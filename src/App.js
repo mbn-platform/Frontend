@@ -1,21 +1,38 @@
 import React, { Component } from 'react';
 import logo from './Logo.svg';
-import './App.css';
+import { BrowserRouter, NavLink, Route, Redirect, Switch } from 'react-router-dom';
+import Dashboard from './dashboard/Dashboard';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <div className="App-header">
+
+const Root = () => (
+  <div>Site is under heavy construction</div>
+);
+const App = () => (
+  <BrowserRouter>
+    <div>
+      <nav>
+        <NavLink to="/">
           <img src={logo} className="App-logo" alt="logo" />
-          <h2>Mercatus Template</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        </NavLink>
+        <a href="/">
+        </a>
+        <NavLink to="/dashboard">Dashboard</NavLink>
+        <NavLink to="/profile">Profile</NavLink>
+        <NavLink to="/ratings">Ratings</NavLink>
+        <NavLink to="/terminal">Terminal</NavLink>
+      </nav>
+      <div className="MainContent">
+        <Switch>
+          <Route exact path="/" component={Root}/>
+          <Route path="/dashboard" component={Dashboard}/>
+          <Route path="/ratings" component={Ratings}/>
+          <Redirect to="/" />
+        </Switch>
       </div>
-    );
-  }
-}
+    </div>
+  </BrowserRouter>
+);
+
+const Ratings = () => (<div>Under Construction</div>);
 
 export default App;
