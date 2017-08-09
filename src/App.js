@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import logo from './Logo.svg';
 import { BrowserRouter, NavLink, Route, Redirect, Switch } from 'react-router-dom';
 import Dashboard from './dashboard/Dashboard';

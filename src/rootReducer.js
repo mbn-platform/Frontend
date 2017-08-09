@@ -1,1 +1,4 @@
-export default state => state;
+import apiKeys from './reducers/apiKeys';
+import { combineReducers } from 'redux';
+
+export default combineReducers({apiKeys}); 
