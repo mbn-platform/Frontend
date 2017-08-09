@@ -35,7 +35,7 @@ class AddApiKey extends React.Component {
       alert('enter keyname and key value');
       return;
     }
-    this.props.onApiKeyCreated({keyName, keyValue, stock, inUse: false});
+    this.props.onApiKeyCreated({keyName, keyValue, stock, inUse: false, pairs: []});
     this.setState(this.initialState());
   }
 

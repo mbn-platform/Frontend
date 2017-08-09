@@ -1,7 +1,7 @@
 import { DELETE_API_KEY, ADD_API_KEY } from '../actions/apiKeys';
 const KEYS = [
-  {keyName: 'first key', keyValue: 'Acx123123DFdf', stock: 'Some Stock', inUse: true},
-  {keyName: 'second key', keyValue: 'Acx12312sxdf', stock: 'Some Other Stock', inUse: false}
+  {keyName: 'first key', keyValue: 'Acx123123DFdf', stock: 'Some Stock', inUse: true, pairs: ['ETH/BTC']},
+  {keyName: 'second key', keyValue: 'Acx12312sxdf', stock: 'Some Other Stock', inUse: false, pairs: []}
 ];
 
 export default function(state = KEYS, action) {
