@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { deleteApiKey } from '../actions/apiKeys';
-const availablePairs = ['ETH/BTC', 'BTC/USD', 'ETH/USD'];
+const availablePairs = ['BTC-BCC', 'BTC-NEO', 'BTC-ETH'];
 
 const ApiKeys = ({ apiKeys, onKeyDeleteClick }) => {
   if(apiKeys.length === 0) {
@@ -9,7 +9,7 @@ const ApiKeys = ({ apiKeys, onKeyDeleteClick }) => {
   } else {
     return (
       <ul>
-        {apiKeys.map(apiKey => <ApiKey key={Math.random()} apiKey={apiKey} onKeyDeleteClick={onKeyDeleteClick} />)};
+        {apiKeys.map(apiKey => <ApiKey key={apiKey.keyId} apiKey={apiKey} onKeyDeleteClick={onKeyDeleteClick} />)}
       </ul>
       );
   }
@@ -30,11 +30,10 @@ class ApiKey extends React.Component {
   render() {
     const apiKey = this.props.apiKey;
     return (
-      <li key={Math.random()}>
-        <span>{apiKey.keyName} </span>
+      <li>
+        <span>{apiKey.name} </span>
         <span>{apiKey.keyValue} </span>
-        <span>{apiKey.stock} </span>
-        <span>{apiKey.pairs} </span>
+        <span>{apiKey.exchange} </span>
         <span>{apiKey.inUse ? 'in use' : 'free'} </span>
         <br/>
         <button onClick={this.onPairsClicked}>Pairs</button>
@@ -47,15 +46,33 @@ class ApiKey extends React.Component {
 
   renderPairs() {
     if(this.state.pairsOpened) {
-      return (
-        <div>
-          {availablePairs.map(pair => <label><input type="checkbox"/>{pair}</label>)}
-        </div>
-      );
+      return (<PairsForm availablePairs={availablePairs} pairs={this.props.apiKey.pairs}/>);
     } else {
       return null;
     }
   }
+}
+
+
+class PairsForm extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <div>
+        {this.props.availablePairs.map(pair => this.renderPair(pair))}
+      </div>
+    );
+  }
+
+  renderPair(pair) {
+    const pairEnabled = this.props.pairs.indexOf(pair) !== -1;
+    return (<label><input type="checkbox" defaultChecked={pairEnabled}/>{pair}</label>);
+  }
+
+
 }
 
 const mapDispatchToProps = dispatch => {

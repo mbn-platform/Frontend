@@ -2,11 +2,12 @@ import React from 'react';
 import logo from './Logo.svg';
 import { BrowserRouter, NavLink, Route, Redirect, Switch } from 'react-router-dom';
 import Dashboard from './dashboard/Dashboard';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import reducer from './rootReducer';
+import thunk from 'redux-thunk'
 
-const store = createStore(reducer);
+const store = createStore(reducer, applyMiddleware(thunk));
 
 
 const Root = () => (
