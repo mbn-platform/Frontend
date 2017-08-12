@@ -15,9 +15,9 @@ class AddApiKey extends React.Component {
   initialState() {
     return {
       opened: false,
-      keyName: '',
-      keyValue: '',
-      stock: 'Bitrex'
+      name: '',
+      value: '',
+      exchange: 'Bitrex'
     };
   }
 
@@ -30,12 +30,12 @@ class AddApiKey extends React.Component {
 
   onSubmit(event) {
     event.preventDefault();
-    const { keyName, keyValue, stock } = this.state;
-    if(!keyName || !keyValue) {
+    const { name, value, exchange } = this.state;
+    if(!name || !value) {
       alert('enter keyname and key value');
       return;
     }
-    this.props.onApiKeyCreated({keyName, keyValue, stock, inUse: false, pairs: []});
+    this.props.onApiKeyCreated({name, value, exchange, inUse: false, pairs: []});
     this.setState(this.initialState());
   }
 
@@ -51,9 +51,9 @@ class AddApiKey extends React.Component {
     } else {
       return (
         <form onSubmit={this.onSubmit}>
-          <input placeholder="Key name" name="keyName" value={this.state.keyName} onChange={this.handleChange} />
-          <input placeholder="Key" name="keyValue" value={this.state.keyValue} onChange={this.handleChange} />
-          <select name="stock" value={this.state.stock} onChange={this.handleChange} >
+          <input placeholder="Key name" name="name" value={this.state.name} onChange={this.handleChange} />
+          <input placeholder="Key" name="value" value={this.state.value} onChange={this.handleChange} />
+          <select name="exchange" value={this.state.exchange} onChange={this.handleChange} >
             <option>Bitrex</option>
           </select>
           <input type="submit" value="Submit" />

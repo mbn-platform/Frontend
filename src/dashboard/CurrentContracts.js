@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 class CurrentContracts extends React.Component {
   render() {
@@ -26,8 +27,10 @@ class CurrentContracts extends React.Component {
 }
 
 const CurrentContract = (props) => (
-  <li key={props.id}>
+  <li>
     <Link to={props.link}>{props.name}</Link> <span>{props.info}</span>
   </li>
 );
-export default CurrentContracts;
+export default connect(state => {
+  return {contracts: state.currentContracts};
+})(CurrentContracts);
