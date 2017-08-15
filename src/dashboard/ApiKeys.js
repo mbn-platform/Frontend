@@ -1,19 +1,67 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { deleteApiKey } from '../actions/apiKeys';
+import PropTypes from 'prop-types';
 const availablePairs = ['BTC-BCC', 'BTC-NEO', 'BTC-ETH'];
 
-const ApiKeys = ({ apiKeys, onKeyDeleteClick }) => {
-  if(apiKeys.length === 0) {
-    return (<div>You have no keys yet</div>);
-  } else {
+class ApiKeys extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedTab: 0,
+      ownedKeys: this.props.apiKeys.filter(k => k.owned),
+      sharedKeys: this.props.apiKeys.filter(k => !k.owned)
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log('apiKeys will receive props');
+    console.log(nextProps);
+    this.setState({
+      ownedKeys: nextProps.apiKeys.filter(k => k.owned),
+      sharedKeys: nextProps.apiKeys.filter(k => !k.owned)
+    });
+  }
+
+  render() {
     return (
-      <ul>
-        {apiKeys.map(apiKey => <ApiKey key={apiKey.keyId} apiKey={apiKey} onKeyDeleteClick={onKeyDeleteClick} />)}
-      </ul>
+      <div>
+        <h2 style={{display: 'inline'}}>Api Keys</h2>
+        <button onClick={() => this.setState({selectedTab: 0})}>My Keys ({this.state.ownedKeys.length})</button>
+        <button onClick={() => this.setState({selectedTab: 1})}>Received keys ({this.state.sharedKeys.length})</button>
+        {this.renderContent()}
+      </div>
+    );
+  }
+
+  renderContent() {
+    const { apiKeys, onKeyDeleteClick } = this.props;
+    if(apiKeys.length === 0) {
+      return (<div>You have no keys yet</div>);
+    } else {
+      const selectedTab = this.state.selectedTab;
+      const keys = selectedTab ? this.state.sharedKeys : this.state.ownedKeys;
+      return (
+        <ul>
+          {keys.map(apiKey => (
+            <ApiKey key={apiKey.keyId} apiKey={apiKey}
+            onKeySelected={this.props.onKeySelected}
+            onKeyDeleteClick={onKeyDeleteClick} selected={apiKey == this.props.selectedApiKey}/>
+          ))}
+        </ul>
       );
+
+    }
   }
 }
+
+ApiKeys.propTypes = {
+  onKeySelected: PropTypes.func.isRequired,
+  onKeyDeleteClick: PropTypes.func.isRequired,
+  apiKeys: PropTypes.array.isRequired,
+  selectedKey: PropTypes.object
+};
 
 class ApiKey extends React.Component {
   constructor(props) {
@@ -30,27 +78,17 @@ class ApiKey extends React.Component {
   render() {
     const apiKey = this.props.apiKey;
     return (
-      <li>
+      <li style={this.props.selected ? {backgroundColor: 'aqua'} : {}} onClick={() => this.props.onKeySelected(apiKey)}>
         <span>{apiKey.name} </span>
         <span>{apiKey.keyValue} </span>
         <span>{apiKey.exchange} </span>
         <span>{apiKey.inUse ? 'in use' : 'free'} </span>
         <br/>
-        <button onClick={this.onPairsClicked}>Pairs</button>
-        {this.renderPairs()}
-        <br/>
-        <button onClick={() => this.props.onKeyDeleteClick(apiKey)}>Delete</button>
+        {apiKey.owned ? <button onClick={() => this.props.onKeyDeleteClick(apiKey)}>Delete</button> : null}
       </li>
-     );
+    );
   }
 
-  renderPairs() {
-    if(this.state.pairsOpened) {
-      return (<PairsForm availablePairs={availablePairs} pairs={this.props.apiKey.pairs}/>);
-    } else {
-      return null;
-    }
-  }
 }
 
 
@@ -75,22 +113,4 @@ class PairsForm extends React.Component {
 
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    onKeyDeleteClick: apiKey => {
-      if(apiKey.inUse) {
-        alert('cannot delete key - key is in use');
-      } else {
-        dispatch(deleteApiKey(apiKey));
-      }
-    }
-  }
-}
-
-const mapStateToProps = state => {
-  return {
-    apiKeys: state.apiKeys
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ApiKeys);
+export default ApiKeys;
