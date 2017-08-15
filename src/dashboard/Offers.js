@@ -3,11 +3,21 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { acceptOffer, cancelOffer, rejectOffer } from '../actions/offers';
 
-class Offers extends React.Component {
+class Offers extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedTab: 0,
+      ownOffers: this.props.offers.filter(o => o.owned),
+      incomingOffers: this.props.offers.filter(o => !o.owned)
+    }
+  }
   render() {
     return (
       <div>
-        <h2>Offers</h2>
+        <h2 style={{display: 'inline'}}>Offers</h2>
+        <button onClick={() => this.setState({selectedTab: 0})}>Sent ({this.state.ownOffers.length})</button>
+        <button onClick={() => this.setState({selectedTab: 1})}>Received ({this.state.incomingOffers.length})</button>
         {this.renderContent()}
       </div>
     );
@@ -17,9 +27,12 @@ class Offers extends React.Component {
     if(this.props.offers.length === 0) {
       return (<div>No pending offers</div>);
     } else {
+      const offers = this.state.selectedTab ? this.state.incomingOffers : this.state.ownOffers;
       return (
         <ul>
-          {this.props.offers.map(o => <Offer offer={o} key={o.id} 
+          {offers.map(o => <Offer offer={o} key={o.id}
+            selected={this.props.selectedOffer == o}
+            onOfferSelected={this.props.onOfferSelected}
             onCancelClick={this.props.onCancelClick}
             onRejectClick={this.props.onRejectClick}
             onAcceptClick={this.props.onAcceptClick} />)}
@@ -48,7 +61,8 @@ class Offer extends React.Component {
 
   render() {
     return (
-      <li>
+      <li style={this.props.selected ? {backgroundColor: 'red'} : {}}
+        onClick={() => this.props.onOfferSelected(this.props.offer)}>
         <Link to={this.props.offer.link}>{this.props.offer.link}</Link>
         {this.renderButtons()}
       </li>
@@ -66,8 +80,9 @@ const mapDispatchToProps = dispatch => {
 };
 
 const mapStateToProps = state => {
-  return {offers: state.offers};
+  return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Offers);
+//export default connect(mapStateToProps, mapDispatchToProps)(Offers);
+export default Offers;
 

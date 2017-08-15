@@ -16,12 +16,18 @@ class ApiKeys extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('apiKeys will receive props');
-    console.log(nextProps);
-    this.setState({
-      ownedKeys: nextProps.apiKeys.filter(k => k.owned),
-      sharedKeys: nextProps.apiKeys.filter(k => !k.owned)
-    });
+    if(nextProps.selectedApiKey && nextProps.selectedApiKey !== this.props.selectedApiKey) {
+      const requiredTab = nextProps.selectedApiKey.owned ? 0 : 1;
+      if(this.state.selectedTab !== requiredTab) {
+        this.setState({selectedTab: requiredTab});
+      }
+    }
+    if(nextProps.apiKeys !== this.props.apiKeys) {
+      this.setState({
+        ownedKeys: nextProps.apiKeys.filter(k => k.owned),
+        sharedKeys: nextProps.apiKeys.filter(k => !k.owned)
+      });
+    }
   }
 
   render() {
@@ -67,7 +73,7 @@ class ApiKey extends React.Component {
   constructor(props) {
     super(props);
     this.state = {pairsOpened: false};
-    this.onPairsClicked = this.onPairsClicked.bind(this);
+    this.onKeyDeleteClick = this.onKeyDeleteClick.bind(this);
   }
 
   onPairsClicked() {
@@ -84,9 +90,15 @@ class ApiKey extends React.Component {
         <span>{apiKey.exchange} </span>
         <span>{apiKey.inUse ? 'in use' : 'free'} </span>
         <br/>
-        {apiKey.owned ? <button onClick={() => this.props.onKeyDeleteClick(apiKey)}>Delete</button> : null}
+        {apiKey.owned ? <button onClick={this.onKeyDeleteClick}>Delete</button> : null}
+
       </li>
     );
+  }
+
+  onKeyDeleteClick(event) {
+    event.stopPropagation();
+    this.props.onKeyDeleteClick(this.props.apiKey);
   }
 
 }
