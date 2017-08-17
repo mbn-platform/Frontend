@@ -15,11 +15,31 @@ const Root = () => (
   <div>Site is under heavy construction</div>
 );
 
-const App = () => (
-  <Provider store={store}>
-    <MainRouter>
-    </MainRouter>
-  </Provider>
-);
+
+
+
+class App extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {loading: true};
+  }
+
+  componentDidMount() {
+    window.addEventListener('load', () => {
+      if(typeof window.web3 !== undefined) {
+        window.web3 = new window.Web3(window.web3.currentProvider);
+        this.setState({loading: false});
+      }
+    });
+  }
+  render() {
+    return (
+      <Provider store={store}>
+        {this.state.loading ? <div/> : (<MainRouter />)}
+      </Provider>
+      );
+  }
+}
 
 export default App;

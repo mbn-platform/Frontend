@@ -2,6 +2,7 @@ import { BrowserRouter, NavLink, Route, Redirect } from 'react-router-dom';
 import logo from './Logo.svg';
 import React from 'react';
 import Dashboard from './dashboard/DashboardContainer';
+import Login from './login/Login';
 
 const MainRouter = () => (
   <BrowserRouter>
@@ -18,39 +19,9 @@ const MainRouter = () => (
         <NavLink to="/terminal">Terminal</NavLink>
       </nav>
       <Route exact path='/login' component={Login} />
-      <ProtectedRoute path='/dashboard' component={Dashboard} />
+      <Route path='/dashboard' component={Dashboard} />
     </div>
   </BrowserRouter>
 );
-
-const auth = {
-  isAuthorized: true
-}
-
-const Login = () => {
-  if(!window.web3) {
-    return (<div>Install meta mask</div>);
-  } else {
-    return (<button>Log in</button>);
-  }
-}
-
-class ProtectedRoute extends React.Component {
-
-
-  render() {
-    console.log(auth);
-    const Component = this.props.component;
-    return (<Route exact path={this.props.path} render={() => auth.isAuthorized ? (
-      <Component />
-      ) : (
-      <Redirect to="/login" />
-      )
-      }/>)
-  }
-}
-
-
-
 
 export default MainRouter;
