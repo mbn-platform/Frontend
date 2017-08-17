@@ -1,7 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { acceptOffer, cancelOffer, rejectOffer } from '../actions/offers';
 
 class Offers extends React.PureComponent {
   constructor(props) {
@@ -10,7 +8,7 @@ class Offers extends React.PureComponent {
       selectedTab: 0,
       ownOffers: this.props.offers.filter(o => o.owned),
       incomingOffers: this.props.offers.filter(o => !o.owned)
-    }
+    };
   }
 
   componentWillReceiveProps(nextProps) {
@@ -30,26 +28,26 @@ class Offers extends React.PureComponent {
         <button onClick={() => this.setState({selectedTab: 1})}>Received ({this.state.incomingOffers.length})</button>
         {this.renderContent()}
       </div>
-      );
-}
+    );
+  }
 
-renderContent() {
-  if(this.props.offers.length === 0) {
-    return (<div>No pending offers</div>);
-  } else {
-    const offers = this.state.selectedTab ? this.state.incomingOffers : this.state.ownOffers;
-    return (
+  renderContent() {
+    if(this.props.offers.length === 0) {
+      return (<div>No pending offers</div>);
+    } else {
+      const offers = this.state.selectedTab ? this.state.incomingOffers : this.state.ownOffers;
+      return (
       <ul>
         {offers.map(o => <Offer offer={o} key={o.id}
-          selected={this.props.selectedOffer == o}
+          selected={this.props.selectedOffer === o}
           onOfferSelected={this.props.onOfferSelected}
           onCancelClick={this.props.onOfferCanceled}
           onRejectClick={this.props.onOfferRejected}
           onAcceptClick={this.props.onOfferAccepted} />)}
       </ul>
       );
+    }
   }
-}
 
 }
 
@@ -98,23 +96,10 @@ class Offer extends React.Component {
         <Link to={this.props.offer.link}>{this.props.offer.link}</Link>
         {this.renderButtons()}
       </li>
-      );
+    );
+  }
 }
-}
 
 
-const mapDispatchToProps = dispatch => {
-  return {
-    onCancelClick: offer => dispatch(cancelOffer(offer)),
-    onRejectClick: offer => dispatch(rejectOffer(offer)),
-    onAcceptClick: offer => dispatch(acceptOffer(offer))
-  };
-};
-
-const mapStateToProps = state => {
-  return {};
-};
-
-//export default connect(mapStateToProps, mapDispatchToProps)(Offers);
 export default Offers;
 

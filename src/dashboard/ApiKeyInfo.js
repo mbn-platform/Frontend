@@ -12,17 +12,17 @@ class ApiKeyInfo extends React.Component {
         {this.props.apiKey ? (
         <ul>
           {availablePairs.map(p => {
-          const pairEnabled = this.props.apiKey.pairs.indexOf(p) !== -1;
-          return (
+            const pairEnabled = this.props.apiKey.pairs.indexOf(p) !== -1;
+            return (
           <li key={p}>
             <label><input type="checkbox" checked={pairEnabled}/>{p}</label>
           </li>
-          )
+            );
           })}
         </ul>
         ): (<div>No api key selected</div>)}
       </div>
-      );
+    );
 
   }
 }

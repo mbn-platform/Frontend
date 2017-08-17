@@ -4,5 +4,5 @@ export function updateCurrentContracts(contracts) {
   return {
     type: UPDATE_CURRENT_CONTRACTS,
     currentContracts: contracts
-  }
+  };
 }

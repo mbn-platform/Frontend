@@ -8,7 +8,7 @@ export function fetchDashboardData() {
         data: data
       });
     });
-  }
+  };
   //return async dispatch => {
     //const res = await window.fetch('/api/dashboard');
     //const json = await res.json();

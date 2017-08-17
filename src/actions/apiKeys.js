@@ -24,7 +24,7 @@ export function addApiKey(key) {
         dispatch({
           type: ADD_API_KEY,
           apiKey: key
-        })
+        });
       });
   };
 }
@@ -39,7 +39,7 @@ export function updateApiKey(key) {
         dispatch({
           type: UPDATE_API_KEY,
           apiKey: key
-        })
+        });
       });
   };
 }

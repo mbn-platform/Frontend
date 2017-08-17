@@ -68,7 +68,7 @@ const mapDispatchToProps = dispatch => {
   return {
     onApiKeyCreated: key => dispatch(addApiKey(key))
   };
-}
+};
 
 
-export default connect(() => { return {}}, mapDispatchToProps)(AddApiKey);
+export default connect(() => { return {};}, mapDispatchToProps)(AddApiKey);

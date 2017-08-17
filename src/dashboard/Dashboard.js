@@ -4,7 +4,6 @@ import AddApiKey from './AddApiKey';
 import ApiKeyInfo from './ApiKeyInfo';
 import CurrentContracts from './CurrentContracts';
 import Offers from './Offers';
-import { connect } from 'react-redux';
 
 class Dashboard extends React.Component {
   constructor(props) {

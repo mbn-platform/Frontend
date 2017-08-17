@@ -50,7 +50,7 @@ class ApiKeys extends React.Component {
           {keys.map(apiKey => (
             <ApiKey key={apiKey.keyId} apiKey={apiKey}
             onKeySelected={this.props.onKeySelected}
-            onKeyDeleteClick={onKeyDeleteClick} selected={apiKey == this.props.selectedApiKey}/>
+            onKeyDeleteClick={onKeyDeleteClick} selected={apiKey === this.props.selectedApiKey}/>
           ))}
         </ul>
       );
@@ -97,28 +97,6 @@ class ApiKey extends React.Component {
     event.stopPropagation();
     this.props.onKeyDeleteClick(this.props.apiKey);
   }
-
-}
-
-
-class PairsForm extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <div>
-        {this.props.availablePairs.map(pair => this.renderPair(pair))}
-      </div>
-    );
-  }
-
-  renderPair(pair) {
-    const pairEnabled = this.props.pairs.indexOf(pair) !== -1;
-    return (<label><input type="checkbox" defaultChecked={pairEnabled}/>{pair}</label>);
-  }
-
 
 }
 

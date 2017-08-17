@@ -21,8 +21,8 @@ class App extends React.Component {
       if(typeof window.web3 !== 'undefined') {
         window.web3 = new window.Web3(window.web3.currentProvider);
       }
+      this.setState({loading: false});
     });
-    this.setState({loading: false});
   }
   render() {
     return (
