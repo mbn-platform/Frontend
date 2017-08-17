@@ -14,7 +14,10 @@ export function logIn() {
         if(!err) {
           window.fetch('/api/auth', {
             method: 'post',
-            body: JSON.stringify({message, acc})
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({sgn: result, addr: acc})
           }).then(res => res.json())
             .then(json => dispatch({
               type: LOGGED_IN,
