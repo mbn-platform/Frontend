@@ -4,8 +4,6 @@ const availablePairs = ['BTC-BCC', 'BTC-NEO', 'BTC-ETH'];
 class ApiKeyInfo extends React.Component {
 
   render() {
-    console.log('render ApiKeyInfo');
-
     return (
       <div>
         <h2>ApiKey Info</h2>

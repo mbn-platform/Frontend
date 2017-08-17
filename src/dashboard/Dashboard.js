@@ -2,7 +2,7 @@ import React from 'react';
 import ApiKeys from './ApiKeys';
 import AddApiKey from './AddApiKey';
 import ApiKeyInfo from './ApiKeyInfo';
-import CurrentContracts from './CurrentContracts';
+import Contracts from './Contracts';
 import Offers from './Offers';
 
 class Dashboard extends React.Component {
@@ -38,8 +38,8 @@ class Dashboard extends React.Component {
         />
         <AddApiKey />
         <ApiKeyInfo apiKey={this.state.selectedApiKey} />
-        <CurrentContracts
-          contracts={this.props.currentContracts}
+        <Contracts
+          contracts={this.props.contracts}
           selectedContract={this.state.selectedContract}
           onContractSelected={this.onContractSelected}
         />
@@ -50,9 +50,7 @@ class Dashboard extends React.Component {
   onKeySelected(apiKey) {
     if(this.state.selectedApiKey !== apiKey) {
       const offer = this.props.offers.find(o => o.keyId === apiKey.keyId);
-      const contract = this.props.currentContracts.find(c => c.keyId === apiKey.keyId);
-      console.log(contract);
-      console.log(offer);
+      const contract = this.props.contracts.find(c => c.keyId === apiKey.keyId);
       this.setState({selectedApiKey: apiKey, selectedOffer: offer, selectedContract: contract});
     }
   }
@@ -71,7 +69,6 @@ class Dashboard extends React.Component {
   onContractSelected(contract) {
     if(this.state.selectedContract !== contract) {
       const key = this.props.apiKeys.find(k => k.keyId === contract.keyId);
-      console.log(key);
       this.setState({
         selectedContract: contract,
         selectedApiKey: key,
@@ -82,4 +79,3 @@ class Dashboard extends React.Component {
 }
 
 export default Dashboard;
-

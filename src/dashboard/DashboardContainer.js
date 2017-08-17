@@ -8,7 +8,7 @@ const mapStateToProps = state => {
   return {
     apiKeys: state.apiKeys,
     offers: state.offers,
-    currentContracts: state.currentContracts
+    contracts: state.contracts
   };
 };
 
@@ -16,7 +16,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onKeyDeleteClick: apiKey => {
-      console.log('on key delete click');
       if(apiKey.inUse) {
         alert('cannot delete key - key is in use');
       } else {
@@ -31,4 +30,3 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
-

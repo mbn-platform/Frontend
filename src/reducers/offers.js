@@ -1,7 +1,8 @@
 import { ACCEPT_OFFER, REJECT_OFFER, CANCEL_OFFER } from '../actions/offers';
-const OFFERS = [
-  {owned: false, link: '/profile/some', created: Date.now(), id: 'abc123', keyId: 1} 
-];
+// const OFFERS = [
+//   {owned: false, link: '/profile/some', created: Date.now(), id: 'abc123', keyId: 1}
+// ];
+const OFFERS = [];
 
 export default function(state = OFFERS, action) {
   switch(action.type) {

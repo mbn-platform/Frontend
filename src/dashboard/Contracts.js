@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-class CurrentContracts extends React.Component {
+class Contracts extends React.Component {
   render() {
     return (
       <div>
-        <h2>Current Contracts</h2>
+        <h2>Contracts</h2>
         {this.renderContent()}
       </div>
     );
@@ -13,12 +13,12 @@ class CurrentContracts extends React.Component {
 
   renderContent() {
     if(this.props.contracts.length === 0) {
-      return (<div>No current contracts</div>);
+      return (<div>No contracts</div>);
     } else {
       return (
         <ul>
           {this.props.contracts.map(c => (
-          <CurrentContract contract={c} key={c.id}
+          <Contract contract={c} key={c.id}
             onContractSelected={this.props.onContractSelected}
             selected={this.props.selectedContract === c} />
           ))}
@@ -29,10 +29,10 @@ class CurrentContracts extends React.Component {
 
 }
 
-const CurrentContract = (props) => (
+const Contract = (props) => (
   <li style={props.selected ? {backgroundColor: 'green'} : {}} onClick={() => props.onContractSelected(props.contract)}>
     <Link to={props.contract.link}>{props.contract.name}</Link> <span>{props.contract.info}</span>
   </li>
 );
 
-export default CurrentContracts;
+export default Contracts;

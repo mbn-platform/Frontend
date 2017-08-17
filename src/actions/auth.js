@@ -13,6 +13,7 @@ export function logIn() {
       window.web3.eth.sign(acc, message, (err, result) => {
         if(!err) {
           window.fetch('/api/auth', {
+            credentials: 'same-origin',
             method: 'post',
             headers: {
               'Content-Type': 'application/json'
