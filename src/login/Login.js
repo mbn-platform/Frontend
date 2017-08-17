@@ -6,7 +6,7 @@ class Login extends React.Component {
     if(!window.web3) {
       return (<div>Install Metamask plugin</div>);
     }
-    return (<button onClick={this.props.onLoginButtonClick}>Log in</button>);
+    return (<button onClick={this.props.onLoginClick}>Log in</button>);
   }
 }
 
