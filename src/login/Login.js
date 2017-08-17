@@ -6,22 +6,11 @@ import { logIn } from '../actions/auth';
 class Login extends React.Component {
 
   render() {
-    if(this.props.auth.loggedIn) {
-      return (<Redirect to="/dashboard" />);
+    if(!window.web3) {
+      return (<div>Install Metamask plugin</div>);
     }
-
     return (<button onClick={this.props.onLoginButtonClick}>Log in</button>);
   }
 }
 
-const mapStateToProps = state => {
-  return {auth: state.auth};
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    onLoginButtonClick: () => dispatch(logIn())
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default Login;
