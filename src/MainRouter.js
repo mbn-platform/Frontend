@@ -3,6 +3,8 @@ import logo from './Logo.svg';
 import React from 'react';
 import Dashboard from './dashboard/DashboardContainer';
 import Login from './login/Login';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 
 const MainRouter = () => (
   <BrowserRouter>
@@ -19,9 +21,28 @@ const MainRouter = () => (
         <NavLink to="/terminal">Terminal</NavLink>
       </nav>
       <Route exact path='/login' component={Login} />
-      <Route path='/dashboard' component={Dashboard} />
+      <ProtectedRoute path="/dashboard" component={Dashboard} />
     </div>
   </BrowserRouter>
 );
+
+
+
+let ProtectedRoute = ({ path, component: Component, loggedIn }) => {
+  const render = (props) => {
+    if(loggedIn) {
+      return (<Component />);
+    } else {
+      return (<Redirect to="login" />);
+    }
+  };
+
+  return (<Route path={path} render={render} />);
+};
+
+ProtectedRoute = withRouter(connect(state => {
+  return {loggedIn: state.auth.loggedIn};
+})(ProtectedRoute));
+
 
 export default MainRouter;
