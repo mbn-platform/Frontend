@@ -5,9 +5,6 @@ import ApiKeyInfo from './ApiKeyInfo';
 import CurrentContracts from './CurrentContracts';
 import Offers from './Offers';
 import { connect } from 'react-redux';
-import { fetchDashboardData } from '../actions/dashboard';
-import { deleteApiKey } from '../actions/apiKeys';
-const CONTRACTS = [{name: 'Trader', link: '/trader', id: '1', info: 'Contract Info'}];
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -18,7 +15,7 @@ class Dashboard extends React.Component {
     this.onContractSelected = this.onContractSelected.bind(this);
   }
   componentDidMount() {
-    this.props.dispatch(fetchDashboardData());
+    this.props.onDashboardMounted();
   }
 
   render() {
@@ -26,6 +23,10 @@ class Dashboard extends React.Component {
       <div>
         <h1>Dashboard</h1>
         <Offers
+          onOfferCanceled={this.props.onOfferCanceled}
+          onOfferRejected={this.props.onOfferRejected}
+          onOfferAccepted={this.props.onOfferAccepted}
+
           offers={this.props.offers}
           selectedOffer={this.state.selectedOffer}
           onOfferSelected={this.onOfferSelected}
@@ -44,51 +45,42 @@ class Dashboard extends React.Component {
           onContractSelected={this.onContractSelected}
         />
       </div>
-      );
+    );
   }
 
   onKeySelected(apiKey) {
     if(this.state.selectedApiKey !== apiKey) {
       const offer = this.props.offers.find(o => o.keyId === apiKey.keyId);
-      this.setState({selectedApiKey: apiKey, selectedOffer: offer});
+      const contract = this.props.currentContracts.find(c => c.keyId === apiKey.keyId);
+      console.log(contract);
+      console.log(offer);
+      this.setState({selectedApiKey: apiKey, selectedOffer: offer, selectedContract: contract});
     }
   }
 
   onOfferSelected(offer) {
     if(this.state.selectedOffer !== offer) {
       const key = this.props.apiKeys.find(k => k.keyId === offer.keyId);
-      this.setState({selectedOffer: offer, selectedApiKey: key});
+      this.setState({
+        selectedOffer: offer,
+        selectedApiKey: key,
+        selectedContract: null
+      });
     }
   }
 
   onContractSelected(contract) {
     if(this.state.selectedContract !== contract) {
-      this.setState({selectedContract: contract});
+      const key = this.props.apiKeys.find(k => k.keyId === contract.keyId);
+      console.log(key);
+      this.setState({
+        selectedContract: contract,
+        selectedApiKey: key,
+        selectedOffer: null
+      });
     }
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    apiKeys: state.apiKeys,
-    offers: state.offers,
-    currentContracts: state.currentContracts
-  };
-};
+export default Dashboard;
 
-
-const mapDispatchToProps = dispatch => {
-  return {
-    onKeyDeleteClick: apiKey => {
-      console.log('on key delete click');
-      if(apiKey.inUse) {
-        alert('cannot delete key - key is in use');
-      } else {
-        dispatch(deleteApiKey(apiKey));
-      }
-    },
-    dispatch: dispatch
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

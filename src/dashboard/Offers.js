@@ -12,6 +12,16 @@ class Offers extends React.PureComponent {
       incomingOffers: this.props.offers.filter(o => !o.owned)
     }
   }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.offers !== this.props.offers) {
+      this.setState({
+        ownOffers: nextProps.offers.filter(o => o.owned),
+        incomingOffers: nextProps.offers.filter(o => !o.owned)
+      });
+    }
+  }
+
   render() {
     return (
       <div>
@@ -20,43 +30,65 @@ class Offers extends React.PureComponent {
         <button onClick={() => this.setState({selectedTab: 1})}>Received ({this.state.incomingOffers.length})</button>
         {this.renderContent()}
       </div>
-    );
-  }
-
-  renderContent() {
-    if(this.props.offers.length === 0) {
-      return (<div>No pending offers</div>);
-    } else {
-      const offers = this.state.selectedTab ? this.state.incomingOffers : this.state.ownOffers;
-      return (
-        <ul>
-          {offers.map(o => <Offer offer={o} key={o.id}
-            selected={this.props.selectedOffer == o}
-            onOfferSelected={this.props.onOfferSelected}
-            onCancelClick={this.props.onCancelClick}
-            onRejectClick={this.props.onRejectClick}
-            onAcceptClick={this.props.onAcceptClick} />)}
-        </ul>
       );
-    }
+}
+
+renderContent() {
+  if(this.props.offers.length === 0) {
+    return (<div>No pending offers</div>);
+  } else {
+    const offers = this.state.selectedTab ? this.state.incomingOffers : this.state.ownOffers;
+    return (
+      <ul>
+        {offers.map(o => <Offer offer={o} key={o.id}
+          selected={this.props.selectedOffer == o}
+          onOfferSelected={this.props.onOfferSelected}
+          onCancelClick={this.props.onOfferCanceled}
+          onRejectClick={this.props.onOfferRejected}
+          onAcceptClick={this.props.onOfferAccepted} />)}
+      </ul>
+      );
   }
+}
 
 }
 
 class Offer extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.onCancelClick = this.onCancelClick.bind(this);
+    this.onAcceptClick = this.onAcceptClick.bind(this);
+    this.onRejectClick = this.onRejectClick.bind(this);
+  }
+
+  onCancelClick(event) {
+    event.stopPropagation();
+    this.props.onCancelClick(this.props.offer);
+  }
+  onRejectClick(event) {
+    event.stopPropagation();
+    this.props.onRejectClick(this.props.offer);
+  }
+  onAcceptClick(event) {
+    event.stopPropagation();
+    this.props.onAcceptClick(this.props.offer);
+  }
+
   renderButtons() {
     if(this.props.offer.owned) {
-      const {offer, onCancelClick} = this.props;
-      return (<button onClick={() => onCancelClick(offer)}>Cancel</button>);
+      return (<button onClick={this.onCancelClick}>Cancel</button>);
     } else {
-      const {offer, onRejectClick, onAcceptClick} = this.props;
       return [
-        <button onClick={() => onAcceptClick(offer)}>Accept</button>,
-        <button onClick={() => onRejectClick(offer)}>Reject</button>,
+        <button onClick={this.onAcceptClick}>Accept</button>,
+        <button onClick={this.onRejectClick}>Reject</button>,
       ];
     }
   }
+
+
+
+
 
 
   render() {
@@ -66,8 +98,8 @@ class Offer extends React.Component {
         <Link to={this.props.offer.link}>{this.props.offer.link}</Link>
         {this.renderButtons()}
       </li>
-    );
-  }
+      );
+}
 }
 
 

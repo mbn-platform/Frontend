@@ -1,8 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { deleteApiKey } from '../actions/apiKeys';
 import PropTypes from 'prop-types';
-const availablePairs = ['BTC-BCC', 'BTC-NEO', 'BTC-ETH'];
 
 class ApiKeys extends React.Component {
 

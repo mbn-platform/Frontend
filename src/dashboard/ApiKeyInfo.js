@@ -1,18 +1,21 @@
 import React from 'react';
+const availablePairs = ['BTC-BCC', 'BTC-NEO', 'BTC-ETH'];
 
 class ApiKeyInfo extends React.Component {
 
   render() {
+    console.log('render ApiKeyInfo');
 
     return (
       <div>
         <h2>ApiKey Info</h2>
         {this.props.apiKey ? (
         <ul>
-          {this.props.apiKey.pairs.map(p => {
+          {availablePairs.map(p => {
+          const pairEnabled = this.props.apiKey.pairs.indexOf(p) !== -1;
           return (
           <li key={p}>
-            {p}
+            <label><input type="checkbox" checked={pairEnabled}/>{p}</label>
           </li>
           )
           })}

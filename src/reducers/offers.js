@@ -1,7 +1,6 @@
 import { ACCEPT_OFFER, REJECT_OFFER, CANCEL_OFFER } from '../actions/offers';
 const OFFERS = [
-  {owned: true, link: '/profile/some', created: Date.now(), id: 'abc123', keyId: 2} ,
-  {owned: false, link: '/profile/other', created: Date.now(), id: 'asd123', keyId: 1}
+  {owned: false, link: '/profile/some', created: Date.now(), id: 'abc123', keyId: 1} 
 ];
 
 export default function(state = OFFERS, action) {

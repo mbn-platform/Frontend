@@ -6,6 +6,7 @@ import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import reducer from './rootReducer';
 import thunk from 'redux-thunk'
+import MainRouter from './MainRouter';
 
 const store = createStore(reducer, applyMiddleware(thunk));
 
@@ -13,34 +14,12 @@ const store = createStore(reducer, applyMiddleware(thunk));
 const Root = () => (
   <div>Site is under heavy construction</div>
 );
+
 const App = () => (
   <Provider store={store}>
-    <BrowserRouter>
-      <div>
-        <nav>
-          <NavLink to="/">
-            <img src={logo} className="App-logo" alt="logo" />
-          </NavLink>
-          <a href="/">
-          </a>
-          <NavLink to="/dashboard">Dashboard</NavLink>
-          <NavLink to="/profile">Profile</NavLink>
-          <NavLink to="/ratings">Ratings</NavLink>
-          <NavLink to="/terminal">Terminal</NavLink>
-        </nav>
-        <div className="MainContent">
-          <Switch>
-            <Route exact path="/" component={Root}/>
-            <Route path="/dashboard" component={Dashboard}/>
-            <Route path="/ratings" component={Ratings}/>
-            <Redirect to="/" />
-          </Switch>
-        </div>
-      </div>
-    </BrowserRouter>
+    <MainRouter>
+    </MainRouter>
   </Provider>
 );
-
-const Ratings = () => (<div>Under Construction</div>);
 
 export default App;
