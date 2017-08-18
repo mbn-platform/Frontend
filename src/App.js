@@ -7,7 +7,11 @@ import reducer from './rootReducer';
 import thunk from 'redux-thunk';
 import MainContent from './MainContent';
 
-const store = createStore(reducer, applyMiddleware(thunk));
+function getReduxState() {
+  const state = localStorage.getItem('reduxState');
+  return state ? JSON.parse(state) : {};
+}
+const store = createStore(reducer, getReduxState(), applyMiddleware(thunk));
 
 class App extends React.Component {
 
