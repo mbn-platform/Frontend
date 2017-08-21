@@ -1,42 +1,155 @@
 import React from 'react';
 const availablePairs = ['BTC-BCC', 'BTC-NEO', 'BTC-ETH'];
 
+
 class ApiKeyInfo extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {pairs: availablePairs};
-    this.filterList = this.filterList.bind(this);
+    this.state = {filtedData: props.availablePairs};
   }
-
-  filterList(e) {
-    const filter = e.target.value.toLowerCase();
-    const filtered = availablePairs.filter(pair => pair.toLowerCase().search(filter) !== -1);
-    this.setState({pairs: filtered});
-  }
-
 
   render() {
     return (
       <div>
-        <h2>ApiKey Info</h2>
-        <input placeholder="Search" onChange={this.filterList} />
-        {this.props.apiKey ? (
-        <ul>
-          {this.state.pairs.map(p => {
-            const pairEnabled = this.props.apiKey.pairs.indexOf(p) !== -1;
-            return (
-          <li key={p}>
-            <label><input type="checkbox" checked={pairEnabled}/>{p}</label>
-          </li>
-            );
-          })}
-        </ul>
-        ): (<div>No api key selected</div>)}
+        <h2>KEY'S PAIRS</h2>
+        <PairsList apiKey={this.props.apiKey} availablePairs={availablePairs} />
       </div>
-    );
-
+      );
   }
 }
+
+class PairsList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.onFilterChange = this.onFilterChange.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.onCancelChangesClick = this.onCancelChangesClick.bind(this);
+    this.onCheckAllClicked = this.onCheckAllClicked.bind(this);
+    this.state = {
+      filter: '',
+      changed: false,
+      filteredData: availablePairs,
+      checkedPairs: props.apiKey ? new Set(props.apiKey.pairs) : null
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(!nextProps.apiKey) {
+      this.setState({changed: false, filteredData: null, checkedPairs: null});
+    } else {
+      this.setState(state => ({changed: false, checkedPairs: new Set(nextProps.apiKey.pairs), filteredData: this.props.availablePairs, filter: ''}));
+    }
+  }
+
+  onChange(e) {
+    const checked = e.target.checked;
+    const index = e.target.dataset.index;
+    const pair = this.state.filteredData[index];
+    if(checked) {
+      this.state.checkedPairs.add(pair);
+    } else {
+      this.state.checkedPairs.delete(pair);
+    }
+    if(!this.state.changed) {
+      this.setState({changed: true});
+    }
+    this.forceUpdate();
+  }
+
+  onFilterChange(e) {
+    const value = e.target.value;
+    this.setState({filter: value});
+    if(!this.props.apiKey) {
+      return;
+    }
+    if(!value) {
+      this.setState({filteredData: this.props.availablePairs});
+    } else {
+      const filter = value.toLowerCase();
+      const filtered = this.props.availablePairs.filter(pair => pair.toLowerCase().indexOf(filter) !== -1);
+      this.setState({filteredData: filtered});
+    }
+  }
+
+  onCancelChangesClick() {
+    this.setState({
+      checkedPairs: new Set(this.props.apiKey.pairs),
+      changed: false
+    });
+  }
+
+  onCheckAllClicked() {
+    if(!this.props.apiKey) {
+      return;
+    }
+    if(this.state.checkedPairs.size === this.props.availablePairs.length) {
+      this.setState({
+        checkedPairs: new Set(),
+        changed: true
+      });
+    } else {
+      this.setState({
+        checkedPairs: new Set(this.props.availablePairs),
+        changed: true
+      });
+    }
+  }
+
+  renderPairs() {
+    if(this.props.apiKey && this.state.filteredData) {
+      return this.state.filteredData.map((pair, i) => (
+        <PairRow
+          key={pair}
+          index={i}
+          pair={pair}
+          checked={this.state.checkedPairs.has(pair)}
+          onChange={this.onChange}
+        />
+        ));
+    } else {
+      return null;
+    }
+  }
+
+  renderSubmit() {
+    if(this.state.changed) {
+      return (
+        <tr>
+          <td>
+            SAVE CHANGES?
+            <button onClick={this.onSaveChangesClick}>YES</button>
+            <button onClick={this.onCancelChangesClick}>NO</button>
+          </td>
+        </tr>
+        );
+    } else {
+      return null;
+    }
+  }
+
+  render() {
+    return (
+      <table>
+        <th>
+          <div>Pairs</div>
+          <input placeholder="Search" value={this.state.filter}  onChange={this.onFilterChange} />
+        </th>
+        <th>Status<button onClick={this.onCheckAllClicked}>check all</button></th>
+        {this.renderPairs()}
+        {this.renderSubmit()}
+      </table>
+      );
+  }
+}
+
+const PairRow = ({ index, pair, checked, onChange }) => (
+  <tr>
+    <td>{pair}</td>
+    <td>
+      <input type="checkbox" data-index={index} checked={checked} onChange={onChange}/>
+    </td>
+  </tr>
+);
 
 export default ApiKeyInfo;
