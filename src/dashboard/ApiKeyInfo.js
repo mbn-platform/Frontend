@@ -13,7 +13,7 @@ class ApiKeyInfo extends React.Component {
     return (
       <div>
         <h2>KEY'S PAIRS</h2>
-        <PairsList apiKey={this.props.apiKey} availablePairs={availablePairs} />
+        <PairsList apiKey={this.props.apiKey} availablePairs={availablePairs} onKeyUpdate={this.props.onKeyUpdateClick} />
       </div>
       );
   }
@@ -26,12 +26,20 @@ class PairsList extends React.Component {
     this.onChange = this.onChange.bind(this);
     this.onCancelChangesClick = this.onCancelChangesClick.bind(this);
     this.onCheckAllClicked = this.onCheckAllClicked.bind(this);
+    this.onSaveChangesClick = this.onSaveChangesClick.bind(this);
     this.state = {
       filter: '',
       changed: false,
       filteredData: availablePairs,
       checkedPairs: props.apiKey ? new Set(props.apiKey.pairs) : null
     }
+  }
+
+  onSaveChangesClick() {
+    const key = {...this.props.apiKey,
+      pairs: Array.from(this.state.checkedPairs)
+    };
+    this.props.onKeyUpdate(key);
   }
 
   componentWillReceiveProps(nextProps) {

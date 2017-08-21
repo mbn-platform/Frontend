@@ -1,6 +1,6 @@
 import Dashboard from './Dashboard';
 import { connect } from 'react-redux';
-import { deleteApiKey } from '../actions/apiKeys';
+import { deleteApiKey, updateApiKey } from '../actions/apiKeys';
 import { acceptOffer, cancelOffer, rejectOffer } from '../actions/offers';
 import { fetchDashboardData } from '../actions/dashboard';
 
@@ -22,6 +22,7 @@ const mapDispatchToProps = dispatch => {
         dispatch(deleteApiKey(apiKey));
       }
     },
+    onKeyUpdateClick: apiKey => dispatch(updateApiKey(apiKey)),
     onDashboardMounted: () => dispatch(fetchDashboardData()),
     onOfferAccepted: offer => dispatch(cancelOffer(offer)),
     onOfferRejected: offer => dispatch(rejectOffer(offer)),

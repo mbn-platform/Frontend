@@ -4,27 +4,46 @@ export const UPDATE_API_KEY = 'UPDATE_API_KEY';
 
 export function deleteApiKey(key) {
   return dispatch => {
-    window.fetch('/api/keys/' + key.keyId, {method: 'delete'})
+    window.fetch('/api/key/' + key.keyId, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'same-origin',
+      method: 'delete'})
       .then(res => res.json())
-      .then(json => dispatch({
-        type: DELETE_API_KEY,
-        apiKey: key
-      }));
+      .then(json =>  {
+        if(json.result) {
+          dispatch({
+            type: DELETE_API_KEY,
+            apiKey: key
+          });
+        } else {
+          alert('failed to delete api key');
+        }
+      });
   };
 }
 
+
 export function addApiKey(key) {
   return dispatch => {
-    window.fetch('/api/keys', {
+    window.fetch('/api/key', {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'same-origin',
       method: 'post',
       body: JSON.stringify(key)
     }).then(res => res.json())
       .then(json => {
-        key.keyId = Math.random().toFixed(10);
-        dispatch({
-          type: ADD_API_KEY,
-          apiKey: key
-        });
+        if(json.portfolioId) {
+          key.keyId = json.portfolioId;
+          delete key.value;
+          dispatch({
+            type: ADD_API_KEY,
+            apiKey: key
+          });
+        }
       });
   };
 }
@@ -32,6 +51,10 @@ export function addApiKey(key) {
 export function updateApiKey(key) {
   return dispatch => {
     window.fetch('/api/keys/' + key.keyId, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'same-origin',
       method: 'put',
       body: JSON.stringify(key)
     }).then(res => res.json())

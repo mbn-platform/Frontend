@@ -1,4 +1,4 @@
-import { DELETE_API_KEY, ADD_API_KEY } from '../actions/apiKeys';
+import { DELETE_API_KEY, ADD_API_KEY, UPDATE_API_KEY } from '../actions/apiKeys';
 // const KEYS = [
 //   {keyName: 'Pending Key key', keyValue: 'Acx123123DFdf', stock: 'Some Stock', inUse: false, pairs: ['BTC-BCC'], owned: false, keyId: 1},
 //   {keyName: 'Shared key', keyValue: 'Acx123123DFdf', stock: 'Some Stock', inUse: false, pairs: ['BTC-ETH'], owned: false, keyId: 2},
@@ -13,6 +13,8 @@ export default function(state = KEYS, action) {
       return state.filter(apiKey => apiKey.keyId !== action.apiKey.keyId);
     case ADD_API_KEY:
       return state.concat(action.apiKey);
+    case UPDATE_API_KEY:
+      return state.map(apiKey => apiKey.keyId === action.apiKey.keyId ? action.apiKey : apiKey);
     default:
       return state;
   }

@@ -37,7 +37,10 @@ class Dashboard extends React.Component {
           onKeyDeleteClick={this.props.onKeyDeleteClick}
         />
         <AddApiKey />
-        <ApiKeyInfo apiKey={this.state.selectedApiKey} />
+        <ApiKeyInfo
+          apiKey={this.state.selectedApiKey}
+          onKeyUpdateClick={this.props.onKeyUpdateClick}
+        />
         <Contracts
           contracts={this.props.contracts}
           selectedContract={this.state.selectedContract}
