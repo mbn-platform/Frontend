@@ -4,6 +4,9 @@ import AddApiKey from './AddApiKey';
 import ApiKeyInfo from './ApiKeyInfo';
 import Contracts from './Contracts';
 import Offers from './Offers';
+import SelectedContractInfo from './SelectedContractInfo';
+import TradersChart from './TradersChart';
+import ContractsChart from './ContractsChart';
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -46,6 +49,9 @@ class Dashboard extends React.Component {
           selectedContract={this.state.selectedContract}
           onContractSelected={this.onContractSelected}
         />
+        <SelectedContractInfo contract={this.state.selectedContract} />
+        <TradersChart />
+        <ContractsChart />
       </div>
     );
   }
