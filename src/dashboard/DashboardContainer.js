@@ -8,7 +8,8 @@ const mapStateToProps = state => {
   return {
     apiKeys: state.apiKeys,
     offers: state.offers,
-    contracts: state.contracts
+    contracts: state.contracts,
+    userId: state.auth.userId
   };
 };
 

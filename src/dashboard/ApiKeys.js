@@ -7,22 +7,22 @@ class ApiKeys extends React.Component {
     super(props);
     this.state = {
       selectedTab: 0,
-      ownedKeys: this.props.apiKeys.filter(k => k.owned),
-      sharedKeys: this.props.apiKeys.filter(k => !k.owned)
+      ownedKeys: props.apiKeys.filter(k => k.owner === props.userId),
+      sharedKeys: props.apiKeys.filter(k => k.owner !== props.userId),
     };
   }
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.selectedApiKey && nextProps.selectedApiKey !== this.props.selectedApiKey) {
-      const requiredTab = nextProps.selectedApiKey.owned ? 0 : 1;
+      const requiredTab = nextProps.selectedApiKey.owner === nextProps.userId ? 0 : 1;
       if(this.state.selectedTab !== requiredTab) {
         this.setState({selectedTab: requiredTab});
       }
     }
     if(nextProps.apiKeys !== this.props.apiKeys) {
       this.setState({
-        ownedKeys: nextProps.apiKeys.filter(k => k.owned),
-        sharedKeys: nextProps.apiKeys.filter(k => !k.owned)
+        ownedKeys: nextProps.apiKeys.filter(k => k.owner === nextProps.userId),
+        sharedKeys: nextProps.apiKeys.filter(k => k.owner !== nextProps.userId),
       });
     }
   }
@@ -48,9 +48,11 @@ class ApiKeys extends React.Component {
       return (
         <ul>
           {keys.map(apiKey => (
-            <ApiKey key={apiKey.keyId} apiKey={apiKey}
-            onKeySelected={this.props.onKeySelected}
-            onKeyDeleteClick={onKeyDeleteClick} selected={apiKey === this.props.selectedApiKey}/>
+            <ApiKey key={apiKey._id} apiKey={apiKey}
+              owned={this.props.userId === apiKey.owner}
+              onKeySelected={this.props.onKeySelected}
+              onKeyDeleteClick={onKeyDeleteClick}
+              selected={apiKey === this.props.selectedApiKey}/>
           ))}
         </ul>
       );
@@ -87,7 +89,7 @@ class ApiKey extends React.Component {
         <span>{apiKey.exchange} </span>
         <span>{apiKey.inUse ? 'in use' : 'free'} </span>
         <br/>
-        {apiKey.owned ? <button onClick={this.onKeyDeleteClick}>Delete</button> : null}
+        {this.props.owned ? <button onClick={this.onKeyDeleteClick}>Delete</button> : null}
 
       </li>
     );

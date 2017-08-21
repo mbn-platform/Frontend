@@ -35,7 +35,7 @@ class AddApiKey extends React.Component {
       alert('enter keyname and key value');
       return;
     }
-    this.props.onApiKeyCreated({name, key: value, exchange, pairs: []});
+    this.props.onApiKeyCreated({name, key: value, exchange, pairs: [], owner: this.props.userId});
     this.setState(this.initialState());
   }
 
@@ -71,4 +71,4 @@ const mapDispatchToProps = dispatch => {
 };
 
 
-export default connect(() => { return {};}, mapDispatchToProps)(AddApiKey);
+export default connect(state => ({userId: state.auth.userId}), mapDispatchToProps)(AddApiKey);

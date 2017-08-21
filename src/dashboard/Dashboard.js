@@ -34,6 +34,7 @@ class Dashboard extends React.Component {
           onOfferSelected={this.onOfferSelected}
         />
         <ApiKeys
+          userId={this.props.userId}
           apiKeys={this.props.apiKeys}
           selectedApiKey={this.state.selectedApiKey}
           onKeySelected={this.onKeySelected}
