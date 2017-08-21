@@ -17,7 +17,7 @@ class AddApiKey extends React.Component {
       opened: false,
       name: '',
       value: '',
-      exchange: 'Bitrex'
+      exchange: 'bittrex'
     };
   }
 
@@ -35,7 +35,7 @@ class AddApiKey extends React.Component {
       alert('enter keyname and key value');
       return;
     }
-    this.props.onApiKeyCreated({name, value, exchange, inUse: false, pairs: []});
+    this.props.onApiKeyCreated({name, key: value, exchange, pairs: []});
     this.setState(this.initialState());
   }
 
@@ -54,7 +54,7 @@ class AddApiKey extends React.Component {
           <input placeholder="Key name" name="name" value={this.state.name} onChange={this.handleChange} />
           <input placeholder="Key" name="value" value={this.state.value} onChange={this.handleChange} />
           <select name="exchange" value={this.state.exchange} onChange={this.handleChange} >
-            <option>Bitrex</option>
+            <option>bittrex</option>
           </select>
           <input type="submit" value="Submit" />
           <input type="button" value="Cancel" onClick={this.onCancelClick} />

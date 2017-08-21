@@ -4,7 +4,7 @@ export const UPDATE_API_KEY = 'UPDATE_API_KEY';
 
 export function deleteApiKey(key) {
   return dispatch => {
-    window.fetch('/api/key/' + key.keyId, {
+    window.fetch('/api/key/' + key._id, {
       headers: {
         'Content-Type': 'application/json'
       },
@@ -36,8 +36,8 @@ export function addApiKey(key) {
       body: JSON.stringify(key)
     }).then(res => res.json())
       .then(json => {
-        if(json.portfolioId) {
-          key.keyId = json.portfolioId;
+        if(json.keyId) {
+          key._id = json.keyId;
           delete key.value;
           dispatch({
             type: ADD_API_KEY,
@@ -50,7 +50,7 @@ export function addApiKey(key) {
 
 export function updateApiKey(key) {
   return dispatch => {
-    window.fetch('/api/keys/' + key.keyId, {
+    window.fetch('/api/key/' + key._id, {
       headers: {
         'Content-Type': 'application/json'
       },

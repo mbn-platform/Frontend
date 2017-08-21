@@ -10,11 +10,11 @@ const KEYS = [];
 export default function(state = KEYS, action) {
   switch(action.type) {
     case DELETE_API_KEY:
-      return state.filter(apiKey => apiKey.keyId !== action.apiKey.keyId);
+      return state.filter(apiKey => apiKey._id !== action.apiKey._id);
     case ADD_API_KEY:
       return state.concat(action.apiKey);
     case UPDATE_API_KEY:
-      return state.map(apiKey => apiKey.keyId === action.apiKey.keyId ? action.apiKey : apiKey);
+      return state.map(apiKey => apiKey._id === action.apiKey._id ? action.apiKey : apiKey);
     default:
       return state;
   }
