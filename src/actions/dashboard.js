@@ -1,14 +1,13 @@
+import { apiGet } from '../generic/apiCall';
 export const UPDATE_DASHBOARD = 'UPDATE_DASHBOARD';
 
 export function fetchDashboardData() {
   return dispatch => {
-    window.fetch('/api/dashboard', {
-      credentials: 'same-origin'
-    }).then(res => res.json()).then(data => {
-      dispatch({
-        type: 'UPDATE_DASHBOARD',
-        data: data
-      });
-    });
+    apiGet('/api/dashboard', null, dispatch)
+      .then(json => dispatch({
+        type: UPDATE_DASHBOARD,
+        data: json
+      }))
+      .catch(err => console.log('catched eror', err));
   };
 }
