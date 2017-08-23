@@ -1,19 +1,24 @@
 import React from 'react';
-const availablePairs = ['BTC-BCC', 'BTC-NEO', 'BTC-ETH'];
 
 
 class ApiKeyInfo extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {filtedData: props.availablePairs};
+  getAvailablePairs() {
+    if(!this.props.apiKey) {
+      return [];
+    }
+    const exchange = this.props.exchanges.find(ex => ex.name === this.props.apiKey.exchange);
+    return exchange ? exchange.pairs : [];
   }
 
   render() {
     return (
       <div>
         <h2>KEY'S PAIRS</h2>
-        <PairsList apiKey={this.props.apiKey} availablePairs={availablePairs} onKeyUpdate={this.props.onKeyUpdateClick} />
+        <PairsList
+          apiKey={this.props.apiKey}
+          availablePairs={this.getAvailablePairs()}
+          onKeyUpdate={this.props.onKeyUpdateClick} />
       </div>
       );
   }
@@ -30,7 +35,7 @@ class PairsList extends React.Component {
     this.state = {
       filter: '',
       changed: false,
-      filteredData: availablePairs,
+      filteredData: props.availablePairs,
       checkedPairs: props.apiKey ? new Set(props.apiKey.pairs) : null
     }
   }
@@ -46,7 +51,10 @@ class PairsList extends React.Component {
     if(!nextProps.apiKey) {
       this.setState({changed: false, filteredData: null, checkedPairs: null});
     } else {
-      this.setState(state => ({changed: false, checkedPairs: new Set(nextProps.apiKey.pairs), filteredData: this.props.availablePairs, filter: ''}));
+      this.setState(state => ({
+        changed: false,
+        checkedPairs: new Set(nextProps.apiKey.pairs),
+        filteredData: nextProps.availablePairs, filter: ''}));
     }
   }
 
