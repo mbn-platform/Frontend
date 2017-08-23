@@ -1,17 +1,10 @@
 import React from 'react';
 import logo from './Logo.svg';
 import { BrowserRouter, NavLink } from 'react-router-dom';
-import { createStore, applyMiddleware } from 'redux';
+import store from './store';
 import { Provider } from 'react-redux';
-import reducer from './rootReducer';
-import thunk from 'redux-thunk';
 import MainContent from './MainContent';
 
-function getReduxState() {
-  const state = localStorage.getItem('reduxState');
-  return state ? JSON.parse(state) : {};
-}
-const store = createStore(reducer, getReduxState(), applyMiddleware(thunk));
 
 class App extends React.Component {
 
