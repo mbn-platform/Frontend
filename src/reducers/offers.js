@@ -1,16 +1,23 @@
 import { ACCEPT_OFFER, REJECT_OFFER, CANCEL_OFFER } from '../actions/offers';
-// const OFFERS = [
-//   {owned: false, link: '/profile/some', created: Date.now(), id: 'abc123', keyId: 1}
-// ];
-const OFFERS = [];
+import { combineReducers } from 'redux';
 
-export default function(state = OFFERS, action) {
+function incoming(state = [], action) {
   switch(action.type) {
     case REJECT_OFFER:
-    case CANCEL_OFFER:
     case ACCEPT_OFFER:
-      return state.filter(o => o.id !== action.offer.id);
+      return state.filter(offer => offer._id !== action.offer._id);
     default:
       return state;
   }
 }
+
+function outgoing(state = [], action) {
+  switch(action.type) {
+    case CANCEL_OFFER:
+      return state.filter(offer => offer._id !== action.offer._id);
+    default:
+      return state;
+  }
+}
+
+export default combineReducers({outgoing, incoming});
