@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { deleteApiKey, updateApiKey } from '../actions/apiKeys';
 import { acceptOffer, cancelOffer, rejectOffer } from '../actions/offers';
 import { fetchDashboardData } from '../actions/dashboard';
+import { updateExchagnes } from '../actions/exchanges';
 
 const mapStateToProps = state => {
   return {
@@ -24,7 +25,10 @@ const mapDispatchToProps = dispatch => {
       }
     },
     onKeyUpdateClick: apiKey => dispatch(updateApiKey(apiKey)),
-    onDashboardMounted: () => dispatch(fetchDashboardData()),
+    onDashboardMounted: () => {
+      dispatch(fetchDashboardData());
+      dispatch(updateExchagnes());
+    },
     onOfferAccepted: offer => dispatch(cancelOffer(offer)),
     onOfferRejected: offer => dispatch(rejectOffer(offer)),
     onOfferCanceled: offer => dispatch(acceptOffer(offer))
