@@ -30,9 +30,9 @@ const mapDispatchToProps = dispatch => {
       dispatch(fetchDashboardData());
       dispatch(updateExchagnes());
     },
-    onOfferAccepted: offer => dispatch(cancelOffer(offer)),
+    onOfferAccepted: offer => dispatch(acceptOffer(offer)),
     onOfferRejected: offer => dispatch(rejectOffer(offer)),
-    onOfferCanceled: offer => dispatch(acceptOffer(offer))
+    onOfferCanceled: offer => dispatch(cancelOffer(offer))
   };
 };
 

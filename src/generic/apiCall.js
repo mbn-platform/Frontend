@@ -9,6 +9,13 @@ export function apiGet(url, params, dispatch) {
     .then(res => handleRequest(dispatch, res));
 }
 
+export function apiDelete(url, dispatch) {
+  return window.fetch(url, {
+    method: 'delete',
+    credentials: 'same-origin'
+  }).then(res => handleRequest(dispatch, res));
+}
+
 export function apiPost(url, params, dispatch) {
   params = {
     method: 'post',

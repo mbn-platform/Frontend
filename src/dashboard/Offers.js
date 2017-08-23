@@ -5,27 +5,16 @@ class Offers extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      selectedTab: 0,
-      ownOffers: this.props.offers.filter(o => o.owned),
-      incomingOffers: this.props.offers.filter(o => !o.owned)
+      selectedTab: 0
     };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if(nextProps.offers !== this.props.offers) {
-      this.setState({
-        ownOffers: nextProps.offers.filter(o => o.owned),
-        incomingOffers: nextProps.offers.filter(o => !o.owned)
-      });
-    }
   }
 
   render() {
     return (
       <div>
         <h2 style={{display: 'inline'}}>Offers</h2>
-        <button onClick={() => this.setState({selectedTab: 0})}>Sent ({this.state.ownOffers.length})</button>
-        <button onClick={() => this.setState({selectedTab: 1})}>Received ({this.state.incomingOffers.length})</button>
+        <button onClick={() => this.setState({selectedTab: 0})}>Sent ({this.props.offers.outgoing.length})</button>
+        <button onClick={() => this.setState({selectedTab: 1})}>Received ({this.props.offers.incoming.length})</button>
         {this.renderContent()}
       </div>
     );
@@ -35,10 +24,11 @@ class Offers extends React.PureComponent {
     if(this.props.offers.length === 0) {
       return (<div>No pending offers</div>);
     } else {
-      const offers = this.state.selectedTab ? this.state.incomingOffers : this.state.ownOffers;
+      const offers = this.state.selectedTab ? this.props.offers.incoming : this.props.offers.outgoing;
       return (
       <ul>
-        {offers.map(o => <Offer offer={o} key={o.id}
+        {offers.map(o => <Offer offer={o} key={o._id}
+          owned={!this.state.selectedTab}
           selected={this.props.selectedOffer === o}
           onOfferSelected={this.props.onOfferSelected}
           onCancelClick={this.props.onOfferCanceled}
@@ -74,26 +64,22 @@ class Offer extends React.Component {
   }
 
   renderButtons() {
-    if(this.props.offer.owned) {
+    if(this.props.owned) {
       return (<button onClick={this.onCancelClick}>Cancel</button>);
     } else {
       return [
-        <button onClick={this.onAcceptClick}>Accept</button>,
-        <button onClick={this.onRejectClick}>Reject</button>,
+        <button key="accept" onClick={this.onAcceptClick}>Accept</button>,
+        <button key="reject" onClick={this.onRejectClick}>Reject</button>,
       ];
     }
   }
-
-
-
-
-
 
   render() {
     return (
       <li style={this.props.selected ? {backgroundColor: 'red'} : {}}
         onClick={() => this.props.onOfferSelected(this.props.offer)}>
-        <Link to={this.props.offer.link}>{this.props.offer.link}</Link>
+        {this.props.offer.state} {this.props.offer.amount} {this.props.offer.currency}
+        <Link to={this.props.offer.to}>{this.props.offer.link}</Link>
         {this.renderButtons()}
       </li>
     );

@@ -1,3 +1,5 @@
+import { apiPost, apiDelete } from '../generic/apiCall';
+
 export const ACCEPT_OFFER = 'ACCEPT_OFFER';
 export const REJECT_OFFER = 'REJECT_OFFER';
 export const CANCEL_OFFER = 'CANCEL_OFFER';
@@ -5,45 +7,42 @@ export const CANCEL_OFFER = 'CANCEL_OFFER';
 
 export function acceptOffer(offer) {
   return dispatch => {
-    window.fetch('/api/offer/accept/', {
-      method: 'post',
-      body: JSON.stringify(offer)
-    }).then(res => res.json)
+    apiPost(`/api/offer/${offer._id}/accept`, null, dispatch)
       .then(json => {
-        dispatch({
-          type: ACCEPT_OFFER,
-          offer
-        });
+        if(json.offerId) {
+          dispatch({
+            type: ACCEPT_OFFER,
+            offer
+          });
+        }
       });
   };
 }
 
 export function cancelOffer(offer) {
   return dispatch => {
-    window.fetch('/api/offer/cancel', {
-      method: 'post',
-      body: JSON.stringify(offer)
-    }).then(res => res.json())
+    apiDelete(`/api/offer/${offer._id}`, dispatch)
       .then(json => {
-        dispatch({
-          type: CANCEL_OFFER,
-          offer
-        });
+        if(json.result) {
+          dispatch({
+            type: CANCEL_OFFER,
+            offer
+          });
+        }
       });
   };
 }
 
 export function rejectOffer(offer) {
   return dispatch => {
-    window.fetch('/api/offer/reject', {
-      method: 'post',
-      body: JSON.stringify(offer)
-    }).then(res => res.json())
+    apiPost(`/api/offer/${offer._id}/reject`, null, dispatch)
       .then(json => {
-        dispatch({
-          type: REJECT_OFFER,
-          offer
-        });
+        if(json.offerId) {
+          dispatch({
+            type: REJECT_OFFER,
+            offer
+          });
+        }
       });
   };
 }
