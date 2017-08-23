@@ -17,7 +17,7 @@ class AddApiKey extends React.Component {
       opened: false,
       name: '',
       value: '',
-      exchange: 'bittrex'
+      exchange: this.props.exchanges.length ? this.props.exchanges[0].name : ''
     };
   }
 
@@ -26,6 +26,10 @@ class AddApiKey extends React.Component {
   }
   onCancelClick() {
     this.setState({opened: false});
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({exchange: nextProps.exchanges.length ? nextProps.exchanges[0].name : ''});
   }
 
   onSubmit(event) {
@@ -45,6 +49,12 @@ class AddApiKey extends React.Component {
     this.setState({[name]: value});
   }
 
+  renderExchanges() {
+    return this.props.exchanges.map(ex => (
+      <option key={ex._id}>{ex.name}</option>
+    ));
+  }
+
   render() {
     if(!this.state.opened) {
       return (<button onClick={this.onAddButtonClick}>Add key</button>);
@@ -54,7 +64,7 @@ class AddApiKey extends React.Component {
           <input placeholder="Key name" name="name" value={this.state.name} onChange={this.handleChange} />
           <input placeholder="Key" name="value" value={this.state.value} onChange={this.handleChange} />
           <select name="exchange" value={this.state.exchange} onChange={this.handleChange} >
-            <option>bittrex</option>
+            {this.renderExchanges()}
           </select>
           <input type="submit" value="Submit" />
           <input type="button" value="Cancel" onClick={this.onCancelClick} />
@@ -71,4 +81,7 @@ const mapDispatchToProps = dispatch => {
 };
 
 
-export default connect(state => ({userId: state.auth.userId}), mapDispatchToProps)(AddApiKey);
+export default connect(state => ({
+  userId: state.auth.userId,
+  exchanges: state.exchanges
+}), mapDispatchToProps)(AddApiKey);
