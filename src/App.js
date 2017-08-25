@@ -3,7 +3,7 @@ import logo from './Logo.svg';
 import { BrowserRouter, NavLink } from 'react-router-dom';
 import store from './store';
 import { Provider } from 'react-redux';
-import MainContent from './MainContent';
+import MainContent from './MainContentContainer';
 
 
 class App extends React.Component {

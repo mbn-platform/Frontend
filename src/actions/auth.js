@@ -1,5 +1,6 @@
 export const LOGGED_OUT = 'LOGGED_OUT';
 export const LOGGED_IN = 'LOGGED_IN';
+export const SET_NICKNAME = 'SET_NICKNAME';
 
 export function logIn() {
   return dispatch => {
@@ -29,5 +30,14 @@ export function logIn() {
       });
     });
   };
+}
+
+export function setNickname(nickname) {
+  return dispatch => {
+    dispatch({
+      type: SET_NICKNAME,
+      nickname: nickname
+    });
+  }
 }
 
