@@ -1,4 +1,4 @@
-import { LOGGED_IN, LOGGED_OUT, SET_NICKNAME } from '../actions/auth';
+import { LOGGED_IN, LOGGED_OUT, NAME_REQUIRED, SET_NICKNAME } from '../actions/auth';
 
 export default function reducer(auth = {}, action) {
   switch(action.type) {
@@ -12,9 +12,14 @@ export default function reducer(auth = {}, action) {
       localStorage.setItem('reduxState', JSON.stringify({auth: {loggedIn: false}}));
       return {loggedIn: false}
     }
+    case NAME_REQUIRED: {
+      const state = {nameRequired: true, loggedIn: false};
+      localStorage.setItem('reduxState', JSON.stringify({auth: state}));
+      return state;
+    }
     case SET_NICKNAME: {
-      const nickname = action.nickname;
-      const state = {...auth, loggedIn: true, isNew: false};
+      const name = action.name;
+      const state = {loggedIn: true, userId: name};
       localStorage.setItem('reduxState', JSON.stringify({auth: state}));
       return state;
     }

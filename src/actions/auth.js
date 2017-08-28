@@ -1,5 +1,8 @@
+import { apiPost } from '../generic/apiCall';
+
 export const LOGGED_OUT = 'LOGGED_OUT';
 export const LOGGED_IN = 'LOGGED_IN';
+export const NAME_REQUIRED = 'NAME_REQUIRED';
 export const SET_NICKNAME = 'SET_NICKNAME';
 
 export function logIn() {
@@ -21,10 +24,13 @@ export function logIn() {
             },
             body: JSON.stringify({sgn: result, addr: acc})
           }).then(res => res.json())
-            .then(json => dispatch({
-              type: LOGGED_IN,
-              data: json
-            }))
+            .then(json => {
+              if(json.isNew) {
+                dispatch(nameRequiredAction());
+              } else {
+                dispatch(loggedInAction(json));
+              }
+            })
             .catch(err => console.log(err));
         }
       });
@@ -32,12 +38,38 @@ export function logIn() {
   };
 }
 
-export function setNickname(nickname) {
+export function addName(name) {
   return dispatch => {
-    dispatch({
-      type: SET_NICKNAME,
-      nickname: nickname
-    });
-  }
+    apiPost('/api/addName', {
+      body: JSON.stringify({name})
+    }, dispatch)
+      .then(({ result }) => {
+        if(result) {
+          dispatch(setNicknameAction(name));
+        }
+      });
+  };
 }
+
+export function setNicknameAction(name) {
+  return {
+    type: SET_NICKNAME,
+    name
+  };
+}
+
+function nameRequiredAction() {
+  return {
+    type: NAME_REQUIRED
+  };
+}
+
+function loggedInAction(data) {
+  return {
+    type: LOGGED_IN,
+    data
+  };
+}
+
+
 
