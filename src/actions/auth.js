@@ -25,7 +25,7 @@ export function logIn() {
             body: JSON.stringify({sgn: result, addr: acc})
           }).then(res => res.json())
             .then(json => {
-              if(json.isNew) {
+              if(!json.name) {
                 dispatch(nameRequiredAction());
               } else {
                 dispatch(loggedInAction(json));
@@ -43,8 +43,8 @@ export function addName(name) {
     apiPost('/api/addName', {
       body: JSON.stringify({name})
     }, dispatch)
-      .then(({ result }) => {
-        if(result) {
+      .then(({ name }) => {
+        if(name) {
           dispatch(setNicknameAction(name));
         }
       });

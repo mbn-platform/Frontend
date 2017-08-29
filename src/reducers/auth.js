@@ -3,8 +3,8 @@ import { LOGGED_IN, LOGGED_OUT, NAME_REQUIRED, SET_NICKNAME } from '../actions/a
 export default function reducer(auth = {}, action) {
   switch(action.type) {
     case LOGGED_IN: {
-      const { _id: userId, isNew } = action.data;
-      const state = {loggedIn: true, userId, isNew};
+      const { _id: userId, name } = action.data;
+      const state = {loggedIn: true, userId: name};
       localStorage.setItem('reduxState', JSON.stringify({auth: state}));
       return state;
     }

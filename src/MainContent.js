@@ -1,60 +1,31 @@
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import Login from './login/Login';
-import EnterNickname from './login/EnterNickname';
+import Login from './login/LoginContainer';
 import Dashboard from './dashboard/DashboardContainer';
 
-const MainContent = ({ loggedIn, onLoginClick, nameRequired, onNicknameSet }) => (
+const MainContent = ({ loggedIn }) => (
   <Switch>
-    {loginRoute(loggedIn, nameRequired, onLoginClick)}
-    {nicknameRoute(nameRequired, onNicknameSet)}
-    {protectedRoute("/dashboard", true, Dashboard, loggedIn)}
+    <LoginRoute exact path="/login" loggedIn={loggedIn} />
+    <ProtectedRoute exact path="/dashboard" component={Dashboard} loggedIn={loggedIn} />
     <Redirect from="/" to="/dashboard" />
   </Switch>
 );
 
-const protectedRoute = (path, exact, Component, loggedIn) => (
-  <Route exact={exact} path={path} render={() => (
-    loggedIn ? <Component /> : <Redirect to="/login" />
-    )}
-  />
-);
 
-const loginRoute = (loggedIn, nameRequired, onLoginClick) => {
-  const render = () => {
-    let component;
-    if(loggedIn) {
-      component = (<Redirect to="/dashboard" />);
-    } else if(nameRequired) {
-      component = (<Redirect to="/nickname" />);
-    } else {
-      component = (<Login onLoginClick={onLoginClick} />);
-    }
-    return component;
-  };
-  return (<Route exact path="/login" render={render} />);
+const LoginRoute = ({ loggedIn, ...props }) => {
+  if(loggedIn) {
+    return (<Redirect to="/dashboard" />);
+  } else {
+    return (<Route  {...props} component={Login} />);
+  }
 };
 
-const nicknameRoute = (nameRequired, onNicknameSet) => (
-  <Route exact path="/nickname" render={() => (
-    nameRequired ? <EnterNickname onNicknameSet={onNicknameSet} /> : <Redirect to="/login" />
-    )} />
-);
-
-
-const ProtectedRoute = ({ path, exact, component: Component, loggedIn, isNew }) => {
-  const render = () => {
-    let component;
-    if(!loggedIn) {
-      component = (<Redirect to="/login" />);
-    } else if(isNew) {
-      component = (<Redirect to="/nickname" />);
-    } else {
-      component = (<Component />);
-    }
-    return component;
-  };
-  return (<Route exact={exact} path={path} render={render} />);
+const ProtectedRoute = ({ component, loggedIn, ...props }) => {
+  if(!loggedIn) {
+    return (<Redirect to="/login" />);
+  } else {
+    return (<Route {...props} component={component} />);
+  }
 };
 
 export default MainContent;
