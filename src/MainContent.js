@@ -4,10 +4,11 @@ import Login from './login/LoginContainer';
 import Dashboard from './dashboard/DashboardContainer';
 import Profile from './profile/Profile';
 
-const MainContent = ({ loggedIn }) => (
+const MainContent = ({ loggedIn, profile }) => (
   <Switch>
     <LoginRoute exact path="/login" loggedIn={loggedIn} />
     <ProtectedRoute exact path="/dashboard" component={Dashboard} loggedIn={loggedIn} />
+    <Redirect exact from="/profile" to={profile ? `/${profile.name}` : '/login'} />
     <Route exact path="/:id" component={Profile} />
     <Redirect from="/" to="/dashboard" />
   </Switch>

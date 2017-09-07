@@ -43,10 +43,8 @@ export function addName(name) {
     apiPost('/api/addName', {
       body: JSON.stringify({name})
     }, dispatch)
-      .then(({ name }) => {
-        if(name) {
-          dispatch(setNicknameAction(name));
-        }
+      .then(json => {
+        dispatch(loggedInAction(json));
       });
   };
 }

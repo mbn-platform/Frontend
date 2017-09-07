@@ -41,7 +41,7 @@ const MainRouter = () => (
         <a href="/">
         </a>
         <NavLink to="/dashboard">Dashboard</NavLink>
-        <NavLink to="/profile/some">Profile</NavLink>
+        <NavLink to="/profile">Profile</NavLink>
         <NavLink to="/ratings">Ratings</NavLink>
         <NavLink to="/terminal">Terminal</NavLink>
       </nav>
