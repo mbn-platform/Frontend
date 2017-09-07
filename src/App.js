@@ -1,9 +1,10 @@
 import React from 'react';
-import logo from './Logo.svg';
-import { BrowserRouter, NavLink } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import store from './store';
 import { Provider } from 'react-redux';
 import MainContent from './MainContentContainer';
+import Navigation from './Navigation';
+import './App.css';
 
 
 class App extends React.Component {
@@ -33,22 +34,16 @@ class App extends React.Component {
 
 const MainRouter = () => (
   <BrowserRouter>
-    <div>
-      <nav>
-        <NavLink to="/">
-          <img src={logo} className="App-logo" alt="logo" />
-        </NavLink>
-        <a href="/">
-        </a>
-        <NavLink to="/dashboard">Dashboard</NavLink>
-        <NavLink to="/profile">Profile</NavLink>
-        <NavLink to="/ratings">Ratings</NavLink>
-        <NavLink to="/terminal">Terminal</NavLink>
-      </nav>
-      <MainContent />
+    <div className="page_wrapper">
+      <div className="page_cols_wrapper clearfix">
+        <Navigation />
+        <MainContent />
+      </div>
     </div>
   </BrowserRouter>
 );
+
+
 
 
 
