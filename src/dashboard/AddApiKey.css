@@ -1,0 +1,209 @@
+.add_keys_form_wrapper
+{
+  background-color: #232629;
+  border: 1px solid #494d4d;
+  height: 52px;
+  line-height: 52px;
+  float: left;
+  width: 100%;
+  border-top: 0;
+  box-sizing: border-box;
+  border-radius: 0 0 4px 4px;
+}
+.add_keys_form
+{
+
+}
+.add_keys_str
+{
+  text-align: left;
+  padding-left: 15px;
+}
+.add_keys_str .add_keys_field_wr:nth-child(1)
+{
+  margin-left: 0;
+}
+.add_keys_field_wr,
+.add_keys_double_field_wr
+{
+  display: inline-block;
+  width: 20%;
+  vertical-align: top;
+  margin-left: 2%;
+}
+.add_keys_field_wr.select_wr
+{
+  width: 15%;
+}
+.add_keys_select_wr
+{
+  border: 1px solid #44464a;
+  border-bottom: 0;
+  border-radius: 3px;
+  padding-left: 17px;
+  text-align: left;
+  color: #505153;
+  height: 26px;
+  box-sizing: border-box;
+  line-height: 26px;
+  font-size: 1.3em;
+  background-color: inherit;
+  cursor: pointer;
+  position: relative;
+  transition-property: color, border;
+  transition-duration: 400ms;
+  transition: color 400ms, border 400ms;
+}
+.add_keys_select_wr:hover
+{
+  border: 1px solid #7c7c7d;
+  color: #7c7c7d;
+  border-radius: 3px 3px 0 0;
+}
+.add_keys_select_wr
+{
+  display: inline-block;
+  vertical-align: middle;
+  width: 100%;
+}
+.add_keys_double_field_wr
+{
+  width: 50%;
+  display: inline-block;
+  vertical-align: middle;
+}
+.add_keys_field
+{
+  border: 1px solid #44464a;
+  border-radius: 3px;
+  padding-left: 17px;
+  text-align: left;
+  color: #505153;	
+  height: 26px;
+  box-sizing: border-box;
+  line-height: 26px;
+  font-size: 1.3em;
+  background-color: inherit;
+  width: 100%;
+  vertical-align: middle;
+  transition-property: color, border-color;
+  transition-duration: 400ms;
+  -webkit-transition: color 400ms, border-color 400ms;
+}
+.add_keys_field::-webkit-input-placeholder {color:#505153;}
+.add_keys_field::-moz-placeholder          {color:#505153;}/* Firefox 19+ */
+.add_keys_field:-moz-placeholder           {color:#505153;}/* Firefox 18- */
+.add_keys_field:-ms-input-placeholder      {color:#505153;}
+
+.add_keys_select_values_list_wr
+{
+  max-height: 0;
+  height: auto;
+  opacity: 1;
+  position: absolute;
+  z-index: 42;
+  background: #232629;
+  left: -1px;
+  right: -1px;
+  border: 1px solid #232629;
+  border-top: 0 !important;
+  border-bottom: 1px solid #44464a;
+  box-sizing: border-box;
+  top: 24px;
+  transition-property: height, border, max-height;
+  transition-duration: 400ms;
+  transition: height 400ms, border 400ms, max-height 400ms;
+  overflow: hidden;
+}
+.add_keys_select_wr:hover .add_keys_select_values_list_wr
+{
+  height: auto;
+  max-height: 400px;
+  opacity: 1;
+  color: #7c7c7d;
+  border: 1px solid #7c7c7d;
+}
+.add_keys_select_ul
+{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.add_keys_select_li
+{
+  padding: 0 15px;
+  border-bottom: 1px solid #383838;
+  color: #7c7c7d;
+  background: #232629;
+  transition-property: background, color;
+  transition-duration: 400ms;
+  transition: background 400ms, color 400ms;
+}
+.add_keys_select_li:hover
+{
+  background: #3c3c3c;
+}
+.add_keys_double_field_wr .add_keys_field:focus
+{
+  z-index: 2;
+}
+.add_keys_double_field_wr .add_keys_field
+{
+  width: 48%;
+  float: left;
+  position: relative;
+  z-index: 1;
+}
+
+.add_keys_field_key
+{
+  border-radius: 3px 0 0 3px;
+}
+.add_keys_field_secret
+{
+  border-radius: 0 3px 3px 0;
+  margin-left: -1px;
+}
+
+.add_keys_field:focus
+{
+  outline: none;
+  border-color: #7c7c7d;
+}
+
+.keys_submit_wrapper
+{
+  float: right;
+}
+.keys_submit
+{
+  border: 0;
+  width: 54px;
+  height: 51px;
+  border-left: 1px solid #44464a;
+  background-color: #2d3034;
+  cursor: pointer;
+  line-height: 56px;
+  display: inline-block;
+  text-align: center;
+  vertical-align: top;
+  font-size: 4em;
+  color: #7c7c7d;
+  padding: 0;
+  transition-property: color, background-color;
+  transition-duration: 400ms;
+  transition: color 400ms, background-color 400ms;
+  font-family: 'maven_pro_light300';
+  background-image: url(./AddKeyIcon.png);
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.keys_submit:focus
+{
+  outline: none;
+}
+.keys_submit:hover
+{
+  background-color: #346255;
+  color: white;
+}

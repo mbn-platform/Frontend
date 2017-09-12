@@ -1,45 +1,35 @@
 import React from 'react';
+import ExchangeSelect from './ExchangeSelect';
 import { connect } from 'react-redux';
 import { addApiKey } from '../actions/apiKeys';
+import './AddApiKey.css';
 
 class AddApiKey extends React.Component {
   constructor(props) {
     super(props);
     this.state = this.initialState();
-    this.onAddButtonClick = this.onAddButtonClick.bind(this);
-    this.onCancelClick = this.onCancelClick.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleExchangeChange = this.handleExchangeChange.bind(this);
   }
 
   initialState() {
     return {
-      opened: false,
       name: '',
+      secret: '',
       value: '',
-      exchange: this.props.exchanges.length ? this.props.exchanges[0].name : ''
+      exchange: ''
     };
-  }
-
-  onAddButtonClick() {
-    this.setState({opened: true});
-  }
-  onCancelClick() {
-    this.setState({opened: false});
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({exchange: nextProps.exchanges.length ? nextProps.exchanges[0].name : ''});
   }
 
   onSubmit(event) {
     event.preventDefault();
-    const { name, value, exchange } = this.state;
+    const { name, value, exchange, secret } = this.state;
     if(!name || !value) {
       alert('enter keyname and key value');
       return;
     }
-    this.props.onApiKeyCreated({name, key: value, exchange, pairs: [], owner: this.props.userId});
+    this.props.onApiKeyCreated({name, key: value, exchange, pairs: [], owner: this.props.userId, secret});
     this.setState(this.initialState());
   }
 
@@ -49,28 +39,54 @@ class AddApiKey extends React.Component {
     this.setState({[name]: value});
   }
 
-  renderExchanges() {
-    return this.props.exchanges.map(ex => (
-      <option key={ex._id}>{ex.name}</option>
-    ));
+  handleExchangeChange(exchange) {
+    this.setState({exchange: exchange.name});
   }
 
   render() {
-    if(!this.state.opened) {
-      return (<button onClick={this.onAddButtonClick}>Add key</button>);
-    } else {
-      return (
-        <form onSubmit={this.onSubmit}>
-          <input placeholder="Key name" name="name" value={this.state.name} onChange={this.handleChange} />
-          <input placeholder="Key" name="value" value={this.state.value} onChange={this.handleChange} />
-          <select name="exchange" value={this.state.exchange} onChange={this.handleChange} >
-            {this.renderExchanges()}
-          </select>
-          <input type="submit" value="Submit" />
-          <input type="button" value="Cancel" onClick={this.onCancelClick} />
-      </form>
-      );
-    }
+    return (
+      <div className="add_keys_form_wrapper">
+        <form className="add_keys_form" onSubmit={this.onSubmit}>
+          <div className="add_keys_str">
+            <div className="add_keys_field_wr">
+              <input
+                className="add_keys_field add_keys_field_name"
+                onChange={this.handleChange}
+                type="text"
+                value={this.state.name}
+                name="name"
+                placeholder="Name"
+              />
+            </div>
+            <ExchangeSelect
+              exchanges={this.props.exchanges}
+              onChange={this.handleExchangeChange}
+              exchange={this.state.exchange}
+            />
+            <div className="add_keys_double_field_wr clearfix">
+              <input className="add_keys_field add_keys_field_key"
+                type="text"
+                name="value"
+                value={this.state.value}
+                onChange={this.handleChange}
+                placeholder="Key"
+              />
+              <input
+                className="add_keys_field add_keys_field_secret"
+                type="text"
+                value={this.state.secret}
+                name="secret"
+                onChange={this.handleChange}
+                placeholder="Secret"
+              />
+            </div>
+            <div className="keys_submit_wrapper">
+              <input className="keys_submit" type="submit" value=""/>
+            </div>
+          </div>
+        </form>
+      </div>
+    );
   }
 }
 
