@@ -1,0 +1,34 @@
+.table_title_tabs_wr
+{
+  line-height: 1;
+  color: white;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid #595b5c;
+  float: right;
+  margin-right: 20px;
+}
+
+.table_title_tab
+{
+  color: #595b5c;
+  font-size: 1em;
+  text-transform: uppercase;
+  font-family: 'maven_proregular';
+  float: left;
+  height: 20px;
+  line-height: 20px;
+  padding: 0 15px;
+  text-align: center;
+  cursor: pointer;
+  transition-property: color, background;
+  transition-duration: 400ms;
+  transition: color 400ms, background 400ms;
+}
+.table_title_tab.selected {
+  background: #346255;
+  color: #bfbfc1;
+}
+.table_title_tab:hover {
+  color: #bfbfc1;
+}

@@ -1,4 +1,5 @@
 import React from 'react';
+import './SegmentedControl.css';
 
 class SegmentedControl extends React.Component {
   constructor(props) {
@@ -8,7 +9,7 @@ class SegmentedControl extends React.Component {
   }
 
   onChange(e) {
-    const index = parseInt(e.target.dataset.index);
+    const index = parseInt(e.target.dataset.index, 10);
     if(this.state.index !== index) {
       this.setState({index});
       if(this.props.onChange) {
@@ -19,13 +20,21 @@ class SegmentedControl extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="table_title_tabs_wr">
         {this.props.segments.map((segment, index) => (
-          <span style={{backgroundColor: this.state.index == index ? 'white' : 'grey'}} data-index={index} onClick={this.onChange} key={segment}>{segment}</span>
+          <div className={classNameForTab(this.state.index, index)} data-index={index} onClick={this.onChange} key={segment}>{segment}</div>
         )
         )}
       </div>
     );
+  }
+}
+
+function classNameForTab(selectedIndex, tabIndex) {
+  if(selectedIndex === tabIndex) {
+    return 'table_title_tab selected';
+  } else {
+    return 'table_title_tab';
   }
 }
 
