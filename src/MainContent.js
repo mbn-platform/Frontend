@@ -3,15 +3,21 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import Login from './login/LoginContainer';
 import Dashboard from './dashboard/DashboardContainer';
 import Profile from './profile/Profile';
+import { Scrollbars } from 'react-custom-scrollbars';
+import './MainContent.css';
 
 const MainContent = ({ loggedIn, profile }) => (
-  <Switch>
-    <LoginRoute exact path="/login" loggedIn={loggedIn} />
-    <ProtectedRoute exact path="/dashboard" component={Dashboard} loggedIn={loggedIn} />
-    <Redirect exact from="/profile" to={profile ? `/${profile.name}` : '/login'} />
-    <Route exact path="/:id" component={Profile} />
-    <Redirect from="/" to="/dashboard" />
-  </Switch>
+  <div className="page_right_col">
+    <Scrollbars>
+      <Switch>
+        <LoginRoute exact path="/login" loggedIn={loggedIn} />
+        <ProtectedRoute exact path="/dashboard" component={Dashboard} loggedIn={loggedIn} />
+        <Redirect exact from="/profile" to={profile ? `/${profile.name}` : '/login'} />
+        <Route exact path="/:id" component={Profile} />
+        <Redirect from="/" to="/dashboard" />
+      </Switch>
+    </Scrollbars>
+  </div>
 );
 
 
