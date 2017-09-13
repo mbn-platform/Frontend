@@ -1,5 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import SegmentedControl from '../generic/SegmentedControl';
+import ReactTable from '../generic/SelectableReactTable';
+import ExchangeSelect from './ExchangeSelect';
 
 class ApiKeys extends React.Component {
 
@@ -30,9 +33,7 @@ class ApiKeys extends React.Component {
   render() {
     return (
       <div>
-        <h2 style={{display: 'inline'}}>Api Keys</h2>
-        <button onClick={() => this.setState({selectedTab: 0})}>My Keys ({this.state.ownedKeys.length})</button>
-        <button onClick={() => this.setState({selectedTab: 1})}>Received keys ({this.state.sharedKeys.length})</button>
+        <SegmentedControl segments={['MINE', 'OTHER']}/>
         {this.renderContent()}
       </div>
     );
@@ -40,6 +41,30 @@ class ApiKeys extends React.Component {
 
   renderContent() {
     const { apiKeys, onKeyDeleteClick } = this.props;
+    const columns = [
+      {
+        Header: "Key name",
+        filterable: true,
+        Filter: SearchFilter,
+        accessor: 'name'
+      }, {
+        Header: 'Exchange',
+        accessor: 'exchange'
+      }, {
+        Header: 'Balance, BTC'
+      }, {
+        Header: '',
+        Cell: row => (<button onClick={() => this.props.onKeyDeleteClick(row.original)}>Delete</button>)
+      }
+    ];
+    return (
+      <ReactTable
+        columns={columns}
+        data={apiKeys}
+        selectedItem={this.props.selectedApiKey}
+        onItemSelected={key => this.props.onKeySelected(key)}
+      />
+    );
     if(apiKeys.length === 0) {
       return (<div>You have no keys yet</div>);
     } else {
@@ -101,5 +126,26 @@ class ApiKey extends React.Component {
   }
 
 }
+
+class SearchTableColumn extends React.Component {
+  render() {
+    return (
+      <div>
+        <div>{this.props.Header}</div>
+        <div>
+          <input className="add_keys_field" placeholder="Search" />
+        </div>
+      </div>
+    );
+  }
+}
+const SearchFilter = ({filter, onChange}) => (
+  <input
+    placeholder="Search"
+    onChange={event => onChange(event.target.value)}
+    value={filter ? filter.value : ''}
+  />
+);
+
 
 export default ApiKeys;

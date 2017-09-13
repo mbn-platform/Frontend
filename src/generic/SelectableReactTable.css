@@ -1,0 +1,78 @@
+.ReactTable {
+  height: 100px;
+  overflow: hidden;
+}
+
+
+.ReactTable .-loading {
+  display: none;
+}
+
+.ReactTable .rt-tr
+{
+  flex: 1 0 auto;
+  display: inline-flex;
+}
+
+.ReactTable .rt-tr:first-child
+{
+  text-align: center;
+}
+.ReactTable .rt-tr > :first-child
+{
+  padding-left: 15px;
+  text-align: left;
+}
+.ReactTable .rt-thead .rt-tr
+{
+  width: 100%
+}
+
+.ReactTable .rt-tr-group {
+  flex: 1 0 auto;
+  display: -ms-flexbox;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.ReactTable .rt-tbody {
+  flex: 99999 1 auto;
+  display: -ms-flexbox;
+  display: flex;
+  flex-direction: column;
+}
+
+.ReactTable .rt-table {
+  flex: 1 1 0%;
+  display: -ms-flexbox;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+}
+.ReactTable .rt-tr-group .rt-tr.-even {
+  background: #232629;
+}
+.ReactTable .rt-tr-group .rt-tr:hover {
+  background: #2c2f33;
+}
+.ReactTable .rt-tr-group .rt-tr {
+  transition: background 400ms;
+  cursor: pointer;
+  border-bottom: 1px solid #2c2f33;
+  min-height: 30px;
+  line-height: 30px;
+}
+.ReactTable .rt-tr-group .rt-tr.-selected {
+  background: #346255;
+}
+
+.ReactTable .rt-td {
+  color: #b8b8ba;
+}.ReactTable .rt-th {
+  color: #e1e1e1;
+}
+
