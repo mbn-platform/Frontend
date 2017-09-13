@@ -75,14 +75,22 @@
 }
 
 .left_col_menu_li_1 .left_col_menu_a {
-    background: url(./img/MenuIconDashboard.png) no-repeat center 25px;
+  background: url(./img/MenuIconDashboard.png) no-repeat center 25px;
 }
 .left_col_menu_li_2 .left_col_menu_a {
-    background: url(./img/MenuIconProfile.png) no-repeat center 25px;
+  background: url(./img/MenuIconProfile.png) no-repeat center 25px;
 }
 .left_col_menu_li_3 .left_col_menu_a {
-    background: url(./img/MenuIconRatings.png) no-repeat center 25px;
+  background: url(./img/MenuIconRatings.png) no-repeat center 25px;
 }
 .left_col_menu_li_4 .left_col_menu_a {
-    background: url(./img/MenuIconTerminal.png) no-repeat center 25px;
+  background: url(./img/MenuIconTerminal.png) no-repeat center 25px;
+}
+@media only screen and (max-width: 992px) {
+  .page_left_col {
+    display: none;
+  }
+  .page_right_col {
+    width: 100%;
+  }
 }

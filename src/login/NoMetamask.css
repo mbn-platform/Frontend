@@ -44,5 +44,16 @@
 }
 
 .metamask_link_img {
-    max-width: 100%;
+  max-width: 100%;
+}
+@media only screen and (max-width: 992px) {
+  .metamask_link_wrapper, .metamask_text_title, .metamask_text {
+    text-align: center;
+  }
+  .metamask_link_wrapper {
+    margin-bottom: 25px;
+  }
+  .metamask_link_wrapper, .metamask_text_wrapper {
+    width: 100%;
+  }
 }

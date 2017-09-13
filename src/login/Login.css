@@ -48,15 +48,14 @@
   height: 100%;
   width: 100%;
 }
-
-/*@media only screen and (max-width : 1400px) {*/
-  /*.login_content*/
-  /*{*/
-    /*width: 100%;*/
-    /*margin-left: 0;*/
-    /*left: 0;*/
-    /*box-sizing: border-box;*/
-    /*padding: 0 40px;*/
-    /*font-size: 8px;*/
-  /*}*/
-/*}*/
+@media only screen and (max-width : 1400px) {
+  .login_content
+  {
+    width: 100%;
+    margin-left: 0;
+    left: 0;
+    box-sizing: border-box;
+    padding: 0 40px;
+    font-size: 8px;
+  }
+}

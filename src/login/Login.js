@@ -10,14 +10,18 @@ class Login extends React.Component {
 
   constructor(props) {
     super(props);
-    const intervalId = setInterval(() =>
+    if(window.web3) {
+      const intervalId = setInterval(() =>
+        window.web3.eth.getAccounts((err, accounts) => {
+          this.setState({hasActiveAccount: (!err && accounts.length)});
+        }), 1000);
+      this.state = {hasActiveAccount: false, intervalId: intervalId};
       window.web3.eth.getAccounts((err, accounts) => {
         this.setState({hasActiveAccount: (!err && accounts.length)});
-      }), 1000);
-    this.state = {hasActiveAccount: false, intervalId: intervalId};
-    window.web3.eth.getAccounts((err, accounts) => {
-      this.setState({hasActiveAccount: (!err && accounts.length)});
-    });
+      });
+    } else {
+      this.state = {};
+    }
   }
 
   componentWillUnmount() {
