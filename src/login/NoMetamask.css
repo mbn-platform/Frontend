@@ -1,0 +1,48 @@
+.login_no_metamask_title {
+  font-size: 2.6em;
+  color: #e84c4c;
+  text-transform: uppercase;
+  padding-left: 50px;
+  text-align: center;
+  display: inline-block;
+  background: url(../img/Warning.png) no-repeat left center;
+  line-height: 1;
+  margin-bottom: 45px;
+}
+
+.login_no_metamask_text {
+  font-size: 2.3em;
+  text-align: center;
+  color: #e1e1e1;
+  margin-bottom: 40px;
+}
+.metamask_link_wrapper {
+  width: 40%;
+  float: left;
+  padding-top: 15px;
+}
+.metamask_link {
+  transition-property: opacity, background-color;
+  transition-duration: 400ms;
+}
+.metamask_link:hover {
+  opacity: .8;
+}
+.metamask_text_wrapper {
+  width: 58%;
+  float: right;
+}
+.metamask_text_title {
+  font-size: 2.5em;
+  text-align: left;
+  color: #e8821e;
+}
+.metamask_text {
+  font-size: 2em;
+  text-align: left;
+  color: #e1e1e1;
+}
+
+.metamask_link_img {
+    max-width: 100%;
+}

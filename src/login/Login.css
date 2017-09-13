@@ -1,0 +1,53 @@
+.login_wrapper
+{
+  width: 100%;
+  position: relative;
+  height: 800px;
+}
+.login_content
+{
+  height: 800px;
+  line-height: 800px;
+  position: absolute;
+  top: 50%;
+  margin-top: -400px;
+  left: 50%;
+  margin-left: -555px;
+  width: 1110px;
+}
+.login_steps
+{
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 1.4;
+}
+
+.login_title_wrapper {
+  margin-bottom: 60px;
+}
+
+.login_title_img_wr {
+  display: inline-block;
+  vertical-align: middle;
+}
+.login_title_text
+{
+  font-size: 4.6em;
+  display: inline-block;
+  vertical-align: middle;
+  color: #00b891;
+  font-family: 'maven_pro_light200';
+  margin-left: 20px;
+}
+
+/*@media only screen and (max-width : 1400px) {*/
+  /*.login_content*/
+  /*{*/
+    /*width: 100%;*/
+    /*margin-left: 0;*/
+    /*left: 0;*/
+    /*box-sizing: border-box;*/
+    /*padding: 0 40px;*/
+    /*font-size: 8px;*/
+  /*}*/
+/*}*/

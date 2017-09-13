@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import './EnterNickname.css';
 
 class EnterNickname extends React.Component {
 
@@ -11,7 +12,8 @@ class EnterNickname extends React.Component {
   }
 
   onChange(e) {
-    this.setState({nickname: e.target.value});
+    const value = e.target.value;
+    this.setState({nickname: value.replace(' ', '')});
   }
 
   onSubmit(e) {
@@ -22,16 +24,25 @@ class EnterNickname extends React.Component {
 
   render() {
     return (
-    <form onSubmit={this.onSubmit}>
-      <input placeholder="Enter nickname" onChange={this.onChange} />
-      <input type="submit" />
-    </form>
+      <div className="login_step_nickname">
+        <div className="login_step_nickname_text">Please choose nickname:</div>
+        <div className="login_step_nickname_field_wrapper clearfix">
+          <form onSubmit={this.onSubmit}>
+            <input className="login_step_nickname_field"
+              type="text" value={this.state.nickname}
+              name="nickname" placeholder="Nickname"
+              onChange={this.onChange}
+            />
+            <input className="login_step_nickname_submit" type="submit" value="ok"/>
+          </form>
+        </div>
+      </div>
     );
   }
 }
 
 EnterNickname.propTypes = {
   onNicknameSet: PropTypes.func.isRequired
-}
+};
 
 export default EnterNickname;

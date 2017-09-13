@@ -1,0 +1,28 @@
+.login_step_login_text {
+  font-size: 2.3em;
+  text-align: center;
+  color: #e1e1e1;
+  margin-bottom: 40px;
+}
+.login_step_login_submit {
+  display: inline-block;
+  height: 57px;
+  line-height: 57px;
+  background: #2d3034;
+  font-size: 1.8em;
+  border: 1px solid #3c3e42;
+  color: #a6a7a9;
+  text-transform: uppercase;
+  width: 100%;
+  border-radius: 4px;
+  cursor: pointer;
+  transition-property: border, background-color;
+  transition-duration: 400ms;
+  max-width: 300px;
+  margin: auto;
+}
+.login_step_login_submit:hover {
+  border: 1px solid #b7b7b7;
+  background: #404448;
+}
+

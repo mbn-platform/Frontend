@@ -1,0 +1,53 @@
+.login_step_nickname_text {
+  font-size: 2.6em;
+  text-align: center;
+  text-transform: uppercase;
+  color: #e1e1e1;
+  font-family: 'maven_proregular';
+  margin-bottom: 40px;
+}
+.login_step_nickname_field_wrapper {
+  max-width: 400px;
+  margin: auto;
+}
+.login_step_nickname_field {
+  height: 57px;
+  line-height: 57px;
+  text-align: left;
+  padding-left: 20px;
+  font-size: 2.3em;
+  color: #7c7c7d;
+  background: inherit;
+  box-sizing: border-box;
+  float: left;
+  width: 80%;
+  border: 1px solid #7c7c7d;
+  border-radius: 4px 0 0 4px;
+  transition-property: border, background-color;
+  transition-duration: 400ms;
+}
+.login_step_nickname_submit {
+  height: 57px;
+  line-height: 57px;
+  background: #2d3034;
+  font-size: 1.8em;
+  border: 1px solid #7c7c7d;
+  border-left: 0;
+  color: #a6a7a9;
+  text-transform: uppercase;
+  float: left;
+  width: 20%;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+  transition-property: border, background-color;
+  transition-duration: 400ms;
+}
+.login_step_nickname_field:focus {
+  border: 1px solid #b7b7b7;
+  outline: none;
+}
+.login_step_nickname_submit:hover {
+  border: 1px solid #b7b7b7;
+  border-left: 0;
+  background: #404448;
+}
