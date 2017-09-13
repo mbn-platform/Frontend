@@ -8,13 +8,37 @@ import LoginStep from './LoginStep';
 
 class Login extends React.Component {
 
+  constructor(props) {
+    super(props);
+    const intervalId = setInterval(() =>
+      window.web3.eth.getAccounts((err, accounts) => {
+        this.setState({hasActiveAccount: (!err && accounts.length)});
+      }), 1000);
+    this.state = {hasActiveAccount: false, intervalId: intervalId};
+    window.web3.eth.getAccounts((err, accounts) => {
+      this.setState({hasActiveAccount: (!err && accounts.length)});
+    });
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.intervalId);
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if(nextProps !== this.props) {
+      return true;
+    } else {
+      return !(this.state.hasActiveAccount === nextState.hasActiveAccount);
+    }
+  }
+
   renderStep() {
     if(!window.web3) {
       return (<NoMetamask />);
     } else if(this.props.nameRequired) {
       return (<EnterNickname onNicknameSet={this.props.onNicknameSet} />);
     } else {
-      return (<LoginStep onClick={this.props.onLoginClick} />);
+      return (<LoginStep onClick={this.props.onLoginClick} hasActiveAccount={this.state.hasActiveAccount} />);
     }
   }
 
@@ -34,19 +58,7 @@ class Login extends React.Component {
         </div>
       </div>
     );
-    //if(window.web3) {
-      //return (<NoMetamask />);
-    //}
-    //if(this.props.nameRequired) {
-      //return (<EnterNickname onNicknameSet={this.props.onNicknameSet} />);
-    //} else {
-      //return (<button onClick={this.props.onLoginClick}>Log in</button>);
-    //}
-}
-
-
-
-
+  }
 }
 
 export default Login;

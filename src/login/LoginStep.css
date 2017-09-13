@@ -25,4 +25,15 @@
   border: 1px solid #b7b7b7;
   background: #404448;
 }
+.login_step_login_submit:focus {
+  outline: none;
+}
+.login_step_has_account {
+  font-size: 2.6em;
+  text-align: center;
+  text-transform: uppercase;
+  color: #e1e1e1;
+  font-family: 'maven_proregular';
+  margin-bottom: 40px;
+}
 

@@ -10,7 +10,6 @@ export function logIn() {
     window.web3.eth.getAccounts((err, accounts) => {
       const acc = accounts[0];
       if(!acc) {
-        alert('no active acc11');
         return;
       }
       const message = window.web3.sha3('MercatusLogin');
