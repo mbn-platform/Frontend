@@ -40,6 +40,15 @@
   margin-left: 20px;
 }
 
+.login_bg {
+  position: absolute;
+  z-index: -1;
+  background: url(../img/LoginBg.jpg) no-repeat center center;
+  background-size: cover;
+  height: 100%;
+  width: 100%;
+}
+
 /*@media only screen and (max-width : 1400px) {*/
   /*.login_content*/
   /*{*/

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 import store from './store';
 import { Provider } from 'react-redux';
 import MainContent from './MainContentContainer';
@@ -35,6 +35,7 @@ class App extends React.Component {
 const MainRouter = () => (
   <BrowserRouter>
     <div className="page_wrapper">
+      <Route path="/login" exact render={() => (<div className="login_bg"></div>)} />
       <div className="page_cols_wrapper clearfix">
         <Navigation />
         <MainContent />
