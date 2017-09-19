@@ -40,6 +40,7 @@ class Dashboard extends React.Component {
         />
         <AddApiKey />
       </div>
+      <div className="table_wrapper requests_table_wrapper">
         <Offers
           onOfferCanceled={this.props.onOfferCanceled}
           onOfferRejected={this.props.onOfferRejected}
@@ -49,6 +50,7 @@ class Dashboard extends React.Component {
           selectedOffer={this.state.selectedOffer}
           onOfferSelected={this.onOfferSelected}
         />
+      </div>
         <Contracts
           contracts={this.props.contracts}
           selectedContract={this.state.selectedContract}
