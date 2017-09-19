@@ -1,0 +1,45 @@
+.api_keys_table
+{
+  width: 55% !important;
+  float: left;
+  border-right: 0 !important;
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+.table_title_wrapper
+{
+  background: #2d3034;
+  max-height: 50px;
+  border-bottom: 1px solid #494d4d;
+  padding-left: 15px;
+  padding-top: 14px;
+  padding-bottom: 14px;
+  box-sizing: border-box;
+}
+
+.api_keys_table .table_title_wrapper
+{
+  border-radius: 4px 0 0 0;
+}
+.table_title
+{
+  font-size: 1.8em;
+  text-align: left;
+  color: #bfbfc1;
+  font-family: 'maven_proregular';
+  text-transform: uppercase;
+  height: 22px;
+  line-height: 22px;
+  float: left;
+  letter-spacing: 1px;
+}
+
+.table_col_value
+{
+  vertical-align: middle;
+  font-size: 1.3em;
+  color: #7c7c7d;
+  height: 100%
+}

@@ -8,6 +8,7 @@ import SelectedContractInfo from './SelectedContractInfo';
 import TradersChart from './TradersChart';
 import ContractsChart from './ContractsChart';
 import ContractInfo from './ContractInfo';
+import './Dashboard.css';
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -23,8 +24,22 @@ class Dashboard extends React.Component {
 
   render() {
     return (
-      <div>
-        <h1>Dashboard</h1>
+      <div className="dashboard_wrapper">
+        <div className="keys_tables_wrapper table_wrapper">
+        <ApiKeys 
+          userId={this.props.userId}
+          apiKeys={this.props.apiKeys}
+          selectedApiKey={this.state.selectedApiKey}
+          onKeySelected={this.onKeySelected}
+          onKeyDeleteClick={this.props.onKeyDeleteClick}
+        />
+        <ApiKeyInfo
+          apiKey={this.state.selectedApiKey}
+          exchanges={this.props.exchanges}
+          onKeyUpdateClick={this.props.onKeyUpdateClick}
+        />
+        <AddApiKey />
+      </div>
         <Offers
           onOfferCanceled={this.props.onOfferCanceled}
           onOfferRejected={this.props.onOfferRejected}
@@ -33,19 +48,6 @@ class Dashboard extends React.Component {
           offers={this.props.offers}
           selectedOffer={this.state.selectedOffer}
           onOfferSelected={this.onOfferSelected}
-        />
-        <ApiKeys
-          userId={this.props.userId}
-          apiKeys={this.props.apiKeys}
-          selectedApiKey={this.state.selectedApiKey}
-          onKeySelected={this.onKeySelected}
-          onKeyDeleteClick={this.props.onKeyDeleteClick}
-        />
-        <AddApiKey />
-        <ApiKeyInfo
-          apiKey={this.state.selectedApiKey}
-          exchanges={this.props.exchanges}
-          onKeyUpdateClick={this.props.onKeyUpdateClick}
         />
         <Contracts
           contracts={this.props.contracts}

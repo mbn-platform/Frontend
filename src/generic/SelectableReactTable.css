@@ -1,5 +1,4 @@
 .ReactTable {
-  height: 100px;
   overflow: hidden;
 }
 
@@ -23,9 +22,30 @@
   padding-left: 15px;
   text-align: left;
 }
+.rt-resizable-header-content
+{
+  color: #e1e1e1;
+  line-height: 30px;
+  font-size: 1.6em;
+  font-family: 'maven_pro_light300';
+}
 .ReactTable .rt-thead .rt-tr
 {
   width: 100%
+}
+
+.ReactTable .rt-tr {
+  min-height: 30px;
+}
+
+.-filters .rt-th
+{
+  padding-top: 4px;
+  padding-bottom: 20px;
+}
+.rt-tbody
+{
+  border-top: 1px solid #494d4d;
 }
 
 .ReactTable .rt-tr-group {
@@ -70,9 +90,10 @@
   background: #346255;
 }
 
-.ReactTable .rt-td {
-  color: #b8b8ba;
-}.ReactTable .rt-th {
-  color: #e1e1e1;
-}
+/*.ReactTable .rt-td {*/
+  /*color: #b8b8ba;*/
+/*}*/
+/*.ReactTable .rt-th {*/
+  /*color: #e1e1e1;*/
+/*}*/
 

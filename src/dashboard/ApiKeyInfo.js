@@ -1,4 +1,5 @@
 import React from 'react';
+import './ApiKeyInfo.css';
 
 
 class ApiKeyInfo extends React.Component {
@@ -13,12 +14,21 @@ class ApiKeyInfo extends React.Component {
 
   render() {
     return (
-      <div>
-        <h2>KEY'S PAIRS</h2>
+      <div className="api_key_currencies_table table">
+        <div className="table_title_wrapper clearfix">
+          <div className="table_title">Currencies</div>
+        </div>
         <PairsList
           apiKey={this.props.apiKey}
           availablePairs={this.getAvailablePairs()}
           onKeyUpdate={this.props.onKeyUpdateClick} />
+        <div className="table_requests_control_wr clearfix">
+          <div className="table_requests_control_text">save changes?</div>
+          <div className="table_requests_control_btns">
+            <div className="table_requests_yes table_requests_btn"><u>Yes</u></div>
+            <div className="table_requests_no table_requests_btn"><u>No</u></div>
+          </div>
+        </div>
       </div>
       );
   }

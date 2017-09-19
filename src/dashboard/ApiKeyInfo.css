@@ -1,0 +1,60 @@
+.api_key_currencies_table
+{
+  width: 45% !important;
+  float: left;
+  border-top-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+.api_key_currencies_table .table_title_wrapper
+{
+  border-radius: 0 4px 0 0;
+}
+
+.table_requests_control_wr
+{
+  background: #2d3034;
+  padding: 15px 0;
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+  border-top: 1px solid #494d4d;
+  z-index: 20;
+}
+
+.table_requests_control_text
+{
+  color: #b8b8ba;
+  font-size: 1.2em;
+  text-transform: uppercase;
+  text-align: 15px;
+  padding-left: 15px;
+  float: left;
+}
+
+.table_requests_control_btns
+{
+  float: right;
+}
+
+.table_requests_btn
+{
+  cursor: pointer;
+  font-size: 1em;
+  display: inline-block;
+  vertical-align: middle;
+  text-transform: uppercase;
+}
+
+.table_requests_yes
+{
+  color: #32ba94;
+  margin-right: 20px;
+}
+.table_requests_no
+{
+  color: #c94546;
+  margin-right: 20px;
+}

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import SegmentedControl from '../generic/SegmentedControl';
 import ReactTable from '../generic/SelectableReactTable';
 import ExchangeSelect from './ExchangeSelect';
+import './ApiKeys.css';
 
 class ApiKeys extends React.Component {
 
@@ -32,8 +33,11 @@ class ApiKeys extends React.Component {
 
   render() {
     return (
-      <div>
-        <SegmentedControl segments={['MINE', 'OTHER']}/>
+      <div className="api_keys_table table">
+        <div className="table_title_wrapper clearfix">
+          <div className="table_title">API keys</div>
+          <SegmentedControl segments={['MINE', 'OTHER']}/>
+        </div>
         {this.renderContent()}
       </div>
     );
@@ -46,12 +50,15 @@ class ApiKeys extends React.Component {
         Header: "Key name",
         filterable: true,
         Filter: SearchFilter,
-        accessor: 'name'
+        accessor: 'name',
+        className: 'table_col_value'
       }, {
         Header: 'Exchange',
-        accessor: 'exchange'
+        accessor: 'exchange',
+        className: 'table_col_value',
       }, {
-        Header: 'Balance, BTC'
+        Header: 'Balance, BTC',
+        accessor: 'balance'
       }, {
         Header: '',
         Cell: row => (<button onClick={() => this.props.onKeyDeleteClick(row.original)}>Delete</button>)
@@ -59,6 +66,7 @@ class ApiKeys extends React.Component {
     ];
     return (
       <ReactTable
+        style={{height: '300px'}}
         columns={columns}
         data={apiKeys}
         selectedItem={this.props.selectedApiKey}
@@ -140,11 +148,14 @@ class SearchTableColumn extends React.Component {
   }
 }
 const SearchFilter = ({filter, onChange}) => (
+  <div>
   <input
+    className="add_keys_field add_keys_field_name"
     placeholder="Search"
     onChange={event => onChange(event.target.value)}
     value={filter ? filter.value : ''}
   />
+  </div>
 );
 
 
