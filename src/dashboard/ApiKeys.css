@@ -43,3 +43,7 @@
   color: #7c7c7d;
   height: 100%
 }
+.-selected .table_col_value
+{
+  color: #e1e1e1;
+}

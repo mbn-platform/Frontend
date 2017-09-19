@@ -14,6 +14,7 @@ class ApiKeys extends React.Component {
       ownedKeys: props.apiKeys.filter(k => k.owner === props.userId),
       sharedKeys: props.apiKeys.filter(k => k.owner !== props.userId),
     };
+    this.onTabChange = this.onTabChange.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -31,12 +32,16 @@ class ApiKeys extends React.Component {
     }
   }
 
+  onTabChange(index) {
+    this.setState({selectedTab: index});
+  }
+
   render() {
     return (
       <div className="api_keys_table table">
         <div className="table_title_wrapper clearfix">
           <div className="table_title">API keys</div>
-          <SegmentedControl segments={['MINE', 'OTHER']}/>
+          <SegmentedControl segments={['MINE', 'OTHER']} onChange={this.onTabChange}/>
         </div>
         {this.renderContent()}
       </div>
@@ -44,10 +49,12 @@ class ApiKeys extends React.Component {
   }
 
   renderContent() {
-    const { apiKeys, onKeyDeleteClick } = this.props;
+    const { apiKeys, onKeyDeleteClick, userId } = this.props;
+    const data = this.state.selectedTab ? apiKeys.filter(k => k.owner !== userId)
+      : apiKeys.filter(k => k.owner === userId);
     const columns = [
       {
-        Header: "Key name",
+        Header: 'Key name',
         filterable: true,
         Filter: SearchFilter,
         accessor: 'name',
@@ -57,8 +64,9 @@ class ApiKeys extends React.Component {
         accessor: 'exchange',
         className: 'table_col_value',
       }, {
+        id: '_id',
         Header: 'Balance, BTC',
-        accessor: 'balance'
+        accessor: key => key.balance ? key.balance : '0',
       }, {
         Header: '',
         Cell: row => (<button onClick={() => this.props.onKeyDeleteClick(row.original)}>Delete</button>)
@@ -68,7 +76,7 @@ class ApiKeys extends React.Component {
       <ReactTable
         style={{height: '300px'}}
         columns={columns}
-        data={apiKeys}
+        data={data}
         selectedItem={this.props.selectedApiKey}
         onItemSelected={key => this.props.onKeySelected(key)}
       />
@@ -95,6 +103,7 @@ class ApiKeys extends React.Component {
 }
 
 ApiKeys.propTypes = {
+  userId: PropTypes.string.isRequired,
   onKeySelected: PropTypes.func.isRequired,
   onKeyDeleteClick: PropTypes.func.isRequired,
   apiKeys: PropTypes.array.isRequired,

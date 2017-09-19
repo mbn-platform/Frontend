@@ -10,7 +10,7 @@ const mapStateToProps = state => {
     apiKeys: state.apiKeys,
     offers: state.offers,
     contracts: state.contracts,
-    userId: state.auth.userId,
+    userId: state.auth.profile._id,
     exchanges: state.exchanges
   };
 };

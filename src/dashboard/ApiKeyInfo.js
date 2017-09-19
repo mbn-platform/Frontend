@@ -1,34 +1,65 @@
 import React from 'react';
+import ReactTable from '../generic/SelectableReactTable';
 import './ApiKeyInfo.css';
 
 
 class ApiKeyInfo extends React.Component {
 
-  getAvailablePairs() {
+  constructor(props) {
+    super(props);
+    this.state = {changed: false};
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.apiKey !== this.props.apiKey) {
+      this.setState({changed: false});
+    }
+  }
+
+  getAvailableCurrencies() {
     if(!this.props.apiKey) {
       return [];
     }
     const exchange = this.props.exchanges.find(ex => ex.name === this.props.apiKey.exchange);
-    return exchange ? exchange.pairs : [];
+    return exchange.pairs.map(p => p.split('-')).reduce((acc, v) => acc.concat(v), []);
   }
 
   render() {
+    const columns = [
+      {
+        Header: 'Currency',
+        filterable: true,
+        Filter: SearchFilter,
+        accessor: '',
+        className: 'table_col_value'
+      }, {
+        Header: 'Status'
+      }, {
+        Header: 'Balance'
+      }
+    ];
+    const data = this.getAvailableCurrencies();
+
     return (
       <div className="api_key_currencies_table table">
         <div className="table_title_wrapper clearfix">
           <div className="table_title">Currencies</div>
         </div>
-        <PairsList
-          apiKey={this.props.apiKey}
-          availablePairs={this.getAvailablePairs()}
-          onKeyUpdate={this.props.onKeyUpdateClick} />
-        <div className="table_requests_control_wr clearfix">
-          <div className="table_requests_control_text">save changes?</div>
-          <div className="table_requests_control_btns">
-            <div className="table_requests_yes table_requests_btn"><u>Yes</u></div>
-            <div className="table_requests_no table_requests_btn"><u>No</u></div>
+        <ReactTable
+          style={{height: '300px'}}
+          data={data}
+          columns={columns}
+          onItemSelected={() => this.setState({changed: true})}
+        />
+        {this.state.changed ? (
+          <div className="table_requests_control_wr clearfix">
+            <div className="table_requests_control_text">save changes?</div>
+            <div className="table_requests_control_btns">
+              <div className="table_requests_yes table_requests_btn"><u>Yes</u></div>
+              <div className="table_requests_no table_requests_btn"><u>No</u></div>
+            </div>
           </div>
-        </div>
+          ) : null}
       </div>
       );
   }
@@ -179,3 +210,13 @@ const PairRow = ({ index, pair, checked, onChange }) => (
 );
 
 export default ApiKeyInfo;
+const SearchFilter = ({filter, onChange}) => (
+  <div>
+    <input
+      className="add_keys_field add_keys_field_name"
+      placeholder="Search"
+      onChange={event => onChange(event.target.value)}
+      value={filter ? filter.value : ''}
+    />
+  </div>
+);

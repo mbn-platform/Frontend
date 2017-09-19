@@ -20,13 +20,14 @@ class SelectableReactTable extends React.Component {
     };
     return (
       <ReactTable
+        noDataText=''
         resizable={false}
         showPagination={false}
         minRows={0}
-        {...this.props}
         getTrProps={getTrProps}
         getTheadProps={getTheadProps}
         TbodyComponent={CustomTBodyComponent}
+        {...this.props}
       />
     );
   }

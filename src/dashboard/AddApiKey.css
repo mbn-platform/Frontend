@@ -78,7 +78,7 @@
   border-radius: 3px;
   padding-left: 17px;
   text-align: left;
-  color: #505153;	
+  color: #505153;
   height: 26px;
   box-sizing: border-box;
   line-height: 26px;
@@ -170,6 +170,10 @@
   outline: none;
   border-color: #7c7c7d;
 }
+.add_keys_field:focus::-webkit-input-placeholder {color:#7c7c7d;}
+.add_keys_field:focus::-moz-placeholder          {color:#7c7c7d;}/* Firefox 19+ */
+.add_keys_field:focus::-moz-placeholder           {color:#7c7c7d;}/* Firefox 18- */
+.add_keys_field:focus::-ms-input-placeholder      {color:#7c7c7d;}
 
 .keys_submit_wrapper
 {
