@@ -90,6 +90,11 @@
   background: #346255;
 }
 
+.table_value_red
+{
+  color: #c34445;
+}
+
 /*.ReactTable .rt-td {*/
   /*color: #b8b8ba;*/
 /*}*/

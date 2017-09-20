@@ -7,7 +7,6 @@ import Offers from './Offers';
 import SelectedContractInfo from './SelectedContractInfo';
 import TradersChart from './TradersChart';
 import ContractsChart from './ContractsChart';
-import ContractInfo from './ContractInfo';
 import './Dashboard.css';
 
 class Dashboard extends React.Component {
@@ -26,40 +25,41 @@ class Dashboard extends React.Component {
     return (
       <div className="dashboard_wrapper">
         <div className="keys_tables_wrapper table_wrapper">
-        <ApiKeys 
-          userId={this.props.userId}
-          apiKeys={this.props.apiKeys}
-          selectedApiKey={this.state.selectedApiKey}
-          onKeySelected={this.onKeySelected}
-          onKeyDeleteClick={this.props.onKeyDeleteClick}
-        />
-        <ApiKeyInfo
-          apiKey={this.state.selectedApiKey}
-          exchanges={this.props.exchanges}
-          onKeyUpdateClick={this.props.onKeyUpdateClick}
-        />
-        <AddApiKey />
-      </div>
-      <div className="table_wrapper requests_table_wrapper">
-        <Offers
-          onOfferCanceled={this.props.onOfferCanceled}
-          onOfferRejected={this.props.onOfferRejected}
-          onOfferAccepted={this.props.onOfferAccepted}
+          <ApiKeys
+            userId={this.props.userId}
+            apiKeys={this.props.apiKeys}
+            selectedApiKey={this.state.selectedApiKey}
+            onKeySelected={this.onKeySelected}
+            onKeyDeleteClick={this.props.onKeyDeleteClick}
+          />
+          <ApiKeyInfo
+            apiKey={this.state.selectedApiKey}
+            exchanges={this.props.exchanges}
+            onKeyUpdateClick={this.props.onKeyUpdateClick}
+          />
+          <AddApiKey />
+        </div>
+        <div className="table_wrapper requests_table_wrapper">
+          <Offers
+            onOfferCanceled={this.props.onOfferCanceled}
+            onOfferRejected={this.props.onOfferRejected}
+            onOfferAccepted={this.props.onOfferAccepted}
 
-          offers={this.props.offers}
-          selectedOffer={this.state.selectedOffer}
-          onOfferSelected={this.onOfferSelected}
-        />
-      </div>
-        <Contracts
-          contracts={this.props.contracts}
-          selectedContract={this.state.selectedContract}
-          onContractSelected={this.onContractSelected}
-        />
-        <SelectedContractInfo contract={this.state.selectedContract} />
-        <ContractInfo
-          contract={this.state.selectedContract}
-        />
+            offers={this.props.offers}
+            selectedOffer={this.state.selectedOffer}
+            onOfferSelected={this.onOfferSelected}
+          />
+        </div>
+        <div className="table_wrapper contracts_table_wrapper">
+          <Contracts
+            contracts={this.props.contracts}
+            selectedContract={this.state.selectedContract}
+            onContractSelected={this.onContractSelected}
+          />
+        </div>
+        <div className="table_wrapper selected_contract_table">
+          <SelectedContractInfo contract={this.state.selectedContract} />
+        </div>
         <TradersChart />
         <ContractsChart />
       </div>

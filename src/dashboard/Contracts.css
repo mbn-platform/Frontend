@@ -1,0 +1,49 @@
+.contracts_table
+{
+}
+.title_green_arrows_wrapper
+{
+  text-align: center;
+}
+.green_arrow
+{
+  width: 6px;
+  height: 6px;
+  display: inline-block;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.status_circle
+{
+  display: inline-block;
+  vertical-align: middle;
+  width: 6px;
+  height: 6px;
+  border-radius: 6px;
+}
+.status_circle.red
+{
+  background: #c94546;
+}
+.status_circle.green
+{
+  background: #60a754;
+}
+.status_circle.yellow
+{
+  background: #dcb14a;
+}
+.tx_link
+{
+  background: url(../img/TxLink.png) no-repeat center center;
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  transition: opacity 400ms;
+  opacity: .7;
+}
+.tx_link:hover
+{
+  opacity: 1.0;
+}

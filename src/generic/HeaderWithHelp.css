@@ -1,0 +1,16 @@
+.header_with_help_icon
+{
+  position: absolute;
+  top: 4px;
+  width: 11px;
+  height: 11px;
+  background: url(../img/HelpIcon.png) no-repeat center center;
+  transition-property: opacity, background;
+  transition-duration: 400ms;
+  display: inline-block;
+  vertical-align: middle;
+}
+.header_with_help
+{
+  position: relative;
+}

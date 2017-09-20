@@ -1,38 +1,140 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import SegmentedControl from '../generic/SegmentedControl';
+import ReactTable from '../generic/SelectableReactTable';
+import SearchFilter from '../generic/SearchFilter';
+import HeaderWithHelp from '../generic/HeaderWithHelp';
+import './Contracts.css';
+
+
 
 class Contracts extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {showNotOwned: 0, showFinished: 0};
+    this.onOwnershipTabChange = this.onOwnershipTabChange.bind(this);
+    this.onStatusTabChange = this.onStatusTabChange.bind(this);
+  }
+
+  onOwnershipTabChange(index) {
+    this.setState({showNotOwned: index});
+  }
+  onStatusTabChange(index) {
+    this.setState({showFinished: index});
+  }
+
+  renderContent() {
+    const data = this.props.contracts.filter(c => {
+      let condition = true;
+      if(this.state.showFinished) {
+        condition = condition && c.status === 'completed';
+      } else {
+        condition = condition && c.status !== 'completed';
+      }
+      return condition;
+    });
+
+    return (
+      <ReactTable
+        style={{height: '352px'}}
+        columns={this.getTableColumns()}
+        data={data}
+        selectedItem={this.props.selectedContract}
+        onItemSelected={this.props.onContractSelected}
+      />
+    );
+  }
+
   render() {
     return (
-      <div>
-        <h2>Contracts</h2>
+      <div className="table contracts_table">
+        <div className="table_title_wrapper clearfix">
+          <div className="table_title">Contracts</div>
+          <SegmentedControl segments={['CURRENT', 'FINISHED']} onChange={this.onStatusTabChange}/>
+          <SegmentedControl segments={['MINE', 'OTHER']} onChange={this.onOwnershipTabChange}/>
+        </div>
         {this.renderContent()}
       </div>
     );
   }
 
-  renderContent() {
-    if(this.props.contracts.length === 0) {
-      return (<div>No contracts</div>);
-    } else {
-      return (
-        <ul>
-          {this.props.contracts.map(c => (
-          <Contract contract={c} key={c.id}
-            onContractSelected={this.props.onContractSelected}
-            selected={this.props.selectedContract === c} />
-          ))}
-        </ul>
-      );
-    }
-  }
+  getTableColumns() {
+    return [{
+      Header: 'Contractor',
+      filterable: true,
+      className: 'table_col_value',
+      Filter: SearchFilter,
+      accessor: 'contractor',
+      Cell: row => (<Link className="table_col_value_a" to={'/' + row.value}>{row.value}</Link>),
+    }, {
+      Header: 'Expire date',
+    }, {
+      Header: 'Current profit, %',
+      className: 'table_col_value',
+      accessor: 'currentProfit',
+      Cell: NegativeValuesCell
+    }, {
+      Header: 'Max loss, %',
+      className: 'table_col_value',
+      accessor: 'maxLoss',
+    }, {
+      id: 'startBalance',
+      className: 'table_col_value',
+      Header: 'Start balance',
+      accessor: c => c.startBalance + ' ' + c.currency,
+    }, {
+      id: 'currentBalance',
+      className: 'table_col_value',
+      Header: 'Current balance',
+      accessor: c => c.currentBalance + ' ' + c.currency,
+    }, {
+      id: 'left',
+      Header: 'Left',
+      className: 'table_col_value',
+      accessor: c => c.left + ' ' + c.currency,
+    }, {
+      Header: 'Fee, %',
+      className: 'table_col_value',
+      accessor: 'fee'
+    },{
+      Header: HeaderWithHelp('TX'),
+      Cell: TXCell
+    }, {
+      Header: HeaderWithHelp('Status'),
+      accessor: 'status',
+      Cell: StatusCell
+    }];
 
+  }
 }
 
-const Contract = (props) => (
-  <li style={props.selected ? {backgroundColor: 'green'} : {}} onClick={() => props.onContractSelected(props.contract)}>
-    <Link to={props.contract.link}>{props.contract.name}</Link> <span>{props.contract.info}</span>
-  </li>
+const NegativeValuesCell = row => (
+  <div className={parseFloat(row.value) < 0 ? 'table_value_red' : ''}>{row.value}</div>
 );
+
+const TXCell = ({original}) => (
+  <Link className="tx_link" to={original.txLink || '/'} />
+);
+
+const StatusCell = ({value}) => {
+  let className = 'status_circle ';
+  switch(value) {
+    case 'completed':
+      className += 'green';
+      break;
+    case 'in_progress':
+      className += 'yellow';
+      break;
+    case 'failed':
+      className += 'red';
+      break;
+    default:
+      break;
+  }
+  return (
+    <div className={className}></div>
+  );
+};
 
 export default Contracts;
