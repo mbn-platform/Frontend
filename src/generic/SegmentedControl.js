@@ -4,14 +4,16 @@ import './SegmentedControl.css';
 class SegmentedControl extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {index: this.props.selectedIndex || 0};
     this.onChange = this.onChange.bind(this);
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return nextProps.selectedIndex !== this.props.selectedIndex;
   }
 
   onChange(e) {
     const index = parseInt(e.target.dataset.index, 10);
-    if(this.state.index !== index) {
-      this.setState({index});
+    if(this.props.selectedIndex !== index) {
       if(this.props.onChange) {
         this.props.onChange(index);
       }
@@ -22,12 +24,16 @@ class SegmentedControl extends React.Component {
     return (
       <div className="table_title_tabs_wr">
         {this.props.segments.map((segment, index) => (
-          <div className={classNameForTab(this.state.index, index)} data-index={index} onClick={this.onChange} key={segment}>{segment}</div>
+          <div className={classNameForTab(this.props.selectedIndex, index)} data-index={index} onClick={this.onChange} key={segment}>{segment}</div>
         )
         )}
       </div>
     );
   }
+}
+
+SegmentedControl.defaultProps = {
+  selectedIndex: 0
 }
 
 function classNameForTab(selectedIndex, tabIndex) {

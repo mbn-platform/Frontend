@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import SegmentedControl from '../generic/SegmentedControl';
 import ReactTable from '../generic/SelectableReactTable';
+import SearchFilter from '../generic/SearchFilter';
 import ExchangeSelect from './ExchangeSelect';
 import './ApiKeys.css';
 
@@ -41,7 +42,7 @@ class ApiKeys extends React.Component {
       <div className="api_keys_table table">
         <div className="table_title_wrapper clearfix">
           <div className="table_title">API keys</div>
-          <SegmentedControl segments={['MINE', 'OTHER']} onChange={this.onTabChange}/>
+          <SegmentedControl selectedIndex={this.state.selectedTab} segments={['MINE', 'OTHER']} onChange={this.onTabChange}/>
         </div>
         {this.renderContent()}
       </div>
@@ -49,7 +50,7 @@ class ApiKeys extends React.Component {
   }
 
   renderContent() {
-    const { apiKeys, onKeyDeleteClick, userId } = this.props;
+    const { apiKeys, userId } = this.props;
     const data = this.state.selectedTab ? apiKeys.filter(k => k.owner !== userId)
       : apiKeys.filter(k => k.owner === userId);
     const columns = [
@@ -81,24 +82,6 @@ class ApiKeys extends React.Component {
         onItemSelected={key => this.props.onKeySelected(key)}
       />
     );
-    if(apiKeys.length === 0) {
-      return (<div>You have no keys yet</div>);
-    } else {
-      const selectedTab = this.state.selectedTab;
-      const keys = selectedTab ? this.state.sharedKeys : this.state.ownedKeys;
-      return (
-        <ul>
-          {keys.map(apiKey => (
-            <ApiKey key={apiKey._id} apiKey={apiKey}
-              owned={this.props.userId === apiKey.owner}
-              onKeySelected={this.props.onKeySelected}
-              onKeyDeleteClick={onKeyDeleteClick}
-              selected={apiKey === this.props.selectedApiKey}/>
-          ))}
-        </ul>
-      );
-
-    }
   }
 }
 
@@ -109,63 +92,5 @@ ApiKeys.propTypes = {
   apiKeys: PropTypes.array.isRequired,
   selectedKey: PropTypes.object
 };
-
-class ApiKey extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {pairsOpened: false};
-    this.onKeyDeleteClick = this.onKeyDeleteClick.bind(this);
-  }
-
-  onPairsClicked() {
-    this.setState(prev => {
-      return {pairsOpened: !prev.pairsOpened};
-    });
-  }
-  render() {
-    const apiKey = this.props.apiKey;
-    return (
-      <li style={this.props.selected ? {backgroundColor: 'aqua'} : {}} onClick={() => this.props.onKeySelected(apiKey)}>
-        <span>{apiKey.name} </span>
-        <span>{apiKey.keyValue} </span>
-        <span>{apiKey.exchange} </span>
-        <span>{apiKey.inUse ? 'in use' : 'free'} </span>
-        <br/>
-        {this.props.owned ? <button onClick={this.onKeyDeleteClick}>Delete</button> : null}
-
-      </li>
-    );
-  }
-
-  onKeyDeleteClick(event) {
-    event.stopPropagation();
-    this.props.onKeyDeleteClick(this.props.apiKey);
-  }
-
-}
-
-class SearchTableColumn extends React.Component {
-  render() {
-    return (
-      <div>
-        <div>{this.props.Header}</div>
-        <div>
-          <input className="add_keys_field" placeholder="Search" />
-        </div>
-      </div>
-    );
-  }
-}
-const SearchFilter = ({filter, onChange}) => (
-  <div>
-  <input
-    className="add_keys_field add_keys_field_name"
-    placeholder="Search"
-    onChange={event => onChange(event.target.value)}
-    value={filter ? filter.value : ''}
-  />
-  </div>
-);
-
 
 export default ApiKeys;

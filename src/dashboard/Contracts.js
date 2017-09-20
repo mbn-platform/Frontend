@@ -12,27 +12,34 @@ class Contracts extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {showNotOwned: 0, showFinished: 0};
+    this.state = {ownedTabIndex: 0, completedTabIndex: 0};
     this.onOwnershipTabChange = this.onOwnershipTabChange.bind(this);
     this.onStatusTabChange = this.onStatusTabChange.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if(!nextProps.selectedContract) {
+      return;
+    }
+    if(nextProps.selectedContract !== this.props.selectedContract) {
+      const requiredTab = (nextProps.selectedContract.status === 'completed' & 1);
+      if(this.state.completedTabIndex !== requiredTab) {
+        this.setState({completedTabIndex: requiredTab});
+      }
+    }
+  }
+
   onOwnershipTabChange(index) {
-    this.setState({showNotOwned: index});
+    this.setState({ownedTabIndex: index});
   }
   onStatusTabChange(index) {
-    this.setState({showFinished: index});
+    this.setState({completedTabIndex: index});
   }
 
   renderContent() {
     const data = this.props.contracts.filter(c => {
-      let condition = true;
-      if(this.state.showFinished) {
-        condition = condition && c.status === 'completed';
-      } else {
-        condition = condition && c.status !== 'completed';
-      }
-      return condition;
+      const isCompleted = c.status !== 'completed';
+      return this.state.completedTabIndex === 0 ? isCompleted : !isCompleted;
     });
 
     return (
@@ -51,8 +58,8 @@ class Contracts extends React.Component {
       <div className="table contracts_table">
         <div className="table_title_wrapper clearfix">
           <div className="table_title">Contracts</div>
-          <SegmentedControl segments={['CURRENT', 'FINISHED']} onChange={this.onStatusTabChange}/>
-          <SegmentedControl segments={['MINE', 'OTHER']} onChange={this.onOwnershipTabChange}/>
+          <SegmentedControl selectedIndex={this.state.completedTabIndex} segments={['CURRENT', 'FINISHED']} onChange={this.onStatusTabChange}/>
+          <SegmentedControl selectedIndex={this.state.ownedTabIndex} segments={['MINE', 'OTHER']} onChange={this.onOwnershipTabChange}/>
         </div>
         {this.renderContent()}
       </div>
