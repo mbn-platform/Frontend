@@ -48,7 +48,8 @@
   color: #b8b8ba;
   text-transform: uppercase;
 }
-.-selected .table_col_value
+.-selected .table_col_value,
+.-selected .table_col_value_a
 {
   color: #e1e1e1;
 }
