@@ -4,7 +4,7 @@ import './RatingBar.css';
 class RatingBar extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {selected: false, rating: 0, hover: -1};
+    this.state = {selected: false, rating: props.rating, hover: -1};
     this.onMouseEnter = this.onMouseEnter.bind(this);
     this.onMouseLeave = this.onMouseLeave.bind(this);
     this.onClick = this.onClick.bind(this);
@@ -26,8 +26,14 @@ class RatingBar extends React.Component {
   }
 
   render() {
+    const props = {
+      className: 'rating_bar'
+    };
+    if(this.props.selectable) {
+      props.onMouseLeave = this.onMouseLeave;
+    }
     return (
-      <div className="rating_bar" onMouseLeave={this.onMouseLeave} >
+      <div {...props} >
         {this.renderStars()}
       </div>
     );
@@ -36,12 +42,16 @@ class RatingBar extends React.Component {
     const stars = [];
     for(let i = 0; i < this.props.numberOfStars; i++) {
       const className = this.state.hover >= i || this.state.rating > i ? 'rating_bar_item hover' : 'rating_bar_item';
+      const props = {};
+      if(this.props.selectable) {
+        props.onClick =  () => this.onClick(i);
+        props.onMouseEnter = () => this.onMouseEnter(i);
+      }
       const comp = (
         <div
           key={i}
           className={className}
-          onClick={() => this.onClick(i)}
-          onMouseEnter={() => this.onMouseEnter(i)}
+          {...props}
         >
         </div>
       );
@@ -52,7 +62,9 @@ class RatingBar extends React.Component {
 }
 
 RatingBar.defaultProps = {
-  numberOfStars: 5
+  numberOfStars: 5,
+  rating: 0,
+  selectable: true
 };
 
 export default RatingBar;
