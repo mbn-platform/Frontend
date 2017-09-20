@@ -1,0 +1,23 @@
+.rating_bar
+{
+  height: 27px;
+  line-height: 25px;
+  display: inline-block;
+}
+
+.rating_bar_item
+{
+  vertical-align: middle;
+  width: 15px;
+  height: 15px;
+  display: inline-block;
+  margin: 0 5px;
+  background: url(../img/RatingUnselected.png) no-repeat center center;
+  transition-property: opacity, background;
+  transition-duration: 400ms;
+}
+
+.rating_bar_item.hover
+{
+  background: url(../img/RatingSelected.png) no-repeat center center;
+}
