@@ -24,6 +24,8 @@
   transition-property: color, background;
   transition-duration: 400ms;
   transition: color 400ms, background 400ms;
+  box-sizing: border-box;
+  width: 50%;
 }
 .table_title_tab.selected {
   background: #346255;
