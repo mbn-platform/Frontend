@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import './Navigation.css';
-import Logo from './img/MainLogo.svg';
+import Logo from './img/MainLogo.png';
 const pages = [
   {name: 'Dashboard', to: '/dashboard'},
   {name: 'Profile', to: '/profile'},
