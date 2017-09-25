@@ -22,7 +22,11 @@ class ApiKeys extends React.Component {
   }
 
   onFilter(e) {
-    this.setState({filtered: [{id: 'name', value: e.target.value}]});
+    const value = e.target.value;
+    this.setState(state => {
+      const filtered = state.filtered.map(i => i.id === 'name' ? {id: 'name', value} : i);
+      return {filtered}
+    });
   }
 
   onExchangeChange(e) {

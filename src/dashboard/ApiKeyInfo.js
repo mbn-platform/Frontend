@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactTable from '../generic/SelectableReactTable';
+import SearchHeader from '../generic/SearchHeader';
 import './ApiKeyInfo.css';
 
 
@@ -7,7 +8,12 @@ class ApiKeyInfo extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {changed: false};
+    this.state = {changed: false, filtered: [{id: 'currency', value: ''}]};
+    this.onCurrencyChange = this.onCurrencyChange.bind(this);
+  }
+
+  onCurrencyChange(e) {
+    this.setState({filtered: [{id: 'currency', value: e.target.value}]});
   }
 
   componentWillReceiveProps(nextProps) {
@@ -21,15 +27,15 @@ class ApiKeyInfo extends React.Component {
       return [];
     }
     const exchange = this.props.exchanges.find(ex => ex.name === this.props.apiKey.exchange);
-    return exchange.pairs.map(p => p.split('-')).reduce((acc, v) => acc.concat(v), []);
+    return [...new Set([].concat.apply([], exchange.pairs.map(p => p.split('-'))))];
   }
 
   render() {
+    const currencyFilter = this.state.filtered.find(f => f.id === 'currency').value;
     const columns = [
       {
-        Header: 'Currency',
-        filterable: true,
-        Filter: SearchFilter,
+        Header: SearchHeader('Currency', currencyFilter, this.onCurrencyChange),
+        id: 'currency',
         accessor: '',
         className: 'table_col_value'
       }, {
@@ -49,6 +55,7 @@ class ApiKeyInfo extends React.Component {
           style={{height: '300px'}}
           data={data}
           columns={columns}
+          filtered={this.state.filtered}
           onItemSelected={() => this.setState({changed: true})}
         />
         {this.state.changed ? (
