@@ -26,7 +26,6 @@
 {
   color: #e1e1e1;
   line-height: 30px;
-  font-size: 1.6em;
   font-family: 'maven_pro_light300';
 }
 .ReactTable .rt-thead .rt-tr
@@ -94,6 +93,33 @@
 {
   color: #c34445;
 }
+.table_header
+{
+  font-size: 1.6em;
+}
+.table_filter_wrapper
+{
+  padding: 15px 0 20px 0;
+}
+
+.sort_triangle
+{
+  height: 6px;
+  width: 6px;
+  display: inline-block;
+
+}
+
+.-sort-asc .table_header:after
+{
+  content: url(../img/GreenTriangleBottom.png);
+}
+.-sort-desc .table_header:after
+{
+  content: url(../img/GreenTriangleTop.png);
+}
+
+
 
 /*.ReactTable .rt-td {*/
   /*color: #b8b8ba;*/

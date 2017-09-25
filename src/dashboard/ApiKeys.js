@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import SegmentedControl from '../generic/SegmentedControl';
 import ReactTable from '../generic/SelectableReactTable';
-import SearchFilter from '../generic/SearchFilter';
 import ExchangeSelect from './ExchangeSelect';
+import SearchHeader from '../generic/SearchHeader';
 import './ApiKeys.css';
 
 class ApiKeys extends React.Component {
@@ -14,8 +14,23 @@ class ApiKeys extends React.Component {
       selectedTab: 0,
       ownedKeys: props.apiKeys.filter(k => k.owner === props.userId),
       sharedKeys: props.apiKeys.filter(k => k.owner !== props.userId),
+      filtered: [{id: 'name', value: ''}, {id: 'exchange', value: 'All'}]
     };
     this.onTabChange = this.onTabChange.bind(this);
+    this.onFilter = this.onFilter.bind(this);
+    this.onExchangeChange = this.onExchangeChange.bind(this);
+  }
+
+  onFilter(e) {
+    this.setState({filtered: [{id: 'name', value: e.target.value}]});
+  }
+
+  onExchangeChange(e) {
+    const value = e ? e.name : 'All';
+    this.setState((state) => {
+      const filtered = state.filtered.map(i => i.id === 'exchange' ? {id: 'exchange', value} : i);
+      return {filtered};
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -53,24 +68,34 @@ class ApiKeys extends React.Component {
     const { apiKeys, userId } = this.props;
     const data = this.state.selectedTab ? apiKeys.filter(k => k.owner !== userId)
       : apiKeys.filter(k => k.owner === userId);
+    const nameFilter = this.state.filtered.find(f => f.id === 'name').value;
+    const exchangeFilter = this.state.filtered.find(f => f.id === 'exchange').value;
     const columns = [
       {
-        Header: 'Key name',
-        filterable: true,
-        Filter: SearchFilter,
-        accessor: 'name',
-        className: 'table_col_value'
+        Header: SearchHeader('Key name', nameFilter, this.onFilter),
+        className: 'table_col_value',
+        accessor: 'name'
       }, {
-        Header: 'Exchange',
+        Header: ExchangeHeader(this.props.exchanges, exchangeFilter, this.onExchangeChange),
         accessor: 'exchange',
         className: 'table_col_value',
+        filterMethod: (filter, row) => {
+          if(filter.value === 'All') {
+            return true;
+          } else {
+            return filter.value = row.exchange;
+          }
+        }
       }, {
         id: '_id',
+        className: 'table_col_value',
         Header: 'Balance, BTC',
         accessor: key => key.balance ? key.balance : '0',
+        headerClassName: 'table_header'
       }, {
         Header: '',
-        Cell: row => (<button onClick={() => this.props.onKeyDeleteClick(row.original)}>Delete</button>)
+        Cell: row => (<div className="delete_key_button" onClick={() => this.props.onKeyDeleteClick(row.original)}></div>),
+        width: 30
       }
     ];
     return (
@@ -78,12 +103,29 @@ class ApiKeys extends React.Component {
         style={{height: '300px'}}
         columns={columns}
         data={data}
+        filtered={this.state.filtered}
         selectedItem={this.props.selectedApiKey}
         onItemSelected={key => this.props.onKeySelected(key)}
       />
     );
   }
 }
+
+
+const ExchangeHeader = (exchanges, value, onChange) => {
+  return () => (
+    <div>
+      <div className="table_header">Exchange</div>
+      <div className="table_filter_wrapper" onClick={e => e.stopPropagation()}>
+        <ExchangeSelect exchanges={exchanges}
+          showAllOption
+          exchange={value}
+          onChange={onChange}
+        />
+      </div>
+    </div>
+  );
+};
 
 ApiKeys.propTypes = {
   userId: PropTypes.string.isRequired,

@@ -34,3 +34,8 @@
 {
   width: 46%;
 }
+.traders_chart,
+.contracts_chart
+{
+  width: 27%;
+}

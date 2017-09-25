@@ -27,10 +27,23 @@ class SelectableReactTable extends React.Component {
         getTrProps={getTrProps}
         getTheadProps={getTheadProps}
         TbodyComponent={CustomTBodyComponent}
+        defaultFilterMethod={this.defaultFilterMethod}
         {...this.props}
       />
     );
   }
+
+  defaultFilterMethod(filter, row, column) {
+    const id = filter.pivotId || filter.id
+    const rowValue = row[id];
+    if(rowValue === undefined) {
+      return true;
+    } else {
+      return rowValue.toLowerCase().indexOf(filter.value.toLowerCase()) !== -1;
+    }
+  }
+
+
 }
 
 const CustomTBodyComponent = (props) => {

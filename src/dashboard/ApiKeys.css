@@ -27,13 +27,19 @@
 {
   font-size: 1.8em;
   text-align: left;
-  color: #bfbfc1;
+  color: #727274;
   font-family: 'maven_proregular';
   text-transform: uppercase;
   height: 22px;
-  line-height: 22px;
+  line-height: 24px;
+  padding-left: 25px;
   float: left;
   letter-spacing: 1px;
+}
+
+.api_keys_table .table_title
+{
+  background: url('../img/ApiKeysIcon.png') no-repeat left center;
 }
 
 .table_col_value
@@ -59,4 +65,17 @@
   vertical-align: middle;
   font-size: 1.2em;
   margin-right: 2px;
+}
+
+.delete_key_button
+{
+  background: url(../img/DeleteKey.png) no-repeat center center;
+  width: 17px;
+  height: 13px;
+  display: inline-block;
+  vertical-align: middle;
+  opacity: .2;
+  transition-property: opacity, background-color;
+  transition-duration: 400ms;
+  cursor: pointer;
 }

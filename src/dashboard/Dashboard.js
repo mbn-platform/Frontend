@@ -23,7 +23,7 @@ class Dashboard extends React.Component {
 
   render() {
     return (
-      <div className="dashboard_wrapper">
+      <div className="dashboard_wrapper clearfix" >
         <div className="keys_tables_wrapper table_wrapper">
           <ApiKeys
             userId={this.props.userId}
@@ -31,6 +31,7 @@ class Dashboard extends React.Component {
             selectedApiKey={this.state.selectedApiKey}
             onKeySelected={this.onKeySelected}
             onKeyDeleteClick={this.props.onKeyDeleteClick}
+            exchanges={this.props.exchanges}
           />
           <ApiKeyInfo
             apiKey={this.state.selectedApiKey}
@@ -60,8 +61,12 @@ class Dashboard extends React.Component {
         <div className="table_wrapper selected_contract_table">
           <SelectedContractInfo contract={this.state.selectedContract} />
         </div>
-        <TradersChart />
-        <ContractsChart />
+        <div className="table_wrapper traders_chart">
+          <TradersChart />
+        </div>
+        <div className="table_wrapper contracts_chart">
+          <ContractsChart />
+        </div>
       </div>
     );
   }

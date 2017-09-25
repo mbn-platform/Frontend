@@ -58,11 +58,13 @@ class AddApiKey extends React.Component {
                 placeholder="Name"
               />
             </div>
-            <ExchangeSelect
-              exchanges={this.props.exchanges}
-              onChange={this.handleExchangeChange}
-              exchange={this.state.exchange}
-            />
+            <div className="add_keys_field_wr select_wr">
+              <ExchangeSelect
+                exchanges={this.props.exchanges}
+                onChange={this.handleExchangeChange}
+                exchange={this.state.exchange}
+              />
+            </div>
             <div className="add_keys_double_field_wr clearfix">
               <input className="add_keys_field add_keys_field_key"
                 type="text"
@@ -98,6 +100,6 @@ const mapDispatchToProps = dispatch => {
 
 
 export default connect(state => ({
-  userId: state.auth.userId,
+  userId: state.auth.profile._id,
   exchanges: state.exchanges
 }), mapDispatchToProps)(AddApiKey);
