@@ -59,3 +59,9 @@
     font-size: 8px;
   }
 }
+@media only screen and (max-width : 480px) {
+  .login_content
+  {
+    padding: 0 20px;
+  }
+}
