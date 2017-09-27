@@ -1,3 +1,35 @@
-.requests_table
+.requests_table .table_title
 {
+    background: url('../img/RequestsIcon.png') no-repeat left center;
+}
+.pay_request_wrapper
+{
+  display: inline-block;
+  width: 100%;
+  max-width: 100px;
+  border: 1px solid #b8b8ba;
+  border-radius: 2px 2px 0 0;
+  border-bottom: 0;
+  box-sizing: border-box;
+  height: 20px;
+  line-height: 20px;
+  transition-property: color, background-color;
+  transition-duration: 400ms;
+}
+.pay_request_wrapper:hover
+{
+  background-color: #b8b8ba;
+}
+.pay_request_wrapper:hover .pay_request_btn_txt
+{
+  color: #1f2225;
+}
+.pay_request_btn_txt
+{
+  font-size: 1em;
+  text-transform: uppercase;
+  color: #b8b8ba;
+  text-align: center;
+  transition-property: color;
+  transition-duration: 400ms;
 }

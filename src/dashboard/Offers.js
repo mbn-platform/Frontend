@@ -11,10 +11,15 @@ class Offers extends React.PureComponent {
       selectedTab: 0
     };
     this.onTabChange = this.onTabChange.bind(this);
+    this.onOfferPayClick = this.onOfferPayClick.bind(this);
+  }
+
+  onOfferPayClick(offer) {
+    console.log('clicked paying offer');
   }
 
   componentWillReceiveProps(nextProps) {
-    if(!nextProps.selectedOffer) { 
+    if(!nextProps.selectedOffer) {
       return;
     }
     if(this.props.offers.incoming.find(o => o._id === nextProps.selectedOffer._id)
@@ -58,6 +63,7 @@ class Offers extends React.PureComponent {
         const current = Date.now();
         return formatTime(current - date.getTime());
       },
+      Cell: OfferCell(this.onOfferPayClick)
     }, {
       Header: 'Sum',
       className: 'table_col_value',
@@ -76,6 +82,27 @@ class Offers extends React.PureComponent {
   }
 
 }
+
+const OfferCell = (onPayClick) => {
+  return rowInfo => {
+    if(rowInfo.original.state === 'ACCEPTED') {
+      const onClick = e => {
+        e.stopPropagation();
+        onPayClick(rowInfo.original);
+      };
+      return (
+        <div onClick={onClick} className="pay_request_wrapper">
+          <span className="pay_request_btn_txt">pay</span>
+          <div className="hours_scale_wr">
+            <div className="hours_scale" style={{width: '60%', background: '#ffad39'}}></div>
+          </div>
+        </div>
+      );
+    } else {
+    return <div>{rowInfo.value}</div>
+    }
+  }
+};
 
 
 
