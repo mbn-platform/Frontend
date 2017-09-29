@@ -1,12 +1,15 @@
 .table_title_tabs_wr
 {
-  line-height: 1;
   color: white;
   border-radius: 4px;
   overflow: hidden;
   border: 1px solid #595b5c;
   float: right;
   margin-right: 20px;
+  height: 20px;
+  box-sizing: border-box;
+  line-height: 20px;
+  border-top: 0;
 }
 
 .table_title_tab
@@ -17,15 +20,15 @@
   font-family: 'maven_proregular';
   float: left;
   height: 20px;
-  line-height: 20px;
+  line-height: 18px;
   padding: 0 15px;
   text-align: center;
   cursor: pointer;
   transition-property: color, background;
   transition-duration: 400ms;
-  transition: color 400ms, background 400ms;
   box-sizing: border-box;
   width: 50%;
+  border-top: 1px solid #595b5c;
 }
 .table_title_tab.selected {
   background: #346255;

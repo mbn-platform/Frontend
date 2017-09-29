@@ -31,6 +31,18 @@
   vertical-align: top;
   margin-left: 2%;
 }
+.add_keys_select_value_bg
+{
+  background: url(../img/SelectArrow.png) no-repeat center right;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  float: right;
+  margin-top: 3px;
+  margin-right: 10px;
+  position: absolute;
+  right: 0;
+}
 .add_keys_field_wr.select_wr
 {
   width: 15%;
@@ -78,10 +90,10 @@
   border-radius: 3px;
   padding-left: 17px;
   text-align: left;
-  color: #505153;
+  color: #7c7c7d;
   height: 26px;
   box-sizing: border-box;
-  line-height: 26px;
+  line-height: 16px;
   font-size: 1.3em;
   background-color: inherit;
   width: 100%;

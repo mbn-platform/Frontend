@@ -19,18 +19,19 @@
 }
 .ReactTable .rt-tr > :first-child
 {
-  padding-left: 15px;
+  margin-left: 15px;
   text-align: left;
 }
 .rt-resizable-header-content
 {
   color: #e1e1e1;
-  line-height: 30px;
+  /*line-height: 30px;*/
   font-family: 'maven_pro_light300';
 }
 .ReactTable .rt-thead .rt-tr
 {
-  width: 100%
+  width: 100%;
+  padding-top: 15px;
 }
 
 .ReactTable .rt-tr {
@@ -70,7 +71,6 @@
   align-items: stretch;
   width: 100%;
   border-collapse: collapse;
-  overflow: hidden;
 }
 .ReactTable .rt-tr-group .rt-tr.-even {
   background: #232629;
@@ -96,30 +96,23 @@
 .table_header
 {
   font-size: 1.6em;
+  line-height: 1.4;
+  vertical-align: middle;
+}
+.table_header_wrapper
+{
+  display: inline-block;
+  width: 100%;
+  vertical-align: top;
+  font-family: 'maven_proregular';
+  height: 80px;
+  line-height: 1;
 }
 .table_filter_wrapper
 {
   padding: 15px 0 20px 0;
+  max-width: 150px;
 }
-
-.sort_triangle
-{
-  height: 6px;
-  width: 6px;
-  display: inline-block;
-
-}
-
-.-sort-asc .table_header:after
-{
-  content: url(../img/GreenTriangleBottom.png);
-}
-.-sort-desc .table_header:after
-{
-  content: url(../img/GreenTriangleTop.png);
-}
-
-
 
 /*.ReactTable .rt-td {*/
   /*color: #b8b8ba;*/
@@ -128,3 +121,10 @@
   /*color: #e1e1e1;*/
 /*}*/
 
+.sort_icon_wrapper
+{
+  vertical-align: middle;
+  text-align: center;
+  display: inline-block;
+  margin-left: 10px;
+}

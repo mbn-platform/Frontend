@@ -14,6 +14,15 @@
   cursor: pointer;
 }
 
+.green_arrow_bottom
+{
+  background: url(../img/GreenTriangleBottom.png) no-repeat center center
+}
+.green_arrow_top
+{
+  background: url(../img/GreenTriangleTop.png) no-repeat center center
+}
+
 .status_circle
 {
   display: inline-block;

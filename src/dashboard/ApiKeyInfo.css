@@ -59,3 +59,8 @@
   color: #c94546;
   margin-right: 20px;
 }
+
+.api_key_currencies_table .table_title
+{
+  background: url('../img/Currencies.png') no-repeat left center;
+}

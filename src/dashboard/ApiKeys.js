@@ -25,7 +25,7 @@ class ApiKeys extends React.Component {
     const value = e.target.value;
     this.setState(state => {
       const filtered = state.filtered.map(i => i.id === 'name' ? {id: 'name', value} : i);
-      return {filtered}
+      return {filtered};
     });
   }
 
@@ -93,9 +93,14 @@ class ApiKeys extends React.Component {
       }, {
         id: '_id',
         className: 'table_col_value',
-        Header: 'Balance, BTC',
+        Header: (<div className="table_header_wrapper">
+          <span className="table_header">Balance,<br/>BTC</span>
+          <div className="sort_icon_wrapper" style={{display: 'block', margin: 0}}>
+            <div className="green_arrow green_arrow_bottom" ></div>
+          </div>
+        </div>),
         accessor: key => key.balance ? key.balance : '0',
-        headerClassName: 'table_header'
+        headerClassName: 'table_header_wrapper'
       }, {
         Header: '',
         Cell: row => (<div className="delete_key_button" onClick={() => this.props.onKeyDeleteClick(row.original)}></div>),
@@ -104,7 +109,7 @@ class ApiKeys extends React.Component {
     ];
     return (
       <ReactTable
-        style={{height: '300px'}}
+        style={{height: 312}}
         columns={columns}
         data={data}
         filtered={this.state.filtered}
@@ -117,9 +122,12 @@ class ApiKeys extends React.Component {
 
 
 const ExchangeHeader = (exchanges, value, onChange) => {
-  return () => (
-    <div>
-      <div className="table_header">Exchange</div>
+  return (
+    <div className="table_header_wrapper" style={{paddingLeft: 15}}>
+      <span className="table_header">Exchange</span>
+      <div className="sort_icon_wrapper">
+        <div className="green_arrow green_arrow_bottom" ></div>
+      </div>
       <div className="table_filter_wrapper" onClick={e => e.stopPropagation()}>
         <ExchangeSelect exchanges={exchanges}
           showAllOption
