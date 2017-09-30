@@ -4,6 +4,7 @@ import SegmentedControl from '../generic/SegmentedControl';
 import ReactTable from '../generic/SelectableReactTable';
 import ExchangeSelect from './ExchangeSelect';
 import SearchHeader from '../generic/SearchHeader';
+import classNames from 'classnames';
 import './ApiKeys.css';
 
 class ApiKeys extends React.Component {
@@ -12,8 +13,6 @@ class ApiKeys extends React.Component {
     super(props);
     this.state = {
       selectedTab: 0,
-      ownedKeys: props.apiKeys.filter(k => k.owner === props.userId),
-      sharedKeys: props.apiKeys.filter(k => k.owner !== props.userId),
       filtered: [{id: 'name', value: ''}, {id: 'exchange', value: 'All'}]
     };
     this.onTabChange = this.onTabChange.bind(this);
@@ -44,12 +43,6 @@ class ApiKeys extends React.Component {
         this.setState({selectedTab: requiredTab});
       }
     }
-    if(nextProps.apiKeys !== this.props.apiKeys) {
-      this.setState({
-        ownedKeys: nextProps.apiKeys.filter(k => k.owner === nextProps.userId),
-        sharedKeys: nextProps.apiKeys.filter(k => k.owner !== nextProps.userId),
-      });
-    }
   }
 
   onTabChange(index) {
@@ -69,9 +62,8 @@ class ApiKeys extends React.Component {
   }
 
   renderContent() {
-    const { apiKeys, userId } = this.props;
-    const data = this.state.selectedTab ? apiKeys.filter(k => k.owner !== userId)
-      : apiKeys.filter(k => k.owner === userId);
+    const { apiKeys } = this.props;
+    const data = this.state.selectedTab ? apiKeys.receivedKeys : apiKeys.ownKeys;
     const nameFilter = this.state.filtered.find(f => f.id === 'name').value;
     const exchangeFilter = this.state.filtered.find(f => f.id === 'exchange').value;
     const columns = [
@@ -99,11 +91,18 @@ class ApiKeys extends React.Component {
             <div className="green_arrow green_arrow_bottom" ></div>
           </div>
         </div>),
-        accessor: key => key.balance ? key.balance : '0',
-        headerClassName: 'table_header_wrapper'
+        accessor: key => key.currencies ? key.currencies.reduce((sum, c) => sum + (c.amount || 0), 0) : 0
       }, {
         Header: '',
-        Cell: row => (<div className="delete_key_button" onClick={() => this.props.onKeyDeleteClick(row.original)}></div>),
+        Cell: row => {
+          const canDeleteKey = row.original.state === 'free';
+          const onClick = canDeleteKey ? e => {
+            e.stopPropagation();
+            this.props.onKeyDeleteClick(row.original)
+          } : null;
+          const className = classNames('delete_key_button', {can_delete_key: canDeleteKey});
+          return (<div className={className} onClick={onClick}></div>);
+        },
         width: 30
       }
     ];
@@ -143,7 +142,7 @@ ApiKeys.propTypes = {
   userId: PropTypes.string.isRequired,
   onKeySelected: PropTypes.func.isRequired,
   onKeyDeleteClick: PropTypes.func.isRequired,
-  apiKeys: PropTypes.array.isRequired,
+  apiKeys: PropTypes.object.isRequired,
   selectedKey: PropTypes.object
 };
 

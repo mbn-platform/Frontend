@@ -64,3 +64,37 @@
 {
   background: url('../img/Currencies.png') no-repeat left center;
 }
+
+.currency_status_checkbox
+{
+  vertical-align: middle;
+  width: 11px;
+  height: 11px;
+  border-radius: 11px;
+  border: 1px solid #32ba94;
+  text-align: center;
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+  background-color: inherit;
+  transition: background-color 400ms;
+}
+.currency_status_checkbox.selected
+{
+  background-color: #32ba94;
+  background-image: url(../img/StatusSelected.svg);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 9px;
+}
+.currency_status_checkbox:hover
+{
+  background-color: rgba(50, 186, 148, 0.56);
+}
+.currency_select_all
+{
+  color: #7c7c7d;
+  font-size: 1.2em;
+  height: 20px;
+  line-height: 20px;
+}

@@ -5,16 +5,22 @@ import { DELETE_API_KEY, ADD_API_KEY, UPDATE_API_KEY } from '../actions/apiKeys'
 //   {keyName: 'My Key in use', keyValue: 'Acx12312sxdf', stock: 'Some Other Stock', inUse: true, pairs: ['BTC-ETH'], owned: true, keyId: 3},
 //   {keyName: 'My Fee key', keyValue: 'Acx12312sxdf', stock: 'Some Other Stock', inUse: false, pairs: ['BTC-NEO'], owned: true, keyId: 4}
 // ];
-const KEYS = [];
+const KEYS = {ownKeys: [], receivedKeys: [], selected: null};
 
 export default function(state = KEYS, action) {
   switch(action.type) {
-    case DELETE_API_KEY:
-      return state.filter(apiKey => apiKey._id !== action.apiKey._id);
-    case ADD_API_KEY:
-      return state.concat(action.apiKey);
-    case UPDATE_API_KEY:
-      return state.map(apiKey => apiKey._id === action.apiKey._id ? action.apiKey : apiKey);
+    case DELETE_API_KEY: {
+      const ownKeys = state.ownKeys.filter(apiKey => apiKey._id !== action.apiKey._id);
+      return {...state, ownKeys};
+    }
+    case ADD_API_KEY: {
+      const ownKeys = state.ownKeys.concat(action.apiKey);
+      return {...state, ownKeys};
+    }
+    case UPDATE_API_KEY: {
+      const ownKeys = state.ownKeys.map(apiKey => apiKey._id === action.apiKey._id ? action.apiKey : apiKey);
+      return {...state, ownKeys};
+    }
     default:
       return state;
   }

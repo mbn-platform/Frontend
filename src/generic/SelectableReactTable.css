@@ -128,3 +128,53 @@
   display: inline-block;
   margin-left: 10px;
 }
+.table_header_help_wrapper
+{
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  background: url(../img/HelpIcon.png) no-repeat center center;
+  display: inline-block;
+  vertical-align: middle;
+  cursor: pointer;
+  margin-left: 5px;
+  overflow: hidden;
+}
+.table_header_help_wrapper:hover
+{
+  overflow: visible;
+}
+.table_header_help_text
+{
+  position: absolute;
+  height: 0;
+  top: -5px;
+  right: 15px;
+  transition-property: height;
+  transition-duration: 400ms;
+  color: #bdbdbd;
+  font-size: 1.2em;
+  text-align: left;
+  width: 100px;
+  left: -142px;
+  top: -8px;
+}
+.table_header_help_text:after
+{
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 17px;
+  right: -12px;
+  top: 5px;
+  background: url(../img/HelpLeftTriangle.png) no-repeat center center;
+}
+.table_header_help_wrapper:hover .table_header_help_text
+{
+  height: auto;
+  line-height: 1.4;
+  background: #2d3034;
+  border: 1px solid #494d4d;
+  padding: 10px;
+  z-index: 2;
+}

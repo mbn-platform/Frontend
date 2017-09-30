@@ -21,6 +21,17 @@ class Dashboard extends React.Component {
     this.props.onDashboardMounted();
   }
 
+
+  componentWillReceiveProps(nextProps) {
+    if(this.props.apiKeys !== nextProps.apiKeys) {
+      if(this.state.selectedApiKey) {
+        const key = nextProps.apiKeys.ownKeys.find(k => k._id === this.state.selectedApiKey._id) ||
+          nextProps.apiKeys.receivedKeys.find(k => k._id === this.state.selectedApiKey._id);
+        this.setState({selectedApiKey: key});
+      }
+    }
+  }
+
   render() {
     return (
       <div className="dashboard_wrapper clearfix" >

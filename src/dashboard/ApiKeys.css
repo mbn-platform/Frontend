@@ -79,3 +79,7 @@
   transition-duration: 400ms;
   cursor: pointer;
 }
+.can_delete_key
+{
+  opacity: .4;
+}

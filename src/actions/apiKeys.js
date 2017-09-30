@@ -36,12 +36,10 @@ export function addApiKey(key) {
       body: JSON.stringify(key)
     }).then(res => res.json())
       .then(json => {
-        if(json.keyId) {
-          key._id = json.keyId;
-          delete key.value;
+        if(json._id) {
           dispatch({
             type: ADD_API_KEY,
-            apiKey: key
+            apiKey: json
           });
         }
       });
@@ -59,9 +57,10 @@ export function updateApiKey(key) {
       body: JSON.stringify(key)
     }).then(res => res.json())
       .then(json => {
+        console.log(json);
         dispatch({
           type: UPDATE_API_KEY,
-          apiKey: key
+          apiKey: json
         });
       });
   };
