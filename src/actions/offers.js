@@ -3,6 +3,7 @@ import { apiPost, apiDelete } from '../generic/apiCall';
 export const ACCEPT_OFFER = 'ACCEPT_OFFER';
 export const REJECT_OFFER = 'REJECT_OFFER';
 export const CANCEL_OFFER = 'CANCEL_OFFER';
+export const SEND_OFFER = 'SEND_OFFER';
 
 
 export function acceptOffer(offer) {
@@ -40,6 +41,20 @@ export function rejectOffer(offer) {
         if(json.offerId) {
           dispatch({
             type: REJECT_OFFER,
+            offer
+          });
+        }
+      });
+  };
+}
+
+export function sendOffer(offer) {
+  return dispatch => {
+    apiPost('/api/offer', null, dispatch)
+      .then(json => {
+        if(json.offerId) {
+          dispatch({
+            type: SEND_OFFER,
             offer
           });
         }

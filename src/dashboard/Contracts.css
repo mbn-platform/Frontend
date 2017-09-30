@@ -14,11 +14,11 @@
   cursor: pointer;
 }
 
-.green_arrow_bottom
+.-sort-asc .green_arrow
 {
   background: url(../img/GreenTriangleBottom.png) no-repeat center center
 }
-.green_arrow_top
+.-sort-desc .green_arrow
 {
   background: url(../img/GreenTriangleTop.png) no-repeat center center
 }

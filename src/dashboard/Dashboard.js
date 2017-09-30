@@ -30,6 +30,13 @@ class Dashboard extends React.Component {
         this.setState({selectedApiKey: key});
       }
     }
+    if(this.props.offers !== nextProps.offers) {
+      if(this.state.selectedOffer) {
+        const offer = nextProps.offers.incoming.find(o => o._id === this.state.selectedOffer._id) ||
+          nextProps.offers.outgoing.find(o => o._id === this.state.selectedOffer._id);
+        this.setState({selectedOffer: offer});
+      }
+    }
   }
 
   render() {
@@ -94,7 +101,8 @@ class Dashboard extends React.Component {
 
   onOfferSelected(offer) {
     if(this.state.selectedOffer !== offer) {
-      const key = this.props.apiKeys.find(k => k._id === offer.keyId);
+      const key = this.props.apiKeys.ownKeys.find(k => k._id === offer.keyId) ||
+        this.props.apiKeys.receivedKeys.find(k => k._id === offer.keyId);
       this.setState({
         selectedOffer: offer,
         selectedApiKey: key,
@@ -105,7 +113,8 @@ class Dashboard extends React.Component {
 
   onContractSelected(contract) {
     if(this.state.selectedContract !== contract) {
-      const key = this.props.apiKeys.find(k => k._id === contract.apiKey);
+      const key = this.props.apiKeys.ownKeys.find(k => k._id === contract.keyId) ||
+        this.props.apiKeys.receivedKeys.find(k => k._id === contract.keyId);
       this.setState({
         selectedContract: contract,
         selectedApiKey: key,
