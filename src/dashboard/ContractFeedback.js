@@ -8,7 +8,7 @@ const ContractFeedback = ({contract}) => {
   return (
     <div className="table">
       <div className="table_title_wrapper clearfix">
-        <div className="table_title">Rate the contract</div>
+        <div className="table_title center">Rate the contract</div>
       </div>
       {contract.comment ? (<LeftComment {...contract.comment} />) : (<LeaveComment />)}
     </div>

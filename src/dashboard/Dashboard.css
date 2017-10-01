@@ -67,3 +67,11 @@
   width: 100%;
   height: 205px;
 }
+.amChartsLegend
+{
+  letter-spacing: 1px;
+}
+.amcharts-chart-div > a
+{
+  color: white !important;
+}
