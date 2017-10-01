@@ -12,6 +12,7 @@
   display: inline-block;
   vertical-align: middle;
   cursor: pointer;
+  background: url(../img/GreenTriangleTopGray.png) no-repeat center center
 }
 
 .-sort-asc .green_arrow

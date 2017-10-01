@@ -98,12 +98,12 @@ class Offers extends React.Component {
 
   renderContent() {
     const columns = [{
-      Header: 'From',
+      Header: SortHeader('From'),
       accessor: 'from',
       className: 'table_col_value'
     }, {
       id: '_id',
-      Header: 'Time',
+      Header: SortHeader('Time'),
       className: 'table_col_value',
       accessor: offer => {
         const date = new Date(offer.date);
@@ -112,7 +112,7 @@ class Offers extends React.Component {
       },
       Cell: OfferCell(this.onOfferPayClick)
     }, {
-      Header: 'Sum',
+      Header: SortHeader('Sum'),
       className: 'table_col_value',
       accessor: 'amount'
     }];
@@ -130,6 +130,15 @@ class Offers extends React.Component {
   }
 
 }
+
+const SortHeader = header => (
+  <div className="table_header_wrapper" style={{height: 30}}>
+    <span className="table_header">{header}</span>
+    <div className="sort_icon_wrapper">
+      <div className="green_arrow"></div>
+    </div>
+  </div>
+);
 
 const OfferCell = (onPayClick) => {
   return rowInfo => {

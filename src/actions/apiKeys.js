@@ -57,7 +57,7 @@ export function updateApiKey(key) {
       body: JSON.stringify(key)
     }).then(res => res.json())
       .then(json => {
-        console.log(json);
+        json._id = key._id;
         dispatch({
           type: UPDATE_API_KEY,
           apiKey: json
