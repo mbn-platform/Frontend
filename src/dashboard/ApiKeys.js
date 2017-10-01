@@ -98,7 +98,7 @@ class ApiKeys extends React.Component {
           const canDeleteKey = row.original.state === 'FREE';
           const onClick = canDeleteKey ? e => {
             e.stopPropagation();
-            this.props.onKeyDeleteClick(row.original)
+            this.props.onKeyDeleteClick(row.original);
           } : null;
           const className = classNames('delete_key_button', {can_delete_key: canDeleteKey});
           return (<div className={className} onClick={onClick}></div>);

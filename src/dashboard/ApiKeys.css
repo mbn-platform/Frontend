@@ -51,6 +51,12 @@
 }
 .table_col_value_a
 {
+  display: inline-block;
+  max-width: 80%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  vertical-align: middle;
+  line-height: 1;
   color: #b8b8ba;
   text-transform: uppercase;
 }
@@ -59,13 +65,13 @@
 {
   color: #e1e1e1;
 }
-.table_col_value_a:before {
-  content: "@";
-  display: inline-block;
-  vertical-align: middle;
-  font-size: 1.2em;
-  margin-right: 2px;
-}
+/*.table_col_value_a:before {*/
+  /*content: "@";*/
+  /*display: inline-block;*/
+  /*vertical-align: middle;*/
+  /*font-size: 1.2em;*/
+  /*margin-right: 2px;*/
+/*}*/
 
 .delete_key_button
 {

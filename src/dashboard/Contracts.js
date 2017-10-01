@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import SegmentedControl from '../generic/SegmentedControl';
 import ReactTable from '../generic/SelectableReactTable';
-import SearchFilter from '../generic/SearchFilter';
+import SearchHeader from '../generic/SearchHeader';
 import HeaderWithHelp from '../generic/HeaderWithHelp';
 import './Contracts.css';
 
@@ -68,54 +68,112 @@ class Contracts extends React.Component {
 
   getTableColumns() {
     return [{
-      Header: 'Contractor',
-      filterable: true,
-      className: 'table_col_value',
-      Filter: SearchFilter,
+      Header: SearchHeader('Contractor', '', () => {}),
+      headerClassName: 'big_column',
+      className: 'big_column table_col_value',
       accessor: 'contractor',
-      Cell: row => (<Link className="table_col_value_a" to={'/' + row.value}>{row.value}</Link>),
+      Cell: row => (<div>@<Link className="table_col_value_a" to={'/' + row.value}>{row.value}</Link></div>),
     }, {
-      Header: 'Expire date',
+      Header: ContractTableHeader('Expire date'),
+      headerClassName: 'big_column',
+      className: 'table_col_value big_column',
     }, {
-      Header: 'Current profit, %',
+      Header: ContractTableHeader('Current\nprofit, %'),
       className: 'table_col_value',
       accessor: 'currentProfit',
       Cell: NegativeValuesCell
     }, {
-      Header: 'Max loss, %',
+      Header: ContractTableHeader('Max\nloss, %'),
       className: 'table_col_value',
       accessor: 'maxLoss',
     }, {
       id: 'startBalance',
       className: 'table_col_value',
-      Header: 'Start balance',
+      Header: ContractTableHeader('Start\nbalance, %'),
       accessor: c => c.startBalance + ' ' + c.currency,
     }, {
       id: 'currentBalance',
       className: 'table_col_value',
-      Header: 'Current balance',
+      Header: ContractTableHeader('Current\nbalance, %'),
       accessor: c => c.currentBalance + ' ' + c.currency,
     }, {
       id: 'left',
-      Header: 'Left',
+      Header: ContractTableHeader('Left'),
       className: 'table_col_value',
       accessor: c => c.left + ' ' + c.currency,
     }, {
-      Header: 'Fee, %',
+      Header: ContractTableHeader('Fee, %'),
       className: 'table_col_value',
       accessor: 'fee'
     },{
-      Header: HeaderWithHelp('TX'),
-      Cell: TXCell
+      Header: <TXHeader />,
+      Cell: TXCell,
+      sortable: false,
+      minWidth: 80,
+      headerClassName: 'small_column',
+      className: 'small_column'
     }, {
-      Header: HeaderWithHelp('Status'),
+      Header: HelpHeader('Status'),
       accessor: 'status',
-      Cell: StatusCell
+      Cell: StatusCell,
+      headerClassName: 'small_column',
+      minWidth: 80,
+      className: 'small_column'
     }];
 
   }
 }
 
+const HelpHeader = header => {
+  return (
+    <div className="table_header_wrapper contract_header_wrapper">
+      <div className="table_header">{header}</div>
+      <ContractStatusHelp />
+      <div className="sort_icon_wrapper">
+        <div className="green_arrow"></div>
+      </div>
+    </div>
+  );
+};
+
+const ContractStatusHelp = () => (
+  <div className="table_header_help_wrapper" style={{paddingTop: 22}}>
+    <div className="table_header_help_text">
+      <div className="status_description_wr">
+        <div className="status_desc_item">
+          <div className="status_desc_item_cyrcle green"></div>
+          <div className="status_desc_item_text">completed</div>
+        </div>
+        <div className="status_desc_item">
+          <div className="status_desc_item_cyrcle yellow"></div>
+          <div className="status_desc_item_text">in progress</div>
+        </div>
+        <div className="status_desc_item">
+          <div className="status_desc_item_cyrcle red"></div>
+          <div className="status_desc_item_text">failed</div>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+const TXHeader = () => (
+  <div className="table_header_wrapper contract_header_wrapper">
+    <div className="table_header">TX</div>
+    <div className="table_header_help_wrapper" style={{paddingTop: 22}}>
+      <div className="table_header_help_text">This is a link on etherscan.io which contains all details of your contract.</div>
+    </div>
+  </div>
+);
+
+const ContractTableHeader = header => (
+  <div className="table_header_wrapper contract_header_wrapper">
+    <div className="table_header">{header}</div>
+    <div className="sort_icon_wrapper">
+      <div className="green_arrow"></div>
+    </div>
+  </div>
+);
 const NegativeValuesCell = row => (
   <div className={parseFloat(row.value) < 0 ? 'table_value_red' : ''}>{row.value}</div>
 );
