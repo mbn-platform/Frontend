@@ -84,7 +84,7 @@ class AddApiKey extends React.Component {
               />
             </div>
             <div className="keys_submit_wrapper">
-              <input className="keys_submit" type="submit" value=""/>
+              <input className="keys_submit" type="submit" value="Add key"/>
             </div>
           </div>
         </form>

@@ -1,0 +1,149 @@
+@media only screen and (max-width : 1400px) {
+  .keys_tables_wrapper,
+  .requests_table_wrapper,
+  .selected_contract_table
+  {
+    width: 100%;
+  }
+  .contracts_chart, .traders_chart
+  {
+    width: 49%;
+  }
+  .traders_chart
+  {
+    margin-right: 1%;
+  }
+
+  .contracts_chart
+  {
+    margin-left: 1%;
+  }
+
+}
+@media only screen and (max-width : 768px) {
+  .dashboard_wrapper
+  {
+    padding: 10px;
+  }
+}
+
+
+@media only screen and (max-width : 992px) {
+  .keys_tables_wrapper .api_keys_table,
+  .keys_tables_wrapper .api_key_currencies_table
+  {
+    width: 100% !important;
+    border-radius: 4px;
+  }
+
+
+  .keys_tables_wrapper .api_keys_table.table
+  {
+    border-right: 1px solid #494d4d;
+    margin-bottom: 30px;
+  }
+
+  .traders_chart
+  {
+    margin-right: 0;
+  }
+  .contracts_chart
+  {
+    margin-left: 0;
+  }
+
+}
+
+@media only screen and (max-width : 992px) {
+  .send_rate_btn_wr
+  {
+    width: 100%;
+    text-align: center;
+    padding-right: 0;
+    margin-bottom: 10px;
+  }
+  .rate_scale_wrapper.rate_scale_form
+  {
+    float: left;
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  .rate_scale_form .rating_bar
+  {
+    float: none;
+  }
+  .table_wrapper
+  {
+    width: 100% !important;
+  }
+  .dashboard_wrapper
+  {
+    padding: 10px;
+  }
+}
+@media only screen and (max-width : 768px) {
+  .dashboard_wrapper
+  {
+    padding: 5px;
+  }
+}
+@media only screen and (max-width : 768px) {
+  .table_wrapper
+  {
+    padding: 15px 0;
+  }
+  .add_keys_form_wrapper
+  {
+    height: auto;
+  }
+  .add_keys_str
+  {
+    padding-top: 15px;
+    margin-right: 15px;
+    float: none;
+    line-height: 11.5px;
+  }
+  .add_keys_str > div
+  {
+    width: 100% !important;
+  }
+  .add_keys_field_wr.select_wr
+  {
+    margin: 0;
+  }
+  .add_keys_double_field_wr
+  {
+    margin-left: 0;
+  }
+  .add_keys_double_field_wr .add_keys_field
+  {
+    width: 50%;
+  }
+  .add_keys_field_wr,
+  .add_keys_field_wr.select_wr,
+  .add_keys_double_field_wr
+  {
+    height: 30px;
+    line-height: 1;
+    vertical-align: top;
+    margin-bottom: 10px;
+  }
+  .keys_submit_wrapper
+  {
+    text-align: center;
+    background: none;
+    border: none;
+    padding-bottom: 15px;
+  }
+  .keys_submit
+  {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    border: 1px solid #44464a;
+    background-image: none;
+    font-size: 1.6em;
+    color: #7c7c7d;
+    max-width: 200px;
+  }
+}

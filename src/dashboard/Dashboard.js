@@ -1,4 +1,5 @@
 import React from 'react';
+import './Dashboard.css';
 import ApiKeys from './ApiKeys';
 import AddApiKey from './AddApiKey';
 import ApiKeyInfo from './ApiKeyInfo';
@@ -7,7 +8,7 @@ import Offers from './Offers';
 import SelectedContractInfo from './SelectedContractInfo';
 import TradersChart from './TradersChart';
 import ContractsChart from './ContractsChart';
-import './Dashboard.css';
+import './Dashboard.adaptive.css';
 
 class Dashboard extends React.Component {
   constructor(props) {

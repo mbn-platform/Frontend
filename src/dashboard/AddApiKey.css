@@ -100,7 +100,6 @@
   vertical-align: middle;
   transition-property: color, border-color;
   transition-duration: 400ms;
-  -webkit-transition: color 400ms, border-color 400ms;
 }
 .add_keys_field::-webkit-input-placeholder {color:#505153;}
 .add_keys_field::-moz-placeholder          {color:#505153;}/* Firefox 19+ */
@@ -203,7 +202,7 @@
   display: inline-block;
   text-align: center;
   vertical-align: top;
-  font-size: 4em;
+  font-size: 0em;
   color: #7c7c7d;
   padding: 0;
   transition-property: color, background-color;

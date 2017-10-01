@@ -1,11 +1,11 @@
-.api_keys_table
+.keys_tables_wrapper .api_keys_table.table
 {
-  width: 55% !important;
+  width: 55%;
   float: left;
-  border-right: 0 !important;
-  border-top-right-radius: 0 !important;
-  border-bottom-right-radius: 0 !important;
-  border-bottom-left-radius: 0 !important;
+  border-right: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
 .table_title_wrapper
