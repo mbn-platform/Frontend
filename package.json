@@ -5,13 +5,13 @@
   "dependencies": {
     "amcharts3": "github:amcharts/amcharts3",
     "classnames": "^2.2.5",
-    "react": "^15.6.1",
+    "react": "^15.6.2",
     "react-custom-scrollbars": "^4.1.2",
-    "react-dom": "^15.6.1",
+    "react-dom": "^15.6.2",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
-    "react-scripts": "^1.0.13",
-    "react-table": "^6.5.3",
+    "react-scripts": "^1.0.14",
+    "react-table": "^6.6.0",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0"
   },
