@@ -9,6 +9,7 @@ import { Col } from 'reactstrap';
 const MainContent = ({ loggedIn, profile }) => (
   <Col xs="12" md>
     <Switch>
+      <Redirect from="/login" to="/dashboard" />
       <LoginRoute exact path="/login" loggedIn={loggedIn} />
       <ProtectedRoute exact path="/dashboard" component={Dashboard} loggedIn={loggedIn} />
       <Redirect exact from="/profile" to={profile ? `/${profile.name}` : '/login'} />
@@ -28,11 +29,7 @@ const LoginRoute = ({ loggedIn, ...props }) => {
 };
 
 const ProtectedRoute = ({ component, loggedIn, ...props }) => {
-  if(!loggedIn) {
-    return (<Redirect to="/login" />);
-  } else {
-    return (<Route {...props} component={component} />);
-  }
+  return (<Route {...props} component={component} />);
 };
 
 export default MainContent;

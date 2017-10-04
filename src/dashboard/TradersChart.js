@@ -4,9 +4,27 @@ import PieChart from 'amcharts3/amcharts/pie';
 
 class TradersChart extends React.Component {
 
+
+  constructor(props) {
+    super(props);
+    this.state = {data: this.formatData(this.props.contracts)};
+  }
+
+  formatData(contracts) {
+    return contracts.filter(c => c.status === 'completed' && c.currentBalance - c.startBalance > 0)
+      .sort((c1, c2) => c1.currentBalance - c1.startBalance < c2.currentBalance - c2.startBalance)
+      .map(c => ({category: c.contractor, 'column-1': c.currentBalance - c.startBalance}));
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({data: this.formatData(nextProps.contracts)});
+    if(this.chart) {
+      this.chart.dataProvider = this.data;
+    }
+  }
+
   componentDidMount() {
-    console.log(window.AmCharts);
-    const chart = window.AmCharts.makeChart('traders_chart',
+    this.chart = window.AmCharts.makeChart('traders_chart',
       {
         'type': 'pie',
         'fontFamily': 'maven_probold',
@@ -18,14 +36,6 @@ class TradersChart extends React.Component {
           '#ce802c',
           '#c5c5c5',
           '#465666'
-        ],
-        'gradientRatio': [
-          -0.6,
-          -0.6,
-          -0.6,
-          -0.6,
-          0,
-          0
         ],
         'balloonText': '[[title]]<br><span style=\'font-size:14px\'><b>[[value]]</b> ([[percents]]%)</span>',
         'innerRadius': '70%',
@@ -50,25 +60,11 @@ class TradersChart extends React.Component {
           'useMarkerColorForLabels': true,
           'useMarkerColorForValues': true,
           'valueWidth': 200
-         
         },
         'titles': [],
-        'dataProvider': [
-          {
-            'category': 'SATOSHI_FUNDBLUE',
-            'column-1': 8
-          },
-          {
-            'category': 'category 2',
-            'column-1': 6
-          },
-          {
-            'category': 'category 3',
-            'column-1': 2
-          }
-        ]
+        'dataProvider': this.state.data
       }
-    );  
+    );
   }
 
   render() {
@@ -78,7 +74,7 @@ class TradersChart extends React.Component {
           <div className="table_title center">Profit as trader</div>
         </div>
         <div className="chart_title_total">
-          <span className="chart_title_total_span">Total:</span> 1.456 btc ~ 24 865 usd
+          <span className="chart_title_total_span">Total:</span> {this.state.data.reduce((sum, entry) => sum + entry['column-1'], 0)} BTC
         </div>
         <div id="traders_chart" style={{width: '100%', height: 205}}>
         </div>

@@ -76,14 +76,19 @@ class Contracts extends React.Component {
       Cell: row => (<div>@<Link className="table_col_value_a" to={'/' + row.value}>{row.value}</Link></div>),
     }, {
       Header: ContractTableHeader('Expire date'),
+      id: 'expireDate',
+      accessor: c => {
+        return formatTime(c.expireDate - Date.now());
+      },
       headerClassName: 'big_column',
       className: 'table_col_value big_column',
       // minWidth: 88,
     }, {
       Header: ContractTableHeader('Current\nprofit, %'),
+      id: 'currentProfit',
       className: 'table_col_value',
       accessor: 'currentProfit',
-      // minWidth: 75,
+      accessor: c => ((c.currentBalance / c.startBalance - 1) * 100).toFixed(2),
       Cell: NegativeValuesCell
     }, {
       Header: ContractTableHeader('Max\nloss, %'),
@@ -187,7 +192,7 @@ const NegativeValuesCell = row => (
 );
 
 const TXCell = ({original}) => (
-  <Link className="tx_link" to={original.txLink || '/'} />
+  <Link className="tx_link" to={original.txLink || 'https://etherscan.io'} />
 );
 
 const StatusCell = ({value}) => {
@@ -211,3 +216,8 @@ const StatusCell = ({value}) => {
 };
 
 export default Contracts;
+function formatTime(difference){
+  const hours = Math.floor(difference / 1000 / 3600);
+  const minutes = Math.floor(difference / 1000 % 3600 / 60);
+  return `${hours} h ${minutes} m`;
+}

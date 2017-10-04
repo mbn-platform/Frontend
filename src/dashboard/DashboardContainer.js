@@ -25,7 +25,7 @@ const mapDispatchToProps = dispatch => {
         dispatch(deleteApiKey(apiKey));
       }
     },
-    onKeyUpdateClick: apiKey => dispatch(updateApiKey(apiKey)),
+    onKeyUpdateClick: (apiKey, original) => dispatch(updateApiKey(apiKey, original)),
     onDashboardMounted: () => {
       dispatch(fetchDashboardData());
       dispatch(updateExchagnes());

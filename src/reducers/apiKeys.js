@@ -6,6 +6,7 @@ import { combineReducers } from 'redux';
 const KEYS = {ownKeys: [], receivedKeys: []};
 
 function ownKeys(keys = [], action) {
+  console.log(action);
   switch(action.type) {
     case DELETE_API_KEY:
       return keys.filter(k => k._id !== action.apiKey._id);
@@ -14,8 +15,6 @@ function ownKeys(keys = [], action) {
         action.apiKey : k);
     case ADD_API_KEY:
       return keys.concat(action.apiKey);
-    case UPDATE_DASHBOARD:
-      return action.data.keys.ownKeys;
     case CANCEL_OFFER:
       return keys.map(k => k._id === action.offer.keyId ? {...k, state: 'FREE'} : k);
     case SEND_OFFER:
@@ -27,8 +26,6 @@ function ownKeys(keys = [], action) {
 
 function receivedKeys(keys = [], action) {
   switch(action.type) {
-    case UPDATE_DASHBOARD:
-      return action.data.keys.receivedKeys;
     case REJECT_OFFER:
       return keys.filter(k => k._id !== action.offer.keyId);
     default:

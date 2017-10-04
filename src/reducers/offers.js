@@ -8,8 +8,6 @@ function incoming(state = [], action) {
       return state.filter(o => o._id !== action.offer._id);
     case ACCEPT_OFFER:
       return state.map(o => o._id === action.offer._id ? {...o, state: 'ACCEPTED'} : o);
-    case UPDATE_DASHBOARD:
-      return action.data.offers.incoming;
     default:
       return state;
   }
@@ -19,8 +17,6 @@ function outgoing(state = [], action) {
   switch(action.type) {
     case CANCEL_OFFER:
       return state.filter(offer => offer._id !== action.offer._id);
-    case UPDATE_DASHBOARD:
-      return action.data.offers.outgoing;
     case SEND_OFFER:
       return state.concat(action.offer);
     default:
