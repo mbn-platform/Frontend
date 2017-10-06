@@ -48,6 +48,11 @@
   height: 100%;
   width: 100%;
 }
+.demo_button_wr
+{
+  padding-top: 40px;
+  clear: both;
+}
 @media only screen and (max-width : 1400px) {
   .login_content
   {

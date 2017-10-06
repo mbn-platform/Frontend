@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import './Navigation.css';
 import Logo from './img/MainLogo.png';
 const pages = [
@@ -20,6 +20,9 @@ const Navigation = () => (
     <div className="left_col_menu_wrapper">
       <ul className="left_col_menu_ul">
         {renderLinks()}
+        <li key="demo" className={`left_col_menu_li left_col_menu_li_5`}>
+          <a className="left_col_menu_a" href="http://demo.mercatus.im">Demo</a>
+        </li>
       </ul>
     </div>
   </div>

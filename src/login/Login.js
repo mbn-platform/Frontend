@@ -36,6 +36,11 @@ class Login extends React.Component {
     }
   }
 
+  onDemoClick() {
+    console.log(' on demo click')
+    window.location = 'http://demo.mercatus.im';
+  }
+
   renderStep() {
     if(!window.web3) {
       return (<NoMetamask />);
@@ -58,6 +63,9 @@ class Login extends React.Component {
               <div className="login_title_text">(Alpha)</div>
             </div>
             {this.renderStep()}
+            <div className="demo_button_wr">
+              <button onClick={this.onDemoClick} className="login_step_login_submit">DEMO</button>
+            </div>
           </div>
         </div>
       </div>
