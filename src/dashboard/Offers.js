@@ -117,7 +117,7 @@ class Offers extends React.Component {
       accessor: 'amount'
     }];
     const data = this.state.selectedTab ? this.props.offers.outgoing : this.props.offers.incoming;
-    const style={height: 352};
+    const style={height: 364};
     return (
       <ReactTable
         style={style}
@@ -125,6 +125,7 @@ class Offers extends React.Component {
         columns={columns}
         selectedItem={this.props.selectedOffer}
         onItemSelected={this.props.onOfferSelected}
+        scrollBarHeight={319}
       />
     );
   }

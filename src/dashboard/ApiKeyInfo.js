@@ -110,6 +110,8 @@ class ApiKeyInfo extends React.Component {
       }
     ];
 
+    const scrollBarHeight = this.state.changed ? 217 - 44 : 217;
+
     return (
       <div className="api_key_currencies_table table">
         <div className="table_title_wrapper clearfix">
@@ -121,6 +123,7 @@ class ApiKeyInfo extends React.Component {
           columns={columns}
           filtered={this.state.filtered}
           onItemSelected={() => {}}
+          scrollBarHeight={scrollBarHeight}
         />
         {this.state.changed ? (
           <div className="table_requests_control_wr clearfix">

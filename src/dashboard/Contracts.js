@@ -44,11 +44,12 @@ class Contracts extends React.Component {
 
     return (
       <ReactTable
-        style={{height: '352px'}}
+        style={{height: 352}}
         columns={this.getTableColumns()}
         data={data}
         selectedItem={this.props.selectedContract}
         onItemSelected={this.props.onContractSelected}
+        scrollBarHeight={257}
       />
     );
   }

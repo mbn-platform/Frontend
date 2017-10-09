@@ -2,6 +2,7 @@ import React from 'react';
 import ReactTable, { ReactTableDefaults } from 'react-table';
 //import 'react-table/react-table.css';
 import './SelectableReactTable.css';
+import Scrollbars from 'react-custom-scrollbars';
 
 class SelectableReactTable extends React.Component {
   render() {
@@ -18,15 +19,22 @@ class SelectableReactTable extends React.Component {
         }
       };
     };
+
+    const getTbodyProps = (state, rowInfo, column, instance) => {
+      return {scrollBarHeight: instance.props.scrollBarHeight};
+    };
     return (
       <ReactTable
         noDataText=''
         resizable={false}
         showPagination={false}
         minRows={0}
+        defaultPageSize={9999}
         getTrProps={getTrProps}
         getTheadProps={getTheadProps}
+        getTbodyProps={getTbodyProps}
         TbodyComponent={CustomTBodyComponent}
+        scrollBarHeight={200}
         defaultFilterMethod={this.defaultFilterMethod}
         {...this.props}
       />
@@ -34,7 +42,7 @@ class SelectableReactTable extends React.Component {
   }
 
   defaultFilterMethod(filter, row, column) {
-    const id = filter.pivotId || filter.id
+    const id = filter.pivotId || filter.id;
     const rowValue = row[id];
     if(rowValue === undefined) {
       return true;
@@ -48,10 +56,13 @@ class SelectableReactTable extends React.Component {
 
 const CustomTBodyComponent = (props) => {
   const { TbodyComponent } = ReactTableDefaults;
+  let {scrollBarHeight, ...rest} = props;
   return (
-    <TbodyComponent {...props} />
+    <Scrollbars style={{height: scrollBarHeight }}>
+      <TbodyComponent {...rest} />
+    </Scrollbars>
   );
 
-}
+};
 
 export default SelectableReactTable;

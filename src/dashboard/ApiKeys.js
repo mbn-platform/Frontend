@@ -114,6 +114,7 @@ class ApiKeys extends React.Component {
         filtered={this.state.filtered}
         selectedItem={this.props.selectedApiKey}
         onItemSelected={key => this.props.onKeySelected(key)}
+        scrollBarHeight={217}
       />
     );
   }
