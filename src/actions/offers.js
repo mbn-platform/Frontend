@@ -50,12 +50,12 @@ export function rejectOffer(offer) {
 
 export function sendOffer(offer) {
   return dispatch => {
-    apiPost('/api/offer', null, dispatch)
+    apiPost('/api/offer', {body: JSON.stringify(offer)}, dispatch)
       .then(json => {
-        if(json.offerId) {
+        if(json._id) {
           dispatch({
             type: SEND_OFFER,
-            offer
+            offer: json
           });
         }
       });
