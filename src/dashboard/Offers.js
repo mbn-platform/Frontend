@@ -8,7 +8,8 @@ class Offers extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedTab: 0
+      selectedTab: 0,
+      selectedOfferTab: 0
     };
     this.onTabChange = this.onTabChange.bind(this);
     this.onOfferPayClick = this.onOfferPayClick.bind(this);
@@ -22,13 +23,10 @@ class Offers extends React.Component {
     if(!nextProps.selectedOffer) {
       return;
     }
-    if(this.props.offers.incoming.find(o => o._id === nextProps.selectedOffer._id)
-      && this.state.selectedTab !== 0) {
-
-      this.setState({selectedTab: 0});
-    } else if(this.props.offers.outgoing.find(o => o._id === nextProps.selectedOffer._id) &&
-      this.state.selectedTab !== 1) {
-      this.setState({selectedTab: 1});
+    if(this.props.offers.incoming.find(o => o._id === nextProps.selectedOffer._id)) {
+      this.setState({selectedTab: 0, selectedOfferTab: 0});
+    } else if(this.props.offers.outgoing.find(o => o._id === nextProps.selectedOffer._id)) {
+      this.setState({selectedTab: 1, selectedOfferTab: 1});
     }
   }
 
@@ -55,8 +53,11 @@ class Offers extends React.Component {
   }
 
   renderForm() {
-    if(this.props.selectedOffer) {
+    if(this.props.selectedOffer && this.state.selectedTab === this.state.selectedOfferTab) {
       if(this.state.selectedTab === 0) {
+        if(this.props.selectedOffer.state !== 'INIT') {
+          return null;
+        };
         const onAcceptClick = e => {
           e.preventDefault();
           this.props.onOfferAccepted(this.props.selectedOffer);
@@ -99,7 +100,8 @@ class Offers extends React.Component {
   renderContent() {
     const columns = [{
       Header: SortHeader('From'),
-      accessor: 'from',
+      id: 'name',
+      accessor: o => o.fromUser ? o.fromUser[0].name : '',
       className: 'table_col_value'
     }, {
       id: '_id',
