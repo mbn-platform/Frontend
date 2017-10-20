@@ -4,6 +4,7 @@ import store from './store';
 import { Provider } from 'react-redux';
 import MainContent from './MainContentContainer';
 import Navigation from './Navigation';
+import { fetchTime } from './actions/time';
 import './App.css';
 
 
@@ -21,7 +22,16 @@ class App extends React.Component {
       }
       this.setState({loading: false});
     });
+    store.dispatch(fetchTime());
+    this.timeInterval = setInterval(() => {
+      store.dispatch(fetchTime());
+    }, 10000);
   }
+
+  componentWillUnmount() {
+    clearInterval(this.timeInterval);
+  }
+
   render() {
     return (
       <Provider store={store}>
