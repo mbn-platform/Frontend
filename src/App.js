@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import MainContent from './MainContentContainer';
 import Navigation from './Navigation';
 import { fetchTime } from './actions/time';
+import { Container, Row } from 'reactstrap';
 import './App.css';
 
 
@@ -44,13 +45,13 @@ class App extends React.Component {
 
 const MainRouter = () => (
   <BrowserRouter>
-    <div className="page_wrapper">
+    <Container className="main-panel" fluid>
       <Route path="/login" exact render={() => (<div className="login_bg"></div>)} />
-      <div className="page_cols_wrapper clearfix">
+      <Row noGutters>
         <Navigation />
         <MainContent />
-      </div>
-    </div>
+      </Row>
+    </Container>
   </BrowserRouter>
 );
 

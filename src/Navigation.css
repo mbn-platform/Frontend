@@ -39,6 +39,8 @@
 }
 .left_col_menu_li
 {
+  float: none;
+  display: block;
   width: 100%;
   opacity: .65;
   transition: opacity 400ms;
@@ -74,27 +76,48 @@
   border-color: #383c40;
 }
 
-.left_col_menu_li_1 .left_col_menu_a {
-  background: url(./img/MenuIconDashboard.png) no-repeat center 25px;
+.menu-panel .dashboard {
+  background: url(./img/MenuIconDashboard.svg);
 }
-.left_col_menu_li_2 .left_col_menu_a {
-  background: url(./img/MenuIconProfile.png) no-repeat center 25px;
+.menu-panel .profile {
+  background: url(./img/MenuIconProfile.png);
 }
-.left_col_menu_li_3 .left_col_menu_a {
-  background: url(./img/MenuIconRatings.png) no-repeat center 25px;
+.menu-panel .ratings {
+  background: url(./img/MenuIconRatings.png);
 }
-.left_col_menu_li_4 .left_col_menu_a {
-  background: url(./img/MenuIconTerminal.png) no-repeat center 25px;
+.menu-panel .terminal {
+  background: url(./img/MenuIconTerminal.png);
+}
+.menu-panel .image {
+  width: 30px;
+  height: 30px;
+}
+
+.nav-link.active {
+  background-color: #363a3d !important;
+}
+.nav-link
+{
+  opacity: .65;
+  transition: opacity 400ms;
+}
+.nav-link:hover
+{
+  opacity: 1;
+}
+
+.menu-panel .nav-link .menu-text {
+  text-transform: uppercase;
+  margin-top: 17px;
+  color: #e1e1e1;
 }
 .left_col_menu_a.active
 {
   background-color: #363a3d;
 }
-@media only screen and (max-width: 992px) {
-  .page_left_col {
-    display: none;
-  }
-  .page_right_col {
-    width: 100%;
+@media (max-width: 1027px) {
+  .main-panel.container-fluid .menu-panel .nav-link {
+    height: 70px;
+    background-color: transparent;
   }
 }

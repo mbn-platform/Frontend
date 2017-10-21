@@ -2,36 +2,83 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import './Navigation.css';
 import Logo from './img/MainLogo.png';
+import LogoMobile from './img/HeaderLogoBigMobile.svg';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
+import { Navbar, NavbarToggler, NavbarBrand, Nav, Collapse, Col } from 'reactstrap';
+import { Container, Row } from 'reactstrap';
+import classNames from 'classnames';
 
 class Navigation extends React.Component {
+
+
+  constructor(props) {
+    super(props);
+    this.toggle = this.toggle.bind(this);
+    this.state = {isOpen: false};
+  }
+
+  toggle() {
+    this.setState({isOpen: !this.state.isOpen});
+  }
+
+  brand() {
+    return (
+      <div className="left_col_logo_wrapper">
+        <NavLink className="left_col_logo_a" to="/">
+          <img className="left_col_logo" src={Logo} alt="" />
+        </NavLink>
+      </div>
+    );
+  }
   render() {
     return (
-      <div className="page_left_col">
-        <div className="left_col_logo_wrapper">
-          <NavLink className="left_col_logo_a" to="/">
-            <img className="left_col_logo" src={Logo} alt="" />
-          </NavLink>
-        </div>
-        <div className="left_col_menu_wrapper">
-          <ul className="left_col_menu_ul">
-            {this.renderLinks()}
-            <li key="demo" className={'left_col_menu_li left_col_menu_li_5'}>
-              <a className="left_col_menu_a" href="http://demo.mercatus.im">Demo</a>
-            </li>
-          </ul>
-        </div>
-      </div>
+      <Col xs="12" md="auto" className="d-block d-md-block menu-panel ">
+        <Navbar expand="lg"  >
+          <NavbarBrand className="d-inline-block d-md-none" tag="div">
+            <img src={LogoMobile} alt=""/>
+          </NavbarBrand>
+          <NavbarToggler onClick={this.toggle} />
+          <Collapse isOpen={this.state.isOpen} className="ml-auto ml-md-0" navbar>
+            <Nav pills className="flex-column w-100 align-middle" tag="div">
+              {this.getLinks().map(this.getBar)}
+            </Nav>
+          </Collapse>
+        </Navbar>
+      </Col>
+    );
+  }
+
+  getBar({name, to, imgClass}) {
+    return (
+      <NavLink to={to} key={name} className="nav-link">
+        <Container className="h-100" fluid >
+          <Row className="h-100">
+            <Col xs="12" className="align-self-center">
+              <Container fluid className="align-middle">
+                <Row>
+                  <Col xs="3" md="12" className="d-flex justify-content-end justify-content-md-center">
+                    <div className={classNames(imgClass, 'image')} />
+                  </Col>
+                  <Col xs="auto" className="d-flex d-md-none"/>
+                  <Col xs="3" md="12" className="d-flex justify-content-start justify-content-md-center">
+                    <div className="menu-text">{name}</div>
+                  </Col>
+                </Row>
+              </Container>
+            </Col>
+          </Row>
+        </Container>
+      </NavLink>
     );
   }
 
   getLinks() {
     return [
-      {name: 'Dashboard', to: '/dashboard'},
-      {name: 'Profile', to: this.props.auth.profile ? '/' + this.props.auth.profile.name : '/profile'},
-      {name: 'Ratings', to: '/ratings'},
-      {name: 'Terminal', to: '/terminal'}
+      {name: 'Dashboard', to: '/dashboard', imgClass: 'dashboard'},
+      {name: 'Profile', to: this.props.auth.profile ? '/' + this.props.auth.profile.name : '/profile', imgClass: 'profile'},
+      {name: 'Ratings', to: '/ratings', imgClass: 'ratings'},
+      {name: 'Terminal', to: '/terminal', imgClass: 'terminal'}
     ];
   }
 

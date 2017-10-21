@@ -4,9 +4,10 @@ import Login from './login/LoginContainer';
 import Dashboard from './dashboard/DashboardContainer';
 import Profile from './profile/Profile';
 import './MainContent.css';
+import { Col } from 'reactstrap';
 
 const MainContent = ({ loggedIn, profile }) => (
-  <div className="page_right_col">
+  <Col xs="12" md>
     <Switch>
       <LoginRoute exact path="/login" loggedIn={loggedIn} />
       <ProtectedRoute exact path="/dashboard" component={Dashboard} loggedIn={loggedIn} />
@@ -14,7 +15,7 @@ const MainContent = ({ loggedIn, profile }) => (
       <Route exact path="/:id" component={Profile} />
       <Redirect from="/" to="/dashboard" />
     </Switch>
-  </div>
+  </Col>
 );
 
 
