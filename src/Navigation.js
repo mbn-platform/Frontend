@@ -1,7 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import './Navigation.css';
-import Logo from './img/MainLogo.png';
+import Logo from './img/MainLogo.svg';
 import LogoMobile from './img/HeaderLogoBigMobile.svg';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
@@ -41,6 +40,7 @@ class Navigation extends React.Component {
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} className="ml-auto ml-md-0" navbar>
             <Nav pills className="flex-column w-100 align-middle" tag="div">
+              {this.getLogo()}
               {this.getLinks().map(this.getBar)}
             </Nav>
           </Collapse>
@@ -64,6 +64,24 @@ class Navigation extends React.Component {
                   <Col xs="3" md="12" className="d-flex justify-content-start justify-content-md-center">
                     <div className="menu-text">{name}</div>
                   </Col>
+                </Row>
+              </Container>
+            </Col>
+          </Row>
+        </Container>
+      </NavLink>
+    );
+  }
+
+  getLogo() {
+    return (
+      <NavLink exact to="/" key="root" className="nav-link d-none d-md-flex">
+        <Container fluid className="h-100">
+          <Row className="h-100">
+            <Col xs="12" className="align-self-center">
+              <Container fluid className="align-middle">
+                <Row fluid className="d-flex justify-content-center">
+                  <img src={Logo} width="36" height="36" alt="" />
                 </Row>
               </Container>
             </Col>

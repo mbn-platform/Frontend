@@ -1,0 +1,144 @@
+.main-panel.container-fluid {
+	padding: 0;
+	div, nav, a {
+		padding: 0;
+	}
+	.row {
+		margin-right: 0;
+		margin-left: 0;
+	}
+	&, &>.row {
+		min-height: 100vh
+	}
+	.item-screen {
+		min-height: 100vh;
+	}
+	.navbar {
+		margin-top: 20px;
+	}
+
+}
+.menu-panel {
+	background-color: #2d3034 !important;
+	z-index: 10;
+	width: 174px;
+	box-shadow: 7px 12.124px 54px 0px rgba(0, 0, 0, 0.039);
+	.list-group-item {
+		background-color: transparent !important;
+		border-color: #3a3e42;
+		border: 0;
+		border-bottom: 1px solid #3a3e42;
+	}
+	.nav-link {
+		height: 105px;
+		border-radius: 0px;
+		color: #7c7e80 !important;
+		border-bottom: 1px solid rgba(58, 62, 66,.7);
+		.menu-text {
+			font-family: 'maven_promedium';
+			font-size: 1.2em;
+			margin-top: 17px;
+		}
+	}
+	.nav-link:hover,.nav-link.active {
+		background-color: rgba(58, 62, 66,.7) !important;
+		color: #e1e1e1 !important;
+		.dashboard {
+			background-image: url(../img/MenuIconDashboard.svg);
+		}
+	}
+	.show > .nav-pills .nav-link {
+		background-color: #2d3034;
+	}
+	.nav-link .row {
+		margin: 0;
+	}
+	.text-menu {
+		margin-top: 17px;
+	}
+	.image {
+		width: 23px;
+		height: 23px;
+
+	}
+	.profile {
+		background-image: url(../img/MenuIconProfile.png);
+	}
+	.terminal {
+		background-image: url(../img/MenuIconTerminal.png);
+	}
+	.ratings {
+		background-image: url(../img/MenuIconRatings.png);
+	}
+	.dashboard {
+		background-image: url(../img/MenuIconDashboard.svg);
+	}
+}
+
+.no-gutters {
+	margin-right: 0;
+	margin-left: 0;
+
+	> .col,
+	> [class*="col-"] {
+		padding-right: 0;
+		padding-left: 0;
+	}
+}
+
+@include media-breakpoint-down(sm) {
+	.main-panel {
+		&.container-fluid {
+			.menu-panel {
+				height: 45px;
+				.image {
+					width: 15px;
+					height: 15px;
+				}
+				.nav-link {
+					height: 70px;
+					background-color: transparent;
+					.menu-text {
+						margin-top: 0px;
+					}
+					.gap {
+						width: 23px;
+					}
+					&.active {
+						border-left: 2px solid #319d7e;
+					}
+				}
+				.nav-link:last-child {
+					margin-bottom: 70px;
+				}
+			}
+			.navbar {
+				margin-top: 0px;
+				.navbar-brand {
+					width: 158px;
+					margin-left: 53px;
+					margin-top: 3px;
+				}
+
+				.navbar-toggler	{
+					border-color: transparent;
+					height: 45px;
+					width: 57px;
+					border-radius: 0px;
+					background-color: #36393d;
+					&[aria-expanded="false"] {
+						background-color: transparent !important;
+					}
+					.navbar-toggler-icon {
+						width: 21px;
+						background-image: url(../img/Menu.svg);
+					}
+				}
+				.navbar-collapse {
+					flex-basis: 60%;
+					background: linear-gradient(to bottom, #25282b 0.5%, #2d3034 4%);
+				}
+			}
+		}
+	} 
+}
