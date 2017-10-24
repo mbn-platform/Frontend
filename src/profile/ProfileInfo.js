@@ -3,6 +3,7 @@ import { Col, Container, Row } from 'reactstrap';
 import RatingBar from './RatingBar';
 import Stats from './Stats';
 import PropTypes from 'prop-types';
+import ContractSettings from './ContractSettings';
 
 class ProfileInfo extends React.Component {
 
@@ -48,6 +49,7 @@ class ProfileInfo extends React.Component {
                 roi={16}
                 moneyInManagement={20000}
               />
+              <ContractSettings />
             </Col>
           </Row>
         </Container>
