@@ -1,6 +1,9 @@
 import React from 'react';
 import { Col, Row, Container } from 'reactstrap';
 import ProfitChart from './ProfitChart';
+import Feedback from './Feedback';
+import CurrencySettings from './CurrencySettings';
+import TradeHistory from './TradeHistory';
 
 class TablesScreen extends React.Component {
   render() {
@@ -12,6 +15,16 @@ class TablesScreen extends React.Component {
               <Container fluid className="h-custom-100">
                 <Row className="table-row">
                   <ProfitChart />
+                  <Feedback
+                    comments={[{name: 'Some', text:'super'}]}
+                  />
+                </Row>
+                <Row className="d-none d-md-block">
+                  <Col xs="12" className="gap-card"></Col>
+                </Row>
+                <Row className="table-row">
+                  <CurrencySettings />
+                  <TradeHistory />
                 </Row>
               </Container>
             </Col>
