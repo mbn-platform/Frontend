@@ -44,7 +44,7 @@ const Stats = ({ traderRating, investorRating, roi, moneyInManagement })  => (
         <div className="row-fuild money">
           <div className="col-auto">
             <div className="description-text">
-              money in management:
+              money in <br/> management:
             </div>
             <div className="value-text green">
               {moneyInManagement}<span className="currency-value-usd-text"> usd</span>

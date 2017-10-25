@@ -17,11 +17,11 @@
 {
   text-align: center;
 }
-.ReactTable .rt-tr > :first-child
+/*.ReactTable .rt-tr > :first-child
 {
   margin-left: 15px;
   text-align: left;
-}
+}*/
 .rt-resizable-header-content
 {
   color: #e1e1e1;
