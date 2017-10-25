@@ -18,12 +18,11 @@ class ProfileInfo extends React.Component {
   }
 
   onSendOfferClick() {
-    //if(!this.state.selectedApiKey) {
-      //alert('Select api key first');
-      //return
-    //}
-    //const keyId = this.state.selectedApiKey._id;
-    const keyId = this.props.apiKeys[0]._id;
+    if(!this.state.selectedApiKey) {
+      alert('Select api key first');
+      return
+    }
+    const keyId = this.state.selectedApiKey._id;
     const offer = {
       keyId,
       to: this.props._id,

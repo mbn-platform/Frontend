@@ -1,5 +1,6 @@
 import React from 'react';
 import ProfileInfo from './ProfileInfo';
+import TablesScreen from './TablesScreen';
 import { Row, Container } from 'reactstrap';
 import { connect } from 'react-redux';
 import { sendOffer } from '../actions/offers';
@@ -65,6 +66,7 @@ class Profile extends React.Component {
             onOfferSendClick={this.onOfferSendClick}
             onSaveChangesClick={this.onSaveChangesClick}
           />
+          <TablesScreen />
         </Row>
       </Container>
     );
