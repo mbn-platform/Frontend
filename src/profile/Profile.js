@@ -57,7 +57,7 @@ class Profile extends React.Component {
     const own = this.props.profile._id && this.state._id && this.props.profile._id === this.state._id;
     console.log(own);
     return (
-      <Container fluid>
+      <Container fluid className='profile-item'>
         <Row>
           <ProfileInfo own={own} {...this.state}
             sendOffer={this.props.sendOffer}
