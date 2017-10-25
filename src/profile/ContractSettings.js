@@ -31,7 +31,17 @@ class ContractSettings extends React.Component {
   }
 
   onEditButtonClick() {
-    console.log(this.state);
+    const isEditing = this.state.isEditing;
+    if(isEditing) {
+      const update = {
+        fee: parseInt(this.state.fee),
+        minAmount: parseInt(this.state.amount),
+        minAmountCurrency: this.state.currency,
+        maxLoss: parseInt(this.state.maxLoss),
+        duration: parseInt(this.state.duration),
+      };
+      this.props.onSaveChangesClick(update);
+    }
     this.setState({isEditing: !this.state.isEditing});
   }
 
@@ -82,8 +92,7 @@ class ContractSettings extends React.Component {
         </div>
         <div className="amount-block edit-money-block">
           <div className="description-text">MIN CONTRACT AMOUNT:</div>
-          <div className="value-text amount-text-block text-block">
-            <span className="days">USD</span>
+          <div className="value-text amount-text-block text-block">{this.props.amount} <span className="days">{this.props.currency}</span>
           </div>
           <div className="amount-input-block input-block">
             <div className="input-group">
@@ -103,10 +112,10 @@ class ContractSettings extends React.Component {
                 >BTC</button>
                 <button
                   onClick={this.onCurrencySelected}
-                  name="USD"
-                  className={classNames('btn', 'btn-secondary', {active: this.state.currency === 'USD'})}
+                  name="USDT"
+                  className={classNames('btn', 'btn-secondary', {active: this.state.currency === 'USDT'})}
                   type="button"
-                >USD</button>
+                >USDT</button>
               </span>
             </div>
           </div>
@@ -120,7 +129,7 @@ class ContractSettings extends React.Component {
       <Col xs="auto" lg="12" xl="12">
         <div className="loss-block edit-money-block">
           <div className="description-text">MAX LOSS:</div>
-          <div className="value-text loss-text-block text-block">10 <span className="days">%</span></div>
+          <div className="value-text loss-text-block text-block">{this.props.maxLoss} <span className="days">%</span></div>
           <div className="loss-input-block  input-block">
             <div className="input-group">
               <input
@@ -138,7 +147,7 @@ class ContractSettings extends React.Component {
         </div>
         <div className="fee-block edit-money-block">
           <div className="description-text">FEE:</div>
-          <div className="value-text fee-text-block text-block">15 <span className="days">%</span></div>
+          <div className="value-text fee-text-block text-block">{this.props.fee} <span className="days">%</span></div>
           <div className="fee-input-block input-block">
             <div className="input-group">
               <input

@@ -4,9 +4,52 @@ import RatingBar from './RatingBar';
 import Stats from './Stats';
 import PropTypes from 'prop-types';
 import ContractSettings from './ContractSettings';
+import ContractDetails from './ContractDetails';
+import SelectApiKey from './SelectApiKey';
 
 class ProfileInfo extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {};
+    this.switchApiKeysView = this.switchApiKeysView.bind(this);
+    this.onSendOfferClick = this.onSendOfferClick.bind(this);
+    this.onApiKeySelected = this.onApiKeySelected.bind(this);
+  }
+
+  onSendOfferClick() {
+    //if(!this.state.selectedApiKey) {
+      //alert('Select api key first');
+      //return
+    //}
+    //const keyId = this.state.selectedApiKey._id;
+    const keyId = this.props.apiKeys[0]._id;
+    const offer = {
+      keyId,
+      to: this.props._id,
+      amount: this.props.minAmount,
+      currency: this.props.minAmountCurrency,
+      maxLoss: this.props.maxLoss,
+      fee: this.props.fee,
+      duration: this.props.duration,
+    };
+    this.props.sendOffer(offer);
+  }
+
+  onApiKeySelected(selectedApiKey) {
+    this.setState({selectedApiKey});
+  }
+
+  switchApiKeysView() {
+    if(this.state.showSelectApiKey) {
+      this.setState({
+        showSelectApiKey: false,
+        selectedApiKey: null
+       });
+    } else {
+      this.setState({showSelectApiKey: true});
+    }
+  }
 
   getHeader() {
     return (
@@ -35,26 +78,75 @@ class ProfileInfo extends React.Component {
   }
 
   render() {
-    return (
-      <Col xs="12" md="auto" sm="12" className="item-screen info-screen request-sent contract-block">
-        <Container fluid>
-          <Row className="justify-content-center">
-            <Col xs="12">
-              {this.getHeader()}
-              {this.getHeaderSeparator()}
-              <RatingBar rating={2}/>
-              <Stats
-                traderRating={20}
-                investorRating={100}
-                roi={16}
-                moneyInManagement={20000}
-              />
-              <ContractSettings />
-            </Col>
-          </Row>
-        </Container>
-      </Col>
-    );
+    if(this.props.own) {
+      return (
+        <Col xs="12" md="auto" sm="12" className="item-screen info-screen request-sent contract-block">
+          <Container fluid>
+            <Row className="justify-content-center">
+              <Col xs="12">
+                {this.getHeader()}
+                {this.getHeaderSeparator()}
+                <RatingBar rating={2}/>
+                <Stats
+                  traderRating={this.props.topTraders}
+                  investorRating={this.props.topInvesters}
+                  roi={16}
+                  moneyInManagement={20000}
+                />
+                <ContractSettings
+                  onSaveChangesClick={this.props.onSaveChangesClick}
+                  duration={this.props.duration}
+                  amount={this.props.minAmount}
+                  currency={this.props.minAmountCurrency}
+                  maxLoss={this.props.maxLoss}
+                  fee={this.props.fee}
+                />
+              </Col>
+            </Row>
+          </Container>
+        </Col>
+      );
+    } else {
+      return (
+        <Col xs="12" md="auto" sm="12" className="item-screen info-screen request-sent contract-block">
+          <Container fluid>
+            <Row className="justify-content-center">
+              <Col xs="12">
+                {this.getHeader()}
+                {this.getHeaderSeparator()}
+                <RatingBar rating={2}/>
+                <Stats
+                  traderRating={this.props.topTraders}
+                  investorRating={this.props.topInvesters}
+                  roi={16}
+                  moneyInManagement={20000}
+                />
+                {
+                  this.state.showSelectApiKey ?
+                    <SelectApiKey
+                      onOfferSendClick={this.onOfferSendClick}
+                      exchanges={this.props.exchanges}
+                      apiKeys={this.props.apiKeys}
+                      selectedApiKey={this.state.selectedApiKey}
+                      onCancelClick={this.switchApiKeysView}
+                      onSendOfferClick={this.onSendOfferClick}
+                      onApiKeySelected={this.onApiKeySelected}
+                    /> :
+                    <ContractDetails
+                      onOfferSendClick={this.switchApiKeysView}
+                      duration={this.props.duration}
+                      amount={this.props.minAmount}
+                      currency={this.props.minAmountCurrency}
+                      maxLoss={this.props.maxLoss}
+                      fee={this.props.fee}
+                    />
+                }
+              </Col>
+            </Row>
+          </Container>
+        </Col>
+      );
+    }
   }
 }
 
