@@ -1,0 +1,187 @@
+.main-panel.container-fluid {
+	.info-screen {
+		.request-sent-block {
+			display: none;
+		}
+		&.request-sent {
+			.request-sent-block {
+				display: block;
+			}
+		}		
+		.request-sent-block {
+			.request-sent-title {
+				.request-sent-title-text {
+					margin-top: 39px;
+					font-size: 1.7em;
+					color: #bfbfc1;
+					text-transform: uppercase;
+				}
+			}
+			.request-sent-info {
+				margin-top: 36px;
+				.request-sent-info-item {
+					margin-top: 22px;
+					height: 26px;
+					.left-info {
+						background-image: linear-gradient( 90deg, rgb(35,38,41) 0%, rgb(45,48,52) 100%);						
+						font-size: 1.2em;
+						width: 243px;
+						height: 100%;
+						color: #727274;
+						text-align: right;
+						padding-top: 5px;
+						padding-right: 9px;
+
+					}
+					.right-info {
+						background-image: linear-gradient( 270deg, rgb(35,38,41) 0%, rgb(45,48,52) 100%);
+						width: 149px;
+						height: 100%;
+						color: #bfbfc1;
+						padding-top: 1px;
+						font-size: 1.7em;
+						padding-left: 13px;
+						.attribute {
+							font-size: 14px;
+						}
+						&.green {
+							color: #31b993;
+						}
+						&.red {
+							color: #953a3a;
+						}						
+					}
+				}
+				.request-sent-info-item:first-child {
+					margin-top: 0px;
+				}
+			}
+			.btn {
+				margin: 41px 0 142px 0;
+				width: 180px;
+				height: 40px;
+				letter-spacing: 1px;
+				border-radius: 5px;
+				border: 0;
+				background-color: #2d3034;
+				text-transform: uppercase;
+				&.cancel-btn {
+					width: 118px;
+				}
+				&.send-request-btn {
+					width: 178px;
+				}
+				&:hover, &.active {
+					background-color: #346255;
+				}
+				.icon-help {
+					margin-left: 32px;
+    				margin-top: -19px;
+				}
+							
+			}			
+		}
+		@include media-breakpoint-down(sm) {
+			.request-sent-block {
+				// background: -webkit-linear-gradient(bottom, rgba(0, 0, 0, 0.2), #1b1d1f, #1b1d1f, #1b1d1f, #1b1d1f, #1b1d1f, rgba(0, 0, 0, 0.2));
+				// background: -o-linear-gradient(bottom, rgba(0, 0, 0, 0.2), #1b1d1f, #1b1d1f, #1b1d1f, #1b1d1f, #1b1d1f, rgba(0, 0, 0, 0.2));
+				// background: linear-gradient(to top, #17191b, #1b1d1f, #1b1d1f, #1b1d1f, #1b1d1f, #1b1d1f, #17191b);
+				background-color: #17191b;
+			 	.request-sent-title {
+			 		.request-sent-title-text {
+			 			margin-top: 24px;
+			 			margin-left: 33px;
+			 			color: #727274;
+			 			font-size: 1.4em;
+			 			letter-spacing: 2.1px;
+			 			.icon {
+			 				margin-right: 11px !important;
+			 				font-size: .9em;
+			 			}
+			 		}
+			 	} 
+			 	.tooltip-text-block {
+			 		margin-top: 29px;					
+			 		.tooltip-mobile-box {
+			 			color: #727274;
+			 		    text-align: center;
+			 		    margin-bottom: 12px;
+			 			font-size: .95em;
+			 			border: 1px dashed #953a3a;
+			 			line-height: 1.2;
+			 			letter-spacing: 1.3;
+			 			padding: 14px 32px 10px 30px;
+			 			text-transform: none;
+			 			height: 52px;
+			 			min-width: 254px;
+			 			.red {
+			 				color: #953a3a;
+			 			}
+			 		}					
+			 	}	
+			 	.request-sent-info {
+			 		margin-top: 21px;					
+			 		.request-sent-info-item {
+			 			height: 21px;
+			 			margin-top: 19px;
+			 			.gap {
+			 				width: 20px;
+			 			}
+			 			.left-info {
+			 				background-image: linear-gradient(90deg, #1b1d1f 0%, #2d3034 100%);
+			 				font-size: 1em;
+			 				width: auto;
+			 				height: 100%;
+			 				color: #727274;
+			 				text-align: right;
+			 				padding-top: 3px;
+			 				padding-right: 2px;
+			 			}
+			 			.right-info {
+			 				background-image: linear-gradient(270deg, #1b1d1f 0%, #2d3034 100%);
+			 				width: auto;
+			 				height: 100%;
+			 				color: #bfbfc1;
+			 				padding-top: 0px;
+			 				font-size: 1.4em;
+			 				padding-left: 7px;
+			 			}
+			 			&:first-child {
+			 				margin-top: 0px;
+			 			}
+			 			.col {
+			 				&.active {
+			 					border-top: 1px solid #953a3a;
+			 					border-bottom: 1px solid #953a3a;
+			 					border-left: 1px solid #953a3a;
+			 				}
+			 			}						
+			 		}
+			 	}
+			 	.btn{
+			 	    margin: 26px 0 18px 0;
+			 	    height: 31px;
+			 	    letter-spacing: 1px;
+			 	    border-radius: 3px;
+			 	    border: 0;
+			 	    font-size: 1.2em;					
+			 		&.send-request-btn {
+			 			width: 148px;
+			 		}
+			 	}
+			 	.popover-send-text {
+			 		color: #444644;
+			 		font-size: .9em;
+			 		padding: 0 32px 0 32px;
+			 		max-width: 280px;
+			 		letter-spacing: 1.5px;
+			 		text-align: center;
+			 		margin-bottom: 20px;
+			 
+			 	}
+			 } 
+		}
+
+	}
+}
+

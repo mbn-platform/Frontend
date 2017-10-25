@@ -1,58 +1,88 @@
 import React from 'react';
-import ProfileChart from './ProfileChart';
-import ProfileComments from './ProfileComments';
-
+import ProfileInfo from './ProfileInfo';
+import TablesScreen from './TablesScreen';
+import { Row, Container } from 'reactstrap';
+import { connect } from 'react-redux';
+import { sendOffer } from '../actions/offers';
+import { fetchDashboardData } from '../actions/dashboard';
+import { updateExchagnes } from '../actions/exchanges';
+import { updateProfile } from '../actions/profile';
 
 class Profile extends React.Component {
 
   constructor(props) {
     super(props);
-    console.log('constructor');
-    this.onChange = this.onChange.bind(this);
-    this.state = {fee: '', 'min-amount': ''};
+    this.state = {};
+    this.onSaveChangesClick = this.onSaveChangesClick.bind(this);
+    this.onOfferSendClick = this.onOfferSendClick.bind(this);
   }
 
-  initialState() {
-    return {
-      fee: '',
+  onOfferSendClick() {
+  }
+
+  onSaveChangesClick(update) {
+    const profile = {
+      availableForOffers: true,
+      name: this.props.profile.name,
+      currencies: this.props.profile.currencies,
+      ...update
     }
+    console.log(profile);
+    updateProfile(profile);
+  }
+
+  componentDidMount() {
+    const name = this.props.match.params.id;
+    this.updateProfile(name);
+    this.props.fetchDashboardData();
+    this.props.updateExchanges();
+  }
+
+  updateProfile(name) {
+    window.fetch(`/api/profile/${name}`, {
+      credentials: 'same-origin'
+    })
+      .then(res => res.json())
+      .then(profile => {
+        this.setState(profile);
+      });
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
+    const name = nextProps.match.params.id;
+    this.updateProfile(name);
   }
 
-
-
-  onChange(e) {
-    const value = e.target.value;
-    this.setState({[e.target.name]: value});
-  }
   render() {
+    const own = this.props.profile._id && this.state._id && this.props.profile._id === this.state._id;
+    console.log(own);
     return (
-      <div>
-        <h2>General</h2>
-        <div>Nickname</div>
-        <div>Trader Rating</div>
-        <div>Ivestor rating</div>
-        <div>Status</div>
-        <div>Amount</div>
-        <ProfileComments />
-        <ProfileChart />
-        <h2>Detail</h2>
-        <form onSubmit={this.onSubmit}>
-          Fee
-          <input name="fee" onChange={this.onChange} value={this.state.fee} />
-          Min contract amount
-          <input name="min-amount" onChange={this.onChange} value={this.state['min-amount']} />
-        </form>
-
-      </div>
+      <Container fluid>
+        <Row>
+          <ProfileInfo own={own} {...this.state}
+            sendOffer={this.props.sendOffer}
+            exchanges={this.props.exchanges}
+            apiKeys={this.props.apiKeys}
+            onOfferSendClick={this.onOfferSendClick}
+            onSaveChangesClick={this.onSaveChangesClick}
+          />
+          <TablesScreen />
+        </Row>
+      </Container>
     );
   }
-
-
-
 }
 
-export default Profile;
+const mapStateToProps = state => ({
+  profile: state.auth.profile,
+  apiKeys: state.apiKeys.ownKeys,
+  exchanges: state.exchanges,
+});
+
+const mapDispatchToProps = dispatch => ({
+  sendOffer: offer => dispatch(sendOffer(offer)),
+  fetchDashboardData: () => dispatch(fetchDashboardData()),
+  updateExchanges: () => dispatch(updateExchagnes()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
