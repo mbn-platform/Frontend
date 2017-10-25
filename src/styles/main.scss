@@ -15,9 +15,6 @@ $container-max-widths: (
   xl: 1720px
 );
 
-html {
-	color: white;
-}
 body {
 	min-height: 100vh;
 	font-size: 10px;
@@ -25,11 +22,9 @@ body {
     width: 100%;
     position: absolute;	
     background-color: #1f2225;
-    color: white;
-    //TODO добавить в menu-panel
-/*    font-family: 'maven_proregular';
+    font-family: 'maven_proregular';
     letter-spacing: 1px;
-    text-transform: uppercase;*/
+    text-transform: uppercase;
 }
 button,.btn:focus,.btn:active {
 	outline: 0 !important;
