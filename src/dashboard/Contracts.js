@@ -82,10 +82,12 @@ class Contracts extends React.Component {
       Header: ContractTableHeader('Current\nprofit, %'),
       className: 'table_col_value',
       accessor: 'currentProfit',
+      minWidth: 85,
       Cell: NegativeValuesCell
     }, {
       Header: ContractTableHeader('Max\nloss, %'),
       className: 'table_col_value',
+      minWidth: 85,
       accessor: 'maxLoss',
     }, {
       id: 'startBalance',
