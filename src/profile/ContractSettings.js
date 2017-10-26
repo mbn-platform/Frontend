@@ -9,7 +9,6 @@ class ContractSettings extends React.Component {
     super(props);
     this.onToggleClick = this.onToggleClick.bind(this);
     this.state = {
-      acceptsRequests: false,
       isEditing: false,
       duration: props.duration,
       amount: props.amount,
@@ -46,7 +45,7 @@ class ContractSettings extends React.Component {
   }
 
   onToggleClick(e) {
-    this.setState({acceptsRequests: !this.state.acceptsRequests});
+    this.props.onSaveChangesClick({availableForOffers: !this.props.availableForOffers});
   }
 
   renderAcceptsRequests() {
@@ -56,7 +55,7 @@ class ContractSettings extends React.Component {
           <Row className="justify-content-between accept-block">
             <Col xs="auto" className="text">ACCEPT REQUESTS?</Col>
             <Col xs="auto" className="switch">
-              <input className="cmn-toggle cmn-toggle-round-flat" type="checkbox" checked={this.state.acceptsRequests}/>
+              <input className="cmn-toggle cmn-toggle-round-flat" type="checkbox" onChange={this.onToggleClick} checked={this.props.availableForOffers}/>
               <label onClick={this.onToggleClick} className="cmn-toggle-background"/>
               <label className="cmn-text cmn-yes-text">YES</label>
               <label className="cmn-text cmn-no-text">NO</label>

@@ -99,6 +99,7 @@ class ProfileInfo extends React.Component {
                   currency={this.props.minAmountCurrency}
                   maxLoss={this.props.maxLoss}
                   fee={this.props.fee}
+                  availableForOffers={this.props.availableForOffers}
                 />
               </Col>
             </Row>

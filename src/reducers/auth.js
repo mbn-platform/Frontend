@@ -1,4 +1,5 @@
 import { LOGGED_IN, LOGGED_OUT, NAME_REQUIRED } from '../actions/auth';
+import { UPDATE_PROFILE } from '../actions/profile';
 
 export default function reducer(auth = {}, action) {
   switch(action.type) {
@@ -15,6 +16,11 @@ export default function reducer(auth = {}, action) {
       const state = {nameRequired: true, loggedIn: false};
       localStorage.setItem('reduxState', JSON.stringify({auth: state}));
       return state;
+    }
+    case UPDATE_PROFILE: {
+      console.log(action);
+      const profile = action.profile;
+      return {...auth, profile};
     }
     default:
       return auth;

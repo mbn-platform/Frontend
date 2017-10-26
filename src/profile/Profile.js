@@ -21,14 +21,17 @@ class Profile extends React.Component {
   }
 
   onSaveChangesClick(update) {
+    const {
+      availableForOffers, currencies,
+      minAmount, minAmountCurrency,
+      fee, maxLoss, duration, name
+    } = this.props.profile;
     const profile = {
-      availableForOffers: true,
-      name: this.props.profile.name,
-      currencies: this.props.profile.currencies,
-      ...update
-    }
-    console.log(profile);
-    updateProfile(profile);
+      availableForOffers, currencies, minAmount,
+      minAmountCurrency, fee, maxLoss, name,
+      duration, ...update
+    };
+    this.props.updateProfile(profile);
   }
 
   componentDidMount() {
@@ -80,6 +83,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  updateProfile: profile => dispatch(updateProfile(profile)),
   sendOffer: offer => dispatch(sendOffer(offer)),
   fetchDashboardData: () => dispatch(fetchDashboardData()),
   updateExchanges: () => dispatch(updateExchagnes()),
