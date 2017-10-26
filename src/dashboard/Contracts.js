@@ -78,39 +78,46 @@ class Contracts extends React.Component {
       Header: ContractTableHeader('Expire date'),
       headerClassName: 'big_column',
       className: 'table_col_value big_column',
+      // minWidth: 88,
     }, {
       Header: ContractTableHeader('Current\nprofit, %'),
       className: 'table_col_value',
       accessor: 'currentProfit',
+      // minWidth: 75,
       Cell: NegativeValuesCell
     }, {
       Header: ContractTableHeader('Max\nloss, %'),
       className: 'table_col_value',
+      // minWidth: 75,
       accessor: 'maxLoss',
     }, {
       id: 'startBalance',
       className: 'table_col_value',
+      // minWidth: 75,
       Header: ContractTableHeader('Start\nbalance, %'),
       accessor: c => c.startBalance + ' ' + c.currency,
     }, {
       id: 'currentBalance',
       className: 'table_col_value',
+      // minWidth: 85,
       Header: ContractTableHeader('Current\nbalance, %'),
       accessor: c => c.currentBalance + ' ' + c.currency,
     }, {
       id: 'left',
       Header: ContractTableHeader('Left'),
       className: 'table_col_value',
+      // minWidth: 55,
       accessor: c => c.left + ' ' + c.currency,
     }, {
       Header: ContractTableHeader('Fee, %'),
       className: 'table_col_value',
+      // minWidth: 55,
       accessor: 'fee'
     },{
       Header: <TXHeader />,
       Cell: TXCell,
       sortable: false,
-      minWidth: 80,
+      // minWidth: 45,
       headerClassName: 'small_column',
       className: 'small_column'
     }, {
@@ -118,7 +125,7 @@ class Contracts extends React.Component {
       accessor: 'status',
       Cell: StatusCell,
       headerClassName: 'small_column',
-      minWidth: 80,
+      // minWidth: 80,
       className: 'small_column'
     }];
 
