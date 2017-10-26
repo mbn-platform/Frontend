@@ -41,11 +41,15 @@ class TradeHistory extends React.Component {
     const columns = [
       {
         Header: SortableHeader('Date'),
-        accessor: 'date'
+        accessor: 'date',
+        minWidth: undefined
+
       },
       {
         Header: SortableHeader('Type'),
-        accessor: 'type'
+        accessor: 'type',
+        resizable: true
+
       },
       {
         Header: SortableHeader('Price, BTC'),

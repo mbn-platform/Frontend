@@ -79,7 +79,7 @@ class ProfileInfo extends React.Component {
   render() {
     if(this.props.own) {
       return (
-        <Col xs="12" md="auto" sm="12" className="item-screen info-screen request-sent contract-block">
+        <Col xs="12" md="auto" sm="12" className="item-screen info-screen contract-block">
           <Container fluid>
             <Row className="justify-content-center">
               <Col xs="12">
@@ -107,7 +107,7 @@ class ProfileInfo extends React.Component {
       );
     } else {
       return (
-        <Col xs="12" md="auto" sm="12" className="item-screen info-screen request-sent contract-block">
+        <Col xs="12" md="auto" sm="12" className="item-screen info-screen contract-block">
           <Container fluid>
             <Row className="justify-content-center">
               <Col xs="12">
