@@ -18,9 +18,9 @@ class Dashboard extends React.Component {
     this.onOfferSelected = this.onOfferSelected.bind(this);
     this.onContractSelected = this.onContractSelected.bind(this);
   }
-  componentDidMount() {
+  /*componentDidMount() {
     this.props.onDashboardMounted();
-  }
+  }*/
 
 
   componentWillReceiveProps(nextProps) {

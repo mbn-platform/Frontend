@@ -31,12 +31,12 @@ class Profile extends React.Component {
     updateProfile(profile);
   }
 
-  componentDidMount() {
+  /*componentDidMount() {
     const name = this.props.match.params.id;
     this.updateProfile(name);
     this.props.fetchDashboardData();
     this.props.updateExchanges();
-  }
+  }*/
 
   updateProfile(name) {
     window.fetch(`/api/profile/${name}`, {

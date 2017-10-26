@@ -6,17 +6,6 @@
   background: url(../img/LoginBg.jpg) no-repeat center center;
   background-size: cover;
 }
-.login_content
-{
-  /*height: 800px;
-  line-height: 800px;
-  position: absolute;
-  top: 50%;
-  margin-top: -400px;
-  left: 50%;
-  margin-left: -555px;
-  width: 1110px;*/
-}
 .login_steps
 {
   display: inline-block;
