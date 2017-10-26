@@ -2,26 +2,32 @@
 {
   width: 100%;
   position: relative;
-  height: 800px;
+  height: 100%;
+  background: url(../img/LoginBg.jpg) no-repeat center center;
+  background-size: cover;
 }
 .login_content
 {
-  height: 800px;
+  /*height: 800px;
   line-height: 800px;
   position: absolute;
   top: 50%;
   margin-top: -400px;
   left: 50%;
   margin-left: -555px;
-  width: 1110px;
+  width: 1110px;*/
 }
 .login_steps
 {
   display: inline-block;
   vertical-align: middle;
   line-height: 1.4;
+  position: absolute;
+  top: 50%;
+  margin-top: -200px;
+  left: 50%;
+  margin-left: -200px;  
 }
-
 .login_title_wrapper {
   margin-bottom: 60px;
 }
@@ -60,13 +66,81 @@
     margin-left: 0;
     left: 0;
     box-sizing: border-box;
-    padding: 0 40px;
+    
     font-size: 8px;
   }
+
 }
-@media only screen and (max-width : 480px) {
+@media only screen and (max-width : 1028px) {
+   .login_content {
+    height: calc(100vh + 100px);
+  } 
+}
+@media only screen and (max-width : 450px) {
   .login_content
   {
+    
+  }
+  .login_steps {
     padding: 0 20px;
+    margin-left: -220px;
+  }
+  .login_title_wrapper {
+    text-align: center;
+  }
+}
+@media only screen and (max-width : 416px) {
+  .login_steps {
+      margin-left: -208px;
+  }
+}
+@media only screen and (max-width : 394px) {
+  .login_steps {
+    margin-left: -201px;
+  }
+}
+@media only screen and (max-width : 370px) {
+  .login_step_login_submit {
+    margin-left: 29px;
+  }
+  .login_steps {
+    margin-left: -188px;
+  }
+}
+
+@media only screen and (max-width : 350px) {
+  .login_step_login_submit {
+    margin-left: 16px;
+  }
+  .login_steps {
+    margin-left: -175px;
+  }
+}
+
+@media only screen and (max-width : 335px) {
+  .login_step_login_submit {
+    margin-left: 7px;
+  }
+  .login_steps {
+    margin-left: -167px;
+  }
+}
+
+@media only screen and (max-width : 320px) {
+  .login_step_login_submit {
+    margin-left: 0px;
+  }
+  .login_steps {
+    margin-left: -161px;
+  }
+}
+
+@media only screen and (max-width : 310px) {
+  .login_step_login_submit {
+    margin-left: 0px;
+  }
+  .login_steps {
+    padding: 0 10px;
+    margin-left: -161px;
   }
 }
