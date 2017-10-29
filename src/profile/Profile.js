@@ -69,7 +69,9 @@ class Profile extends React.Component {
             onOfferSendClick={this.onOfferSendClick}
             onSaveChangesClick={this.onSaveChangesClick}
           />
-          <TablesScreen />
+          <TablesScreen
+            currencies={this.state.currencies}
+          />
         </Row>
       </Container>
     );

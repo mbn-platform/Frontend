@@ -23,7 +23,9 @@ class TablesScreen extends React.Component {
                   <Col xs="12" className="gap-card"></Col>
                 </Row>
                 <Row className="table-row">
-                  <CurrencySettings />
+                  <CurrencySettings
+                    currencies={this.props.currencies}
+                  />
                   <TradeHistory />
                 </Row>
               </Container>

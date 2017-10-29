@@ -1,8 +1,5 @@
 import React from 'react';
-import { Container, Row, Col } from 'reactstrap';
-
-
-const template = '<div className="popover red-border-popover" role="tooltip"><div className="arrow"></div><h3 className="popover-header"></h3><div className="popover-body"></div></div>';
+import { UncontrolledTooltip } from 'reactstrap';
 
 class ContractDetails extends React.Component {
 
@@ -49,8 +46,11 @@ class ContractDetails extends React.Component {
             <div className="col-auto">
               <button onClick={this.props.onOfferSendClick} type="button" className="send-request-btn btn btn-secondary active">
                 SEND REQUEST
-                <span className="d-none d-md-inline-block icon icon-help icon-help-web-button"  data-toggle="popover" data-html="true" data-trigger="hover" data-content="YOUR REQUEST WILL BE <span className='green'>ACCEPTED</span> OR <span className='red'>DECLINED</span> WITHIN 24H"  data-template='<div className="popover request-popover" role="tooltip"><div className="arrow"></div><h3 className="popover-header"></h3><div className="popover-body"></div></div>'></span>
+                <span id="help-icon-send-request" className="d-none d-md-inline-block icon icon-help icon-help-web-button" />
               </button>
+              <UncontrolledTooltip target="help-icon-send-request" placement="right">
+                YOUR REQUEST WILL BE <span className='green'>ACCEPTED</span> OR <span className='red'>DECLINED</span> WITHIN 24H
+              </UncontrolledTooltip>
 
             </div>
           </div>
@@ -79,7 +79,6 @@ const ContractDetailRow = ({ name, value, dim }) => (
       </div>
     </div>
   </div>
-
-)
+);
 
 export default ContractDetails;

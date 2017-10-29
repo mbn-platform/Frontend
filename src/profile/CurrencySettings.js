@@ -3,12 +3,18 @@ import classNames from 'classnames';
 import { Col, Container, Row } from 'reactstrap';
 import ReactTable from '../generic/SelectableReactTable';
 import SearchHeader from '../generic/SearchHeader';
+import { UncontrolledTooltip } from 'reactstrap';
 
 class CurrencySettings extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {filtered: [{id: 'currency', value: ''}, {id: 'selected', value: 'all'}]};
+    this.onCurrencyChange = this.onCurrencyChange.bind(this);
+  }
+
+  onCurrencyChange(e) {
+    this.setState({filtered: [{id: 'currency', value: e.target.value}]});
   }
 
   render() {
@@ -56,28 +62,18 @@ class CurrencySettings extends React.Component {
         accessor: 'name',
         className: 'table_col_value'
       }, {
-        Header: (<div className="table_header_wrapper">
-          <span className="table_header">Trade volume</span>
-          <div className="sort_icon_wrapper" style={{display: 'block', margin: 0}}>
-            <div className="green_arrow green_arrow_bottom" ></div>
-          </div>
-        </div>),
+        Header: SortableTableHeader('Trade volume'),
         className: 'table_col_value',
-        accessor: 'amount'
+        accessor: 'tradeVolume'
       }, {
-        Header: (<div className="table_header_wrapper">
-          <span className="table_header">ROI, %</span>
-          <div className="sort_icon_wrapper" style={{display: 'block', margin: 0}}>
-            <div className="green_arrow green_arrow_bottom" ></div>
-          </div>
-        </div>),
+        Header:  SortableTableHeader('ROI, %'),
         className: 'table_col_value',
-        accessor: 'amount'
+        accessor: 'roi'
       }, {
         id: 'selected',
         Header: StatusHeader(this.onSelectAllClicked),
-        Cell: StatusCell(this.onCurrencyStateClicked),
-        accessor: 'selected',
+        Cell: row => (<span className={classNames('icon', 'icon-star', {active: row.original.preferred})} />),
+        accessor: 'preferred',
         filterMethod: (filter, row) => {
           if(filter.value === 'all') {
             return true;
@@ -103,6 +99,14 @@ class CurrencySettings extends React.Component {
 
   }
 }
+const SortableTableHeader = header => (
+  <div className="table_header_wrapper contract_header_wrapper">
+    <div className="table_header">{header}</div>
+    <div className="sort_icon_wrapper">
+      <div className="green_arrow"></div>
+    </div>
+  </div>
+);
 const StatusCell = (onClick, apiKey) => rowInfo => {
   const handler = e => {
     e.stopPropagation();
@@ -114,17 +118,16 @@ const StatusCell = (onClick, apiKey) => rowInfo => {
 
 const StatusHeader = (onSelectAllClicked) => {
   return (
-    <div className="table_header_wrapper">
-      <span className="table_header">Status</span>
-      <div className="table_header_help_wrapper">
-        <div className="table_header_help_text">This is a link on etherscan.io which contains all details of your contract.</div>
+    <div className="table_header_wrapper contract_header_wrapper">
+      <div className="table_header">
+        <span className="icon icon-star"/>
       </div>
-      <div className="sort_icon_wrapper" style={{marginLeft: 20}}>
-        <div className="green_arrow green_arrow_bottom" ></div>
-      </div>
-      <div className="title_green_arrows_wrapper">
-        <div onClick={onSelectAllClicked} className="currency_select_all">All</div>
-        <div className="currency_status_checkbox selected"></div>
+      <div id="help-icon-preferred-currencies" className="table_header_help_wrapper" style={{paddingTop: 32, marginLeft: 0}}></div>
+      <UncontrolledTooltip target="help-icon-preferred-currencies" placement="right">
+        Choose your preferred currencies
+      </UncontrolledTooltip>
+      <div className="sort_icon_wrapper">
+        <div className="green_arrow"></div>
       </div>
     </div>
   );

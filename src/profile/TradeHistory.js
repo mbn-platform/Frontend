@@ -7,7 +7,7 @@ class TradeHistory extends React.Component {
     return (
       <Col xs="12" sm="12" md="12" lg="12" xl="7" className="trade-block">
         <Container fluid className="h-100">
-          <Row className="h-100">												
+          <Row className="h-100">
             <Col className="trade-history">
               <div className="card">
                 <div className="card-header">
@@ -17,22 +17,22 @@ class TradeHistory extends React.Component {
                         <span className="icon icon-profit icon-history-clock-button"></span>TRADE HISTORY
                       </div>
                       <div className="col">
-                      </div>							
+                      </div>
                     </div>
                   </div>
-                </div>	
+                </div>
                 <div className="card-body">
                   {this.renderTable()}
                   <div className="d-flex d-md-none justify-content-center show-next-block">
                     <button type="button" className="btn btn-secondary">show one more week</button>
-                  </div>														
+                  </div>
                 </div>
 
               </div>
             </Col>
           </Row>
         </Container>
-      </Col>																	
+      </Col>
     );
   }
 
@@ -42,31 +42,34 @@ class TradeHistory extends React.Component {
       {
         Header: SortableHeader('Date'),
         accessor: 'date',
-        minWidth: undefined
+        className: 'table_col_value',
 
       },
       {
         Header: SortableHeader('Type'),
         accessor: 'type',
-        resizable: true
-
+        className: 'table_col_value',
       },
       {
         Header: SortableHeader('Price, BTC'),
-        accessor: 'price'
+        accessor: 'price',
+        className: 'table_col_value',
       },
       {
         Header: SortableHeader('Amount'),
-        accessor: 'amount'
+        accessor: 'amount',
+        className: 'table_col_value',
       },
       {
         Header: SortableHeader('Total, BTC'),
-        accessor: 'total'
+        accessor: 'total',
+        className: 'table_col_value',
       },
       {
         Header: SortableHeader('TX', false),
         accessor: 'tx',
         sortable: false,
+        className: 'table_col_value',
       },
     ];
     return (
