@@ -42,11 +42,9 @@ class App extends React.Component {
   }
 }
 
-
 const MainRouter = () => (
   <BrowserRouter>
     <Container className="main-panel" fluid>
-      <Route path="/login" exact render={() => (<div className="login_bg"></div>)} />
       <Row noGutters>
         <Navigation />
         <MainContent />
