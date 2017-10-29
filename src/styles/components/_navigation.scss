@@ -40,6 +40,9 @@
 			margin-top: 17px;
 		}
 	}
+	.nav-link.active {
+		border-right: 2px solid #319d7e;
+	}
 	.nav-link:hover,.nav-link.active {
 		background-color: rgba(58, 62, 66,.7) !important;
 		color: #e1e1e1 !important;
