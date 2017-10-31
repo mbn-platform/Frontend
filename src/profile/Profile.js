@@ -15,6 +15,22 @@ class Profile extends React.Component {
     this.state = {};
     this.onSaveChangesClick = this.onSaveChangesClick.bind(this);
     this.onOfferSendClick = this.onOfferSendClick.bind(this);
+    this.onCurrencyToggle = this.onCurrencyToggle.bind(this);
+  }
+
+  onCurrencyToggle(update) {
+    const {
+      availableForOffers, currencies,
+      minAmount, minAmountCurrency,
+      fee, maxLoss, duration, name
+    } = this.props.profile;
+    const updatedCurrencies = currencies.map(c => c.name === update.name ? update : {name: c.name, preferred: c.preferred});
+    const profile = {
+      availableForOffers, currencies: updatedCurrencies, minAmount,
+      minAmountCurrency, fee, maxLoss, name,
+      duration
+    };
+    this.props.updateProfile(profile);
   }
 
   onOfferSendClick() {
@@ -70,6 +86,7 @@ class Profile extends React.Component {
             onSaveChangesClick={this.onSaveChangesClick}
           />
           <TablesScreen
+            onCurrencyToggle={this.onCurrencyToggle}
             currencies={this.state.currencies}
           />
         </Row>

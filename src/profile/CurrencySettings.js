@@ -11,6 +11,13 @@ class CurrencySettings extends React.Component {
     super(props);
     this.state = {filtered: [{id: 'currency', value: ''}, {id: 'selected', value: 'all'}]};
     this.onCurrencyChange = this.onCurrencyChange.bind(this);
+    this.onCurrencyToggle = this.onCurrencyToggle.bind(this);
+  }
+
+  onCurrencyToggle(row) {
+    const preferred = !row.original.preferred;
+    const update = {name: row.original.name, preferred};
+    this.props.onCurrencyToggle(update);
   }
 
   onCurrencyChange(e) {
@@ -72,7 +79,13 @@ class CurrencySettings extends React.Component {
       }, {
         id: 'selected',
         Header: StatusHeader(this.onSelectAllClicked),
-        Cell: row => (<span className={classNames('icon', 'icon-star', {active: row.original.preferred})} />),
+        Cell: row => (
+          <span onClick={e => {
+            e.stopPropagation();
+            this.onCurrencyToggle(row);
+          }}
+          className={classNames('icon', 'icon-star', {active: row.original.preferred})}
+        />),
         accessor: 'preferred',
         filterMethod: (filter, row) => {
           if(filter.value === 'all') {
