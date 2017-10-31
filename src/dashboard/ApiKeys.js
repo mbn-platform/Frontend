@@ -70,7 +70,9 @@ class ApiKeys extends React.Component {
       </div>
     );
   }
-
+  mobileWidth() {
+    return window.outerWidth < 1028;
+  }
   renderContent() {
     const { apiKeys } = this.props;
     const data = this.state.selectedTab ? apiKeys.receivedKeys : apiKeys.ownKeys;
@@ -80,10 +82,13 @@ class ApiKeys extends React.Component {
       {
         Header: SearchHeader('Key name', nameFilter, this.onFilter),
         className: 'table_col_value',
+        Cell: row => (<div className="key_name_text_td">{row.value}</div>),
+        minWidth: this.mobileWidth() ? 102 : 100,
         accessor: 'name'
       }, {
         Header: ExchangeHeader(this.props.exchanges, exchangeFilter, this.onExchangeChange),
         accessor: 'exchange',
+        minWidth: this.mobileWidth() ? 99 : 100,
         className: 'table_col_value',
         filterMethod: (filter, row) => {
           if(filter.value === 'All') {
@@ -95,6 +100,7 @@ class ApiKeys extends React.Component {
       }, {
         id: '_id',
         className: 'table_col_value',
+        minWidth: this.mobileWidth() ? 75 : 100,
         Header: (<div className="table_header_wrapper">
           <span className="table_header">Balance,<br/>BTC</span>
           <div className="sort_icon_wrapper" style={{display: 'block', margin: 0}}>
@@ -104,6 +110,8 @@ class ApiKeys extends React.Component {
         accessor: key => key.currencies ? key.currencies.reduce((sum, c) => sum + (c.amount || 0), 0) : 0
       }, {
         Header: '',
+        minWidth: this.mobileWidth() ? 44 : 30,
+        className: 'table_col_delete',
         Cell: row => {
           const canDeleteKey = row.original.state === 'FREE';
           const onClick = canDeleteKey ? e => {
@@ -113,7 +121,7 @@ class ApiKeys extends React.Component {
           const className = classNames('delete_key_button', {can_delete_key: canDeleteKey});
           return (<div className={className} onClick={onClick}></div>);
         },
-        width: 30
+
       }
     ];
     return (

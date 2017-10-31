@@ -63,6 +63,23 @@
     display: block;
   }
 
+  .keys_tables_wrapper .table_title_wrapper {
+    margin-top: 0px;
+  }
+
+  .keys_tables_wrapper .ReactTable .table_header_wrapper__align {
+    width: 85px;
+    margin-left: auto;
+  }
+
+  .keys_tables_wrapper .ReactTable .key_name_text_td {
+    width: 74px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin-left: auto;
+    text-align: left
+  }
+
 
   .table_wrapper .table {
     border: 0;
@@ -110,9 +127,6 @@
   .table_col_value {
     font-size: 1.2em;    
   }
-  .sort_icon_wrapper {
-    margin-top: 8px !important;
-  }
   .ReactTable .rt-thead .rt-tr {
     padding-top: 22px;
   }
@@ -120,7 +134,7 @@
     margin-left: 0px;
   }
   .ReactTable .rt-td {
-    text-align: center !important;
+    text-align: center;
     overflow: hidden;
     text-overflow: ellipsis;    
   }
@@ -129,6 +143,10 @@
   }
   .rt-tbody {
     border-top: 0;
+  }
+
+  .keys_tables_wrapper .ReactTable .rt-td.table_col_delete {
+    text-align: left !important;
   }
 
   .api_keys_table .ReactTable .rt-tr-group .rt-tr {
@@ -303,6 +321,33 @@
   .contracts_table .ReactTable .rt-tr-group .rt-tr {
     min-height: 25px;
     line-height: 25px;
+  }
+
+  .contracts_table .fee_column .contract_header_wrapper .sort_icon_wrapper,
+  .contracts_table .status_column .contract_header_wrapper .sort_icon_wrapper
+   {
+    margin-top: 23px;
+  }
+  .contracts_table_wrapper .ReactTable .table_header_wrapper__align {
+    width: 62px;
+    margin-left: auto;
+  }
+  .contracts_table_wrapper .ReactTable .contractor_link {
+    width: 60px;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin-left: auto;
+    text-align: left;
+  }
+
+  .contracts_table_wrapper .ReactTable .rt-td.table_col_delete {
+    text-align: left !important;
+  }
+
+  .contracts_table_wrapper .ReactTable .tx_column {
+    text-align: left;
+    margin-left: 2px;
   }
   .selected_contract_table  .time_profit_left_border {
     border: 0;
