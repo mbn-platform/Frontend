@@ -89,8 +89,8 @@ class ProfileInfo extends React.Component {
                 <Stats
                   traderRating={this.props.topTraders}
                   investorRating={this.props.topInvesters}
-                  roi={16}
-                  moneyInManagement={20000}
+                  roi={15}
+                  moneyInManagement={this.props.investmentAmount}
                 />
                 <ContractSettings
                   onSaveChangesClick={this.props.onSaveChangesClick}
@@ -118,8 +118,8 @@ class ProfileInfo extends React.Component {
                 <Stats
                   traderRating={this.props.topTraders}
                   investorRating={this.props.topInvesters}
-                  roi={16}
-                  moneyInManagement={20000}
+                  roi={15}
+                  moneyInManagement={this.props.investmentAmount}
                 />
                 {
                   this.state.showSelectApiKey ?
