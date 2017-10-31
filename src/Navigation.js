@@ -33,11 +33,11 @@ class Navigation extends React.Component {
   render() {
     return (
       <Col xs="12" md="auto" className="d-block d-md-block menu-panel ">
-        <Navbar expand="md"  >
+        <Navbar expand="lg"  >
           <NavbarBrand className="d-inline-block d-md-none" tag="div">
             <img src={LogoMobile} alt=""/>
           </NavbarBrand>
-          <NavbarToggler onClick={this.toggle} />
+          <NavbarToggler onClick={this.toggle} className={this.state.isOpen ? '' : 'collapsed'} />
           <Collapse isOpen={this.state.isOpen} className="ml-auto ml-md-0" navbar>
             <Nav pills className="flex-column w-100 align-middle" tag="div">
               {this.getLogo()}
@@ -60,7 +60,9 @@ class Navigation extends React.Component {
                   <Col xs="3" md="12" className="d-flex justify-content-end justify-content-md-center">
                     <div className={classNames(imgClass, 'image')} />
                   </Col>
-                  <Col xs="auto" className="d-flex d-md-none"/>
+                  <Col xs="auto" className="d-flex d-md-none">
+                    <div className="gap"/>
+                  </Col>
                   <Col xs="3" md="12" className="d-flex justify-content-start justify-content-md-center">
                     <div className="menu-text">{name}</div>
                   </Col>
