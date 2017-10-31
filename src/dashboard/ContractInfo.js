@@ -7,10 +7,24 @@ class ContractInfo extends React.Component {
   render() {
     return (
       <div>
-        <TimeLeft />
-        <ProgressBar progress={50} />
-        <ProfitLeft />
-        <ProgressBar progress={30} />
+        <div className="time_left">
+          <TimeLeft />
+          <ProgressBar progress={50} />
+        </div>
+        <div className="profit_left">
+          <ProfitLeft />
+          <ProgressBar progress={30} />
+        </div>
+      <div className="table_rewind_page">
+        <div className="table_rewind_page_wrapper">
+          <div className="table_prev_page">
+            <div className="table_prev_page--button"></div>
+          </div>
+          <div className="table_next_page">
+            <div className="table_next_page--button"></div>
+          </div>
+        </div>
+      </div>        
       </div>
     );
   }
@@ -23,22 +37,22 @@ const TimeLeft = () => (
         <div className="time_left_title">time left to complete:</div>
       </div>
       <div className="time_left_counts_wrapper">
-        <div className="time_left_count_wrapper">
+        <div className="time_left_count_wrapper days">
           <div className="time_left_count_big green">45</div>
           <div className="time_left_count_small">days</div>
         </div>
-        <div className="time_left_count_wrapper"><span className="dots_couple green">:</span></div>
-        <div className="time_left_count_wrapper">
+        <div className="time_left_count_wrapper dots"><span className="dots_couple green">:</span></div>
+        <div className="time_left_count_wrapper hours">
           <div className="time_left_count_big green">4</div>
           <div className="time_left_count_small">hours</div>
         </div>
-        <div className="time_left_count_wrapper"><span className="dots_couple green">:</span></div>
-        <div className="time_left_count_wrapper">
+        <div className="time_left_count_wrapper dots-second"><span className="dots_couple green">:</span></div>
+        <div className="time_left_count_wrapper min">
           <div className="time_left_count_big green">21</div>
           <div className="time_left_count_small">min</div>
         </div>
       </div>
-    </div>
+    </div>    
   </div>
 );
 

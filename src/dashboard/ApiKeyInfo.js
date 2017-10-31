@@ -117,6 +117,9 @@ class ApiKeyInfo extends React.Component {
         <div className="table_title_wrapper clearfix">
           <div className="table_title">Currencies</div>
         </div>
+        <div className="tooltip-mobile-box">
+          Selected key pairs allowed for trading.
+        </div>
         <ReactTable
           style={{height: 312}}
           data={this.state.currencies}
@@ -155,7 +158,7 @@ const StatusHeader = (onSelectAllClicked) => {
       <div className="table_header_help_wrapper">
         <div className="table_header_help_text">This is a link on etherscan.io which contains all details of your contract.</div>
       </div>
-      <div className="sort_icon_wrapper" style={{marginLeft: 20}}>
+      <div className="sort_icon_wrapper">
         <div className="green_arrow green_arrow_bottom" ></div>
       </div>
       <div className="title_green_arrows_wrapper">

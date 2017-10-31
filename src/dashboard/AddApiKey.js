@@ -47,6 +47,9 @@ class AddApiKey extends React.Component {
   render() {
     return (
       <div className="add_keys_form_wrapper">
+        <div className='table_title_wrapper clearfix'>
+          <div className="table_title">Add key</div>
+        </div>
         <form className="add_keys_form" onSubmit={this.onSubmit}>
           <div className="add_keys_str">
             <div className="add_keys_field_wr">
@@ -58,13 +61,14 @@ class AddApiKey extends React.Component {
                 name="name"
                 placeholder="Name"
               />
-            </div>
-            <div className="add_keys_field_wr select_wr">
               <ExchangeSelect
                 exchanges={this.props.exchanges}
                 onChange={this.handleExchangeChange}
                 exchange={this.state.exchange}
               />
+              <div className="keys_submit_wrapper mobile">
+                <input className="keys_submit" type="submit" value="Add key"/>
+              </div>              
             </div>
             <div className="add_keys_double_field_wr clearfix">
               <input className="add_keys_field add_keys_field_key"
@@ -83,7 +87,7 @@ class AddApiKey extends React.Component {
                 placeholder="Secret"
               />
             </div>
-            <div className="keys_submit_wrapper">
+            <div className="keys_submit_wrapper desktop">
               <input className="keys_submit" type="submit" value="Add key"/>
             </div>
           </div>

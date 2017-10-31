@@ -57,6 +57,16 @@ class ApiKeys extends React.Component {
           <SegmentedControl selectedIndex={this.state.selectedTab} segments={['MINE', 'OTHER']} onChange={this.onTabChange}/>
         </div>
         {this.renderContent()}
+        <div className="table_rewind_page">
+          <div className="table_rewind_page_wrapper">
+            <div className="table_prev_page">
+              <div className="table_prev_page--button"></div>
+            </div>
+            <div className="table_next_page">
+              <div className="table_next_page--button"></div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -123,7 +133,7 @@ class ApiKeys extends React.Component {
 
 const ExchangeHeader = (exchanges, value, onChange) => {
   return (
-    <div className="table_header_wrapper" style={{paddingLeft: 15}}>
+    <div className="table_header_wrapper">
       <span className="table_header">Exchange</span>
       <div className="sort_icon_wrapper">
         <div className="green_arrow green_arrow_bottom" ></div>
