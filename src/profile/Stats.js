@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col } from 'reactstrap';
+import { UncontrolledTooltip } from 'reactstrap';
 
 
 const Stats = ({ traderRating, investorRating, roi, moneyInManagement })  => (
@@ -23,7 +24,11 @@ const Stats = ({ traderRating, investorRating, roi, moneyInManagement })  => (
               return on investment (ROI):
             </div>
             <div className="value-text">
-              {roi}<span className="number-value-text"> %</span> <span className="icon icon-help icon-help-web-button"  data-toggle="popover" data-trigger="hover" data-content="ROI CALCULATED BY MERCATUS ANALYSIS SYSTEM"></span>
+              {roi}<span className="number-value-text"> %</span> <span className="icon icon-help icon-help-web-button"  id="help-icon-roi"></span>
+              <UncontrolledTooltip target="help-icon-roi">
+                ROI CALCULATED BY MERCATUS ANALYSIS SYSTEM
+              </UncontrolledTooltip>
+
             </div>
           </Col>
         </div>

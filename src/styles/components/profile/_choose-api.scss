@@ -10,6 +10,7 @@
               margin-top: 42px;
               letter-spacing: 1px;
               text-align: center;
+              text-transform: uppercase;
             }			
           }
           .separate-second-block {
@@ -22,15 +23,29 @@
               background: linear-gradient( 90deg, rgb(35,38,41) 0%, rgba(114,114,116,.6) 48%, rgba(35,38,41,1) 100%);
             }
           }
+          .ReactTable {
+            margin-top: 26px;
+          }
           .rt-table {
             .rt-tbody {
               border: none;
+            }
+            .table_header {
+              min-height: 50px;
+            }
+            .table_filter_wrapper {
+              margin: auto;
+              padding: 10px 15px 0 15px;
             }
             .add_keys_select_wr {
               padding-left: 17px;
 
             }
-            .rt-td:first-child {
+            .rt-td > :first-child {
+              margin-left: 0;
+              text-align: center;
+            }
+            .rt-tr > :first-child {
               margin-left: 0;
               text-align: center;
             }

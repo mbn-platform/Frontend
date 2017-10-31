@@ -37,7 +37,7 @@ class TradeHistory extends React.Component {
   }
 
   renderTable() {
-    const data = [{date: '123', type: 'buy', price: 1, curency: 'BTC', amount: 3, total: 4, tx: ''}, {date: '123', type: 'buy', price: 2, curency: 'BTC', amount: 5, total: 2, tx: ''}];
+    const data = [{date: '123', type: 'Buy', price: 1, curency: 'BTC', amount: 3, total: 4, tx: ''}, {date: '123', type: 'Sell', price: 2, curency: 'BTC', amount: 5, total: 2, tx: ''}];
     const columns = [
       {
         Header: SortableHeader('Date'),
@@ -47,6 +47,7 @@ class TradeHistory extends React.Component {
       },
       {
         Header: SortableHeader('Type'),
+        Cell: TradeTypeCell,
         accessor: 'type',
         className: 'table_col_value',
       },
@@ -93,5 +94,10 @@ const SortableHeader = (header, showSort = true) => (
     ) : null}
   </div>
 );
+
+const TradeTypeCell = row => {
+  const className = row.original.type === 'Buy' ? 'green' : 'red';
+  return (<div className={className}>{row.original.type}</div>);
+};
 
 export default TradeHistory;

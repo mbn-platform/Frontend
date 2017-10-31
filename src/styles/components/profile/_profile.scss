@@ -1,10 +1,22 @@
 .main-panel.container-fluid {
 	.table-screen {
 		.ReactTable {
+      .rt-td > :first-child {
+        margin-left: 0;
+        text-align: center;
+      }
+      .rt-tr > :first-child {
+        margin-left: 0;
+        text-align: center;
+      }
 			.table_header {
 				line-height: 50px;
 				color: white;
 			}
+      .table_filter_wrapper {
+        margin: auto;
+        padding: 0 10px 0 10px;
+      }
 		}
 	}
 	.row {
@@ -338,6 +350,14 @@
 			}
 
 			.trade-history {
+        .ReactTable {
+          .red {
+            color: #dd4c4c;
+          }
+          .green {
+            color: #32ba94;
+          }
+        }
 							.card {
 											.card-body {
 															.table {
@@ -607,6 +627,7 @@
 			.info-screen {
 							background-color: #232629;
 							.title-text {
+                      text-transform: uppercase;
 											font-size: 2.4em;
 											color: #bfbfc1;
 											margin-top: 30px;
@@ -667,6 +688,7 @@
 											}
 							}
 							.raiting-block {
+                      letter-spacing: 1px;
 											text-transform: uppercase;
 											margin-top: 33px;
 											padding: 0px 43px 0 62px;

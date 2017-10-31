@@ -78,6 +78,7 @@ class CurrencySettings extends React.Component {
         accessor: 'roi'
       }, {
         id: 'selected',
+        maxWidth: 80,
         Header: StatusHeader(this.onSelectAllClicked),
         Cell: row => (
           <span onClick={e => {
@@ -113,7 +114,7 @@ class CurrencySettings extends React.Component {
   }
 }
 const SortableTableHeader = header => (
-  <div className="table_header_wrapper contract_header_wrapper">
+  <div className="table_header_wrapper">
     <div className="table_header">{header}</div>
     <div className="sort_icon_wrapper">
       <div className="green_arrow"></div>
