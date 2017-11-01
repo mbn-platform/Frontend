@@ -1,6 +1,6 @@
 import { generateId } from './util';
 
-export const generateProfile = () => {
+export const generateProfile = (profileName) => {
   const _id = generateId();
   const feedbacks= [];
   const availableForOffers = Math.random() * 2 < 1;
@@ -10,7 +10,7 @@ export const generateProfile = () => {
   const minAmountCurrency = 'USDT';
   const duration = Math.floor(Math.random() * 15 + 15);;
   const maxLoss = Math.floor(Math.random() * 10 + 10);
-  const name = 'my_profile';
+  const name = profileName  || 'my_profile';
   const currencies = ['ETH', 'USDT', 'BTC'].map(currency);
   return {
     _id, feedbacks, availableForOffers,
