@@ -7,6 +7,7 @@ import { sendOffer } from '../actions/offers';
 import { fetchDashboardData } from '../actions/dashboard';
 import { updateExchagnes } from '../actions/exchanges';
 import { updateProfile } from '../actions/profile';
+import { generateProfile } from '../demoData/profile';
 
 class Profile extends React.Component {
 
@@ -58,18 +59,22 @@ class Profile extends React.Component {
   }
 
   updateProfile(name) {
-    window.fetch(`/api/profile/${name}`, {
-      credentials: 'same-origin'
-    })
-      .then(res => res.json())
-      .then(profile => {
-        this.setState(profile);
-      });
+    if(name === this.props.profile.name) {
+      this.setState(this.props.profile);
+    } else {
+      this.setState(generateProfile(name));
+    }
   }
 
   componentWillReceiveProps(nextProps) {
     const name = nextProps.match.params.id;
-    this.updateProfile(name);
+    if(name === nextProps.profile.name) {
+      this.setState(nextProps.profile);
+    } else if(name === this.state.name) {
+      return;
+    } else {
+      this.setState(generateProfile(name));
+    }
   }
 
   render() {
