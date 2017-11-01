@@ -6,7 +6,6 @@ import { combineReducers } from 'redux';
 const KEYS = {ownKeys: [], receivedKeys: []};
 
 function ownKeys(keys = [], action) {
-  console.log(action);
   switch(action.type) {
     case DELETE_API_KEY:
       return keys.filter(k => k._id !== action.apiKey._id);

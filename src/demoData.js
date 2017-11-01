@@ -2,10 +2,11 @@ import { generateKeys } from './demoData/apiKeys';
 import { generateId } from './demoData/util';
 import { generateOffer } from './demoData/offers';
 import { generateContract } from './demoData/contracts';
+import { generateProfile } from './demoData/profile';
 
 export default function generateData() {
-  const profileId = generateId();
-  const apiKeys = generateKeys(profileId);
+  const profile = generateProfile();
+  const apiKeys = generateKeys(profile._id);
   const outgoingOffer = generateOffer(apiKeys.ownKeys[1]._id, 'INIT', 'me', 'other');
   const incomingOffer = generateOffer(apiKeys.receivedKeys[0]._id, 'INIT', 'me', 'other');
   const myContract = generateContract(apiKeys.ownKeys[2]._id, 'in_progress', 'SOME_TRADER');
@@ -16,7 +17,7 @@ export default function generateData() {
   const failedContract = generateContract(apiKeys.ownKeys[2]._id, 'failed', 'BEST_TRADER');
   const receivedContract = generateContract(apiKeys.ownKeys[1]._id, 'in_progress', 'me');
   return {
-    auth: {loggedIn: true, profile: {_id: profileId}},
+    auth: {loggedIn: true, profile},
     apiKeys,
     offers: {incoming: [incomingOffer], outgoing: [outgoingOffer]},
     contracts: [myContract, completedContract, failedContract, receivedContract, completed2, completed3, completed4]
