@@ -147,6 +147,16 @@
     border-top: 0;
   }
 
+  .api_key_currencies_table .ReactTable .rt-tr-group .rt-tr.-odd,
+  .contracts_table_wrapper .ReactTable .rt-tr-group .rt-tr.-odd {
+    background: #232629;
+  }
+
+  .api_key_currencies_table .ReactTable .rt-tr-group .rt-tr.-even,
+  .contracts_table_wrapper .ReactTable .rt-tr-group .rt-tr.-even {
+    background: transparent;
+  }
+
   .keys_tables_wrapper .ReactTable .rt-td.table_col_delete {
     text-align: left !important;
   }
