@@ -68,7 +68,7 @@ class Offers extends React.Component {
         };
         return (
           <div className="table_requests_control_wr clearfix">
-            <div className="table_requests_control_text">Do you want to accept this request?</div>
+            <div className="table_requests_control_text">accept this request?</div>
             <div className="table_requests_control_btns">
               <a onClick={onAcceptClick}
                 className="table_requests_yes table_requests_btn" href="">Yes</a>
@@ -175,7 +175,7 @@ const OfferCell = (onPayClick) => {
       style.width = ratio + '%';
       const wrStyle = {height: 'auto'};
       return (
-        <div style={wrStyle}>{formatTime(rowInfo.value)}
+        <div className="request_progress_txt" style={wrStyle}>{formatTime(rowInfo.value)}
           <div className="request_progress_wr">
             <div className="request_progress" style={style}></div>
           </div>

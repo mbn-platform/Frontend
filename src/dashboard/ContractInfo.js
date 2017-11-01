@@ -6,18 +6,34 @@ import './ContractInfo.css';
 class ContractInfo extends React.Component {
 
   render() {
-    const now = Date.now()
+    const now = Date.now();
     const expireDate = this.props.contract.expireDate;
     const startDate = this.props.contract.startDate;
-    const progress = (expireDate - now) / (expireDate - startDate) * 100
+    const progress = (expireDate - now) / (expireDate - startDate) * 100;
     const { startBalance, currentBalance, left} = this.props.contract;
     const profitProgress = currentBalance > startBalance ? (1 - left / (left + currentBalance)) * 100 : 0;
     return (
       <div>
-        <TimeLeft startDate={this.props.contract.startDate} expireDate={this.props.contract.expireDate} progress={progress}/>
-        <ProgressBar progress={progress} />
-        <ProfitLeft {...this.props.contract} progress={profitProgress}/>
-        <ProgressBar progress={profitProgress} />
+        <div className="time_left">
+          <div className="time_left_wrapper">
+            <TimeLeft startDate={this.props.contract.startDate} expireDate={this.props.contract.expireDate} progress={progress}/>
+            <ProgressBar progress={progress} />
+          </div>
+        </div>
+        <div className="profit_left">
+          <ProfitLeft {...this.props.contract} progress={profitProgress}/>
+          <ProgressBar progress={profitProgress} />
+        </div>
+        <div className="table_rewind_page">
+          <div className="table_rewind_page_wrapper">
+            <div className="table_prev_page">
+              <div className="table_prev_page--button"></div>
+            </div>
+            <div className="table_next_page">
+              <div className="table_next_page--button"></div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -33,7 +49,7 @@ class TimeLeft extends React.Component {
     const minutes = Math.floor(difference % 60000 / 1000);
     const progress = this.props.progress;
     const color = getColor(progress);
-    console.log(color)
+    console.log(color);
     return (
       <div className="time_profit_left_border">
         <div className="time_left_wrapper clearfix">
@@ -41,17 +57,17 @@ class TimeLeft extends React.Component {
             <div className="time_left_title">time left to complete:</div>
           </div>
           <div className={classNames('time_left_counts_wrapper', color)}>
-            <div className="time_left_count_wrapper">
+            <div className="time_left_count_wrapper days">
               <div className="time_left_count_big">{days}</div>
               <div className="time_left_count_small">days</div>
             </div>
-            <div className="time_left_count_wrapper"><span className="dots_couple">:</span></div>
-            <div className="time_left_count_wrapper">
+            <div className="time_left_count_wrapper dots"><span className="dots_couple green">:</span></div>
+            <div className="time_left_count_wrapper hours">
               <div className="time_left_count_big">{hours}</div>
               <div className="time_left_count_small">hours</div>
             </div>
-            <div className="time_left_count_wrapper"><span className="dots_couple">:</span></div>
-            <div className="time_left_count_wrapper">
+            <div className="time_left_count_wrapper dots-second"><span className="dots_couple green">:</span></div>
+            <div className="time_left_count_wrapper min">
               <div className="time_left_count_big">{minutes}</div>
               <div className="time_left_count_small">min</div>
             </div>
@@ -102,7 +118,7 @@ const ProgressBar = ({ progress }) => {
       <div className={className} style={{width: progress + '%'}}></div>
     </div>
   );
-}
+};
 
 ContractInfo.propTypes = {
   contract: PropTypes.object,
