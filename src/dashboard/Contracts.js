@@ -109,7 +109,7 @@ class Contracts extends React.Component {
     }, {
       id: 'currentBalance',
       headerClassName: 'current_balance small_column',
-      className: 'table_col_value',
+      className: 'table_col_value small_column',
       minWidth: this.mobileWidth() ? 82 : 100,
       // minWidth: 85,
       Header: ContractTableHeader('Current\nbalance, %'),
@@ -125,7 +125,7 @@ class Contracts extends React.Component {
     }, {
       Header: ContractTableHeader('Fee, %'),
       headerClassName: 'fee_column small_column',
-      className: 'table_col_value',
+      className: 'table_col_value small_column',
       minWidth: this.mobileWidth() ? 63 : 100,
       // minWidth: 55,
       accessor: 'fee'
