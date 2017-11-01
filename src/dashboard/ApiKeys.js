@@ -57,6 +57,16 @@ class ApiKeys extends React.Component {
           <SegmentedControl selectedIndex={this.state.selectedTab} segments={['MINE', 'OTHER']} onChange={this.onTabChange}/>
         </div>
         {this.renderContent()}
+        <div className="table_rewind_page">
+          <div className="table_rewind_page_wrapper">
+            <div className="table_prev_page">
+              <div className="table_prev_page--button"></div>
+            </div>
+            <div className="table_next_page">
+              <div className="table_next_page--button"></div>
+            </div>
+          </div>
+        </div>        
       </div>
     );
   }
