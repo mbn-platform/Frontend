@@ -206,11 +206,6 @@
     margin-right: auto;
   }
 
-  .keys_tables_wrapper .api_keys_table.table
-  {
-    margin-bottom: 20px;
-  }
-
   .api_keys_table .rt-tr-group:nth-child(n+6), .api_key_currencies_table .rt-tr-group:nth-child(n+6) {
     display: none;
   }
@@ -541,7 +536,7 @@
     text-align: center;
     background: none;
     border: none;
-    padding-bottom: 15px;
+    margin-bottom: 20px;
   }
   .keys_submit
   {
