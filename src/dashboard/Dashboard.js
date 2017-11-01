@@ -52,12 +52,13 @@ class Dashboard extends React.Component {
             onKeyDeleteClick={this.props.onKeyDeleteClick}
             exchanges={this.props.exchanges}
           />
+          <AddApiKey/>
           <ApiKeyInfo
             apiKey={this.state.selectedApiKey}
             exchanges={this.props.exchanges}
             onKeyUpdateClick={this.props.onKeyUpdateClick}
           />
-          <AddApiKey />
+
         </div>
         <div className="table_wrapper requests_table_wrapper">
           <Offers

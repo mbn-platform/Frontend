@@ -12,6 +12,11 @@
   border-radius: 0 4px 0 0;
 }
 
+.api_key_currencies_table {
+  float: right;
+  margin-top: -416px;
+}
+
 .table_requests_control_wr
 {
   background: #2d3034;
