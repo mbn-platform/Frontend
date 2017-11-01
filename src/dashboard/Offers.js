@@ -89,9 +89,6 @@ class Offers extends React.Component {
               <a
                 onClick={onClick}
                 className="table_requests_yes table_requests_btn" href="">Yes</a>
-              <a
-                onClick={onClick}
-                className="table_requests_no table_requests_btn" href="">No</a>                
             </div>
           </div>
         );

@@ -22,10 +22,10 @@
 }
 
 @media only screen and (max-width : 1028px) {
-  .api_keys_table {
+  .api_keys_table, .add_keys_form_wrapper {
     background-color: #1f2225;
   }
-  .api_key_currencies_table, .add_keys_form_wrapper {
+  .api_key_currencies_table {
     background-color: #17191b;
   }  
   .add_keys_form .add_keys_field_wr, .add_keys_form .add_keys_double_field_wr {
@@ -35,10 +35,6 @@
   .contracts_table, .selected_contract_table {
     background-color: #17191b;    
   }  
-
-  .add_keys_form .add_keys_str {
-    margin-bottom: 18px;
-  }
 
   .requests_table_wrapper .ReactTable {
     margin-bottom: 12px;
@@ -59,17 +55,26 @@
     border-radius: 4px;
   }
 
-  .add_keys_form_wrapper .table_title_wrapper {
-    display: block;
+  .api_key_currencies_table {
+    float: inherit;
+    margin-top: 0;
   }
+
+  /*.add_keys_form_wrapper .table_title_wrapper {
+    display: block;
+  }*/
 
   .keys_tables_wrapper .table_title_wrapper {
     margin-top: 0px;
   }
 
-  .keys_tables_wrapper .ReactTable .table_header_wrapper__align {
+  .api_keys_table .ReactTable .table_header_wrapper__align {
     width: 85px;
     margin-left: auto;
+  }
+
+  .api_key_currencies_table .ReactTable .rt-tr > :first-child {
+    text-align: center;
   }
 
   .keys_tables_wrapper .ReactTable .key_name_text_td {
@@ -92,9 +97,6 @@
   }
   .api_keys_table .table_title {
     background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAzUlEQVQokYXQoUoEURSA4W9mp4rYbVtsVl9At+prLIrhMqAm+3ANglarWLQIshYRdi0Gg80XMC4MW0QYgw4Mg7Nz2vnv/8PhJlVV6ZsQ8iOcYJH0BSHk5zio97RHvmnIb9jLOsRVPGCrgV9iLO6yhrSJbXxjH8O/pxL3uIWkqioh5BcYd1w2j7FYq5dBWS7GOO2Q33E5Gu1Ma5DhuEOGsxiLqyZIsb4kGLZBiuclwcd/wWGH/IrrNhzMZtPPyeTxCRtYwdzvF+7GWHy1gx9CoDso+t0bEgAAAABJRU5ErkJggg==) no-repeat 4px center;
-  }
-  .add_keys_select_value_bg {
-    margin-top: 1px;
   }
 
   .table_title {
@@ -199,22 +201,6 @@
     margin-bottom: 20px;
   }
 
-  .add_keys_field {
-    width: 60px;
-    height: 22px;
-    padding-left: 13px;
-    font-size: 1em;
-  }
-  .add_keys_select_wr {
-    height: 22px;
-    line-height: 22px;
-    padding-left: 33px;
-    font-size: 1em;
-  }
-  .add_keys_select_values_list_wr {
-    top: 20px;
-  }
-
   .api_keys_table .rt-tr-group:nth-child(n+6), .api_key_currencies_table .rt-tr-group:nth-child(n+6) {
     display: none;
   }
@@ -313,7 +299,7 @@
   }
 
   .contracts_table .table_title {
-    background: url(../img/table3_icon.png) no-repeat left center;
+    background: url(../img/Contracts.png) no-repeat left center;
   }
   .contracts_table .table_col_value {
     font-size: .8em;
@@ -399,7 +385,6 @@
     width: 116px;
     margin-left: 29px;
     margin-bottom: 30px;
-    /*width: 48%;*/
   }
   .selected_contract_table .progress_bar {
     height: 2px;
@@ -505,18 +490,6 @@
     height: auto;
     border: 0;
   }
-  .add_keys_form .add_keys_field.add_keys_field_name {
-    width: calc(50% - 1px);
-    margin-right: 0px;
-    border-right: 0;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-
-  .add_keys_form .add_keys_select_wr {
-    border-radius: 0;
-  }
-
   .add_keys_str
   {
     padding-top: 15px;
@@ -540,30 +513,6 @@
   {
     width: 50%;
   }
-  .add_keys_form_wrapper .add_keys_select_wr {
-    width: calc(50% - 50px);
-    padding-left: 13px;
-
-  }
-
-  .add_keys_form .add_keys_field {
-    height: 30px;
-  }
-
-  .add_keys_form .add_keys_select_wr {
-    height: 30px;
-  }
-  .add_keys_form .add_keys_select_wr .add_keys_select_values_list_wr {
-    top: 28px;
-  }
-  .add_keys_form .add_keys_select_wr .add_keys_select_value {
-    height: 30px;
-    line-height: 30px;
-  }
-  .add_keys_form .add_keys_select_wr .add_keys_select_value .add_keys_select_value_bg {
-    margin-top: 4px;
-  }
-
   .add_keys_field_wr,
   .add_keys_field_wr.select_wr,
   .add_keys_double_field_wr
@@ -573,63 +522,38 @@
     vertical-align: top;
     margin-bottom: 10px;
   }
-
-  .add_keys_form .add_keys_field_wr,
-  .add_keys_form  .add_keys_field_wr.select_wr,
-  .add_keys_form .add_keys_double_field_wr {
-    margin-bottom: 0;
-  }  
-
-  .add_keys_form .add_keys_field_wr .add_keys_field.add_keys_field_name {
-    border-top-left-radius: 0;
-  }
-
-  .add_keys_form .add_keys_field_wr .add_keys_select_wr {
-    border-top-right-radius: 0;
-  }  
-
-  .add_keys_form .add_keys_double_field_wr .add_keys_field.add_keys_field_key {
-    border-bottom-left-radius: 0;
-  }
-
-  .add_keys_form .add_keys_double_field_wr .add_keys_field.add_keys_field_secret {
-    border-bottom-right-radius: 0;
-  }  
-  .add_keys_form .add_keys_field_wr {
-    margin-top: 30px;
-  }
-  .add_keys_form .add_keys_double_field_wr {
-    margin-top: -60px;
-  }
   .keys_submit_wrapper
   {
     text-align: center;
     background: none;
     border: none;
     padding-bottom: 15px;
-    height: 30px;
   }
-  .keys_submit_wrapper.mobile {
-    display: inline-block;
-  }
-  .keys_submit_wrapper.desktop {
-    display: none;
-  } 
-  .add_keys_form_wrapper .table_title {
-    display: block;
-    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAARCAYAAAA7bUf6AAAAoElEQVQ4jdWSsQ3CMBBFn5GpaWkyAj0D0CUjwADsEFPEQzAAjAAdA9AzAg0tNUhOwVWnnByZKk86/eK+nk6WXUoJixAONXAE9jF2V6s3Mw0/1kAlaZKTvFUWSUYxHclL5SCubUMNrICv2n2ADdAAF+AGzFXHAw8vhRyNzCBeln9d4jI/dgucgF2M3dnq5R52qbJIMorpSBYqiyR34Clp0gMtxCR21XaTNgAAAABJRU5ErkJggg==) no-repeat left center;
-    background-size: 10px;
-  } 
   .keys_submit
   {
-    height: 30px;
-    line-height: 30px;
-    width: 50px;
-    margin-right: 1px;
-    /*margin-left: -1px;*/
-    background-size: 12px;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
     border: 1px solid #44464a;
+    background-image: none;
+    font-size: 1.6em;
     color: #7c7c7d;
-    border-bottom-right-radius: 3px;
+    max-width: 200px;
+  }  
+
+  .ReactTable .add_keys_field {
+    width: 60px;
+    height: 22px;
+    padding-left: 13px;
+    font-size: 1em;
+  }
+  .ReactTable .add_keys_select_wr {
+    height: 22px;
+    line-height: 22px;
+    padding-left: 33px;
+    font-size: 1em;
+  }
+  .ReactTable .add_keys_select_values_list_wr {
+    top: 20px;
   }
 }

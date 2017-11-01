@@ -8,8 +8,10 @@ class ContractInfo extends React.Component {
     return (
       <div>
         <div className="time_left">
-          <TimeLeft />
-          <ProgressBar progress={50} />
+          <div className="time_left_wrapper">
+            <TimeLeft />
+            <ProgressBar progress={50} />
+          </div>
         </div>
         <div className="profit_left">
           <ProfitLeft />
