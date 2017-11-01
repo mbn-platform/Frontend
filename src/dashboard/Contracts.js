@@ -135,6 +135,7 @@ class Contracts extends React.Component {
       Cell: StatusCell,
       minWidth: this.mobileWidth() ? 44 : 100,
       headerClassName: 'status_column small_column',
+      show: this.mobileWidth(),
       // minWidth: 80,
       className: 'small_column'
     }, {
