@@ -357,7 +357,7 @@
     margin-top: -5px;
   }
   .selected_contract_table .time_left_wrapper {
-    margin-top: 12px;
+    width: auto;
   }
   .selected_contract_table .time_left_title_wr {
     background: transparent;
@@ -366,7 +366,7 @@
     height: 20px;
     line-height: 20px;
     text-align: left;
-    margin-left: 29px;
+    margin-left: 0;
   }
 
   .selected_contract_table .time_left_title_wr .time_left_title {
@@ -374,7 +374,7 @@
   }
   .selected_contract_table .time_left_counts_wrapper {
     width: auto;
-    margin-left: 29px;
+    margin-left: 0;
     height: 40px;
     line-height: 40px;    
   }
@@ -393,7 +393,7 @@
   .selected_contract_table .progress_bar_wrapper {
     height: 2px;
     width: 116px;
-    margin-left: 29px;
+    margin-left: 0;
     margin-bottom: 30px;
   }
   .selected_contract_table .progress_bar {
@@ -402,12 +402,16 @@
 
   .selected_contract_table .time_left {
     display: inline-block;
-    width: 48%;
+    width: 46%;
+  }
+  .selected_contract_table .time_left_wrapper {
+    margin-left: auto;
+    width: 116px;
   }
   .selected_contract_table .profit_left {
     display: inline-block;
-    width: 48%;
-    margin-left: 7px;
+    width: 46%;
+    margin-left: 16px;
   }
   .selected_contract_table .profit_left .profit_left_count {
     font-size: 2.7em;
