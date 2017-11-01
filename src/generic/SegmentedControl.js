@@ -1,5 +1,6 @@
 import React from 'react';
 import './SegmentedControl.css';
+import classNames from 'classnames';
 
 class SegmentedControl extends React.Component {
   constructor(props) {
@@ -21,10 +22,12 @@ class SegmentedControl extends React.Component {
   }
 
   render() {
+    const width = this.props.segmentWidth * this.props.segments.length;
+    const style = {width};
     return (
-      <div className="table_title_tabs_wr">
+      <div style={style} className={classNames('table_title_tabs_wr', this.props.className)}>
         {this.props.segments.map((segment, index) => (
-          <div className={classNameForTab(this.props.selectedIndex, index)} data-index={index} onClick={this.onChange} key={segment}>{segment}</div>
+          <div className={classNames('table_title_tab', {selected: index === this.props.selectedIndex})} data-index={index} onClick={this.onChange} key={segment}>{segment}</div>
         )
         )}
       </div>
@@ -33,14 +36,15 @@ class SegmentedControl extends React.Component {
 }
 
 SegmentedControl.defaultProps = {
-  selectedIndex: 0
+  selectedIndex: 0,
+  segmentWidth: 80,
 }
 
 function classNameForTab(selectedIndex, tabIndex) {
   if(selectedIndex === tabIndex) {
-    return 'table_title_tab selected';
+    return 'segmented-control-tab selected';
   } else {
-    return 'table_title_tab';
+    return 'segmented-control-tab';
   }
 }
 

@@ -9,6 +9,12 @@
   box-sizing: border-box;
 }
 
+.table_title_wrapper .table_title_tabs_wr
+{
+  margin-right: 20px;
+  float: right;
+}
+
 .table_wrapper .table
 {
   width: 100%;

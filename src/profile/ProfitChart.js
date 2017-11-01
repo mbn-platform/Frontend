@@ -118,8 +118,9 @@ class ProfitChart extends React.Component {
                 <div className="col-auto title-text">
                   <span className="icon icon-profit icon-005-growth"></span>PROFIT CHART
                 </div>
-                <Col>
+                <Col className="d-flex justify-content-end">
                   <SegmentedControl
+                    className="currency-button"
                     segments={['USD', 'BTC']}
                     selectedIndex={this.state.selectedCurrency}
                     onChange={i => this.setState({selectedCurrency: i})}
