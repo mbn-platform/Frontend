@@ -397,7 +397,7 @@
 
   .selected_contract_table .time_left {
     display: inline-block;
-    width: 46%;
+    width: 48%;
   }
   .selected_contract_table .time_left_wrapper {
     margin-left: auto;
