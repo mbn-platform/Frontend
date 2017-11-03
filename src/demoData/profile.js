@@ -28,4 +28,3 @@ const currency = name => {
   };
 };
 
-console.log(generateProfile());

@@ -6,5 +6,5 @@ export function generateOffer(keyId, state, from, to) {
   const amount = Math.floor(Math.random() * 90 + 10);
   const fee = Math.floor(Math.random() * 20 + 10);
   return {_id: generateId(), keyId, state, date, amount,
-    fee, maxLoss, from, to};
+    fee, maxLoss, fromUser: [{name: from}], toUser: [{name: to}]};
 }

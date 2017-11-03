@@ -25,8 +25,15 @@ function getReduxState() {
   const state = localStorage.getItem('reduxState');
   const lastUpdated = localStorage.getItem('demoDataLastUpdated') || 0;
   if(Date.now() - lastUpdated < 30 * 60 * 1000 && state) {
-    saveState(JSON.parse(state));
-    return JSON.parse(state);
+    try {
+      const json = JSON.parse(state);
+      saveState(json);
+      return json;
+    } catch(e) {
+      const data = newFakeData();
+      saveState(data);
+      return data;
+    }
   } else {
     const data = newFakeData();
     saveState(data);
