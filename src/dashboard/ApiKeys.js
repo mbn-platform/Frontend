@@ -5,6 +5,8 @@ import ReactTable from '../generic/SelectableReactTable';
 import ExchangeSelect from './ExchangeSelect';
 import SearchHeader from '../generic/SearchHeader';
 import classNames from 'classnames';
+import { Desktop, Mobile } from '../generic/MediaQuery';
+import Pagination from '../generic/Pagination';
 import './ApiKeys.css';
 
 class ApiKeys extends React.Component {
@@ -57,38 +59,24 @@ class ApiKeys extends React.Component {
           <SegmentedControl selectedIndex={this.state.selectedTab} segments={['MINE', 'OTHER']} onChange={this.onTabChange}/>
         </div>
         {this.renderContent()}
-        <div className="table_rewind_page">
-          <div className="table_rewind_page_wrapper">
-            <div className="table_prev_page">
-              <div className="table_prev_page--button"></div>
-            </div>
-            <div className="table_next_page">
-              <div className="table_next_page--button"></div>
-            </div>
-          </div>
-        </div>        
       </div>
     );
   }
-  mobileWidth() {
-    return window.outerWidth < 1028;
-  }
-  renderContent() {
-    const { apiKeys } = this.props;
-    const data = this.state.selectedTab ? apiKeys.receivedKeys : apiKeys.ownKeys;
+
+  getColumns() {
     const nameFilter = this.state.filtered.find(f => f.id === 'name').value;
     const exchangeFilter = this.state.filtered.find(f => f.id === 'exchange').value;
-    const columns = [
+    return [
       {
         Header: SearchHeader('Key name', nameFilter, this.onFilter),
         className: 'table_col_value',
         Cell: row => (<div className="key_name_text_td">{row.value}</div>),
-        minWidth: this.mobileWidth() ? 102 : 100,
+        minWidth: 102,
         accessor: 'name'
       }, {
         Header: ExchangeHeader(this.props.exchanges, exchangeFilter, this.onExchangeChange),
         accessor: 'exchange',
-        minWidth: this.mobileWidth() ? 99 : 100,
+        minWidth: 99,
         className: 'table_col_value',
         filterMethod: (filter, row) => {
           if(filter.value === 'All') {
@@ -100,7 +88,7 @@ class ApiKeys extends React.Component {
       }, {
         id: '_id',
         className: 'table_col_value',
-        minWidth: this.mobileWidth() ? 75 : 100,
+        minWidth: 75,
         Header: (<div className="table_header_wrapper">
           <span className="table_header">Balance,<br/>BTC</span>
           <div className="sort_icon_wrapper" style={{display: 'block', margin: 0}}>
@@ -110,7 +98,7 @@ class ApiKeys extends React.Component {
         accessor: key => key.currencies ? key.currencies.reduce((sum, c) => sum + (c.amount || 0), 0) : 0
       }, {
         Header: '',
-        minWidth: this.mobileWidth() ? 44 : 30,
+        minWidth: 44,
         className: 'table_col_delete',
         Cell: row => {
           const canDeleteKey = row.original.state === 'FREE';
@@ -124,16 +112,37 @@ class ApiKeys extends React.Component {
 
       }
     ];
+  }
+  renderContent() {
+    const { apiKeys } = this.props;
+    const data = this.state.selectedTab ? apiKeys.receivedKeys : apiKeys.ownKeys;
     return (
-      <ReactTable
-        style={{height: 312}}
-        columns={columns}
-        data={data}
-        filtered={this.state.filtered}
-        selectedItem={this.props.selectedApiKey}
-        onItemSelected={key => this.props.onKeySelected(key)}
-        scrollBarHeight={217}
-      />
+      <div>
+        <Desktop>
+          <ReactTable
+            style={{height: 312}}
+            columns={this.getColumns()}
+            data={data}
+            filtered={this.state.filtered}
+            selectedItem={this.props.selectedApiKey}
+            onItemSelected={key => this.props.onKeySelected(key)}
+            scrollBarHeight={217}
+          />
+        </Desktop>
+        <Mobile>
+          <ReactTable
+            columns={this.getColumns()}
+            data={data}
+            filtered={this.state.filtered}
+            selectedItem={this.props.selectedApiKey}
+            onItemSelected={key => this.props.onKeySelected(key)}
+            minRows={5}
+            showPagination={true}
+            defaultPageSize={5}
+            PaginationComponent={Pagination}
+          />
+        </Mobile>
+      </div>
     );
   }
 }
