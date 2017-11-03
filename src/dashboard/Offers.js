@@ -111,8 +111,7 @@ class Offers extends React.Component {
       className: 'table_col_value',
       accessor: offer => {
         const date = new Date(offer.date);
-        const current = Date.now();
-        return current - date.getTime();
+        return this.props.time - date.getTime();
       },
       Cell: OfferCell(this.onOfferPayClick)
     }, {
@@ -147,34 +146,29 @@ const SortHeader = header => (
 
 const OfferCell = (onPayClick) => {
   return rowInfo => {
+    let ratio = Math.abs((1 - rowInfo.value / 86400000) * 100);
+    ratio = ratio > 100 ? 1 : ratio;
+    const style = {width: Math.floor(ratio) + '%'};
+    const progressColor = getColorClass(ratio);
     if(rowInfo.original.state === 'ACCEPTED') {
       const onClick = e => {
         e.stopPropagation();
         onPayClick(rowInfo.original);
       };
-      const style ={width: '60%', background: '#ffad39'};
-      const ratio = Math.floor(Math.random() * 100);
-      const color = getColorClass(ratio);
       return (
         <div onClick={onClick}
           className="pay_request_wrapper">
           <span className="pay_request_btn_txt">pay</span>
           <div className="request_progress_wr">
-            <div className={classNames('request_progress', color)} style={style}></div>
+            <div className={classNames('request_progress', progressColor)} style={style}></div>
           </div>
         </div>
       );
     } else {
-      const value = rowInfo.value;
-      const style = {};
-      let ratio = Math.abs(1 - value / 86400000) * 100;
-      ratio = ratio > 100 ? 100 : ratio;
-      const color = getColorClass(ratio);
-      style.width = ratio + '%';
       return (
         <div className="request_progress_txt"><div>{formatTime(rowInfo.value)}</div>
           <div className="request_progress_wr">
-            <div className={classNames('request_progress', color)} style={style}></div>
+            <div className={classNames('request_progress', progressColor)} style={style}></div>
           </div>
         </div>
       );
@@ -183,7 +177,7 @@ const OfferCell = (onPayClick) => {
 };
 
 function getColorClass(progress) {
-  if(progress  > 66) {
+  if(progress > 66) {
     return 'green-m';
   } else if(progress > 33) {
     return 'yellow-m';

@@ -62,6 +62,7 @@ class Dashboard extends React.Component {
         </div>
         <div className="table_wrapper requests_table_wrapper">
           <Offers
+            time={this.props.time}
             onOfferCanceled={this.props.onOfferCanceled}
             onOfferRejected={this.props.onOfferRejected}
             onOfferAccepted={this.props.onOfferAccepted}
