@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import SegmentedControl from '../generic/SegmentedControl';
 import ReactTable from '../generic/SelectableReactTable';
+import classNames from 'classnames';
 import './Offers.css';
 
 class Offers extends React.Component {
@@ -102,6 +103,7 @@ class Offers extends React.Component {
       Header: SortHeader('From'),
       id: 'name',
       accessor: o => o.fromUser ? o.fromUser[0].name : '',
+      Cell: row => (<div className="contractor_link">@<Link className="table_col_value_a" to={'/' + row.value}>{row.value}</Link></div>),
       className: 'table_col_value'
     }, {
       id: '_id',
@@ -151,12 +153,14 @@ const OfferCell = (onPayClick) => {
         onPayClick(rowInfo.original);
       };
       const style ={width: '60%', background: '#ffad39'};
+      const ratio = Math.floor(Math.random() * 100);
+      const color = getColorClass(ratio);
       return (
         <div onClick={onClick}
           className="pay_request_wrapper">
           <span className="pay_request_btn_txt">pay</span>
           <div className="request_progress_wr">
-            <div className="hours_scale" style={style}></div>
+            <div className={classNames('request_progress', color)} style={style}></div>
           </div>
         </div>
       );
@@ -165,25 +169,28 @@ const OfferCell = (onPayClick) => {
       const style = {};
       let ratio = Math.abs(1 - value / 86400000) * 100;
       ratio = ratio > 100 ? 100 : ratio;
-      if(ratio > 66) {
-        style.background = '#52e069';
-      } else if(ratio > 33) {
-        style.background = '#ffad39';
-      } else {
-        style.background = '#c94546';
-      }
+      const color = getColorClass(ratio);
       style.width = ratio + '%';
-      const wrStyle = {height: 'auto'};
       return (
-        <div className="request_progress_txt" style={wrStyle}>{formatTime(rowInfo.value)}
+        <div className="request_progress_txt"><div>{formatTime(rowInfo.value)}</div>
           <div className="request_progress_wr">
-            <div className="request_progress" style={style}></div>
+            <div className={classNames('request_progress', color)} style={style}></div>
           </div>
         </div>
       );
     }
   };
 };
+
+function getColorClass(progress) {
+  if(progress  > 66) {
+    return 'green-m';
+  } else if(progress > 33) {
+    return 'yellow-m';
+  } else {
+    return 'red-m';
+  }
+}
 
 
 

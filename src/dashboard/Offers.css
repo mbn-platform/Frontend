@@ -4,15 +4,14 @@
 }
 .pay_request_wrapper
 {
-  display: inline-block;
+  border-radius: 5px;
+  background-color: #2b2f34;
+  box-shadow: 0px 3px 40px 0px rgba(0, 0, 0, 0.22);
+  max-width: 93px;
   width: 100%;
-  max-width: 100px;
-  border: 1px solid #b8b8ba;
-  border-radius: 2px 2px 0 0;
-  border-bottom: 0;
-  box-sizing: border-box;
-  height: 20px;
-  line-height: 20px;
+  height: 100%;
+  line-height: normal;
+  margin: auto;
   transition-property: color, background-color;
   transition-duration: 400ms;
 }
@@ -26,12 +25,18 @@
 }
 .pay_request_btn_txt
 {
+  line-height: 23px;
   font-size: 1em;
   text-transform: uppercase;
-  color: #b8b8ba;
+  color: #868788;
   text-align: center;
   transition-property: color;
   transition-duration: 400ms;
+}
+
+.request_progress_txt
+{
+  line-height: 23px;
 }
 .request_progress_wr
 {
@@ -42,7 +47,7 @@
   line-height: 2px;
   max-width: 100px;
   margin: auto;
-  margin-top: 5px;
+  margin-bottom: 5px;
 }
 .request_progress
 {

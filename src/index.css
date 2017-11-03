@@ -91,3 +91,15 @@ body
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.green-m
+{
+  background: #60a754;
+}
+.yellow-m
+{
+  background: #dcb14a;
+}
+.red-m
+{
+  background: #c94546;
+}
