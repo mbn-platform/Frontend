@@ -7,6 +7,7 @@ import { updateExchagnes } from '../actions/exchanges';
 
 const mapStateToProps = state => {
   return {
+    time: state.time,
     apiKeys: state.apiKeys,
     offers: state.offers,
     contracts: state.contracts,
