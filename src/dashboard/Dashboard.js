@@ -66,6 +66,7 @@ class Dashboard extends React.Component {
             onOfferCanceled={this.props.onOfferCanceled}
             onOfferRejected={this.props.onOfferRejected}
             onOfferAccepted={this.props.onOfferAccepted}
+            onOfferPay={this.props.onOfferPay}
 
             offers={this.props.offers}
             selectedOffer={this.state.selectedOffer}

@@ -17,7 +17,7 @@ class Offers extends React.Component {
   }
 
   onOfferPayClick(offer) {
-    console.log('clicked paying offer');
+    this.props.onOfferPay(offer);
   }
 
   componentWillReceiveProps(nextProps) {
