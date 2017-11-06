@@ -8,43 +8,6 @@ import SendRequestBlock from './SendRequestBlock';
 
 class ProfileInfo extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {};
-    this.switchApiKeysView = this.switchApiKeysView.bind(this);
-    this.onSendOfferClick = this.onSendOfferClick.bind(this);
-    this.onApiKeySelected = this.onApiKeySelected.bind(this);
-  }
-
-  onSendOfferClick(key) {
-    const keyId = this.state.selectedApiKey._id;
-    const offer = {
-      keyId,
-      to: this.props._id,
-      amount: this.props.minAmount,
-      currency: this.props.minAmountCurrency,
-      maxLoss: this.props.maxLoss,
-      fee: this.props.fee,
-      duration: this.props.duration,
-    };
-    this.props.sendOffer(offer);
-  }
-
-  onApiKeySelected(selectedApiKey) {
-    this.setState({selectedApiKey});
-  }
-
-  switchApiKeysView() {
-    if(this.state.showSelectApiKey) {
-      this.setState({
-        showSelectApiKey: false,
-        selectedApiKey: null
-       });
-    } else {
-      this.setState({showSelectApiKey: true});
-    }
-  }
-
   getHeader() {
     return (
       <Row className="justify-content-center">
@@ -116,7 +79,7 @@ class ProfileInfo extends React.Component {
                   roi={15}
                   moneyInManagement={this.props.investmentAmount}
                 />
-                <SendRequestBlock {...this.props} />
+                <SendRequestBlock profile={this.props} />
               </Col>
             </Row>
           </Container>

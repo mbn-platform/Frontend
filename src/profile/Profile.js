@@ -3,7 +3,6 @@ import ProfileInfo from './ProfileInfo';
 import TablesScreen from './TablesScreen';
 import { Row, Container } from 'reactstrap';
 import { connect } from 'react-redux';
-import { sendOffer } from '../actions/offers';
 import { fetchDashboardData } from '../actions/dashboard';
 import { updateExchagnes } from '../actions/exchanges';
 import { updateProfile } from '../actions/profile';
@@ -14,7 +13,6 @@ class Profile extends React.Component {
     super(props);
     this.state = {};
     this.onSaveChangesClick = this.onSaveChangesClick.bind(this);
-    this.onOfferSendClick = this.onOfferSendClick.bind(this);
     this.onCurrencyToggle = this.onCurrencyToggle.bind(this);
   }
 
@@ -31,9 +29,6 @@ class Profile extends React.Component {
       duration
     };
     this.props.updateProfile(profile);
-  }
-
-  onOfferSendClick() {
   }
 
   onSaveChangesClick(update) {
@@ -79,10 +74,6 @@ class Profile extends React.Component {
       <Container fluid className='profile-item'>
         <Row>
           <ProfileInfo own={own} {...this.state}
-            sendOffer={this.props.sendOffer}
-            exchanges={this.props.exchanges}
-            apiKeys={this.props.apiKeys}
-            onOfferSendClick={this.onOfferSendClick}
             onSaveChangesClick={this.onSaveChangesClick}
           />
           <TablesScreen
@@ -97,13 +88,10 @@ class Profile extends React.Component {
 
 const mapStateToProps = state => ({
   profile: state.auth.profile,
-  apiKeys: state.apiKeys.ownKeys.filter(k => k.state === 'FREE'),
-  exchanges: state.exchanges,
 });
 
 const mapDispatchToProps = dispatch => ({
   updateProfile: profile => dispatch(updateProfile(profile)),
-  sendOffer: offer => dispatch(sendOffer(offer)),
   fetchDashboardData: () => dispatch(fetchDashboardData()),
   updateExchanges: () => dispatch(updateExchagnes()),
 });
