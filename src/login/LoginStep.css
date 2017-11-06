@@ -18,8 +18,6 @@
   cursor: pointer;
   transition-property: border, background-color;
   transition-duration: 400ms;
-  /*max-width: 280px;*/
-  /*margin-left: 50px*/
   margin-left: auto;
   margin-right: auto;
 }
@@ -37,47 +35,4 @@
   color: #e1e1e1;
   font-family: 'maven_proregular';
   margin-bottom: 40px;
-}
-@media only screen and (max-width : 750px) {
-  .login_step_login_submit {
-    margin-left: 62px;
-  }
-}
-@media only screen and (max-width : 415px) {
-  .login_step_login_submit {
-    margin-left: 49px;
-  }
-}
-@media only screen and (max-width : 370px) {
-  .login_step_login_submit {
-    margin-left: 29px;
-  }
-}
-
-@media only screen and (max-width : 350px) {
-  .login_step_login_submit {
-    margin-left: 16px;
-  }
-
-}
-
-@media only screen and (max-width : 335px) {
-  .login_step_login_submit {
-    margin-left: 7px;
-  }
-
-}
-
-@media only screen and (max-width : 320px) {
-  .login_step_login_submit {
-    margin-left: 0px;
-  }
-
-}
-
-@media only screen and (max-width : 310px) {
-  .login_step_login_submit {
-    margin-left: 0px;
-  }
-
 }

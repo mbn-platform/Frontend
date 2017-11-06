@@ -1,13 +1,21 @@
+.login_no_metamask {
+  width: 1110px;
+}
 .login_no_metamask_title {
   font-size: 2.6em;
   color: #e84c4c;
   text-transform: uppercase;
   padding-left: 50px;
   text-align: center;
-  display: inline-block;
   background: url(../img/Warning.png) no-repeat left center;
   line-height: 1;
   margin-bottom: 45px;
+}
+
+.login_no_metamask_title {
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .login_no_metamask_text {
@@ -17,8 +25,6 @@
   margin-bottom: 40px;
 }
 .metamask_link_wrapper {
-  width: 40%;
-  float: left;
   padding-top: 15px;
 }
 .metamask_link {
@@ -27,10 +33,6 @@
 }
 .metamask_link:hover {
   opacity: .8;
-}
-.metamask_text_wrapper {
-  width: 58%;
-  float: right;
 }
 .metamask_text_title {
   font-size: 2.5em;
@@ -46,6 +48,35 @@
 .metamask_link_img {
   max-width: 100%;
 }
+@media only screen and (max-width: 1400px) {
+  .login_no_metamask_title {
+    background-size: contain;
+  }
+}
+@media only screen and (max-width: 1400px) {
+  .login_no_metamask {
+    width: 1010px;
+  }
+}
+@media only screen and (max-width: 1200px) {
+  .login_no_metamask {
+    max-width: 1010px;
+    width: auto;
+  }
+}
+@media only screen and (max-width: 1030px) {
+  .login_no_metamask {
+    max-width: 1010px;
+    width: auto;
+  }
+  .metamask_text_title, .metamask_text {
+    text-align: center;
+  }
+  .metamask_link_img {
+    margin-bottom: 30px;
+  }
+
+}
 @media only screen and (max-width: 992px) {
   .metamask_link_wrapper, .metamask_text_title, .metamask_text {
     text-align: center;
@@ -55,5 +86,30 @@
   }
   .metamask_link_wrapper, .metamask_text_wrapper {
     width: 100%;
+  }
+}
+@media only screen and (max-width: 670px) {
+  .login_no_metamask_text {
+    padding: 0 20px;
+  }
+  .login_no_metamask_title {
+    padding-left: 0;
+    width: 330px;
+    text-align: right;
+  }
+}
+@media only screen and (max-width: 470px) {
+  .login_no_metamask_title {
+      width: 310px;
+  }
+  .login_title_wrapper {
+    padding: 0 20px;
+    margin-bottom: 20px;
+  }
+}
+@media only screen and (max-width: 370px) {
+  .login_no_metamask_title {
+    font-size: 2em;
+    width: 250px;    
   }
 }

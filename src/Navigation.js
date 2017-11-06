@@ -33,7 +33,7 @@ class Navigation extends React.Component {
   render() {
     return (
       <Col xs="12" md="auto" className="d-block d-md-block menu-panel ">
-        <Navbar expand="lg"  >
+        <Navbar expand="md"  >
           <NavbarBrand className="d-inline-block d-md-none" tag="div">
             <img src={LogoMobile} alt=""/>
           </NavbarBrand>
