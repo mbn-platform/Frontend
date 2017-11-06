@@ -97,7 +97,7 @@ class Profile extends React.Component {
 
 const mapStateToProps = state => ({
   profile: state.auth.profile,
-  apiKeys: state.apiKeys.ownKeys,
+  apiKeys: state.apiKeys.ownKeys.filter(k => k.state === 'FREE'),
   exchanges: state.exchanges,
 });
 
