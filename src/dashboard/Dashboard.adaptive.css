@@ -47,6 +47,10 @@
     margin-bottom: 24px;
   }
 
+  .api_key_currencies_table .table_rewind_page {
+    margin-bottom: 10px;
+  }
+
 
   .keys_tables_wrapper .api_keys_table,
   .keys_tables_wrapper .api_key_currencies_table
@@ -112,7 +116,7 @@
   .table_title_tab {
     height: 22px;
     line-height: 22px;
-    padding: 0 18px;
+    padding: 0;
     background-color: #232629;
   }
 
@@ -197,6 +201,10 @@
     display: block; 
     margin-left: 0px;
     margin-top: 8px;
+  }
+
+  .selected_header .sort_icon_wrapper {
+    margin-left: 0px;
   }
 
   .table_filter_wrapper {
@@ -340,6 +348,14 @@
     text-align: left;
     margin-left: 2px;
   }
+  .selected_contract_table .profit_time_wrapper_block {
+    width: 100%;
+  }
+  .selected_contract_table .profit_time_wrapper_block .profit_time_block {
+    margin-left: auto;
+    margin-right: auto;
+    width: 270px;
+  }  
   .selected_contract_table  .time_profit_left_border {
     border: 0;
     margin-bottom: 4px;
@@ -355,6 +371,7 @@
     width: auto;
   }
   .selected_contract_table .time_left_title_wr {
+    display: inline-block;
     background: transparent;
     float: none;
     width: auto;
@@ -387,7 +404,8 @@
   }
   .selected_contract_table .progress_bar_wrapper {
     height: 2px;
-    width: 116px;
+    width: 126px;
+    display: inline-block;
     margin-left: 0;
     margin-bottom: 30px;
   }
@@ -400,8 +418,8 @@
     width: 48%;
   }
   .selected_contract_table .time_left_wrapper {
-    margin-left: auto;
-    width: 116px;
+    /*margin-left: auto;*/
+    min-width: 100px;
   }
   .selected_contract_table .profit_left {
     display: inline-block;

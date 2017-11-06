@@ -7,15 +7,19 @@ class ContractInfo extends React.Component {
   render() {
     return (
       <div>
-        <div className="time_left">
-          <div className="time_left_wrapper">
-            <TimeLeft />
-            <ProgressBar progress={50} />
+        <div className="profit_time_wrapper_block">
+          <div className="profit_time_block">
+            <div className="time_left">
+              <div className="time_left_wrapper">
+                <TimeLeft />
+                <ProgressBar progress={50} />
+              </div>
+            </div>
+            <div className="profit_left">
+              <ProfitLeft />
+              <ProgressBar progress={30} />
+            </div>
           </div>
-        </div>
-        <div className="profit_left">
-          <ProfitLeft />
-          <ProgressBar progress={30} />
         </div>
       <div className="table_rewind_page">
         <div className="table_rewind_page_wrapper">
@@ -45,7 +49,7 @@ const TimeLeft = () => (
         </div>
         <div className="time_left_count_wrapper dots"><span className="dots_couple green">:</span></div>
         <div className="time_left_count_wrapper hours">
-          <div className="time_left_count_big green">4</div>
+          <div className="time_left_count_big green">45</div>
           <div className="time_left_count_small">hours</div>
         </div>
         <div className="time_left_count_wrapper dots-second"><span className="dots_couple green">:</span></div>

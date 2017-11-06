@@ -92,6 +92,7 @@ class ApiKeyInfo extends React.Component {
         Header: StatusHeader(this.onSelectAllClicked),
         Cell: StatusCell(this.onCurrencyStateClicked),
         accessor: 'selected',
+        headerClassName: "selected_header",
         filterMethod: (filter, row) => {
           if(filter.value === 'all') {
             return true;
@@ -138,6 +139,16 @@ class ApiKeyInfo extends React.Component {
             </div>
           </div>
         ) : null}
+        <div className="table_rewind_page">
+          <div className="table_rewind_page_wrapper">
+            <div className="table_prev_page">
+              <div className="table_prev_page--button"></div>
+            </div>
+            <div className="table_next_page">
+              <div className="table_next_page--button"></div>
+            </div>
+          </div>
+        </div>        
       </div>
     );
   }
