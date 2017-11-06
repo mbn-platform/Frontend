@@ -2,6 +2,7 @@ import React from 'react';
 import ReactTable from '../generic/SelectableReactTable';
 import SearchHeader from '../generic/SearchHeader';
 import classNames from 'classnames';
+import { UncontrolledTooltip } from 'reactstrap';
 import './ApiKeyInfo.css';
 
 
@@ -155,9 +156,10 @@ const StatusHeader = (onSelectAllClicked) => {
   return (
     <div className="table_header_wrapper">
       <span className="table_header">Status</span>
-      <div className="table_header_help_wrapper">
-        <div className="table_header_help_text">This is a link on etherscan.io which contains all details of your contract.</div>
-      </div>
+      <div id="help-icon-enabled-currencies" className="table_header_help_wrapper" style={{marginLeft: 0}}></div>
+      <UncontrolledTooltip target="help-icon-enabled-currencies" placement="right">
+        Choose your preferred currencies
+      </UncontrolledTooltip>
       <div className="sort_icon_wrapper">
         <div className="green_arrow green_arrow_bottom" ></div>
       </div>
