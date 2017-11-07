@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container, Row, Col } from 'reactstrap';
+import classNames from 'classnames';
 
 class Feedback extends React.Component {
 
@@ -24,7 +25,7 @@ class Feedback extends React.Component {
                 </div>
                 <div className="card-body">
                   <ul className="list-group">
-                    {this.props.comments.map(Comment)}
+                    {this.props.comments.map((comment, i) => <Comment key={i} comment={comment}/>)}
                   </ul>
                   <div className="d-flex d-md-none justify-content-center show-next-block">
                     <button type="button" className="btn btn-secondary">show next 5 feedbacks</button>
@@ -41,33 +42,55 @@ class Feedback extends React.Component {
   }
 }
 
-const Comment = comment => (
-  <li className="list-group-item d-none d-md-block">
-    <article className="feedback-item">
-      <div className="container-fuild">
-        <div className="row">
-          <div className="col-auto">
-            <div className="name">@<u>{comment.name}</u></div>
-          </div>
-          <div className="col-auto">
-            <div className="date">27.07.2017</div>
-          </div>
-          <div className="col-auto">
-            <div className="raiting">
-              <span className="icon icon-star active"></span>
-              <span className="icon icon-star active"></span>
-              <span className="icon icon-star active"></span>
-              <span className="icon icon-star active"></span>
-              <span className="icon icon-star active"></span>
+class Comment extends React.Component {
+
+  renderStars() {
+    const stars = [];
+    for(let i = 0; i < 5; i++) {
+      const className = classNames('icon', 'icon-star', {active: i < this.props.comment.raiting});
+      stars.push((<span key={i} className={className} />));
+    }
+    return stars;
+  }
+
+  render() {
+    const  comment = this.props.comment;
+    return (
+      <li className="list-group-item d-none d-md-block">
+        <article className="feedback-item">
+          <div className="container-fuild">
+            <div className="row">
+              <div className="col-auto">
+                <div className="name">@<u>{comment.name}</u></div>
+              </div>
+              <div className="col-auto">
+                <div className="date">{formatDate(new Date(comment.date))}</div>
+              </div>
+              <div className="col-auto">
+                <div className="raiting">
+                  {this.renderStars()}
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div className="text-feedback d-none d-md-block">{comment.text}</div>
-    </article>
-  </li>
+          <div className="text-feedback d-none d-md-block">{comment.text}</div>
+        </article>
+      </li>
+    );
+  }
+}
 
-
-);
+function formatDate(date) {
+  const year = date.getFullYear();
+  let month = date.getMonth() + 1;
+  if(month < 10) {
+    month = '0' + month;
+  }
+  let day = date.getDate();
+  if(day < 10) {
+    day = '0' + day;
+  }
+  return day + '.' + month + '.' + year;
+}
 
 export default Feedback;
