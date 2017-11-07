@@ -13,7 +13,20 @@ $container-max-widths: (
   xl: 1720px
 );
 
+$tooltip-color: #7c7c7d;
+$tooltip-bg: #2d3034;
+$tooltip-opacity: 1;
+$tooltip-arrow-width: 7px;
+$tooltip-arrow-height: 7px;
+.tooltip-inner {
+  font-family: 'maven_proregular';
+  box-shadow: 0px 3px 40px 0px rgba(0, 0, 0, 0.22);
+  font-size: 14px;
+}
+
+
 @import 'bootstrap/scss/bootstrap';
+
 
 
 
@@ -25,7 +38,7 @@ body {
 	font-size: 10px;
     height: 100%;
     width: 100%;
-    position: absolute;	
+    position: absolute;
     background-color: #1f2225;
     color: white;
     //TODO добавить в menu-panel
@@ -53,7 +66,7 @@ button,.btn.focus, .btn:focus {
 	    border: 0;
 	    border-top: 3px solid;
 	    border-color: inherit;
-	}	
+	}
 }
 
 .popover {
@@ -88,14 +101,14 @@ button,.btn.focus, .btn:focus {
 .red-border-popover {
 	border-color: #ba3b3b !important;
 	font-size: 11.5px;
-    line-height: 1em;	
+    line-height: 1em;
     max-width: 134px !important;
 	.popover-body {
 		text-align: center;
 		 padding: 15px 7px 13px 7px;
 		.red {
 			color: #ca3c3c !important;
-		}			
+		}
 	}
 	.arrow::before {
 		border-right-color: #ba3b3b !important;

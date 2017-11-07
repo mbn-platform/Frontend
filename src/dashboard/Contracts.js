@@ -4,6 +4,7 @@ import SegmentedControl from '../generic/SegmentedControl';
 import ReactTable from '../generic/SelectableReactTable';
 import SearchHeader from '../generic/SearchHeader';
 import HeaderWithHelp from '../generic/HeaderWithHelp';
+import { UncontrolledTooltip } from 'reactstrap';
 import './Contracts.css';
 
 
@@ -172,32 +173,31 @@ const HelpHeader = header => {
 };
 
 const ContractStatusHelp = () => (
-  <div className="table_header_help_wrapper" style={{paddingTop: 22}}>
-    <div className="table_header_help_text">
-      <div className="status_description_wr">
-        <div className="status_desc_item">
-          <div className="status_desc_item_cyrcle green"></div>
-          <div className="status_desc_item_text">completed</div>
-        </div>
-        <div className="status_desc_item">
-          <div className="status_desc_item_cyrcle yellow"></div>
-          <div className="status_desc_item_text">in progress</div>
-        </div>
-        <div className="status_desc_item">
-          <div className="status_desc_item_cyrcle red"></div>
-          <div className="status_desc_item_text">failed</div>
-        </div>
+  <div id="help-icon-contract-status" className="table_header_help_wrapper" style={{paddingTop: 22}}>
+    <UncontrolledTooltip target="help-icon-contract-status" placement="auto-start">
+      <div className="status_desc_item">
+        <div className="status_desc_item_cyrcle green"></div>
+        <div className="status_desc_item_text">completed</div>
       </div>
-    </div>
+      <div className="status_desc_item">
+        <div className="status_desc_item_cyrcle yellow"></div>
+        <div className="status_desc_item_text">in progress</div>
+      </div>
+      <div className="status_desc_item">
+        <div className="status_desc_item_cyrcle red"></div>
+        <div className="status_desc_item_text">failed</div>
+      </div>
+    </UncontrolledTooltip>
   </div>
 );
 
 const TXHeader = () => (
   <div className="table_header_wrapper contract_header_wrapper">
     <div className="table_header">TX</div>
-    <div className="table_header_help_wrapper" style={{paddingTop: 22}}>
-      <div className="table_header_help_text">This is a link on etherscan.io which contains all details of your contract.</div>
-    </div>
+    <div id="help-icon-tx" className="table_header_help_wrapper" style={{paddingTop: 22}}/>
+    <UncontrolledTooltip target="help-icon-tx">
+      This is a link on etherscan.io which contains all details of your contract
+    </UncontrolledTooltip>
   </div>
 );
 
