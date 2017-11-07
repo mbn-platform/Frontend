@@ -43,8 +43,15 @@
     padding-top: 23px;
   }
 
+  .table_rewind_page {
+    margin-top: 15px;
+    margin-bottom: 24px;
+  }
   .selected_contract_table .table_rewind_page {
     margin-bottom: 24px;
+  }
+  .api_key_currencies_table  .table_rewind_page {
+   margin-bottom: 24px; 
   }
 
 
@@ -89,6 +96,7 @@
   .table_wrapper .table {
     border: 0;
   }
+
 
   .table_title_wrapper {
     border-bottom: 0;
@@ -157,9 +165,6 @@
     background: transparent;
   }
 
-  .keys_tables_wrapper .ReactTable .rt-td.table_col_delete {
-    text-align: left !important;
-  }
 
   .api_keys_table .ReactTable .rt-tr-group .rt-tr {
     min-height: 30px;
@@ -206,9 +211,9 @@
     margin-right: auto;
   }
 
-  .api_keys_table .rt-tr-group:nth-child(n+6), .api_key_currencies_table .rt-tr-group:nth-child(n+6) {
+  /*.api_keys_table .rt-tr-group:nth-child(n+6), .api_key_currencies_table .rt-tr-group:nth-child(n+6) {
     display: none;
-  }
+  }*/
 
   .table_rewind_page {
     width: 100%;
@@ -249,6 +254,7 @@
 
   }
 
+
   .requests_table .ReactTable .rt-tr-group .rt-tr {
     min-height: 24px;
     line-height: 24px;
@@ -264,6 +270,8 @@
     padding: 0;
     border-top: 0;
     background-color: transparent;
+    position: relative;
+    margin-bottom: 17px;
   }
 
   .requests_table .table_requests_control_wr .table_requests_control_text {
@@ -308,7 +316,7 @@
     background: url(../img/Contracts.png) no-repeat left center;
   }
   .contracts_table .table_col_value {
-    font-size: .8em;
+    font-size: 1em;
   }
   .contracts_table .ReactTable .rt-tr-group .rt-tr {
     min-height: 25px;
@@ -319,6 +327,9 @@
   .contracts_table .status_column .contract_header_wrapper .sort_icon_wrapper
    {
     margin-top: 23px;
+  }
+  .contracts_table_wrapper .table_title_wrapper{
+    margin-top: 0px;
   }
   .contracts_table_wrapper .ReactTable .table_header_wrapper__align {
     width: 62px;

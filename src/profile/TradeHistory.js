@@ -1,5 +1,7 @@
 import React from 'react';
 import { Col, Container, Row } from 'reactstrap';
+import { Desktop, Mobile } from '../generic/MediaQuery';
+import Pagination from '../generic/Pagination';
 import ReactTable from '../generic/SelectableReactTable';
 
 class TradeHistory extends React.Component {
@@ -23,9 +25,6 @@ class TradeHistory extends React.Component {
                 </div>
                 <div className="card-body">
                   {this.renderTable()}
-                  <div className="d-flex d-md-none justify-content-center show-next-block">
-                    <button type="button" className="btn btn-secondary">show one more week</button>
-                  </div>
                 </div>
 
               </div>
@@ -36,9 +35,8 @@ class TradeHistory extends React.Component {
     );
   }
 
-  renderTable() {
-    const data = [{date: '123', type: 'Buy', price: 1, curency: 'BTC', amount: 3, total: 4, tx: ''}, {date: '123', type: 'Sell', price: 2, curency: 'BTC', amount: 5, total: 2, tx: ''}];
-    const columns = [
+  getColumns() {
+    return [
       {
         Header: SortableHeader('Date'),
         accessor: 'date',
@@ -73,12 +71,30 @@ class TradeHistory extends React.Component {
         className: 'table_col_value',
       },
     ];
+  }
+  renderTable() {
+    const data = [{date: '123', type: 'Buy', price: 1, curency: 'BTC', amount: 3, total: 4, tx: ''}, {date: '123', type: 'Sell', price: 2, curency: 'BTC', amount: 5, total: 2, tx: ''}];
     return (
-      <ReactTable
-        data={data}
-        columns={columns}
-        onItemSelected={() => {}}
-      />
+      <div>
+        <Desktop>      
+          <ReactTable
+            data={data}
+            columns={this.getColumns()}
+            onItemSelected={() => {}}
+          />
+        </Desktop>
+        <Mobile>
+          <ReactTable
+            data={data}
+            columns={this.getColumns()}
+            onItemSelected={() => {}}
+            minRows={5}
+            showPagination={true}
+            defaultPageSize={5}
+            PaginationComponent={Pagination}                
+          />        
+        </Mobile>    
+      </div>                   
     );
 
   }

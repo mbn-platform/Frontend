@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import SegmentedControl from '../generic/SegmentedControl';
 import ReactTable from '../generic/SelectableReactTable';
+import { Desktop, Mobile } from '../generic/MediaQuery';
+import Pagination from '../generic/Pagination';
 import './Offers.css';
 
 class Offers extends React.Component {
@@ -95,10 +97,8 @@ class Offers extends React.Component {
       }
     }
   }
-
-
-  renderContent() {
-    const columns = [{
+  getColumns() {
+    return [{
       Header: SortHeader('From'),
       id: 'name',
       accessor: o => o.fromUser ? o.fromUser[0].name : '',
@@ -118,17 +118,39 @@ class Offers extends React.Component {
       className: 'table_col_value',
       accessor: 'amount'
     }];
+
+
+  }
+
+  renderContent() {
     const data = this.state.selectedTab ? this.props.offers.outgoing : this.props.offers.incoming;
     const style={height: 364};
     return (
-      <ReactTable
-        style={style}
-        data={data}
-        columns={columns}
-        selectedItem={this.props.selectedOffer}
-        onItemSelected={this.props.onOfferSelected}
-        scrollBarHeight={319}
-      />
+      <div>
+        <Desktop>      
+          <ReactTable
+            style={style}
+            data={data}
+            columns={this.getColumns()}
+            selectedItem={this.props.selectedOffer}
+            onItemSelected={this.props.onOfferSelected}
+            scrollBarHeight={319}
+          />
+        </Desktop>   
+        <Mobile>
+          <ReactTable
+            style={style}
+            data={data}
+            columns={this.getColumns()}
+            selectedItem={this.props.selectedOffer}
+            onItemSelected={this.props.onOfferSelected}
+            minRows={10}
+            showPagination={true}
+            defaultPageSize={10}
+            PaginationComponent={Pagination}               
+          />        
+        </Mobile>
+      </div>       
     );
   }
 

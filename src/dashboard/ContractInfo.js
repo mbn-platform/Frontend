@@ -16,17 +16,7 @@ class ContractInfo extends React.Component {
         <div className="profit_left">
           <ProfitLeft />
           <ProgressBar progress={30} />
-        </div>
-      <div className="table_rewind_page">
-        <div className="table_rewind_page_wrapper">
-          <div className="table_prev_page">
-            <div className="table_prev_page--button"></div>
-          </div>
-          <div className="table_next_page">
-            <div className="table_next_page--button"></div>
-          </div>
-        </div>
-      </div>        
+        </div>       
       </div>
     );
   }
