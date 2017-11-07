@@ -144,9 +144,9 @@ class Offers extends React.Component {
             columns={this.getColumns()}
             selectedItem={this.props.selectedOffer}
             onItemSelected={this.props.onOfferSelected}
-            minRows={10}
+            minRows={5}
             showPagination={true}
-            defaultPageSize={10}
+            defaultPageSize={5}
             PaginationComponent={Pagination}               
           />        
         </Mobile>
