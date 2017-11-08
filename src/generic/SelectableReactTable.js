@@ -9,7 +9,7 @@ class SelectableReactTable extends React.Component {
     const getTheadProps = () => ({className: 'clearfix'});
     const getTrProps = (state, rowInfo, column, instance) => {
       let className;
-      if(this.props.selectedItem && this.props.selectedItem._id === rowInfo.original._id) {
+      if(this.props.selectedItem && rowInfo && this.props.selectedItem._id === rowInfo.original._id) {
         className = '-selected';
       }
       return {
@@ -23,19 +23,24 @@ class SelectableReactTable extends React.Component {
     const getTbodyProps = (state, rowInfo, column, instance) => {
       return {scrollBarHeight: instance.props.scrollBarHeight};
     };
+    const props = {
+      noDataText: '',
+      resizable: false,
+      showPagination: false,
+      minRows: 0,
+      defaultPageSize: 9999,
+      getTrProps: getTrProps,
+      getTheadProps: getTheadProps,
+      defaultFilterMethod: this.defaultFilterMethod,
+    };
+    if(this.props.scrollBarHeight) {
+      props.getTbodyProps = getTbodyProps;
+      props.TbodyComponent = CustomTBodyComponent;
+    }
+
     return (
       <ReactTable
-        noDataText=''
-        resizable={false}
-        showPagination={false}
-        minRows={0}
-        defaultPageSize={9999}
-        getTrProps={getTrProps}
-        getTheadProps={getTheadProps}
-        getTbodyProps={getTbodyProps}
-        TbodyComponent={CustomTBodyComponent}
-        scrollBarHeight={200}
-        defaultFilterMethod={this.defaultFilterMethod}
+        {...props}
         {...this.props}
       />
     );

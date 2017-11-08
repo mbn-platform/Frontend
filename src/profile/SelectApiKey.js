@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactTable from '../generic/SelectableReactTable';
 import SearchHeader from '../generic/SearchHeader';
+import { Desktop, Mobile } from '../generic/MediaQuery';
+import Pagination from '../generic/Pagination';
 import ExchangeSelect from '../dashboard/ExchangeSelect';
 
 
@@ -51,11 +53,10 @@ class SelectApiKey extends React.Component {
     );
   }
 
-  renderTable() {
+  getColumns() {
     const nameFilter = this.state.filtered.find(f => f.id === 'name').value;
     const exchangeFilter = this.state.filtered.find(f => f.id === 'exchange').value;
-    const data = this.props.apiKeys;
-    const columns = [
+    return [
       {
         Header: SearchHeader('Key name', nameFilter, this.onFilter),
         className: 'table_col_value',
@@ -82,17 +83,38 @@ class SelectApiKey extends React.Component {
         </div>),
         accessor: key => key.currencies ? key.currencies.reduce((sum, c) => sum + (c.amount || 0), 0) : 0
       }
-    ];
+    ];    
+  }
+
+  renderTable() {
+    const data = this.props.apiKeys;
     return (
-      <ReactTable
-        style={{height: 245, width: '100%'}}
-        columns={columns}
-        data={data}
-        filtered={this.state.filtered}
-        selectedItem={this.props.selectedApiKey}
-        onItemSelected={key => this.props.onApiKeySelected(key)}
-        scrollBarHeight={150}
-      />
+      <div>
+        <Desktop>          
+          <ReactTable
+            style={{height: 245, width: '100%'}}
+            columns={this.getColumns()}
+            data={data}
+            filtered={this.state.filtered}
+            selectedItem={this.props.selectedApiKey}
+            onItemSelected={key => this.props.onApiKeySelected(key)}
+            scrollBarHeight={150}
+          />
+        </Desktop>
+        <Mobile>
+          <ReactTable
+            columns={this.getColumns()}
+            data={data}
+            filtered={this.state.filtered}
+            selectedItem={this.props.selectedApiKey}
+            onItemSelected={key => this.props.onApiKeySelected(key)}
+            minRows={5}
+            showPagination={true}
+            defaultPageSize={5}
+            PaginationComponent={Pagination}                
+          />        
+        </Mobile>
+      </div>
     );
   }
 }

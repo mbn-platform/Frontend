@@ -3,6 +3,8 @@ import ReactTable from '../generic/SelectableReactTable';
 import SearchHeader from '../generic/SearchHeader';
 import classNames from 'classnames';
 import { UncontrolledTooltip } from 'reactstrap';
+import { Desktop, Mobile } from '../generic/MediaQuery';
+import Pagination from '../generic/Pagination';
 import './ApiKeyInfo.css';
 
 
@@ -79,9 +81,9 @@ class ApiKeyInfo extends React.Component {
     }
   }
 
-  render() {
+  getColumns() {
     const currencyFilter = this.state.filtered.find(f => f.id === 'currency').value;
-    const columns = [
+    return [
       {
         Header: SearchHeader('Currency', currencyFilter, this.onCurrencyChange),
         id: 'currency',
@@ -111,9 +113,39 @@ class ApiKeyInfo extends React.Component {
         accessor: 'amount'
       }
     ];
-
+  }
+  renderContent() {
     const scrollBarHeight = this.state.changed ? 217 - 44 : 217;
+    return (
+      <div>
+        <Desktop>
+          <ReactTable
+            style={{height: 312}}
+            data={this.state.currencies}
+            columns={this.getColumns()}
+            filtered={this.state.filtered}
+            onItemSelected={() => {}}
+            scrollBarHeight={scrollBarHeight}
+          />      
+        </Desktop>
+        <Mobile>
+          <ReactTable
+            data={this.state.currencies}
+            columns={this.getColumns()}
+            filtered={this.state.filtered}
+            onItemSelected={() => {}}
+            minRows={5}
+            showPagination={true}
+            defaultPageSize={5}
+            PaginationComponent={Pagination}            
+          />      
+        </Mobile>    
+      </div>  
+      )
+  }
 
+  render() {
+            
     return (
       <div className="api_key_currencies_table table">
         <div className="table_title_wrapper clearfix">
@@ -122,14 +154,7 @@ class ApiKeyInfo extends React.Component {
         <div className="tooltip-mobile-box">
           Selected key pairs allowed for trading.
         </div>
-        <ReactTable
-          style={{height: 312}}
-          data={this.state.currencies}
-          columns={columns}
-          filtered={this.state.filtered}
-          onItemSelected={() => {}}
-          scrollBarHeight={scrollBarHeight}
-        />
+        {this.renderContent()}
         {this.state.changed ? (
           <div className="table_requests_control_wr clearfix">
             <div className="table_requests_control_text">save changes?</div>

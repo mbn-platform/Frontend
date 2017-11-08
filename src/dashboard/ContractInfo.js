@@ -21,16 +21,6 @@ class ContractInfo extends React.Component {
             </div>
           </div>
         </div>
-      <div className="table_rewind_page">
-        <div className="table_rewind_page_wrapper">
-          <div className="table_prev_page">
-            <div className="table_prev_page--button"></div>
-          </div>
-          <div className="table_next_page">
-            <div className="table_next_page--button"></div>
-          </div>
-        </div>
-      </div>        
       </div>
     );
   }
@@ -58,7 +48,7 @@ const TimeLeft = () => (
           <div className="time_left_count_small">min</div>
         </div>
       </div>
-    </div>    
+    </div>
   </div>
 );
 
@@ -92,7 +82,7 @@ const ProgressBar = ({ progress }) => {
       <div className={className} style={{width: progress + '%'}}></div>
     </div>
   );
-}
+};
 
 ContractInfo.propTypes = {
   contract: PropTypes.object,
