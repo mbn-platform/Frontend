@@ -18,11 +18,7 @@ $tooltip-bg: #2d3034;
 $tooltip-opacity: 1;
 $tooltip-arrow-width: 7px;
 $tooltip-arrow-height: 7px;
-.tooltip-inner {
-  font-family: 'maven_proregular';
-  box-shadow: 0px 3px 40px 0px rgba(0, 0, 0, 0.22);
-  font-size: 14px;
-}
+$tooltip-arrow-color: #494d4d;
 
 
 @import 'bootstrap/scss/bootstrap';
@@ -68,7 +64,70 @@ button,.btn.focus, .btn:focus {
 	    border-color: inherit;
 	}
 }
+.tooltip {
+	.arrow::after {
+		border-color: transparent;
+	    content: '';
+	    border-width: $tooltip-arrow-width - 2;
+	    position: absolute;
+	    border-style: solid;		
+	}
+	&.bs-tooltip-right {
+		.arrow::before{
+			margin-left: 1px;
+		}
+		.arrow::after{
+		    border-right-color: #2d3134;
+			border-left-width: 0;
+		    margin-top: -3px;
+		    margin-left: 3px;
+		}		
+	}	
+	&.bs-tooltip-left {
+		 .arrow::before{
+			margin-right: 1px;
+		}
+		.arrow::after{
+		    border-left-color: #2d3134;
+			border-right-width: 0;
+		    margin-top: -3px;
+		    margin-left: -1px;
+		}				
+	}	
+	&.bs-tooltip-bottom {
+		 .arrow::before{
+			margin-top: 1px;
+		}
+		.arrow::after{
+		    border-bottom-color: #2d3134;
+			border-top-width: 0;
+		    margin-top: 3px;
+		    margin-left: -3px;
+		}			
+	}		
+	&.bs-tooltip-top {
+		 .arrow::before{
+			margin-top: -1px;
+		}
+		.arrow::after{
+		    border-top-color: #2d3134;
+		    border-bottom-width: 0;
+		    margin-top: -1px;
+		    margin-left: -3px;
+		}					
+	}			
+}
 
+.tooltip-inner {
+	border-radius: 0;
+	font-family: 'maven_proregular';
+	// box-shadow: 0px 3px 40px 0px rgba(0, 0, 0, 0.22);
+	padding: 10px;
+	font-size: 10px;
+	max-width: 125px;
+	border: 1px solid #494d4d;
+
+}
 .popover {
 	max-width: 123px;
     font-size: 9px;
