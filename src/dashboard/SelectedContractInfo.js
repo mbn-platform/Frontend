@@ -2,12 +2,16 @@ import React from 'react';
 import ContractInfo from './ContractInfo';
 import ContractFeedback from './ContractFeedback';
 
-const SelectedContractInfo = ({ contract }) => {
+const SelectedContractInfo = ({ contract, onContractRate }) => {
   if(!contract) {
     return null;
   } else {
-    if(contract.status === 'completed') {
-      return (<ContractFeedback contract={contract}/>);
+    if(contract.state === 'FINISHED') {
+      return (
+        <ContractFeedback
+          onContractRate={onContractRate}
+          contract={contract}
+        />);
     } else {
       return (<ContractInfo contract={contract}/>);
     }

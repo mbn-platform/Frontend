@@ -38,6 +38,12 @@ class Dashboard extends React.Component {
         this.setState({selectedOffer: offer});
       }
     }
+    if(this.props.contracts !== nextProps.contracts) {
+      if(this.state.selectedContract) {
+        const contract = nextProps.contracts.find(c => c._id === this.state.selectedContract._id);
+        this.setState({selectedContract: contract});
+      }
+    }
   }
 
   render() {
@@ -81,7 +87,9 @@ class Dashboard extends React.Component {
           />
         </div>
         <div className="table_wrapper selected_contract_table">
-          <SelectedContractInfo contract={this.state.selectedContract} />
+          <SelectedContractInfo
+            onContractRate={this.props.onContractRate}
+            contract={this.state.selectedContract} />
         </div>
         <div className="table_wrapper traders_chart">
           <TradersChart />

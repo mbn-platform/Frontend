@@ -4,6 +4,7 @@ import { deleteApiKey, updateApiKey } from '../actions/apiKeys';
 import { acceptOffer, cancelOffer, rejectOffer, payOffer } from '../actions/offers';
 import { fetchDashboardData } from '../actions/dashboard';
 import { updateExchagnes } from '../actions/exchanges';
+import { rateContract } from '../actions/contracts';
 
 const mapStateToProps = state => {
   return {
@@ -34,7 +35,8 @@ const mapDispatchToProps = dispatch => {
     onOfferPay: offer => dispatch(payOffer(offer)),
     onOfferAccepted: offer => dispatch(acceptOffer(offer)),
     onOfferRejected: offer => dispatch(rejectOffer(offer)),
-    onOfferCanceled: offer => dispatch(cancelOffer(offer))
+    onOfferCanceled: offer => dispatch(cancelOffer(offer)),
+    onContractRate: feedback => dispatch(rateContract(feedback)),
   };
 };
 
