@@ -1,7 +1,27 @@
 import React from 'react';
 import { Container, Row, Col } from 'reactstrap';
+import { Desktop, Mobile } from '../generic/MediaQuery';
+import Pagination from '../generic/Pagination';
 
 class Feedback extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {page: 0, canPrevious: false, canNext: props.comments.length > this.props.pageSize};
+    this.onPageChange = this.onPageChange.bind(this);
+  }
+
+  onPageChange(page) {
+    this.setState({page,
+      canNext: this.props.comments.length - page * this.props.pageSize > this.props.pageSize,
+      canPrevious: page > 0
+    });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({page: 0, canPrevious: false, canNext: nextProps.comments.length > this.props.pageSize});
+  }
+
 
   render() {
     return (
@@ -24,25 +44,45 @@ class Feedback extends React.Component {
                 </div>
                 <div className="card-body">
                   <ul className="list-group">
-                    {this.props.comments.map(Comment)}
+                    <Desktop>
+                      {this.props.comments.map(Comment)}
+                    </Desktop>
+                    {this.renderMobile()}
                   </ul>
-                  <div className="d-flex d-md-none justify-content-center show-next-block">
-                    <button type="button" className="btn btn-secondary">show next 5 feedbacks</button>
-                  </div>
+                  <Mobile>
+                    <Pagination
+                      page={this.state.page}
+                      canNext={this.state.canNext}
+                      canPrevious={this.state.canPrevious}
+                      onPageChange={this.onPageChange}
+                    />
+                  </Mobile>
                 </div>
-
               </div>
             </Col>
           </Row>
         </Container>
       </Col>
     );
+  }
 
+  renderMobile() {
+    const data = this.props.comments.slice(this.state.page * this.props.pageSize,
+      this.state.page * this.props.pageSize + this.props.pageSize);
+    return (
+      <Mobile>
+        {data.map(Comment)}
+      </Mobile>
+    );
   }
 }
 
+Feedback.defaultProps = {
+  pageSize: 5
+}
+
 const Comment = comment => (
-  <li className="list-group-item d-none d-md-block">
+  <li className="list-group-item">
     <article className="feedback-item">
       <div className="container-fuild">
         <div className="row">
@@ -63,7 +103,7 @@ const Comment = comment => (
           </div>
         </div>
       </div>
-      <div className="text-feedback d-none d-md-block">{comment.text}</div>
+      <div className="text-feedback">{comment.text}</div>
     </article>
   </li>
 
