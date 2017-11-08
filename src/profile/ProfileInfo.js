@@ -4,51 +4,9 @@ import RatingBar from './RatingBar';
 import Stats from './Stats';
 import PropTypes from 'prop-types';
 import ContractSettings from './ContractSettings';
-import ContractDetails from './ContractDetails';
-import SelectApiKey from './SelectApiKey';
+import SendRequestBlock from './SendRequestBlock';
 
 class ProfileInfo extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {};
-    this.switchApiKeysView = this.switchApiKeysView.bind(this);
-    this.onSendOfferClick = this.onSendOfferClick.bind(this);
-    this.onApiKeySelected = this.onApiKeySelected.bind(this);
-  }
-
-  onSendOfferClick() {
-    if(!this.state.selectedApiKey) {
-      alert('Select api key first');
-      return
-    }
-    const keyId = this.state.selectedApiKey._id;
-    const offer = {
-      keyId,
-      to: this.props._id,
-      amount: this.props.minAmount,
-      currency: this.props.minAmountCurrency,
-      maxLoss: this.props.maxLoss,
-      fee: this.props.fee,
-      duration: this.props.duration,
-    };
-    this.props.sendOffer(offer);
-  }
-
-  onApiKeySelected(selectedApiKey) {
-    this.setState({selectedApiKey});
-  }
-
-  switchApiKeysView() {
-    if(this.state.showSelectApiKey) {
-      this.setState({
-        showSelectApiKey: false,
-        selectedApiKey: null
-       });
-    } else {
-      this.setState({showSelectApiKey: true});
-    }
-  }
 
   getHeader() {
     return (
@@ -121,26 +79,7 @@ class ProfileInfo extends React.Component {
                   roi={15}
                   moneyInManagement={this.props.investmentAmount}
                 />
-                {
-                  this.state.showSelectApiKey ?
-                    <SelectApiKey
-                      onOfferSendClick={this.onOfferSendClick}
-                      exchanges={this.props.exchanges}
-                      apiKeys={this.props.apiKeys}
-                      selectedApiKey={this.state.selectedApiKey}
-                      onCancelClick={this.switchApiKeysView}
-                      onSendOfferClick={this.onSendOfferClick}
-                      onApiKeySelected={this.onApiKeySelected}
-                    /> :
-                    <ContractDetails
-                      onOfferSendClick={this.switchApiKeysView}
-                      duration={this.props.duration}
-                      amount={this.props.minAmount}
-                      currency={this.props.minAmountCurrency}
-                      maxLoss={this.props.maxLoss}
-                      fee={this.props.fee}
-                    />
-                }
+                <SendRequestBlock profile={this.props} />
               </Col>
             </Row>
           </Container>

@@ -11,6 +11,7 @@
     "react-custom-scrollbars": "^4.1.2",
     "react-dom": "^15.6.2",
     "react-redux": "^5.0.6",
+    "react-responsive": "^3.0.0",
     "react-router-dom": "^4.2.2",
     "react-scripts": "^1.0.14",
     "react-table": "^6.6.0",

@@ -17,11 +17,15 @@ class Dashboard extends React.Component {
     this.onKeySelected = this.onKeySelected.bind(this);
     this.onOfferSelected = this.onOfferSelected.bind(this);
     this.onContractSelected = this.onContractSelected.bind(this);
+    this.onContractRate = this.onContractRate.bind(this);
   }
   componentDidMount() {
     this.props.onDashboardMounted();
   }
 
+  onContractRate(feedback) {
+    this.props.onContractRate(feedback, this.props.userId, this.props.time);
+  }
 
   componentWillReceiveProps(nextProps) {
     if(this.props.apiKeys !== nextProps.apiKeys) {
@@ -36,6 +40,12 @@ class Dashboard extends React.Component {
         const offer = nextProps.offers.incoming.find(o => o._id === this.state.selectedOffer._id) ||
           nextProps.offers.outgoing.find(o => o._id === this.state.selectedOffer._id);
         this.setState({selectedOffer: offer});
+      }
+    }
+    if(this.props.contracts !== nextProps.contracts) {
+      if(this.state.selectedContract) {
+        const contract = nextProps.contracts.find(c => c._id === this.state.selectedContract._id);
+        this.setState({selectedContract: contract});
       }
     }
   }
@@ -66,6 +76,7 @@ class Dashboard extends React.Component {
             onOfferCanceled={this.props.onOfferCanceled}
             onOfferRejected={this.props.onOfferRejected}
             onOfferAccepted={this.props.onOfferAccepted}
+            onOfferPay={this.props.onOfferPay}
 
             offers={this.props.offers}
             selectedOffer={this.state.selectedOffer}
@@ -80,7 +91,9 @@ class Dashboard extends React.Component {
           />
         </div>
         <div className="table_wrapper selected_contract_table">
-          <SelectedContractInfo contract={this.state.selectedContract} />
+          <SelectedContractInfo
+            onContractRate={this.onContractRate}
+            contract={this.state.selectedContract} />
         </div>
         <div className="table_wrapper traders_chart">
           <TradersChart contracts={this.props.contracts}/>

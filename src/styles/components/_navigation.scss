@@ -41,7 +41,8 @@
 		}
 	}
 	.nav-link.active {
-		border-right: 2px solid #319d7e;
+		border-left: 2px solid #319d7e;
+		padding-right: 2px;
 	}
 	.nav-link:hover,.nav-link.active {
 		background-color: rgba(58, 62, 66,.7) !important;

@@ -14,23 +14,17 @@ class ContractInfo extends React.Component {
     const profitProgress = currentBalance > startBalance ? (1 - left / (left + currentBalance)) * 100 : 0;
     return (
       <div>
-        <div className="time_left">
-          <div className="time_left_wrapper">
-            <TimeLeft startDate={this.props.contract.startDate} expireDate={this.props.contract.expireDate} progress={progress}/>
-            <ProgressBar progress={progress} />
-          </div>
-        </div>
-        <div className="profit_left">
-          <ProfitLeft {...this.props.contract} progress={profitProgress}/>
-          <ProgressBar progress={profitProgress} />
-        </div>
-        <div className="table_rewind_page">
-          <div className="table_rewind_page_wrapper">
-            <div className="table_prev_page">
-              <div className="table_prev_page--button"></div>
+        <div className="profit_time_wrapper_block">
+          <div className="profit_time_block">
+            <div className="time_left">
+              <div className="time_left_wrapper">
+                <TimeLeft startDate={this.props.contract.startDate} expireDate={this.props.contract.expireDate} progress={progress}/>
+                <ProgressBar progress={progress} />
+              </div>
             </div>
-            <div className="table_next_page">
-              <div className="table_next_page--button"></div>
+            <div className="profit_left">
+              <ProfitLeft {...this.props.contract} progress={profitProgress}/>
+              <ProgressBar progress={profitProgress} />
             </div>
           </div>
         </div>
@@ -61,12 +55,12 @@ class TimeLeft extends React.Component {
               <div className="time_left_count_big">{days}</div>
               <div className="time_left_count_small">days</div>
             </div>
-            <div className="time_left_count_wrapper dots"><span className="dots_couple green">:</span></div>
+            <div className="time_left_count_wrapper dots"><span className="dots_couple">:</span></div>
             <div className="time_left_count_wrapper hours">
               <div className="time_left_count_big">{hours}</div>
               <div className="time_left_count_small">hours</div>
             </div>
-            <div className="time_left_count_wrapper dots-second"><span className="dots_couple green">:</span></div>
+            <div className="time_left_count_wrapper dots-second"><span className="dots_couple">:</span></div>
             <div className="time_left_count_wrapper min">
               <div className="time_left_count_big">{minutes}</div>
               <div className="time_left_count_small">min</div>

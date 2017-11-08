@@ -22,6 +22,9 @@
   margin-left: 15px;
   text-align: left;
 }
+.api_key_currencies_table .ReactTable .rt-tr > :first-child {
+ text-align: center; 
+}
 .rt-resizable-header-content
 {
   color: #e1e1e1;
@@ -71,6 +74,7 @@
   width: 100%;
   border-collapse: collapse;
 }
+
 .ReactTable .rt-tr-group .rt-tr.-even {
   background: #232629;
 }
@@ -87,7 +91,11 @@
 .ReactTable .rt-tr-group .rt-tr.-selected {
   background: #346255;
 }
-
+.ReactTable .rt-td {
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;    
+}
 .table_value_red
 {
   color: #c34445;
@@ -167,6 +175,9 @@
   right: -12px;
   top: 5px;
   background: url(../img/HelpLeftTriangle.png) no-repeat center center;
+}
+.ReactTable .rt-td.table_col_delete {
+  text-align: left !important;
 }
 .table_header_help_wrapper:hover .table_header_help_text
 {

@@ -70,6 +70,10 @@
   background: url('../img/Currencies.png') no-repeat left center;
 }
 
+.selected_header .sort_icon_wrapper {
+  margin-left: 18px;
+}
+
 .currency_status_checkbox
 {
   vertical-align: middle;

@@ -3,6 +3,8 @@ import classNames from 'classnames';
 import { Col, Container, Row } from 'reactstrap';
 import ReactTable from '../generic/SelectableReactTable';
 import SearchHeader from '../generic/SearchHeader';
+import { Desktop, Mobile } from '../generic/MediaQuery';
+import Pagination from '../generic/Pagination';
 import { UncontrolledTooltip } from 'reactstrap';
 
 class CurrencySettings extends React.Component {
@@ -49,8 +51,6 @@ class CurrencySettings extends React.Component {
                 </div>
                 <div className="card-body">
                   {this.renderTable()}
-                  <div className="d-flex d-md-none justify-content-center show-next-block">
-                    <button type="button" className="btn btn-secondary">show next 10 currencies</button></div>
                 </div>
               </div>
             </Col>
@@ -60,9 +60,9 @@ class CurrencySettings extends React.Component {
     );
   }
 
-  renderTable() {
+  getColumns() {
     const currencyFilter = this.state.filtered.find(f => f.id === 'currency').value;
-    const columns = [
+    return [
       {
         Header: SearchHeader('Currency', currencyFilter, this.onCurrencyChange),
         id: 'currency',
@@ -98,17 +98,37 @@ class CurrencySettings extends React.Component {
       },
     ];
 
+  }
+
+  renderTable() {
+
     const scrollBarHeight = this.state.changed ? 217 - 44 : 217;
 
     return (
-      <ReactTable
-        style={{height: 312}}
-        data={this.props.currencies}
-        columns={columns}
-        filtered={this.state.filtered}
-        onItemSelected={() => {}}
-        scrollBarHeight={scrollBarHeight}
-      />
+      <div>
+        <Desktop>        
+          <ReactTable
+            style={{height: 312}}
+            data={this.props.currencies}
+            columns={this.getColumns()}
+            filtered={this.state.filtered}
+            onItemSelected={() => {}}
+            scrollBarHeight={scrollBarHeight}
+          />
+        </Desktop>
+        <Mobile>
+          <ReactTable
+            data={this.props.currencies}
+            columns={this.getColumns()}
+            filtered={this.state.filtered}
+            onItemSelected={() => {}}
+            minRows={5}
+            showPagination={true}
+            defaultPageSize={5}
+            PaginationComponent={Pagination}                 
+          />        
+        </Mobile>
+      </div>
     );
 
   }

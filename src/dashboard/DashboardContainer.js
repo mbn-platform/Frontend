@@ -1,9 +1,10 @@
 import Dashboard from './Dashboard';
 import { connect } from 'react-redux';
 import { deleteApiKey, updateApiKey } from '../actions/apiKeys';
-import { acceptOffer, cancelOffer, rejectOffer } from '../actions/offers';
+import { acceptOffer, cancelOffer, rejectOffer, payOffer } from '../actions/offers';
 import { fetchDashboardData } from '../actions/dashboard';
 import { updateExchagnes } from '../actions/exchanges';
+import { rateContract } from '../actions/contracts';
 
 const mapStateToProps = state => {
   return {
@@ -31,9 +32,11 @@ const mapDispatchToProps = dispatch => {
       dispatch(fetchDashboardData());
       dispatch(updateExchagnes());
     },
+    onOfferPay: offer => dispatch(payOffer(offer)),
     onOfferAccepted: offer => dispatch(acceptOffer(offer)),
     onOfferRejected: offer => dispatch(rejectOffer(offer)),
-    onOfferCanceled: offer => dispatch(cancelOffer(offer))
+    onOfferCanceled: offer => dispatch(cancelOffer(offer)),
+    onContractRate: (feedback, userId, time) => dispatch(rateContract(feedback)),
   };
 };
 
