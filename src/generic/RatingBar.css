@@ -2,7 +2,11 @@
 {
   height: 15px;
   line-height: 15px;
-  display: inline-block;
+  display: block;
+  width: 125px;
+  margin-right: auto;
+  margin-left: auto;
+
 }
 
 .rating_bar_item
