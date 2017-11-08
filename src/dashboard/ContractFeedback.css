@@ -90,6 +90,7 @@
 
 .rate_text
 {
+  text-indent: 1.5em;
   font-size: 1.5em;
   text-align: left;
   color: #6c6c6e;
@@ -99,7 +100,6 @@
 }
 .rate_text_wrapper
 {
-  text-indent: 1.5em;
   margin: 35px 15px;
   margin-bottom: 15px;
   position: relative;
