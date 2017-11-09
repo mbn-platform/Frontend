@@ -134,7 +134,7 @@ class CurrencySettings extends React.Component {
   }
 }
 const SortableTableHeader = header => (
-  <div className="table_header_wrapper">
+  <div className="table_header_wrapper contract_header_wrapper">
     <div className="table_header">{header}</div>
     <div className="sort_icon_wrapper">
       <div className="green_arrow"></div>

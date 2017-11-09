@@ -135,6 +135,10 @@
   display: inline-block;
   margin-left: 10px;
 }
+.sort_icon_wrapper.position_down_icon_wrapper {
+  display: block;
+  margin: 0;
+}
 .table_header_help_wrapper
 {
   position: absolute;

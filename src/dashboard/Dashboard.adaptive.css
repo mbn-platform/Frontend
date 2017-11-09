@@ -65,6 +65,18 @@
     width: 100% !important;
     border-radius: 4px;
   }
+  .api_keys_table .add_keys_select_value {
+    text-align: center;
+    margin-right: 12px;
+  }
+
+  .api_keys_table .add_keys_select_wr {
+    padding-left: 0 !important;
+  }
+
+  .api_keys_table .add_keys_select_value .add_keys_select_value_bg {
+    margin-top: 1px;
+  }
 
   .api_key_currencies_table {
     float: inherit;
@@ -207,6 +219,9 @@
     margin-left: 0px;
     margin-top: 8px;
   }
+  .sort_icon_wrapper.position_down_icon_wrapper {
+   margin-top: 8px; 
+  }
 
   .selected_header .sort_icon_wrapper {
     margin-left: 0px;
@@ -280,6 +295,10 @@
     background-color: transparent;
     position: relative;
     margin-bottom: 17px;
+  }
+
+  .requests_table .ReactTable .contractor_link {
+    text-align: center;
   }
 
   .requests_table .table_requests_control_wr .table_requests_control_text {
