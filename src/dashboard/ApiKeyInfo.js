@@ -164,16 +164,6 @@ class ApiKeyInfo extends React.Component {
             </div>
           </div>
         ) : null}
-        <div className="table_rewind_page">
-          <div className="table_rewind_page_wrapper">
-            <div className="table_prev_page">
-              <div className="table_prev_page--button"></div>
-            </div>
-            <div className="table_next_page">
-              <div className="table_next_page--button"></div>
-            </div>
-          </div>
-        </div>        
       </div>
     );
   }
