@@ -38,7 +38,7 @@ class Navigation extends React.Component {
             <img src={LogoMobile} alt=""/>
           </NavbarBrand>
           <NavbarToggler onClick={this.toggle} className={this.state.isOpen ? '' : 'collapsed'} />
-          <Collapse isOpen={this.state.isOpen} className="ml-auto ml-md-0" navbar>
+          <Collapse isOpen={this.state.isOpen} className="ml-auto ml-md-0" navbar onClick={this.toggle}>
             <Nav pills className="flex-column w-100 align-middle" tag="div">
               {this.getLogo()}
               {this.getLinks().map(this.getBar)}
