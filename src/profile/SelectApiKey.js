@@ -89,7 +89,7 @@ class SelectApiKey extends React.Component {
   renderTable() {
     const data = this.props.apiKeys;
     return (
-      <div>
+      <div style={{width: '100%'}}>
         <Desktop>          
           <ReactTable
             style={{height: 245, width: '100%'}}

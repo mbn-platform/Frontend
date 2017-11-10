@@ -67,17 +67,21 @@ class CurrencySettings extends React.Component {
         Header: SearchHeader('Currency', currencyFilter, this.onCurrencyChange),
         id: 'currency',
         accessor: 'name',
+        minWidth: 60,
         className: 'table_col_value'
       }, {
         Header: SortableTableHeader('Trade volume'),
         className: 'table_col_value',
+        minWidth: 60,
         accessor: 'tradeVolume'
       }, {
         Header:  SortableTableHeader('ROI, %'),
         className: 'table_col_value',
+        minWidth: 60,
         accessor: 'roi'
       }, {
         id: 'selected',
+        minWidth: 40,
         maxWidth: 80,
         Header: StatusHeader(this.onSelectAllClicked),
         Cell: row => (

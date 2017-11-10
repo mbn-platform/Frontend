@@ -147,6 +147,9 @@
   .table_header {
     font-size: 1.2em;
   }
+  .last_header_column_currencies .table_header {
+    height: auto;
+  }
   .table_header br {
     display: none;
   }

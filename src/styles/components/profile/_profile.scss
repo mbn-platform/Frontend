@@ -474,6 +474,7 @@
           .card {
 
             .card-body {
+
               padding: 0;
               min-height: 300px;
               .profit-card-body {
@@ -481,6 +482,9 @@
                 position: absolute;
                 flex: 1;
                 height: calc(100% - 54px);
+                .table_title_tabs_wr {
+                  margin-right: 0px;
+                }
                 .amcharts-block {
                   flex: 1;
 
