@@ -78,9 +78,10 @@
 .ReactTable .rt-tr-group .rt-tr.-even {
   background: #232629;
 }
-.ReactTable .rt-tr-group .rt-tr:hover {
+.ReactTable .rt-tr-group .rt-tr:not(.-padRow):hover {
   background: #2c2f33;
 }
+
 .ReactTable .rt-tr-group .rt-tr {
   transition: background 400ms;
   cursor: pointer;
@@ -88,9 +89,20 @@
   min-height: 30px;
   line-height: 30px;
 }
-.ReactTable .rt-tr-group .rt-tr.-selected {
-  background: #346255;
+.ReactTable .rt-tr-group .rt-tr:not(.-padRow).-selected {
+  /*background: #346255;*/
+  /*background: linear-gradient(270deg, rgba(52, 98, 85, 0), rgba(52, 98, 85, 0.8), #346255);*/
 }
+.ReactTable .rt-tr-group .rt-tr:not(.-padRow).-selected .rt-td {
+  background-color: #346255;
+}
+.ReactTable .rt-tr-group .rt-tr:not(.-padRow).-selected .rt-td:first-child {
+  background: linear-gradient(90deg, rgba(52, 98, 85, 0), #346255);
+}
+.ReactTable .rt-tr-group .rt-tr:not(.-padRow).-selected .rt-td:last-child {
+  background: linear-gradient(90deg, #346255, rgba(52, 98, 85, 0.2))
+}
+
 .ReactTable .rt-td {
   text-align: center;
   overflow: hidden;

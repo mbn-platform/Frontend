@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Col, Container, Row } from 'reactstrap';
 import { Desktop, Mobile } from '../generic/MediaQuery';
 import Pagination from '../generic/Pagination';
@@ -86,14 +87,12 @@ class TradeHistory extends React.Component {
           <ReactTable
             data={data}
             columns={this.getColumns()}
-            onItemSelected={() => {}}
           />
         </Desktop>
         <Mobile>
           <ReactTable
             data={data}
             columns={this.getColumns()}
-            onItemSelected={() => {}}
             minRows={5}
             showPagination={true}
             defaultPageSize={5}

@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import SegmentedControl from '../generic/SegmentedControl';
 import ReactTable from '../generic/SelectableReactTable';
-import SearchHeader from '../generic/SearchHeader';
+import SearchHeaderWithoutSort from '../generic/SearchHeaderWithoutSort';
 import HeaderWithHelp from '../generic/HeaderWithHelp';
 import { Desktop, Mobile } from '../generic/MediaQuery';
 import Pagination from '../generic/Pagination';
@@ -81,7 +81,6 @@ class Contracts extends React.Component {
         <div className="table_title_wrapper clearfix">
           <div className="table_title">Contracts</div>
           <SegmentedControl selectedIndex={this.state.completedTabIndex} segments={['CURRENT', 'FINISHED']} onChange={this.onStatusTabChange}/>
-          <SegmentedControl selectedIndex={this.state.ownedTabIndex} segments={['MINE', 'OTHER']} onChange={this.onOwnershipTabChange}/>
         </div>
         {this.renderContent()}
       </div>
@@ -90,7 +89,7 @@ class Contracts extends React.Component {
 
   getTableColumns() {
     return [{
-      Header: SearchHeader('Contractor', '', () => {}),
+      Header: SearchHeaderWithoutSort('Contractor', '', () => {}),
       headerClassName: 'contractor',
       className: 'table_col_value',
       accessor: 'contractor',
@@ -161,7 +160,7 @@ class Contracts extends React.Component {
 
   getTableMobileColumns() {
     return [{
-      Header: SearchHeader('Contractor', '', () => {}),
+      Header: SearchHeaderWithoutSort('Contractor', '', () => {}),
       headerClassName: 'contractor big_column',
       className: 'big_column table_col_value',
       accessor: 'contractor',
