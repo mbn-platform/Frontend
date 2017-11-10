@@ -8,6 +8,7 @@ import { Desktop, Mobile } from '../generic/MediaQuery';
 import Pagination from '../generic/Pagination';
 import { UncontrolledTooltip } from 'reactstrap';
 import './Contracts.css';
+import { CONTRACT_STATE_FINISHED, CONTRACT_STATE_VERIFIED, CONTRACT_STATE_HALTED } from '../constants';
 
 
 
@@ -25,7 +26,7 @@ class Contracts extends React.Component {
       return;
     }
     if(nextProps.selectedContract !== this.props.selectedContract) {
-      const requiredTab = (nextProps.selectedContract.status === 'completed' & 1);
+      const requiredTab = (nextProps.selectedContract.state === CONTRACT_STATE_FINISHED & 1);
       if(this.state.completedTabIndex !== requiredTab) {
         this.setState({completedTabIndex: requiredTab});
       }
@@ -40,14 +41,12 @@ class Contracts extends React.Component {
   }
 
   renderContent() {
-    const data = this.props.contracts.filter(c => {
-      const isCompleted = c.status !== 'completed';
-      return this.state.completedTabIndex === 0 ? isCompleted : !isCompleted;
-    });
-
+    const data = this.state.completedTabIndex ?
+      this.props.contracts.finished :
+      this.props.contracts.current;
     return (
       <div>
-        <Desktop>            
+        <Desktop>
           <ReactTable
             style={{'height': 352}}
             columns={this.getTableColumns()}
@@ -56,7 +55,7 @@ class Contracts extends React.Component {
             onItemSelected={this.props.onContractSelected}
             scrollBarHeight={257}
           />
-        </Desktop>   
+        </Desktop>
         <Mobile>
           <ReactTable
             columns={this.getTableMobileColumns()}
@@ -66,10 +65,10 @@ class Contracts extends React.Component {
             minRows={5}
             showPagination={true}
             defaultPageSize={5}
-            PaginationComponent={Pagination}              
-          />        
+            PaginationComponent={Pagination}
+          />
         </Mobile>
-      </div>                         
+      </div>
     );
   }
   mobileWidth() {
@@ -142,7 +141,7 @@ class Contracts extends React.Component {
       className: 'small_column tx_column'
     }, {
       Header: HelpHeader('Status'),
-      accessor: 'status',
+      accessor: 'state',
       Cell: StatusCell,
       headerClassName: 'status_column small_column',
       className: 'small_column'
@@ -247,15 +246,16 @@ const TXCell = ({original}) => (
 );
 
 const StatusCell = ({value}) => {
+  console.log(value);
   let className = 'status_circle ';
   switch(value) {
-    case 'completed':
+    case CONTRACT_STATE_FINISHED:
       className += 'green';
       break;
-    case 'in_progress':
+    case CONTRACT_STATE_VERIFIED:
       className += 'yellow';
       break;
-    case 'failed':
+    case CONTRACT_STATE_HALTED:
       className += 'red';
       break;
     default:

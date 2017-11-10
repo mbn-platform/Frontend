@@ -38,12 +38,12 @@ class Dashboard extends React.Component {
         this.setState({selectedOffer: offer});
       }
     }
-    if(this.props.contracts !== nextProps.contracts) {
-      if(this.state.selectedContract) {
-        const contract = nextProps.contracts.find(c => c._id === this.state.selectedContract._id);
-        this.setState({selectedContract: contract});
-      }
-    }
+    //if(this.props.contracts !== nextProps.contracts) {
+      //if(this.state.selectedContract) {
+        //const contract = nextProps.contracts.find(c => c._id === this.state.selectedContract._id);
+        //this.setState({selectedContract: contract});
+      //}
+    //}
   }
 
   render() {
@@ -106,7 +106,8 @@ class Dashboard extends React.Component {
       const { incoming, outgoing } = this.props.offers;
       const findFunction = elem => elem.keyId === apiKey._id;
       const offer = incoming.find(findFunction) || outgoing.find(findFunction);
-      const contract = this.props.contracts.find(c => c.apiKey === apiKey._id);
+      const { current, finished } = this.props.contracts;
+      const contract = current.find(findFunction) || finished.find(findFunction);
       this.setState({selectedApiKey: apiKey, selectedOffer: offer, selectedContract: contract});
     }
   }
