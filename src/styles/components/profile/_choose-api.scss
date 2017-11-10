@@ -39,8 +39,8 @@
             }
             .add_keys_select_wr {
               padding-left: 17px;
-
             }
+
             .rt-td > :first-child {
               margin-left: 0;
               text-align: center;
@@ -301,8 +301,14 @@
             .choose-title {
               .title-text {
                 font-size: 1.5em;
+              
               }
             }
+            .add_keys_select_wr {
+              .add_keys_select_value_bg {
+                margin-top: 1px;
+              }
+            }              
             .table {
               &.table-inverse {
                 background-color: transparent;
