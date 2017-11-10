@@ -1,6 +1,5 @@
 import React from 'react';
 import EnterNickname from './EnterNickname';
-import LoginTitle from '../img/LoginTitle.png';
 import './Login.css';
 import NoMetamask from './NoMetamask';
 import LoginStep from './LoginStep';
@@ -37,7 +36,7 @@ class Login extends React.Component {
   }
 
   onDemoClick() {
-    console.log(' on demo click')
+    console.log(' on demo click');
     window.location = 'http://demo.mercatus.im';
   }
 
@@ -57,10 +56,7 @@ class Login extends React.Component {
         <div className="login_content row justify-content-center align-items-center">
           <div className="login_steps">
             <div className="login_title_wrapper">
-              <div className="login_title_img_wr">
-                <img className="login_title_img" src={LoginTitle} alt="" title="" />
-              </div>
-              <div className="login_title_text">(Alpha)</div>
+              <div className="login_title_text">Alpha</div>
             </div>
             {this.renderStep()}
             <div className="demo_button_wr">
