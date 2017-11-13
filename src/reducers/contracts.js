@@ -14,9 +14,9 @@ export default function(state = {current: [], finished: []}, action) {
         rate: feedback.rate,
         text: feedback.text,
       };
-      const contract = state.find(c => c._id === feedback.offerId);
+      const contract = state.finished.find(c => c._id === feedback.offerId);
       const updated = {...contract, feedbacks: contract.feedbacks.concat(f)};
-      return state.map(c => c._id === updated._id ? updated : c);
+      return {...state, finished: state.finished.map(c => c._id === updated._id ? updated : c)};
     default:
       return state;
   }
