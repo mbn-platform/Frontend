@@ -254,7 +254,7 @@
   }
   .table_rewind_page .table_prev_page.disabled, 
   .table_rewind_page .table_next_page.disabled {
-    opacity: .3;
+    visibility: hidden;
   }
 
   .table_rewind_page .table_rewind_page_wrapper {
