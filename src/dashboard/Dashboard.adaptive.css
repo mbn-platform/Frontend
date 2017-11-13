@@ -335,7 +335,7 @@
     height: auto;
   }
 
-  .ReactTable .rt-tr-group .rt-tr.-selected {
+  .ReactTable .rt-tr-group .rt-tr:not(.-padRow).-selected {
     background: transparent;
   }  
 
