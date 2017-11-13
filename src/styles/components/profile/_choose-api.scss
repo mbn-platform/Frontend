@@ -39,8 +39,8 @@
             }
             .add_keys_select_wr {
               padding-left: 17px;
-
             }
+
             .rt-td > :first-child {
               margin-left: 0;
               text-align: center;
@@ -297,14 +297,18 @@
       @include media-breakpoint-down(sm) {
         .info-screen {
           .choose-api-block {
-            background: -webkit-linear-gradient(bottom, rgba(0, 0, 0, 0.2), #1b1d1f, #1b1d1f, #1b1d1f, #1b1d1f, #1b1d1f, rgba(0, 0, 0, 0.2));
-            background: -o-linear-gradient(bottom, rgba(0, 0, 0, 0.2), #1b1d1f, #1b1d1f, #1b1d1f, #1b1d1f, #1b1d1f, rgba(0, 0, 0, 0.2));
-            background: linear-gradient(to top, #17191b, #1b1d1f, #1b1d1f, #1b1d1f, #1b1d1f, #1b1d1f, #17191b);				
+            background-color: #17191b;
             .choose-title {
               .title-text {
                 font-size: 1.5em;
+              
               }
             }
+            .add_keys_select_wr {
+              .add_keys_select_value_bg {
+                margin-top: 1px;
+              }
+            }              
             .table {
               &.table-inverse {
                 background-color: transparent;

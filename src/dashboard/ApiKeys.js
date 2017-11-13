@@ -91,7 +91,7 @@ class ApiKeys extends React.Component {
         minWidth: 75,
         Header: (<div className="table_header_wrapper">
           <span className="table_header">Balance,<br/>BTC</span>
-          <div className="sort_icon_wrapper" style={{display: 'block', margin: 0}}>
+          <div className="sort_icon_wrapper position_down_icon_wrapper">
             <div className="green_arrow green_arrow_bottom" ></div>
           </div>
         </div>),

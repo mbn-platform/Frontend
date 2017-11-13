@@ -65,6 +65,18 @@
     width: 100% !important;
     border-radius: 4px;
   }
+  .api_keys_table .add_keys_select_value {
+    text-align: center;
+    margin-right: 12px;
+  }
+
+  .api_keys_table .add_keys_select_wr {
+    padding-left: 0 !important;
+  }
+
+  .api_keys_table .add_keys_select_value .add_keys_select_value_bg {
+    margin-top: 1px;
+  }
 
   .api_key_currencies_table {
     float: inherit;
@@ -134,6 +146,9 @@
   }
   .table_header {
     font-size: 1.2em;
+  }
+  .last_header_column_currencies .table_header {
+    height: auto;
   }
   .table_header br {
     display: none;
@@ -207,6 +222,9 @@
     margin-left: 0px;
     margin-top: 8px;
   }
+  .sort_icon_wrapper.position_down_icon_wrapper {
+   margin-top: 8px; 
+  }
 
   .selected_header .sort_icon_wrapper {
     margin-left: 0px;
@@ -271,7 +289,8 @@
     font-size: .9em;
   }
   .requests_table .request_progress_txt .request_progress_wr {
-    margin-top: -2px;
+    margin-top: -3px;
+    margin-bottom: 2px;
   }
 
   .requests_table .table_requests_control_wr {
@@ -280,6 +299,10 @@
     background-color: transparent;
     position: relative;
     margin-bottom: 17px;
+  }
+
+  .requests_table .ReactTable .contractor_link {
+    text-align: center;
   }
 
   .requests_table .table_requests_control_wr .table_requests_control_text {
@@ -308,16 +331,26 @@
     height: 50px !important;
   }
 
-  .contracts_table .table_title_tabs_wr {
-    display: none;
-  }
-
   .contract_header_wrapper .table_header {
     height: auto;
   }
 
-  .contracts_table .ReactTable .rt-tr-group .rt-tr.-selected {
-    background: linear-gradient(90deg, rgba(52, 98, 85, 0.2), #346255, #346255, #346255, #346255, #346255,#346255,#346255,#346255);
+  .ReactTable .rt-tr-group .rt-tr:not(.-padRow).-selected {
+    background: transparent;
+  }  
+
+  .ReactTable .rt-tr-group .rt-tr.-selected:not(.-padRow):hover {
+    background: transparent;
+  }    
+
+  .ReactTable .rt-tr-group .rt-tr:not(.-padRow).-selected .rt-td:first-child {
+    background: linear-gradient(90deg, rgba(52, 98, 85, 0), #346255);
+  }
+  .ReactTable .rt-tr-group .rt-tr:not(.-padRow).-selected .rt-td:last-child {
+    background: linear-gradient(90deg, #346255, rgba(52, 98, 85, 0.2))
+  }  
+  .ReactTable .rt-tr-group .rt-tr:not(.-padRow).-selected .rt-td {
+    background-color: #346255;
   }
 
   .contracts_table .table_title {
@@ -334,8 +367,13 @@
   .contracts_table .fee_column .contract_header_wrapper .sort_icon_wrapper,
   .contracts_table .status_column .contract_header_wrapper .sort_icon_wrapper
    {
-    margin-top: 23px;
+    margin-top: 16px;
   }
+  .contracts_table .current_balance .contract_header_wrapper .sort_icon_wrapper {
+    margin-top: 0px;
+  }
+
+
   .contracts_table_wrapper .table_title_wrapper{
     margin-top: 0px;
   }

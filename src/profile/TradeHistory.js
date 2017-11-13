@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Col, Container, Row } from 'reactstrap';
 import { Desktop, Mobile } from '../generic/MediaQuery';
 import Pagination from '../generic/Pagination';
@@ -40,6 +41,7 @@ class TradeHistory extends React.Component {
       {
         Header: SortableHeader('Date'),
         accessor: 'date',
+        minWidth: 50,
         className: 'table_col_value',
 
       },
@@ -47,27 +49,32 @@ class TradeHistory extends React.Component {
         Header: SortableHeader('Type'),
         Cell: TradeTypeCell,
         accessor: 'type',
+        minWidth: 50,
         className: 'table_col_value',
       },
       {
         Header: SortableHeader('Price, BTC'),
         accessor: 'price',
+        minWidth: 50,
         className: 'table_col_value',
       },
       {
         Header: SortableHeader('Amount'),
         accessor: 'amount',
+        minWidth: 50,
         className: 'table_col_value',
       },
       {
         Header: SortableHeader('Total, BTC'),
         accessor: 'total',
+        minWidth: 50,
         className: 'table_col_value',
       },
       {
         Header: SortableHeader('TX', false),
         accessor: 'tx',
         sortable: false,
+        minWidth: 30,
         className: 'table_col_value',
       },
     ];
@@ -80,14 +87,12 @@ class TradeHistory extends React.Component {
           <ReactTable
             data={data}
             columns={this.getColumns()}
-            onItemSelected={() => {}}
           />
         </Desktop>
         <Mobile>
           <ReactTable
             data={data}
             columns={this.getColumns()}
-            onItemSelected={() => {}}
             minRows={5}
             showPagination={true}
             defaultPageSize={5}
@@ -101,7 +106,7 @@ class TradeHistory extends React.Component {
 }
 
 const SortableHeader = (header, showSort = true) => (
-  <div className="table_header_wrapper">
+  <div className="table_header_wrapper contract_header_wrapper">
     <span className="table_header">{header}</span>
     {showSort ? (
       <div className="sort_icon_wrapper" style={{display: 'block', margin: 0}}>

@@ -49,9 +49,7 @@
 	@include media-breakpoint-down(sm) {
 		.info-screen {
 			.contract-sent-block {
-				background: -webkit-linear-gradient(bottom, rgba(0, 0, 0, 0.2), #1b1d1f, #1b1d1f, #1b1d1f, #1b1d1f, #1b1d1f, rgba(0, 0, 0, 0.2));
-				background: -o-linear-gradient(bottom, rgba(0, 0, 0, 0.2), #1b1d1f, #1b1d1f, #1b1d1f, #1b1d1f, #1b1d1f, rgba(0, 0, 0, 0.2));
-				background: linear-gradient(to top, #17191b, #1b1d1f, #1b1d1f, #1b1d1f, #1b1d1f, #1b1d1f, #17191b);
+				background-color: #17191b;
 				.contract-sent-title {
 					.contract-sent-title-text {
 						margin-top: 41px;

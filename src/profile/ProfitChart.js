@@ -1,6 +1,7 @@
 import React from 'react';
 import SegmentedControl from '../generic/SegmentedControl';
 import { Col } from 'reactstrap';
+import { Desktop, Mobile } from '../generic/MediaQuery';
 import AmCharts from 'amcharts3/amcharts/amcharts';
 import SerialChar from 'amcharts3/amcharts/serial';
 
@@ -119,12 +120,24 @@ class ProfitChart extends React.Component {
                   <span className="icon icon-profit icon-005-growth"></span>PROFIT CHART
                 </div>
                 <Col className="d-flex justify-content-end">
-                  <SegmentedControl
-                    className="currency-button"
-                    segments={['USD', 'BTC']}
-                    selectedIndex={this.state.selectedCurrency}
-                    onChange={i => this.setState({selectedCurrency: i})}
-                  />
+                  <Desktop>
+                    <SegmentedControl
+                      className="currency-button"
+                      segments={['USD', 'BTC']}
+                      selectedIndex={this.state.selectedCurrency}
+                      onChange={i => this.setState({selectedCurrency: i})}
+                    />                  
+                  </Desktop>
+                  <Mobile>
+                    <SegmentedControl
+                      className="currency-button"
+                      segments={['USD', 'BTC']}
+                      segmentWidth={50}
+                      selectedIndex={this.state.selectedCurrency}
+                      onChange={i => this.setState({selectedCurrency: i})}
+                    />                       
+                  </Mobile>
+
                 </Col>
 
               </div>
@@ -147,11 +160,21 @@ class ProfitChart extends React.Component {
 
               </div>
               <div className="row order-1 order-md-3 justify-content-center">
-                <SegmentedControl
-                  segments={['DAY', 'WEEK', 'MONTH', '6 MONTH', 'YEAR', 'ALL']}
-                  selectedIndex={this.state.selectedInterval}
-                  onChange={i => this.setState({selectedInterval: i})}
-                />
+                <Desktop>
+                  <SegmentedControl
+                    segments={['DAY', 'WEEK', 'MONTH', '6 MONTH', 'YEAR', 'ALL']}
+                    selectedIndex={this.state.selectedInterval}
+                    onChange={i => this.setState({selectedInterval: i})}
+                  />
+                </Desktop>
+                <Mobile>
+                  <SegmentedControl
+                    segments={['DAY', 'WEEK', 'MONTH', '6 MONTH', 'YEAR', 'ALL']}
+                    segmentWidth={50}
+                    selectedIndex={this.state.selectedInterval}
+                    onChange={i => this.setState({selectedInterval: i})}
+                  />
+                </Mobile>                
               </div>
               <div className="row order-4 d-flex d-md-none justify-content-center ">
                 <div className="container-fuild alltime-block">
