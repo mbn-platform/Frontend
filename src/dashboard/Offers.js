@@ -6,6 +6,7 @@ import classNames from 'classnames';
 import { Desktop, Mobile } from '../generic/MediaQuery';
 import Pagination from '../generic/Pagination';
 import './Offers.css';
+import { CONTRACT_STATE_INIT, CONTRACT_STATE_ACCEPTED } from '../constants';
 
 class Offers extends React.Component {
   constructor(props) {
@@ -58,7 +59,7 @@ class Offers extends React.Component {
   renderForm() {
     if(this.props.selectedOffer && this.state.selectedTab === this.state.selectedOfferTab) {
       if(this.state.selectedTab === 0) {
-        if(this.props.selectedOffer.state !== 'INIT') {
+        if(this.props.selectedOffer.state !== CONTRACT_STATE_INIT) {
           return null;
         };
         const onAcceptClick = e => {
@@ -172,7 +173,7 @@ const OfferCell = (onPayClick) => {
     ratio = ratio > 100 ? 1 : ratio;
     const style = {width: Math.floor(ratio) + '%'};
     const progressColor = getColorClass(ratio);
-    if(rowInfo.original.state === 'ACCEPTED') {
+    if(rowInfo.original.state === CONTRACT_STATE_ACCEPTED) {
       const onClick = e => {
         e.stopPropagation();
         onPayClick(rowInfo.original);

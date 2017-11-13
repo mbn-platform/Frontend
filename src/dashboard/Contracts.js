@@ -8,6 +8,7 @@ import { Desktop, Mobile } from '../generic/MediaQuery';
 import Pagination from '../generic/Pagination';
 import { UncontrolledTooltip } from 'reactstrap';
 import './Contracts.css';
+import { CONTRACT_STATE_FINISHED, CONTRACT_STATE_VERIFIED, CONTRACT_STATE_HALTED } from '../constants';
 
 
 
@@ -25,7 +26,7 @@ class Contracts extends React.Component {
       return;
     }
     if(nextProps.selectedContract !== this.props.selectedContract) {
-      const requiredTab = (nextProps.selectedContract.state === 'FINISHED' & 1);
+      const requiredTab = (nextProps.selectedContract.state === CONTRACT_STATE_FINISHED & 1);
       if(this.state.completedTabIndex !== requiredTab) {
         this.setState({completedTabIndex: requiredTab});
       }
@@ -40,11 +41,9 @@ class Contracts extends React.Component {
   }
 
   renderContent() {
-    const data = this.props.contracts.filter(c => {
-      const isCompleted = c.state !== 'FINISHED';
-      return this.state.completedTabIndex === 0 ? isCompleted : !isCompleted;
-    });
-
+    const data = this.state.completedTabIndex ?
+      this.props.contracts.finished :
+      this.props.contracts.current;
     return (
       <div>
         <Desktop>
@@ -254,13 +253,13 @@ const TXCell = ({original}) => (
 const StatusCell = ({value}) => {
   let className = 'status_circle ';
   switch(value) {
-    case 'FINISHED':
+    case CONTRACT_STATE_FINISHED:
       className += 'green';
       break;
-    case 'in_progress':
+    case CONTRACT_STATE_VERIFIED:
       className += 'yellow';
       break;
-    case 'failed':
+    case CONTRACT_STATE_HALTED:
       className += 'red';
       break;
     default:
