@@ -4,7 +4,7 @@ class ContractsChart extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {data: this.formatData(props.contracts)};
+    this.state = {data: this.formatData(props.contracts.finished)};
   }
 
   formatData(contracts) {

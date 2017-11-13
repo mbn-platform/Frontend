@@ -1,5 +1,7 @@
 import { generateId } from './util';
 
+import { CONTRACT_STATE_VERIFIED, CONTRACT_STATE_FINISHED,
+  CONTRACT_STATE_HALTED } from '../constants';
 
 export const generateContract = (keyId, state, contractor) => {
   const id = generateId();
@@ -10,7 +12,7 @@ export const generateContract = (keyId, state, contractor) => {
   const targetBalance = Math.floor(startBalance * (100 + roi) / 100);
   const minBalance = Math.floor(startBalance * (100 - fee) / 100);
   let currentBalance;
-  if(state === 'FINISHED') {
+  if(state === CONTRACT_STATE_FINISHED) {
     currentBalance = Math.floor(Math.random() * (targetBalance - startBalance) + startBalance);
   } else {
     currentBalance = Math.floor(Math.random() * (targetBalance - minBalance) - (startBalance - minBalance)) + startBalance;

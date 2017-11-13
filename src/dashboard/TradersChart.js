@@ -7,17 +7,17 @@ class TradersChart extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {data: this.formatData(this.props.contracts)};
+    this.state = {data: this.formatData(this.props.contracts.finished)};
   }
 
   formatData(contracts) {
-    return contracts.filter(c => c.status === 'completed' && c.currentBalance - c.startBalance > 0)
+    return contracts.filter(c => c.state === 'FINISHED' && c.currentBalance - c.startBalance > 0)
       .sort((c1, c2) => c1.currentBalance - c1.startBalance < c2.currentBalance - c2.startBalance)
       .map(c => ({category: c.contractor, 'column-1': c.currentBalance - c.startBalance}));
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({data: this.formatData(nextProps.contracts)});
+    this.setState({data: this.formatData(nextProps.contracts.finished)});
     if(this.chart) {
       this.chart.dataProvider = this.data;
     }

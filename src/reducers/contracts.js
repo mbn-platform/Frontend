@@ -4,11 +4,6 @@ import { CONTRACT_STATE_VERIFIED, CONTRACT_STATE_FINISHED, CONTRACT_STATE_HALTED
 
 export default function(state = {current: [], finished: []}, action) {
   switch(action.type) {
-    case UPDATE_DASHBOARD:
-      const all = [...action.data.offers.outgoing, ...action.data.offers.incoming];
-      const current = all.filter(c => c.state === CONTRACT_STATE_VERIFIED);
-      const finished = all.filter(c => c.state === CONTRACT_STATE_FINISHED || c.state === CONTRACT_STATE_HALTED);
-      return { current, finished };
     case RATE_CONTRACT:
       const feedback = action.feedback;
       const author = action.userId;
