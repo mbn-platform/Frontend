@@ -335,13 +335,23 @@
     height: auto;
   }
 
-  .contracts_table .ReactTable .rt-tr-group .rt-tr.-selected {
-    background: linear-gradient(90deg, rgba(52, 98, 85, 0.2), #346255, #346255, #346255, #346255, #346255,#346255,#346255,#346255);
-  }
-
   .ReactTable .rt-tr-group .rt-tr.-selected {
-    background: linear-gradient(90deg, rgba(52, 98, 85, 0.2), #346255, #346255, #346255, #346255, #346255,#346255,#346255,#346255);
+    background: transparent;
   }  
+
+  .ReactTable .rt-tr-group .rt-tr.-selected:not(.-padRow):hover {
+    background: transparent;
+  }    
+
+  .ReactTable .rt-tr-group .rt-tr:not(.-padRow).-selected .rt-td:first-child {
+    background: linear-gradient(90deg, rgba(52, 98, 85, 0), #346255);
+  }
+  .ReactTable .rt-tr-group .rt-tr:not(.-padRow).-selected .rt-td:last-child {
+    background: linear-gradient(90deg, #346255, rgba(52, 98, 85, 0.2))
+  }  
+  .ReactTable .rt-tr-group .rt-tr:not(.-padRow).-selected .rt-td {
+    background-color: #346255;
+  }
 
   .contracts_table .table_title {
     background: url(../img/Contracts.png) no-repeat left center;

@@ -15,8 +15,6 @@ class SelectableReactTable extends React.Component {
       return {
         className,
         onClick: ()  => {
-          console.log("hui");
-          console.log(rowInfo.original);
           this.props.onItemSelected(rowInfo.original);
         }
       };
