@@ -25,7 +25,7 @@ class LeaveComment extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {comment: '', rate: 2};
+    this.state = {comment: '', rate: null};
     this.onClick = this.onClick.bind(this);
   }
 
@@ -40,7 +40,7 @@ class LeaveComment extends React.Component {
     }
     const feedback = {
       offerId: this.props.id,
-      rate: 2,
+      rate: this.state.rate,
       text: this.state.comment
     };
     this.props.onContractRate(feedback);
@@ -50,7 +50,8 @@ class LeaveComment extends React.Component {
     return (
       <div className="table_content">
         <div className="rate_field_wrapper">
-          <RatingBar className="rate_scale"/>
+          <RatingBar className="rate_scale" rating={this.state.rate || 0}
+            onRatingSelected={rate => this.setState({rate})}/>
           <textarea value={this.state.comment}
             onChange={e => this.setState({comment: e.target.value})}
             className="rate_field" placeholder="Type your feedback here..."/>

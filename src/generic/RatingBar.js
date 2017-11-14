@@ -12,7 +12,6 @@ class RatingBar extends React.Component {
   }
 
   onClick(index) {
-    this.setState({selected: true, rating: index + 1});
     if(this.props.onRatingSelected) {
       this.props.onRatingSelected(index + 1);
     }
@@ -42,7 +41,7 @@ class RatingBar extends React.Component {
   renderStars() {
     const stars = [];
     for(let i = 0; i < this.props.numberOfStars; i++) {
-      const className = this.state.hover >= i || this.state.rating > i ? 'rating_bar_item hover' : 'rating_bar_item';
+      const className = this.state.hover >= i || this.props.rating > i ? 'rating_bar_item hover' : 'rating_bar_item';
       const props = {};
       if(this.props.selectable) {
         props.onClick =  () => this.onClick(i);
