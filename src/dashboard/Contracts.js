@@ -41,7 +41,6 @@ class Contracts extends React.Component {
   }
 
   renderContent() {
-    console.log(this.props.contracts)
     const data = this.state.completedTabIndex ?
       this.props.contracts.finished :
       this.props.contracts.current;

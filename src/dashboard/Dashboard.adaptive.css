@@ -50,6 +50,13 @@
   .selected_contract_table .table_rewind_page {
     margin-bottom: 24px;
   }
+  .selected_contract_table .table_title_wrapper {
+    margin-top: 0;
+    padding-top: 0;
+  }
+  .selected_contract_table .rate_field_wrapper .rate_field {
+    margin-top: 0px;
+  }
   .api_key_currencies_table  .table_rewind_page {
    margin-bottom: 24px; 
   }
