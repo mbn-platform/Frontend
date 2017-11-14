@@ -188,6 +188,10 @@
     background: transparent;
   }
 
+  .ReactTable .rt-tr-group .rt-tr:not(.-padRow):hover {
+    background: #2c2f33;
+  }
+
 
   .api_keys_table .ReactTable .rt-tr-group .rt-tr {
     min-height: 30px;

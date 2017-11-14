@@ -3,7 +3,19 @@
 	padding: 0;
 }
 
+.main-panel.container-fluid .feedback-profile .profile-item.container-fluid .feedback-block {
+	padding: 0;
+}
 
+.main-panel.container-fluid .feedback-profile .profile-item.container-fluid .feedback-block {
+	height: 287px !important;
+}
+
+
+.main-panel.container-fluid .feedback-profile .profile-item.container-fluid .feedback-block.col-xl-4 {
+	max-width: 100%;
+	flex: 0 0 100%;
+}
 .main-panel.container-fluid .feedback-profile .profile-item.container-fluid .table-screen .table-row .card .card-header .title-text .icon {
     margin-right: 12px;
     margin-left: 15px;	
