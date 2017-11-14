@@ -99,6 +99,9 @@ const ProfitLeft = ({left, currency, progress}) => (
 );
 
 const ProgressBar = ({ progress }) => {
+  if(progress < 1) {
+    progress = 1;
+  }
   let className;
   if(progress > 66) {
     className = 'progress_bar green';
