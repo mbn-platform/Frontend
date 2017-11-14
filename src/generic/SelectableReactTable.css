@@ -196,3 +196,7 @@
   padding: 10px;
   z-index: 2;
 }
+.table_col_value.upper
+{
+  text-transform: uppercase;
+}

@@ -1,4 +1,5 @@
 import React from 'react';
+import './ExchangeSelect.css';
 
 class ExchangeSelect extends React.Component {
 
@@ -10,7 +11,7 @@ class ExchangeSelect extends React.Component {
   render() {
     return (
       <div className="add_keys_select_wr">
-        <div className="add_keys_select_value">{this.props.exchange ? this.props.exchange : 'Exchange' }
+        <div className="add_keys_select_value upper upper">{this.props.exchange ? this.props.exchange : 'Exchange' }
           <div className="add_keys_select_value_bg" />
         </div>
         <div className="add_keys_select_values_list_wr">
@@ -44,7 +45,7 @@ class ExchangeSelect extends React.Component {
     return this.props.exchanges.map(exchange => (
       <li value={exchange.name}
         key={exchange.name}
-        className="add_keys_select_li"
+        className="add_keys_select_li upper"
         onClick={() => this.onClick(exchange)}
       >{exchange.name}</li>
       ));
