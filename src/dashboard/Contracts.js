@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import SegmentedControl from '../generic/SegmentedControl';
 import ReactTable from '../generic/SelectableReactTable';
-import SearchHeader from '../generic/SearchHeader';
+import SearchHeaderWithoutSort from '../generic/SearchHeaderWithoutSort';
 import HeaderWithHelp from '../generic/HeaderWithHelp';
 import { Desktop, Mobile } from '../generic/MediaQuery';
 import Pagination from '../generic/Pagination';
@@ -80,7 +80,6 @@ class Contracts extends React.Component {
         <div className="table_title_wrapper clearfix">
           <div className="table_title">Contracts</div>
           <SegmentedControl selectedIndex={this.state.completedTabIndex} segments={['CURRENT', 'FINISHED']} onChange={this.onStatusTabChange}/>
-          <SegmentedControl selectedIndex={this.state.ownedTabIndex} segments={['MINE', 'OTHER']} onChange={this.onOwnershipTabChange}/>
         </div>
         {this.renderContent()}
       </div>
@@ -89,10 +88,11 @@ class Contracts extends React.Component {
 
   getTableColumns() {
     return [{
-      Header: SearchHeader('Contractor', '', () => {}),
-      headerClassName: 'contractor big_column',
-      className: 'big_column table_col_value',
+      Header: SearchHeaderWithoutSort('Contractor', '', () => {}),
+      headerClassName: 'contractor',
+      className: 'table_col_value',
       accessor: 'contractor',
+      minWidth: 70,
       Cell: row => (<div className="contractor_link">@<Link className="table_col_value_a" to={'/' + row.value}>{row.value}</Link></div>),
     }, {
       Header: ContractTableHeader('Expire date'),
@@ -102,51 +102,60 @@ class Contracts extends React.Component {
       },
       headerClassName: 'expire_date big_column',
       className: 'table_col_value big_column',
-
+      minWidth: 60,
+      className: 'table_col_value',
     }, {
       Header: ContractTableHeader('Current\nprofit, %'),
       id: 'currentProfit',
       className: 'table_col_value',
       headerClassName: 'current_profit',
       accessor: c => ((c.currentBalance / c.startBalance - 1) * 100).toFixed(2),
+      minWidth: 50,
       Cell: NegativeValuesCell
     }, {
       Header: ContractTableHeader('Max\nloss, %'),
       className: 'table_col_value',
       headerClassName: 'max_loss',
+      minWidth: 50,
       accessor: 'maxLoss',
     }, {
       id: 'startBalance',
       className: 'table_col_value',
       headerClassName: 'start_balance',
       Header: ContractTableHeader('Start\nbalance, %'),
+      minWidth: 50,
       accessor: c => c.startBalance + ' ' + c.currency,
     }, {
       id: 'currentBalance',
       headerClassName: 'current_balance small_column',
       className: 'table_col_value small_column',
       Header: ContractTableHeader('Current\nbalance, %'),
+      minWidth: 50,
       accessor: c => c.currentBalance + ' ' + c.currency,
     }, {
       id: 'left',
       Header: ContractTableHeader('Left'),
       headerClassName: 'left_column small_column',
       className: 'table_col_value',
+      minWidth: 40,
       accessor: c => c.left + ' ' + c.currency,
     }, {
       Header: ContractTableHeader('Fee, %'),
+      minWidth: 30,
       headerClassName: 'fee_column small_column',
       className: 'table_col_value small_column',
       accessor: 'fee'
     }, {
       Header: <TXHeader />,
       Cell: TXCell,
+      minWidth: 30,
       sortable: false,
       headerClassName: 'tx_column small_column',
       className: 'small_column tx_column'
     }, {
       Header: HelpHeader('Status'),
       accessor: 'state',
+      minWidth: 50,
       Cell: StatusCell,
       headerClassName: 'status_column small_column',
       className: 'small_column'
@@ -155,7 +164,7 @@ class Contracts extends React.Component {
 
   getTableMobileColumns() {
     return [{
-      Header: SearchHeader('Contractor', '', () => {}),
+      Header: SearchHeaderWithoutSort('Contractor', '', () => {}),
       headerClassName: 'contractor big_column',
       className: 'big_column table_col_value',
       accessor: 'contractor',

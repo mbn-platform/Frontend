@@ -102,9 +102,9 @@ class ApiKeyInfo extends React.Component {
           }
         }
       }, {
-        Header: (<div className="table_header_wrapper">
+        Header: (<div className="table_header_wrapper last_header_column_currencies">
           <span className="table_header">Balance</span>
-          <div className="sort_icon_wrapper" style={{display: 'block', margin: 0}}>
+          <div className="sort_icon_wrapper position_down_icon_wrapper">
             <div className="green_arrow green_arrow_bottom" ></div>
           </div>
         </div>),

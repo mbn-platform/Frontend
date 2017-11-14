@@ -65,6 +65,24 @@
   margin-right: 20px;
 }
 
+.last_header_column_currencies {
+  display: inline;
+}
+
+.last_header_column_currencies .table_header
+{
+  display: table-cell;
+  height: 40px;
+  white-space: pre;
+}
+
+.last_header_column_currencies .sort_icon_wrapper
+{
+  display: block;
+  height: 30px;
+  margin-left: 0;
+}
+
 .api_key_currencies_table .table_title
 {
   background: url('../img/Currencies.png') no-repeat left center;

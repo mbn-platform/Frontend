@@ -5,6 +5,7 @@ import LogoMobile from './img/HeaderLogoBigMobile.svg';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { Navbar, NavbarToggler, NavbarBrand, Nav, Collapse, Col } from 'reactstrap';
+import { Desktop, Mobile } from './generic/MediaQuery';
 import { Container, Row } from 'reactstrap';
 import classNames from 'classnames';
 
@@ -38,12 +39,22 @@ class Navigation extends React.Component {
             <img src={LogoMobile} alt=""/>
           </NavbarBrand>
           <NavbarToggler onClick={this.toggle} className={this.state.isOpen ? '' : 'collapsed'} />
-          <Collapse isOpen={this.state.isOpen} className="ml-auto ml-md-0" navbar>
-            <Nav pills className="flex-column w-100 align-middle" tag="div">
-              {this.getLogo()}
-              {this.getLinks().map(this.getBar)}
-            </Nav>
-          </Collapse>
+          <Desktop>
+            <Collapse isOpen={this.state.isOpen} className="ml-auto ml-md-0" navbar>
+              <Nav pills className="flex-column w-100 align-middle" tag="div">
+                {this.getLogo()}
+                {this.getLinks().map(this.getBar)}
+              </Nav>
+            </Collapse>
+          </Desktop>
+          <Mobile>
+            <Collapse isOpen={this.state.isOpen} className="ml-auto ml-md-0" navbar onClick={this.toggle}>
+              <Nav pills className="flex-column w-100 align-middle" tag="div">
+                {this.getLogo()}
+                {this.getLinks().map(this.getBar)}
+              </Nav>
+            </Collapse>          
+          </Mobile>
         </Navbar>
       </Col>
     );
@@ -77,7 +88,7 @@ class Navigation extends React.Component {
 
   getLogo() {
     return (
-      <NavLink exact to="/" key="root" className="nav-link d-none d-md-flex">
+      <NavLink exact to="/" key="root" className="nav-link d-none d-md-flex no-hover-link">
         <Container fluid className="h-100">
           <Row className="h-100">
             <Col xs="12" className="align-self-center">

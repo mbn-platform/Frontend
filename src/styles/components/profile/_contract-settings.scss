@@ -249,9 +249,7 @@
 				.info-screen {
 					.contract-setting-block {
 						padding: 0;
-						background: -webkit-linear-gradient(bottom, rgba(0, 0, 0, 0.2), #1b1d1f, #1b1d1f, #1b1d1f, #1b1d1f, #1b1d1f, rgba(0, 0, 0, 0.2));
-						background: -o-linear-gradient(bottom, rgba(0, 0, 0, 0.2), #1b1d1f, #1b1d1f, #1b1d1f, #1b1d1f, #1b1d1f, rgba(0, 0, 0, 0.2));
-						background: linear-gradient(to top, #17191b, #1b1d1f, #1b1d1f, #1b1d1f, #1b1d1f, #1b1d1f, #17191b);				
+						background-color: #17191b;
 						.title-setting {
 							.title-text {
 								font-size: 1.6em;

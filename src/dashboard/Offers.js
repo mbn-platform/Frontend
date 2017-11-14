@@ -141,7 +141,6 @@ class Offers extends React.Component {
         </Desktop>
         <Mobile>
           <ReactTable
-            style={style}
             data={data}
             columns={this.getColumns()}
             selectedItem={this.props.selectedOffer}
