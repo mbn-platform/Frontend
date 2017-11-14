@@ -38,12 +38,14 @@ class Dashboard extends React.Component {
         this.setState({selectedOffer: offer});
       }
     }
-    //if(this.props.contracts !== nextProps.contracts) {
-      //if(this.state.selectedContract) {
-        //const contract = nextProps.contracts.find(c => c._id === this.state.selectedContract._id);
-        //this.setState({selectedContract: contract});
-      //}
-    //}
+    
+    if(this.props.contracts !== nextProps.contracts) {
+      if(this.state.selectedContract) {
+        const contract = nextProps.contracts.find(c => c._id === this.state.selectedContract._id);
+        this.setState({selectedContract: contract});
+      }
+    }
+
   }
 
   render() {

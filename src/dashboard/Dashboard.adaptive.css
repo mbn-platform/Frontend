@@ -91,21 +91,18 @@
     margin-top: 0px;
   }
 
-  .api_keys_table .ReactTable .table_header_wrapper__align {
-    width: 85px;
-    margin-left: auto;
-  }
 
   .api_key_currencies_table .ReactTable .rt-tr > :first-child {
     text-align: center;
   }
 
   .keys_tables_wrapper .ReactTable .key_name_text_td {
-    width: 74px;
+    width: 60px;
     text-overflow: ellipsis;
     overflow: hidden;
     margin-left: auto;
-    text-align: left
+    margin-right: auto;
+    text-align: center
   }
 
 
@@ -377,17 +374,14 @@
   .contracts_table_wrapper .table_title_wrapper{
     margin-top: 0px;
   }
-  .contracts_table_wrapper .ReactTable .table_header_wrapper__align {
-    width: 62px;
-    margin-left: auto;
-  }
   .contracts_table_wrapper .ReactTable .contractor_link {
     width: 60px;
     -o-text-overflow: ellipsis;
     text-overflow: ellipsis;
     overflow: hidden;
     margin-left: auto;
-    text-align: left;
+    margin-right: auto;
+    text-align: center;
   }
 
   .contracts_table_wrapper .ReactTable .rt-td.table_col_delete {
@@ -395,8 +389,7 @@
   }
 
   .contracts_table_wrapper .ReactTable .tx_column {
-    text-align: left;
-    margin-left: 2px;
+    text-align: center;
   }
   .selected_contract_table .profit_time_wrapper_block {
     width: 100%;

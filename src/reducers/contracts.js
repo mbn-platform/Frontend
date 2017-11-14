@@ -1,4 +1,4 @@
-import { UPDATE_CONTRACTS, RATE_CONTRACT } from '../actions/contracts';
+ import { UPDATE_CONTRACTS, RATE_CONTRACT } from '../actions/contracts';
 import { UPDATE_DASHBOARD } from '../actions/dashboard';
 import { CONTRACT_STATE_VERIFIED, CONTRACT_STATE_FINISHED, CONTRACT_STATE_HALTED } from '../constants';
 
