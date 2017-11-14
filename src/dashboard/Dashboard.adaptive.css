@@ -282,11 +282,15 @@
     min-height: 24px;
     line-height: 24px;
   }
+  .requests_table .ReactTable .rt-tr-group .rt-tr .rt-td {
+    height: 30px;
+  }
+
   .requests_table .request_progress_txt {
     font-size: .9em;
   }
   .requests_table .request_progress_txt .request_progress_wr {
-    margin-top: -3px;
+    margin-top: 0;
     margin-bottom: 2px;
   }
 
