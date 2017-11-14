@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import './RatingBar.css';
 
 class RatingBar extends React.Component {
@@ -27,7 +28,7 @@ class RatingBar extends React.Component {
 
   render() {
     const props = {
-      className: 'rating_bar'
+      className: classNames('rating_bar', this.props.className)
     };
     if(this.props.selectable) {
       props.onMouseLeave = this.onMouseLeave;
