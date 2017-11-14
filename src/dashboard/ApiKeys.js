@@ -77,7 +77,7 @@ class ApiKeys extends React.Component {
         Header: ExchangeHeader(this.props.exchanges, exchangeFilter, this.onExchangeChange),
         accessor: 'exchange',
         minWidth: 99,
-        className: 'table_col_value',
+        className: 'table_col_value upper',
         filterMethod: (filter, row) => {
           if(filter.value === 'All') {
             return true;
