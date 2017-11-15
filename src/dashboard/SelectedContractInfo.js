@@ -8,19 +8,9 @@ const SelectedContractInfo = ({ contract, onContractRate }) => {
     return null;
   } else {
     if(contract.state === 'FINISHED') {
-      if(contract.feedbacks && contract.feedbacks.length > 1) {
         return (<ProfileFeedbacks
           comments={contract.feedbacks}
         />);
-      } else {
-        return (
-
-          <ContractFeedback
-            onContractRate={onContractRate}
-            contract={contract}
-          />);        
-      }
-
     } else {
       return (<ContractInfo contract={contract}/>);
     }
