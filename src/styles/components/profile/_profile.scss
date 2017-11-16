@@ -43,9 +43,6 @@
         width: 412px;
         //padding: 0 60px;
         box-shadow: 7px 12.124px 54px 0px rgba(0, 0, 0, 0.039);
-        .input-block {
-          display: none;
-        }
       }
 
       .accept-request-block {
@@ -73,7 +70,7 @@
       }
 
 
-      .raiting-block, .title-setting, .accept-requests, .duration-contract, .date-button .btn, .feedback-item .name, thead, .accept-request-title-text {
+      .raiting-block, .title-setting, .accept-requests, .settings, .date-button .btn, .feedback-item .name, thead, .accept-request-title-text {
         font-family: 'maven_pro_light300' !important;
       }
       .feedback-item .date, .feedback-item .text-feedback, .raiting .value-text,.alltime-block .percent,.alltime-block .date{

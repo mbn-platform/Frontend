@@ -58,6 +58,7 @@ class ProfileInfo extends React.Component {
                   maxLoss={this.props.maxLoss}
                   fee={this.props.fee}
                   availableForOffers={this.props.availableForOffers}
+                  roi={this.props.roi}
                 />
               </Col>
             </Row>

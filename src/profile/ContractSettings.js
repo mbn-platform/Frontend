@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Row, Col } from 'reactstrap';
 
@@ -8,21 +7,14 @@ class ContractSettings extends React.Component {
   constructor(props) {
     super(props);
     this.onToggleClick = this.onToggleClick.bind(this);
-    this.state = {
-      isEditing: false,
-      duration: props.duration,
-      amount: props.amount,
-      currency: props.currency,
-      maxLoss: props.maxLoss,
-      fee: props.fee
-    };
+    this.state = this.getInitialState();
     this.onEditButtonClick = this.onEditButtonClick.bind(this);
     this.onFieldEdit = this.onFieldEdit.bind(this);
     this.onCurrencySelected = this.onCurrencySelected.bind(this);
   }
 
   onCurrencySelected(e) {
-    this.setState({currency: e.target.name})
+    this.setState({currency: e.target.name});
   }
 
   onFieldEdit(e) {
@@ -33,16 +25,32 @@ class ContractSettings extends React.Component {
     const isEditing = this.state.isEditing;
     if(isEditing) {
       const update = {
-        fee: parseInt(this.state.fee),
-        minAmount: parseInt(this.state.amount),
-        minAmountCurrency: this.state.currency,
-        maxLoss: parseInt(this.state.maxLoss),
-        duration: parseInt(this.state.duration),
+        fee: parseInt(this.state.fee, 10) || this.props.fee,
+        minAmount: parseInt(this.state.amount, 10) || this.props.amount,
+        minAmountCurrency: this.state.currency || this.props.currency,
+        roi: parseInt(this.state.roi) || this.props.roi,
+        maxLoss: parseInt(this.state.maxLoss, 10) || this.props.maxLoss,
+        duration: parseInt(this.state.duration, 10) || this.props.duration,
       };
       this.props.onSaveChangesClick(update);
+      this.setState(this.getInitialState());
+    } else {
+      this.setState({isEditing: true});
     }
-    this.setState({isEditing: !this.state.isEditing});
   }
+
+  getInitialState() {
+    return {
+      isEditing: false,
+      duration: '',
+      amount: '',
+      currency: this.props.currency,
+      roi: '',
+      maxLoss: '',
+      fee: '',
+    };
+  }
+
 
   onToggleClick(e) {
     this.props.onSaveChangesClick({availableForOffers: !this.props.availableForOffers});
@@ -66,122 +74,16 @@ class ContractSettings extends React.Component {
     );
   }
 
-  renderDurationAndAmount() {
-    return (
-      <Col xs="auto" lg="12" xl="12">
-        <div className="duration-block edit-money-block">
-          <div className="description-text">DURATION OF CONTRACT:</div>
-          <div className="value-text days-text-block text-block">
-            {this.props.duration} <span className="days">DAYS</span>
-          </div>
-          <div className="days-input-block input-block">
-            <div className="input-group">
-              <input
-                onChange={this.onFieldEdit}
-                name="duration"
-                value={this.state.duration}
-                type="text" className="form-control"
-                placeholder="45" aria-label="45"
-              />
-              <span className="input-group-btn">
-                <button className="btn btn-secondary" type="button">days</button>
-              </span>
-            </div>
-          </div>
-        </div>
-        <div className="amount-block edit-money-block">
-          <div className="description-text">MIN CONTRACT AMOUNT:</div>
-          <div className="value-text amount-text-block text-block">{this.props.amount} <span className="days">{this.props.currency}</span>
-          </div>
-          <div className="amount-input-block input-block">
-            <div className="input-group">
-              <input
-                onChange={this.onFieldEdit}
-                name="amount"
-                value={this.state.amount}
-                type="text" className="form-control"
-                placeholder="4000" aria-label="4000"
-              />
-              <span className="input-group-btn">
-                <button
-                  onClick={this.onCurrencySelected}
-                  name="BTC"
-                  className={classNames('btn', 'btn-secondary', {active: this.state.currency === 'BTC'})}
-                  type="button"
-                >BTC</button>
-                <button
-                  onClick={this.onCurrencySelected}
-                  name="USDT"
-                  className={classNames('btn', 'btn-secondary', {active: this.state.currency === 'USDT'})}
-                  type="button"
-                >USDT</button>
-              </span>
-            </div>
-          </div>
-        </div>
-      </Col>
-    );
-  }
-
-  renderMaxLossAndFee() {
-    return (
-      <Col xs="auto" lg="12" xl="12">
-        <div className="loss-block edit-money-block">
-          <div className="description-text">MAX LOSS:</div>
-          <div className="value-text loss-text-block text-block">{this.props.maxLoss} <span className="days">%</span></div>
-          <div className="loss-input-block  input-block">
-            <div className="input-group">
-              <input
-                onChange={this.onFieldEdit}
-                name="maxLoss"
-                value={this.state.maxLoss}
-                type="text" className="form-control"
-                placeholder="10" aria-label="10"
-              />
-              <span className="input-group-btn">
-                <button className="btn btn-secondary" type="button">%</button>
-              </span>
-            </div>
-          </div>
-        </div>
-        <div className="fee-block edit-money-block">
-          <div className="description-text">FEE:</div>
-          <div className="value-text fee-text-block text-block">{this.props.fee} <span className="days">%</span></div>
-          <div className="fee-input-block input-block">
-            <div className="input-group">
-              <input
-                onChange={this.onFieldEdit}
-                name="fee"
-                value={this.state.fee}
-                type="text" className="form-control"
-                placeholder="15" aria-label="15"
-              />
-              <span className="input-group-btn">
-                <button className="btn btn-secondary" type="button">%</button>
-              </span>
-            </div>
-          </div>
-        </div>
-      </Col>
-    );
-  }
-
-
-
   render() {
-    const className = classNames('row-fluid','contract-setting-block', {'edit-block': this.state.isEditing});
     return (
-      <div className={className}>
+      <div className="row-fluid contract-setting-block">
         <div className="row title-setting">
           <div className="col-auto text-center align-middle contract-setting-title title-text">
             <span className="icon icon-settings icon-006-wrench"></span>Contract settings
           </div>
         </div>
         {this.renderAcceptsRequests()}
-        <div className="row justify-content-between duration-contract">
-          {this.renderDurationAndAmount()}
-          {this.renderMaxLossAndFee()}
-        </div>
+        {this.renderEntries()}
         <div className="row justify-content-center d-flex d-md-none tooltip-text-block">
           <div className="tooltip-mobile-box">
             <span className="pointer">*</span>To change your profile please accept or decline all offers in your dashboard
@@ -189,6 +91,7 @@ class ContractSettings extends React.Component {
         </div>
         <div className="row justify-content-center">
           <button
+            tabIndex={10}
             onClick={this.onEditButtonClick} type="button"
             className={classNames('edit-btn', 'btn', 'btn-secondary', {active: this.state.isEditing})}
             data-toggle="popover" data-trigger="hover"
@@ -200,6 +103,167 @@ class ContractSettings extends React.Component {
     );
   }
 
+  renderEntries() {
+    return (
+      <div  className="row justify-content-between settings">
+        <Col xs="auto" lg="12" xl="12">
+          <Setting
+            tabIndex={1}
+            header="DURATION OF CONTRACT"
+            value={this.props.duration}
+            dimension="DAYS"
+            isEditing={this.state.isEditing}
+            editValue={this.state.duration}
+            name="duration"
+            onChange={this.onFieldEdit}
+          />
+          <SettingAmount
+            tabIndex={2}
+            value={this.props.amount}
+            dimension={this.props.currency}
+            isEditing={this.state.isEditing}
+            editValue={this.state.amount}
+            editCurrency={this.state.currency}
+            onChange={this.onFieldEdit}
+            onCurrencySelected={this.onCurrencySelected}
+          />
+          <Setting
+            tabIndex={3}
+            header="ROI"
+            value={this.props.roi}
+            dimension="%"
+            isEditing={this.state.isEditing}
+            editValue={this.state.roi}
+            name="roi"
+            onChange={this.onFieldEdit}
+          />
+        </Col>
+        <Col xs="auto" lg="12" xl="12">
+          <Setting
+            tabIndex={4}
+            header="MAX LOSS"
+            value={this.props.maxLoss}
+            dimension="%"
+            isEditing={this.state.isEditing}
+            editValue={this.state.maxLoss}
+            name="maxLoss"
+            onChange={this.onFieldEdit}
+          />
+          <Setting
+            tabIndex={5}
+            header="FEE"
+            value={this.props.fee}
+            dimension="%"
+            isEditing={this.state.isEditing}
+            editValue={this.state.fee}
+            name="fee"
+            onChange={this.onFieldEdit}
+          />
+        </Col>
+
+      </div>
+    );
+  }
+
 }
+
+const SettingEntry = ({value, dimension}) => (
+  <div className="value-text loss-text-block text-block">{value} <span className="days">{dimension}</span></div>
+);
+
+const Setting = ({header, value, dimension, isEditing, editValue, onChange, name, tabIndex}) => (
+  <div className="setting-block">
+    <div className="description-text">{header}:</div>
+    {isEditing ? (
+      <EditSettingsEntry
+        tabIndex={tabIndex}
+        dimension={dimension}
+        onChange={onChange}
+        name={name}
+        placeholder={value}
+        value={editValue}
+      />
+    ) : (
+      <SettingEntry
+        value={value}
+        dimension={dimension}
+      />
+    )}
+  </div>
+);
+
+const SettingAmount = ({isEditing, value, dimension, editValue, editCurrency, onChange, onCurrencySelected, tabIndex}) => (
+  <div className="loss-block setting-block">
+    <div className="description-text">MIN CONTRACT AMOUNT:</div>
+    {isEditing ? (
+      <EditAmountEntry
+        tabIndex={tabIndex}
+        onChange={onChange}
+        onCurrencySelected={onCurrencySelected}
+        value={editValue}
+        currency={editCurrency}
+        placeholder={value}
+      />
+    ) : (
+      <SettingEntry
+        value={value}
+        dimension={dimension}
+      />
+    )}
+  </div>
+);
+
+const EditAmountEntry = ({placeholder, value, onChange, onCurrencySelected, currency, tabIndex}) => (
+  <div className="amount-input-block input-block">
+    <div className="input-group">
+      <input
+        tabIndex={tabIndex}
+        className="form-control"
+        onChange={onChange}
+        name="amount"
+        value={value}
+        type="text"
+        placeholder={placeholder}
+        aria-label={placeholder}
+      />
+      <span className="input-group-btn">
+        <button
+          onClick={onCurrencySelected}
+          name="BTC"
+          className={classNames('btn', 'btn-secondary', {active: currency === 'BTC'})}
+          type="button"
+        >BTC</button>
+        <button
+          onClick={onCurrencySelected}
+          name="USDT"
+          className={classNames('btn', 'btn-secondary', {active: currency === 'USDT'})}
+          type="button"
+        >USDT</button>
+      </span>
+    </div>
+  </div>
+);
+
+const EditSettingsEntry = ({placeholder,value, dimension, name, onChange, tabIndex}) => (
+  <div className="loss-input-block  input-block">
+    <div className="input-group">
+      <input
+        tabIndex={tabIndex}
+        className="form-control"
+        onChange={onChange}
+        name={name}
+        value={value}
+        type="text"
+        placeholder={placeholder}
+        aria-label={placeholder}
+      />
+      <span className="input-group-btn">
+        <button className="btn btn-secondary" type="button">{dimension}</button>
+      </span>
+    </div>
+  </div>
+);
+
+
 
 export default ContractSettings;

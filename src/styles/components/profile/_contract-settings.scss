@@ -2,22 +2,6 @@
 	.profile-item {
 		&.container-fluid {
 
-			.contract-setting-block.edit-block {
-				display: block !important;
-				.text-block {
-					display: none !important;
-				}				
-				.input-block {
-					display: inline-block !important;
-					.form-control:disabled {
-						background-color: transparent;
-						:hover {
-							background-color: transparent;
-						}
-					}
-				}			
-
-			}	
 			.info-screen {
 
 				.contract-setting-block {
@@ -157,9 +141,12 @@
 						
 					}
 
-					.duration-contract {
+					.settings {
+						.input-block {
+							display: inline-block;
+						}
 						margin-top: 10px;
-						.edit-money-block {
+						.setting-block {
 							margin-top: 18px;
 						}
 						.description-text {
@@ -302,7 +289,7 @@
 							}
 						}
 
-						.duration-contract {
+						.settings {
 							// padding: 0 80px;
 							padding: 0 45px 0 35px;
 							margin-top: 2px;
