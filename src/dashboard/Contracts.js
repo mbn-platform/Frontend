@@ -71,9 +71,6 @@ class Contracts extends React.Component {
       </div>
     );
   }
-  mobileWidth() {
-    return window.outerWidth < 1028;
-  }
   render() {
     return (
       <div className="table contracts_table">

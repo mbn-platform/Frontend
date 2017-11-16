@@ -655,6 +655,7 @@
         .accept-request-title-block {
           margin-top: 40px;
           margin-bottom: 7px;
+          text-transform: uppercase;
           .accept-request-title-text {
             background: -moz-linear-gradient(90deg, rgba(52, 98, 85, 0.2), #346255, #346255, #346255, #346255, #346255, rgba(52, 98, 85, 0.2));
             background: -webkit-linear-gradient(90deg, rgba(52, 98, 85, 0.2), #346255, #346255, #346255, #346255, #346255, rgba(52, 98, 85, 0.2));
@@ -671,6 +672,7 @@
           margin-top: 40px;
           margin-bottom: 7px;
           display: none;
+          text-transform: uppercase;
           .no-accept-request-title-text {
             background: linear-gradient(90deg, rgba(73, 77, 77, 0.2), #494d4d, #494d4d, #494d4d, #494d4d, #494d4d, rgba(73, 77, 77, 0.2));
             color: #bfbfc1;

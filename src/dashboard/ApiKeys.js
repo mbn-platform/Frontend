@@ -100,7 +100,7 @@ class ApiKeys extends React.Component {
         }
       }, {
         Header: '',
-        minWidth: 44,
+        minWidth: 24,
         className: 'table_col_delete',
         Cell: row => {
           const canDeleteKey = row.original.state === 'FREE';

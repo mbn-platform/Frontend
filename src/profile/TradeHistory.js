@@ -86,12 +86,14 @@ class TradeHistory extends React.Component {
         <Desktop>      
           <ReactTable
             data={data}
+            onItemSelected={() => {}}
             columns={this.getColumns()}
           />
         </Desktop>
         <Mobile>
           <ReactTable
             data={data}
+            onItemSelected={() => {}}
             columns={this.getColumns()}
             minRows={5}
             showPagination={true}
