@@ -61,11 +61,13 @@ class Offers extends React.Component {
   }
 
   renderForm() {
-    if(this.props.selectedOffer && this.state.selectedTab === this.state.selectedOfferTab) {
-      if(this.state.selectedTab === TAB_INBOX) {
-        if(this.props.selectedOffer.state !== CONTRACT_STATE_INIT) {
-          return null;
-        };
+    if(!this.props.selectedOffer ||
+      this.state.selectedTab !== this.state.selectedOfferTab ||
+      this.props.selectedOffer.state !== CONTRACT_STATE_INIT) {
+      return null;
+    } else {
+      switch(this.state.selectedTab) {
+        case TAB_INBOX: {
         const onAcceptClick = e => {
           e.preventDefault();
           this.props.onOfferAccepted(this.props.selectedOffer);
@@ -85,7 +87,8 @@ class Offers extends React.Component {
             </div>
           </div>
         );
-      } else {
+        }
+        case TAB_OUTBOX: {
         const onClick = e => {
           e.preventDefault();
           this.props.onOfferCanceled(this.props.selectedOffer);
@@ -100,9 +103,13 @@ class Offers extends React.Component {
             </div>
           </div>
         );
+        }
+        default:
+          throw new Error('invalid state');
       }
     }
   }
+
   getColumns() {
     return [{
       Header: SortHeader('From'),
