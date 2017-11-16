@@ -50,6 +50,13 @@
   .selected_contract_table .table_rewind_page {
     margin-bottom: 24px;
   }
+  .selected_contract_table .table_title_wrapper {
+    margin-top: 0;
+    padding-top: 0;
+  }
+  .selected_contract_table .rate_field_wrapper .rate_field {
+    margin-top: 0px;
+  }
   .api_key_currencies_table  .table_rewind_page {
    margin-bottom: 24px; 
   }
@@ -91,21 +98,18 @@
     margin-top: 0px;
   }
 
-  .api_keys_table .ReactTable .table_header_wrapper__align {
-    width: 85px;
-    margin-left: auto;
-  }
 
   .api_key_currencies_table .ReactTable .rt-tr > :first-child {
     text-align: center;
   }
 
   .keys_tables_wrapper .ReactTable .key_name_text_td {
-    width: 74px;
+    width: 60px;
     text-overflow: ellipsis;
     overflow: hidden;
     margin-left: auto;
-    text-align: left
+    margin-right: auto;
+    text-align: center
   }
 
 
@@ -182,6 +186,10 @@
   .api_key_currencies_table .ReactTable .rt-tr-group .rt-tr.-even,
   .contracts_table_wrapper .ReactTable .rt-tr-group .rt-tr.-even {
     background: transparent;
+  }
+
+  .ReactTable .rt-tr-group .rt-tr:not(.-padRow):hover {
+    background: #2c2f33;
   }
 
 
@@ -285,11 +293,15 @@
     min-height: 24px;
     line-height: 24px;
   }
+  .requests_table .ReactTable .rt-tr-group .rt-tr .rt-td {
+    height: 30px;
+  }
+
   .requests_table .request_progress_txt {
     font-size: .9em;
   }
   .requests_table .request_progress_txt .request_progress_wr {
-    margin-top: -3px;
+    margin-top: 0;
     margin-bottom: 2px;
   }
 
@@ -377,17 +389,14 @@
   .contracts_table_wrapper .table_title_wrapper{
     margin-top: 0px;
   }
-  .contracts_table_wrapper .ReactTable .table_header_wrapper__align {
-    width: 62px;
-    margin-left: auto;
-  }
   .contracts_table_wrapper .ReactTable .contractor_link {
     width: 60px;
     -o-text-overflow: ellipsis;
     text-overflow: ellipsis;
     overflow: hidden;
     margin-left: auto;
-    text-align: left;
+    margin-right: auto;
+    text-align: center;
   }
 
   .contracts_table_wrapper .ReactTable .rt-td.table_col_delete {
@@ -395,8 +404,7 @@
   }
 
   .contracts_table_wrapper .ReactTable .tx_column {
-    text-align: left;
-    margin-left: 2px;
+    text-align: center;
   }
   .selected_contract_table .profit_time_wrapper_block {
     width: 100%;

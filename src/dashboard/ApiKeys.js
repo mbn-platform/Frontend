@@ -98,7 +98,7 @@ class ApiKeys extends React.Component {
         accessor: key => key.currencies ? key.currencies.reduce((sum, c) => sum + (c.amount || 0), 0) : 0
       }, {
         Header: '',
-        minWidth: 44,
+        minWidth: 24,
         className: 'table_col_delete',
         Cell: row => {
           const canDeleteKey = row.original.state === 'FREE';

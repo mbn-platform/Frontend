@@ -1,0 +1,42 @@
+
+.main-panel.container-fluid .feedback-profile .profile-item.container-fluid .table-screen {
+	padding: 0;
+}
+
+.main-panel.container-fluid .feedback-profile .profile-item.container-fluid .feedback-block {
+	padding: 0;
+}
+
+.main-panel.container-fluid .feedback-profile .profile-item.container-fluid .feedback-block {
+	height: 287px !important;
+}
+
+
+.main-panel.container-fluid .feedback-profile .profile-item.container-fluid .feedback-block.col-xl-4 {
+	max-width: 100%;
+	flex: 0 0 100%;
+}
+.main-panel.container-fluid .feedback-profile .profile-item.container-fluid .table-screen .table-row .card .card-header .title-text .icon {
+    margin-right: 12px;
+    margin-left: 15px;	
+}
+
+.main-panel.container-fluid  .feedback-profile .profile-item.container-fluid .table-screen .table-row .feedback-block .feedback-card .card-header {
+	margin-top: 0;
+}
+
+.main-panel.container-fluid .feedback-profile .profile-item.container-fluid .table-screen .table-row .feedback-block .feedback-card .card-header {
+	min-height: 40px;
+}
+
+.main-panel.container-fluid  .feedback-profile .profile-item.container-fluid .card .card-header {
+	height: 50px;
+}
+
+@media only screen and (max-width : 1027px) {
+	.main-panel.container-fluid  .feedback-profile .profile-item.container-fluid .table-screen .table-row .feedback-block .feedback-card .card-body ul {
+		padding-left: 15px;
+		padding-right: 15px;
+	}
+
+}

@@ -96,8 +96,8 @@
 .delete_key_button
 {
   background: url(../img/DeleteKey.png) no-repeat center center;
-  width: 17px;
-  height: 13px;
+  width: 100%;
+  height: 100%;
   display: inline-block;
   vertical-align: middle;
   opacity: .2;
