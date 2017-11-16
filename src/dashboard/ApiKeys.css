@@ -80,6 +80,10 @@
   color: #b8b8ba;
   text-transform: uppercase;
 }
+.table_col_value_a:hover {
+  color: #b8b8ba;
+  text-decoration: none;
+}
 .-selected .table_col_value,
 .-selected .table_col_value_a
 {
