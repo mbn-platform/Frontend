@@ -7,7 +7,7 @@ class ContractSettings extends React.Component {
   constructor(props) {
     super(props);
     this.onToggleClick = this.onToggleClick.bind(this);
-    this.state = this.getInitialState();
+    this.state = {isEditing: false};
     this.onEditButtonClick = this.onEditButtonClick.bind(this);
     this.onFieldEdit = this.onFieldEdit.bind(this);
     this.onCurrencySelected = this.onCurrencySelected.bind(this);
@@ -35,7 +35,7 @@ class ContractSettings extends React.Component {
       this.props.onSaveChangesClick(update);
       this.setState(this.getInitialState());
     } else {
-      this.setState({isEditing: true});
+      this.setState({...this.getInitialState(), isEditing: true});
     }
   }
 
@@ -89,16 +89,24 @@ class ContractSettings extends React.Component {
             <span className="pointer">*</span>To change your profile please accept or decline all offers in your dashboard
           </div>
         </div>
-        <div className="row justify-content-center">
-          <button
-            tabIndex={10}
-            onClick={this.onEditButtonClick} type="button"
-            className={classNames('edit-btn', 'btn', 'btn-secondary', {active: this.state.isEditing})}
-            data-toggle="popover" data-trigger="hover"
-            data-content="To change your profile please accept or decline all offers in your dashboard">
-            {this.state.isEditing ? 'SAVE CHANGES' : 'EDIT'}
-          </button>
-        </div>
+        {this.state.isEditing ? (
+          <div className="col-12 d-flex align-items-center justify-content-between choose-btn-group">
+            <button tabIndex={9} onClick={() => this.setState({isEditing: false})} type="button" className="edit-btn cancel-btn btn btn-secondary">CANCEL</button>
+            <button tabIndex={10} onClick={this.onEditButtonClick} type="button" className="edit-btn send-request-btn btn btn-secondary active">
+              SAVE CHANGES</button>
+          </div>
+        ) : (
+          <div className="row justify-content-center">
+            <button
+              tabIndex={10}
+              onClick={this.onEditButtonClick} type="button"
+              className={classNames('edit-btn', 'btn', 'btn-secondary', {active: this.state.isEditing})}
+              data-toggle="popover" data-trigger="hover"
+              data-content="To change your profile please accept or decline all offers in your dashboard">
+              EDIT
+            </button>
+          </div>
+        )}
       </div>
     );
   }
