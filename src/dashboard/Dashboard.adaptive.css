@@ -57,6 +57,10 @@
   .selected_contract_table .rate_field_wrapper .rate_field {
     margin-top: 0px;
   }
+  .selected_contract_table .rate_field_wrapper .rating_bar {
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
   .api_key_currencies_table  .table_rewind_page {
    margin-bottom: 24px; 
   }
@@ -544,6 +548,12 @@
     text-align: center;
     padding-right: 0;
     margin-bottom: 10px;
+  }
+  .send_rate_btn {
+    width: 148px;
+    border-radius: 2px;
+    height: 30px;
+    font-size: 12px;    
   }
   .rate_scale_wrapper.rate_scale_form
   {
