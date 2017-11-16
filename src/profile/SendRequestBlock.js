@@ -34,6 +34,7 @@ class SendRequestBlock extends React.Component {
       maxLoss: this.props.profile.maxLoss,
       fee: this.props.profile.fee,
       duration: this.props.profile.duration,
+      roi: this.props.profile.roi,
     };
     this.props.sendOffer(offer);
   }
@@ -57,6 +58,7 @@ class SendRequestBlock extends React.Component {
             currency={this.props.profile.minAmountCurrency}
             maxLoss={this.props.profile.maxLoss}
             fee={this.props.profile.fee}
+            roi={this.props.profile.roi}
           />
         );
       }

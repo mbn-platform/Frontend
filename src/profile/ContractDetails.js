@@ -31,6 +31,11 @@ class ContractDetails extends React.Component {
                 dim={this.props.currency}
               />
               <ContractDetailRow
+                name="ROI:"
+                value={this.props.roi}
+                dim="%"
+              />
+              <ContractDetailRow
                 name="Max loss:"
                 value={this.props.maxLoss}
                 dim="%"
