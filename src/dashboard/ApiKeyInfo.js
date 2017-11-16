@@ -54,21 +54,28 @@ class ApiKeyInfo extends React.Component {
 
 
   canChangeCurrency(currency) {
-    if(currency.name === 'USDT' || currency.name === 'BTC' || currency.name === 'ETH') {
+    if(currency === 'USDT' || currency === 'BTC' || currency === 'ETH') {
       return false;
     } else {
       return true;
     }
   }
 
-  onCurrencyStateClicked(currency) {
-    if(!this.canChangeCurrency(currency)) {
+  onCurrencyStateClicked(e) {
+    e.stopPropagation();
+    if(this.props.apiKey.state === 'USED') {
       return;
     }
-    this.setState(state => {
-      const currencies = state.currencies.map(c => c.name === currency.name ? {...c, selected: !c.selected} : c);
-      return {changed: true, currencies};
-    });
+    const currency = e.target.dataset.currency;
+    console.log(currency);
+    if(!this.canChangeCurrency(currency)) {
+      return;
+    } else {
+      this.setState(state => {
+        const currencies = state.currencies.map(c => c.name === currency ? {...c, selected: !c.selected} : c);
+        return {changed: true, currencies};
+      });
+    }
   }
 
   onCurrencyChange(e) {
@@ -94,7 +101,7 @@ class ApiKeyInfo extends React.Component {
         Header: StatusHeader(this.onSelectAllClicked),
         Cell: StatusCell(this.onCurrencyStateClicked),
         accessor: 'selected',
-        headerClassName: "selected_header",
+        headerClassName: 'selected_header',
         filterMethod: (filter, row) => {
           if(filter.value === 'all') {
             return true;
@@ -126,7 +133,7 @@ class ApiKeyInfo extends React.Component {
             filtered={this.state.filtered}
             onItemSelected={() => {}}
             scrollBarHeight={scrollBarHeight}
-          />      
+          />
         </Desktop>
         <Mobile>
           <ReactTable
@@ -137,15 +144,15 @@ class ApiKeyInfo extends React.Component {
             minRows={5}
             showPagination={true}
             defaultPageSize={5}
-            PaginationComponent={Pagination}            
-          />      
-        </Mobile>    
-      </div>  
-      )
+            PaginationComponent={Pagination}
+          />
+        </Mobile>
+      </div>
+    );
   }
 
   render() {
-            
+
     return (
       <div className="api_key_currencies_table table">
         <div className="table_title_wrapper clearfix">
@@ -170,12 +177,8 @@ class ApiKeyInfo extends React.Component {
 }
 
 const StatusCell = (onClick, apiKey) => rowInfo => {
-  const handler = e => {
-    e.stopPropagation();
-    onClick(rowInfo.original);
-  };
   const className = classNames('currency_status_checkbox', {selected: rowInfo.value});
-  return (<div onClick={handler} className={className}/>);
+  return (<div data-currency={rowInfo.original.name} onClick={onClick} className={className}/>);
 };
 
 const StatusHeader = (onSelectAllClicked) => {
