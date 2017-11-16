@@ -8,16 +8,17 @@ export const generateProfile = (profileName) => {
   const fee = Math.floor(Math.random() * 10 + 10);
   const minAmount = Math.floor(Math.random() * 200 + 50);
   const minAmountCurrency = 'USDT';
+  const roi = Math.floor(Math.random() * 10 + 5);
   const duration = Math.floor(Math.random() * 15 + 15);;
   const maxLoss = Math.floor(Math.random() * 10 + 10);
-  const name = profileName  || 'my_profile';
+  const name = profileName  || 'me';
   const currencies = ['ETH', 'USDT', 'BTC'].map(currency);
   const topTraders = getRandom(20);
   const topInvesters = getRandom(20);
   return {
     _id, feedbacks, availableForOffers,
     investmentAmount, fee, minAmount, minAmountCurrency,
-    duration, maxLoss, name, currencies,
+    duration, maxLoss, name, currencies, roi,
     topTraders, topInvesters,
   };
 };
