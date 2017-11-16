@@ -46,7 +46,7 @@ class Feedback extends React.Component {
                 <div className="card-body">
                   <ul className="list-group">
                     <Desktop>
-                      {this.props.comments.map(c => <Comment comment={c}/>)}
+                      {this.props.comments.map((c, i) => <Comment key={i} comment={c}/>)}
                     </Desktop>
                     {this.renderMobile()}
                   </ul>
@@ -72,7 +72,7 @@ class Feedback extends React.Component {
       this.state.page * this.props.pageSize + this.props.pageSize);
     return (
       <Mobile>
-        {data.map(c => <Comment comment={c}/>)}
+        {data.map((c, i) => <Comment key={i} comment={c}/>)}
       </Mobile>
     );
   }
