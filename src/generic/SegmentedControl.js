@@ -35,19 +35,11 @@ class SegmentedControl extends React.Component {
   }
 }
 function mobileWidth() {
-    return window.outerWidth < 1028;
-  }
+  return window.outerWidth < 1028;
+}
 SegmentedControl.defaultProps = {
   selectedIndex: 0,
   segmentWidth: mobileWidth() ? 65 : 80,
-}
-
-function classNameForTab(selectedIndex, tabIndex) {
-  if(selectedIndex === tabIndex) {
-    return 'segmented-control-tab selected';
-  } else {
-    return 'segmented-control-tab';
-  }
-}
+};
 
 export default SegmentedControl;

@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Col, Container, Row } from 'reactstrap';
 import { Desktop, Mobile } from '../generic/MediaQuery';
 import Pagination from '../generic/Pagination';
@@ -83,7 +82,7 @@ class TradeHistory extends React.Component {
     const data = [{date: '123', type: 'Buy', price: 1, curency: 'BTC', amount: 3, total: 4, tx: ''}, {date: '123', type: 'Sell', price: 2, curency: 'BTC', amount: 5, total: 2, tx: ''}];
     return (
       <div>
-        <Desktop>      
+        <Desktop>
           <ReactTable
             data={data}
             onItemSelected={() => {}}
@@ -98,10 +97,10 @@ class TradeHistory extends React.Component {
             minRows={5}
             showPagination={true}
             defaultPageSize={5}
-            PaginationComponent={Pagination}                
-          />        
-        </Mobile>    
-      </div>                   
+            PaginationComponent={Pagination}
+          />
+        </Mobile>
+      </div>
     );
 
   }

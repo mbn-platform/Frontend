@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import SegmentedControl from '../generic/SegmentedControl';
 import ReactTable from '../generic/SelectableReactTable';
 import SearchHeaderWithoutSort from '../generic/SearchHeaderWithoutSort';
-import HeaderWithHelp from '../generic/HeaderWithHelp';
 import { Desktop, Mobile } from '../generic/MediaQuery';
 import Pagination from '../generic/Pagination';
 import { UncontrolledTooltip } from 'reactstrap';
