@@ -28,7 +28,7 @@ class ContractSettings extends React.Component {
         fee: parseInt(this.state.fee, 10) || this.props.fee,
         minAmount: parseInt(this.state.amount, 10) || this.props.amount,
         minAmountCurrency: this.state.currency || this.props.currency,
-        roi: parseInt(this.state.roi) || this.props.roi,
+        roi: parseInt(this.state.roi, 10) || this.props.roi,
         maxLoss: parseInt(this.state.maxLoss, 10) || this.props.maxLoss,
         duration: parseInt(this.state.duration, 10) || this.props.duration,
       };
@@ -108,6 +108,7 @@ class ContractSettings extends React.Component {
       <div  className="row justify-content-between settings">
         <Col xs="auto" lg="12" xl="12">
           <Setting
+            className={'duration-block input-block'}
             tabIndex={1}
             header="DURATION OF CONTRACT"
             value={this.props.duration}
@@ -171,11 +172,12 @@ const SettingEntry = ({value, dimension}) => (
   <div className="value-text loss-text-block text-block">{value} <span className="days">{dimension}</span></div>
 );
 
-const Setting = ({header, value, dimension, isEditing, editValue, onChange, name, tabIndex}) => (
+const Setting = ({className, header, value, dimension, isEditing, editValue, onChange, name, tabIndex}) => (
   <div className="setting-block">
     <div className="description-text">{header}:</div>
     {isEditing ? (
       <EditSettingsEntry
+        className={className}
         tabIndex={tabIndex}
         dimension={dimension}
         onChange={onChange}
@@ -244,8 +246,8 @@ const EditAmountEntry = ({placeholder, value, onChange, onCurrencySelected, curr
   </div>
 );
 
-const EditSettingsEntry = ({placeholder,value, dimension, name, onChange, tabIndex}) => (
-  <div className="loss-input-block  input-block">
+const EditSettingsEntry = ({className, placeholder,value, dimension, name, onChange, tabIndex}) => (
+  <div className={className || 'loss-input-block  input-block'}>
     <div className="input-group">
       <input
         tabIndex={tabIndex}
