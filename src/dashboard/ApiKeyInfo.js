@@ -95,6 +95,7 @@ class ApiKeyInfo extends React.Component {
         Header: SearchHeader('Currency', currencyFilter, this.onCurrencyChange),
         id: 'currency',
         accessor: 'name',
+        headerClassName: "filter_align_center",
         className: 'table_col_value'
       }, {
         id: 'selected',

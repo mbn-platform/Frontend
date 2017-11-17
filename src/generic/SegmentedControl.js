@@ -1,5 +1,6 @@
 import React from 'react';
 import './SegmentedControl.css';
+import { Desktop, Mobile } from '../generic/MediaQuery';
 import classNames from 'classnames';
 
 class SegmentedControl extends React.Component {
@@ -22,24 +23,31 @@ class SegmentedControl extends React.Component {
   }
 
   render() {
-    const width = this.props.segmentWidth * this.props.segments.length;
-    const style = {width};
     return (
-      <div style={style} className={classNames('table_title_tabs_wr', this.props.className)}>
-        {this.props.segments.map((segment, index) => (
-          <div className={classNames('table_title_tab', {selected: index === this.props.selectedIndex})} data-index={index} onClick={this.onChange} key={segment}>{segment}</div>
-        )
-        )}
+      <div>
+        <Desktop>
+          <div style={{width: 80 * this.props.segments.length}} className={classNames('table_title_tabs_wr', this.props.className)}>
+            {this.props.segments.map((segment, index) => (
+              <div className={classNames('table_title_tab', {selected: index === this.props.selectedIndex})} data-index={index} onClick={this.onChange} key={segment}>{segment}</div>
+            )
+            )}
+          </div>
+        </Desktop>
+        <Mobile>
+          <div style={{width: 65 * this.props.segments.length}} className={classNames('table_title_tabs_wr', this.props.className)}>
+            {this.props.segments.map((segment, index) => (
+              <div className={classNames('table_title_tab', {selected: index === this.props.selectedIndex})} data-index={index} onClick={this.onChange} key={segment}>{segment}</div>
+            )
+            )}
+          </div>
+        </Mobile>
       </div>
+
     );
   }
 }
-function mobileWidth() {
-  return window.outerWidth < 1028;
-}
 SegmentedControl.defaultProps = {
   selectedIndex: 0,
-  segmentWidth: mobileWidth() ? 65 : 80,
 };
 
 export default SegmentedControl;

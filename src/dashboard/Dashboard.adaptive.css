@@ -163,13 +163,18 @@
   .ReactTable .rt-thead .rt-tr {
     padding-top: 22px;
   }
+  .rt-thead
+  {
+    border-bottom: 0;
+  }
   .ReactTable .rt-tr > :first-child {
     margin-left: 0px;
   }
   .ReactTable .rt-td {
     text-align: center;
     overflow: hidden;
-    text-overflow: ellipsis;    
+    text-overflow: ellipsis;  
+    white-space: nowrap;  
   }
   .ReactTable .rt-tr-group .rt-tr {
     border-bottom: 0;

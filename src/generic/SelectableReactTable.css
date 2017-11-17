@@ -45,9 +45,9 @@
   padding-top: 4px;
   padding-bottom: 20px;
 }
-.rt-tbody
+.rt-thead
 {
-  border-top: 1px solid #494d4d;
+  border-bottom: 1px solid #494d4d;
 }
 
 .ReactTable .rt-tr-group {
@@ -122,15 +122,13 @@
 .table_filter_wrapper
 {
   padding: 15px 0 20px 0;
-  max-width: 150px;
+  max-width: 100px;
 }
 
-/*.ReactTable .rt-td {*/
-  /*color: #b8b8ba;*/
-/*}*/
-/*.ReactTable .rt-th {*/
-  /*color: #e1e1e1;*/
-/*}*/
+.filter_align_center .table_filter_wrapper {
+  margin-left: auto;
+  margin-right: auto;
+}
 
 .sort_icon_wrapper
 {
