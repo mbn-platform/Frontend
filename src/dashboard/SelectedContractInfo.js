@@ -2,16 +2,17 @@ import React from 'react';
 import ContractInfo from './ContractInfo';
 import ContractFeedback from './ContractFeedback';
 import ProfileFeedbacks from './ProfileFeedbacks';
+import { CONTRACT_STATE_FINISHED, CONTRACT_STATE_HALTED } from '../constants';
 
 const SelectedContractInfo = ({ contract, onContractRate }) => {
   if(!contract) {
     return null;
   } else {
-    if(contract.state === 'FINISHED') {
+    if(contract.state === CONTRACT_STATE_FINISHED || contract.state === CONTRACT_STATE_HALTED) {
       if(contract.feedbacks && contract.feedbacks.length) {
         return (<ProfileFeedbacks
           comments={contract.feedbacks}
-        />);        
+        />);
       } else {
         return (
           <ContractFeedback
