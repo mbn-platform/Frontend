@@ -82,6 +82,7 @@ class Profile extends React.Component {
             onSaveChangesClick={this.onSaveChangesClick}
           />
           <TablesScreen
+            profile={this.state}
             onCurrencyToggle={this.onCurrencyToggle}
             currencies={this.state.currencies}
           />
