@@ -3,6 +3,7 @@ import { Container, Row, Col } from 'reactstrap';
 import classNames from 'classnames';
 import { Desktop, Mobile } from '../generic/MediaQuery';
 import Pagination from '../generic/Pagination';
+import Scrollbars from 'react-custom-scrollbars';
 
 class Feedback extends React.Component {
 
@@ -43,22 +44,28 @@ class Feedback extends React.Component {
                     </div>
                   </div>
                 </div>
-                <div className="card-body">
-                  <ul className="list-group">
-                    <Desktop>
-                      {this.props.comments.map((c, i) => <Comment key={i} comment={c}/>)}
-                    </Desktop>
-                    {this.renderMobile()}
-                  </ul>
-                  <Mobile>
+                <Desktop>
+                  <Scrollbars>
+                    <div className="card-body">
+                      <ul className="list-group">
+                        {this.props.comments.map((c, i) => <Comment key={i} comment={c}/>)}
+                      </ul>
+                    </div>
+                  </Scrollbars>
+                </Desktop>
+                <Mobile>
+                  <div className="card-body">
+                    <ul className="list-group">
+                      {this.renderMobile()}
+                    </ul>
                     <Pagination
                       page={this.state.page}
                       canNext={this.state.canNext}
                       canPrevious={this.state.canPrevious}
                       onPageChange={this.onPageChange}
                     />
-                  </Mobile>
-                </div>
+                  </div>
+                </Mobile>
               </div>
             </Col>
           </Row>
