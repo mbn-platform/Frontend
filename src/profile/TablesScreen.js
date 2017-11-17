@@ -16,7 +16,7 @@ class TablesScreen extends React.Component {
                 <Row className="table-row">
                   <ProfitChart />
                   <Feedback
-                    comments={[{name: 'Some', text:'super'}]}
+                    comments={this.props.profile.feedbacks || []}
                   />
                 </Row>
                 <Row className="d-none d-md-block">
