@@ -243,7 +243,7 @@ const ContractTableHeader = header => (
   </div>
 );
 const NegativeValuesCell = row => (
-  <div className={parseFloat(row.value) < 0 ? 'table_value_red' : ''}>{row.value}</div>
+  <div className={parseFloat(row.value) < 0 ? 'table_value_red' : 'table_value_green'}>{row.value}</div>
 );
 
 const TXCell = ({original}) => (
