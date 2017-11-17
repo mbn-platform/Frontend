@@ -71,12 +71,13 @@ class ApiKeys extends React.Component {
         Header: SearchHeader('Key name', nameFilter, this.onFilter),
         className: 'table_col_value',
         Cell: row => (<div className="key_name_text_td">{row.value}</div>),
-        minWidth: 102,
+        minWidth: 100,
         accessor: 'name'
       }, {
         Header: ExchangeHeader(this.props.exchanges, exchangeFilter, this.onExchangeChange),
         accessor: 'exchange',
-        minWidth: 99,
+        minWidth: 100,
+        headerClassName: "filter_align_center",
         className: 'table_col_value upper',
         filterMethod: (filter, row) => {
           if(filter.value === 'All') {
@@ -88,7 +89,7 @@ class ApiKeys extends React.Component {
       }, {
         id: '_id',
         className: 'table_col_value',
-        minWidth: 75,
+        minWidth: 80,
         Header: (<div className="table_header_wrapper">
           <span className="table_header">Balance,<br/>BTC</span>
           <div className="sort_icon_wrapper position_down_icon_wrapper">

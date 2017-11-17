@@ -94,7 +94,7 @@ class Navigation extends React.Component {
             <Col xs="12" className="align-self-center">
               <Container fluid className="align-middle">
                 <Row className="d-flex justify-content-center">
-                  <img src={Logo} width="36" height="36" alt="" />
+                  <img className="cursor-pointer" src={Logo} width="36" height="36" alt="" />
                 </Row>
               </Container>
             </Col>

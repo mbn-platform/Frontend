@@ -28,7 +28,8 @@
 						&:hover, &.active {
 							background-color: #346255;
 						}
-					}		
+					}
+
 					.title-setting {
 						.title-text {
 							.icon {
@@ -43,7 +44,8 @@
 
 
 						}			
-					}			
+					}
+
 					.accept-requests {
 						margin-top: 31px;
 						.accept-block {
@@ -230,6 +232,13 @@
 							}
 						}
 					}
+
+					.choose-btn-group {
+						.send-request-btn {
+							margin-left: 40px;	
+						}
+						
+					}
 				}
 			}
 			@include media-breakpoint-down(sm) {
@@ -371,6 +380,10 @@
 							font-size: 1.3em;
 							letter-spacing: 2px;
 						}
+
+						.choose-btn-group {
+							padding: 0 45px 0 35px;
+						}						
 					}
 				}
 			}

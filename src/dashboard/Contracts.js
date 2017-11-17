@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import SegmentedControl from '../generic/SegmentedControl';
 import ReactTable from '../generic/SelectableReactTable';
 import SearchHeaderWithoutSort from '../generic/SearchHeaderWithoutSort';
-import HeaderWithHelp from '../generic/HeaderWithHelp';
 import { Desktop, Mobile } from '../generic/MediaQuery';
 import Pagination from '../generic/Pagination';
 import { UncontrolledTooltip } from 'reactstrap';
@@ -48,7 +47,7 @@ class Contracts extends React.Component {
       <div>
         <Desktop>
           <ReactTable
-            style={{'height': 352}}
+            style={{'height': 345}}
             columns={this.getTableColumns()}
             data={data}
             selectedItem={this.props.selectedContract}
@@ -101,6 +100,7 @@ class Contracts extends React.Component {
       className: 'table_col_value big_column',
       minWidth: 60,
       className: 'table_col_value',
+      headerClassName: 'expire_date',
     }, {
       Header: ContractTableHeader('Current\nprofit, %'),
       id: 'currentProfit',
@@ -249,7 +249,7 @@ const ContractTableHeader = header => (
   </div>
 );
 const NegativeValuesCell = row => (
-  <div className={parseFloat(row.value) < 0 ? 'table_value_red' : ''}>{row.value}</div>
+  <div className={parseFloat(row.value) < 0 ? 'table_value_red' : 'table_value_green'}>{row.value}</div>
 );
 
 const TXCell = ({original}) => (

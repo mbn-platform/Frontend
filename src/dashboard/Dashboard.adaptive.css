@@ -57,6 +57,10 @@
   .selected_contract_table .rate_field_wrapper .rate_field {
     margin-top: 0px;
   }
+  .selected_contract_table .rate_field_wrapper .rating_bar {
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
   .api_key_currencies_table  .table_rewind_page {
    margin-bottom: 24px; 
   }
@@ -163,13 +167,18 @@
   .ReactTable .rt-thead .rt-tr {
     padding-top: 22px;
   }
+  .rt-thead
+  {
+    border-bottom: 0;
+  }
   .ReactTable .rt-tr > :first-child {
     margin-left: 0px;
   }
   .ReactTable .rt-td {
     text-align: center;
     overflow: hidden;
-    text-overflow: ellipsis;    
+    text-overflow: ellipsis;  
+    white-space: nowrap;  
   }
   .ReactTable .rt-tr-group .rt-tr {
     border-bottom: 0;
@@ -295,6 +304,7 @@
   }
   .requests_table .ReactTable .rt-tr-group .rt-tr .rt-td {
     height: 30px;
+    line-height: 30px;
   }
 
   .requests_table .request_progress_txt {
@@ -315,6 +325,11 @@
 
   .requests_table .ReactTable .contractor_link {
     text-align: center;
+    height: 100%;
+  }
+
+  .requests_table .ReactTable .pay_request_wrapper {
+    box-shadow: none;
   }
 
   .requests_table .table_requests_control_wr .table_requests_control_text {
@@ -539,6 +554,12 @@
     text-align: center;
     padding-right: 0;
     margin-bottom: 10px;
+  }
+  .send_rate_btn {
+    width: 148px;
+    border-radius: 2px;
+    height: 30px;
+    font-size: 12px;    
   }
   .rate_scale_wrapper.rate_scale_form
   {

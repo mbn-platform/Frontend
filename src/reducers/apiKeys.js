@@ -3,8 +3,6 @@ import { UPDATE_DASHBOARD } from '../actions/dashboard';
 import { SEND_OFFER, CANCEL_OFFER, REJECT_OFFER } from '../actions/offers';
 import { combineReducers } from 'redux';
 
-const KEYS = {ownKeys: [], receivedKeys: []};
-
 function ownKeys(keys = [], action) {
   switch(action.type) {
     case DELETE_API_KEY:

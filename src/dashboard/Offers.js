@@ -8,12 +8,16 @@ import Pagination from '../generic/Pagination';
 import './Offers.css';
 import { CONTRACT_STATE_INIT, CONTRACT_STATE_ACCEPTED } from '../constants';
 
+
+const TAB_INBOX = 0;
+const TAB_OUTBOX = 1;
+
 class Offers extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedTab: 0,
-      selectedOfferTab: 0
+      selectedTab: TAB_INBOX,
+      selectedOfferTab: TAB_INBOX,
     };
     this.onTabChange = this.onTabChange.bind(this);
     this.onOfferPayClick = this.onOfferPayClick.bind(this);
@@ -28,9 +32,9 @@ class Offers extends React.Component {
       return;
     }
     if(this.props.offers.incoming.find(o => o._id === nextProps.selectedOffer._id)) {
-      this.setState({selectedTab: 0, selectedOfferTab: 0});
+      this.setState({selectedTab: TAB_INBOX, selectedOfferTab: TAB_INBOX});
     } else if(this.props.offers.outgoing.find(o => o._id === nextProps.selectedOffer._id)) {
-      this.setState({selectedTab: 1, selectedOfferTab: 1});
+      this.setState({selectedTab: TAB_OUTBOX, selectedOfferTab: TAB_OUTBOX});
     }
   }
 
@@ -57,11 +61,13 @@ class Offers extends React.Component {
   }
 
   renderForm() {
-    if(this.props.selectedOffer && this.state.selectedTab === this.state.selectedOfferTab) {
-      if(this.state.selectedTab === 0) {
-        if(this.props.selectedOffer.state !== CONTRACT_STATE_INIT) {
-          return null;
-        };
+    if(!this.props.selectedOffer ||
+      this.state.selectedTab !== this.state.selectedOfferTab ||
+      this.props.selectedOffer.state !== CONTRACT_STATE_INIT) {
+      return null;
+    } else {
+      switch(this.state.selectedTab) {
+        case TAB_INBOX: {
         const onAcceptClick = e => {
           e.preventDefault();
           this.props.onOfferAccepted(this.props.selectedOffer);
@@ -81,7 +87,8 @@ class Offers extends React.Component {
             </div>
           </div>
         );
-      } else {
+        }
+        case TAB_OUTBOX: {
         const onClick = e => {
           e.preventDefault();
           this.props.onOfferCanceled(this.props.selectedOffer);
@@ -96,9 +103,13 @@ class Offers extends React.Component {
             </div>
           </div>
         );
+        }
+        default:
+          throw new Error('invalid state');
       }
     }
   }
+
   getColumns() {
     return [{
       Header: SortHeader('From'),
@@ -114,7 +125,7 @@ class Offers extends React.Component {
         const date = new Date(offer.date);
         return this.props.time - date.getTime();
       },
-      Cell: OfferCell(this.onOfferPayClick)
+      Cell: OfferCell(this.onOfferPayClick, this.state.selectedTab)
     }, {
       Header: SortHeader('Sum'),
       className: 'table_col_value',
@@ -166,26 +177,36 @@ const SortHeader = header => (
   </div>
 );
 
-const OfferCell = (onPayClick) => {
+const OfferCell = (onPayClick, selectedTab) => {
   return rowInfo => {
     let ratio = Math.abs((1 - rowInfo.value / 86400000) * 100);
     ratio = ratio > 100 ? 1 : ratio;
     const style = {width: Math.floor(ratio) + '%'};
     const progressColor = getColorClass(ratio);
     if(rowInfo.original.state === CONTRACT_STATE_ACCEPTED) {
-      const onClick = e => {
-        e.stopPropagation();
-        onPayClick(rowInfo.original);
-      };
-      return (
-        <div onClick={onClick}
-          className="pay_request_wrapper">
-          <span className="pay_request_btn_txt">pay</span>
-          <div className="request_progress_wr">
-            <div className={classNames('request_progress', progressColor)} style={style}></div>
+      if(selectedTab === TAB_INBOX) {
+        return (
+          <div className="request_progress_txt"><div>awaiting payment</div>
+            <div className="request_progress_wr">
+              <div className={classNames('request_progress', progressColor)} style={style}></div>
+            </div>
           </div>
-        </div>
-      );
+        );
+      } else {
+        const onClick = e => {
+          e.stopPropagation();
+          onPayClick(rowInfo.original);
+        };
+        return (
+          <div onClick={onClick}
+            className="pay_request_wrapper">
+            <span className="pay_request_btn_txt">pay</span>
+            <div className="request_progress_wr">
+              <div className={classNames('request_progress', progressColor)} style={style}></div>
+            </div>
+          </div>
+        );
+      }
     } else {
       return (
         <div className="request_progress_txt"><div>{formatTime(rowInfo.value)}</div>
@@ -214,7 +235,8 @@ export default Offers;
 
 
 function formatTime(difference){
-  const hours = Math.floor(difference / 1000 / 3600);
-  const minutes = Math.floor(difference / 1000 % 3600 / 60);
+  const left = 86400000 - difference;
+  const hours = Math.floor(left / 1000 / 3600);
+  const minutes = Math.floor(left / 1000 % 3600 / 60);
   return `${hours} h ${minutes} m`;
 }

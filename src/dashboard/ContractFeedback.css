@@ -59,25 +59,28 @@
 }
 .send_rate_btn
 {
-  height: 27px;
-  line-height: 27px;
-  font-size: 1.3em;
+  width: 178px;
+  height: 40px;
+  letter-spacing: 1px;
   text-align: center;
-  border: 1px solid #c5c5c5;
-  border-radius: 3px;
+  font-size: 1rem;
+  border: 0;
+  padding: 0.5rem 0.75rem;
+  line-height: 1.25;
+  border-radius: 5px;
   display: inline-block;
   background: none;
   outline: none;
   padding: 0 38px;
-  color: #c5c5c5;
+  color: white;
+  text-transform: uppercase;
+  background: #2d3034;
   cursor: pointer;
-  transition-property: color, background-color;
-  transition-duration: 400ms;
+  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;  
 }
 .send_rate_btn:hover
 {
-  background-color: #c5c5c5;
-  color: #1f2225;
+  background-color: #346255;
 }
 .rate_scale_wrapper
 {

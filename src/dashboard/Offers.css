@@ -9,11 +9,12 @@
   box-shadow: 0px 3px 40px 0px rgba(0, 0, 0, 0.22);
   max-width: 93px;
   width: 100%;
-  height: 100%;
+  height: 24px;
   line-height: normal;
   margin: auto;
   transition-property: color, background-color;
   transition-duration: 400ms;
+  margin-top: 3px;
 }
 .pay_request_wrapper:hover
 {
@@ -25,7 +26,7 @@
 }
 .pay_request_btn_txt
 {
-  line-height: 23px;
+  line-height: 18px;
   font-size: 1em;
   text-transform: uppercase;
   color: #868788;
@@ -45,7 +46,7 @@
   background: #494d4d;
   text-align: left;
   line-height: 2px;
-  max-width: 100px;
+  max-width: 70px;
   margin: auto;
   margin-bottom: 5px;
 }

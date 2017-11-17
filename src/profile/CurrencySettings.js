@@ -85,12 +85,14 @@ class CurrencySettings extends React.Component {
         maxWidth: 80,
         Header: StatusHeader(this.onSelectAllClicked),
         Cell: row => (
-          <span onClick={e => {
-            e.stopPropagation();
-            this.onCurrencyToggle(row);
-          }}
-          className={classNames('icon', 'icon-star', {active: row.original.preferred})}
-        />),
+          <span
+            onClick={e => {
+              e.stopPropagation();
+              this.onCurrencyToggle(row);
+            }}
+            className={classNames('icon', 'icon-star', {active: row.original.preferred})}
+          />
+        ),
         accessor: 'preferred',
         filterMethod: (filter, row) => {
           if(filter.value === 'all') {
@@ -110,7 +112,7 @@ class CurrencySettings extends React.Component {
 
     return (
       <div>
-        <Desktop>        
+        <Desktop>
           <ReactTable
             style={{height: 312}}
             data={this.props.currencies}
@@ -129,8 +131,8 @@ class CurrencySettings extends React.Component {
             minRows={5}
             showPagination={true}
             defaultPageSize={5}
-            PaginationComponent={Pagination}                 
-          />        
+            PaginationComponent={Pagination}
+          />
         </Mobile>
       </div>
     );
@@ -145,14 +147,6 @@ const SortableTableHeader = header => (
     </div>
   </div>
 );
-const StatusCell = (onClick, apiKey) => rowInfo => {
-  const handler = e => {
-    e.stopPropagation();
-    onClick(rowInfo.original);
-  };
-  const className = classNames('currency_status_checkbox', {selected: rowInfo.value});
-  return (<div onClick={handler} className={className}/>);
-};
 
 const StatusHeader = (onSelectAllClicked) => {
   return (
