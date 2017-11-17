@@ -47,7 +47,7 @@ class Contracts extends React.Component {
       <div>
         <Desktop>
           <ReactTable
-            style={{'height': 352}}
+            style={{'height': 345}}
             columns={this.getTableColumns()}
             data={data}
             selectedItem={this.props.selectedContract}
@@ -92,10 +92,10 @@ class Contracts extends React.Component {
       Cell: row => (<div className="contractor_link">@<Link className="table_col_value_a" to={'/' + row.value}>{row.value}</Link></div>),
     }, {
       Header: ContractTableHeader('Expire date'),
+      accessor: 'expireDate',
       headerClassName: 'expire_date',
-      minWidth: 60,
       className: 'table_col_value',
-
+      minWidth: 60,
     }, {
       Header: ContractTableHeader('Current\nprofit, %'),
       className: 'table_col_value',
@@ -243,7 +243,7 @@ const ContractTableHeader = header => (
   </div>
 );
 const NegativeValuesCell = row => (
-  <div className={parseFloat(row.value) < 0 ? 'table_value_red' : ''}>{row.value}</div>
+  <div className={parseFloat(row.value) < 0 ? 'table_value_red' : 'table_value_green'}>{row.value}</div>
 );
 
 const TXCell = ({original}) => (
