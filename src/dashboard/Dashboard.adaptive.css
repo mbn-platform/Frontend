@@ -304,6 +304,7 @@
   }
   .requests_table .ReactTable .rt-tr-group .rt-tr .rt-td {
     height: 30px;
+    line-height: 30px;
   }
 
   .requests_table .request_progress_txt {
@@ -324,6 +325,11 @@
 
   .requests_table .ReactTable .contractor_link {
     text-align: center;
+    height: 100%;
+  }
+
+  .requests_table .ReactTable .pay_request_wrapper {
+    box-shadow: none;
   }
 
   .requests_table .table_requests_control_wr .table_requests_control_text {
