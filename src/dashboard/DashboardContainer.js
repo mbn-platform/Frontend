@@ -13,6 +13,7 @@ const mapStateToProps = state => {
     offers: state.offers,
     contracts: state.contracts,
     userId: state.auth.profile._id,
+    userName: state.auth.profile.name,
     exchanges: state.exchanges
   };
 };
@@ -36,7 +37,7 @@ const mapDispatchToProps = dispatch => {
     onOfferAccepted: offer => dispatch(acceptOffer(offer)),
     onOfferRejected: offer => dispatch(rejectOffer(offer)),
     onOfferCanceled: offer => dispatch(cancelOffer(offer)),
-    onContractRate: (feedback, userId, time) => dispatch(rateContract(feedback)),
+    onContractRate: (feedback, userName, time) => dispatch(rateContract(feedback, userName, time)),
   };
 };
 

@@ -24,7 +24,7 @@ class Dashboard extends React.Component {
   }
 
   onContractRate(feedback) {
-    this.props.onContractRate(feedback, this.props.userId, this.props.time);
+    this.props.onContractRate(feedback, this.props.userName, this.props.time);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -45,7 +45,8 @@ class Dashboard extends React.Component {
     
     if(this.props.contracts !== nextProps.contracts) {
       if(this.state.selectedContract) {
-        const contract = nextProps.contracts.find(c => c._id === this.state.selectedContract._id);
+        const findFunction = c => c._id === this.state.selectedContract._id;
+        const contract = nextProps.contracts.current.find(findFunction) || nextProps.contracts.finished.find(findFunction);
         this.setState({selectedContract: contract});
       }
     }

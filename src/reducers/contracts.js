@@ -6,12 +6,12 @@ export default function(state = {current: [], finished: []}, action) {
   switch(action.type) {
     case RATE_CONTRACT:
       const feedback = action.feedback;
-      const author = action.userId;
-      const dt = action.time;
+      const name = action.userId;
+      const date = (new Date(action.time)).toISOString();
       const f = {
-        author,
-        dt,
-        rate: feedback.rate,
+        name,
+        date,
+        raiting: feedback.rate,
         text: feedback.text,
       };
       const contract = state.finished.find(c => c._id === feedback.offerId);
