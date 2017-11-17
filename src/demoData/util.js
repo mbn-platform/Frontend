@@ -7,3 +7,8 @@ export function generateId(length) {
   }
   return id;
 }
+
+
+export function generateTraderName() {
+  return 'Trader' + Math.floor(Math.random() * 2048).toString(16);
+}

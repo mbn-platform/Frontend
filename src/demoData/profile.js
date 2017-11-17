@@ -1,8 +1,8 @@
-import { generateId } from './util';
+import { generateId, generateTraderName } from './util';
 
 export const generateProfile = (profileName) => {
   const _id = generateId();
-  const feedbacks= [];
+  const feedbacks= generateFeedbacks();
   const availableForOffers = Math.random() * 2 < 1;
   const investmentAmount = Math.floor(Math.random() * 40);
   const fee = Math.floor(Math.random() * 10 + 10);
@@ -32,6 +32,35 @@ const currency = name => {
   };
 };
 
+function generateFeedbacks() {
+  const feedbacks = [];
+  const now = Date.now();
+  for(let i = 0; i < 20; i++) {
+    const feedback = {
+      name: generateTraderName(),
+      date: new Date(now - getRandom(now - 50000000)).toISOString(),
+      raiting: getRandom(5) + 1,
+      text: generateText(),
+    };
+    feedbacks.push(feedback);
+  }
+  return feedbacks;
+}
+
+function generateText() {
+  console.log('generating text');
+  const words = [];
+  for(let i = 0; i < 20; i++) {
+    words.push(dicitonary[getRandom(dicitonary.length)]);
+  }
+  return words.join(' ');
+}
+
+const dicitonary = [
+  'currency', 'exchange', 'market', 'superiour', 'extra',
+  'scum', 'excellent', 'important', 'money', 'money', 'trade', 'bitcoin',
+  'promise', 'future'
+];
 
 function getRandom(n) {
   return Math.floor(Math.random() * n);

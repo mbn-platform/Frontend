@@ -1,5 +1,5 @@
 import { generateKeys, KEY_STATE_USED } from './demoData/apiKeys';
-import { generateId } from './demoData/util';
+import { generateId, generateTraderName } from './demoData/util';
 import { generateOffer, getRandomState } from './demoData/offers';
 import { generateContract } from './demoData/contracts';
 import { generateProfile } from './demoData/profile';
@@ -68,9 +68,6 @@ export default function generateData() {
   };
 }
 
-function generateTraderName() {
-  return 'Trader' + Math.floor(Math.random() * 2048).toString(16);
-}
 
 function getRandomFinishedContractState() {
   return getPercent(80) ? CONTRACT_STATE_FINISHED : CONTRACT_STATE_HALTED;
