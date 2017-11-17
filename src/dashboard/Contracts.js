@@ -26,7 +26,7 @@ class Contracts extends React.Component {
     }
     if(nextProps.selectedContract !== this.props.selectedContract) {
       let requiredTab;
-      if(nextProps.selectedContract.state = CONTRACT_STATE_FINISHED || nextProps.selectedContract.state === CONTRACT_STATE_HALTED) {
+      if(nextProps.selectedContract.state === CONTRACT_STATE_FINISHED || nextProps.selectedContract.state === CONTRACT_STATE_HALTED) {
         requiredTab = 1;
       } else {
         requiredTab = 0;
