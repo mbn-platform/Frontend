@@ -1,4 +1,5 @@
 import { generateId, generateTraderName } from './util';
+import { generateTrades } from './trades';
 
 export const generateProfile = (profileName) => {
   const _id = generateId();
@@ -15,11 +16,12 @@ export const generateProfile = (profileName) => {
   const currencies = ['ETH', 'USDT', 'BTC'].map(currency);
   const topTraders = getRandom(20);
   const topInvesters = getRandom(20);
+  const trades = generateTrades();
   return {
     _id, feedbacks, availableForOffers,
     investmentAmount, fee, minAmount, minAmountCurrency,
     duration, maxLoss, name, currencies, roi,
-    topTraders, topInvesters,
+    topTraders, topInvesters, trades
   };
 };
 

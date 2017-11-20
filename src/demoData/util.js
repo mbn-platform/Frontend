@@ -12,3 +12,10 @@ export function generateId(length) {
 export function generateTraderName() {
   return 'Trader' + Math.floor(Math.random() * 2048).toString(16);
 }
+
+/**
+ * returns random integer number 0..<limit + offset
+*/
+export function getRandom(limit = 100, offset = 0) {
+  return Math.floor(Math.random() * limit + offset);
+}

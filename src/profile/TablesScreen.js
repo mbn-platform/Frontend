@@ -28,7 +28,7 @@ class TablesScreen extends React.Component {
                     currencies={this.props.currencies}
                   />
                   <TradeHistory
-                    trades={[]}
+                    trades={this.props.profile.trades || []}
                   />
                 </Row>
               </Container>
