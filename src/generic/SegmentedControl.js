@@ -26,7 +26,7 @@ class SegmentedControl extends React.Component {
     return (
       <div>
         <Desktop>
-          <div style={{width: 80 * this.props.segments.length}} className={classNames('table_title_tabs_wr', this.props.className)}>
+          <div style={{width: (this.props.segmentWidth ?  this.props.segmentWidth : 80) * this.props.segments.length}} className={classNames('table_title_tabs_wr', this.props.className)}>
             {this.props.segments.map((segment, index) => (
               <div className={classNames('table_title_tab', {selected: index === this.props.selectedIndex})} data-index={index} onClick={this.onChange} key={segment}>{segment}</div>
             )
@@ -34,7 +34,7 @@ class SegmentedControl extends React.Component {
           </div>
         </Desktop>
         <Mobile>
-          <div style={{width: 65 * this.props.segments.length}} className={classNames('table_title_tabs_wr', this.props.className)}>
+          <div style={{width: (this.props.segmentWidth ?  this.props.segmentWidth : 65) * this.props.segments.length}} className={classNames('table_title_tabs_wr', this.props.className)}>
             {this.props.segments.map((segment, index) => (
               <div className={classNames('table_title_tab', {selected: index === this.props.selectedIndex})} data-index={index} onClick={this.onChange} key={segment}>{segment}</div>
             )
@@ -48,6 +48,7 @@ class SegmentedControl extends React.Component {
 }
 SegmentedControl.defaultProps = {
   selectedIndex: 0,
+  segmentWidth: 0
 };
 
 export default SegmentedControl;

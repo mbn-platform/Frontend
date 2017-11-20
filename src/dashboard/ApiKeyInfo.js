@@ -7,6 +7,7 @@ import { Desktop, Mobile } from '../generic/MediaQuery';
 import Pagination from '../generic/Pagination';
 import './ApiKeyInfo.css';
 
+const STATUS_HELP = 'Selected key pairs allowed for trading';
 
 class ApiKeyInfo extends React.Component {
 
@@ -159,7 +160,7 @@ class ApiKeyInfo extends React.Component {
           <div className="table_title">Currencies</div>
         </div>
         <div className="tooltip-mobile-box">
-          Selected key pairs allowed for trading.
+          {STATUS_HELP}
         </div>
         {this.renderContent()}
         {this.state.changed ? (
@@ -187,7 +188,7 @@ const StatusHeader = (onSelectAllClicked) => {
       <span className="table_header">Status</span>
       <div id="help-icon-enabled-currencies" className="table_header_help_wrapper" style={{marginLeft: 0}}></div>
       <UncontrolledTooltip target="help-icon-enabled-currencies" placement="right">
-        Choose your preferred currencies
+        {STATUS_HELP}
       </UncontrolledTooltip>
       <div className="sort_icon_wrapper">
         <div className="green_arrow green_arrow_bottom" ></div>

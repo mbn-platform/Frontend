@@ -5,11 +5,11 @@ import './NoMetamask.css';
 export default () => (
   <div className="login_no_metamask">
     <div className="login_no_metamask_title">Please, install Metamask</div>
-    <div className="login_no_metamask_text">To login you need to connect through google chrome and install Metamask extension:</div>
+    <div className="login_no_metamask_text">To login you need to connect through Chrome or Firefox browsers and install Metamask extension:</div>
     <div className='row justify-content-around'>
       <div className="metamask_link_wrapper col-12 d-flex  justify-content-center  col-md-auto">
         <a
-          href="https://chrome.google.com/webstore/detail/nkbihfbeogaeaoehlefnkodbefgpgknn"
+          href="https://metamask.io/"
           className="metamask_link" rel="nofollow">
           <img className="metamask_link_img" src={Metamask} alt="" title=""/>
         </a>
