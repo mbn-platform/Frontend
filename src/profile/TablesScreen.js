@@ -27,7 +27,9 @@ class TablesScreen extends React.Component {
                     onCurrencyToggle={this.props.onCurrencyToggle}
                     currencies={this.props.currencies}
                   />
-                  <TradeHistory />
+                  <TradeHistory
+                    trades={[]}
+                  />
                 </Row>
               </Container>
             </Col>

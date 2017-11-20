@@ -3,6 +3,7 @@ import { Col, Container, Row } from 'reactstrap';
 import { Desktop, Mobile } from '../generic/MediaQuery';
 import Pagination from '../generic/Pagination';
 import ReactTable from '../generic/SelectableReactTable';
+import { formatDate } from '../generic/util';
 
 class TradeHistory extends React.Component {
   render() {
@@ -38,8 +39,9 @@ class TradeHistory extends React.Component {
   getColumns() {
     return [
       {
+        id: 'date',
         Header: SortableHeader('Date'),
-        accessor: 'date',
+        accessor: trade => formatDate(new Date(trade.date)),
         minWidth: 50,
         className: 'table_col_value',
 
@@ -59,7 +61,8 @@ class TradeHistory extends React.Component {
       },
       {
         Header: SortableHeader('Amount'),
-        accessor: 'amount',
+        id: 'amount',
+        accessor: trade => trade.amountCurrency + ' ' + trade.amount,
         minWidth: 50,
         className: 'table_col_value',
       },
@@ -75,11 +78,12 @@ class TradeHistory extends React.Component {
         sortable: false,
         minWidth: 30,
         className: 'table_col_value',
+        Cell: rowInfo => (<a className="tx_link" target="_blank" href={rowInfo.value || '/'} />),
       },
     ];
   }
   renderTable() {
-    const data = [{date: '123', type: 'Buy', price: 1, curency: 'BTC', amount: 3, total: 4, tx: ''}, {date: '123', type: 'Sell', price: 2, curency: 'BTC', amount: 5, total: 2, tx: ''}];
+    const data = this.props.trades.reduce((accum, value) => accum.concat(value), []);
     return (
       <div>
         <Desktop>
