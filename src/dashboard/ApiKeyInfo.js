@@ -128,7 +128,7 @@ class ApiKeyInfo extends React.Component {
       <div>
         <Desktop>
           <ReactTable
-            style={{height: 312}}
+            style={{height: 312, marginRight: -1}}
             data={this.state.currencies}
             columns={this.getColumns()}
             filtered={this.state.filtered}
@@ -159,9 +159,11 @@ class ApiKeyInfo extends React.Component {
         <div className="table_title_wrapper clearfix">
           <div className="table_title">Currencies</div>
         </div>
-        <div className="tooltip-mobile-box">
-          {STATUS_HELP}
-        </div>
+        <Mobile>
+          <div className="tooltip-mobile-box">
+            {STATUS_HELP}
+          </div>
+        </Mobile>
         {this.renderContent()}
         {this.state.changed ? (
           <div className="table_requests_control_wr clearfix">

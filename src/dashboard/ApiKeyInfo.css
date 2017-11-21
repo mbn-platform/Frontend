@@ -15,6 +15,7 @@
 .api_key_currencies_table {
   float: right;
   margin-top: -416px;
+  overflow: hidden;
 }
 
 .table_requests_control_wr

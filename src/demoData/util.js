@@ -1,3 +1,5 @@
+const contractCurrencies = ['BTC', 'USDT'];
+
 export function generateId(length) {
   length = length || 24;
   const validChars = '1234567890abcdef';
@@ -7,6 +9,11 @@ export function generateId(length) {
   }
   return id;
 }
+
+export function getRandomContractCurrency() {
+  return contractCurrencies[getRandom(contractCurrencies.length)];
+}
+
 
 
 export function generateTraderName() {
