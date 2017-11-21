@@ -130,7 +130,7 @@ class Offers extends React.Component {
       Header: SortHeader('Sum'),
       className: 'table_col_value',
       id: 'amount',
-      accessor: o => o.state === CONTRACT_STATE_ACCEPTED ? o.startBalance + ' ' + o.currency : 0 + ' ' + o.currency,
+      accessor: offer => offer.amount + ' ' + offer.currency,
     }];
 
 
