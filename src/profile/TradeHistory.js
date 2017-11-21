@@ -6,6 +6,10 @@ import ReactTable from '../generic/SelectableReactTable';
 import { formatDate } from '../generic/util';
 
 class TradeHistory extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {containerHeight: 250};
+  }
   render() {
     return (
       <Col xs="12" sm="12" md="12" lg="12" xl="7" className="trade-block">
@@ -24,7 +28,7 @@ class TradeHistory extends React.Component {
                     </div>
                   </div>
                 </div>
-                <div className="card-body">
+                <div className="card-body" ref={element => this.divRef = element}>
                   {this.renderTable()}
                 </div>
 
@@ -34,6 +38,20 @@ class TradeHistory extends React.Component {
         </Container>
       </Col>
     );
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.calcHeight();
+    }, 1)
+    window.addEventListener('resize', (e) => {
+      this.calcHeight()
+    });
+
+  }  
+
+  calcHeight() {
+    this.setState({containerHeight: this.divRef.clientHeight - 96})
   }
 
   getColumns() {
@@ -91,6 +109,7 @@ class TradeHistory extends React.Component {
             data={data}
             onItemSelected={() => {}}
             columns={this.getColumns()}
+            scrollBarHeight={this.state.containerHeight}
           />
         </Desktop>
         <Mobile>
