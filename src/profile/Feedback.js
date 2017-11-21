@@ -9,7 +9,7 @@ class Feedback extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {page: 0, canPrevious: false, canNext: props.comments.length > this.props.pageSize};
+    this.state = {page: 0, canPrevious: false, canNext: props.comments.length > this.props.pageSize, scrollHeight: 250};
     this.onPageChange = this.onPageChange.bind(this);
   }
 
@@ -24,6 +24,20 @@ class Feedback extends React.Component {
     this.setState({page: 0, canPrevious: false, canNext: nextProps.comments.length > this.props.pageSize});
   }
 
+  componentDidMount() {
+    setTimeout(() => {
+      this.calcHeight();
+    }, 1)
+    window.addEventListener('resize', (e) => {
+      this.calcHeight()
+    });
+
+  }  
+
+  calcHeight() {
+    this.setState({scrollHeight: this.divRef.clientHeight - 54})
+  }
+
 
   render() {
     return (
@@ -31,7 +45,7 @@ class Feedback extends React.Component {
         <Container fluid className="h-100">
           <Row className="h-100">
             <Col xs="12" sm="12" md="12" lg="12" xl="12">
-              <div className="card feedback-card">
+              <div className="card feedback-card"  ref={element => this.divRef = element}>
                 <div className="card-header">
                   <div className="container-fuild h-100">
                     <div className="row h-100 align-items-center">
@@ -45,7 +59,7 @@ class Feedback extends React.Component {
                   </div>
                 </div>
                 <Desktop>
-                  <Scrollbars>
+                  <Scrollbars style={{height: this.state.scrollHeight }}>
                     <div className="card-body">
                       <ul className="list-group">
                         {this.props.comments.map((c, i) => <Comment key={i} comment={c}/>)}
