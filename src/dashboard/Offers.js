@@ -112,9 +112,9 @@ class Offers extends React.Component {
 
   getColumns() {
     return [{
-      Header: SortHeader('From'),
+      Header: SortHeader(this.state.selectedTab === TAB_INBOX ? 'From' : 'To'),
       id: 'name',
-      accessor: o => o.fromUser ? o.fromUser[0].name : '',
+      accessor: o => this.state.selectedTab == TAB_INBOX ? o.fromUser[0].name : o.toUser[0].name,
       Cell: row => (<div className="contractor_link">@<Link className="table_col_value_a" to={'/' + row.value}>{row.value}</Link></div>),
       className: 'table_col_value'
     }, {
@@ -129,7 +129,8 @@ class Offers extends React.Component {
     }, {
       Header: SortHeader('Sum'),
       className: 'table_col_value',
-      accessor: 'amount'
+      id: 'amount',
+      accessor: o => o.state === CONTRACT_STATE_ACCEPTED ? o.startBalance + ' ' + o.currency : 0 + ' ' + o.currency,
     }];
 
 
