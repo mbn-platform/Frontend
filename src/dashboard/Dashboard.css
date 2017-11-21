@@ -86,7 +86,7 @@
 
 .legend_pie_wrapper {
   float: right;
-  overflow-y: scroll;
+  overflow-y: hidden;
 }
 
 .amChartsLegend
