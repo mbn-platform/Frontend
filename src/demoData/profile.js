@@ -1,8 +1,9 @@
-import { generateId, generateTraderName } from './util';
+import { generateId, generateTraderName, generateAddress, getRandom } from './util';
 import { generateTrades } from './trades';
 
 export const generateProfile = (profileName) => {
   const _id = generateId();
+  const addr = generateAddress();
   const feedbacks= generateFeedbacks();
   const availableForOffers = Math.random() * 2 < 1;
   const investmentAmount = Math.floor(Math.random() * 40);
@@ -18,7 +19,7 @@ export const generateProfile = (profileName) => {
   const topInvesters = getRandom(20);
   const trades = generateTrades();
   return {
-    _id, feedbacks, availableForOffers,
+    _id, addr, feedbacks, availableForOffers,
     investmentAmount, fee, minAmount, minAmountCurrency,
     duration, maxLoss, name, currencies, roi,
     topTraders, topInvesters, trades
@@ -64,6 +65,3 @@ const dicitonary = [
   'promise', 'future'
 ];
 
-function getRandom(n) {
-  return Math.floor(Math.random() * n);
-}

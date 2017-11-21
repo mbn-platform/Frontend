@@ -14,6 +14,10 @@ export function getRandomContractCurrency() {
   return contractCurrencies[getRandom(contractCurrencies.length)];
 }
 
+export function generateAddress () {
+  return '0x' + generateId(42);
+}
+
 
 
 export function generateTraderName() {
