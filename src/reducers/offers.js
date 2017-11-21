@@ -1,4 +1,4 @@
-import { ACCEPT_OFFER, REJECT_OFFER, CANCEL_OFFER, SEND_OFFER } from '../actions/offers';
+import { ACCEPT_OFFER, REJECT_OFFER, CANCEL_OFFER, SEND_OFFER, PAY_OFFER } from '../actions/offers';
 import { makeId } from '../generic/util';
 import { UPDATE_DASHBOARD } from '../actions/dashboard';
 import { combineReducers } from 'redux';
@@ -25,6 +25,8 @@ function outgoing(state = [], action) {
       offer.date = (new Date()).toISOString();
       offer.fromUser = [{name: 'me'}];
       return state.concat(offer);
+    case PAY_OFFER:
+      return state.filter(offer => offer._id !== action.offer._id);
     default:
       return state;
   }
