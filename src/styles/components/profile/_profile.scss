@@ -240,7 +240,9 @@
         padding-left: 30px;
         .feedback-card {
 
-
+          .card-body {
+            min-height: 350px;
+          }
           .list-group {
             .list-group-item {
               background-color: transparent;
@@ -498,12 +500,14 @@
         }
       }
 
+
       .currency-settings, .trade-history {
 
         .card {
           .card-body {
             padding: 0;
             max-height: 100%;
+            min-height: 344px;
             .icon-dir {
               margin: 0;
               font-size: .65em;
@@ -1020,6 +1024,9 @@
           .card-header {
             min-height: 60px;
             margin-top: 10px;
+          }
+          .card-body {
+            min-height: 1px;
           }
           .list-group {
             .list-group-item {

@@ -35,8 +35,13 @@ class SelectableReactTable extends React.Component {
     };
     if(this.props.scrollBarHeight) {
       props.getTbodyProps = getTbodyProps;
-      props.TbodyComponent = CustomTBodyComponent;
+      props.TbodyComponent = FixHeightTBodyComponent;
     }
+
+    if(this.props.scrollBarHeightAuto) {
+      props.getTbodyProps = getTbodyProps;
+      props.TbodyComponent = AutoHeightTBodyComponent;
+    }    
 
     return (
       <ReactTable
@@ -56,14 +61,30 @@ class SelectableReactTable extends React.Component {
     }
   }
 
-
 }
 
-const CustomTBodyComponent = (props) => {
+
+const FixHeightTBodyComponent = (props) => {
   const { TbodyComponent } = ReactTableDefaults;
   let {scrollBarHeight, ...rest} = props;
   return (
-    <Scrollbars style={{height: scrollBarHeight }}>
+    <Scrollbars style={{height: scrollBarHeight}}
+        >
+      <TbodyComponent {...rest} />
+    </Scrollbars>
+  );
+
+};
+
+const AutoHeightTBodyComponent = (props) => {
+  const { TbodyComponent } = ReactTableDefaults;
+  let {scrollBarHeight, ...rest} = props;
+  return (
+    <Scrollbars style={{height: '100%'}}
+      autoHeight
+        autoHeightMin={100}
+        autoHeightMax={'100%'}
+        >
       <TbodyComponent {...rest} />
     </Scrollbars>
   );

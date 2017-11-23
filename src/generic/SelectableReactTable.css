@@ -13,6 +13,10 @@
   display: inline-flex;
 }
 
+.rt-table {
+  height: 100%;
+}
+
 .ReactTable .rt-tr:first-child
 {
   text-align: center;

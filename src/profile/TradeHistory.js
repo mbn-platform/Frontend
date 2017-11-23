@@ -8,7 +8,6 @@ import { formatDate } from '../generic/util';
 class TradeHistory extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {containerHeight: 250};
   }
   render() {
     return (
@@ -28,7 +27,7 @@ class TradeHistory extends React.Component {
                     </div>
                   </div>
                 </div>
-                <div className="card-body" ref={element => this.divRef = element}>
+                <div className="card-body">
                   {this.renderTable()}
                 </div>
 
@@ -38,20 +37,6 @@ class TradeHistory extends React.Component {
         </Container>
       </Col>
     );
-  }
-
-  componentDidMount() {
-    setTimeout(() => {
-      this.calcHeight();
-    }, 1)
-    window.addEventListener('resize', (e) => {
-      this.calcHeight()
-    });
-
-  }  
-
-  calcHeight() {
-    this.setState({containerHeight: this.divRef.clientHeight - 96})
   }
 
   getColumns() {
@@ -105,23 +90,28 @@ class TradeHistory extends React.Component {
     return (
       <div>
         <Desktop>
-          <ReactTable
-            data={data}
-            onItemSelected={() => {}}
-            columns={this.getColumns()}
-            scrollBarHeight={this.state.containerHeight}
-          />
+          <div style={{height: 'calc(100% - 54px)',position: 'absolute',width: '100%'}}>        
+            <ReactTable
+              data={data}
+              style={{position: 'absolute',height: 'calc(100%)',width: '100%'}}
+              onItemSelected={() => {}}
+              columns={this.getColumns()}
+              scrollBarHeightAuto='true'
+            />
+          </div>
         </Desktop>
         <Mobile>
-          <ReactTable
-            data={data}
-            onItemSelected={() => {}}
-            columns={this.getColumns()}
-            minRows={5}
-            showPagination={true}
-            defaultPageSize={5}
-            PaginationComponent={Pagination}
-          />
+          <div>
+            <ReactTable
+              data={data}
+              onItemSelected={() => {}}
+              columns={this.getColumns()}
+              minRows={5}
+              showPagination={true}
+              defaultPageSize={5}
+              PaginationComponent={Pagination}
+            />
+          </div>
         </Mobile>
       </div>
     );

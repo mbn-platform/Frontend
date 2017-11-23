@@ -11,7 +11,7 @@ class CurrencySettings extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {filtered: [{id: 'currency', value: ''}, {id: 'selected', value: 'all'}]};
+    this.state = {filtered: [{id: 'currency', value: ''}, {id: 'selected', value: 'all'}],containerHeight: 344};
     this.onCurrencyChange = this.onCurrencyChange.bind(this);
     this.onCurrencyToggle = this.onCurrencyToggle.bind(this);
   }
@@ -25,6 +25,16 @@ class CurrencySettings extends React.Component {
   onCurrencyChange(e) {
     this.setState({filtered: [{id: 'currency', value: e.target.value}]});
   }
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.calcHeight();
+    }, 1)
+  }  
+
+  calcHeight() {
+    this.setState({containerHeight: this.divRef.clientHeight})
+  }  
 
   render() {
     return (
@@ -49,7 +59,7 @@ class CurrencySettings extends React.Component {
                     </div>
                   </div>
                 </div>
-                <div className="card-body">
+                <div className="card-body"  ref={element => this.divRef = element}>
                   {this.renderTable()}
                 </div>
               </div>
@@ -113,14 +123,17 @@ class CurrencySettings extends React.Component {
     return (
       <div>
         <Desktop>
-          <ReactTable
-            style={{height: 312}}
-            data={this.props.currencies}
-            columns={this.getColumns()}
-            filtered={this.state.filtered}
-            onItemSelected={() => {}}
-            scrollBarHeight={scrollBarHeight}
-          />
+          <div style={{height: 'calc(100% - 54px)',position: 'absolute',width: '100%'}}>        
+            <ReactTable
+              style={{position: 'absolute',height: 'calc(100%)',width: '100%'}}
+              data={this.props.currencies}
+              columns={this.getColumns()}
+              filtered={this.state.filtered}
+              onItemSelected={() => {}}
+              scrollBarHeight={scrollBarHeight}
+              scrollBarHeightAuto='true'
+            />
+          </div>
         </Desktop>
         <Mobile>
           <ReactTable
