@@ -1,30 +1,27 @@
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import Login from './login/LoginContainer';
-import Dashboard from './dashboard/DashboardContainer';
-import Profile from './profile/Profile';
+import Terminal from './terminal/Terminal';
 import './MainContent.css';
 import { Col } from 'reactstrap';
 
 const MainContent = ({ loggedIn, profile }) => (
   <Col xs="12" md>
     <Switch>
-      <LoginRoute exact path="/login" loggedIn={loggedIn} />
-      <ProtectedRoute exact path="/dashboard" component={Dashboard} loggedIn={loggedIn} />
-      <Redirect exact from="/profile" to={profile ? `/${profile.name}` : '/login'} />
-      <Route exact path="/:id" component={Profile} />
-      <Redirect from="/" to="/dashboard" />
+      <Route exact path="/terminal" component={Terminal} />
+      <Route exact path="/ratings" component={History} />
+      <Route exact path="/orders" component={Orders} />
+      <Redirect to="/terminal" />
+      <Route path="/" component={RedirectToMain} />
     </Switch>
   </Col>
 );
 
+const History = () => null;
+const Orders = () => null;
 
-const LoginRoute = ({ loggedIn, ...props }) => {
-  if(loggedIn) {
-    return (<Redirect to="/dashboard" />);
-  } else {
-    return (<Route  {...props} component={Login} />);
-  }
+const RedirectToMain = (props) => {
+  const location = props.location.pathname;
+  window.location = location;
 };
 
 const ProtectedRoute = ({ component, loggedIn, ...props }) => {
