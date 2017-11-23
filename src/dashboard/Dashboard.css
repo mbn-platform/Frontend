@@ -69,11 +69,26 @@
   color: #adadad;
 }
 
-#contracts_chart, #traders_chart
-{
+.charts {
+  overflow: hidden;
   width: 100%;
-  height: 205px;
+  display: block;
+  height: 205px;  
 }
+
+.chart_pie, .legend_pie_wrapper {
+  display: inline-block;
+  width: 50%;
+  height: 100%;
+  position: relative;
+
+}
+
+.legend_pie_wrapper {
+  float: right;
+  overflow-y: hidden;
+}
+
 .amChartsLegend
 {
   letter-spacing: 1px;

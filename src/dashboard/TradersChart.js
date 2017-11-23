@@ -24,7 +24,7 @@ class TradersChart extends React.Component {
   }
 
   componentDidMount() {
-    this.chart = window.AmCharts.makeChart('traders_chart',
+    this.chart = window.AmCharts.makeChart('trader_pie',
       {
         'type': 'pie',
         'fontFamily': 'maven_probold',
@@ -47,19 +47,20 @@ class TradersChart extends React.Component {
         'balloon': {},
         'legend': {
           'enabled': true,
-          'align': 'center',
           'fontSize': 12,
+          'marginLeft': 0,
           'markerSize': 0,
-          'position': 'right',
           'switchable': false,
           'textClickEnabled': true,
+          'divId': 'trader_legend',
           'rollOverColor': '#FFFFFF',
           'labelText': '',
+          'align': 'left',
+          'maxColumns': 1,
           'valueAlign': 'left',
           'valueText': '[[percents]] - [[title]]',
           'useMarkerColorForLabels': true,
           'useMarkerColorForValues': true,
-          'valueWidth': 200
         },
         'titles': [],
         'dataProvider': this.state.data
@@ -76,7 +77,13 @@ class TradersChart extends React.Component {
         <div className="chart_title_total">
           <span className="chart_title_total_span">Total:</span> {this.state.data.reduce((sum, entry) => sum + entry['column-1'], 0)} BTC
         </div>
-        <div id="traders_chart" style={{width: '100%', height: 205}}>
+        <div className="charts">
+          <div id="trader_pie" className="chart_pie">
+          </div>
+          <div className="legend_pie_wrapper">
+            <div id="trader_legend" className="legend_pie">
+            </div>
+          </div>
         </div>
       </div>
     );

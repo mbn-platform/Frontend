@@ -30,14 +30,21 @@ class ContractsChart extends React.Component {
         <div className="chart_title_total">
           <span className="chart_title_total_span">Total:</span> 1.456 btc ~ 24 865 usd
         </div>
-        <div id="contracts_chart">
+        <div className="charts">
+          <div id="contracts_pie" className="chart_pie">
+          </div>
+          <div className="legend_pie_wrapper">
+            <div id="contracts_legend" className="legend_pie">
+            </div>
+          </div>
         </div>
+
       </div>
     );
   }
 
   componentDidMount() {
-    this.chart = window.AmCharts.makeChart('contracts_chart',
+    this.chart = window.AmCharts.makeChart('contracts_pie',
       {
         'type': 'pie',
         'fontFamily': 'maven_probold',
@@ -60,19 +67,21 @@ class ContractsChart extends React.Component {
         'balloon': {},
         'legend': {
           'enabled': true,
-          'align': 'center',
+          'marginLeft': 0,
           'fontSize': 12,
           'markerSize': 0,
-          'position': 'right',
           'switchable': false,
+          "equalWidths": false,
+          'maxColumns': 1,
           'textClickEnabled': true,
+          'divId': 'contracts_legend',
           'rollOverColor': '#FFFFFF',
           'labelText': '',
           'valueAlign': 'left',
+          'align': 'left',
           'valueText': '[[percents]] - [[title]]',
           'useMarkerColorForLabels': true,
-          'useMarkerColorForValues': true,
-          'valueWidth': 200
+          'useMarkerColorForValues': true
         },
         'titles': [],
         'dataProvider': this.state.data
