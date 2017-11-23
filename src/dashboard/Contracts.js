@@ -123,60 +123,59 @@ class Contracts extends React.Component {
       accessor: c => c.startBalance + ' ' + c.currency,
     }, {
       id: 'currentBalance',
-      headerClassName: 'current_balance small_column',
-      className: 'table_col_value small_column',
+      headerClassName: 'current_balance',
+      className: 'table_col_value',
       Header: ContractTableHeader('Current\nbalance, %'),
       minWidth: 50,
       accessor: c => c.currentBalance + ' ' + c.currency,
     }, {
       id: 'left',
       Header: ContractTableHeader('Left'),
-      headerClassName: 'left_column small_column',
+      headerClassName: 'left_column',
       className: 'table_col_value',
       minWidth: 40,
       accessor: c => c.left + ' ' + c.currency,
     }, {
       Header: ContractTableHeader('Fee, %'),
       minWidth: 30,
-      headerClassName: 'fee_column small_column',
-      className: 'table_col_value small_column',
+      headerClassName: 'fee_column',
+      className: 'table_col_value',
       accessor: 'fee'
     }, {
       Header: <TXHeader />,
       Cell: TXCell,
       minWidth: 30,
       sortable: false,
-      headerClassName: 'tx_column small_column',
-      className: 'small_column tx_column'
+      headerClassName: 'tx_column',
+      className: 'tx_column'
     }, {
       Header: HelpHeader('Status'),
       accessor: 'state',
       minWidth: 50,
       Cell: StatusCell,
-      headerClassName: 'status_column small_column',
-      className: 'small_column'
+      headerClassName: 'status_column'
     }];
   }
 
   getTableMobileColumns() {
     return [{
       Header: SearchHeaderWithoutSort('Contractor', '', () => {}),
-      headerClassName: 'contractor big_column',
-      className: 'big_column table_col_value',
+      headerClassName: 'contractor',
+      className: 'table_col_value',
       accessor: 'contractor',
       minWidth: 84,
       Cell: row => (<div className="contractor_link">@<Link className="table_col_value_a" to={'/' + row.value}>{row.value}</Link></div>),
     }, {
       id: 'currentBalance',
-      headerClassName: 'current_balance small_column',
-      className: 'table_col_value small_column',
+      headerClassName: 'current_balance',
+      className: 'table_col_value',
       minWidth: 82,
       Header: ContractTableHeader('Current\nbalance, %'),
       accessor: c => c.currentBalance + ' ' + c.currency,
     }, {
       Header: ContractTableHeader('Fee, %'),
-      headerClassName: 'fee_column small_column',
-      className: 'table_col_value small_column',
+      headerClassName: 'fee_column',
+      className: 'table_col_value',
       minWidth: 63,
       accessor: 'fee'
     }, {
@@ -184,15 +183,14 @@ class Contracts extends React.Component {
       accessor: 'status',
       Cell: StatusCell,
       minWidth: 44,
-      headerClassName: 'status_column small_column',
-      className: 'small_column'
+      headerClassName: 'status_column'
     }, {
       Header: <TXHeader />,
       Cell: TXCell,
       sortable: false,
       minWidth: 45,
-      headerClassName: 'tx_column small_column',
-      className: 'small_column tx_column'
+      headerClassName: 'tx_column',
+      className: 'tx_column'
     }];
 
   }
