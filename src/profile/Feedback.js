@@ -43,18 +43,21 @@ class Feedback extends React.Component {
                     </div>
                   </div>
                 </div>
-                <div className="card-body">
-                  <div>
+                
+                  <div className="card-body">
                     <Desktop>
-                      <div style={{height: 'calc(100% - 84px)',position: 'absolute',width: 'calc(100% - 50px)'}}>        
-                        <Scrollbars style={{height: '100%'}}
+                    
+                      <div style={{height: 'calc(100% - 84px)',position: 'absolute',width: 'calc(100%)', minHeight: 250}}>        
+                      
+                        <Scrollbars style={{height: '100%',width: 'calc(100% - 25px)'}}
                           autoHeight
                           autoHeightMin={250}
                           autoHeightMax={'100%'}>
-                          <ul className="list-group">
-                            {this.props.comments.map((c, i) => <Comment key={i} comment={c}/>)}
-                          </ul>
+                            <ul className="list-group" style={{width: 'calc(100% - 50px)'}}>
+                              {this.props.comments.map((c, i) => <Comment key={i} comment={c}/>)}
+                            </ul>
                         </Scrollbars>
+                      
                       </div>
                     </Desktop>
                     <Mobile>
@@ -70,7 +73,7 @@ class Feedback extends React.Component {
                     </Mobile>                  
                   </div>
 
-                </div>
+                
               </div>
             </Col>
           </Row>
