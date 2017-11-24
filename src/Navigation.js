@@ -108,8 +108,10 @@ class Navigation extends React.Component {
     return [
       {name: 'Dashboard', to: '/dashboard', imgClass: 'dashboard'},
       {name: 'Profile', to: this.props.auth.profile ? '/' + this.props.auth.profile.name : '/profile', imgClass: 'profile'},
+      {name: 'Terminal', to: '/terminal', imgClass: 'terminal'},
+      {name: 'Orders', to: '/orders', imgClass: 'orders'},
+      {name: 'History', to: '/history', imgClass: 'history'},
       {name: 'Ratings', to: '/ratings', imgClass: 'ratings'},
-      {name: 'Terminal', to: '/terminal', imgClass: 'terminal'}
     ];
   }
 
