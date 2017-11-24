@@ -34,81 +34,112 @@ const html = `
 </div>
 <div class="ratings-tabs">
   <div class="ratings-tab ratings-traders active">
-    <div class="ratings-table-wrap js-table-wrapper">
+    <div class="ratings-table-wrap">
       <table class="table">
         <thead>
           <tr>
-            <th class="fav">
+            <th>
               <span class="star"></span>
             </th>
-            <th class="name">
-              <span>Name</span><span class="icon-dir icon-down-dir"></span>
+            <th class='name'>
+              <div>
+                <span>Name</span> <span class="icon-dir icon-down-dir"></span>
+              </div>
+              <div>
+                <input class="input_search" type="text" placeholder="Search"> </input>
+              </div>
             </th>
-            <th class="rank">
-              <span>Rank</span><span class="icon-dir icon-down-dir"></span>
-            </th>
-            <th>
-              <span>ROI,&nbsp;%</span><span class="icon-dir icon-down-dir"></span>
-            </th>
-            <th>
-              <span>Since opened</span><span class="icon-dir icon-down-dir"></span>
-            </th>
-            <th>
-              <span>Min contract<br>amount</span><span class="icon-dir icon-down-dir"></span>
-            </th>
-            <th>
-              <span>Duration of the contract</span><span class="icon-dir icon-down-dir"></span>
-            </th>
-            <th>
-              <span>Fee, %</span><span class="icon-dir icon-down-dir"></span>
-            </th>
-            <th>
-              <span>Money in management</span><span class="icon-dir icon-down-dir"></span>
-            </th>
-            <th>
-              <span>Max&nbsp;loss,&nbsp;%</span><span class="icon-dir icon-down-dir"></span>
-            </th>
-          </tr>
+            <th class='rank'>
+              <div>
+                <span>Rank</span> <span class="icon-dir icon-down-dir"></span>
+              </div>
+              <div class="help">
+                ?
+                <div class="help_dropdown">
+                  <div class="total row">
+                    <div><span class="round"></span></div>
+                    <div><span>The total amount of contracts</span></div>
 
-          <tr>
-            <th></th>
+                  </div>
+                  <div class="succes row">
+                    <div><span class="round"></span></div>
+                    <div><span>The amount of successfully finished contracts</span></div>
+
+                  </div>
+
+                </div>
+              </div>
+            </th>
             <th>
               <div>
-                <input type="text" class="input_search" placeholder="Search" />
+                ROI, % <span class="icon-dir icon-down-dir"></span>
               </div>
-            </th>
-            <th>
-              <div class="help" data-toggle="ratings-help-popover" data-placement="bottom" data-total="The total amount of contracts" data-success="The amount of successfully finished contracts">?</div>
-            </th>
-            <th>
+
               <div class="all-time">
-                All time <span class="arrow_down"></span>
-              </div>
-              <div class="all-time_dropdown">
-                <a href="#" class="all-time_dropdown-link">1 week</a>
-                <a href="#" class="all-time_dropdown-link">1 month</a>
-                <a href="#" class="all-time_dropdown-link">3 months</a>
-                <a href="#" class="all-time_dropdown-link">6 months</a>
-                <a href="#" class="all-time_dropdown-link">12 months</a>
-                <a href="#" class="all-time_dropdown-link active">All time</a>
+                All time
+                <span class="arrow_down"></span>
+                <div class="all-time_dropdown">
+                  <a href="#" class="all-time_dropdown-link">
+                    1 week
+                  </a>
+                  <a href="#" class="all-time_dropdown-link">
+                    1 month
+                  </a>
+                  <a href="#" class="all-time_dropdown-link">
+                    3 months
+                  </a>
+                  <a href="#" class="all-time_dropdown-link">
+                    6 months
+                  </a>
+                  <a href="#" class="all-time_dropdown-link">
+                    12 months
+                  </a>
+                  <a href="#" class="all-time_dropdown-link active">
+                    All time
+                  </a>
+                </div>
               </div>
             </th>
-            <th></th>
             <th>
+              <div>
+                Since opened <span class="icon-dir icon-down-dir"></span>
+              </div>
+
+            </th>
+            <th>
+              <div>
+                Min contract amount <span class="icon-dir icon-down-dir"></span>
+              </div>
+
               <div class="buttons-wrap">
                 <button class="btn btn-active">BTC</button>
                 <button class="btn">USD</button>
               </div>
             </th>
-            <th></th>
-            <th></th>
             <th>
+              <div>
+                Duration of the contract <span class="icon-dir icon-down-dir"></span>
+              </div>
+            </th>
+            <th>
+              <div>
+                <span>Fee, %</span> <span class="icon-dir icon-down-dir"></span>
+              </div>
+            </th>
+            <th>
+              <div>
+                Money in management <span class="icon-dir icon-down-dir"></span>
+              </div>
               <div class="buttons-wrap">
                 <button class="btn btn-active">BTC</button>
                 <button class="btn">USD</button>
               </div>
             </th>
-            <th></th>
+            <th>
+              <div>
+                <span>Max loss, %</span> <span class="icon-dir icon-down-dir"></span>
+              </div>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -123,7 +154,7 @@ const html = `
               <span class="rank">1</span>
               <span class="total">7</span>
               <span class="total">/</span>
-              <span class="success">8</span>
+              <span class="succes">8</span>
             </td>
             <td>
               <span>-34.7</span>
@@ -159,7 +190,7 @@ const html = `
               <span class="rank">1</span>
               <span class="total">7</span>
               <span class="total">/</span>
-              <span class="success">8</span>
+              <span class="succes">8</span>
             </td>
             <td>
               <span>-34.7</span>
@@ -195,7 +226,7 @@ const html = `
               <span class="rank">1</span>
               <span class="total">7</span>
               <span class="total">/</span>
-              <span class="success">8</span>
+              <span class="succes">8</span>
             </td>
             <td>
               <span>-34.7</span>
@@ -231,7 +262,7 @@ const html = `
               <span class="rank">1</span>
               <span class="total">7</span>
               <span class="total">/</span>
-              <span class="success">8</span>
+              <span class="succes">8</span>
             </td>
             <td>
               <span>-34.7</span>
@@ -267,7 +298,7 @@ const html = `
               <span class="rank">1</span>
               <span class="total">7</span>
               <span class="total">/</span>
-              <span class="success">8</span>
+              <span class="succes">8</span>
             </td>
             <td>
               <span>-34.7</span>
@@ -303,7 +334,7 @@ const html = `
               <span class="rank">1</span>
               <span class="total">7</span>
               <span class="total">/</span>
-              <span class="success">8</span>
+              <span class="succes">8</span>
             </td>
             <td>
               <span>-34.7</span>
@@ -339,7 +370,7 @@ const html = `
               <span class="rank">1</span>
               <span class="total">7</span>
               <span class="total">/</span>
-              <span class="success">8</span>
+              <span class="succes">8</span>
             </td>
             <td>
               <span>-34.7</span>
@@ -375,7 +406,7 @@ const html = `
               <span class="rank">1</span>
               <span class="total">7</span>
               <span class="total">/</span>
-              <span class="success">8</span>
+              <span class="succes">8</span>
             </td>
             <td>
               <span>-34.7</span>
@@ -411,7 +442,7 @@ const html = `
               <span class="rank">1</span>
               <span class="total">7</span>
               <span class="total">/</span>
-              <span class="success">8</span>
+              <span class="succes">8</span>
             </td>
             <td>
               <span>-34.7</span>
@@ -447,7 +478,7 @@ const html = `
               <span class="rank">1</span>
               <span class="total">7</span>
               <span class="total">/</span>
-              <span class="success">8</span>
+              <span class="succes">8</span>
             </td>
             <td>
               <span>-34.7</span>
@@ -483,7 +514,7 @@ const html = `
               <span class="rank">1</span>
               <span class="total">7</span>
               <span class="total">/</span>
-              <span class="success">8</span>
+              <span class="succes">8</span>
             </td>
             <td>
               <span>-34.7</span>
@@ -519,7 +550,7 @@ const html = `
               <span class="rank">1</span>
               <span class="total">7</span>
               <span class="total">/</span>
-              <span class="success">8</span>
+              <span class="succes">8</span>
             </td>
             <td>
               <span>-34.7</span>
@@ -556,7 +587,7 @@ const html = `
               <span class="rank">1</span>
               <span class="total">7</span>
               <span class="total">/</span>
-              <span class="success">8</span>
+              <span class="succes">8</span>
             </td>
             <td>
               <span>-34.7</span>
@@ -592,7 +623,7 @@ const html = `
               <span class="rank">1</span>
               <span class="total">7</span>
               <span class="total">/</span>
-              <span class="success">8</span>
+              <span class="succes">8</span>
             </td>
             <td>
               <span>-34.7</span>
@@ -628,7 +659,7 @@ const html = `
               <span class="rank">1</span>
               <span class="total">7</span>
               <span class="total">/</span>
-              <span class="success">8</span>
+              <span class="succes">8</span>
             </td>
             <td>
               <span>-34.7</span>
@@ -664,7 +695,7 @@ const html = `
               <span class="rank">1</span>
               <span class="total">7</span>
               <span class="total">/</span>
-              <span class="success">8</span>
+              <span class="succes">8</span>
             </td>
             <td>
               <span>-34.7</span>
@@ -700,7 +731,7 @@ const html = `
               <span class="rank">1</span>
               <span class="total">7</span>
               <span class="total">/</span>
-              <span class="success">8</span>
+              <span class="succes">8</span>
             </td>
             <td>
               <span>-34.7</span>
@@ -736,7 +767,7 @@ const html = `
               <span class="rank">1</span>
               <span class="total">7</span>
               <span class="total">/</span>
-              <span class="success">8</span>
+              <span class="succes">8</span>
             </td>
             <td>
               <span>-34.7</span>
@@ -764,10 +795,6 @@ const html = `
 
         </tbody>
       </table>
-    </div>
-    <div class="table-rewind table-rewind--dark hide-desktop">
-      <button class="table-rewind__button table-rewind__button--prev"><span class="arrow"></span></button>
-      <button class="table-rewind__button table-rewind__button--next"><span class="arrow"></span></button>
     </div>
     <div class="ratings__best">
       <ul class="ratings__best-list">
@@ -824,7 +851,7 @@ const html = `
     </div>
   </div>
   <div class="ratings-tab ratings-investors">
-    <div class="ratings-table-wrap js-table-wrapper">
+    <div class="ratings-table-wrap">
       <table class="table">
         <thead>
           <tr>
@@ -832,57 +859,84 @@ const html = `
               <span class="star"></span>
             </th>
             <th class='name'>
-              <span>Name</span><span class="icon-dir icon-down-dir"></span>
+              <div>
+                Name <span class="icon-dir icon-down-dir"></span>
+              </div>
+              <div>
+                <input class="input_search" placeholder="Search"> </input>
+              </div>
             </th>
             <th class='rank active'>
-              <span>Rank</span><span class="icon-dir icon-down-dir"></span>
-            </th>
-            <th>
-              <span>ROI,&nbsp;%</span><span class="icon-dir icon-down-dir"></span>
-            </th>
-            <th>
-              <span>Since opened</span><span class="icon-dir icon-down-dir"></span>
-            </th>
-            <th>
-              <span>Paid excess<br>porfit</span><span class="icon-dir icon-down-dir"></span>
-            </th>
-            <th>
-              <span>Amount of paid invoices</span><span class="icon-dir icon-down-dir"></span>
-            </th>
-          </tr>
-
-          <tr>
-            <th></th>
-            <th>
               <div>
-                <input type="text" class="input_search" placeholder="Search" />
+                Rank <span class="icon-dir icon-down-dir"></span>
+              </div>
+              <div class="help">
+                ?
+                <div class="help_dropdown">
+                  <div class="total row">
+                    <div><span class="round"></span></div>
+                    <div><span>The total amount of contracts</span></div>
+
+                  </div>
+                  <div class="succes row">
+                    <div><span class="round"></span></div>
+                    <div><span>The amount of successfully finished contracts</span></div>
+                </div>
               </div>
             </th>
             <th>
-              <div class="help" data-toggle="ratings-help-popover" data-placement="bottom" data-total="The total amount of contracts" data-success="The amount of successfully finished contracts">?</div>
-            </th>
-            <th>
+              <div>
+                ROI, % <span class="icon-dir icon-down-dir"></span>
+              </div>
+
               <div  class="all-time">
                 All time
                 <span class="arrow_down"></span>
                 <div class="all-time_dropdown">
-                  <a href="#" class="all-time_dropdown-link">1 week</a>
-                  <a href="#" class="all-time_dropdown-link">1 month</a>
-                  <a href="#" class="all-time_dropdown-link">3 months</a>
-                  <a href="#" class="all-time_dropdown-link">6 months</a>
-                  <a href="#" class="all-time_dropdown-link">12 months</a>
-                  <a href="#" class="all-time_dropdown-link active">All time</a>
+                  <a href="#" class="all-time_dropdown-link">
+                    1 week
+                  </a>
+                  <a href="#" class="all-time_dropdown-link">
+                    1 month
+                  </a>
+                  <a href="#" class="all-time_dropdown-link">
+                    3 months
+                  </a>
+                  <a href="#" class="all-time_dropdown-link">
+                    6 months
+                  </a>
+                  <a href="#" class="all-time_dropdown-link">
+                    12 months
+                  </a>
+                  <a href="#" class="all-time_dropdown-link active">
+                    All time
+                  </a>
                 </div>
               </div>
+
             </th>
-            <th></th>
             <th>
+              <div>
+                <span>Since opened </span><span class="icon-dir icon-down-dir"></span>
+              </div>
+
+            </th>
+            <th>
+              <div>
+                Paid excess profit <span class="icon-dir icon-down-dir"></span>
+              </div>
+
               <div class="buttons-wrap">
                 <button class="btn btn-active">BTC</button>
                 <button class="btn">USD</button>
               </div>
             </th>
-            <th></th>
+            <th>
+              <div>
+                Amount of paid invoices <span class="icon-dir icon-down-dir"></span>
+              </div>
+            </th>
+
           </tr>
         </thead>
         <tbody>
@@ -897,7 +951,7 @@ const html = `
               <span class="rank">1</span>
               <span class="total">7</span>
               <span class="total">/</span>
-              <span class="success">8</span>
+              <span class="succes">8</span>
             </td>
             <td>
               <span>-34.7</span>
@@ -924,7 +978,7 @@ const html = `
               <span class="rank">1</span>
               <span class="total">7</span>
               <span class="total">/</span>
-              <span class="success">8</span>
+              <span class="succes">8</span>
             </td>
             <td>
               <span>-34.7</span>
@@ -951,7 +1005,7 @@ const html = `
               <span class="rank">1</span>
               <span class="total">7</span>
               <span class="total">/</span>
-              <span class="success">8</span>
+              <span class="succes">8</span>
             </td>
             <td>
               <span>-34.7</span>
@@ -978,7 +1032,7 @@ const html = `
               <span class="rank">1</span>
               <span class="total">7</span>
               <span class="total">/</span>
-              <span class="success">8</span>
+              <span class="succes">8</span>
             </td>
             <td>
               <span>-34.7</span>
@@ -1005,7 +1059,7 @@ const html = `
               <span class="rank">1</span>
               <span class="total">7</span>
               <span class="total">/</span>
-              <span class="success">8</span>
+              <span class="succes">8</span>
             </td>
             <td>
               <span>-34.7</span>
@@ -1032,7 +1086,7 @@ const html = `
               <span class="rank">1</span>
               <span class="total">7</span>
               <span class="total">/</span>
-              <span class="success">8</span>
+              <span class="succes">8</span>
             </td>
             <td>
               <span>-34.7</span>
@@ -1052,10 +1106,6 @@ const html = `
         </tbody>
       </table>
     </div>
-    <div class="table-rewind table-rewind--dark hide-desktop">
-      <button class="table-rewind__button table-rewind__button--prev"><span class="arrow"></span></button>
-      <button class="table-rewind__button table-rewind__button--next"><span class="arrow"></span></button>
-    </div>
     <div class="ratings__best">
       <ul class="ratings__best-list">
         <li class="ratings__best-item best_alltime">
@@ -1068,7 +1118,6 @@ const html = `
               <span class="text">ROI, %</span>
             </div>
         </li>
-        <li class="dash"></li>
         <li class="ratings__best-item best_year">
           <div class="ratings__best-top">
               <div class="time">Best investor of <span class="year">2017</span></div>
@@ -1080,7 +1129,6 @@ const html = `
           </div>
 
         </li>
-        <li class="dash"></li>
         <li class="ratings__best-item best_quart">
           <div class="ratings__best-top">
             <div class="time">Best investor of quart</div>
@@ -1092,7 +1140,6 @@ const html = `
           </div>
 
         </li>
-        <li class="dash"></li>
         <li class="ratings__best-item best_month">
           <div class="ratings__best-top">
             <div class="time">
@@ -1110,6 +1157,5 @@ const html = `
       </ul>
     </div>
   </div>
-</div>
 </div>
 `;
