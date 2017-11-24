@@ -81,7 +81,6 @@ const AutoHeightTBodyComponent = (props) => {
   let {scrollBarHeight, ...rest} = props;
   return (
     <Scrollbars style={{height: '100%'}}
-      autoHeight
         autoHeightMin={100}
         autoHeightMax={'100%'}
         >
