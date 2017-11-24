@@ -1,5 +1,16 @@
 .main-panel.container-fluid {
   .table-screen {
+    .profile_table_wrapper {
+      height: calc(100% - 54px);
+      position: absolute;
+      width: 100%;
+      .profile_table {
+        overflow-x: hidden;
+        position: absolute;
+        height: calc(100%);
+        width: 100%;
+      }
+    }
     .ReactTable {
       .rt-td > :first-child {
         margin-left: 0;
@@ -240,7 +251,15 @@
         padding-left: 30px;
         .feedback-card {
 
-
+          .card-body {
+            min-height: 350px;
+            .feedback-body {
+              height: calc(100% - 84px);
+              position: absolute;
+              width: calc(100%); 
+              min-height: 250px;
+            }
+          }
           .list-group {
             .list-group-item {
               background-color: transparent;
@@ -498,12 +517,14 @@
         }
       }
 
+
       .currency-settings, .trade-history {
 
         .card {
           .card-body {
             padding: 0;
             max-height: 100%;
+            min-height: 344px;
             .icon-dir {
               margin: 0;
               font-size: .65em;
@@ -1020,6 +1041,9 @@
           .card-header {
             min-height: 60px;
             margin-top: 10px;
+          }
+          .card-body {
+            min-height: 1px;
           }
           .list-group {
             .list-group-item {
