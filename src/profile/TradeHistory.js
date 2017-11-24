@@ -6,6 +6,9 @@ import ReactTable from '../generic/SelectableReactTable';
 import { formatDate } from '../generic/util';
 
 class TradeHistory extends React.Component {
+  constructor(props) {
+    super(props);
+  }
   render() {
     return (
       <Col xs="12" sm="12" md="12" lg="12" xl="7" className="trade-block">
@@ -87,22 +90,28 @@ class TradeHistory extends React.Component {
     return (
       <div>
         <Desktop>
-          <ReactTable
-            data={data}
-            onItemSelected={() => {}}
-            columns={this.getColumns()}
-          />
+          <div  className="profile_table_wrapper">
+            <ReactTable
+              data={data}
+              className="profile_table"
+              onItemSelected={() => {}}
+              columns={this.getColumns()}
+              scrollBarHeightAuto='true'
+            />
+          </div>
         </Desktop>
         <Mobile>
-          <ReactTable
-            data={data}
-            onItemSelected={() => {}}
-            columns={this.getColumns()}
-            minRows={5}
-            showPagination={true}
-            defaultPageSize={5}
-            PaginationComponent={Pagination}
-          />
+          <div>
+            <ReactTable
+              data={data}
+              onItemSelected={() => {}}
+              columns={this.getColumns()}
+              minRows={5}
+              showPagination={true}
+              defaultPageSize={5}
+              PaginationComponent={Pagination}
+            />
+          </div>
         </Mobile>
       </div>
     );
