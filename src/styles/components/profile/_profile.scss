@@ -1,5 +1,15 @@
 .main-panel.container-fluid {
   .table-screen {
+    .profile_table_wrapper {
+      height: calc(100% - 54px);
+      position: absolute;
+      width: 100%;
+      .profile_table {
+        position: absolute;
+        height: calc(100%);
+        width: 100%;
+      }
+    }
     .ReactTable {
       .rt-td > :first-child {
         margin-left: 0;

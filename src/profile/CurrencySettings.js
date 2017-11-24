@@ -123,9 +123,9 @@ class CurrencySettings extends React.Component {
     return (
       <div>
         <Desktop>
-          <div style={{height: 'calc(100% - 54px)',position: 'absolute',width: '100%'}}>        
+          <div className="profile_table_wrapper">
             <ReactTable
-              style={{position: 'absolute',height: 'calc(100%)',width: '100%'}}
+              className="profile_table"
               data={this.props.currencies}
               columns={this.getColumns()}
               filtered={this.state.filtered}

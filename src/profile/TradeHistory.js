@@ -90,10 +90,10 @@ class TradeHistory extends React.Component {
     return (
       <div>
         <Desktop>
-          <div style={{height: 'calc(100% - 54px)',position: 'absolute',width: '100%'}}>        
+          <div  className="profile_table_wrapper">
             <ReactTable
               data={data}
-              style={{position: 'absolute',height: 'calc(100%)',width: '100%'}}
+              className="profile_table"
               onItemSelected={() => {}}
               columns={this.getColumns()}
               scrollBarHeightAuto='true'
