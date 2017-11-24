@@ -70,16 +70,24 @@
 	.image {
 		width: 23px;
 		height: 23px;
+		background-size: contain;
+		background-repeat: no-repeat;
 
 	}
 	.profile {
-		background: url(../img/MenuIconProfile.png) center no-repeat;
+		background-image: url(../img/MenuIconProfile.png);
 	}
 	.terminal {
-		background: url(../img/MenuIconTerminal.png) center no-repeat;
+		background-image: url(../img/terminal.svg);
 	}
 	.ratings {
-		background: url(../img/MenuIconRatings.png) center no-repeat;
+		background-image: url(../img/MenuIconRatings.png);
+	}
+	.orders {
+		background-image: url(../img/orders.svg);
+	}
+	.history {
+		background-image: url(../img/history.svg);
 	}
 	.dashboard {
 		background-image: url(../img/MenuIconDashboard.svg);

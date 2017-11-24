@@ -12,6 +12,10 @@ const MainContent = ({ loggedIn, profile }) => (
       <Redirect from="/login" to="/dashboard" />
       <LoginRoute exact path="/login" loggedIn={loggedIn} />
       <ProtectedRoute exact path="/dashboard" component={Dashboard} loggedIn={loggedIn} />
+      <ProtectedRoute exact path="/terminal" component={Terminal} loggedIn={loggedIn} />
+      <ProtectedRoute exact path="/orders" component={Terminal} loggedIn={loggedIn} />
+      <ProtectedRoute exact path="/history" component={Terminal} loggedIn={loggedIn} />
+      <ProtectedRoute exact path="/ratings" component={Terminal} loggedIn={loggedIn} />
       <Redirect exact from="/profile" to={profile ? `/${profile.name}` : '/login'} />
       <Route exact path="/:id" component={Profile} />
       <Redirect from="/" to="/dashboard" />
@@ -19,6 +23,9 @@ const MainContent = ({ loggedIn, profile }) => (
   </Col>
 );
 
+const Terminal = ({location}) => {
+  window.location = location.pathname;
+}
 
 const LoginRoute = ({ loggedIn, ...props }) => {
   if(loggedIn) {
