@@ -14,15 +14,13 @@ const MainContent = ({ loggedIn, profile }) => (
       <Route exact path="/history" component={History} />
       <Route exact path="/orders" component={Orders} />
       <Route exact path="/ratings" component={Ratings} />
-      <Redirect to="/terminal" />
       <Route path="/" component={RedirectToMain} />
     </Switch>
   </Col>
 );
 
-const RedirectToMain = (props) => {
-  const location = props.location.pathname;
-  window.location = location;
+const RedirectToMain = ({location}) => {
+  window.location = location.pathname;
 };
 
 const ProtectedRoute = ({ component, loggedIn, ...props }) => {
