@@ -47,11 +47,11 @@ class Feedback extends React.Component {
                   <div className="card-body">
                     <Desktop>
                     
-                      <div style={{height: 'calc(100% - 84px)',position: 'absolute',width: 'calc(100%)', minHeight: 250}}>        
+                      <div className="feedback-body">        
                       
                         <Scrollbars style={{height: '100%',width: 'calc(100% - 25px)'}}
                           autoHeight
-                          autoHeightMin={250}
+                          autoHeightMin={207}
                           autoHeightMax={'100%'}>
                             <ul className="list-group" style={{width: 'calc(100% - 50px)'}}>
                               {this.props.comments.map((c, i) => <Comment key={i} comment={c}/>)}

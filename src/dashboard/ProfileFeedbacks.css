@@ -33,6 +33,14 @@
 	height: 50px;
 }
 
+.main-panel.container-fluid  .feedback-profile .profile-item.container-fluid .feedback-block .feedback-card .card-body {
+	min-height: 200px;
+}
+
+.main-panel.container-fluid  .feedback-profile .profile-item.container-fluid .feedback-block .feedback-card .card-body .feedback-body {
+	min-height: 207px;
+}
+
 @media only screen and (max-width : 1027px) {
 	.main-panel.container-fluid  .feedback-profile .profile-item.container-fluid .table-screen .table-row .feedback-block .feedback-card .card-body ul {
 		padding-left: 15px;

@@ -253,6 +253,12 @@
 
           .card-body {
             min-height: 350px;
+            .feedback-body {
+              height: calc(100% - 84px);
+              position: absolute;
+              width: calc(100%); 
+              min-height: 250px;
+            }
           }
           .list-group {
             .list-group-item {
