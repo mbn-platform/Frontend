@@ -24,6 +24,7 @@ const MainContent = ({ loggedIn, profile }) => (
 
 const Terminal = ({location}) => {
   window.location = location.pathname;
+  return null;
 }
 
 const LoginRoute = ({ loggedIn, ...props }) => {
