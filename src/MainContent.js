@@ -21,6 +21,7 @@ const MainContent = ({ loggedIn, profile }) => (
 
 const RedirectToMain = ({location}) => {
   window.location = location.pathname;
+  return null;
 };
 
 const ProtectedRoute = ({ component, loggedIn, ...props }) => {
