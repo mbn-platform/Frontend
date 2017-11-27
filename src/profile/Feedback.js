@@ -98,7 +98,7 @@ class Comment extends React.Component {
   renderStars() {
     const stars = [];
     for(let i = 0; i < 5; i++) {
-      const className = classNames('icon', 'icon-star', {active: i < this.props.comment.raiting});
+      const className = classNames('star', {active: i < this.props.comment.raiting});
       stars.push((<span key={i} className={className} />));
     }
     return stars;
