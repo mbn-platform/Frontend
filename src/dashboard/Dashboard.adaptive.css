@@ -383,9 +383,7 @@
   .contracts_table .table_title {
     background: url(../img/Contracts.png) no-repeat left center;
   }
-  .contracts_table .table_col_value {
-    font-size: 1em;
-  }
+  
   .contracts_table .ReactTable .rt-tr-group .rt-tr {
     min-height: 25px;
     line-height: 25px;
@@ -405,7 +403,7 @@
     margin-top: 0px;
   }
   .contracts_table_wrapper .ReactTable .contractor_link {
-    width: 60px;
+    width: 68px;
     -o-text-overflow: ellipsis;
     text-overflow: ellipsis;
     overflow: hidden;
