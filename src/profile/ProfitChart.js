@@ -9,11 +9,23 @@ class ProfitChart extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {selectedCurrency: 0, selectedInterval: 0};
+    this.state = {selectedCurrency: 0, selectedInterval: 0, data: this.formatData(this.props.trades)};
   }
 
+  formatData(trades) {
+    let trade = []
+    trades.forEach((item,i) => {
+      if(!trade.length) {
+        trade = item;
+      } else {
+        trade = trade.concat(item)
+      }
+    })
+    return trade.sort((t1, t2) => {Date.parse(t1.date) < Date.parse(t2.date)})
+    .map(t => ({category: t.date, 'column-1': t.price}));
+  }
 
-  componentDidMount() {
+  componentDidMount() {    
     const chart = window.AmCharts.makeChart('chartdiv',
       {
         'type': 'serial',
@@ -30,6 +42,11 @@ class ProfitChart extends React.Component {
           '#0a87b8',
           '#32ba94',
         ],
+        "categoryAxis": {
+          "gridPosition": "start",
+          "minPeriod": "hh",
+          "parseDates": true
+        },        
         'graphs': [
           {
             'balloonText': '[[title]] of [[category]]:[[value]]',
@@ -67,43 +84,7 @@ class ProfitChart extends React.Component {
         },
         'titles': [
         ],
-        'dataProvider': [
-          {
-            'category': 'Jan',
-            'column-1': 8,
-            'column-2': 5
-          },
-          {
-            'category': 'Feb',
-            'column-1': 6,
-            'column-2': 7
-          },
-          {
-            'category': 'Mar',
-            'column-1': 2,
-            'column-2': 3
-          },
-          {
-            'category': 'Apr',
-            'column-1': 8,
-            'column-2': 3
-          },
-          {
-            'category': 'May',
-            'column-1': 2,
-            'column-2': 1
-          },
-          {
-            'category': 'June',
-            'column-1': 3,
-            'column-2': 2
-          },
-          {
-            'category': 'July',
-            'column-1': 6,
-            'column-2': 8
-          }
-        ]
+        'dataProvider': this.state.data
       }
     );
     this.chart = chart;
