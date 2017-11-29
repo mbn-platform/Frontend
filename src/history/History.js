@@ -16,6 +16,13 @@ class History extends React.Component {
       </Container>
     );
   }
+  componentDidMount() {
+    window.customize();
+  }
+
+  componentWillUnmount() {
+    window.uncustomize();
+  }
 }
 
 export default History;

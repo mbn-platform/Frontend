@@ -15,7 +15,15 @@ class Terminal extends React.Component {
         </Row>
       </Container>
     );
-}
+  }
+
+  componentDidMount() {
+    window.customize();
+  }
+
+  componentWillUnmount() {
+    window.uncustomize();
+  }
 }
 
 export default Terminal;
