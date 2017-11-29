@@ -34,6 +34,7 @@ const html = `
 								<div class="key">dfpjg934t0g9g3j3pvd;kg3</div>
 							</div>
 						</div>
+
 						<div class="dropdown-link-wrap">
 							<a href="#" class="dropdown-link">BITTREX <span class="arrow_down"></span></a>
 							<div class="dropdown exchange">
@@ -45,10 +46,10 @@ const html = `
 								<div class="exchange__switch">Bitfinex</div>
 								<div class="exchange__switch active">BITTREX</div>
 							</div>
-
 						</div>
+
 						<div class="dropdown-link-wrap">
-							<a href="#" class="dropdown-link">BTC/ETH <span class="arrow_down"></span></a>
+							<a href="#" class="dropdown-link js-dropdown-table-link">BTC/ETH <span class="arrow_down"></span></a>
 							<div class="dropdown search">
 								<div class="dropdown__name">
 									<span>BTC/ETH</span>
@@ -62,6 +63,8 @@ const html = `
 									<button class="dropdown__btn">ETH</button>
 									<button class="dropdown__btn">USD</button>
 								</div>
+
+								<div class="dropdown-table-wrapper js-dropdown-table-wrapper">
 									<table class="table">
 										<thead>
 											<tr>
@@ -102,12 +105,36 @@ const html = `
 												<td>9843.86</td>
 												<td>-1.12</td>
 											</tr>
-
-
+											<tr class="up">
+												<td>BCH</td>
+												<td>0.15</td>
+												<td>100000.86</td>
+												<td>+21</td>
+											</tr>
+											<tr class="up">
+												<td>BCH</td>
+												<td>0.25</td>
+												<td>100000.86</td>
+												<td>+21</td>
+											</tr>
+											<tr class="down">
+												<td>ETH</td>
+												<td>0.14</td>
+												<td>9843.86</td>
+												<td>-1.12</td>
+											</tr>
+											<tr class="down">
+												<td>ETH</td>
+												<td>0.14</td>
+												<td>9843.86</td>
+												<td>-1.12</td>
+											</tr>
 										</tbody>
 									</table>
+								</div>
 							</div>
 						</div>
+
 						<div class="dropdown-link-wrap">
 							<a href="#" class="dropdown-link">1H <span class="arrow_down"></span></a>
 							<div class="dropdown time">
@@ -124,7 +151,6 @@ const html = `
 								<div class="time__switch">1 w</div>
 							</div>
 						</div>
-
 					</div>
 					<div class="row charts">
 						<div class="charts__left col-12 col-sm-12 col-md-6 col-lg-8">
@@ -273,224 +299,753 @@ const html = `
 											</div>
 									</div>
 									<div class="orders-table-tabs">
-										<div class="orders-table-tab orders-open active">
+											<div class="orders-table-tab orders-open active">
 
-												<table class="table">
-													<thead>
-														<tr>
-															<th>
-																<div>Type <span class="icon-dir icon-down-dir"></span></div>
-																	<div>
-															</th>
-															<th>
-																<div>Opened Date <span class="icon-dir icon-down-dir"></span></div>
-																<div>
-															</th>
+												<div class="orders-table-wrapper js-table-wrapper">
+													<table class="table">
+																	<thead>
+																		<tr>
+																			<th>Type <span class="icon-dir icon-down-dir"></span></th>
+																			<th>Opened <span class="hide-mobile">Date</span> <span class="icon-dir icon-down-dir"></span></th>
+																			<th>Market <span class="icon-dir icon-down-dir"></span></th>
+																			<th>Price <span class="icon-dir icon-down-dir"></span></th>
+																			<th>Units Filed <span class="icon-dir icon-down-dir"></span></th>
+																			<th>Units Total <span class="icon-dir icon-down-dir"></span></th>
+																			<th><span class="hide-mobile">Estimated</span><span class="show-mobile">Est.</span> Total <span class="icon-dir icon-down-dir"></span></th>
+																			<th class="hide-mobile"></th>
+																		</tr>
+																	</thead>
+																	<tbody>
+																		<tr class='buy'>
+																			<td>
+																				<span class="round"></span>
+																				Buy
+																			</td>
+																			<td>11.21.2017</td>
+																			<td>ETH/BTC</td>
+																			<td>0.156</td>
+																			<td>0.00</td>
+																			<td>12.0249235</td>
+				                              <td class="ellipsis-cell">12.0249235</td>
+				                              <td class="hide-mobile"><span class="remove"></span></td>
+																		</tr>
+																		<tr class='sell'>
+																			<td>
+																				<span class="round"></span>
+																				Sell
+																			</td>
+																			<td>11.21.2017</td>
+																			<td>ETH/BTC</td>
+																			<td>0.15646245</td>
+																			<td>0.00</td>
+																			<td>3200.0249235</td>
+				                              <td class="ellipsis-cell">12.0249235</td>
+				                              <td class="hide-mobile"><span class="remove"></span></td>
+																		</tr>
+																		<tr class='buy'>
+																			<td>
+																				<span class="round"></span>
+																				Buy
+																			</td>
+																			<td>11.21.2017</td>
+																			<td>ETH/BTC</td>
+																			<td>0.156</td>
+																			<td>0.00</td>
+																			<td>12.0249235</td>
+				                              <td class="ellipsis-cell">12.0249235</td>
+				                              <td class="hide-mobile"><span class="remove"></span></td>
+																		</tr>
+																		<tr class='buy'>
+																			<td>
+																				<span class="round"></span>
+																				Buy
+																			</td>
+																			<td>11.21.2017</td>
+																			<td>ETH/BTC</td>
+																			<td>0.156</td>
+																			<td>0.00</td>
+																			<td>12.0249235</td>
+				                              <td class="ellipsis-cell">12.0249235</td>
+				                              <td class="hide-mobile"><span class="remove"></span></td>
+																		</tr>
+																		<tr class='sell'>
+																			<td>
+																				<span class="round"></span>
+																				Sell
+																			</td>
+																			<td>11.21.2017</td>
+																			<td>ETH/BTC</td>
+																			<td>0.15646245</td>
+																			<td>0.00</td>
+																			<td>3200.0249235</td>
+				                              <td class="ellipsis-cell">12.0249235</td>
+				                              <td class="hide-mobile"><span class="remove"></span></td>
+																		</tr>
+																		<tr class='buy'>
+																			<td>
+																				<span class="round"></span>
+																				Buy
+																			</td>
+																			<td>11.21.2017</td>
+																			<td>ETH/BTC</td>
+																			<td>0.156</td>
+																			<td>0.00</td>
+																			<td>12.0249235</td>
+				                              <td class="ellipsis-cell">12.0249235</td>
+				                              <td class="hide-mobile"><span class="remove"></span></td>
+																		</tr>
+																		<tr class='buy'>
+																			<td>
+																				<span class="round"></span>
+																				Buy
+																			</td>
+																			<td>11.21.2017</td>
+																			<td>ETH/BTC</td>
+																			<td>0.156</td>
+																			<td>0.00</td>
+																			<td>12.0249235</td>
+				                              <td class="ellipsis-cell">12.0249235</td>
+				                              <td class="hide-mobile"><span class="remove"></span></td>
+																		</tr>
+																		<tr class='sell'>
+																			<td>
+																				<span class="round"></span>
+																				Sell
+																			</td>
+																			<td>11.21.2017</td>
+																			<td>ETH/BTC</td>
+																			<td>0.15646245</td>
+																			<td>0.00</td>
+																			<td>3200.0249235</td>
+				                              <td class="ellipsis-cell">12.0249235</td>
+				                              <td class="hide-mobile"><span class="remove"></span></td>
+																		</tr>
+																		<tr class='buy'>
+																			<td>
+																				<span class="round"></span>
+																				Buy
+																			</td>
+																			<td>11.21.2017</td>
+																			<td>ETH/BTC</td>
+																			<td>0.156</td>
+																			<td>0.00</td>
+																			<td>12.0249235</td>
+				                              <td class="ellipsis-cell">12.0249235</td>
+				                              <td class="hide-mobile"><span class="remove"></span></td>
+																		</tr>
+																		<tr class='buy'>
+																			<td>
+																				<span class="round"></span>
+																				Buy
+																			</td>
+																			<td>11.21.2017</td>
+																			<td>ETH/BTC</td>
+																			<td>0.156</td>
+																			<td>0.00</td>
+																			<td>12.0249235</td>
+				                              <td class="ellipsis-cell">12.0249235</td>
+				                              <td class="hide-mobile"><span class="remove"></span></td>
+																		</tr>
+																		<tr class='sell'>
+																			<td>
+																				<span class="round"></span>
+																				Sell
+																			</td>
+																			<td>11.21.2017</td>
+																			<td>ETH/BTC</td>
+																			<td>0.15646245</td>
+																			<td>0.00</td>
+																			<td>3200.0249235</td>
+				                              <td class="ellipsis-cell">12.0249235</td>
+				                              <td class="hide-mobile"><span class="remove"></span></td>
+																		</tr>
+																		<tr class='buy'>
+																			<td>
+																				<span class="round"></span>
+																				Buy
+																			</td>
+																			<td>11.21.2017</td>
+																			<td>ETH/BTC</td>
+																			<td>0.156</td>
+																			<td>0.00</td>
+																			<td>12.0249235</td>
+				                              <td class="ellipsis-cell">12.0249235</td>
+				                              <td class="hide-mobile"><span class="remove"></span></td>
+																		</tr>
+																		<tr class='buy'>
+																			<td>
+																				<span class="round"></span>
+																				Buy
+																			</td>
+																			<td>11.21.2017</td>
+																			<td>ETH/BTC</td>
+																			<td>0.156</td>
+																			<td>0.00</td>
+																			<td>12.0249235</td>
+				                              <td class="ellipsis-cell">12.0249235</td>
+				                              <td class="hide-mobile"><span class="remove"></span></td>
+																		</tr>
+																		<tr class='sell'>
+																			<td>
+																				<span class="round"></span>
+																				Sell
+																			</td>
+																			<td>11.21.2017</td>
+																			<td>ETH/BTC</td>
+																			<td>0.15646245</td>
+																			<td>0.00</td>
+																			<td>3200.0249235</td>
+				                              <td class="ellipsis-cell">12.0249235</td>
+				                              <td class="hide-mobile"><span class="remove"></span></td>
+																		</tr>
+																		<tr class='buy'>
+																			<td>
+																				<span class="round"></span>
+																				Buy
+																			</td>
+																			<td>11.21.2017</td>
+																			<td>ETH/BTC</td>
+																			<td>0.156</td>
+																			<td>0.00</td>
+																			<td>12.0249235</td>
+				                              <td class="ellipsis-cell">12.0249235</td>
+				                              <td class="hide-mobile"><span class="remove"></span></td>
+																		</tr>
+																		<tr class='buy'>
+																			<td>
+																				<span class="round"></span>
+																				Buy
+																			</td>
+																			<td>11.21.2017</td>
+																			<td>ETH/BTC</td>
+																			<td>0.156</td>
+																			<td>0.00</td>
+																			<td>12.0249235</td>
+				                              <td class="ellipsis-cell">12.0249235</td>
+				                              <td class="hide-mobile"><span class="remove"></span></td>
+																		</tr>
+																		<tr class='sell'>
+																			<td>
+																				<span class="round"></span>
+																				Sell
+																			</td>
+																			<td>11.21.2017</td>
+																			<td>ETH/BTC</td>
+																			<td>0.15646245</td>
+																			<td>0.00</td>
+																			<td>3200.0249235</td>
+				                              <td class="ellipsis-cell">12.0249235</td>
+				                              <td class="hide-mobile"><span class="remove"></span></td>
+																		</tr>
+																		<tr class='buy'>
+																			<td>
+																				<span class="round"></span>
+																				Buy
+																			</td>
+																			<td>11.21.2017</td>
+																			<td>ETH/BTC</td>
+																			<td>0.156</td>
+																			<td>0.00</td>
+																			<td>12.0249235</td>
+				                              <td class="ellipsis-cell">12.0249235</td>
+				                              <td class="hide-mobile"><span class="remove"></span></td>
+																		</tr>
+																		<tr class='buy'>
+																			<td>
+																				<span class="round"></span>
+																				Buy
+																			</td>
+																			<td>11.21.2017</td>
+																			<td>ETH/BTC</td>
+																			<td>0.156</td>
+																			<td>0.00</td>
+																			<td>12.0249235</td>
+				                              <td class="ellipsis-cell">12.0249235</td>
+				                              <td class="hide-mobile"><span class="remove"></span></td>
+																		</tr>
+																		<tr class='sell'>
+																			<td>
+																				<span class="round"></span>
+																				Sell
+																			</td>
+																			<td>11.21.2017</td>
+																			<td>ETH/BTC</td>
+																			<td>0.15646245</td>
+																			<td>0.00</td>
+																			<td>3200.0249235</td>
+				                              <td class="ellipsis-cell">12.0249235</td>
+				                              <td class="hide-mobile"><span class="remove"></span></td>
+																		</tr>
+																		<tr class='buy'>
+																			<td>
+																				<span class="round"></span>
+																				Buy
+																			</td>
+																			<td>11.21.2017</td>
+																			<td>ETH/BTC</td>
+																			<td>0.156</td>
+																			<td>0.00</td>
+																			<td>12.0249235</td>
+				                              <td class="ellipsis-cell">12.0249235</td>
+				                              <td class="hide-mobile"><span class="remove"></span></td>
+																		</tr>
+																		<tr class='buy'>
+																			<td>
+																				<span class="round"></span>
+																				Buy
+																			</td>
+																			<td>11.21.2017</td>
+																			<td>ETH/BTC</td>
+																			<td>0.156</td>
+																			<td>0.00</td>
+																			<td>12.0249235</td>
+				                              <td class="ellipsis-cell">12.0249235</td>
+				                              <td class="hide-mobile"><span class="remove"></span></td>
+																		</tr>
+																		<tr class='sell'>
+																			<td>
+																				<span class="round"></span>
+																				Sell
+																			</td>
+																			<td>11.21.2017</td>
+																			<td>ETH/BTC</td>
+																			<td>0.15646245</td>
+																			<td>0.00</td>
+																			<td>3200.0249235</td>
+				                              <td class="ellipsis-cell">12.0249235</td>
+				                              <td class="hide-mobile"><span class="remove"></span></td>
+																		</tr>
+																		<tr class='buy'>
+																			<td>
+																				<span class="round"></span>
+																				Buy
+																			</td>
+																			<td>11.21.2017</td>
+																			<td>ETH/BTC</td>
+																			<td>0.156</td>
+																			<td>0.00</td>
+																			<td>12.0249235</td>
+				                              <td class="ellipsis-cell">12.0249235</td>
+				                              <td class="hide-mobile"><span class="remove"></span></td>
+																		</tr>
+																		<tr class='buy'>
+																			<td>
+																				<span class="round"></span>
+																				Buy
+																			</td>
+																			<td>11.21.2017</td>
+																			<td>ETH/BTC</td>
+																			<td>0.156</td>
+																			<td>0.00</td>
+																			<td>12.0249235</td>
+				                              <td class="ellipsis-cell">12.0249235</td>
+				                              <td class="hide-mobile"><span class="remove"></span></td>
+																		</tr>
+																		<tr class='sell'>
+																			<td>
+																				<span class="round"></span>
+																				Sell
+																			</td>
+																			<td>11.21.2017</td>
+																			<td>ETH/BTC</td>
+																			<td>0.15646245</td>
+																			<td>0.00</td>
+																			<td>3200.0249235</td>
+				                              <td class="ellipsis-cell">12.0249235</td>
+				                              <td class="hide-mobile"><span class="remove"></span></td>
+																		</tr>
+																		<tr class='buy'>
+																			<td>
+																				<span class="round"></span>
+																				Buy
+																			</td>
+																			<td>11.21.2017</td>
+																			<td>ETH/BTC</td>
+																			<td>0.156</td>
+																			<td>0.00</td>
+																			<td>12.0249235</td>
+				                              <td class="ellipsis-cell">12.0249235</td>
+				                              <td class="hide-mobile"><span class="remove"></span></td>
+																		</tr>
+																	</tbody>
+																</table>
+												</div>
 
-															<th><div>Price <span class="icon-dir icon-down-dir"></span></div>
-																<div></th>
-
-															<th><div>Units Filed<span class="icon-dir icon-down-dir"></span></div>
-																<div></th>
-
-															<!-- <th></th> -->
-														</tr>
-													</thead>
-													<tbody>
-														<tr class='buy'>
-															<td>
-																<span class="round"></span>
-																Buy(LO)
-															</td>
-															<td>11.21.2017</td>
-															<td>0.15646245</td>
-															<td>0.00</td>
-															<td><span class="remove"></span></td>
-														</tr>
-														<tr class='sell'>
-															<td>
-																<span class="round"></span>
-																Sell(LO)
-															</td>
-															<td>11.21.2017</td>
-															<td>0.15646245</td>
-															<td>0.00</td>
-															<td><span class="remove"></span></td>
-														</tr>
-														<tr class='buy'>
-															<td>
-																<span class="round"></span>
-																Buy(LO)
-															</td>
-															<td>11.21.2017</td>
-															<td>0.15646245</td>
-															<td>0.00</td>
-															<td><span class="remove"></span></td>
-														</tr>
-														<tr class='sell'>
-															<td>
-																<span class="round"></span>
-																Sell(LO)
-															</td>
-															<td>11.21.2017</td>
-															<td>0.15646245</td>
-															<td>0.00</td>
-															<td><span class="remove"></span></td>
-														</tr>
-														<tr class='buy'>
-															<td>
-																<span class="round"></span>
-																Buy(LO)
-															</td>
-															<td>11.21.2017</td>
-															<td>0.15646245</td>
-															<td>0.00</td>
-															<td><span class="remove"></span></td>
-														</tr>
-														<tr class='sell'>
-															<td>
-																<span class="round"></span>
-																Sell(LO)
-															</td>
-															<td>11.21.2017</td>
-															<td>0.15646245</td>
-															<td>0.00</td>
-															<td><span class="remove"></span></td>
-														</tr>
-														<tr class='sell'>
-															<td>
-																<span class="round"></span>
-																Sell(LO)
-															</td>
-															<td>11.21.2017</td>
-															<td>0.15646245</td>
-															<td>0.00</td>
-															<td><span class="remove"></span></td>
-														</tr>
-														<tr class='sell'>
-															<td>
-																<span class="round"></span>
-																Sell(LO)
-															</td>
-															<td>11.21.2017</td>
-															<td>0.15646245</td>
-															<td>0.00</td>
-															<td><span class="remove"></span></td>
-														</tr>
-
-													</tbody>
-												</table>
-
-										</div>
+											</div>
 										<div class="orders-table-tab orders-completed">
-											<table class="table">
-													<thead>
-														<tr>
-															<th>
-																<div>Type <span class="icon-dir icon-down-dir"></span></div>
-																	<div>
-															</th>
-															<th>
-																<div>Opened Date <span class="icon-dir icon-down-dir"></span></div>
-																<div>
-															</th>
-															<th><div>Price <span class="icon-dir icon-down-dir"></span></div>
-																<div></th>
-															<th><div>Units Total<span class="icon-dir icon-down-dir"></span></div>
-																<div></th>
-															<th><div>Units Filed <span class="icon-dir icon-down-dir"></span></div>
-																<div></th>
-															<!-- <th></th> -->
-														</tr>
-													</thead>
-													<tbody>
-														<tr class='buy'>
-															<td>
-																<span class="round"></span>
-																Buy(LO)
-															</td>
-															<td>11.21.2017</td>
-															<td>0.15646245</td>
-															<td>12.432432</td>
-															<td>0.00</td>
-														</tr>
-														<tr class='sell'>
-															<td>
-																<span class="round"></span>
-																Sell(LO)
-															</td>
-															<td>11.21.2017</td>
-															<td>0.15646245</td>
-															<td>12.432432</td>
-															<td>0.00</td>
-														</tr>
-														<tr class='buy'>
-															<td>
-																<span class="round"></span>
-																Buy(LO)
-															</td>
-															<td>11.21.2017</td>
-															<td>0.15646245</td>
-															<td>12.432432</td>
-															<td>0.00</td>
-														</tr>
-														<tr class='sell'>
-															<td>
-																<span class="round"></span>
-																Sell(LO)
-															</td>
-															<td>11.21.2017</td>
-															<td>0.15646245</td>
-															<td>12.432432</td>
-															<td>0.00</td>
-														</tr>
-														<tr class='buy'>
-															<td>
-																<span class="round"></span>
-																Buy(LO)
-															</td>
-															<td>11.21.2017</td>
-															<td>0.15646245</td>
-															<td>12.432432</td>
-															<td>0.00</td>
-														</tr>
-														<tr class='sell'>
-															<td>
-																<span class="round"></span>
-																Sell(LO)
-															</td>
-															<td>11.21.2017</td>
-															<td>0.15646245</td>
-															<td>12.432432</td>
-															<td>0.00</td>
-														</tr>
-														<tr class='sell'>
-															<td>
-																<span class="round"></span>
-																Sell(LO)
-															</td>
-															<td>11.21.2017</td>
-															<td>0.15646245</td>
-															<td>12.432432</td>
-															<td>0.00</td>
-														</tr>
-														<tr class='sell'>
-															<td>
-																<span class="round"></span>
-																Sell(LO)
-															</td>
-															<td>11.21.2017</td>
-															<td>0.15646245</td>
-															<td>12.432432</td>
-															<td>0.00</td>
-														</tr>
+
+											<div class="orders-table-wrap js-table-wrapper">
+												<table class="table">
+																<thead>
+																	<tr>
+																		<th>Type <span class="icon-dir icon-down-dir"></span>
+																		</th>
+																		<th>Opened <span class="hide-mobile">Date</span>
+																			<span class="icon-dir icon-down-dir"></span>
+																		</th>
+																		<th>Market <span class="icon-dir icon-down-dir"></span>
+																		<th>Price <span class="icon-dir icon-down-dir"></span>
+																		</th>
+																		<th>Units Total <span class="icon-dir icon-down-dir"></span>
+																		</th>
+																		<th>Units Filed
+																		<span class="icon-dir icon-down-dir"></span></th>
+																		<th><span class="hide-mobile">Estimated</span><span class="show-mobile">Est.</span> Total <span class="icon-dir icon-down-dir"></span></th>
+																			<th class="hide-mobile"></th>
+
+																	</tr>
+																</thead>
+																<tbody>
+																	<tr class='buy'>
+																		<td>
+																			<span class="round"></span>
+																			Buy
+																		</td>
+																		<td>11.21.2017</td>
+																		<td>ETH/BTC</td>
+																		<td>0.156</td>
+																		<td>12.0249235</td>
+																		<td>0.00</td>
+																		<td class="ellipsis-cell">12.0249235</td>
+																	</tr>
+																	<tr class='sell'>
+																		<td>
+																			<span class="round"></span>
+																			Sell
+																		</td>
+																		<td>11.21.2017</td>
+																		<td>ETH/BTC</td>
+																		<td>0.15646245</td>
+																		<td>3200.0249235</td>
+																		<td>0.00</td>
+																		<td class="ellipsis-cell">12.0249235</td>
+																	</tr>
+																	<tr class='buy'>
+																		<td>
+																			<span class="round"></span>
+																			Buy
+																		</td>
+																		<td>11.21.2017</td>
+																		<td>ETH/BTC</td>
+																		<td>0.156</td>
+																		<td>12.0249235</td>
+																		<td>0.00</td>
+																		<td class="ellipsis-cell">12.0249235</td>
+																	</tr>
+																	<tr class='sell'>
+																		<td>
+																			<span class="round"></span>
+																			Sell
+																		</td>
+																		<td>11.21.2017</td>
+																		<td>ETH/BTC</td>
+																		<td>0.15646245</td>
+																		<td>3200.0249235</td>
+																		<td>0.00</td>
+																		<td class="ellipsis-cell">12.0249235</td>
+																	</tr>
+																	<tr class='buy'>
+																		<td>
+																			<span class="round"></span>
+																			Buy
+																		</td>
+																		<td>11.21.2017</td>
+																		<td>ETH/BTC</td>
+																		<td>0.156</td>
+																		<td>12.0249235</td>
+																		<td>0.00</td>
+																		<td class="ellipsis-cell">12.0249235</td>
+																	</tr>
+																	<tr class='sell'>
+																		<td>
+																			<span class="round"></span>
+																			Sell
+																		</td>
+																		<td>11.21.2017</td>
+																		<td>ETH/BTC</td>
+																		<td>0.15646245</td>
+																		<td>3200.0249235</td>
+																		<td>0.00</td>
+																		<td class="ellipsis-cell">12.0249235</td>
+																	</tr>
+																	<tr class='buy'>
+																		<td>
+																			<span class="round"></span>
+																			Buy
+																		</td>
+																		<td>11.21.2017</td>
+																		<td>ETH/BTC</td>
+																		<td>0.156</td>
+																		<td>12.0249235</td>
+																		<td>0.00</td>
+																		<td class="ellipsis-cell">12.0249235</td>
+																	</tr>
+																	<tr class='sell'>
+																		<td>
+																			<span class="round"></span>
+																			Sell
+																		</td>
+																		<td>11.21.2017</td>
+																		<td>ETH/BTC</td>
+																		<td>0.15646245</td>
+																		<td>3200.0249235</td>
+																		<td>0.00</td>
+																		<td class="ellipsis-cell">12.0249235</td>
+																	</tr>
+																	<tr class='buy'>
+																		<td>
+																			<span class="round"></span>
+																			Buy
+																		</td>
+																		<td>11.21.2017</td>
+																		<td>ETH/BTC</td>
+																		<td>0.156</td>
+																		<td>12.0249235</td>
+																		<td>0.00</td>
+																		<td class="ellipsis-cell">12.0249235</td>
+																	</tr>
+																	<tr class='sell'>
+																		<td>
+																			<span class="round"></span>
+																			Sell
+																		</td>
+																		<td>11.21.2017</td>
+																		<td>ETH/BTC</td>
+																		<td>0.15646245</td>
+																		<td>3200.0249235</td>
+																		<td>0.00</td>
+																		<td class="ellipsis-cell">12.0249235</td>
+																	</tr>
+																	<tr class='buy'>
+																		<td>
+																			<span class="round"></span>
+																			Buy
+																		</td>
+																		<td>11.21.2017</td>
+																		<td>ETH/BTC</td>
+																		<td>0.156</td>
+																		<td>12.0249235</td>
+																		<td>0.00</td>
+																		<td class="ellipsis-cell">12.0249235</td>
+																	</tr>
+																	<tr class='sell'>
+																		<td>
+																			<span class="round"></span>
+																			Sell
+																		</td>
+																		<td>11.21.2017</td>
+																		<td>ETH/BTC</td>
+																		<td>0.15646245</td>
+																		<td>3200.0249235</td>
+																		<td>0.00</td>
+																		<td class="ellipsis-cell">12.0249235</td>
+																	</tr>
+																	<tr class='buy'>
+																		<td>
+																			<span class="round"></span>
+																			Buy
+																		</td>
+																		<td>11.21.2017</td>
+																		<td>ETH/BTC</td>
+																		<td>0.156</td>
+																		<td>12.0249235</td>
+																		<td>0.00</td>
+																		<td class="ellipsis-cell">12.0249235</td>
+																	</tr>
+																	<tr class='sell'>
+																		<td>
+																			<span class="round"></span>
+																			Sell
+																		</td>
+																		<td>11.21.2017</td>
+																		<td>ETH/BTC</td>
+																		<td>0.15646245</td>
+																		<td>3200.0249235</td>
+																		<td>0.00</td>
+																		<td class="ellipsis-cell">12.0249235</td>
+																	</tr>
+																	<tr class='buy'>
+																		<td>
+																			<span class="round"></span>
+																			Buy
+																		</td>
+																		<td>11.21.2017</td>
+																		<td>ETH/BTC</td>
+																		<td>0.156</td>
+																		<td>12.0249235</td>
+																		<td>0.00</td>
+																		<td class="ellipsis-cell">12.0249235</td>
+																	</tr>
+																	<tr class='sell'>
+																		<td>
+																			<span class="round"></span>
+																			Sell
+																		</td>
+																		<td>11.21.2017</td>
+																		<td>ETH/BTC</td>
+																		<td>0.15646245</td>
+																		<td>3200.0249235</td>
+																		<td>0.00</td>
+																		<td class="ellipsis-cell">12.0249235</td>
+																	</tr>
+																	<tr class='buy'>
+																		<td>
+																			<span class="round"></span>
+																			Buy
+																		</td>
+																		<td>11.21.2017</td>
+																		<td>ETH/BTC</td>
+																		<td>0.156</td>
+																		<td>12.0249235</td>
+																		<td>0.00</td>
+																		<td class="ellipsis-cell">12.0249235</td>
+																	</tr>
+																	<tr class='sell'>
+																		<td>
+																			<span class="round"></span>
+																			Sell
+																		</td>
+																		<td>11.21.2017</td>
+																		<td>ETH/BTC</td>
+																		<td>0.15646245</td>
+																		<td>3200.0249235</td>
+																		<td>0.00</td>
+																		<td class="ellipsis-cell">12.0249235</td>
+																	</tr>
+																	<tr class='buy'>
+																		<td>
+																			<span class="round"></span>
+																			Buy
+																		</td>
+																		<td>11.21.2017</td>
+																		<td>ETH/BTC</td>
+																		<td>0.156</td>
+																		<td>12.0249235</td>
+																		<td>0.00</td>
+																		<td class="ellipsis-cell">12.0249235</td>
+																	</tr>
+																	<tr class='sell'>
+																		<td>
+																			<span class="round"></span>
+																			Sell
+																		</td>
+																		<td>11.21.2017</td>
+																		<td>ETH/BTC</td>
+																		<td>0.15646245</td>
+																		<td>3200.0249235</td>
+																		<td>0.00</td>
+																		<td class="ellipsis-cell">12.0249235</td>
+																	</tr>
+																	<tr class='buy'>
+																		<td>
+																			<span class="round"></span>
+																			Buy
+																		</td>
+																		<td>11.21.2017</td>
+																		<td>ETH/BTC</td>
+																		<td>0.156</td>
+																		<td>12.0249235</td>
+																		<td>0.00</td>
+																		<td class="ellipsis-cell">12.0249235</td>
+																	</tr>
+																	<tr class='sell'>
+																		<td>
+																			<span class="round"></span>
+																			Sell
+																		</td>
+																		<td>11.21.2017</td>
+																		<td>ETH/BTC</td>
+																		<td>0.15646245</td>
+																		<td>3200.0249235</td>
+																		<td>0.00</td>
+																		<td class="ellipsis-cell">12.0249235</td>
+																	</tr>
+																	<tr class='buy'>
+																		<td>
+																			<span class="round"></span>
+																			Buy
+																		</td>
+																		<td>11.21.2017</td>
+																		<td>ETH/BTC</td>
+																		<td>0.156</td>
+																		<td>12.0249235</td>
+																		<td>0.00</td>
+																		<td class="ellipsis-cell">12.0249235</td>
+																	</tr>
+																	<tr class='sell'>
+																		<td>
+																			<span class="round"></span>
+																			Sell
+																		</td>
+																		<td>11.21.2017</td>
+																		<td>ETH/BTC</td>
+																		<td>0.15646245</td>
+																		<td>3200.0249235</td>
+																		<td>0.00</td>
+																		<td class="ellipsis-cell">12.0249235</td>
+																	</tr>
+																	<tr class='buy'>
+																		<td>
+																			<span class="round"></span>
+																			Buy
+																		</td>
+																		<td>11.21.2017</td>
+																		<td>ETH/BTC</td>
+																		<td>0.156</td>
+																		<td>12.0249235</td>
+																		<td>0.00</td>
+																		<td class="ellipsis-cell">12.0249235</td>
+																	</tr>
+																	<tr class='sell'>
+																		<td>
+																			<span class="round"></span>
+																			Sell
+																		</td>
+																		<td>11.21.2017</td>
+																		<td>ETH/BTC</td>
+																		<td>0.15646245</td>
+																		<td>3200.0249235</td>
+																		<td>0.00</td>
+																		<td class="ellipsis-cell">12.0249235</td>
+																	</tr>
+																	<tr class='buy'>
+																		<td>
+																			<span class="round"></span>
+																			Buy
+																		</td>
+																		<td>11.21.2017</td>
+																		<td>ETH/BTC</td>
+																		<td>0.156</td>
+																		<td>12.0249235</td>
+																		<td>0.00</td>
+																		<td class="ellipsis-cell">12.0249235</td>
+																	</tr>
+																	<tr class='sell'>
+																		<td>
+																			<span class="round"></span>
+																			Sell
+																		</td>
+																		<td>11.21.2017</td>
+																		<td>ETH/BTC</td>
+																		<td>0.15646245</td>
+																		<td>3200.0249235</td>
+																		<td>0.00</td>
+																		<td class="ellipsis-cell">12.0249235</td>
+																	</tr>
 
 
-													</tbody>
-												</table>
+
+																</tbody>
+															</table>
+													</div>
+
 										</div>
 									</div>
 
+								</div>
+								<div class="table-rewind hide-desktop">
+									<button class="table-rewind__button table-rewind__button--prev"><span class="arrow"></span></button>
+									<button class="table-rewind__button table-rewind__button--next"><span class="arrow"></span></button>
 								</div>
 							</div>
 						</div>
@@ -504,7 +1059,7 @@ const html = `
 												<div class="control-dash"></div>
 										</div>
 									</div>
-									<div class="table-wrap">
+									<div class="orderbook-table-wrapper js-table-wrapper">
 										<table class="table red">
 											<thead>
 												<tr>
@@ -652,7 +1207,7 @@ const html = `
 										<span>0.216</span>
 										<span class="icon icon-dir icon-up-dir"></span>
 									</div>
-									<div class="table-wrap">
+									<div class="orderbook-table-wrapper js-table-wrapper">
 										<table class="table green">
 											<tbody>
 												<tr class="sz-100">
@@ -759,6 +1314,7 @@ const html = `
 										</div>
 									</div>
 
+									<div class="trades-table-wrapper js-table-wrapper">
 										<table class="table">
 											<thead>
 												<tr>
@@ -1002,8 +1558,9 @@ const html = `
 
 											</tbody>
 										</table>
-
+									</div>
 								</div>
 							</div>
 						</div>
+					</div>
 `;

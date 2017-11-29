@@ -68,7 +68,7 @@ const html = `
       <tbody>
         <tr class='buy'>
           <td>ETH/BTC</td>
-          <td><span class="round"></span> Buy <span class="hide-mobile">(LO)</span></td>
+          <td><span class="round"></span> Buy</td>
           <td>0.000112349</td>
           <td>21433.57356766</td>
           <td>12.0249235 BTC</td>
@@ -76,7 +76,7 @@ const html = `
         </tr>
         <tr class='sell'>
           <td>ETH/BTC</td>
-          <td><span class="round"></span> Sell <span class="hide-mobile">(LO)</span></td>
+          <td><span class="round"></span> Sell</td>
 
           <td>0.000112349</td>
           <td>21433.57356766</td>
@@ -85,7 +85,7 @@ const html = `
         </tr>
         <tr class='sell'>
           <td>ETH/BTC</td>
-          <td><span class="round"></span> Sell <span class="hide-mobile">(LO)</span></td>
+          <td><span class="round"></span> Sell</td>
 
           <td>—</td>
           <td>21433.57356766</td>
@@ -94,7 +94,7 @@ const html = `
         </tr>
         <tr class='buy'>
           <td>ETH/BTC</td>
-          <td><span class="round"></span> Buy <span class="hide-mobile">(LO)</span></td>
+          <td><span class="round"></span> Buy</td>
           <td>0.000112349</td>
           <td>21433.57356766</td>
           <td>12.0249235 BTC</td>
@@ -102,7 +102,7 @@ const html = `
         </tr>
         <tr class='sell'>
           <td>ETH/BTC</td>
-          <td><span class="round"></span> Sell <span class="hide-mobile">(LO)</span></td>
+          <td><span class="round"></span> Sell</td>
 
           <td>0.000112349</td>
           <td>21433.57356766</td>
@@ -111,7 +111,7 @@ const html = `
         </tr>
         <tr class='sell'>
           <td>ETH/BTC</td>
-          <td><span class="round"></span> Sell <span class="hide-mobile">(LO)</span></td>
+          <td><span class="round"></span> Sell</td>
 
           <td>—</td>
           <td>21433.57356766</td>
@@ -120,7 +120,7 @@ const html = `
         </tr>
         <tr class='buy'>
           <td>ETH/BTC</td>
-          <td><span class="round"></span> Buy <span class="hide-mobile">(LO)</span></td>
+          <td><span class="round"></span> Buy</td>
           <td>0.000112349</td>
           <td>21433.57356766</td>
           <td>12.0249235 BTC</td>
@@ -128,7 +128,7 @@ const html = `
         </tr>
         <tr class='sell'>
           <td>ETH/BTC</td>
-          <td><span class="round"></span> Sell <span class="hide-mobile">(LO)</span></td>
+          <td><span class="round"></span> Sell</td>
 
           <td>0.000112349</td>
           <td>21433.57356766</td>
@@ -137,7 +137,7 @@ const html = `
         </tr>
         <tr class='sell'>
           <td>ETH/BTC</td>
-          <td><span class="round"></span> Sell <span class="hide-mobile">(LO)</span></td>
+          <td><span class="round"></span> Sell</td>
 
           <td>—</td>
           <td>21433.57356766</td>
@@ -146,7 +146,7 @@ const html = `
         </tr>
         <tr class='sell'>
           <td>ETH/BTC</td>
-          <td><span class="round"></span> Sell <span class="hide-mobile">(LO)</span></td>
+          <td><span class="round"></span> Sell</td>
 
           <td>—</td>
           <td>21433.57356766</td>
@@ -155,7 +155,7 @@ const html = `
         </tr>
         <tr class='sell'>
           <td>ETH/BTC</td>
-          <td><span class="round"></span> Sell <span class="hide-mobile">(LO)</span></td>
+          <td><span class="round"></span> Sell</td>
 
           <td>—</td>
           <td>21433.57356766</td>
@@ -164,7 +164,7 @@ const html = `
         </tr>
         <tr class='sell'>
           <td>ETH/BTC</td>
-          <td><span class="round"></span> Sell <span class="hide-mobile">(LO)</span></td>
+          <td><span class="round"></span> Sell</td>
 
           <td>—</td>
           <td>21433.57356766</td>
@@ -173,7 +173,7 @@ const html = `
         </tr>
         <tr class='sell'>
           <td>ETH/BTC</td>
-          <td><span class="round"></span> Sell <span class="hide-mobile">(LO)</span></td>
+          <td><span class="round"></span> Sell</td>
 
           <td>—</td>
           <td>21433.57356766</td>
@@ -182,7 +182,7 @@ const html = `
         </tr>
         <tr class='sell'>
           <td>ETH/BTC</td>
-          <td><span class="round"></span> Sell <span class="hide-mobile">(LO)</span></td>
+          <td><span class="round"></span> Sell</td>
 
           <td>—</td>
           <td>21433.57356766</td>
@@ -191,7 +191,7 @@ const html = `
         </tr>
         <tr class='sell'>
           <td>ETH/BTC</td>
-          <td><span class="round"></span> Sell <span class="hide-mobile">(LO)</span></td>
+          <td><span class="round"></span> Sell</td>
 
           <td>—</td>
           <td>21433.57356766</td>
@@ -200,7 +200,7 @@ const html = `
         </tr>
         <tr class='sell'>
           <td>ETH/BTC</td>
-          <td><span class="round"></span> Sell <span class="hide-mobile">(LO)</span></td>
+          <td><span class="round"></span> Sell</td>
 
           <td>—</td>
           <td>21433.57356766</td>
@@ -209,7 +209,7 @@ const html = `
         </tr>
         <tr class='sell'>
           <td>ETH/BTC</td>
-          <td><span class="round"></span> Sell <span class="hide-mobile">(LO)</span></td>
+          <td><span class="round"></span> Sell</td>
 
           <td>—</td>
           <td>21433.57356766</td>
@@ -218,7 +218,7 @@ const html = `
         </tr>
         <tr class='sell'>
           <td>ETH/BTC</td>
-          <td><span class="round"></span> Sell <span class="hide-mobile">(LO)</span></td>
+          <td><span class="round"></span> Sell</td>
 
           <td>—</td>
           <td>21433.57356766</td>
@@ -227,7 +227,7 @@ const html = `
         </tr>
         <tr class='sell'>
           <td>ETH/BTC</td>
-          <td><span class="round"></span> Sell <span class="hide-mobile">(LO)</span></td>
+          <td><span class="round"></span> Sell</td>
 
           <td>—</td>
           <td>21433.57356766</td>
@@ -236,7 +236,7 @@ const html = `
         </tr>
         <tr class='sell'>
           <td>ETH/BTC</td>
-          <td><span class="round"></span> Sell <span class="hide-mobile">(LO)</span></td>
+          <td><span class="round"></span> Sell</td>
 
           <td>—</td>
           <td>21433.57356766</td>
@@ -245,7 +245,7 @@ const html = `
         </tr>
         <tr class='sell'>
           <td>ETH/BTC</td>
-          <td><span class="round"></span> Sell <span class="hide-mobile">(LO)</span></td>
+          <td><span class="round"></span> Sell</td>
 
           <td>—</td>
           <td>21433.57356766</td>
@@ -254,7 +254,7 @@ const html = `
         </tr>
         <tr class='sell'>
           <td>ETH/BTC</td>
-          <td><span class="round"></span> Sell <span class="hide-mobile">(LO)</span></td>
+          <td><span class="round"></span> Sell</td>
 
           <td>—</td>
           <td>21433.57356766</td>
@@ -263,7 +263,7 @@ const html = `
         </tr>
         <tr class='sell'>
           <td>ETH/BTC</td>
-          <td><span class="round"></span> Sell <span class="hide-mobile">(LO)</span></td>
+          <td><span class="round"></span> Sell</td>
 
           <td>—</td>
           <td>21433.57356766</td>
@@ -272,7 +272,7 @@ const html = `
         </tr>
         <tr class='sell'>
           <td>ETH/BTC</td>
-          <td><span class="round"></span> Sell <span class="hide-mobile">(LO)</span></td>
+          <td><span class="round"></span> Sell</td>
 
           <td>—</td>
           <td>21433.57356766</td>
@@ -281,7 +281,7 @@ const html = `
         </tr>
         <tr class='sell'>
           <td>ETH/BTC</td>
-          <td><span class="round"></span> Sell <span class="hide-mobile">(LO)</span></td>
+          <td><span class="round"></span> Sell</td>
 
           <td>—</td>
           <td>21433.57356766</td>
@@ -290,7 +290,7 @@ const html = `
         </tr>
         <tr class='sell'>
           <td>ETH/BTC</td>
-          <td><span class="round"></span> Sell <span class="hide-mobile">(LO)</span></td>
+          <td><span class="round"></span> Sell</td>
 
           <td>—</td>
           <td>21433.57356766</td>
@@ -299,7 +299,7 @@ const html = `
         </tr>
         <tr class='sell'>
           <td>ETH/BTC</td>
-          <td><span class="round"></span> Sell <span class="hide-mobile">(LO)</span></td>
+          <td><span class="round"></span> Sell</td>
 
           <td>—</td>
           <td>21433.57356766</td>
@@ -308,7 +308,7 @@ const html = `
         </tr>
         <tr class='sell'>
           <td>ETH/BTC</td>
-          <td><span class="round"></span> Sell <span class="hide-mobile">(LO)</span></td>
+          <td><span class="round"></span> Sell</td>
 
           <td>—</td>
           <td>21433.57356766</td>
@@ -317,7 +317,7 @@ const html = `
         </tr>
         <tr class='sell'>
           <td>ETH/BTC</td>
-          <td><span class="round"></span> Sell <span class="hide-mobile">(LO)</span></td>
+          <td><span class="round"></span> Sell</td>
 
           <td>—</td>
           <td>21433.57356766</td>
@@ -326,7 +326,7 @@ const html = `
         </tr>
         <tr class='sell'>
           <td>ETH/BTC</td>
-          <td><span class="round"></span> Sell <span class="hide-mobile">(LO)</span></td>
+          <td><span class="round"></span> Sell</td>
 
           <td>—</td>
           <td>21433.57356766</td>
