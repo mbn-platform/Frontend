@@ -1,70 +1,69 @@
 import React from 'react';
+import { Container, Row, Col } from 'reactstrap';
 
 class HeaderStatus extends React.Component {
 
   render() {
     return (
-      <header className="header-status" dangerouslySetInnerHTML={{__html: html}} />
+      <header className="header-status">
+        <Container fluid className="h-100">
+          <Row className="h-100 justify-content-between">
+            <Rates />
+            <Balance
+              first={{name: 'BTC', value: 10.523}}
+              second={{name: 'ETH', value: 222.523}}
+            />
+          </Row>
+        </Container>
+      </header>
     );
   }
 }
 
-export default HeaderStatus;
+const Rates = props => (
+  <Col xs="8" sm="8" md="6" lg="6" xl="4" className="curses-wrap row">
+    <Col sm="4" md="4" lg="4" xs="4" className="curses row h-100 align-items-center justify-content-between">
+      <Col xs="auto" className="curses-name">BTC/USD</Col>
+      <Col xs="auto" className="curses-val">2542.2</Col>
+      <Col xs="auto" className="curses-change up">
+        <span className="icon icon-dir icon-up-dir"> </span>
+        6.94%
+      </Col>
+    </Col>
+    <Col sm="4" md="4" lg="4" xs="4" className="curses row h-100 align-items-center justify-content-between">
+      <Col xs="auto" className="curses-name">ETH/USD</Col>
+      <Col xs="auto" className="curses-val">2542.2</Col>
+      <Col xs="auto" className="curses-change down">
+        <span className="icon icon-dir icon-down-dir"> </span>
+        6.94%
+      </Col>
+    </Col>
+    <Col sm="4" md="4" lg="4" xs="4" className="curses row h-100 align-items-center justify-content-between">
+      <Col xs="auto" className="curses-name">BTC/ETH</Col>
+      <Col xs="auto" className="curses-val">0.1102</Col>
+      <Col xs="auto" className="curses-change up">
+        <span className="icon icon-dir icon-up-dir"> </span>
+        6.94%
+      </Col>
+    </Col>
+  </Col>
+);
 
-const html = `
-<div class="container-fuild h-100">
-  <div class="row h-100 justify-content-between">
-    <div class="curses-wrap row col-8 col-sm-8 col-md-6 col-lg-6  col-xl-4 ">
-      <div class="curses h-100 row align-items-center justify-content-between col-4 col-sm-4 col-md-4 col-lg-4">
-        <div class="curses-name col-auto">
-          BTC/USD
-        </div>
-        <div class="curses-val col-auto">
-          2542.2
-        </div>
-        <div class="curses-change up col-auto">
-          <span class="icon icon-dir icon-up-dir"></span>
-          6.94%
-        </div>
-      </div>
-      <div class="curses h-100 row align-items-center justify-content-between col-4 col-sm-4 col-md-4 col-lg-4">
-        <div class="curses-name col-auto">
-          ETH/USD
-        </div>
-        <div class="curses-val col-auto">
-          2542.2
-        </div>
-        <div class="curses-change down col-auto">
-          <span class="icon icon-dir icon-down-dir"></span>
-          6.94%
-        </div>
-      </div>
-      <div class="curses h-100 row align-items-center justify-content-between col-4 col-sm-4 col-md-4 col-lg-4">
-        <div class="curses-name col-auto">
-          BTC/ETH
-        </div>
-        <div class="curses-val col-auto">
-          0.1102
-        </div>
-        <div class="curses-change up col-auto">
-          <span class="icon icon-dir icon-up-dir"></span>
-          6.94%
-        </div>
-      </div>
+const Balance = ({first, second}) => (
+  <Col xs="4" sm="4" md="3" lg="3" xl="2" className="row justify-content-end align-items-center">
+    <div className="balance-title"> BALANCE:</div>
+    <div className="balance-wrap">
+      <BalanceValue {...first} />
+      <BalanceValue {...second} />
     </div>
-    <div class="row col-4 col-sm-4 col-md-3 col-lg-3 col-xl-2 justify-content-end align-items-center ">
-      <div class="balance-title"> BALANCE:</div>
-      <div class="balance-wrap">
-        <div class="balance row justify-content-center">
-          <div class="balance-name">BTC</div>
-          <div class="balance-val">10.523</div>
-        </div>
-        <div class="balance row justify-content-center align-items-center">
-          <div class="balance-name">ETH</div>
-          <div class="balance-val">222.523</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-`;
+  </Col>
+);
+
+const BalanceValue = ({name, value}) => (
+  <Row className="balance justify-content-center align-items-center">
+    <div className="balance-name">{name}</div>
+    <div className="balance-val">{value}</div>
+  </Row>
+);
+
+export default HeaderStatus;
