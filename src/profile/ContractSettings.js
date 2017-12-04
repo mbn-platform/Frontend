@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Row, Col } from 'reactstrap';
+import { Desktop, Mobile } from '../generic/MediaQuery';
 
 class ContractSettings extends React.Component {
 
@@ -126,26 +127,30 @@ class ContractSettings extends React.Component {
             name="duration"
             onChange={this.onFieldEdit}
           />
-          <SettingAmount
-            tabIndex={2}
-            value={this.props.amount}
-            dimension={this.props.currency}
-            isEditing={this.state.isEditing}
-            editValue={this.state.amount}
-            editCurrency={this.state.currency}
-            onChange={this.onFieldEdit}
-            onCurrencySelected={this.onCurrencySelected}
-          />
-          <Setting
-            tabIndex={3}
-            header="ROI"
-            value={this.props.roi}
-            dimension="%"
-            isEditing={this.state.isEditing}
-            editValue={this.state.roi}
-            name="roi"
-            onChange={this.onFieldEdit}
-          />
+          <div>
+            <Desktop>
+              <SettingAmount
+                tabIndex={2}
+                value={this.props.amount}
+                dimension={this.props.currency}
+                isEditing={this.state.isEditing}
+                editValue={this.state.amount}
+                editCurrency={this.state.currency}
+                onChange={this.onFieldEdit}
+                onCurrencySelected={this.onCurrencySelected}
+              />         
+            </Desktop>
+            <Setting
+              tabIndex={3}
+              header="ROI"
+              value={this.props.roi}
+              dimension="%"
+              isEditing={this.state.isEditing}
+              editValue={this.state.roi}
+              name="roi"
+              onChange={this.onFieldEdit}
+            />              
+          </div>
         </Col>
         <Col xs="auto" lg="12" xl="12">
           <Setting
@@ -169,7 +174,20 @@ class ContractSettings extends React.Component {
             onChange={this.onFieldEdit}
           />
         </Col>
-
+        <Col xs="12">
+          <Mobile>
+            <SettingAmount
+              tabIndex={2}
+              value={this.props.amount}
+              dimension={this.props.currency}
+              isEditing={this.state.isEditing}
+              editValue={this.state.amount}
+              editCurrency={this.state.currency}
+              onChange={this.onFieldEdit}
+              onCurrencySelected={this.onCurrencySelected}
+            />
+          </Mobile>
+        </Col>
       </div>
     );
   }
@@ -249,6 +267,12 @@ const EditAmountEntry = ({placeholder, value, onChange, onCurrencySelected, curr
           className={classNames('btn', 'btn-secondary', {active: currency === 'USDT'})}
           type="button"
         >USDT</button>
+        <button
+          onClick={onCurrencySelected}
+          name="ETH"
+          className={classNames('btn', 'btn-secondary', {active: currency === 'ETH'})}
+          type="button"
+        >ETH</button>        
       </span>
     </div>
   </div>
