@@ -29,6 +29,12 @@ class LeaveComment extends React.Component {
     this.onClick = this.onClick.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.id !== this.props.id) {
+      this.setState({comment: '', rate: null});
+    }
+  }
+
   onClick(e) {
     if(this.state.rate === null) {
       alert('rate first');
