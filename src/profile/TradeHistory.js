@@ -47,7 +47,7 @@ class TradeHistory extends React.Component {
         accessor: trade => formatDate(new Date(trade.date)),
         minWidth: 50,
         className: 'table_col_value',
-
+        sortable: false,
       },
       {
         Header: SortableHeader('Type'),
@@ -55,12 +55,14 @@ class TradeHistory extends React.Component {
         accessor: 'type',
         minWidth: 50,
         className: 'table_col_value',
+        sortable: false,
       },
       {
         Header: SortableHeader('Price, BTC'),
         accessor: 'price',
         minWidth: 50,
         className: 'table_col_value',
+        sortable: false,
       },
       {
         Header: SortableHeader('Amount'),
@@ -68,12 +70,14 @@ class TradeHistory extends React.Component {
         accessor: trade => trade.amountCurrency + ' ' + trade.amount,
         minWidth: 50,
         className: 'table_col_value',
+        sortable: false,
       },
       {
         Header: SortableHeader('Total, BTC'),
         accessor: 'total',
         minWidth: 50,
         className: 'table_col_value',
+        sortable: false,
       },
       {
         Header: SortableHeader('TX', false),
