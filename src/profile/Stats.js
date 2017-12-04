@@ -4,7 +4,7 @@ import { Row, Col } from 'reactstrap';
 import { UncontrolledTooltip } from 'reactstrap';
 
 
-const Stats = ({ traderRating, investorRating, roi, moneyInManagement })  => (
+const Stats = ({ traderRating, investorRating, roiInUSD, roiInBTC, moneyInManagement })  => (
   <Row className="justify-content-between raiting-block">
     <Col xs="auto" className="raiting-left-item">
       <div className="content-fuild">
@@ -24,12 +24,17 @@ const Stats = ({ traderRating, investorRating, roi, moneyInManagement })  => (
               return on investment (ROI):
             </div>
             <div className="value-text">
-              {roi}<span className="number-value-text"> %</span> <span className="icon icon-help icon-help-web-button"  id="help-icon-roi"></span>
+              {roiInUSD}<span className="currency-value-usd-text letter-spacing-1"> % in usd</span>
+
+               <span className="icon icon-help icon-help-web-button"  id="help-icon-roi"></span>
               <UncontrolledTooltip target="help-icon-roi">
                 ROI CALCULATED BY MERCATUS ANALYSIS SYSTEM
               </UncontrolledTooltip>
 
             </div>
+            <div className="description-text btc-text">
+              ~ {roiInBTC} <span className="currency-value-btc-text letter-spacing-1"> % in btc</span>
+            </div>            
           </Col>
         </div>
       </div>
