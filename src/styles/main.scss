@@ -130,7 +130,13 @@ button,.btn.focus, .btn:focus {
 	font-size: 14px;
 	max-width: 140px;
 	border: 1px solid #494d4d;
+	.red {
+		color: #953a3a;
+	}
 
+	.green {
+		color: #346255;
+	}
 }
 .popover {
 	max-width: 123px;

@@ -16,12 +16,12 @@
   height: 15px;
   display: inline-block;
   margin: 0 5px;
-  background: url(../img/RatingUnselected.png) no-repeat center center;
+  background: url(../img/Rating.svg) no-repeat center center;
   transition-property: opacity, background;
   transition-duration: 400ms;
 }
 
 .rating_bar_item.hover
 {
-  background: url(../img/RatingSelected.png) no-repeat center center;
+  background: url(../img/RatingActive.svg) no-repeat center center;
 }

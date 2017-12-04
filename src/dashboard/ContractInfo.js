@@ -42,6 +42,7 @@ class TimeLeft extends React.Component {
     const hours = Math.floor(difference % 86400000 / 3600000);
     const minutes = Math.floor(difference % 60000 / 1000);
     const progress = this.props.progress;
+    console.log('progress', progress)
     const color = getColor(progress);
     console.log(color);
     return (
@@ -52,17 +53,17 @@ class TimeLeft extends React.Component {
           </div>
           <div className={classNames('time_left_counts_wrapper', color)}>
             <div className="time_left_count_wrapper days">
-              <div className="time_left_count_big">{days}</div>
+              <div className="time_left_count_big">{isNaN(days) ? 0 : days}</div>
               <div className="time_left_count_small">days</div>
             </div>
             <div className="time_left_count_wrapper dots"><span className="dots_couple">:</span></div>
             <div className="time_left_count_wrapper hours">
-              <div className="time_left_count_big">{hours}</div>
+              <div className="time_left_count_big">{isNaN(hours) ? 0 : hours}</div>
               <div className="time_left_count_small">hours</div>
             </div>
             <div className="time_left_count_wrapper dots-second"><span className="dots_couple">:</span></div>
             <div className="time_left_count_wrapper min">
-              <div className="time_left_count_big">{minutes}</div>
+              <div className="time_left_count_big">{isNaN(minutes) ? 0 : minutes}</div>
               <div className="time_left_count_small">min</div>
             </div>
           </div>
@@ -73,7 +74,7 @@ class TimeLeft extends React.Component {
 }
 
 function getColor(progress) {
-  if(progress > 66) {
+  if(progress > 66 || isNaN(progress)) {
     return 'green';
   } else if(progress > 33) {
     return 'yellow';
