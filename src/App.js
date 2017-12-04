@@ -396,26 +396,6 @@ window.customize = function() {
     $('.js-table-wrapper table').floatThead('reflow');
   });
 
-  $('.buysell__switch').on('click', function(e) {
-    e.preventDefault();
-    var container = $('.buysell'),
-      tabs = container.find('.buysell__main'),
-      tabSell = tabs.find('.buysell__main-tab.sell'),
-      tabBuy = tabs.find('.buysell__main-tab.buy');
-
-    if($(this).hasClass('switch-buy')){
-      $(this).addClass('active')
-        .siblings().removeClass('active');
-      tabBuy.addClass('active')
-        .siblings().removeClass('active');
-    }
-    else if ($(this).hasClass('switch-sell')){
-      $(this).addClass('active')
-        .siblings().removeClass('active');
-      tabSell.addClass('active')
-        .siblings().removeClass('active');
-    }
-  });
 
   $('.ratings-main__block').find('.block__top-switch').on('click', function(e) {
     e.preventDefault();

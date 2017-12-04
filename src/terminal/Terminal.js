@@ -25,7 +25,9 @@ class Terminal extends React.Component {
                   <TradingView />
                   <MarketDepth />
                   <Row className="justify-content-between">
-                    <PlaceOrder />
+                    <PlaceOrder
+                      market="BTC-ETH"
+                    />
                     <MyOrders />
                   </Row>
                 </Col>
