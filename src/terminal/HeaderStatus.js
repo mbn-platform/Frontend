@@ -35,48 +35,63 @@ class HeaderStatus extends React.Component {
 
   updateRates() {
     getMarketSummary('USDT-BTC').then(json => {
-      const high = json.result[0].High;
-      this.setState({'usdt-btc': high});
+      const {Bid: bid, Ask: ask, PrevDay: prevDay} = json.result[0];
+      const average = (bid + ask )/ 2;
+      const dynamic = ((average / prevDay - 1) * 100).toFixed(2);
+      console.log(average);
+      console.log(dynamic);
+      this.setState({'usdt-btc': average, 'usdt-btc-dyn': dynamic});
     });
     getMarketSummary('USDT-ETH').then(json => {
-      const high = json.result[0].High;
-      this.setState({'usdt-eth': high});
+      const {Bid: bid, Ask: ask, PrevDay: prevDay} = json.result[0];
+      const average = (bid + ask )/ 2;
+      const dynamic = ((average / prevDay - 1) * 100).toFixed(2);
+      console.log(average);
+      console.log(dynamic);
+      this.setState({'usdt-eth': average, 'usdt-eth-dyn': dynamic});
     });
     getMarketSummary('BTC-ETH').then(json => {
-      const high = json.result[0].High;
-      this.setState({'btc-eth': high});
+      const {Bid: bid, Ask: ask, PrevDay: prevDay} = json.result[0];
+      const average = (bid + ask )/ 2;
+      const dynamic = ((average / prevDay - 1) * 100).toFixed(2);
+      console.log(average);
+      console.log(dynamic);
+      this.setState({'btc-eth': average, 'btc-eth-dyn': dynamic});
     });
   }
 }
 
-const Rates = props => (
-  <Col xs="8" sm="8" md="6" lg="6" xl="4" className="curses-wrap row">
-    <Col sm="4" md="4" lg="4" xs="4" className="curses row h-100 align-items-center justify-content-between">
-      <Col xs="auto" className="curses-name">BTC/USD</Col>
-      <Col xs="auto" className="curses-val">{props['usdt-btc']}</Col>
-      <Col xs="auto" className="curses-change up">
-        <span className="icon icon-dir icon-up-dir"> </span>
-        6.94%
+const Rates = props => {
+
+  return (
+    <Col xs="8" sm="8" md="6" lg="6" xl="4" className="curses-wrap row">
+      <Col sm="4" md="4" lg="4" xs="4" className="curses row h-100 align-items-center justify-content-between">
+        <Col xs="auto" className="curses-name">BTC/USD</Col>
+        <Col xs="auto" className="curses-val">{props['usdt-btc']}</Col>
+        <Col xs="auto" className="curses-change up">
+          <span className="icon icon-dir icon-up-dir"> </span>
+          {props['usdt-btc-dyn']}
+        </Col>
+      </Col>
+      <Col sm="4" md="4" lg="4" xs="4" className="curses row h-100 align-items-center justify-content-between">
+        <Col xs="auto" className="curses-name">ETH/USD</Col>
+        <Col xs="auto" className="curses-val">{props['usdt-eth']}</Col>
+        <Col xs="auto" className="curses-change down">
+          <span className="icon icon-dir icon-down-dir"> </span>
+          {props['usdt-eth-dyn']}
+        </Col>
+      </Col>
+      <Col sm="4" md="4" lg="4" xs="4" className="curses row h-100 align-items-center justify-content-between">
+        <Col xs="auto" className="curses-name">BTC/ETH</Col>
+        <Col xs="auto" className="curses-val">{props['btc-eth']}</Col>
+        <Col xs="auto" className="curses-change up">
+          <span className="icon icon-dir icon-up-dir"> </span>
+          {props['btc-eth-dyn']}
+        </Col>
       </Col>
     </Col>
-    <Col sm="4" md="4" lg="4" xs="4" className="curses row h-100 align-items-center justify-content-between">
-      <Col xs="auto" className="curses-name">ETH/USD</Col>
-      <Col xs="auto" className="curses-val">{props['usdt-eth']}</Col>
-      <Col xs="auto" className="curses-change down">
-        <span className="icon icon-dir icon-down-dir"> </span>
-        6.94%
-      </Col>
-    </Col>
-    <Col sm="4" md="4" lg="4" xs="4" className="curses row h-100 align-items-center justify-content-between">
-      <Col xs="auto" className="curses-name">BTC/ETH</Col>
-      <Col xs="auto" className="curses-val">{props['btc-eth']}</Col>
-      <Col xs="auto" className="curses-change up">
-        <span className="icon icon-dir icon-up-dir"> </span>
-        6.94%
-      </Col>
-    </Col>
-  </Col>
-);
+  );
+};
 
 const Balance = ({first, second}) => (
   <Col xs="4" sm="4" md="3" lg="3" xl="2" className="row justify-content-end align-items-center">
