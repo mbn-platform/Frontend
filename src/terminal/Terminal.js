@@ -33,7 +33,9 @@ class Terminal extends React.Component {
                 </Col>
                 <Col xs="12" sm="12" md="6" lg="4">
                   <Row>
-                    <OrderBook />
+                    <OrderBook
+                      market="BTC-ETH"
+                    />
                     <RecentTrades />
                   </Row>
                 </Col>

@@ -1,6 +1,28 @@
 import React from 'react';
+import { getOrderBook } from '../api/bittrex/bittrex';
 
 class OrderBook extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {buy: [], sell: []};
+  }
+
+
+  componentDidMount() {
+    this.interval = setInterval(this.updateOrderBook.bind(this), 5000);
+    this.updateOrderBook();
+  }
+
+  updateOrderBook() {
+    getOrderBook(this.props.market, 'both').then(json => {
+      if(json.success) {
+        const {buy, sell} = json.result;
+        this.setState({buy: buy.slice(0, 100), sell: sell.slice(0, 100)});
+      }
+    }).catch(err => console.log('error updating order book', err));
+  }
+
   render() {
     return (
       <div className="orderbook-table chart col-12 col-sm-6 col-md-12">
@@ -28,235 +50,57 @@ class OrderBook extends React.Component {
               </tr>
             </thead>
             <tbody className="tbody">
-              <tr className="sz-100">
-                <td>
-                  0.290
-                </td>
-                <td>
-                  <span className="white">4.</span>
-                  <span>04994</span>
-                </td>
-                <td>
-                  32161
-                </td>
-                <td>
-                  <span className="dash"></span>
-                </td>
-              </tr>
-              <tr className="sz-75">
-                <td>
-                  0.290
-                </td>
-                <td>
-                  <span className="white">3.</span>
-                  <span>04994</span>
-                </td>
-                <td>
-                  32161
-                </td>
-                <td>
-                  <span className="dash"></span>
-                </td>
-              </tr>
-              <tr className="sz-50">
-                <td>
-                  0.290
-                </td>
-                <td>
-                  <span className="white">2.</span>
-                  <span>04994</span>
-                </td>
-                <td>
-                  32161
-                </td>
-                <td>
-                  <span className="dash"></span>
-                </td>
-              </tr>
-              <tr className="sz-25">
-                <td>
-                  0.290
-                </td>
-                <td>
-                  <span className="white">1.</span>
-                  <span>04994</span>
-                </td>
-                <td>
-                  32161
-                </td>
-                <td>
-                  <span className="dash"></span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  0.290
-                </td>
-                <td>
-                  <span className="white">4.</span>
-                  <span>04994</span>
-                </td>
-                <td>
-                  32161
-                </td>
-                <td>
-                  <span className="dash"></span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  0.290
-                </td>
-                <td>
-                  <span className="white">4.</span>
-                  <span>04994</span>
-                </td>
-                <td>
-                  32161
-                </td>
-                <td>
-                  <span className="dash"></span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  0.290
-                </td>
-                <td>
-                  <span className="white">4.</span>
-                  <span>04994</span>
-                </td>
-                <td>
-                  32161
-                </td>
-                <td>
-                  <span className="dash"></span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  0.290
-                </td>
-                <td>
-                  <span className="white">4.</span>
-                  <span>04994</span>
-                </td>
-                <td>
-                  32161
-                </td>
-                <td>
-                  <span className="dash"></span>
-                </td>
-              </tr>
-
-      </tbody>
-    </table>
-  </div>
-  <div className="value row up">
-    <span>0.216</span>
-    <span className="icon icon-dir icon-up-dir"></span>
-  </div>
-  <div className="orderbook-table-wrapper js-table-wrapper">
-    <table className="table green">
-      <tbody>
-        <tr className="sz-100">
-          <td>
-            0.290
-          </td>
-          <td>
-            <span className="white">4.</span>
-            <span>04994</span>
-          </td>
-          <td>
-            32161
-          </td>
-          <td>
-            <span className="dash"></span>
-          </td>
-        </tr>
-        <tr className="sz-100">
-          <td>
-            0.290
-          </td>
-          <td>
-            <span className="white">4.</span>
-            <span>04994</span>
-          </td>
-          <td>
-            32161
-          </td>
-          <td>
-            <span className="dash"></span>
-          </td>
-        </tr>
-        <tr className="sz-75">
-          <td>
-            0.290
-          </td>
-          <td>
-            <span className="white">3.</span>
-            <span>04994</span>
-          </td>
-          <td>
-            32161
-          </td>
-          <td>
-            <span className="dash"></span>
-          </td>
-        </tr>
-        <tr className="sz-25">
-          <td>
-            0.290
-          </td>
-          <td>
-            <span className="white">1.</span>
-            <span>04994</span>
-          </td>
-          <td>
-            32161
-          </td>
-          <td>
-            <span className="dash"></span>
-          </td>
-        </tr>
-
-        <tr className="sz-100">
-          <td>
-            0.290
-          </td>
-          <td>
-            <span className="white">4.</span>
-            <span>04994</span>
-          </td>
-          <td>
-            32161
-          </td>
-          <td>
-            <span className="dash"></span>
-          </td>
-        </tr>
-        <tr className="sz-50">
-          <td>
-            0.290
-          </td>
-          <td>
-            <span className="white">2.</span>
-            <span>04994</span>
-          </td>
-          <td>
-            32161
-          </td>
-          <td>
-            <span className="dash"></span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+              {this.state.buy.map((order, i) => (
+                <BuyOrderCell
+                  key={i}
+                  price={order.Rate}
+                  size={order.Quantity}
+                />
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="value row up">
+          <span>0.216</span>
+          <span className="icon icon-dir icon-up-dir"></span>
+        </div>
+        <div className="orderbook-table-wrapper js-table-wrapper">
+          <table className="table green">
+            <tbody>
+              {this.state.sell.map((order, i) => (
+                <BuyOrderCell
+                  key={i}
+                  price={order.Rate}
+                  size={order.Quantity}
+                />
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
 
     );
   }
 }
+
+const BuyOrderCell = ({price, size} ) => {
+  const sizeParts = size.toString().split('.');
+  return (
+    <tr>
+      <td>{price}</td>
+      <td>
+        <span className="white">{sizeParts[0]}.</span>
+        <span>{sizeParts[1]}</span>
+      </td>
+      <td>
+        32161
+      </td>
+      <td>
+        <span className="dash"></span>
+      </td>
+    </tr>
+  );
+};
+
 
 export default OrderBook;
