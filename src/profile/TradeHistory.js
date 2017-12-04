@@ -81,17 +81,35 @@ class TradeHistory extends React.Component {
         sortable: false,
         minWidth: 30,
         className: 'table_col_value',
-        Cell: rowInfo => (<a className="tx_link" target="_blank" href={rowInfo.value || '/'} />),
+        Cell: rowInfo => rowInfo.original.first ? (<a className="tx_link" target="_blank" href={rowInfo.value || '/'} />) : null,
       },
     ];
   }
   renderTable() {
-    const data = this.props.trades.reduce((accum, value) => accum.concat(value), []);
+    const data = this.props.trades.reduce((accum, value) => {
+      if(value.length) {
+        const first = value[0];
+        const updatedFirst = {...first, first: true};
+        value = value.slice(1);
+        value.unshift(updatedFirst);
+      }
+      return accum.concat(value);
+    }, []);
     return (
       <div>
         <Desktop>
           <div  className="profile_table_wrapper">
             <ReactTable
+              getTrProps={(state, rowInfo, column, instance) => {
+                if(rowInfo.original.first) {
+                  console.log('first row');
+                  return {
+                    className: 'first-row'
+                  };
+                } else {
+                  return {};
+                }
+              }}
               data={data}
               className="profile_table"
               onItemSelected={() => {}}
@@ -103,6 +121,16 @@ class TradeHistory extends React.Component {
         <Mobile>
           <div>
             <ReactTable
+              getTrProps={(state, rowInfo, column, instance) => {
+                if(rowInfo && rowInfo.original.first) {
+                  console.log('first row');
+                  return {
+                    className: 'first-row'
+                  };
+                } else {
+                  return {};
+                }
+              }}
               data={data}
               onItemSelected={() => {}}
               columns={this.getColumns()}
