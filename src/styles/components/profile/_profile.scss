@@ -370,14 +370,23 @@
       }
 
       .trade-history {
-        .ReactTable {
-          .red {
-            color: #dd4c4c;
-          }
-          .green {
-            color: #32ba94;
-          }
-        }
+				.ReactTable {
+					.red {
+						color: #dd4c4c;
+					}
+					.green {
+						color: #32ba94;
+					}
+					.rt-tbody {
+
+						.rt-tr.first-row {
+							border-top: 1px solid #44b7ff;
+						}
+						.rt-tr-group {
+							border-left: 1px solid #44b7ff;
+						}
+					}
+				}
         .card {
           .card-body {
             .table {
