@@ -14,6 +14,10 @@ class OrderBook extends React.Component {
     this.updateOrderBook();
   }
 
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
   updateOrderBook() {
     getOrderBook(this.props.market, 'both').then(json => {
       if(json.success) {
