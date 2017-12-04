@@ -30,8 +30,6 @@ class PlaceOrder extends React.Component {
       .then(json => {
         if(json.success) {
           const {Bid: bid, Ask: ask} = json.result;
-          console.log(bid);
-          console.log(ask);
           this.setState({bid, ask});
         }
       })
@@ -113,13 +111,13 @@ class PlaceOrder extends React.Component {
     return (
       <div className="buysell col-12 col-sm-6 col-md-12">
         <div className="buysell__top justify-content-between row col-12">
-          <div class="buysell__switch-wrap ">
+          <div className="buysell__switch-wrap ">
             <span onClick={() => this.onTabClick(TAB_BUY)}
-              class={classNames('buysell__switch', 'switch-buy', {active: this.state.selectedTab === TAB_BUY})}
-            >BUY <span class="val">{this.state.ask}</span></span>
+              className={classNames('buysell__switch', 'switch-buy', {active: this.state.selectedTab === TAB_BUY})}
+            >BUY <span className="val">{this.state.ask}</span></span>
             <span onClick={() => this.onTabClick(TAB_SELL)}
-              class={classNames('buysell__switch', 'switch-sell', {active: this.state.selectedTab === TAB_SELL})}
-            >SELL <span class="val">{this.state.bid}</span></span>
+              className={classNames('buysell__switch', 'switch-sell', {active: this.state.selectedTab === TAB_SELL})}
+            >SELL <span className="val">{this.state.bid}</span></span>
           </div>
           <div className="chart-controls align-items-center justify-content-between row">
             <div className="control-resize"></div>
