@@ -1,6 +1,30 @@
 import React from 'react';
+import classNames from 'classnames';
+import { getMarketHistory } from '../api/bittrex/bittrex';
 
 class RecentTrades extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {history: []};
+  }
+
+  componentDidMount() {
+    this.interval = setInterval(this.updateHistory.bind(this), 12000);
+    this.updateHistory();
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
+  updateHistory() {
+    getMarketHistory(this.props.market).then(json => {
+      if(json.success) {
+        this.setState({history: json.result});
+      }
+    }).catch(err => console.log('error updating  history', err));
+  }
   render() {
     return (
       <div className="trades-table chart col-12 col-sm-6 col-md-12">
@@ -18,7 +42,7 @@ class RecentTrades extends React.Component {
               <tr>
                 <th>
 
-                  <div>Price (ETH) <span className="icon-dir icon-down-dir"></span></div>
+                  <div>Price ({this.props.market.split('-')[1]}) <span className="icon-dir icon-down-dir"></span></div>
                 </th>
                 <th>
                   <div>Trade Size <span className="icon-dir icon-down-dir"></span></div>
@@ -32,225 +56,15 @@ class RecentTrades extends React.Component {
               </tr>
             </thead>
             <tbody className="tbody">
-              <tr className="up">
-                <td>
-                  4086.4
-                  <span className="icon icon-dir icon-up-dir"></span>
-                </td>
-                <td>
-                  250
-                </td>
-                <td>
-                  8:46:41 PM
-                </td>
-                <td>
-                  B
-                </td>
-              </tr>
-              <tr className="down">
-                <td>
-                  4086.3
-                  <span className="icon icon-dir icon-down-dir"></span>
-                </td>
-                <td>
-                  40
-                </td>
-                <td>
-                  8:46:32 PM
-                </td>
-                <td>
-                  S
-                </td>
-              </tr>
-              <tr className="up">
-                <td>
-                  4086.4
-                  <span className="icon icon-dir icon-up-dir"></span>
-                </td>
-                <td>
-                  250
-                </td>
-                <td>
-                  8:46:41 PM
-                </td>
-                <td>
-                  B
-                </td>
-              </tr>
-              <tr className="down">
-                <td>
-                  4086.3
-                  <span className="icon icon-dir icon-down-dir"></span>
-                </td>
-                <td>
-                  40
-                </td>
-                <td>
-                  8:46:32 PM
-                </td>
-                <td>
-                  S
-                </td>
-              </tr>
-              <tr className="up">
-                <td>
-                  4086.4
-                </td>
-                <td>
-                  250
-                </td>
-                <td>
-                  8:46:41 PM
-                </td>
-                <td>
-                  B
-                </td>
-              </tr>
-              <tr className="up">
-                <td>
-                  4086.4
-                </td>
-                <td>
-                  250
-                </td>
-                <td>
-                  8:46:41 PM
-                </td>
-                <td>
-                  B
-                </td>
-              </tr>
-              <tr className="up">
-                <td>
-                  4086.4
-                </td>
-                <td>
-                  250
-                </td>
-                <td>
-                  8:46:41 PM
-                </td>
-                <td>
-                  B
-                </td>
-              </tr>
-              <tr className="up">
-                <td>
-                  4086.4
-                </td>
-                <td>
-                  250
-                </td>
-                <td>
-                  8:46:41 PM
-                </td>
-                <td>
-                  B
-                </td>
-              </tr>
-              <tr className="up">
-                <td>
-                  4086.4
-                </td>
-                <td>
-                  250
-                </td>
-                <td>
-                  8:46:41 PM
-                </td>
-                <td>
-                  B
-                </td>
-              </tr>
-
-              <tr className="down">
-                <td>
-                  4086.3
-                </td>
-                <td>
-                  1996
-                </td>
-                <td>
-                  8:46:32 PM
-                </td>
-                <td>
-                  S
-                </td>
-              </tr>
-              <tr className="down">
-                <td>
-                  4086.3
-                </td>
-                <td>
-                  40
-                </td>
-                <td>
-                  8:46:32 PM
-                </td>
-                <td>
-                  S
-                </td>
-              </tr>
-              <tr className="down">
-                <td>
-                  4086.3
-                </td>
-                <td>
-                  40
-                </td>
-                <td>
-                  8:46:32 PM
-                </td>
-                <td>
-                  S
-                </td>
-              </tr>
-              <tr className="down">
-                <td>
-                  4086.3
-                </td>
-                <td>
-                  40
-                </td>
-                <td>
-                  8:46:32 PM
-                </td>
-                <td>
-                  S
-                </td>
-              </tr>
-
-              <tr className="up">
-                <td>
-                  4086.4
-                  <span className="icon icon-dir icon-up-dir"></span>
-                </td>
-                <td>
-                  250
-                </td>
-                <td>
-                  8:46:41 PM
-                </td>
-                <td>
-                  B
-                </td>
-              </tr>
-              <tr className="down">
-                <td>
-                  4086.3
-                  <span className="icon icon-dir icon-down-dir"></span>
-                </td>
-                <td>
-                  40
-                </td>
-                <td>
-                  8:46:32 PM
-                </td>
-                <td>
-                  S
-                </td>
-              </tr>
-
+              {this.state.history.map((order, index) => (
+                <OrderHistoryRow
+                  key={order.Id}
+                  price={order.Price}
+                  size={order.Quantity}
+                  type={order.OrderType}
+                  date={new Date(order.TimeStamp)}
+                />
+              ))}
             </tbody>
           </table>
         </div>
@@ -258,5 +72,26 @@ class RecentTrades extends React.Component {
     );
   }
 }
+
+const OrderHistoryRow = ({type, date, price, size}) => {
+  const isSellOrder = type === 'SELL';
+  return (
+    <tr className={isSellOrder ? 'down' : 'up'}>
+      <td>
+        {price} <span className={classNames('icon', 'icon-dir',
+          isSellOrder ? 'icon-up-dir' : 'icon-down-dir')}></span>
+      </td>
+      <td>
+        {size}
+      </td>
+      <td>
+        {date.toLocaleTimeString()}
+      </td>
+      <td>
+        {isSellOrder ? 'S' : 'B'}
+      </td>
+    </tr>
+  );
+};
 
 export default RecentTrades;

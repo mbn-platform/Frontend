@@ -36,7 +36,9 @@ class Terminal extends React.Component {
                     <OrderBook
                       market="BTC-ETH"
                     />
-                    <RecentTrades />
+                    <RecentTrades
+                      market="BTC-ETH"
+                    />
                   </Row>
                 </Col>
               </Row>
