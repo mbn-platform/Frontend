@@ -5,13 +5,13 @@ function generateTrade(tx) {
   const type = getRandomTradeType();
   const amount = getRandom(100, 20);
   const amountCurrency = getRandomCurrency();
-  const total = getRandom(20, 4);
-  return { price, date, type, amount, amountCurrency };
+  const total = (price * amount).toFixed(5);
+  return { price, date, type, amount, amountCurrency, total, tx };
 }
 
 
 function generateTradesBlock(n = 20, tx) {
-  tx = tx || 'http://etherscan.io';
+  tx = tx || 'https://ropsten.etherscan.io/tx/0xf003ee3bdbd7c278864c2d4317669918e03b3dea7a0f5947051ea30c46e7c6f9';
   const trades = [];
   for(let i = 0; i < n; i++) {
     trades.push(generateTrade(tx));
@@ -24,7 +24,9 @@ function getRandomTradeType() {
 }
 
 function getRandomPrice() {
-  return getRandom(10, 2);
+  const random = Math.random() * 2 + 0.0001;
+  const value = parseFloat(random.toFixed(5));
+  return value;
 }
 
 const buyCurrencies = ['USDT', 'ETH', 'XRP', 'BCH', 'LTC'];
