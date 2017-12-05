@@ -4,6 +4,7 @@ import { Col } from 'reactstrap';
 import { Desktop, Mobile } from '../generic/MediaQuery';
 import AmCharts from 'amcharts3/amcharts/amcharts';
 import SerialChar from 'amcharts3/amcharts/serial';
+import AmChartsReact from "@amcharts/amcharts3-react";
 
 class ProfitChart extends React.Component {
 
@@ -25,9 +26,8 @@ class ProfitChart extends React.Component {
     .map(t => ({category: t.date, 'column-1': t.price}));
   }
 
-  componentDidMount() {    
-    const chart = window.AmCharts.makeChart('chartdiv',
-      {
+  render() {
+    let config = {
         'type': 'serial',
         'categoryField': 'category',
         'startDuration': 0,
@@ -44,7 +44,7 @@ class ProfitChart extends React.Component {
         ],
         "categoryAxis": {
           "gridPosition": "start",
-          "minPeriod": "hh",
+          "minPeriod": ['hh','DD', 'DD','MM', 'MM', 'YYYY'][this.state.selectedInterval],
           "parseDates": true
         },        
         'graphs': [
@@ -86,11 +86,6 @@ class ProfitChart extends React.Component {
         ],
         'dataProvider': this.state.data
       }
-    );
-    this.chart = chart;
-  }
-
-  render() {
     return (
       <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-8 profit-block">
         <div className="card">
@@ -134,7 +129,8 @@ class ProfitChart extends React.Component {
               <div className="row order-2 justify-content-center amcharts-block">
                 <div className="col-12">
                   <div className="amcharts">
-                    <div id="chartdiv" style={{height: '100%', width: '100%', backgroundColor: 'transparent',position: 'absolute'}} ></div>
+                      <AmChartsReact.React  style={{height: '100%', width: '100%', backgroundColor: 'transparent',position: 'absolute'}}
+                       options={config} />
                   </div>
 
                 </div>

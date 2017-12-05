@@ -1,6 +1,8 @@
 import React from 'react';
 import AmCharts from 'amcharts3/amcharts/amcharts';
 import PieChart from 'amcharts3/amcharts/pie';
+import SerialChar from 'amcharts3/amcharts/serial';
+import AmChartsReact from "@amcharts/amcharts3-react";
 
 class TradersChart extends React.Component {
 
@@ -79,7 +81,49 @@ class TradersChart extends React.Component {
           <span className="chart_title_total_span">Total:</span> {this.state.data.reduce((sum, entry) => sum + entry['column-1'], 0)} BTC
         </div>
         <div className="charts">
-          <div id="trader_pie" className="chart_pie">
+          <div className="chart_pie">
+            <AmChartsReact.React   style={{height: '100%', width: '100%', backgroundColor: 'transparent',position: 'absolute'}}
+                         options={{
+                          'type': 'pie',
+                          'fontFamily': 'maven_probold',
+                          'letterSpacing': '1px',
+                          'colors': [
+                            '#6c6c6e',
+                            '#dcb049',
+                            '#c94546',
+                            '#ce802c',
+                            '#c5c5c5',
+                            '#465666'
+                          ],
+                          'balloonText': '[[title]]<br><span style=\'font-size:14px\'><b>[[value]]</b> ([[percents]]%)</span>',
+                          'innerRadius': '70%',
+                          'labelsEnabled': false,
+                          'startDuration': 0,
+                          'titleField': 'category',
+                          'valueField': 'column-1',
+                          'allLabels': [],
+                          'balloon': {},
+                          'legend': {
+                            'enabled': true,
+                            'fontSize': 12,
+                            'marginLeft': 0,
+                            'markerSize': 0,
+                            'switchable': false,
+                            'textClickEnabled': true,
+                            'divId': 'trader_legend',
+                            'rollOverColor': '#FFFFFF',
+                            'labelText': '',
+                            'align': 'left',
+                            'maxColumns': 1,
+                            'valueAlign': 'left',
+                            'valueText': '[[percents]] - [[title]]',
+                            'useMarkerColorForLabels': true,
+                            'useMarkerColorForValues': true,
+                          },
+                          'titles': [],
+                          'dataProvider': this.state.data
+                        }} />          
+
           </div>
           <div className="legend_pie_wrapper">
             <div id="trader_legend" className="legend_pie">
