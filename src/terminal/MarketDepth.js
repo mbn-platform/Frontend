@@ -3,6 +3,7 @@ import { Col, Row } from 'reactstrap';
 import AmCharts from 'amcharts3/amcharts/amcharts';
 import SerialChar from 'amcharts3/amcharts/serial';
 import DataLoader from 'amcharts3/amcharts/plugins/dataloader/dataloader';
+import AmChartsReact from "@amcharts/amcharts3-react";
 
 class MarketDepth extends React.Component {
 
@@ -11,11 +12,43 @@ class MarketDepth extends React.Component {
     this.state = {selectedCurrency: 0, selectedInterval: 0};
     this.formatNumber = this.formatNumber.bind(this);
     this.balloon = this.balloon.bind(this);
-    this.addGuides = this.addGuides.bind(this);
   }
 
   componentDidMount() {
-    const chart = window.AmCharts.makeChart("chartdiv", {
+    // const chart = window.AmCharts.makeChart("chartdiv", );
+    // this.chart = chart;
+  }  
+
+
+  formatNumber(val, graphChart, precision) {
+    return window.AmCharts.formatNumber(
+      val, 
+      {
+        precision: precision ? precision : graphChart.precision, 
+        decimalSeparator: graphChart.decimalSeparator,
+        thousandsSeparator: graphChart.thousandsSeparator
+      }
+    );
+  }  
+
+  balloon(item, graph) {
+    let txt = '';
+    if (graph.id == "asks") {
+      txt = "Ask: <strong>" + this.formatNumber(item.dataContext.value, graph.chart, 4) + "</strong><br />"
+        + "Total volume: <strong>" + this.formatNumber(item.dataContext.askstotalvolume, graph.chart, 4) + "</strong><br />"
+        + "Volume: <strong>" + this.formatNumber(item.dataContext.asksvolume, graph.chart, 4) + "</strong>";
+    }
+    else {
+      console.log(this)
+      txt = "Bid: <strong>" + this.formatNumber(item.dataContext.value, graph.chart, 4) + "</strong><br />"
+        + "Total volume: <strong>" + this.formatNumber(item.dataContext.bidstotalvolume, graph.chart, 4) + "</strong><br />"
+        + "Volume: <strong>" + this.formatNumber(item.dataContext.bidsvolume, graph.chart, 4) + "</strong>";
+    }
+    return txt;
+  }    
+
+  render() {
+    let config = {
       "type": "serial",
       'startDuration': 0,
       'fontSize': 10,
@@ -25,7 +58,6 @@ class MarketDepth extends React.Component {
       "dataLoader": {
         "url": "https://poloniex.com/public?command=returnOrderBook&currencyPair=BTC_ETH&depth=50",
         "format": "json",
-        //"reload": 30,
         "postProcess": function(data) {
           
           // Function to process (sort and calculate cummulative volume)
@@ -85,31 +117,25 @@ class MarketDepth extends React.Component {
             }
            
           }
-          
-          // Init
           var res = [];
           processData(data.bids, "bids", true);
           processData(data.asks, "asks", false);
-          
-          //console.log(res);
           return res;
         }
         ,
-        "complete": () => {
-          //add in the guides
-          for(let i=0; i < this.chart.dataProvider.length;i++) {
-            //look at the price
+        "complete": function() {
+          for(let i=0; i < this.chart.dataProvider.length - 1;i++) {
             let value = this.chart.dataProvider[i].value;
-            //green chart
             if (i == 27 && this.chart.dataProvider[i + 1]) {
-              //add a guide
               this.chart.categoryAxis.guides.push( {
                 'above': true,
                 "category": value,
                 "lineAlpha": 1,
                 "fillAlpha": 1,
+                'fontSize': 11,
                 "lineColor": "#2d4a46",
-                "label": value,
+                'labelOffset': 70,
+                "label": value.toFixed(3),
                 "position": "bottom",
                 "inside": true,
                 "labelRotation": -90,
@@ -117,7 +143,6 @@ class MarketDepth extends React.Component {
                 'dashLength': 3
               } );
             }
-            //red chart
             if (i == 44 && this.chart.dataProvider[i + 1]) {
               //add a guide
               this.chart.categoryAxis.guides.push( {
@@ -126,17 +151,31 @@ class MarketDepth extends React.Component {
                 "lineAlpha": 1,
                 'boldLabel': true,
                 "fillAlpha": 1,
+                'fontSize': 11,
+                'labelOffset': 70,
                 "lineColor": "#32b893",
-                "label": value,
+                "label": value.toFixed(3),
                 "position": "bottom",
                 "inside": true,
                 "labelRotation": -90,
                 "expand": true,
                 'dashLength': 3
               } );
-            }   
-            
+            }               
           }
+          // setTimeout(() => {
+          //   let array = document.querySelectorAll('.amcharts-guide');
+          //   for(let i = 0; i < array.length; i++) {
+          //     if(array[i].nodeName == "text") {
+          //       console.log(array[i].getBoundingClientRect())
+
+
+          //     }
+          //   }
+
+          // }, 1)
+          
+
         }
       },
       "graphs": [{
@@ -157,24 +196,7 @@ class MarketDepth extends React.Component {
         "type": "step",
         "valueField": "askstotalvolume",
         "balloonFunction": this.balloon
-        },
-      // }, {
-      //   "lineAlpha": 0,
-      //   "fillAlphas": 0.2,
-      //   "lineColor": "#000",
-      //   "type": "column",
-      //   "clustered": false,
-      //   "valueField": "bidsvolume",
-      //   "showBalloon": false
-      // }, {
-      //   "lineAlpha": 0,
-      //   "fillAlphas": 0.2,
-      //   "lineColor": "#000",
-      //   "type": "column",
-      //   "clustered": false,
-      //   "valueField": "asksvolume",
-      //   "showBalloon": false
-      // }
+        }
       ],
       "categoryField": "value",
       "chartCursor": {},
@@ -190,92 +212,10 @@ class MarketDepth extends React.Component {
         "showFirstLabel": false,
         "showLastLabel": false,
       },
-      "listeners": [{
-        "event": "init",
-        "method": this.addGuides
-
-      }],
       "export": {
         "enabled": true
       }
-    });
-    this.chart = chart;
-    this.addGuides();
-  }  
-
-
-  formatNumber(val, graphChart, precision) {
-    return window.AmCharts.formatNumber(
-      val, 
-      {
-        precision: precision ? precision : graphChart.precision, 
-        decimalSeparator: graphChart.decimalSeparator,
-        thousandsSeparator: graphChart.thousandsSeparator
-      }
-    );
-  }  
-
-  balloon(item, graph) {
-    let txt = '';
-    if (graph.id == "asks") {
-      txt = "Ask: <strong>" + this.formatNumber(item.dataContext.value, graph.chart, 4) + "</strong><br />"
-        + "Total volume: <strong>" + this.formatNumber(item.dataContext.askstotalvolume, graph.chart, 4) + "</strong><br />"
-        + "Volume: <strong>" + this.formatNumber(item.dataContext.asksvolume, graph.chart, 4) + "</strong>";
-    }
-    else {
-      console.log(this)
-      txt = "Bid: <strong>" + this.formatNumber(item.dataContext.value, graph.chart, 4) + "</strong><br />"
-        + "Total volume: <strong>" + this.formatNumber(item.dataContext.bidstotalvolume, graph.chart, 4) + "</strong><br />"
-        + "Volume: <strong>" + this.formatNumber(item.dataContext.bidsvolume, graph.chart, 4) + "</strong>";
-    }
-    return txt;
-  }  
-
-  addGuides() {
-    if(!this.chart) {
-      return;
-    }
-    // debugger;
-    for(let i=0; i < this.chart.dataProvider.length;i++) {
-      //look at the price
-      let value = this.chart.dataProvider[i].value;
-      console.log("value" + value)
-      //green chart
-      if ((value > 0.04411) && (value < 0.04422)) {
-        //add a guide
-        this.chart.categoryAxis.guides.push( {
-          "category": value,
-          "lineAlpha": 0.8,
-          "fillAlpha": 0.1,
-          "lineColor": "#0f0",
-          "label": value,
-          "position": "top",
-          "inside": true,
-          "labelRotation": -90,
-          "labelOffset": 90,
-          "expand": true
-        } );
-      }
-      //red chart
-      if ((value > 0.04722) && (value < 0.04725)) {
-        //add a guide
-        this.chart.categoryAxis.guides.push( {
-          "category": value,
-          "lineAlpha": 0.8,
-          "fillAlpha": 0.1,
-          "lineColor": "#f00",
-          "label": value,
-          "position": "top",
-          "inside": true,
-          "labelRotation": -90,
-          "expand": true
-        } );
-      }   
-      
-    }
-  }    
-
-  render() {
+    };
     return (
       <Col xs="12" className="marketdepth-chart chart">
         <Row className="chart__top justify-content-between">
@@ -285,6 +225,9 @@ class MarketDepth extends React.Component {
           </div>
         </Row>
         <div className="marketdepth-chart__graph row col-12" id='chartdiv' >
+          <AmChartsReact.React  style={{height: '100%', width: '100%', backgroundColor: 'transparent',position: 'absolute'}}
+           options={config} 
+           />        
         </div>
       </Col>
     );
