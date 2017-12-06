@@ -163,17 +163,14 @@ class MarketDepth extends React.Component {
               } );
             }               
           }
-          // setTimeout(() => {
-          //   let array = document.querySelectorAll('.amcharts-guide');
-          //   for(let i = 0; i < array.length; i++) {
-          //     if(array[i].nodeName == "text") {
-          //       console.log(array[i].getBoundingClientRect())
-
-
-          //     }
-          //   }
-
-          // }, 1)
+          setTimeout(() => {
+            let array = document.querySelectorAll('.amcharts-guide');
+            for(let i = 0; i < array.length; i++) {
+              if(array[i].nodeName == "text") {
+                console.log(array[i].getBoundingClientRect());
+              }
+            }
+          }, 1)
           
 
         }
@@ -185,6 +182,7 @@ class MarketDepth extends React.Component {
         "lineThickness": 2,
         "lineColor": "#32b893",
         "type": "step",
+        'type': 'smoothedLine',
         "valueField": "bidstotalvolume",
         "balloonFunction": this.balloon
       }, {
@@ -194,6 +192,7 @@ class MarketDepth extends React.Component {
         "lineThickness": 2,
         "lineColor": "#c74949",
         "type": "step",
+        'type': 'smoothedLine',
         "valueField": "askstotalvolume",
         "balloonFunction": this.balloon
         }
@@ -227,7 +226,10 @@ class MarketDepth extends React.Component {
         <div className="marketdepth-chart__graph row col-12" id='chartdiv' >
           <AmChartsReact.React  style={{height: '100%', width: '100%', backgroundColor: 'transparent',position: 'absolute'}}
            options={config} 
-           />        
+           />  
+
+        </div>
+        <div className="marketdepth-chart__item" id='chartitem' >
         </div>
       </Col>
     );
