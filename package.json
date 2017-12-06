@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "amcharts3": "github:amcharts/amcharts3",
+    "@amcharts/amcharts3-react": "^3.0.0",
     "bootstrap": "^4.0.0-beta.2",
     "classnames": "^2.2.5",
     "node-sass-chokidar": "0.0.3",

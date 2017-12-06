@@ -10,10 +10,10 @@ class ProfitChart extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {selectedCurrency: 0, selectedInterval: 0, data: this.formatData(this.props.trades)};
+    this.state = {selectedCurrency: 0, selectedInterval: 0, data: this.formatData(this.props.trades, 0)};
   }
 
-  formatData(trades) {
+  formatData(trades, selectedInterval) {
     let trade = []
     trades.forEach((item,i) => {
       if(!trade.length) {
@@ -22,8 +22,33 @@ class ProfitChart extends React.Component {
         trade = trade.concat(item)
       }
     })
-    return trade.sort((t1, t2) => {Date.parse(t1.date) < Date.parse(t2.date)})
+    let period = this.getPeriod(selectedInterval)
+
+    return trade.sort((t1, t2) => Date.parse(t1.date) < Date.parse(t2.date))
+    .filter(d => Date.parse(d.date) > (Date.now() - period))
     .map(t => ({category: t.date, 'column-1': t.price}));
+  }
+
+  getPeriod(selectedInterval) {
+    let period = 24*60*60*100;
+    switch(selectedInterval) {
+      case 1:
+        period = 7*period;
+        break;
+      case 2: 
+        period *= 31;
+        break;
+      case 3:
+        period *= 6*31;
+        break;
+      case 4:
+        period *= 12*31;
+        break
+      case 5:
+        period = Date.now();
+        break;
+    }
+    return period;
   }
 
   render() {
@@ -141,7 +166,10 @@ class ProfitChart extends React.Component {
                   <SegmentedControl
                     segments={['DAY', 'WEEK', 'MONTH', '6 MONTH', 'YEAR', 'ALL']}
                     selectedIndex={this.state.selectedInterval}
-                    onChange={i => this.setState({selectedInterval: i})}
+                    onChange={i => {
+                      this.setState({selectedInterval: i});
+                      this.setState({data: this.formatData(this.props.trades, i)});
+                    }}
                   />
                 </Desktop>
                 <Mobile>
@@ -149,7 +177,10 @@ class ProfitChart extends React.Component {
                     segments={['DAY', 'WEEK', 'MONTH', '6 MONTH', 'YEAR', 'ALL']}
                     segmentWidth={50}
                     selectedIndex={this.state.selectedInterval}
-                    onChange={i => this.setState({selectedInterval: i})}
+                    onChange={i => {
+                      this.setState({selectedInterval: i});
+                      this.setState({data: this.formatData(this.props.trades, i)});
+                    }}
                   />
                 </Mobile>                
               </div>
