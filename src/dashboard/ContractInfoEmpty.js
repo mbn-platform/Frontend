@@ -35,22 +35,6 @@ class TimeLeft extends React.Component {
           <div className="time_left_title_wr">
             <div className="time_left_title">time left to complete:</div>
           </div>
-          <div className={classNames('time_left_counts_wrapper', 'green')}>
-            <div className="time_left_count_wrapper days">
-              <div className="time_left_count_big">{0}</div>
-              <div className="time_left_count_small">days</div>
-            </div>
-            <div className="time_left_count_wrapper dots"><span className="dots_couple">:</span></div>
-            <div className="time_left_count_wrapper hours">
-              <div className="time_left_count_big">{0}</div>
-              <div className="time_left_count_small">hours</div>
-            </div>
-            <div className="time_left_count_wrapper dots-second"><span className="dots_couple">:</span></div>
-            <div className="time_left_count_wrapper min">
-              <div className="time_left_count_big">{0}</div>
-              <div className="time_left_count_small">min</div>
-            </div>
-          </div>
         </div>
       </div>
     );

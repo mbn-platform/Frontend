@@ -19,6 +19,10 @@
     margin-left: 1%;
   }
 
+  .profit_left .progress_bar_wrapper {
+    margin-bottom: 0px;
+  }
+
 }
 
 @media only screen and (max-width : 1028px) {
