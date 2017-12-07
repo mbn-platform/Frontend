@@ -57,7 +57,6 @@ class Profile extends React.Component {
     if(name === this.props.profile.name) {
       this.setState(this.props.profile);
     } else {
-      console.log(generateProfile(name))
       this.setState(generateProfile(name));
     }
   }
@@ -69,7 +68,6 @@ class Profile extends React.Component {
     } else if(name === this.state.name) {
       return;
     } else {
-      console.log(generateProfile(name))
       this.setState(generateProfile(name));
     }
   }
