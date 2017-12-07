@@ -54,6 +54,14 @@ button,.btn.focus, .btn:focus {
 	color: #494d4d;
 }
 
+*:focus, *:visited, * {
+    outline: none !important;
+}
+
+.form-control:focus {
+	box-shadow: none;
+}
+
 .cursor-pointer {
 	cursor: pointer;
 }
