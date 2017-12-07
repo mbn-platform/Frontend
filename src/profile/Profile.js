@@ -57,6 +57,7 @@ class Profile extends React.Component {
     if(name === this.props.profile.name) {
       this.setState(this.props.profile);
     } else {
+      console.log(generateProfile(name))
       this.setState(generateProfile(name));
     }
   }
@@ -68,6 +69,7 @@ class Profile extends React.Component {
     } else if(name === this.state.name) {
       return;
     } else {
+      console.log(generateProfile(name))
       this.setState(generateProfile(name));
     }
   }
@@ -82,7 +84,6 @@ class Profile extends React.Component {
             onSaveChangesClick={this.onSaveChangesClick}
           />
           <TablesScreen
-            trades={this.props.profile.trades || []}
             profile={this.state}
             onCurrencyToggle={this.onCurrencyToggle}
             currencies={this.state.currencies}

@@ -37,6 +37,7 @@ const currency = name => {
 
 function generateFeedbacks() {
   const feedbacks = [];
+  console.log('generating console');
   const now = Date.now();
   for(let i = 0; i < 20; i++) {
     const feedback = {

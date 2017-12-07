@@ -1,7 +1,7 @@
 import { getRandom } from './util';
 function generateTrade(tx) {
-  const price = getRandomPrice();
-  const date = (new Date()).toISOString();
+  const price = getRandomPrice();                            
+  const date = (new Date(Date.now() - getRandom(Date.now() - 1300000000000))).toISOString();
   const type = getRandomTradeType();
   const amount = getRandom(100, 20);
   const amountCurrency = getRandomCurrency();
