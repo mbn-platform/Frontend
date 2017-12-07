@@ -1,5 +1,5 @@
 import { getRandom } from './util';
-function generateTrade(tx) {
+function generateTrade(tx, count) {
   const price = getRandomPrice();                            
   const date = (new Date(Date.now() - getRandom(Date.now() - 1300000000000))).toISOString();
   const type = getRandomTradeType();
@@ -10,11 +10,11 @@ function generateTrade(tx) {
 }
 
 
-function generateTradesBlock(n = 20, tx) {
+function generateTradesBlock(n = 20, tx,count) {
   tx = tx || 'http://etherscan.io';
   const trades = [];
   for(let i = 0; i < n; i++) {
-    trades.push(generateTrade(tx));
+    trades.push(generateTrade(tx, count));
   }
   return trades;
 }
@@ -36,7 +36,8 @@ export function generateTrades(numberOfBlock) {
   numberOfBlock = numberOfBlock || getRandom(4, 2);
   const trades = [];
   for(let i = 0; i < numberOfBlock; i++) {
-    trades.push(generateTradesBlock(getRandom(10, 4)));
+    // trades.push(generateTradesBlock(getRandom(10, 4)),'http://etherscan.io', i);
+    trades.push(generateTradesBlock(getRandom(10, 4),'http://etherscan.io', i));
   }
   return trades;
 }
