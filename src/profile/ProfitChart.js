@@ -14,14 +14,7 @@ class ProfitChart extends React.Component {
   }
 
   formatData(trades, selectedInterval) {
-    let trade = []
-    trades.forEach((item,i) => {
-      if(!trade.length) {
-        trade = item;
-      } else {
-        trade = trade.concat(item)
-      }
-    })
+    let trade = trades.reduce((accum, item)  => accum.concat(item), [])
     let period = this.getPeriod(selectedInterval)
     return trade.slice().sort((t1, t2) =>  (new Date(t2.date)) - (new Date(t1.date)))
     .filter(d => Date.parse(d.date) >= (Date.now() - period))
