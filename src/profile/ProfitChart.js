@@ -14,9 +14,9 @@ class ProfitChart extends React.Component {
   }
 
   formatData(trades, selectedInterval) {
-    let trade = trades.reduce((accum, item)  => accum.concat(item), [])
+    trades = trades.reduce((accum, item)  => accum.concat(item), [])
     let period = this.getPeriod(selectedInterval)
-    return trade.slice().sort((t1, t2) =>  (new Date(t2.date)) - (new Date(t1.date)))
+    return trades.slice().sort((t1, t2) =>  (new Date(t1.date)) - (new Date(t2.date)))
     .filter(d => Date.parse(d.date) >= (Date.now() - period))
     .map(t => ({category: t.date, 'column-1': t.price}));
   }
@@ -195,7 +195,6 @@ class ProfitChart extends React.Component {
   }
 
   renderChart() {
-    // const data = this.formatData(this.props.trades, 0);
     const config = this.makeConfig(this.state.selectedInterval)
           return ( 
             <AmChartsReact.React  style={{height: '100%', width: '100%', backgroundColor: 'transparent',position: 'absolute'}}
