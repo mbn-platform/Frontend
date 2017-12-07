@@ -56,7 +56,10 @@
 	.nav-link.active {
 		.dashboard {
 			background-image: url(../img/MenuIconDashboardHover.svg);
-		}			
+		}	
+		.ratings {
+			background-image: url(../img/MenuIconRatingsHover.svg);
+		}				
 	}
 
 
@@ -83,7 +86,7 @@
 		background-image: url(../img/terminal.svg);
 	}
 	.ratings {
-		background-image: url(../img/MenuIconRatings.png);
+		background-image: url(../img/MenuIconRatings.svg);
 	}
 	.orders {
 		background-image: url(../img/orders.svg);
