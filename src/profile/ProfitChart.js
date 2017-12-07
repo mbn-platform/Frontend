@@ -23,7 +23,7 @@ class ProfitChart extends React.Component {
       }
     })
     let period = this.getPeriod(selectedInterval)
-    return trade.slice().sort((t1, t2) =>  (new Date(t1.date)) - (new Date(t2.date)))
+    return trade.slice().sort((t1, t2) =>  (new Date(t2.date)) - (new Date(t1.date)))
     .filter(d => Date.parse(d.date) >= (Date.now() - period))
     .map(t => ({category: t.date, 'column-1': t.price}));
   }
@@ -165,6 +165,7 @@ class ProfitChart extends React.Component {
         '#32ba94',
       ],
       "categoryAxis": {
+        "equalSpacing": true,
         "gridPosition": "start",
         "minPeriod": ['hh','DD', 'DD','MM', 'MM', 'YYYY'][this.state.selectedInterval],
         "parseDates": true
@@ -179,16 +180,6 @@ class ProfitChart extends React.Component {
           'visibleInLegend': false,
           'type': 'smoothedLine',
           'valueField': 'column-1'
-        },
-        {
-          'balloonText': '[[title]] of [[category]]:[[value]]',
-          'id': 'AmGraph-2',
-          'lineAlpha': 1,
-          'lineThickness': 2,
-          'visibleInLegend': false,
-          'title': 'graph 2',
-          'type': 'smoothedLine',
-          'valueField': 'column-2'
         }
       ],
       'guides': [],
