@@ -146,6 +146,11 @@
 					.settings {
 						.input-block {
 							display: inline-block;
+							&.amount-input-block {
+								.form-control {
+									width: 168px;
+								}
+							}
 						}
 						margin-top: 10px;
 						.setting-block {
@@ -170,24 +175,22 @@
 							}
 						}	
 
-						.amount-input-block {
-							.input-group-btn {					
-								.btn {
-								    &.active {
-										color: #bfbfc1;
-										background-color: #346255;
-								    }
-								    &:hover {
-								    	color: #bfbfc1;
-								    }
-								}
+						.input-group-btn.only-button {					
+							.btn {
+							    &.active {
+									color: #bfbfc1;
+									background-color: #346255;
+							    }
+							    &:hover {
+							    	color: #bfbfc1;
+							    }
 							}
 						}
-						.input-group .form-control:not(:last-child), .input-group-addon:not(:last-child), .input-group-btn:not(:last-child) > .btn, .input-group-btn:not(:last-child) > .btn-group > .btn, .input-group-btn:not(:last-child) > .dropdown-toggle, .input-group-btn:not(:first-child) > .btn:not(:last-child):not(.dropdown-toggle), .input-group-btn:not(:first-child) > .btn-group:not(:last-child) > .btn {
+						.input-group .form-control:not(:last-child), .input-group-addon:not(:last-child), .input-group-btn:not(:last-child) > .btn, .input-group-btn:not(:last-child) > .btn-group > .btn, .input-group-btn:not(:last-child) > .dropdown-toggle, .input-group-btn.only-button > .btn:not(:last-child), .input-group-btn:not(:first-child) > .btn:not(:last-child):not(.dropdown-toggle), .input-group-btn:not(:first-child) > .btn-group:not(:last-child) > .btn {
 						    border-top-right-radius: 0 !important;
 							border-bottom-right-radius: 0 !important;
 						}				
-						.input-group .form-control:not(:first-child), .input-group-addon:not(:first-child), .input-group-btn:not(:first-child) > .btn, .input-group-btn:not(:first-child) > .btn-group > .btn, .input-group-btn:not(:first-child) > .dropdown-toggle, .input-group-btn:not(:last-child) > .btn:not(:first-child), .input-group-btn:not(:last-child) > .btn-group:not(:first-child) > .btn {
+						.input-group .form-control:not(:first-child), .input-group-addon:not(:first-child), .input-group-btn:not(:first-child) > .btn, .input-group-btn:not(:first-child) > .btn-group > .btn, .input-group-btn:not(:first-child) > .dropdown-toggle, .input-group-btn.only-button > .btn:not(:first-child), .input-group-btn:not(:last-child) > .btn:not(:first-child), .input-group-btn:not(:last-child) > .btn-group:not(:first-child) > .btn {
 							border-top-left-radius: 0 !important;
 							border-bottom-left-radius: 0 !important;					
 						}				
@@ -229,6 +232,15 @@
 								    font-size: 1.2em;
 								    padding-top: 5px;
 								}					
+							}
+						}
+					}
+					.currency-button-block {
+						.input-group {
+							.input-group-btn {
+								.btn {
+									width: 56px;
+								}
 							}
 						}
 					}
@@ -316,7 +328,15 @@
 							.amount-block, .fee-block {
 								margin-top: 32px;
 							}
+
 							.input-block {
+								&.duration-block {
+									.input-group {	
+										input {
+											width: 77px;
+										}
+									}
+								}
 								.input-group {
 									height: 20px;
 									margin-top: 7px;
@@ -351,6 +371,14 @@
 										}
 									}
 								}
+								&.amount-input-block {
+									.input-group {
+										input {
+											width: 114px;		
+										}
+									}
+									
+								}	
 							}
 						}
 						.tooltip-text-block {
