@@ -134,6 +134,9 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .dropdown-popover {
+	.arrow {
+		display: none;
+	}
 	background-color: #2D3034;
 	border: 1px solid #4F525D !important;
 	padding: 0 !important;

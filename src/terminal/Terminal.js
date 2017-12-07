@@ -12,6 +12,16 @@ import OrderBook from './OrderBook';
 
 class Terminal extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {market: 'USDT-BTC'};
+    this.onMarketSelect = this.onMarketSelect.bind(this);
+  }
+
+  onMarketSelect(market) {
+    this.setState({market});
+  }
+
   render() {
     return (
       <Container fluid className="terminal">
@@ -19,7 +29,11 @@ class Terminal extends React.Component {
           <Col xs="12" sm="12" md="12" lg="12">
             <HeaderStatus />
             <div className="terminal-main">
-              <Controls />
+              <Controls
+                onMarketSelect={this.onMarketSelect}
+                market={this.state.market}
+                apiKeys={[]}
+              />
               <Row className="charts">
                 <Col xs="12" sm="12" md="6" lg="8" className="charts__left">
                   <TradingView />

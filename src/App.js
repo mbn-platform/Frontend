@@ -60,70 +60,7 @@ window.customize = function() {
   /*
     Global: Dropdowns behavior
     */
-  let preparePageContent = function() {
-    $('.dropdown-link').each(function(index, el) {
-      console.log(el);
-      let $dropdownLink = $(el);
-      let $container = $dropdownLink.closest('.container-fluid');
-      console.log($container);
 
-      if($dropdownLink.hasClass('js-dropdown-table-link')){
-        $dropdownLink.popover({
-          trigger: 'click',
-          container: $container,
-          html: true,
-          animation: false,
-          placement: 'top',
-          template: `
-            <div class="popover dropdown-popover">
-              <div class="popover-body"></div>
-            </div>`,
-          content: function() {
-            return $(this).next('.dropdown')[0].outerHTML;
-          },
-          offset: '50%p - ' + (($dropdownLink.width() / 2) + 10).toString() + 'px'
-        });
-      }
-      else{
-        $dropdownLink.popover({
-          trigger: 'click',
-          container: $container,
-          html: true,
-          animation: false,
-          placement: 'bottom',
-          template: `
-            <div class="popover dropdown-popover">
-              <div class="popover-body"></div>
-            </div>`,
-          content: function() {
-            return $(this).next('.dropdown')[0].outerHTML;
-          },
-          offset: '50%p - ' + (($dropdownLink.width() / 2) + 10).toString() + 'px'
-        });
-      }
-    });
-  };
-
-  $(document).on('click', '.dropdown .dropdown__name', function() { // .arrow_down
-    $(this).parents('.popover').popover('hide');
-  });
-
-  $('.dropdown-link').on('show.bs.popover', function() {
-    $('.dropdown-link').popover('hide');
-  });
-
-  $('.dropdown-link.js-dropdown-table-link').on('shown.bs.popover', function() {
-    let $table = $('.popover-body .js-dropdown-table-wrapper table');
-    console.log($table);
-
-    processScrollableTable($table);
-  });
-
-  $('a[data-toggle="pill"]').on('shown.bs.tab', function(e) {
-    preparePageContent();
-  });
-
-  preparePageContent();
 
 
   /*
