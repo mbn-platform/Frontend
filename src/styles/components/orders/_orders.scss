@@ -167,6 +167,7 @@
 @include media-breakpoint-down(xs) {
 	.orders {
 		&-main {
+			margin: 0px!important;
 			padding: 10px !important;
 			height: auto !important;
 
