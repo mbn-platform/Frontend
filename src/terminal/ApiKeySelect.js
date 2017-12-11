@@ -12,8 +12,8 @@ class ApiKeySelect extends React.Component {
   }
 
   onKeySelect(e, key) {
+    e.stopPropagation();
     this.setState({selectedKey: key, isOpen: false});
-    //this.props.onKeySelected(key._id);
   }
 
   render() {
@@ -23,7 +23,7 @@ class ApiKeySelect extends React.Component {
         <Popover
           onClick={this.onKeySelect}
           className="dropdown-popover"
-          container=".terminal.container-fluid"
+          container={this.props.container}
           placement="bottom-start"
           target="popover1"
           isOpen={this.state.isOpen}

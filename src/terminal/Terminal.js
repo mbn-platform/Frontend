@@ -9,6 +9,7 @@ import PlaceOrder from './PlaceOrder';
 import MyOrders from './MyOrders';
 import RecentTrades from './RecentTrades';
 import OrderBook from './OrderBook';
+import { connect } from 'react-redux';
 
 class Terminal extends React.Component {
 
@@ -32,7 +33,7 @@ class Terminal extends React.Component {
               <Controls
                 onMarketSelect={this.onMarketSelect}
                 market={this.state.market}
-                apiKeys={[]}
+                apiKeys={[...this.props.apiKeys.ownKeys, ...this.props.apiKeys.receivedKeys]}
               />
               <Row className="charts">
                 <Col xs="12" sm="12" md="6" lg="8" className="charts__left">
@@ -72,4 +73,7 @@ class Terminal extends React.Component {
   }
 }
 
-export default Terminal;
+const TerminalContainer = connect(state => ({
+  apiKeys: state.apiKeys,
+}))(Terminal);
+export default TerminalContainer;

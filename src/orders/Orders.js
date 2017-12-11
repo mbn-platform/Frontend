@@ -3,6 +3,7 @@ import { Container, Row, Col } from 'reactstrap';
 import HeaderStatus from '../terminal/HeaderStatus';
 import Controls from './Controls';
 import OrdersTable from './OrdersTable';
+import { connect } from 'react-redux';
 
 class Orders extends React.Component {
 
@@ -17,7 +18,9 @@ class Orders extends React.Component {
                 <div className="row  align-items-center">
                   <div className="orders-main__title"> Orders</div>
                 </div>
-                <Controls />
+                <Controls
+                  apiKeys={[...this.props.apiKeys.ownKeys, ...this.props.apiKeys.receivedKeys]}
+                />
               </div>
               <OrdersTable />
             </div>
@@ -35,4 +38,8 @@ class Orders extends React.Component {
   }
 }
 
-export default Orders;
+const OrdersContainer = connect(state => ({
+  apiKeys: state.apiKeys
+}))(Orders);
+
+export default OrdersContainer;

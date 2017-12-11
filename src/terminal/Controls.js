@@ -20,8 +20,9 @@ class Controls extends React.Component {
     return (
       <div className="row dropdowns">
         <ApiKeySelect
+          container=".terminal.container-fluid"
           keys={this.props.apiKeys}
-          selectedKey={{name: 'MyKey'}}
+          selectedKey={this.state.selectedKey}
         />
         <DropdownSelect
           selected={this.state.selectedExchange}

@@ -3,6 +3,7 @@ import { Container, Row, Col } from 'reactstrap';
 import HeaderStatus from '../terminal/HeaderStatus';
 import Controls from './Controls';
 import HistoryTable from './HistoryTable';
+import { connect } from 'react-redux';
 
 class History extends React.Component {
 
@@ -17,7 +18,9 @@ class History extends React.Component {
                 <div className="row  align-items-center">
                   <div className="history-main__title"> History</div>
                 </div>
-                <Controls />
+                <Controls
+                  apiKeys={[...this.props.apiKeys.ownKeys, ...this.props.apiKeys.receivedKeys]}
+                />
               </div>
               <HistoryTable />
             </div>
@@ -35,4 +38,9 @@ class History extends React.Component {
   }
 }
 
-export default History;
+
+const HistoryContainer = connect(state => ({
+  apiKeys: state.apiKeys,
+}))(History);
+
+export default HistoryContainer;
