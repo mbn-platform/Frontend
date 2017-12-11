@@ -52,7 +52,6 @@ function generateFeedbacks() {
 }
 
 function generateText() {
-  console.log('generating text');
   const words = [];
   for(let i = 0; i < 20; i++) {
     words.push(dicitonary[getRandom(dicitonary.length)]);
