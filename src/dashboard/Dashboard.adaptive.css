@@ -19,6 +19,10 @@
     margin-left: 1%;
   }
 
+  .profit_left .progress_bar_wrapper {
+    margin-bottom: 0px;
+  }
+
 }
 
 @media only screen and (max-width : 1028px) {
@@ -53,6 +57,7 @@
   .selected_contract_table .table_title_wrapper {
     margin-top: 0;
     padding-top: 0;
+    padding-left: 0;
   }
   .selected_contract_table .rate_field_wrapper .rate_field {
     margin-top: 0px;
@@ -66,7 +71,7 @@
   }
 
   .api_key_currencies_table .table_rewind_page {
-    margin-bottom: 10px;
+    margin-bottom: 30px;
   }
 
 
@@ -383,9 +388,7 @@
   .contracts_table .table_title {
     background: url(../img/Contracts.png) no-repeat left center;
   }
-  .contracts_table .table_col_value {
-    font-size: 1em;
-  }
+  
   .contracts_table .ReactTable .rt-tr-group .rt-tr {
     min-height: 25px;
     line-height: 25px;
@@ -405,7 +408,7 @@
     margin-top: 0px;
   }
   .contracts_table_wrapper .ReactTable .contractor_link {
-    width: 60px;
+    width: 68px;
     -o-text-overflow: ellipsis;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -579,6 +582,7 @@
   {
     padding: 10px;
   }
+
 }
 @media only screen and (max-width : 1028px) {
   .dashboard_wrapper

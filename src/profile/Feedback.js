@@ -24,7 +24,6 @@ class Feedback extends React.Component {
     this.setState({page: 0, canPrevious: false, canNext: nextProps.comments.length > this.props.pageSize});
   }
 
-
   render() {
     return (
       <Col xs="12" sm="12" md="12" lg="12" xl="4" className="feedback-block">
@@ -44,28 +43,37 @@ class Feedback extends React.Component {
                     </div>
                   </div>
                 </div>
-                <Desktop>
-                  <Scrollbars>
-                    <div className="card-body">
-                      <ul className="list-group">
-                        {this.props.comments.map((c, i) => <Comment key={i} comment={c}/>)}
-                      </ul>
-                    </div>
-                  </Scrollbars>
-                </Desktop>
-                <Mobile>
+                
                   <div className="card-body">
-                    <ul className="list-group">
-                      {this.renderMobile()}
-                    </ul>
-                    <Pagination
-                      page={this.state.page}
-                      canNext={this.state.canNext}
-                      canPrevious={this.state.canPrevious}
-                      onPageChange={this.onPageChange}
-                    />
+                    <Desktop>
+                    
+                      <div className="feedback-body">        
+                      
+                        <Scrollbars style={{height: '100%',width: 'calc(100% - 25px)'}}
+                          autoHeight
+                          autoHeightMin={207}
+                          autoHeightMax={'100%'}>
+                            <ul className="list-group" style={{width: 'calc(100% - 50px)'}}>
+                              {this.props.comments.map((c, i) => <Comment key={i} comment={c}/>)}
+                            </ul>
+                        </Scrollbars>
+                      
+                      </div>
+                    </Desktop>
+                    <Mobile>
+                      <ul className="list-group">
+                        {this.renderMobile()}
+                      </ul>
+                      <Pagination
+                        page={this.state.page}
+                        canNext={this.state.canNext}
+                        canPrevious={this.state.canPrevious}
+                        onPageChange={this.onPageChange}
+                      />
+                    </Mobile>                  
                   </div>
-                </Mobile>
+
+                
               </div>
             </Col>
           </Row>
@@ -90,7 +98,7 @@ class Comment extends React.Component {
   renderStars() {
     const stars = [];
     for(let i = 0; i < 5; i++) {
-      const className = classNames('icon', 'icon-star', {active: i < this.props.comment.raiting});
+      const className = classNames('star', {active: i < this.props.comment.raiting});
       stars.push((<span key={i} className={className} />));
     }
     return stars;

@@ -24,8 +24,7 @@ class ApiKeyInfo extends React.Component {
     const key = {_id: this.props.apiKey._id, key: this.props.apiKey.key,
       name: this.props.apiKey.name, exchange: this.props.apiKey.exchange,
       currencies: this.state.currencies.filter(c => c.selected).map(c => c.name)};
-    console.log(key);
-    this.props.onKeyUpdateClick(key);
+    this.props.onKeyUpdateClick(key, this.props.apiKey);
     this.setState({changed: false});
   }
 

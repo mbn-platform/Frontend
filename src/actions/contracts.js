@@ -8,21 +8,11 @@ export function updateContracts(contracts) {
   };
 }
 
-export function rateContract(feedback) {
-  return dispatch => window.fetch('/api/feedback', {
-    credentials: 'same-origin',
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(feedback),
-  }).then(res => res.json())
-    .then(json => {
-      if(json._id) {
-        dispatch({
-          type: RATE_CONTRACT,
-          contract: json
-        });
-      }
-    });
+export function rateContract(feedback, userId, time) {
+  return({
+    type: RATE_CONTRACT,
+    feedback,
+    userId,
+    time,
+  });
 }

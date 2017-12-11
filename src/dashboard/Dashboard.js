@@ -17,11 +17,15 @@ class Dashboard extends React.Component {
     this.onKeySelected = this.onKeySelected.bind(this);
     this.onOfferSelected = this.onOfferSelected.bind(this);
     this.onContractSelected = this.onContractSelected.bind(this);
+    this.onContractRate = this.onContractRate.bind(this);
   }
   componentDidMount() {
     this.props.onDashboardMounted();
   }
 
+  onContractRate(feedback) {
+    this.props.onContractRate(feedback, this.props.userName, this.props.time);
+  }
 
   componentWillReceiveProps(nextProps) {
     if(this.props.apiKeys !== nextProps.apiKeys) {
@@ -41,7 +45,8 @@ class Dashboard extends React.Component {
     
     if(this.props.contracts !== nextProps.contracts) {
       if(this.state.selectedContract) {
-        const contract = nextProps.contracts.find(c => c._id === this.state.selectedContract._id);
+        const findFunction = c => c._id === this.state.selectedContract._id;
+        const contract = nextProps.contracts.current.find(findFunction) || nextProps.contracts.finished.find(findFunction);
         this.setState({selectedContract: contract});
       }
     }
@@ -90,14 +95,14 @@ class Dashboard extends React.Component {
         </div>
         <div className="table_wrapper selected_contract_table">
           <SelectedContractInfo
-            onContractRate={this.props.onContractRate}
+            onContractRate={this.onContractRate}
             contract={this.state.selectedContract} />
         </div>
         <div className="table_wrapper traders_chart">
-          <TradersChart />
+          <TradersChart contracts={this.props.contracts}/>
         </div>
         <div className="table_wrapper contracts_chart">
-          <ContractsChart />
+          <ContractsChart contracts={this.props.contracts} />
         </div>
       </div>
     );

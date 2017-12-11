@@ -10,7 +10,7 @@ export default function reducer(auth = {}, action) {
     }
     case LOGGED_OUT: {
       localStorage.setItem('reduxState', JSON.stringify({auth: {loggedIn: false}}));
-      return {loggedIn: false}
+      return {loggedIn: false};
     }
     case NAME_REQUIRED: {
       const state = {nameRequired: true, loggedIn: false};
@@ -20,7 +20,22 @@ export default function reducer(auth = {}, action) {
     case UPDATE_PROFILE: {
       console.log(action);
       const profile = action.profile;
-      return {...auth, profile};
+      const currentProfile = auth.profile;
+      const update = {...currentProfile, ...profile};
+      let currencies = action.profile.currencies;
+      if(currencies !== currentProfile.currencies) {
+        currencies.forEach(c => {
+          const current = currentProfile.currencies;
+          const cc = current.find(c1 => c1.name === c.name);
+          if(!cc) {
+            return;
+          };
+          c.tradeVolume = cc.tradeVolume;
+          c.roi = cc.roi;
+        });
+        update.currencies = currencies;
+      }
+      return {...auth, profile: update};
     }
     default:
       return auth;

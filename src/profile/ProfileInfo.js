@@ -47,7 +47,8 @@ class ProfileInfo extends React.Component {
                 <Stats
                   traderRating={this.props.topTraders}
                   investorRating={this.props.topInvesters}
-                  roi={15}
+                  roiInBTC={15}
+                  roiInUSD={100}
                   moneyInManagement={this.props.investmentAmount}
                 />
                 <ContractSettings

@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Row, Col } from 'reactstrap';
+import { Desktop, Mobile } from '../generic/MediaQuery';
 
 class ContractSettings extends React.Component {
 
@@ -126,6 +127,11 @@ class ContractSettings extends React.Component {
             name="duration"
             onChange={this.onFieldEdit}
           />
+          <CurrencyOfContractButton 
+            isEditing={this.state.isEditing}
+            onCurrencySelected={this.onCurrencySelected}
+            currency={this.state.currency}
+          />
           <SettingAmount
             tabIndex={2}
             value={this.props.amount}
@@ -135,19 +141,38 @@ class ContractSettings extends React.Component {
             editCurrency={this.state.currency}
             onChange={this.onFieldEdit}
             onCurrencySelected={this.onCurrencySelected}
-          />
-          <Setting
-            tabIndex={3}
-            header="ROI"
-            value={this.props.roi}
-            dimension="%"
-            isEditing={this.state.isEditing}
-            editValue={this.state.roi}
-            name="roi"
-            onChange={this.onFieldEdit}
-          />
+          />       
+
+          <div>
+            <Desktop>
+              <Setting
+                tabIndex={3}
+                header="ROI"
+                value={this.props.roi}
+                dimension="%"
+                isEditing={this.state.isEditing}
+                editValue={this.state.roi}
+                name="roi"
+                onChange={this.onFieldEdit}
+              />  
+            </Desktop>  
+          </div>          
         </Col>
         <Col xs="auto" lg="12" xl="12">
+          <div>
+            <Mobile>
+              <Setting
+                tabIndex={3}
+                header="ROI"
+                value={this.props.roi}
+                dimension="%"
+                isEditing={this.state.isEditing}
+                editValue={this.state.roi}
+                name="roi"
+                onChange={this.onFieldEdit}
+              />  
+            </Mobile>  
+          </div>              
           <Setting
             tabIndex={4}
             header="MAX LOSS"
@@ -202,18 +227,17 @@ const Setting = ({className, header, value, dimension, isEditing, editValue, onC
   </div>
 );
 
-const SettingAmount = ({isEditing, value, dimension, editValue, editCurrency, onChange, onCurrencySelected, tabIndex}) => (
+const SettingAmount = ({isEditing, value, dimension, editValue, onChange, tabIndex}) => (
   <div className="loss-block setting-block">
     <div className="description-text">MIN CONTRACT AMOUNT:</div>
     {isEditing ? (
       <EditAmountEntry
         tabIndex={tabIndex}
         onChange={onChange}
-        onCurrencySelected={onCurrencySelected}
         value={editValue}
-        currency={editCurrency}
         placeholder={value}
       />
+
     ) : (
       <SettingEntry
         value={value}
@@ -223,7 +247,7 @@ const SettingAmount = ({isEditing, value, dimension, editValue, editCurrency, on
   </div>
 );
 
-const EditAmountEntry = ({placeholder, value, onChange, onCurrencySelected, currency, tabIndex}) => (
+const EditAmountEntry = ({placeholder, value, onChange, tabIndex}) => (
   <div className="amount-input-block input-block">
     <div className="input-group">
       <input
@@ -236,23 +260,42 @@ const EditAmountEntry = ({placeholder, value, onChange, onCurrencySelected, curr
         placeholder={placeholder}
         aria-label={placeholder}
       />
-      <span className="input-group-btn">
-        <button
-          onClick={onCurrencySelected}
-          name="BTC"
-          className={classNames('btn', 'btn-secondary', {active: currency === 'BTC'})}
-          type="button"
-        >BTC</button>
-        <button
-          onClick={onCurrencySelected}
-          name="USDT"
-          className={classNames('btn', 'btn-secondary', {active: currency === 'USDT'})}
-          type="button"
-        >USDT</button>
-      </span>
     </div>
   </div>
 );
+
+const CurrencyOfContractButton = ({isEditing, onCurrencySelected, currency}) => (
+  <div className='currency-button-block setting-block'>
+    {isEditing ? (
+      <div className="input-block">
+        <div className="description-text">CURRENCY OF CONTRACT:</div>
+          <div className='input-group'>
+              <span className="input-group-btn only-button">
+                <button
+                  onClick={onCurrencySelected}
+                  name="BTC"
+                  className={classNames('btn', 'btn-secondary', {active: currency === 'BTC'})}
+                  type="button"
+                >BTC</button>
+                <button
+                  onClick={onCurrencySelected}
+                  name="USDT"
+                  className={classNames('btn', 'btn-secondary', {active: currency === 'USDT'})}
+                  type="button"
+                >USDT</button>
+                <button
+                  onClick={onCurrencySelected}
+                  name="ETH"
+                  className={classNames('btn', 'btn-secondary', {active: currency === 'ETH'})}
+                  type="button"
+                >ETH</button>        
+              </span>
+            </div>
+          </div>
+      ) : (<div style={{display: 'none'}}></div>)
+    }
+  </div>
+)
 
 const EditSettingsEntry = ({className, placeholder,value, dimension, name, onChange, tabIndex}) => (
   <div className={className || 'loss-input-block  input-block'}>

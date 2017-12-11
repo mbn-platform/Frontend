@@ -1,67 +1,43 @@
+import { makeId } from '../generic/util';
 export const DELETE_API_KEY = 'DELETE_API_KEY';
 export const ADD_API_KEY = 'ADD_API_KEY';
 export const UPDATE_API_KEY = 'UPDATE_API_KEY';
 
 export function deleteApiKey(key) {
-  return dispatch => {
-    window.fetch('/api/key/' + key._id, {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      credentials: 'same-origin',
-      method: 'delete'})
-      .then(res => res.json())
-      .then(json =>  {
-        if(json.result) {
-          dispatch({
-            type: DELETE_API_KEY,
-            apiKey: key
-          });
-        } else {
-          alert('failed to delete api key');
-        }
-      });
+  return {
+    type: DELETE_API_KEY,
+    apiKey: key
   };
 }
 
 
 export function addApiKey(key) {
-  return dispatch => {
-    window.fetch('/api/key', {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      credentials: 'same-origin',
-      method: 'post',
-      body: JSON.stringify(key)
-    }).then(res => res.json())
-      .then(json => {
-        if(json._id) {
-          dispatch({
-            type: ADD_API_KEY,
-            apiKey: json
-          });
-        }
-      });
+  const resultKey = {...key};
+  delete resultKey.secret;
+  resultKey._id = makeId();
+  resultKey.state = 'FREE';
+  resultKey.currencies = resultKey.currencies.map(c => {
+    const amount = Math.floor(Math.random() * 100);
+    return {name: c, amount};
+  });
+  return {
+    type: ADD_API_KEY,
+    apiKey: resultKey
   };
 }
 
-export function updateApiKey(key) {
-  return dispatch => {
-    window.fetch('/api/key/' + key._id, {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      credentials: 'same-origin',
-      method: 'put',
-      body: JSON.stringify(key)
-    }).then(res => res.json())
-      .then(json => {
-        json._id = key._id;
-        dispatch({
-          type: UPDATE_API_KEY,
-          apiKey: json
-        });
-      });
+export function updateApiKey(key, original) {
+  const updatedCurrencies = key.currencies.map(c => {
+    const originalCurrency = original.currencies.filter(cur => cur.name === c)[0];
+    if(originalCurrency) {
+      return {name: c, amount: originalCurrency.amount};
+    } else {
+      return {name: c, amount: Math.floor(Math.random() * 100)};
+    }
+  });
+  const apiKey = {...original, currencies: updatedCurrencies};
+  return {
+    type: UPDATE_API_KEY,
+    apiKey
   };
 }

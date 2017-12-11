@@ -96,7 +96,9 @@ class ApiKeys extends React.Component {
             <div className="green_arrow green_arrow_bottom" ></div>
           </div>
         </div>),
-        accessor: key => key.currencies ? key.currencies.reduce((sum, c) => sum + (c.amount || 0), 0) : 0
+        accessor: key => {
+          return key.currencies ? (key.currencies.reduce((sum, c) => sum + parseFloat((c.amount || 0)), 0)).toFixed(2) : 0
+        }
       }, {
         Header: '',
         minWidth: 24,

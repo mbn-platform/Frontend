@@ -4,6 +4,7 @@ import { Col } from 'reactstrap';
 import { Desktop, Mobile } from '../generic/MediaQuery';
 import AmCharts from 'amcharts3/amcharts/amcharts';
 import SerialChar from 'amcharts3/amcharts/serial';
+import AmChartsReact from "@amcharts/amcharts3-react";
 
 class ProfitChart extends React.Component {
 
@@ -12,101 +13,34 @@ class ProfitChart extends React.Component {
     this.state = {selectedCurrency: 0, selectedInterval: 0};
   }
 
+  formatData(trades, selectedInterval) {
+    trades = trades.reduce((accum, item)  => accum.concat(item), [])
+    let period = this.getPeriod(selectedInterval)
+    return trades.slice().sort((t1, t2) =>  (new Date(t1.date)) - (new Date(t2.date)))
+    .filter(d => Date.parse(d.date) >= (Date.now() - period))
+    .map(t => ({category: t.date, 'column-1': t.price}));
+  }
 
-  componentDidMount() {
-    const chart = window.AmCharts.makeChart('chartdiv',
-      {
-        'type': 'serial',
-        'categoryField': 'category',
-        'startDuration': 0,
-        'fontSize': 10,
-        'color': '#6f6f71',
-        'fontFamily': 'maven_proregular',
-        'categoryAxis': {
-          'gridPosition': 'start'
-        },
-        'trendLines': [],
-        'colors': [
-          '#0a87b8',
-          '#32ba94',
-        ],
-        'graphs': [
-          {
-            'balloonText': '[[title]] of [[category]]:[[value]]',
-            'id': 'AmGraph-1',
-            'title': 'graph 1',
-            'lineAlpha': 1,
-            'lineThickness': 2,
-            'visibleInLegend': false,
-            'type': 'smoothedLine',
-            'valueField': 'column-1'
-          },
-          {
-            'balloonText': '[[title]] of [[category]]:[[value]]',
-            'id': 'AmGraph-2',
-            'lineAlpha': 1,
-            'lineThickness': 2,
-            'visibleInLegend': false,
-            'title': 'graph 2',
-            'type': 'smoothedLine',
-            'valueField': 'column-2'
-          }
-        ],
-        'guides': [],
-        'valueAxes': [
-          {
-            'id': 'ValueAxis-1',
-            'position': 'right',
-          }
-        ],
-        'allLabels': [],
-        'balloon': {},
-        'legend': {
-          'enabled': true,
-          'useGraphSettings': true
-        },
-        'titles': [
-        ],
-        'dataProvider': [
-          {
-            'category': 'Jan',
-            'column-1': 8,
-            'column-2': 5
-          },
-          {
-            'category': 'Feb',
-            'column-1': 6,
-            'column-2': 7
-          },
-          {
-            'category': 'Mar',
-            'column-1': 2,
-            'column-2': 3
-          },
-          {
-            'category': 'Apr',
-            'column-1': 8,
-            'column-2': 3
-          },
-          {
-            'category': 'May',
-            'column-1': 2,
-            'column-2': 1
-          },
-          {
-            'category': 'June',
-            'column-1': 3,
-            'column-2': 2
-          },
-          {
-            'category': 'July',
-            'column-1': 6,
-            'column-2': 8
-          }
-        ]
-      }
-    );
-    this.chart = chart;
+  getPeriod(selectedInterval) {
+    let period = 24*60*60*1000;
+    switch(selectedInterval) {
+      case 1:
+        period = 7*period;
+        break;
+      case 2: 
+        period *= 31;
+        break;
+      case 3:
+        period *= 183;
+        break;
+      case 4:
+        period *= 365;
+        break
+      case 5:
+        period = Date.now();
+        break;
+    }
+    return period;
   }
 
   render() {
@@ -153,7 +87,7 @@ class ProfitChart extends React.Component {
               <div className="row order-2 justify-content-center amcharts-block">
                 <div className="col-12">
                   <div className="amcharts">
-                    <div id="chartdiv" style={{height: '100%', width: '100%', backgroundColor: 'transparent',position: 'absolute'}} ></div>
+                    {this.renderChart()}
                   </div>
 
                 </div>
@@ -164,7 +98,10 @@ class ProfitChart extends React.Component {
                   <SegmentedControl
                     segments={['DAY', 'WEEK', 'MONTH', '6 MONTH', 'YEAR', 'ALL']}
                     selectedIndex={this.state.selectedInterval}
-                    onChange={i => this.setState({selectedInterval: i})}
+                    onChange={i => {
+                      this.setState({selectedInterval: i});
+                      this.setState({data: this.formatData(this.props.trades, i)});
+                    }}
                   />
                 </Desktop>
                 <Mobile>
@@ -172,17 +109,20 @@ class ProfitChart extends React.Component {
                     segments={['DAY', 'WEEK', 'MONTH', '6 MONTH', 'YEAR', 'ALL']}
                     segmentWidth={50}
                     selectedIndex={this.state.selectedInterval}
-                    onChange={i => this.setState({selectedInterval: i})}
+                    onChange={i => {
+                      this.setState({selectedInterval: i});
+                      this.setState({data: this.formatData(this.props.trades, i)});
+                    }}
                   />
                 </Mobile>                
               </div>
               <div className="row order-4 d-flex d-md-none justify-content-center ">
                 <div className="container-fuild alltime-block">
                   <div className="row justify-content-center">
-                    <div className="col">
+                    <div className="col-auto">
                       <div className="graphic-fake"></div>
                     </div>
-                    <div className="col">
+                    <div className="col-auto">
                       <div className="d-flex flex-column">
                         <div className="alltime">alltime</div>
                         <div className="percent">634.6%</div>
@@ -199,6 +139,67 @@ class ProfitChart extends React.Component {
       </div>
     );
 
+  }
+
+  makeConfig(selectedInterval) {
+    return {
+      'type': 'serial',
+      'categoryField': 'category',
+      'startDuration': 0,
+      'fontSize': 10,
+      'color': '#6f6f71',
+      'fontFamily': 'maven_proregular',
+      'categoryAxis': {
+        'gridPosition': 'start'
+      },
+      'trendLines': [],
+      'colors': [
+        '#0a87b8',
+        '#32ba94',
+      ],
+      "categoryAxis": {
+        "equalSpacing": true,
+        "gridPosition": "start",
+        "minPeriod": ['hh','DD', 'DD','MM', 'MM', 'YYYY'][this.state.selectedInterval],
+        "parseDates": true
+      },        
+      'graphs': [
+        {
+          'balloonText': '[[title]] of [[category]]:[[value]]',
+          'id': 'AmGraph-1',
+          'title': 'graph 1',
+          'lineAlpha': 1,
+          'lineThickness': 2,
+          'visibleInLegend': false,
+          'type': 'smoothedLine',
+          'valueField': 'column-1'
+        }
+      ],
+      'guides': [],
+      'valueAxes': [
+        {
+          'id': 'ValueAxis-1',
+          'position': 'right',
+        }
+      ],
+      'allLabels': [],
+      'balloon': {},
+      'legend': {
+        'enabled': true,
+        'useGraphSettings': true
+      },
+      'titles': [
+      ],
+      'dataProvider': this.formatData(this.props.trades, selectedInterval)
+    };
+  }
+
+  renderChart() {
+    const config = this.makeConfig(this.state.selectedInterval)
+          return ( 
+            <AmChartsReact.React  style={{height: '100%', width: '100%', backgroundColor: 'transparent',position: 'absolute'}}
+           options={config} />
+           )
   }
 }
 

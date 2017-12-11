@@ -87,6 +87,37 @@ class Contracts extends React.Component {
     );
   }
 
+  getExpireDateColumn() {
+    if(this.state.completedTabIndex === 0) {
+      return {
+        Header: ContractTableHeader('Expire date'),
+        id: 'expireDate',
+        accessor: c => {
+          return formatTime(c.expireDate - Date.now());
+        },
+        headerClassName: 'expire_date big_column',
+        className: 'table_col_value big_column',
+        minWidth: 60,
+        className: 'table_col_value',
+        headerClassName: 'expire_date',
+      }
+    } else {
+      return {
+        Header: ContractTableHeader('Finished'),
+        id: 'expireDate',
+        accessor: c => {
+          const date = new Date(c.expireDate);
+          return formatDate(date);
+        },
+        headerClassName: 'expire_date big_column',
+        className: 'table_col_value big_column',
+        minWidth: 60,
+        className: 'table_col_value',
+        headerClassName: 'expire_date',
+      }
+    }
+  }
+
   getTableColumns() {
     return [{
       Header: SearchHeaderWithoutSort('Contractor', '', () => {}),
@@ -95,18 +126,13 @@ class Contracts extends React.Component {
       accessor: 'contractor',
       minWidth: 70,
       Cell: row => (<div className="contractor_link">@<Link className="table_col_value_a" to={'/' + row.value}>{row.value}</Link></div>),
-    }, {
-      Header: ContractTableHeader('Expire date'),
-      accessor: 'expireDate',
-      headerClassName: 'expire_date',
-      className: 'table_col_value',
-      minWidth: 60,
-    }, {
+    }, this.getExpireDateColumn(), {
       Header: ContractTableHeader('Current\nprofit, %'),
+      id: 'currentProfit',
       className: 'table_col_value',
       headerClassName: 'current_profit',
+      accessor: c => ((c.currentBalance / c.startBalance - 1) * 100).toFixed(2),
       minWidth: 50,
-      accessor: 'currentProfit',
       Cell: NegativeValuesCell
     }, {
       Header: ContractTableHeader('Max\nloss, %'),
@@ -123,76 +149,74 @@ class Contracts extends React.Component {
       accessor: c => c.startBalance + ' ' + c.currency,
     }, {
       id: 'currentBalance',
-      headerClassName: 'current_balance small_column',
-      className: 'table_col_value small_column',
+      headerClassName: 'current_balance',
+      className: 'table_col_value',
       Header: ContractTableHeader('Current\nbalance, %'),
       minWidth: 50,
       accessor: c => c.currentBalance + ' ' + c.currency,
     }, {
       id: 'left',
       Header: ContractTableHeader('Left'),
-      headerClassName: 'left_column small_column',
+      headerClassName: 'left_column',
       className: 'table_col_value',
       minWidth: 40,
       accessor: c => c.left + ' ' + c.currency,
     }, {
       Header: ContractTableHeader('Fee, %'),
       minWidth: 30,
-      headerClassName: 'fee_column small_column',
-      className: 'table_col_value small_column',
+      headerClassName: 'fee_column',
+      className: 'table_col_value',
       accessor: 'fee'
     }, {
       Header: <TXHeader />,
       Cell: TXCell,
       minWidth: 30,
       sortable: false,
-      headerClassName: 'tx_column small_column',
-      className: 'small_column tx_column'
+      headerClassName: 'tx_column',
+      className: 'tx_column'
     }, {
       Header: HelpHeader('Status'),
       accessor: 'state',
       minWidth: 50,
       Cell: StatusCell,
-      headerClassName: 'status_column small_column',
-      className: 'small_column'
+      headerClassName: 'status_column'
     }];
   }
 
   getTableMobileColumns() {
     return [{
       Header: SearchHeaderWithoutSort('Contractor', '', () => {}),
-      headerClassName: 'contractor big_column',
-      className: 'big_column table_col_value',
+      headerClassName: 'contractor',
+      className: 'table_col_value',
       accessor: 'contractor',
       minWidth: 84,
       Cell: row => (<div className="contractor_link">@<Link className="table_col_value_a" to={'/' + row.value}>{row.value}</Link></div>),
     }, {
       id: 'currentBalance',
-      headerClassName: 'current_balance small_column',
-      className: 'table_col_value small_column',
+      headerClassName: 'current_balance',
+      className: 'table_col_value',
       minWidth: 82,
       Header: ContractTableHeader('Current\nbalance, %'),
       accessor: c => c.currentBalance + ' ' + c.currency,
     }, {
       Header: ContractTableHeader('Fee, %'),
-      headerClassName: 'fee_column small_column',
-      className: 'table_col_value small_column',
+      headerClassName: 'fee_column',
+      className: 'table_col_value',
       minWidth: 63,
       accessor: 'fee'
     }, {
       Header: HelpHeader('Status'),
-      accessor: 'status',
+      accessor: 'state',
       Cell: StatusCell,
       minWidth: 44,
-      headerClassName: 'status_column small_column',
-      className: 'small_column'
+      headerClassName: 'status_column'
     }, {
       Header: <TXHeader />,
       Cell: TXCell,
       sortable: false,
       minWidth: 45,
-      headerClassName: 'tx_column small_column',
-      className: 'small_column tx_column'
+      headerClassName: 'tx_column',
+      className: 'tx_column'
     }];
 
   }
@@ -252,11 +276,10 @@ const NegativeValuesCell = row => (
 );
 
 const TXCell = ({original}) => (
-  <Link className="tx_link" to={original.txLink || '/'} />
+  <Link className="tx_link" to={original.txLink || 'https://etherscan.io'} />
 );
 
 const StatusCell = ({value}) => {
-  console.log(value);
   let className = 'status_circle ';
   switch(value) {
     case CONTRACT_STATE_FINISHED:
@@ -277,3 +300,29 @@ const StatusCell = ({value}) => {
 };
 
 export default Contracts;
+function formatTime(difference){
+  const components = [];
+  const days = Math.floor(difference / 86400000);
+  if(days > 0) {
+    components.push(`${days} d`);
+  }
+  const hours = Math.floor(difference % 86400000 / 1000 / 3600);
+  components.push(`${hours} h`);
+  if(components.length < 2) {
+  const minutes = Math.floor(difference / 1000 % 3600 / 60);
+    components.push(`{minutes} m`);
+  }
+  return components.join(' ');
+}
+function formatDate(date) {
+  const year = date.getFullYear();
+  let month = date.getMonth() + 1;
+  if(month < 10) {
+    month = '0' + month;
+  }
+  let day = date.getDate();
+  if(day < 10) {
+    day = '0' + day;
+  }
+  return day + '.' + month + '.' + year;
+}

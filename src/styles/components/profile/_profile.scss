@@ -1,5 +1,16 @@
 .main-panel.container-fluid {
   .table-screen {
+    .profile_table_wrapper {
+      height: calc(100% - 54px);
+      position: absolute;
+      width: 100%;
+      .profile_table {
+        overflow-x: hidden;
+        position: absolute;
+        height: calc(100%);
+        width: 100%;
+      }
+    }
     .ReactTable {
       .rt-td > :first-child {
         margin-left: 0;
@@ -240,7 +251,15 @@
         padding-left: 30px;
         .feedback-card {
 
-
+          .card-body {
+            min-height: 350px;
+            .feedback-body {
+              height: calc(100% - 84px);
+              position: absolute;
+              width: calc(100%); 
+              min-height: 250px;
+            }
+          }
           .list-group {
             .list-group-item {
               background-color: transparent;
@@ -282,8 +301,8 @@
               }
               .text-feedback  {
                 text-transform: none;
-                color: #6e6f71;
-                font-size: 1.4em;
+                color: #e1e1e1;
+                font-size: 14px;
                 margin-top: 3px;
               }
             }
@@ -351,14 +370,23 @@
       }
 
       .trade-history {
-        .ReactTable {
-          .red {
-            color: #dd4c4c;
-          }
-          .green {
-            color: #32ba94;
-          }
-        }
+				.ReactTable {
+					.red {
+						color: #dd4c4c;
+					}
+					.green {
+						color: #32ba94;
+					}
+					.rt-tbody {
+
+						.rt-tr.first-row {
+							border-top: 1px solid #44b7ff;
+						}
+						.rt-tr-group {
+							border-left: 1px solid #44b7ff;
+						}
+					}
+				}
         .card {
           .card-body {
             .table {
@@ -498,12 +526,14 @@
         }
       }
 
+
       .currency-settings, .trade-history {
 
         .card {
           .card-body {
             padding: 0;
             max-height: 100%;
+            min-height: 344px;
             .icon-dir {
               margin: 0;
               font-size: .65em;
@@ -732,6 +762,9 @@
               font-size: 1.2em;
               color: #6f6f71;
             }
+            .letter-spacing-1 {
+              letter-spacing: 1px;
+            }
             .value-text {
               margin-top: 10px;
               font-size: 2.7em;
@@ -867,7 +900,7 @@
           .raiting-block {
             margin-top: 26px;
             margin-bottom: 17px;
-            padding: 0 32px 0 52px;
+            padding: 0 32px 0 32px;
 
             /*.col {
               max-width: 220px;
@@ -876,13 +909,13 @@
               max-width: 257px;
             }*/
   .raiting-left-item {
-    width: 100px;
+    width: 120px;
   }
   .raiting-right-item {
     width: 120px;
   }
   .description-text {
-    font-size: .95em !important;
+    font-size: 1.1em !important;
     line-height: 1.1;
   }
   .raiting {
@@ -994,7 +1027,7 @@
           .profit {
             margin-right: 16px;
             .text {
-              font-size: .9em;
+              font-size: 1.1em;
               letter-spacing: .5px;
             }
             .circle {
@@ -1021,6 +1054,9 @@
             min-height: 60px;
             margin-top: 10px;
           }
+          .card-body {
+            min-height: 1px;
+          }
           .list-group {
             .list-group-item {
               padding-bottom: 15px;
@@ -1028,6 +1064,12 @@
                 font-size: 1.5em;
                 color: #bfbfc1;
                 letter-spacing: 1px;
+                max-width: 100px;
+                overflow: hidden;
+                text-overflow: ellipsis;                
+              }
+              .date {
+                font-size: 1.6em;
               }
             }
           }
@@ -1044,22 +1086,27 @@
               padding-left: 29px;
               padding-right: 29px;
               li {
-                //font-size: 1.8em;
                 .date {
-                  margin-top: 3px;
+                  margin-top: 0px;
                   margin-left: 6px;
                   margin-right: 8px;
                   letter-spacing: .5px;
                 }
                 .raiting {
-                  margin-top: 5px;
-                  .icon-star {
-                    font-size: 1em;
-                    margin-right: 1.5px;
-                  }
+                  .star {
+                    width: 10px;
+                    height: 10px;
+                    background-image: url(../img/Rating.svg);
+                    margin-right: 2px;
+                    margin-left: 2px;
+                    display: inline-block;
+                    &.active {
+                      background-image: url(../img/RatingActive.svg);
+                    }
+                  }                  
                 }
                 .text-feedback {
-                  font-size: 1.25em;
+                  font-size: 1.5em;
                   margin-top: 4px;
                   margin-left: 3px;
                   letter-spacing: .8px;
@@ -1122,7 +1169,7 @@
               margin-top: 7px;
             }
             .date {
-              font-size: 0.75em;
+              font-size: 1em;
               line-height: 1em;
               text-transform: none;
               letter-spacing: 1px;
@@ -1153,8 +1200,8 @@
                 max-width: 258px;
                 margin-top: 14px;
                 text-transform: none;
-                font-size: 1em;
-                height: 50px;
+                font-size: 1.2em;
+                height: 54px;
                 width: 100%;
                 padding: 9px 50px 9px 21px;
                 border: 1px dashed #7c7c7d;
