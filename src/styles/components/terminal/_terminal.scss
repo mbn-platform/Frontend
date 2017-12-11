@@ -1,7 +1,9 @@
 .terminal{
 	font-family: "SF-UI"!important;
 	font-weight: 400;
-
+.amcharts-axis-label.amcharts-guide {
+	
+}
 	&-main{
 		> div{
 			margin: 10px!important;
@@ -126,14 +128,20 @@
 			}
 			.marketdepth-chart{
 				height: 240px;
-		    background-image: url('../img/marketdepth_chart.png');
+		    // background-image: url('../img/marketdepth_chart.png');
 			  background-repeat: no-repeat;
 			  background-size: 100% 100%;
-				// &__graph{
-				// 	background: url('../img/marketdepth_chart.png') no-repeat center;
-				// 	background-size: 100%;
-				// 	height: 100%;
-				// }
+				&__graph{
+					// background: url('../img/marketdepth_chart.png') no-repeat center;
+					// background-size: 100%;
+					height: 100%;
+					margin-top: 12px;
+					.amcharts-axis-label.amcharts-guide {
+						text-anchor: end;
+						text-shadow: 1px 1px 1px black;
+					}
+
+				}
 			}
 			.buysell{
 				background-color: #2C2F33;
