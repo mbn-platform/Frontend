@@ -56,8 +56,10 @@ class MarketDepth extends React.Component {
       "addClassNames": true,
       'fontFamily': 'maven_proregular',      
       "dataLoader": {
+        'showCurtain': false,
         "url": "https://poloniex.com/public?command=returnOrderBook&currencyPair=BTC_ETH&depth=50",
         "format": "json",
+        "reload": 1,
         "postProcess": function(data) {
           
           // Function to process (sort and calculate cummulative volume)
@@ -125,52 +127,53 @@ class MarketDepth extends React.Component {
         ,
         "complete": function() {
           for(let i=0; i < this.chart.dataProvider.length - 1;i++) {
-            let value = this.chart.dataProvider[i].value;
-            if (i == 27 && this.chart.dataProvider[i + 1]) {
-              this.chart.categoryAxis.guides.push( {
-                'above': true,
-                "category": value,
-                "lineAlpha": 1,
-                "fillAlpha": 1,
-                'fontSize': 12,
-                "lineColor": "#2d4a46",
-                'labelOffset': 70,
-                "label": value.toFixed(3),
-                "position": "bottom",
-                "inside": true,
-                "labelRotation": -90,
-                "expand": true,
-                'dashLength': 3
-              } );
-            }
-            if (i == 44 && this.chart.dataProvider[i + 1]) {
-              //add a guide
-              this.chart.categoryAxis.guides.push( {
-                'above': true,
-                "category": value,
-                "lineAlpha": 1,
-                'boldLabel': true,
-                "fillAlpha": 1,
-                'fontSize': 12,
-                'labelOffset': 70,
-                "lineColor": "#32b893",
-                "label": value.toFixed(3),
-                "position": "bottom",
-                "inside": true,
-                "labelRotation": -90,
-                "expand": true,
-                'dashLength': 3
-              } );
-            }               
+            
+            // let value = this.chart.dataProvider[i].value;
+            // if (i == 27 && this.chart.dataProvider[i + 1]) {
+            //   this.chart.categoryAxis.guides.push( {
+            //     'above': true,
+            //     "category": value,
+            //     "lineAlpha": 1,
+            //     "fillAlpha": 1,
+            //     'fontSize': 12,
+            //     "lineColor": "#2d4a46",
+            //     'labelOffset': 70,
+            //     "label": value.toFixed(3),
+            //     "position": "bottom",
+            //     "inside": true,
+            //     "labelRotation": -90,
+            //     "expand": true,
+            //     'dashLength': 3
+            //   } );
+            // }
+            // if (i == 44 && this.chart.dataProvider[i + 1]) {
+            //   //add a guide
+            //   this.chart.categoryAxis.guides.push( {
+            //     'above': true,
+            //     "category": value,
+            //     "lineAlpha": 1,
+            //     'boldLabel': true,
+            //     "fillAlpha": 1,
+            //     'fontSize': 12,
+            //     'labelOffset': 70,
+            //     "lineColor": "#32b893",
+            //     "label": value.toFixed(3),
+            //     "position": "bottom",
+            //     "inside": true,
+            //     "labelRotation": -90,
+            //     "expand": true,
+            //     'dashLength': 3
+            //   } );
+            // }               
           }
-          setTimeout(() => {
-            let array = document.querySelectorAll('.amcharts-guide');
-            for(let i = 0; i < array.length; i++) {
-              if(array[i].nodeName == "text") {
-                console.log(array[i].getBoundingClientRect());
-              }
-            }
-          }, 1)
+          // setTimeout(() => {
+          //   let array = document.querySelectorAll('.amcharts-guide');
+          //   for(let i = 0; i < array.length; i++) {
+          //     if(array[i].nodeName == "text") {
+          //       console.log(array[i].getBoundingClientRect());
+          //     }
+          //   }
+          // }, 1)
           
 
         }
@@ -182,7 +185,6 @@ class MarketDepth extends React.Component {
         "lineThickness": 2,
         "lineColor": "#32b893",
         "type": "step",
-        'type': 'smoothedLine',
         "valueField": "bidstotalvolume",
         "balloonFunction": this.balloon
       }, {
@@ -192,7 +194,6 @@ class MarketDepth extends React.Component {
         "lineThickness": 2,
         "lineColor": "#c74949",
         "type": "step",
-        'type': 'smoothedLine',
         "valueField": "askstotalvolume",
         "balloonFunction": this.balloon
         }
