@@ -568,11 +568,22 @@
 	}
 }
 
+@media (max-width: 575px) {
+	.terminal-main {
+		.charts	{
+			.buysell {
+				flex: 0 0 100%;
+			}	
+		}
+	}  
+}
+
 @media (min-width: 576px) {
 
-	.buysell{
-			margin-right: 10px;
+	.buysell {
+		margin-right: 10px;
 	}
+
 	.orderbook-table{
 	    margin-right: 10px;
 	    tbody{
