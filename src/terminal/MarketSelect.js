@@ -55,17 +55,28 @@ class MarketSelect extends React.Component {
 class MarketTable extends React.Component {
   constructor(props) {
     super(props);
+    const baseCurrency = props.market.split('-')[0];
     this.state = {
-      baseCurrency: props.market.split('-')[0],
+      baseCurrency,
       secondaryCurrency: props.market.split('-')[1],
+      filter: '',
+      markets: this.props.markets.filter(m => m.BaseCurrency === baseCurrency),
     };
     this.onBaseCurrencySelected = this.onBaseCurrencySelected.bind(this);
     this.onSecondaryCurrencySelected = this.onSecondaryCurrencySelected.bind(this);
+    this.onChange = this.onChange.bind(this);
+  }
+
+  onChange(e) {
+    this.setState({filter: e.target.value});
   }
 
   onBaseCurrencySelected(e, base) {
     e.stopPropagation();
-    this.setState({baseCurrency: base, secondaryCurrency: null});
+    this.setState({
+      baseCurrency: base, secondaryCurrency: null,
+      markets: this.props.markets.filter(m => m.BaseCurrency === base),
+    });
   }
 
   onSecondaryCurrencySelected(e, currency) {
@@ -100,7 +111,6 @@ class MarketTable extends React.Component {
 
   render() {
     const baseCurrency = this.state.baseCurrency;
-    const secondaryCurrency = this.state.secondaryCurrency;
     return (
       <div className="dropdown search">
         <div className="dropdown__name">
@@ -108,7 +118,7 @@ class MarketTable extends React.Component {
           <span onClick={this.props.close} className="arrow_down"></span>
         </div>
         <form action="" className="dropdown__form">
-          <input type="text" name="" className="input-search" placeholder="Search..."/>
+          <input value={this.state.filter} type="text" name="filter" onChange={this.onChange} className="input-search" placeholder="Search..."/>
         </form>
         <div className="dropdown__btn-wrap">
           <button
@@ -137,8 +147,8 @@ class MarketTable extends React.Component {
             </thead>
             <tbody>
               {
-                this.props.markets
-                  .filter(m => m.BaseCurrency === this.state.baseCurrency)
+                this.state.markets
+                  .filter(m => m.MarketCurrency.toLowerCase().indexOf(this.state.filter.toLowerCase()) >= 0)
                   .map(m => (
                     <MarketRow
                       onClick={this.onSecondaryCurrencySelected}

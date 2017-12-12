@@ -7,13 +7,14 @@ class ApiKeySelect extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {isOpen: false, selectedKey: null};
+    this.state = {isOpen: false};
     this.onKeySelect = this.onKeySelect.bind(this);
   }
 
   onKeySelect(e, key) {
     e.stopPropagation();
-    this.setState({selectedKey: key, isOpen: false});
+    this.setState({isOpen: false});
+    this.props.onApiKeySelect(key);
   }
 
   render() {
@@ -21,7 +22,7 @@ class ApiKeySelect extends React.Component {
       <div onClick={() => this.setState({isOpen: !this.state.isOpen})} id="popover1" className="dropdown-link-wrap">
         {this.renderSelectedApiKey()}
         <Popover
-          onClick={this.onKeySelect}
+          onClick={() => this.setState({isOpen: false})}
           className="dropdown-popover"
           container={this.props.container}
           placement="bottom-start"
@@ -30,14 +31,14 @@ class ApiKeySelect extends React.Component {
           innerClassName="popover-body"
         >
           <div className="dropdown keys">
-            <div class="dropdown__name">
-              <span>API KEY</span><span class="arrow_down"></span>
+            <div className="dropdown__name">
+              <span>API KEY</span><span className="arrow_down"></span>
             </div>
             {this.props.keys.map(key => (
               <div
                 key={key._id}
                 onClick={e => this.onKeySelect(e, key)}
-                className={classNames('key', {active: this.state.selectedKey && this.state.selectedKey._id === key._id})}>
+                className={classNames('key', {active: this.props.selectedKey && this.props.selectedKey._id === key._id})}>
                 {key.name}
               </div>
             ))}
@@ -50,7 +51,7 @@ class ApiKeySelect extends React.Component {
   renderSelectedApiKey() {
     return (
       <span className="dropdown-link">
-        API KEY{this.state.selectedKey ? ': ' + this.state.selectedKey.name + ' ' : ' '}<span className="arrow_down"/>
+        API KEY{this.props.selectedKey ? ': ' + this.props.selectedKey.name + ' ' : ' '}<span className="arrow_down"/>
       </span>
     );
   }

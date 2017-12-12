@@ -1,12 +1,17 @@
 import React from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import { getMarketSummary } from '../api/bittrex/bittrex';
+import classNames from 'classnames';
 
 class HeaderStatus extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      'USDT-BTC': {},
+      'USDT-ETH': {},
+      'BTC-ETH': {},
+    };
   }
 
   render() {
@@ -14,7 +19,23 @@ class HeaderStatus extends React.Component {
       <header className="header-status">
         <Container fluid className="h-100">
           <Row className="h-100 justify-content-between">
-            <Rates {...this.state}/>
+            <Col xs="8" sm="8" md="6" lg="6" xl="4" className="curses-wrap row">
+              <Rate
+                pair="BTC/USD"
+                val={this.state['USDT-BTC'].Last ? Math.floor(this.state['USDT-BTC'].Last) : ''}
+                change={this.state['USDT-BTC'].last}
+              />
+              <Rate
+                pair="ETH/USD"
+                val={this.state['USDT-ETH'].Last ? this.state['USDT-ETH'].Last.toFixed(2) : ''}
+                change={this.state['USDT-ETH'].last}
+              />
+              <Rate
+                pair="BTC/ETH"
+                val={this.state['BTC-ETH'].Last ? this.state['BTC-ETH'].Last.toFixed(5) : ''}
+                change={this.state['BTC-ETH'].last}
+              />
+            </Col>
             <Balance
               first={{name: 'BTC', value: 10.523}}
               second={{name: 'ETH', value: 222.523}}
@@ -33,65 +54,39 @@ class HeaderStatus extends React.Component {
     clearInterval(this.interval);
   }
 
+  updatePair(pair, newValue) {
+    const oldValue = this.state[pair];
+    if(oldValue) {
+      const last = ((newValue.Last / oldValue.Last - 1) * 100);
+      if(last !== 0) {
+        this.setState({[pair]: {...newValue, last}});
+      } else {
+        this.setState({[pair]: {...newValue, last: oldValue.last}});
+      }
+    } else {
+      this.setState({[pair]: newValue});
+    }
+  }
+
   updateRates() {
-    getMarketSummary('USDT-BTC').then(json => {
-      const {Bid: bid, Ask: ask, PrevDay: prevDay} = json.result[0];
-      const average = (bid + ask )/ 2;
-      const dynamic = ((average / prevDay - 1) * 100).toFixed(2);
-      console.log(average);
-      console.log(dynamic);
-      this.setState({'usdt-btc': average, 'usdt-btc-dyn': dynamic});
-    });
-    getMarketSummary('USDT-ETH').then(json => {
-      const {Bid: bid, Ask: ask, PrevDay: prevDay} = json.result[0];
-      const average = (bid + ask )/ 2;
-      const dynamic = ((average / prevDay - 1) * 100).toFixed(2);
-      console.log(average);
-      console.log(dynamic);
-      this.setState({'usdt-eth': average, 'usdt-eth-dyn': dynamic});
-    });
-    getMarketSummary('BTC-ETH').then(json => {
-      const {Bid: bid, Ask: ask, PrevDay: prevDay} = json.result[0];
-      const average = (bid + ask )/ 2;
-      const dynamic = ((average / prevDay - 1) * 100).toFixed(2);
-      console.log(average);
-      console.log(dynamic);
-      this.setState({'btc-eth': average, 'btc-eth-dyn': dynamic});
+    ['USDT-BTC', 'USDT-ETH', 'BTC-ETH'].forEach(pair => {
+      getMarketSummary(pair).then(json => {
+        this.updatePair(pair, json.result[0]);
+      });
     });
   }
 }
 
-const Rates = props => {
-
-  return (
-    <Col xs="8" sm="8" md="6" lg="6" xl="4" className="curses-wrap row">
-      <Col sm="4" md="4" lg="4" xs="4" className="curses row h-100 align-items-center justify-content-between">
-        <Col xs="auto" className="curses-name">BTC/USD</Col>
-        <Col xs="auto" className="curses-val">{props['usdt-btc']}</Col>
-        <Col xs="auto" className="curses-change up">
-          <span className="icon icon-dir icon-up-dir"> </span>
-          {props['usdt-btc-dyn']}
-        </Col>
-      </Col>
-      <Col sm="4" md="4" lg="4" xs="4" className="curses row h-100 align-items-center justify-content-between">
-        <Col xs="auto" className="curses-name">ETH/USD</Col>
-        <Col xs="auto" className="curses-val">{props['usdt-eth']}</Col>
-        <Col xs="auto" className="curses-change down">
-          <span className="icon icon-dir icon-down-dir"> </span>
-          {props['usdt-eth-dyn']}
-        </Col>
-      </Col>
-      <Col sm="4" md="4" lg="4" xs="4" className="curses row h-100 align-items-center justify-content-between">
-        <Col xs="auto" className="curses-name">BTC/ETH</Col>
-        <Col xs="auto" className="curses-val">{props['btc-eth']}</Col>
-        <Col xs="auto" className="curses-change up">
-          <span className="icon icon-dir icon-up-dir"> </span>
-          {props['btc-eth-dyn']}
-        </Col>
-      </Col>
+const Rate = ({ pair, val, change }) => (
+  <Col sm="4" md="4" lg="4" xs="4" className="curses row h-100 align-items-center justify-content-between">
+    <Col xs="auto" className="curses-name">{pair}</Col>
+    <Col xs="auto" className="curses-val">{val}</Col>
+    <Col xs="auto" className={classNames('curses-change', change > 0 ? 'up' : 'down')}>
+      <span className={classNames('icon', 'icon-dir', change > 0 ? 'icon-up-dir' : 'icon-down-dir')}></span>
+      {change ? change.toFixed(2) + '%' : ''}
     </Col>
-  );
-};
+  </Col>
+);
 
 const Balance = ({first, second}) => (
   <Col xs="4" sm="4" md="3" lg="3" xl="2" className="row justify-content-end align-items-center">

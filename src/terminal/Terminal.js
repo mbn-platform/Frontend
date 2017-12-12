@@ -1,7 +1,6 @@
 import React from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import HeaderStatus from './HeaderStatus';
-import { Popover, PopoverBody } from 'reactstrap';
 import Controls from './Controls';
 import TradingView from './TradingView';
 import MarketDepth from './MarketDepth';
@@ -10,12 +9,15 @@ import MyOrders from './MyOrders';
 import RecentTrades from './RecentTrades';
 import OrderBook from './OrderBook';
 import { connect } from 'react-redux';
+import { selectApiKey } from '../actions/terminal';
 
 class Terminal extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {market: 'USDT-BTC'};
+    this.state = {
+      market: 'USDT-BTC',
+    };
     this.onMarketSelect = this.onMarketSelect.bind(this);
   }
 
@@ -28,12 +30,17 @@ class Terminal extends React.Component {
       <Container fluid className="terminal">
         <Row>
           <Col xs="12" sm="12" md="12" lg="12">
-            <HeaderStatus />
+            <HeaderStatus
+              apiKey={this.props.selectedApiKey}
+              market={this.state.market}
+            />
             <div className="terminal-main">
               <Controls
-                onMarketSelect={this.onMarketSelect}
                 market={this.state.market}
                 apiKeys={[...this.props.apiKeys.ownKeys, ...this.props.apiKeys.receivedKeys]}
+                selectedApiKey={this.props.selectedApiKey}
+                onApiKeySelect={key => this.props.selectApiKey(key)}
+                onMarketSelect={this.onMarketSelect}
               />
               <Row className="charts">
                 <Col xs="12" sm="12" md="6" lg="8" className="charts__left">
@@ -41,7 +48,7 @@ class Terminal extends React.Component {
                   <MarketDepth />
                   <Row className="justify-content-between">
                     <PlaceOrder
-                      market="BTC-ETH"
+                      market={this.state.market}
                     />
                     <MyOrders />
                   </Row>
@@ -49,10 +56,10 @@ class Terminal extends React.Component {
                 <Col xs="12" sm="12" md="6" lg="4">
                   <Row>
                     <OrderBook
-                      market="BTC-ETH"
+                      market={this.state.market}
                     />
                     <RecentTrades
-                      market="BTC-ETH"
+                      market={this.state.market}
                     />
                   </Row>
                 </Col>
@@ -66,6 +73,10 @@ class Terminal extends React.Component {
 
   componentDidMount() {
     window.customize();
+    if(!this.props.selectedApiKey) {
+      const key = this.props.apiKeys.ownKeys[0] || this.props.apiKeys.receivedKeys[0];
+      this.props.selectApiKey(key);
+    }
   }
 
   componentWillUnmount() {
@@ -75,5 +86,8 @@ class Terminal extends React.Component {
 
 const TerminalContainer = connect(state => ({
   apiKeys: state.apiKeys,
+  selectedApiKey: state.terminal.selectedApiKey,
+}), dispatch => ({
+  selectApiKey: key => dispatch(selectApiKey(key)),
 }))(Terminal);
 export default TerminalContainer;

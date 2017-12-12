@@ -10,7 +10,6 @@ class Controls extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedKey: null,
       selectedExchange: 'BITTREX',
       selectedTime: '1 H',
     }
@@ -22,7 +21,8 @@ class Controls extends React.Component {
         <ApiKeySelect
           container=".terminal.container-fluid"
           keys={this.props.apiKeys}
-          selectedKey={this.state.selectedKey}
+          selectedKey={this.props.selectedApiKey}
+          onApiKeySelect={this.props.onApiKeySelect}
         />
         <DropdownSelect
           selected={this.state.selectedExchange}

@@ -4,6 +4,7 @@ import HeaderStatus from '../terminal/HeaderStatus';
 import Controls from './Controls';
 import HistoryTable from './HistoryTable';
 import { connect } from 'react-redux';
+import { selectApiKey } from '../actions/terminal';
 
 class History extends React.Component {
 
@@ -20,6 +21,8 @@ class History extends React.Component {
                 </div>
                 <Controls
                   apiKeys={[...this.props.apiKeys.ownKeys, ...this.props.apiKeys.receivedKeys]}
+                  selectedApiKey={this.props.selectedApiKey}
+                  onApiKeySelect={key => this.props.selectApiKey(key)}
                 />
               </div>
               <HistoryTable />
@@ -41,6 +44,9 @@ class History extends React.Component {
 
 const HistoryContainer = connect(state => ({
   apiKeys: state.apiKeys,
+  selectedApiKey: state.terminal.selectedApiKey,
+}), dispatch => ({
+  selectApiKey: key => dispatch(selectApiKey(key)),
 }))(History);
 
 export default HistoryContainer;

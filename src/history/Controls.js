@@ -7,7 +7,9 @@ class Controls extends React.Component {
       <div className="row dropdowns pt-2">
         <ApiKeySelect
           container=".history.container-fluid"
-          keys={this.props.apiKeys || []}
+          keys={this.props.apiKeys}
+          selectedKey={this.props.selectedApiKey}
+          onApiKeySelect={this.props.onApiKeySelect}
         />
         <div className="dropdown-link-wrap">
           <a href="#" className="dropdown-link">BITTREX <span className="arrow_down"></span></a>

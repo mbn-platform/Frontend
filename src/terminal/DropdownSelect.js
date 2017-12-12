@@ -30,11 +30,12 @@ class DropdownSelect extends React.Component {
           className="dropdown-popover"
         >
           <div className={classNames('dropdown', this.props.dropdownClassName)}>
-            <div class="dropdown__name">
+            <div className="dropdown__name">
               <span>{this.props.selected ? this.props.selected : this.props.header}</span><span class="arrow_down"></span>
             </div>
             {this.props.items.map(item => (
               <div
+                key="item"
                 onClick={e => this.onItemSelect(e, item)}
                 className={classNames(this.props.elementClassName, {active: item === this.props.selected})}
               >{item}</div>

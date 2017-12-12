@@ -21,8 +21,16 @@ class OrderBook extends React.Component {
   updateOrderBook() {
     getOrderBook(this.props.market, 'both').then(json => {
       if(json.success) {
-        const {buy, sell} = json.result;
-        this.setState({buy: buy.slice(0, 100), sell: sell.slice(0, 100)});
+        let {buy, sell} = json.result;
+        buy = buy.slice(0, 100);
+        sell = sell.slice(0, 100);
+        const maxBuy = buy.reduce((accum, value) => Math.max(accum, value.Quantity), 0);
+        const maxSell = sell.reduce((accum, value) => Math.max(accum,value.Quantity), 0);
+        const minBuy = buy.reduce((accum, value) => Math.min(accum, value.Quantity), maxBuy);
+        const minSell = sell.reduce((accum, value) => Math.min(accum, value.Quantity), maxSell);
+        buy.forEach(order => order.relativeSize = relativeSize(minBuy, maxBuy, order.Quantity));
+        sell.forEach(order => order.relativeSize = relativeSize(minSell, maxSell, order.Quantity));
+        this.setState({buy, sell});
       }
     }).catch(err => console.log('error updating order book', err));
   }
@@ -54,11 +62,12 @@ class OrderBook extends React.Component {
               </tr>
             </thead>
             <tbody className="tbody">
-              {this.state.buy.map((order, i) => (
+              {this.state.sell.map((order, i) => (
                 <BuyOrderCell
                   key={i}
                   price={order.Rate}
                   size={order.Quantity}
+                  relativeSize={order.relativeSize}
                 />
               ))}
             </tbody>
@@ -71,11 +80,12 @@ class OrderBook extends React.Component {
         <div className="orderbook-table-wrapper js-table-wrapper">
           <table className="table green">
             <tbody>
-              {this.state.sell.map((order, i) => (
+              {this.state.buy.map((order, i) => (
                 <BuyOrderCell
                   key={i}
                   price={order.Rate}
                   size={order.Quantity}
+                  relativeSize={order.relativeSize}
                 />
               ))}
             </tbody>
@@ -87,7 +97,11 @@ class OrderBook extends React.Component {
   }
 }
 
-const BuyOrderCell = ({price, size} ) => {
+function relativeSize(minSize, maxSize, size) {
+  return Math.max((size - minSize) / (maxSize - minSize), 0.02);
+}
+
+const BuyOrderCell = ({price, size, relativeSize} ) => {
   const sizeParts = size.toString().split('.');
   return (
     <tr>
@@ -97,10 +111,10 @@ const BuyOrderCell = ({price, size} ) => {
         <span>{sizeParts[1]}</span>
       </td>
       <td>
-        32161
+        {price * size}
       </td>
       <td>
-        <span className="dash"></span>
+        <span className="dash" style={{width: relativeSize * 100 + '%'}}/>
       </td>
     </tr>
   );

@@ -8,6 +8,8 @@ class Controls extends React.Component {
         <ApiKeySelect
           container=".orders.container-fluid"
           keys={this.props.apiKeys}
+          selectedKey={this.props.selectedApiKey}
+          onApiKeySelect={this.props.onApiKeySelect}
         />
         <div className="dropdown-link-wrap">
           <a href="#" className="dropdown-link">BITTREX <span className="arrow_down"></span></a>
