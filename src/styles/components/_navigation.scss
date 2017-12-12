@@ -52,15 +52,23 @@
 			background-color: rgba(58, 62, 66,.7) !important;
 			color: #e1e1e1 !important;		
 		}
-	}
-	.nav-link.active {
 		.dashboard {
 			background-image: url(../img/MenuIconDashboardHover.svg);
 		}	
 		.ratings {
 			background-image: url(../img/MenuIconRatingsHover.svg);
+		}	
+		.terminal {
+			background-image: url(../img/terminal_hover.svg);
 		}				
+		.orders {
+			background-image: url(../img/orders_hover.svg);
+		}
+		.history {
+			background-image: url(../img/history_hover.svg);
+		}		
 	}
+
 
 
 	.show > .nav-pills .nav-link {
