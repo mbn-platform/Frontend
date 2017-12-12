@@ -106,12 +106,48 @@ class Navigation extends React.Component {
 
   getLinks() {
     return [
-      {name: 'Dashboard', to: '/dashboard', imgClass: 'dashboard'},
-      {name: 'Profile', to: this.props.auth.profile ? '/' + this.props.auth.profile.name : '/profile', imgClass: 'profile'},
-      {name: 'Terminal', to: '/terminal', imgClass: 'terminal'},
-      {name: 'Orders', to: '/orders', imgClass: 'orders'},
-      {name: 'History', to: '/history', imgClass: 'history'},
-      {name: 'Ratings', to: '/ratings', imgClass: 'ratings'},
+      {
+        name: 'Dashboard', 
+        to: '/dashboard', 
+        imgClass: 'dashboard', 
+        url: './img/MenuIconDashboard.svg', 
+        urlHover: './img/MenuIconDashboardHover.svg'
+      },
+      {
+        name: 'Profile', 
+        to: this.props.auth.profile ? '/' + this.props.auth.profile.name : '/profile', 
+        imgClass: 'profile', 
+        url: './img/MenuIconProfile.svg', 
+        urlHover: './img/MenuIconProfile.svg'
+      },
+      {
+        name: 'Terminal', 
+        to: '/terminal', 
+        imgClass: 'terminal',
+        url: './assets/svg/terminal.svg', 
+        urlHover: './assets/svg/terminal_hover.svg'        
+      },
+      {
+        name: 'Orders', 
+        to: '/orders', 
+        imgClass: 'orders',
+        url: './assets/svg/orders.svg', 
+        urlHover: './assets/svg/orders_hover.svg'
+      },
+      {
+        name: 'History', 
+        to: '/history', 
+        imgClass: 'history',
+        url: './assets/svg/history.svg', 
+        urlHover: './assets/svg/history_hover.svg'
+      },
+      {
+        name: 'Ratings', 
+        to: '/ratings', 
+        imgClass: 'ratings',
+        url: './img/MenuIconRatings.svg', 
+        urlHover: './img/MenuIconRatingsHover.svg'
+      },
     ];
   }
 
@@ -119,6 +155,8 @@ class Navigation extends React.Component {
     return this.getLinks().map((link, index) => (
       <li key={link.name} className={`left_col_menu_li left_col_menu_li_${index + 1}`}>
         <NavLink className="left_col_menu_a" to={link.to} exact>{link.name}</NavLink>
+        <img style="display: none;" src={link.url} alt=""/>
+        <img style="display: none;" src={link.urlHover} alt=""/>
       </li>
     ));
   }
