@@ -60,12 +60,14 @@ class Navigation extends React.Component {
     );
   }
 
-  getBar({name, to, imgClass}) {
+  getBar({name, to, imgClass, url, urlHover}) {
     return (
       <NavLink to={to} key={name} className="nav-link">
         <Container className="h-100" fluid >
           <Row className="h-100">
             <Col xs="12" className="align-self-center">
+              <img style={{display: 'none'}} src={url} alt=""/>
+              <img style={{display: 'none'}} src={urlHover} alt=""/>            
               <Container fluid className="align-middle">
                 <Row>
                   <Col xs="3" md="12" className="d-flex justify-content-end justify-content-md-center">
@@ -155,8 +157,8 @@ class Navigation extends React.Component {
     return this.getLinks().map((link, index) => (
       <li key={link.name} className={`left_col_menu_li left_col_menu_li_${index + 1}`}>
         <NavLink className="left_col_menu_a" to={link.to} exact>{link.name}</NavLink>
-        <img style="display: none;" src={link.url} alt=""/>
-        <img style="display: none;" src={link.urlHover} alt=""/>
+        <img style={{display: 'none'}} src={link.url} alt=""/>
+        <img style={{display: 'none'}} src={link.urlHover} alt=""/>
       </li>
     ));
   }
