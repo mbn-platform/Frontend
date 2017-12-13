@@ -14,12 +14,6 @@ class MarketDepth extends React.Component {
     this.balloon = this.balloon.bind(this);
   }
 
-  componentDidMount() {
-    // const chart = window.AmCharts.makeChart("chartdiv", );
-    // this.chart = chart;
-  }  
-
-
   formatNumber(val, graphChart, precision) {
     return window.AmCharts.formatNumber(
       val, 
