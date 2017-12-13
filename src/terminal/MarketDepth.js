@@ -59,7 +59,7 @@ class MarketDepth extends React.Component {
         'showCurtain': false,
         "url": "https://poloniex.com/public?command=returnOrderBook&currencyPair=BTC_ETH&depth=50",
         "format": "json",
-        "reload": 1,
+        "reload": 5,
         "postProcess": function(data) {
           
           // Function to process (sort and calculate cummulative volume)
@@ -126,56 +126,80 @@ class MarketDepth extends React.Component {
         }
         ,
         "complete": function() {
-          for(let i=0; i < this.chart.dataProvider.length - 1;i++) {
-            
-            // let value = this.chart.dataProvider[i].value;
-            // if (i == 27 && this.chart.dataProvider[i + 1]) {
-            //   this.chart.categoryAxis.guides.push( {
-            //     'above': true,
-            //     "category": value,
-            //     "lineAlpha": 1,
-            //     "fillAlpha": 1,
-            //     'fontSize': 12,
-            //     "lineColor": "#2d4a46",
-            //     'labelOffset': 70,
-            //     "label": value.toFixed(3),
-            //     "position": "bottom",
-            //     "inside": true,
-            //     "labelRotation": -90,
-            //     "expand": true,
-            //     'dashLength': 3
-            //   } );
-            // }
-            // if (i == 44 && this.chart.dataProvider[i + 1]) {
-            //   //add a guide
-            //   this.chart.categoryAxis.guides.push( {
-            //     'above': true,
-            //     "category": value,
-            //     "lineAlpha": 1,
-            //     'boldLabel': true,
-            //     "fillAlpha": 1,
-            //     'fontSize': 12,
-            //     'labelOffset': 70,
-            //     "lineColor": "#32b893",
-            //     "label": value.toFixed(3),
-            //     "position": "bottom",
-            //     "inside": true,
-            //     "labelRotation": -90,
-            //     "expand": true,
-            //     'dashLength': 3
-            //   } );
-            // }               
+          let type = ['asks', 'bids'],
+          asks = [],
+          bids = [];
+          this.chart.dataProvider.forEach((item) => {
+            if(item.hasOwnProperty(type[0] + 'volume')) {
+              asks.push(item)
+            }
+            if(item.hasOwnProperty(type[1] + 'volume')) {
+              bids.push(item)
+            }
+          })
+          let minItemAsks = 0;
+          let minItemUpDiffAsks = asks.reduce(function(diff, current, i, arr) {
+            let diffCurrent = 0;
+            if(arr[i + 1]) {
+              diffCurrent = arr[i + 1].askstotalvolume - current.askstotalvolume;
+            }
+            if(diff == 0) {
+              diff = diffCurrent;
+            }
+            if(diff < diffCurrent) {
+              diff = diffCurrent;
+              minItemAsks = i;
+            }
+            return diff;
+          }, 0);
+          let minItemBids = 0;
+          let minItemUpDiffBids = bids.reduce(function(diff, current, i, arr) {
+            let diffCurrent = 0;
+            if(arr[i + 1]) {
+              diffCurrent = current.bidstotalvolume - arr[i + 1].bidstotalvolume;
+            }
+            if(diff == 0) {
+              diff = diffCurrent;
+            }
+            if(diff < diffCurrent) {
+              diff = diffCurrent;
+              minItemBids = i;
+            }
+            return diff;
+          }, 0);          
+          let minItemDownDiffAsks = minItemUpDiffAsks / 10;
+          let minItemDownDiffBids = minItemUpDiffBids / 10;
+          this.chart.categoryAxis.guides = []
+          function addGuides(chart, arr, min, max, type, color, reverse) {
+           for(let i = 0; i < arr.length; i++) {
+              let value = arr[i][type + 'totalvolume'];
+              let valueNext = arr[i + 1] ? arr[i + 1][type + 'totalvolume'] : arr[i][type + 'totalvolume']
+              if(reverse) {
+                let valueChange = value;
+                value = valueNext;
+                valueNext = valueChange;
+              }
+              if(valueNext - value >= min && valueNext - value <= max) {
+                chart.categoryAxis.guides.push( {
+                  'above': true,
+                  "category": arr[i+1].value,
+                  "lineAlpha": 1,
+                  "fillAlpha": 1,
+                  'fontSize': 12,
+                  "lineColor": color,
+                  'labelOffset': 70,
+                  "label": arr[i + 1].value.toFixed(3),
+                  "position": "bottom",
+                  "inside": true,
+                  "labelRotation": -90,
+                  "expand": true,
+                  'dashLength': 3
+                } );              
+              }
+            }
           }
-          // setTimeout(() => {
-          //   let array = document.querySelectorAll('.amcharts-guide');
-          //   for(let i = 0; i < array.length; i++) {
-          //     if(array[i].nodeName == "text") {
-          //       console.log(array[i].getBoundingClientRect());
-          //     }
-          //   }
-          // }, 1)
-          
-
+          addGuides(this.chart, asks, minItemDownDiffAsks, minItemUpDiffAsks, 'asks', '#c74949')
+          addGuides(this.chart, bids, minItemDownDiffBids, minItemUpDiffBids, 'bids', "#32b893", true)
         }
       },
       "graphs": [{
