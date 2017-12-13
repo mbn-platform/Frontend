@@ -32,7 +32,7 @@ class HeaderStatus extends React.Component {
               />
               <Rate
                 pair="BTC/ETH"
-                val={this.state['BTC-ETH'].Last ? this.state['BTC-ETH'].Last.toFixed(4) : ''}
+                val={this.state['BTC-ETH'].Last ? parseFloat(this.state['BTC-ETH'].Last.toFixed(4)) : ''}
                 change={this.state['BTC-ETH'].last}
               />
             </Col>

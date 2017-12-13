@@ -612,6 +612,10 @@
 	// .dropdown-link-wrap{
 	// 	position: relative;
 	// }
+
+}
+
+@media (min-width: 833px) {
 	.balance.row:last-child:before{
 		content: '';
 		display: block;
@@ -628,12 +632,38 @@
 		.balance-wrap{
 			width: auto;
 		}
-	}
+	}	
+
 }
 @media (min-width: 992px) {
 	.orderbook-table{
 	    margin-right: 0;
 
+	}
+}
+
+
+@media (max-width: 832px) {
+	.header-status {
+		height: 70px;
+		margin-top: 10px;
+		padding: 0;
+
+		.curses {
+			padding: 10px 0 0 !important;
+		}
+
+		.balance {
+			&-wrap {
+				margin-right: 0;
+			}
+
+			&-title {
+				width: 100%;
+				margin-right: 0;
+				text-align: center;
+			}
+		}
 	}
 }
 
