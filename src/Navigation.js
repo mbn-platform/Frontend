@@ -2,6 +2,18 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import Logo from './img/MainLogo.svg';
 import LogoMobile from './img/HeaderLogoBigMobile.svg';
+import DashboardIcon from './img/MenuIconDashboard.svg';
+import DashboardIconHover from './img/MenuIconDashboardHover.svg';
+import ProfileIcon from './img/MenuIconProfile.png';
+import ProfileIconHover from './img/MenuIconProfile.png';
+import TermianlIcon from './assets/svg/terminal.svg';
+import TermianlIconHover from './assets/svg/terminal_hover.svg';
+import OrdersIcon from './assets/svg/orders.svg';
+import OrdersIconHover from './assets/svg/orders_hover.svg';
+import HistoryIcon from './assets/svg/history.svg';
+import HistoryIconHover from './assets/svg/history_hover.svg';
+import RaitingIcon from './img/MenuIconRatings.svg';
+import RaitingIconHover from './img/MenuIconRatingsHover.svg';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { Navbar, NavbarToggler, NavbarBrand, Nav, Collapse, Col } from 'reactstrap';
@@ -60,7 +72,7 @@ class Navigation extends React.Component {
     );
   }
 
-  getBar({name, to, imgClass}) {
+  getBar({name, to, imgClass, icon, iconHover}) {
     return (
       <NavLink to={to} key={name} className="nav-link">
         <Container className="h-100" fluid >
@@ -69,7 +81,8 @@ class Navigation extends React.Component {
               <Container fluid className="align-middle">
                 <Row>
                   <Col xs="3" md="12" className="d-flex justify-content-end justify-content-md-center">
-                    <div className={classNames(imgClass, 'image')} />
+                    <img class='image_menu image' src={icon} alt=""/>
+                    <img class='image_menu_hover image' src={iconHover} alt=""/>
                   </Col>
                   <Col xs="auto" className="d-flex d-md-none">
                     <div className="gap"/>
@@ -109,44 +122,44 @@ class Navigation extends React.Component {
       {
         name: 'Dashboard', 
         to: '/dashboard', 
-        imgClass: 'dashboard', 
-        url: './img/MenuIconDashboard.svg', 
-        urlHover: './img/MenuIconDashboardHover.svg'
+        imgClass: 'dashboard',
+        icon: DashboardIcon,
+        iconHover: DashboardIconHover
       },
       {
         name: 'Profile', 
         to: this.props.auth.profile ? '/' + this.props.auth.profile.name : '/profile', 
-        imgClass: 'profile', 
-        url: './img/MenuIconProfile.svg', 
-        urlHover: './img/MenuIconProfile.svg'
+        imgClass: 'profile',
+        icon: ProfileIcon,
+        iconHover: ProfileIconHover
       },
       {
         name: 'Terminal', 
         to: '/terminal', 
         imgClass: 'terminal',
-        url: './assets/svg/terminal.svg', 
-        urlHover: './assets/svg/terminal_hover.svg'        
+        icon: TermianlIcon,
+        iconHover: TermianlIconHover
       },
       {
         name: 'Orders', 
         to: '/orders', 
         imgClass: 'orders',
-        url: './assets/svg/orders.svg', 
-        urlHover: './assets/svg/orders_hover.svg'
+        icon: OrdersIcon,
+        iconHover: OrdersIconHover
       },
       {
         name: 'History', 
         to: '/history', 
         imgClass: 'history',
-        url: './assets/svg/history.svg', 
-        urlHover: './assets/svg/history_hover.svg'
+        icon: HistoryIcon,
+        iconHover: HistoryIconHover
       },
       {
         name: 'Ratings', 
         to: '/ratings', 
         imgClass: 'ratings',
-        url: './img/MenuIconRatings.svg', 
-        urlHover: './img/MenuIconRatingsHover.svg'
+        icon: RaitingIcon,
+        iconHover: RaitingIconHover
       },
     ];
   }
@@ -155,8 +168,6 @@ class Navigation extends React.Component {
     return this.getLinks().map((link, index) => (
       <li key={link.name} className={`left_col_menu_li left_col_menu_li_${index + 1}`}>
         <NavLink className="left_col_menu_a" to={link.to} exact>{link.name}</NavLink>
-        <img style="display: none;" src={link.url} alt=""/>
-        <img style="display: none;" src={link.urlHover} alt=""/>
       </li>
     ));
   }
