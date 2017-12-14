@@ -31,14 +31,12 @@ window.customize = function() {
     $table.on('reflowed', function(e, $floatContainer) {
       let headHeight = $('tr', this).first().height();
 
-      $floatContainer.parent('.floatThead-wrapper').css('padding-top', headHeight);
+      $floatContainer.parent('.floatThead-wrapper').css({'padding-top': headHeight});
       $(this).css('margin-top', -headHeight);
     });
-
     $table.floatThead({
       scrollContainer: function($table){
         let $container = $table.parents('.js-table-wrapper');
-
         if (!$container.length) {
           $container = $table.parents('.js-dropdown-table-wrapper');
         }
@@ -46,15 +44,16 @@ window.customize = function() {
         return $container;
       },
       position: 'absolute',
-      // debug: true
+      autoReflow: 'true',
+      width: '100px',
+      debug: true
     });
   };
-
   $('.js-table-wrapper table').each(function(index, el) {
     let $table = $(el);
-
     processScrollableTable($table);
   });
+
 
 
   /*
@@ -358,7 +357,7 @@ class App extends React.Component {
 const MainRouter = () => (
   <BrowserRouter>
     <Container className="main-panel" fluid>
-      <Row noGutters>
+      <Row noGutters className='flex-wrap flex-md-nowrap'>
         <Navigation />
         <MainContent />
       </Row>
