@@ -108,7 +108,7 @@ class OrdersTable extends React.Component {
 
 const OpenOrder = ({order, onOrderCancel}) => (
   <tr className={order.type}>
-    <td>
+    <td className="text-capitalize">
       <span className="round"></span> {order.type}
     </td>
     <td>{formatDate(new Date(order.dateOpened))}</td>
@@ -123,7 +123,7 @@ const OpenOrder = ({order, onOrderCancel}) => (
 
 const CompletedOrder = ({order}) => (
   <tr className={order.type}>
-    <td>
+    <td className="text-capitalize">
       <span className="round"></span> {order.type}
     </td>
     <td>{formatDate(new Date(order.dateOpened))}</td>

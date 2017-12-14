@@ -1,6 +1,12 @@
 import React from 'react';
 
 class HistoryTable extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+  }
+
   render() {
     return (
       <div className="history-main__block">
@@ -17,279 +23,53 @@ class HistoryTable extends React.Component {
               </tr>
             </thead>
             <tbody>
-              <tr className='buy'>
-                <td>ETH/BTC</td>
-                <td><span className="round"></span> Buy</td>
-                <td>0.000112349</td>
-                <td>21433.57356766</td>
-                <td>12.0249235 BTC</td>
-                <td>11.21.2017 13:48:23</td>
-              </tr>
-              <tr className='sell'>
-                <td>ETH/BTC</td>
-                <td><span className="round"></span> Sell</td>
-
-                <td>0.000112349</td>
-                <td>21433.57356766</td>
-                <td>12.0249235 BTC</td>
-                <td>11.21.2017 13:48:23</td>
-              </tr>
-              <tr className='sell'>
-                <td>ETH/BTC</td>
-                <td><span className="round"></span> Sell</td>
-
-                <td>—</td>
-                <td>21433.57356766</td>
-                <td>12.0249235 BTC</td>
-                <td>11.21.2017 13:48:23</td>
-              </tr>
-              <tr className='buy'>
-                <td>ETH/BTC</td>
-                <td><span className="round"></span> Buy</td>
-                <td>0.000112349</td>
-                <td>21433.57356766</td>
-                <td>12.0249235 BTC</td>
-                <td>11.21.2017 13:48:23</td>
-              </tr>
-              <tr className='sell'>
-                <td>ETH/BTC</td>
-                <td><span className="round"></span> Sell</td>
-
-                <td>0.000112349</td>
-                <td>21433.57356766</td>
-                <td>12.0249235 BTC</td>
-                <td>11.21.2017 13:48:23</td>
-              </tr>
-              <tr className='sell'>
-                <td>ETH/BTC</td>
-                <td><span className="round"></span> Sell</td>
-
-                <td>—</td>
-                <td>21433.57356766</td>
-                <td>12.0249235 BTC</td>
-                <td>11.21.2017 13:48:23</td>
-              </tr>
-              <tr className='buy'>
-                <td>ETH/BTC</td>
-                <td><span className="round"></span> Buy</td>
-                <td>0.000112349</td>
-                <td>21433.57356766</td>
-                <td>12.0249235 BTC</td>
-                <td>11.21.2017 13:48:23</td>
-              </tr>
-              <tr className='sell'>
-                <td>ETH/BTC</td>
-                <td><span className="round"></span> Sell</td>
-
-                <td>0.000112349</td>
-                <td>21433.57356766</td>
-                <td>12.0249235 BTC</td>
-                <td>11.21.2017 13:48:23</td>
-              </tr>
-              <tr className='sell'>
-                <td>ETH/BTC</td>
-                <td><span className="round"></span> Sell</td>
-
-                <td>—</td>
-                <td>21433.57356766</td>
-                <td>12.0249235 BTC</td>
-                <td>11.21.2017 13:48:23</td>
-              </tr>
-              <tr className='sell'>
-                <td>ETH/BTC</td>
-                <td><span className="round"></span> Sell</td>
-
-                <td>—</td>
-                <td>21433.57356766</td>
-                <td>12.0249235 BTC</td>
-                <td>11.21.2017 13:48:23</td>
-              </tr>
-              <tr className='sell'>
-                <td>ETH/BTC</td>
-                <td><span className="round"></span> Sell</td>
-
-                <td>—</td>
-                <td>21433.57356766</td>
-                <td>12.0249235 BTC</td>
-                <td>11.21.2017 13:48:23</td>
-              </tr>
-              <tr className='sell'>
-                <td>ETH/BTC</td>
-                <td><span className="round"></span> Sell</td>
-
-                <td>—</td>
-                <td>21433.57356766</td>
-                <td>12.0249235 BTC</td>
-                <td>11.21.2017 13:48:23</td>
-              </tr>
-              <tr className='sell'>
-                <td>ETH/BTC</td>
-                <td><span className="round"></span> Sell</td>
-
-                <td>—</td>
-                <td>21433.57356766</td>
-                <td>12.0249235 BTC</td>
-                <td>11.21.2017 13:48:23</td>
-              </tr>
-              <tr className='sell'>
-                <td>ETH/BTC</td>
-                <td><span className="round"></span> Sell</td>
-
-                <td>—</td>
-                <td>21433.57356766</td>
-                <td>12.0249235 BTC</td>
-                <td>11.21.2017 13:48:23</td>
-              </tr>
-              <tr className='sell'>
-                <td>ETH/BTC</td>
-                <td><span className="round"></span> Sell</td>
-
-                <td>—</td>
-                <td>21433.57356766</td>
-                <td>12.0249235 BTC</td>
-                <td>11.21.2017 13:48:23</td>
-              </tr>
-              <tr className='sell'>
-                <td>ETH/BTC</td>
-                <td><span className="round"></span> Sell</td>
-
-                <td>—</td>
-                <td>21433.57356766</td>
-                <td>12.0249235 BTC</td>
-                <td>11.21.2017 13:48:23</td>
-              </tr>
-              <tr className='sell'>
-                <td>ETH/BTC</td>
-                <td><span className="round"></span> Sell</td>
-
-                <td>—</td>
-                <td>21433.57356766</td>
-                <td>12.0249235 BTC</td>
-                <td>11.21.2017 13:48:23</td>
-              </tr>
-              <tr className='sell'>
-                <td>ETH/BTC</td>
-                <td><span className="round"></span> Sell</td>
-
-                <td>—</td>
-                <td>21433.57356766</td>
-                <td>12.0249235 BTC</td>
-                <td>11.21.2017 13:48:23</td>
-              </tr>
-              <tr className='sell'>
-                <td>ETH/BTC</td>
-                <td><span className="round"></span> Sell</td>
-
-                <td>—</td>
-                <td>21433.57356766</td>
-                <td>12.0249235 BTC</td>
-                <td>11.21.2017 13:48:23</td>
-              </tr>
-              <tr className='sell'>
-                <td>ETH/BTC</td>
-                <td><span className="round"></span> Sell</td>
-
-                <td>—</td>
-                <td>21433.57356766</td>
-                <td>12.0249235 BTC</td>
-                <td>11.21.2017 13:48:23</td>
-              </tr>
-              <tr className='sell'>
-                <td>ETH/BTC</td>
-                <td><span className="round"></span> Sell</td>
-
-                <td>—</td>
-                <td>21433.57356766</td>
-                <td>12.0249235 BTC</td>
-                <td>11.21.2017 13:48:23</td>
-              </tr>
-              <tr className='sell'>
-                <td>ETH/BTC</td>
-                <td><span className="round"></span> Sell</td>
-
-                <td>—</td>
-                <td>21433.57356766</td>
-                <td>12.0249235 BTC</td>
-                <td>11.21.2017 13:48:23</td>
-              </tr>
-              <tr className='sell'>
-                <td>ETH/BTC</td>
-                <td><span className="round"></span> Sell</td>
-
-                <td>—</td>
-                <td>21433.57356766</td>
-                <td>12.0249235 BTC</td>
-                <td>11.21.2017 13:48:23</td>
-              </tr>
-              <tr className='sell'>
-                <td>ETH/BTC</td>
-                <td><span className="round"></span> Sell</td>
-
-                <td>—</td>
-                <td>21433.57356766</td>
-                <td>12.0249235 BTC</td>
-                <td>11.21.2017 13:48:23</td>
-              </tr>
-              <tr className='sell'>
-                <td>ETH/BTC</td>
-                <td><span className="round"></span> Sell</td>
-
-                <td>—</td>
-                <td>21433.57356766</td>
-                <td>12.0249235 BTC</td>
-                <td>11.21.2017 13:48:23</td>
-              </tr>
-              <tr className='sell'>
-                <td>ETH/BTC</td>
-                <td><span className="round"></span> Sell</td>
-
-                <td>—</td>
-                <td>21433.57356766</td>
-                <td>12.0249235 BTC</td>
-                <td>11.21.2017 13:48:23</td>
-              </tr>
-              <tr className='sell'>
-                <td>ETH/BTC</td>
-                <td><span className="round"></span> Sell</td>
-
-                <td>—</td>
-                <td>21433.57356766</td>
-                <td>12.0249235 BTC</td>
-                <td>11.21.2017 13:48:23</td>
-              </tr>
-              <tr className='sell'>
-                <td>ETH/BTC</td>
-                <td><span className="round"></span> Sell</td>
-
-                <td>—</td>
-                <td>21433.57356766</td>
-                <td>12.0249235 BTC</td>
-                <td>11.21.2017 13:48:23</td>
-              </tr>
-              <tr className='sell'>
-                <td>ETH/BTC</td>
-                <td><span className="round"></span> Sell</td>
-
-                <td>—</td>
-                <td>21433.57356766</td>
-                <td>12.0249235 BTC</td>
-                <td>11.21.2017 13:48:23</td>
-              </tr>
-              <tr className='sell'>
-                <td>ETH/BTC</td>
-                <td><span className="round"></span> Sell</td>
-
-                <td>—</td>
-                <td>21433.57356766</td>
-                <td>12.0249235 BTC</td>
-                <td>11.21.2017 13:48:23</td>
-              </tr>
+                    {this.props.history.map(o => (
+                      <OpenHistory
+                        key={o._id}
+                        history={o}
+                      />
+                    ))}
             </tbody>
           </table>
         </div>
       </div>
     );
   }
+};
+
+
+const OpenHistory = ({history}) => (
+  <tr className={history.type}>
+
+    <td>{history.market}</td>
+    <td className="text-capitalize">
+      <span className="round"></span> {history.type}
+    </td>    
+    <td>{history.price}</td>    
+    <td>{history.amount}</td>    
+    <td>{history.total}</td>    
+    <td>{formatDate(new Date(history.dateOpened))}</td>
+  </tr>
+);
+
+function formatDate(date) {
+    console.log(typeof date);
+    console.log(date);
+    let year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+    let hour = padDate(date.getHours());
+    let minute = padDate(date.getMinutes());
+    let second = padDate(date.getSeconds());
+    year = padDate(year);
+    month = padDate(month);
+    day = padDate(day);
+    return day + '.' + month + '.' + year + ' ' + hour + ':' + minute + ':' + second;
+}
+
+
+function padDate(number) {
+  return number < 10 ? '0' + number : number;
 };
 
 export default HistoryTable;
