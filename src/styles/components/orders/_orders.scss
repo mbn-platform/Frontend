@@ -12,9 +12,9 @@
 	}
 	&-table-wrap{
 		flex: 1 1 auto;
-    overflow: scroll;
-  	max-height: 100%;
-  	height: 500px;
+	    overflow: scroll;
+	  	max-height: 100%;
+	  	height: 540px;
 		margin-bottom: 30px;
 		min-height: 60vh;
 		.table {
@@ -34,16 +34,16 @@
 		}
 	}
 	&-main{
-		padding: 20px!important;
+		margin: 20px!important;
 		display: flex;
 		flex-direction: column;
-    height: calc(100% - 50px)!important;
-    &__top{
-    	margin-bottom: 10px;
-    	.dropdowns{
-    		margin: 0!important;
-    	}
-    }
+    	height: 717px!important;
+	    &__top{
+	    	margin-bottom: 10px;
+	    	.dropdowns{
+	    		margin: 0!important;
+	    	}
+	    }
 		&__title{
 			font-size: 22px;
 			font-weight: 500;
@@ -167,6 +167,7 @@
 @include media-breakpoint-down(xs) {
 	.orders {
 		&-main {
+			margin: 0px!important;
 			padding: 10px !important;
 			height: auto !important;
 

@@ -10,6 +10,7 @@ import RecentTrades from './RecentTrades';
 import OrderBook from './OrderBook';
 import { connect } from 'react-redux';
 import { selectApiKey, cancelOrder, selectMarket } from '../actions/terminal';
+import MediaQuery from 'react-responsive';
 
 class Terminal extends React.Component {
 
@@ -42,17 +43,32 @@ class Terminal extends React.Component {
                     <PlaceOrder
                       market={this.props.selectedMarket}
                     />
-                    <MyOrders
-                      orders={this.props.orders}
-                      cancelOrder={this.props.cancelOrder}
-                    />
+                    <MediaQuery query="(min-width: 576px)">
+                      <MyOrders
+                        orders={this.props.orders}
+                        cancelOrder={this.props.cancelOrder}
+                      />
+                    </MediaQuery>
+                    <MediaQuery query="(max-width: 575px)">
+                      <OrderBook
+                        market={this.props.selectedMarket}
+                      />
+                    </MediaQuery>
                   </Row>
                 </Col>
                 <Col xs="12" sm="12" md="6" lg="4">
                   <Row>
-                    <OrderBook
-                      market={this.props.selectedMarket}
-                    />
+                    <MediaQuery query="(min-width: 576px)">
+                      <OrderBook
+                        market={this.props.selectedMarket}
+                      />
+                    </MediaQuery>
+                    <MediaQuery query="(max-width: 575px)">
+                      <MyOrders
+                        orders={this.props.orders}
+                        cancelOrder={this.props.cancelOrder}
+                      />
+                    </MediaQuery>
                     <RecentTrades
                       market={this.props.selectedMarket}
                     />

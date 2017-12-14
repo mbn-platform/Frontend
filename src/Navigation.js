@@ -2,6 +2,18 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import Logo from './img/MainLogo.svg';
 import LogoMobile from './img/HeaderLogoBigMobile.svg';
+import DashboardIcon from './img/MenuIconDashboard.svg';
+import DashboardIconHover from './img/MenuIconDashboardHover.svg';
+import ProfileIcon from './img/profile.svg';
+import ProfileIconHover from './img/profile_hover.svg';
+import TermianlIcon from './assets/svg/terminal.svg';
+import TermianlIconHover from './assets/svg/terminal_hover.svg';
+import OrdersIcon from './assets/svg/orders.svg';
+import OrdersIconHover from './assets/svg/orders_hover.svg';
+import HistoryIcon from './assets/svg/history.svg';
+import HistoryIconHover from './assets/svg/history_hover.svg';
+import RaitingIcon from './img/MenuIconRatings.svg';
+import RaitingIconHover from './img/MenuIconRatingsHover.svg';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { Navbar, NavbarToggler, NavbarBrand, Nav, Collapse, Col } from 'reactstrap';
@@ -33,7 +45,7 @@ class Navigation extends React.Component {
   }
   render() {
     return (
-      <Col xs="12" md="auto" className="d-block d-md-block menu-panel ">
+      <Col xs="12" md="auto" className="d-block menu-panel">
         <Navbar expand="md"  >
           <NavbarBrand className="d-inline-block d-md-none" tag="div">
             <img src={LogoMobile} alt=""/>
@@ -60,7 +72,7 @@ class Navigation extends React.Component {
     );
   }
 
-  getBar({name, to, imgClass}) {
+  getBar({name, to, imgClass, icon, iconHover}) {
     return (
       <NavLink to={to} key={name} className="nav-link">
         <Container className="h-100" fluid >
@@ -69,7 +81,8 @@ class Navigation extends React.Component {
               <Container fluid className="align-middle">
                 <Row>
                   <Col xs="3" md="12" className="d-flex justify-content-end justify-content-md-center">
-                    <div className={classNames(imgClass, 'image')} />
+                    <img class='image_menu image' src={icon} alt=""/>
+                    <img class='image_menu_hover image' src={iconHover} alt=""/>
                   </Col>
                   <Col xs="auto" className="d-flex d-md-none">
                     <div className="gap"/>
@@ -106,12 +119,48 @@ class Navigation extends React.Component {
 
   getLinks() {
     return [
-      {name: 'Dashboard', to: '/dashboard', imgClass: 'dashboard'},
-      {name: 'Profile', to: this.props.auth.profile ? '/' + this.props.auth.profile.name : '/profile', imgClass: 'profile'},
-      {name: 'Terminal', to: '/terminal', imgClass: 'terminal'},
-      {name: 'Orders', to: '/orders', imgClass: 'orders'},
-      {name: 'History', to: '/history', imgClass: 'history'},
-      {name: 'Ratings', to: '/ratings', imgClass: 'ratings'},
+      {
+        name: 'Dashboard', 
+        to: '/dashboard', 
+        imgClass: 'dashboard',
+        icon: DashboardIcon,
+        iconHover: DashboardIconHover
+      },
+      {
+        name: 'Profile', 
+        to: this.props.auth.profile ? '/' + this.props.auth.profile.name : '/profile', 
+        imgClass: 'profile',
+        icon: ProfileIcon,
+        iconHover: ProfileIconHover
+      },
+      {
+        name: 'Terminal', 
+        to: '/terminal', 
+        imgClass: 'terminal',
+        icon: TermianlIcon,
+        iconHover: TermianlIconHover
+      },
+      {
+        name: 'Orders', 
+        to: '/orders', 
+        imgClass: 'orders',
+        icon: OrdersIcon,
+        iconHover: OrdersIconHover
+      },
+      {
+        name: 'History', 
+        to: '/history', 
+        imgClass: 'history',
+        icon: HistoryIcon,
+        iconHover: HistoryIconHover
+      },
+      {
+        name: 'Ratings', 
+        to: '/ratings', 
+        imgClass: 'ratings',
+        icon: RaitingIcon,
+        iconHover: RaitingIconHover
+      },
     ];
   }
 

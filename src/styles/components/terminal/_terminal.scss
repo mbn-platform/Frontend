@@ -399,6 +399,8 @@
 						height: 100%;
 						padding: 5px 10px;
 						width: 25%;
+						overflow: hidden;
+						text-overflow: ellipsis;						
 					}
 					// th{
 					// 	padding: 5px 15px;
@@ -515,8 +517,11 @@
 		
 	}
 	.terminal{ 
+		.orderbook-table {
+			margin-bottom: 0 !important;
+		}		
 		.orders-table{ 
-			margin-bottom: 0!important;
+			// margin-bottom: 0!important;
 			.table {
 				table-layout: auto !important;
 				min-width: auto !important;
@@ -565,11 +570,22 @@
 	}
 }
 
+@media (max-width: 575px) {
+	.terminal-main {
+		.charts	{
+			.buysell {
+				flex: 0 0 100%;
+			}	
+		}
+	}  
+}
+
 @media (min-width: 576px) {
 
-	.buysell{
-			margin-right: 10px;
+	.buysell {
+		margin-right: 10px;
 	}
+
 	.orderbook-table{
 	    margin-right: 10px;
 	    tbody{
@@ -596,6 +612,10 @@
 	// .dropdown-link-wrap{
 	// 	position: relative;
 	// }
+
+}
+
+@media (min-width: 833px) {
 	.balance.row:last-child:before{
 		content: '';
 		display: block;
@@ -612,12 +632,38 @@
 		.balance-wrap{
 			width: auto;
 		}
-	}
+	}	
+
 }
 @media (min-width: 992px) {
 	.orderbook-table{
 	    margin-right: 0;
 
+	}
+}
+
+
+@media (max-width: 832px) {
+	.header-status {
+		height: 70px;
+		margin-top: 10px;
+		padding: 0;
+
+		.curses {
+			padding: 10px 0 0 !important;
+		}
+
+		.balance {
+			&-wrap {
+				margin-right: 0;
+			}
+
+			&-title {
+				width: 100%;
+				margin-right: 0;
+				text-align: center;
+			}
+		}
 	}
 }
 

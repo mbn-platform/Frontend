@@ -19,7 +19,7 @@ class HeaderStatus extends React.Component {
       <header className="header-status">
         <Container fluid className="h-100">
           <Row className="h-100 justify-content-between">
-            <Col xs="8" sm="8" md="6" lg="6" xl="4" className="curses-wrap row">
+            <Col xs="8" sm="8" md="8" lg="7" xl="4" className="curses-wrap row">
               <Rate
                 pair="BTC/USD"
                 val={this.state['USDT-BTC'].Last ? Math.floor(this.state['USDT-BTC'].Last) : ''}
@@ -32,7 +32,7 @@ class HeaderStatus extends React.Component {
               />
               <Rate
                 pair="BTC/ETH"
-                val={this.state['BTC-ETH'].Last ? this.state['BTC-ETH'].Last.toFixed(5) : ''}
+                val={this.state['BTC-ETH'].Last ? parseFloat(this.state['BTC-ETH'].Last.toFixed(4)) : ''}
                 change={this.state['BTC-ETH'].last}
               />
             </Col>
@@ -89,7 +89,7 @@ const Rate = ({ pair, val, change }) => (
 );
 
 const Balance = ({first, second}) => (
-  <Col xs="4" sm="4" md="3" lg="3" xl="2" className="row justify-content-end align-items-center">
+  <Col xs="4" sm="4" md="4" lg="3" xl="2" className="row justify-content-end align-items-center">
     <div className="balance-title"> BALANCE:</div>
     <div className="balance-wrap">
       <BalanceValue {...first} />
