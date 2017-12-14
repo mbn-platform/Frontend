@@ -286,30 +286,6 @@ window.customize = function() {
   }
   }).trigger('resize');
 
-  //tabs switchers
-  $('.orders-main__block').find('.block__top-switch').on('click', function(e) {
-    e.preventDefault();
-    var container = $('.orders-main__block'),
-      tabs = container.find('.orders-tabs'),
-      tabOpen = tabs.find('.orders-open'),
-      tabCompl = tabs.find('.orders-completed');
-
-    if($(this).hasClass('orders-open')){
-      $(this).addClass('active')
-        .siblings().removeClass('active');
-      tabOpen.addClass('active')
-        .siblings().removeClass('active');
-    }
-    else if ($(this).hasClass('orders-completed')){
-      $(this).addClass('active')
-        .siblings().removeClass('active');
-      tabCompl.addClass('active')
-        .siblings().removeClass('active');
-    }
-
-    $('.js-table-wrapper table').floatThead('reflow');
-  });
-
   $('.ratings-main__block').find('.block__top-switch').on('click', function(e) {
     e.preventDefault();
     var container = $('.ratings-main__block'),

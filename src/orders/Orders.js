@@ -4,7 +4,7 @@ import HeaderStatus from '../terminal/HeaderStatus';
 import Controls from './Controls';
 import OrdersTable from './OrdersTable';
 import { connect } from 'react-redux';
-import { selectApiKey } from '../actions/terminal';
+import { selectApiKey, cancelOrder } from '../actions/terminal';
 
 class Orders extends React.Component {
 
@@ -25,7 +25,10 @@ class Orders extends React.Component {
                   onApiKeySelect={key => this.props.selectApiKey(key)}
                 />
               </div>
-              <OrdersTable />
+              <OrdersTable
+                orders={this.props.orders}
+                cancelOrder={this.props.cancelOrder}
+              />
             </div>
           </Col>
         </Row>
@@ -44,8 +47,10 @@ class Orders extends React.Component {
 const OrdersContainer = connect(state => ({
   apiKeys: state.apiKeys,
   selectedApiKey: state.terminal.selectedApiKey,
+  orders: state.terminal.orders,
 }), dispatch => ({
   selectApiKey: key => dispatch(selectApiKey(key)),
+  cancelOrder: order => dispatch(cancelOrder(order)),
 }))(Orders);
 
 export default OrdersContainer;
