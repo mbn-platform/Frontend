@@ -52,15 +52,19 @@
 			background-color: rgba(58, 62, 66,.7) !important;
 			color: #e1e1e1 !important;		
 		}
+		.image_menu {
+			display: none;
+		}
+		.image_menu_hover {
+			display: block;
+		}			
 	}
-	.nav-link.active {
-		.dashboard {
-			background-image: url(../img/MenuIconDashboardHover.svg);
-		}	
-		.ratings {
-			background-image: url(../img/MenuIconRatingsHover.svg);
-		}				
+	.image_menu {
+		display: block;
 	}
+	.image_menu_hover {
+		display: none;
+	}	
 
 
 	.show > .nav-pills .nav-link {
@@ -79,24 +83,7 @@
 		background-repeat: no-repeat;
 
 	}
-	.profile {
-		background-image: url(../img/MenuIconProfile.png);
-	}
-	.terminal {
-		background-image: url(../img/terminal.svg);
-	}
-	.ratings {
-		background-image: url(../img/MenuIconRatings.svg);
-	}
-	.orders {
-		background-image: url(../img/orders.svg);
-	}
-	.history {
-		background-image: url(../img/history.svg);
-	}
-	.dashboard {
-		background-image: url(../img/MenuIconDashboard.svg);
-	}
+
 }
 
 .no-gutters {
