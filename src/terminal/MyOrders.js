@@ -144,8 +144,6 @@ function padDate(number) {
 };
 
 function formatDate(date) {
-    console.log(typeof date);
-    console.log(date);
     let year = date.getFullYear();
     let month = date.getMonth() + 1;
     let day = date.getDate();
