@@ -49,8 +49,8 @@ export default function generateData() {
       finishedContracts.push(contract);
     }
   }
-  const terminal = {};
   const orders = generateOrders();
+  const terminal = {selectedMarket: 'USDT-BTC', orders};
 
 
 
@@ -68,7 +68,7 @@ export default function generateData() {
     apiKeys,
     offers: {incoming: incomingOffers, outgoing: outgoingOffers},
     contracts: {current: myActiveContracts.concat(myContracts), finished: finishedContracts},
-    terminal: {orders},
+    terminal,
   };
 }
 

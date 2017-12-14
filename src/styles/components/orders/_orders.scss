@@ -129,11 +129,13 @@
 						vertical-align: middle;
 					}
 				&.buy{
+					text-transform: uppercase;
 					.round{
 						background-color: #32B994;
 					}
 				}
 				&.sell{
+					text-transform: uppercase;
 					.round{
 						background-color: #D74C4C;
 					}

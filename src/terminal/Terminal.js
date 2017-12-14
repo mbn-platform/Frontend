@@ -9,20 +9,12 @@ import MyOrders from './MyOrders';
 import RecentTrades from './RecentTrades';
 import OrderBook from './OrderBook';
 import { connect } from 'react-redux';
-import { selectApiKey, cancelOrder } from '../actions/terminal';
+import { selectApiKey, cancelOrder, selectMarket } from '../actions/terminal';
 
 class Terminal extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      market: 'USDT-BTC',
-    };
-    this.onMarketSelect = this.onMarketSelect.bind(this);
-  }
-
-  onMarketSelect(market) {
-    this.setState({market});
   }
 
   render() {
@@ -32,15 +24,15 @@ class Terminal extends React.Component {
           <Col xs="12" sm="12" md="12" lg="12">
             <HeaderStatus
               apiKey={this.props.selectedApiKey}
-              market={this.state.market}
+              market={this.props.selectedMarket}
             />
             <div className="terminal-main">
               <Controls
-                market={this.state.market}
+                market={this.props.selectedMarket}
                 apiKeys={[...this.props.apiKeys.ownKeys, ...this.props.apiKeys.receivedKeys]}
                 selectedApiKey={this.props.selectedApiKey}
                 onApiKeySelect={key => this.props.selectApiKey(key)}
-                onMarketSelect={this.onMarketSelect}
+                onMarketSelect={this.props.selecteMarket}
               />
               <Row className="charts">
                 <Col xs="12" sm="12" md="6" lg="8" className="charts__left">
@@ -48,7 +40,7 @@ class Terminal extends React.Component {
                   <MarketDepth />
                   <Row className="justify-content-between">
                     <PlaceOrder
-                      market={this.state.market}
+                      market={this.props.selectedMarket}
                     />
                     <MyOrders
                       orders={this.props.orders}
@@ -59,10 +51,10 @@ class Terminal extends React.Component {
                 <Col xs="12" sm="12" md="6" lg="4">
                   <Row>
                     <OrderBook
-                      market={this.state.market}
+                      market={this.props.selectedMarket}
                     />
                     <RecentTrades
-                      market={this.state.market}
+                      market={this.props.selectedMarket}
                     />
                   </Row>
                 </Col>
@@ -90,9 +82,11 @@ class Terminal extends React.Component {
 const TerminalContainer = connect(state => ({
   apiKeys: state.apiKeys,
   selectedApiKey: state.terminal.selectedApiKey,
+  selectedMarket: state.terminal.selectedMarket,
   orders: state.terminal.orders,
 }), dispatch => ({
   selectApiKey: key => dispatch(selectApiKey(key)),
   cancelOrder: order => dispatch(cancelOrder(order)),
+  selecteMarket: market => dispatch(selectMarket(market)),
 }))(Terminal);
 export default TerminalContainer;

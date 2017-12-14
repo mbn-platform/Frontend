@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import $ from 'jquery';
 
 const TAB_OPEN_ORDERS = 0;
 const TAB_COMPLETED_ORDERS = 1;
@@ -8,13 +9,14 @@ class MyOrders extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {tab: TAB_COMPLETED_ORDERS};
+    this.state = {tab: TAB_OPEN_ORDERS};
     this.onTabClick = this.onTabClick.bind(this);
   }
 
   onTabClick(tab) {
     if(this.state.tab !== tab) {
       this.setState({tab});
+      $('.js-table-wrapper table').floatThead('reflow');
     }
   }
 
@@ -61,6 +63,7 @@ class MyOrders extends React.Component {
                     {this.props.orders.open.map(o => (
                       <OpenOrder
                         onOrderCancel={this.props.cancelOrder}
+                        key={o._id}
                         order={o}
                       />
                     ))}
@@ -76,28 +79,23 @@ class MyOrders extends React.Component {
                 <table className="table">
                   <thead>
                     <tr>
-                      <th>Type <span className="icon-dir icon-down-dir"></span>
-                      </th>
-                      <th>Opened <span className="hide-mobile">Date</span>
-                        <span className="icon-dir icon-down-dir"></span>
-                      </th>
-                      <th>Market <span className="icon-dir icon-down-dir"></span>
-                      </th>
-                      <th>Price <span className="icon-dir icon-down-dir"></span>
-                      </th>
-                      <th>Units Total <span className="icon-dir icon-down-dir"></span>
-                      </th>
-                      <th>Units Filed
-                        <span className="icon-dir icon-down-dir"></span></th>
+                      <th>Type <span className="icon-dir icon-down-dir"></span></th>
+                      <th>Opened <span className="hide-mobile">Date</span> <span className="icon-dir icon-down-dir"></span></th>
+                      <th>Market <span className="icon-dir icon-down-dir"></span></th>
+                      <th>Price <span className="icon-dir icon-down-dir"></span></th>
+                      <th>Units Filed <span className="icon-dir icon-down-dir"></span></th>
+                      <th>Units Total <span className="icon-dir icon-down-dir"></span></th>
                       <th><span className="hide-mobile">Estimated</span><span className="show-mobile">Est.</span> Total <span className="icon-dir icon-down-dir"></span></th>
                       <th className="hide-mobile"></th>
-
                     </tr>
                   </thead>
                   <tbody>
-                    {this.props.orders.completed.map(o => <CompletedOrder
-                      order={o}
-                    />)}
+                    {this.props.orders.completed.map(o => (
+                      <CompletedOrder
+                        key={o._id}
+                        order={o}
+                      />
+                    ))}
                   </tbody>
                 </table>
               </div>
@@ -111,33 +109,49 @@ class MyOrders extends React.Component {
   }
 }
 
-const OpenOrder = props => (
-  <tr className='buy'>
+const OpenOrder = ({order, onOrderCancel}) => (
+  <tr className={order.type}>
     <td>
-      <span className="round"></span> Buy
+      <span className="round"></span> {order.type}
     </td>
-    <td>11.21.2017</td>
-    <td>ETH/BTC</td>
-    <td>0.156</td>
-    <td>0.00</td>
-    <td>12.0249235</td>
-    <td className="ellipsis-cell">12.0249235</td>
-    <td onClick={() => props.onOrderCancel(props.order)} className="hide-mobile"><span className="remove"></span></td>
+    <td>{formatDate(new Date(order.dateOpened))}</td>
+    <td>{order.market}</td>
+    <td>{order.price}</td>
+    <td>{order.unitsFilled}</td>
+    <td>{order.unitsTotal}</td>
+    <td className="ellipsis-cell">{order.price * order.unitsTotal}</td>
+    <td onClick={() => onOrderCancel(order)} className="hide-mobile"><span className="remove"></span></td>
   </tr>
 );
 
-const CompletedOrder = props => (
-  <tr className='buy'>
+const CompletedOrder = ({order}) => (
+  <tr className={order.type}>
     <td>
-      <span className="round"></span> Buy
+      <span className="round"></span> {order.type}
     </td>
-    <td>11.21.2017</td>
-    <td>ETH/BTC</td>
-    <td>0.156</td>
-    <td>12.0249235</td>
-    <td>0.00</td>
-    <td className="ellipsis-cell">12.0249235</td>
+    <td>{formatDate(new Date(order.dateOpened))}</td>
+    <td>{order.market}</td>
+    <td>{order.price}</td>
+    <td>{order.unitsFilled}</td>
+    <td>{order.unitsTotal}</td>
+    <td className="ellipsis-cell">{order.price * order.unitsTotal}</td>
   </tr>
-);
+)
 
+
+function padDate(number) {
+  return number < 10 ? '0' + number : number;
+};
+
+function formatDate(date) {
+    console.log(typeof date);
+    console.log(date);
+    let year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+    year = padDate(year);
+    month = padDate(month);
+    day = padDate(day);
+    return day + '.' + month + '.' + year;
+}
 export default MyOrders;

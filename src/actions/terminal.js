@@ -1,5 +1,6 @@
 export const SELECT_API_KEY = 'SELECT_API_KEY';
 export const CANCEL_ORDER = 'CANCEL_ORDER';
+export const SELECT_MARKET = 'SELECT_MARKET';
 
 export function selectApiKey(key) {
   return {
@@ -13,6 +14,13 @@ export function cancelOrder(order) {
   return {
     type: CANCEL_ORDER,
     order
+  };
+}
+
+export function selectMarket(market) {
+  return {
+    type: SELECT_MARKET,
+    market,
   };
 }
  

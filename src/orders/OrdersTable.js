@@ -20,10 +20,6 @@ class OrdersTable extends React.Component {
     }
   };
 
-  componentDidUpdate() {
-    $('.js-table-wrapper table').floatThead('reflow');
-  }
-
   render() {
     return (
       <div className="orders-main__block">
@@ -61,6 +57,7 @@ class OrdersTable extends React.Component {
                   <tbody>
                     {this.props.orders.open.map(o => (
                       <OpenOrder
+                        key={o._id}
                         onOrderCancel={this.props.cancelOrder}
                         order={o}
                       />
@@ -94,6 +91,7 @@ class OrdersTable extends React.Component {
                   </thead>
                   <tbody>
                     {this.props.orders.completed.map(o => <CompletedOrder
+                      key={o._id}
                       order={o}
                     />)}
                   </tbody>
@@ -107,33 +105,48 @@ class OrdersTable extends React.Component {
   }
 }
 
-const OpenOrder = props => (
-  <tr className='buy'>
+const OpenOrder = ({order, onOrderCancel}) => (
+  <tr className={order.type}>
     <td>
-      <span className="round"></span> Buy
+      <span className="round"></span> {order.type}
     </td>
-    <td>11.21.2017</td>
-    <td>ETH/BTC</td>
-    <td>0.156</td>
-    <td>0.00</td>
-    <td>12.0249235</td>
-    <td className="ellipsis-cell">12.0249235</td>
-    <td onClick={() => props.onOrderCancel(props.order)} className="hide-mobile"><span className="remove"></span></td>
+    <td>{formatDate(new Date(order.dateOpened))}</td>
+    <td>{order.market}</td>
+    <td>{order.price}</td>
+    <td>{order.unitsFilled}</td>
+    <td>{order.unitsTotal}</td>
+    <td className="ellipsis-cell">{order.price * order.unitsTotal}</td>
+    <td onClick={() => onOrderCancel(order)} className="hide-mobile"><span className="remove"></span></td>
   </tr>
 );
 
-const CompletedOrder = props => (
-  <tr className='buy'>
+const CompletedOrder = ({order}) => (
+  <tr className={order.type}>
     <td>
-      <span className="round"></span> Buy
+      <span className="round"></span> {order.type}
     </td>
-    <td>11.21.2017</td>
-    <td>ETH/BTC</td>
-    <td>0.156</td>
-    <td>12.024</td>
-    <td>0.00</td>
-    <td className="ellipsis-cell">12.0249235</td>
+    <td>{formatDate(new Date(order.dateOpened))}</td>
+    <td>{order.market}</td>
+    <td>{order.price}</td>
+    <td>{order.unitsFilled}</td>
+    <td>{order.unitsTotal}</td>
+    <td className="ellipsis-cell">{order.price * order.unitsTotal}</td>
   </tr>
-);
+)
 
+function padDate(number) {
+  return number < 10 ? '0' + number : number;
+};
+
+function formatDate(date) {
+    console.log(typeof date);
+    console.log(date);
+    let year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+    year = padDate(year);
+    month = padDate(month);
+    day = padDate(day);
+    return day + '.' + month + '.' + year;
+}
 export default OrdersTable;

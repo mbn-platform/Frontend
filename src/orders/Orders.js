@@ -13,7 +13,10 @@ class Orders extends React.Component {
       <Container fluid className="orders">
         <Row>
           <Col xs="12" sm="12" md="12" lg="12">
-            <HeaderStatus />
+            <HeaderStatus
+              apiKey={this.props.selectedApiKey}
+              market={this.props.selectedMarket}
+            />
             <div className="orders-main">
               <div className="orders-main__top">
                 <div className="row  align-items-center">
@@ -37,6 +40,10 @@ class Orders extends React.Component {
   }
   componentDidMount() {
     window.customize();
+    if(!this.props.selectedApiKey) {
+      const key = this.props.apiKeys.ownKeys[0] || this.props.apiKeys.receivedKeys[0];
+      this.props.selectApiKey(key);
+    }
   }
 
   componentWillUnmount() {
@@ -48,6 +55,7 @@ const OrdersContainer = connect(state => ({
   apiKeys: state.apiKeys,
   selectedApiKey: state.terminal.selectedApiKey,
   orders: state.terminal.orders,
+  selectedMarket: state.terminal.selectedMarket,
 }), dispatch => ({
   selectApiKey: key => dispatch(selectApiKey(key)),
   cancelOrder: order => dispatch(cancelOrder(order)),
