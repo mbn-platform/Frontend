@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import $ from 'jquery';
+import { formatFloat } from '../generic/util';
 
 const TAB_OPEN_ORDERS = 0;
 const TAB_COMPLETED_ORDERS = 1;
@@ -115,7 +116,7 @@ const OpenOrder = ({order, onOrderCancel}) => (
     <td>{order.price}</td>
     <td>{order.unitsFilled}</td>
     <td>{order.unitsTotal}</td>
-    <td className="ellipsis-cell">{order.price * order.unitsTotal}</td>
+    <td className="ellipsis-cell">{formatFloat(order.price * order.unitsTotal)}</td>
     <td onClick={() => onOrderCancel(order)} className="hide-mobile"><span className="remove"></span></td>
   </tr>
 );
@@ -130,7 +131,7 @@ const CompletedOrder = ({order}) => (
     <td>{order.price}</td>
     <td>{order.unitsFilled}</td>
     <td>{order.unitsTotal}</td>
-    <td className="ellipsis-cell">{order.price * order.unitsTotal}</td>
+    <td className="ellipsis-cell">{formatFloat(order.price * order.unitsTotal)}</td>
   </tr>
 )
 
@@ -139,8 +140,6 @@ function padDate(number) {
 };
 
 function formatDate(date) {
-    console.log(typeof date);
-    console.log(date);
     let year = date.getFullYear();
     let month = date.getMonth() + 1;
     let day = date.getDate();

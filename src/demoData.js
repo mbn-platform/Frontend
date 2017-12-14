@@ -50,7 +50,7 @@ export default function generateData() {
     }
   }
   const orders = generateOrders();
-  const terminal = {selectedMarket: 'USDT-BTC', orders};
+  const terminal = {selectedMarket: 'USDT-BTC', orders, selectedApiKey: apiKeys.ownKeys[0]};
 
 
 

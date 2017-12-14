@@ -81,8 +81,8 @@ class Navigation extends React.Component {
               <Container fluid className="align-middle">
                 <Row>
                   <Col xs="3" md="12" className="d-flex justify-content-end justify-content-md-center">
-                    <img class='image_menu image' src={icon} alt=""/>
-                    <img class='image_menu_hover image' src={iconHover} alt=""/>
+                    <img className='image_menu image' src={icon} alt=""/>
+                    <img className='image_menu_hover image' src={iconHover} alt=""/>
                   </Col>
                   <Col xs="auto" className="d-flex d-md-none">
                     <div className="gap"/>
@@ -120,43 +120,43 @@ class Navigation extends React.Component {
   getLinks() {
     return [
       {
-        name: 'Dashboard', 
-        to: '/dashboard', 
+        name: 'Dashboard',
+        to: '/dashboard',
         imgClass: 'dashboard',
         icon: DashboardIcon,
         iconHover: DashboardIconHover
       },
       {
-        name: 'Profile', 
-        to: this.props.auth.profile ? '/' + this.props.auth.profile.name : '/profile', 
+        name: 'Profile',
+        to: this.props.auth.profile ? '/' + this.props.auth.profile.name : '/profile',
         imgClass: 'profile',
         icon: ProfileIcon,
         iconHover: ProfileIconHover
       },
       {
-        name: 'Terminal', 
-        to: '/terminal', 
+        name: 'Terminal',
+        to: '/terminal',
         imgClass: 'terminal',
         icon: TermianlIcon,
         iconHover: TermianlIconHover
       },
       {
-        name: 'Orders', 
-        to: '/orders', 
+        name: 'Orders',
+        to: '/orders',
         imgClass: 'orders',
         icon: OrdersIcon,
         iconHover: OrdersIconHover
       },
       {
-        name: 'History', 
-        to: '/history', 
+        name: 'History',
+        to: '/history',
         imgClass: 'history',
         icon: HistoryIcon,
         iconHover: HistoryIconHover
       },
       {
-        name: 'Ratings', 
-        to: '/ratings', 
+        name: 'Ratings',
+        to: '/ratings',
         imgClass: 'ratings',
         icon: RaitingIcon,
         iconHover: RaitingIconHover

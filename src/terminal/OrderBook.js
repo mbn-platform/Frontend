@@ -1,5 +1,6 @@
 import React from 'react';
 import { getOrderBook } from '../api/bittrex/bittrex';
+import { formatFloat } from '../generic/util';
 
 class OrderBook extends React.Component {
 
@@ -102,16 +103,16 @@ function relativeSize(minSize, maxSize, size) {
 }
 
 const BuyOrderCell = ({price, size, relativeSize} ) => {
-  const sizeParts = size.toString().split('.');
+  const sizeParts = formatFloat(size).split('.');
   return (
     <tr>
-      <td>{price}</td>
+      <td>{formatFloat(price)}</td>
       <td>
         <span className="white">{sizeParts[0]}.</span>
         <span>{sizeParts[1]}</span>
       </td>
       <td>
-        {price * size}
+        {formatFloat(price * size)}
       </td>
       <td>
         <span className="dash" style={{width: relativeSize * 100 + '%'}}/>

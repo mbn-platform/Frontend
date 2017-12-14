@@ -28,7 +28,7 @@ class MarketSelect extends React.Component {
     return(
       <div onClick={() => this.setState({isOpen: !this.state.isOpen})} id={this.props.targetId} className="dropdown-link-wrap">
         <div className="dropdown-link">
-          <span>{this.props.selected ? this.props.selected : this.props.header} <span className="arrow_down"/></span>
+          <span>{this.props.selected ? this.props.selected.replace('-', '/') : this.props.header} <span className="arrow_down"/></span>
         </div>
         <Popover
           container=".terminal.container-fluid"
@@ -118,7 +118,7 @@ class MarketTable extends React.Component {
           <span onClick={this.props.close} className="arrow_down"></span>
         </div>
         <form action="" className="dropdown__form">
-          <input value={this.state.filter} type="text" name="filter" onChange={this.onChange} className="input-search" placeholder="Search..."/>
+          <input autocomplete="off" value={this.state.filter} type="text" name="filter" onChange={this.onChange} className="input-search" placeholder="Search..."/>
         </form>
         <div className="dropdown__btn-wrap">
           <button

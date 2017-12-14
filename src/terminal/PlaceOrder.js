@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { getTicker } from '../api/bittrex/bittrex';
+import { formatFloat } from '../generic/util';
 
 const TAB_BUY = 0;
 const TAB_SELL = 1;
@@ -102,7 +103,7 @@ class PlaceOrder extends React.Component {
     const amount = this.state.orderSize > 0 ? this.state.orderSize * price : this.state.amount;
     this.setState({
       selectedTab: tab,
-      price,
+      price: formatFloat(price),
       amount,
     });
   }
@@ -114,10 +115,10 @@ class PlaceOrder extends React.Component {
           <div className="buysell__switch-wrap ">
             <span onClick={() => this.onTabClick(TAB_BUY)}
               className={classNames('buysell__switch', 'switch-buy', {active: this.state.selectedTab === TAB_BUY})}
-            >BUY <span className="val">{this.state.ask}</span></span>
+            >BUY <span className="val">{formatFloat(this.state.ask)}</span></span>
             <span onClick={() => this.onTabClick(TAB_SELL)}
               className={classNames('buysell__switch', 'switch-sell', {active: this.state.selectedTab === TAB_SELL})}
-            >SELL <span className="val">{this.state.bid}</span></span>
+            >SELL <span className="val">{formatFloat(this.state.bid)}</span></span>
           </div>
           <div className="chart-controls align-items-center justify-content-between row">
             <div className="control-resize"></div>

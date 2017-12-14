@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { getMarketHistory } from '../api/bittrex/bittrex';
+import { formatFloat } from '../generic/util';
 
 class RecentTrades extends React.Component {
 
@@ -78,11 +79,11 @@ const OrderHistoryRow = ({type, date, price, size}) => {
   return (
     <tr className={isSellOrder ? 'down' : 'up'}>
       <td>
-        {price} <span className={classNames('icon', 'icon-dir',
+        {formatFloat(price)} <span className={classNames('icon', 'icon-dir',
           isSellOrder ? 'icon-up-dir' : 'icon-down-dir')}></span>
       </td>
       <td>
-        {size}
+        {formatFloat(size)}
       </td>
       <td>
         {date.toLocaleTimeString()}
