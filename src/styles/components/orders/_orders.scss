@@ -57,6 +57,7 @@
 			flex: 1 1 auto;
 			.block__top{
 				&-switch{
+					cursor: pointer;
 					font-size: 14px;
 					text-decoration: none;
 					color: #fff;
