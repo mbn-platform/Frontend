@@ -9,7 +9,7 @@ import MyOrders from './MyOrders';
 import RecentTrades from './RecentTrades';
 import OrderBook from './OrderBook';
 import { connect } from 'react-redux';
-import { selectApiKey } from '../actions/terminal';
+import { selectApiKey, cancelOrder } from '../actions/terminal';
 
 class Terminal extends React.Component {
 
@@ -50,7 +50,10 @@ class Terminal extends React.Component {
                     <PlaceOrder
                       market={this.state.market}
                     />
-                    <MyOrders />
+                    <MyOrders
+                      orders={this.props.orders}
+                      cancelOrder={this.props.cancelOrder}
+                    />
                   </Row>
                 </Col>
                 <Col xs="12" sm="12" md="6" lg="4">
@@ -87,7 +90,9 @@ class Terminal extends React.Component {
 const TerminalContainer = connect(state => ({
   apiKeys: state.apiKeys,
   selectedApiKey: state.terminal.selectedApiKey,
+  orders: state.terminal.orders,
 }), dispatch => ({
   selectApiKey: key => dispatch(selectApiKey(key)),
+  cancelOrder: order => dispatch(cancelOrder(order)),
 }))(Terminal);
 export default TerminalContainer;

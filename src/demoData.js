@@ -3,6 +3,7 @@ import { generateId, generateTraderName } from './demoData/util';
 import { generateOffer, getRandomState } from './demoData/offers';
 import { generateContract } from './demoData/contracts';
 import { generateProfile } from './demoData/profile';
+import { generateOrders } from './demoData/orders';
 
 import { CONTRACT_STATE_VERIFIED, CONTRACT_STATE_HALTED, CONTRACT_STATE_FINISHED } from './constants';
 
@@ -48,6 +49,8 @@ export default function generateData() {
       finishedContracts.push(contract);
     }
   }
+  const terminal = {};
+  const orders = generateOrders();
 
 
 
@@ -65,6 +68,7 @@ export default function generateData() {
     apiKeys,
     offers: {incoming: incomingOffers, outgoing: outgoingOffers},
     contracts: {current: myActiveContracts.concat(myContracts), finished: finishedContracts},
+    terminal: {orders},
   };
 }
 

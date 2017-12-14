@@ -58,7 +58,12 @@ class MyOrders extends React.Component {
                     </tr>
                   </thead>
                   <tbody>
-                    {Array.from(Array(10)).map(() => <OpenOrder />)}
+                    {this.props.orders.open.map(o => (
+                      <OpenOrder
+                        onOrderCancel={this.props.cancelOrder}
+                        order={o}
+                      />
+                    ))}
                   </tbody>
                 </table>
               </div>
@@ -90,7 +95,9 @@ class MyOrders extends React.Component {
                     </tr>
                   </thead>
                   <tbody>
-                    {Array.from(Array(20)).map(CompletedOrder)}
+                    {this.props.orders.completed.map(o => <CompletedOrder
+                      order={o}
+                    />)}
                   </tbody>
                 </table>
               </div>
@@ -115,7 +122,7 @@ const OpenOrder = props => (
     <td>0.00</td>
     <td>12.0249235</td>
     <td className="ellipsis-cell">12.0249235</td>
-    <td className="hide-mobile"><span className="remove"></span></td>
+    <td onClick={() => props.onOrderCancel(props.order)} className="hide-mobile"><span className="remove"></span></td>
   </tr>
 );
 
