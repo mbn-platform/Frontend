@@ -160,7 +160,7 @@ class ProfitChart extends React.Component {
       "categoryAxis": {
         "equalSpacing": true,
         "gridPosition": "start",
-        "minPeriod": ['hh','DD', 'DD','MM', 'MM', 'YYYY'][this.state.selectedInterval],
+        "minPeriod": ['hh','DD', 'DD','MM', 'MM', 'MM'][this.state.selectedInterval],
         "parseDates": true
       },        
       'graphs': [
