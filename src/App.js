@@ -285,28 +285,7 @@ window.customize = function() {
   }
   }).trigger('resize');
 
-  $('.ratings-main__block').find('.block__top-switch').on('click', function(e) {
-    e.preventDefault();
-    var container = $('.ratings-main__block'),
-      tabs = container.find('.ratings-tabs'),
-      tabOpen = tabs.find('.ratings-traders '),
-      tabCompl = tabs.find('.ratings-investors');
 
-    if($(this).hasClass('ratings-traders')){
-      $(this).addClass('active')
-        .siblings().removeClass('active');
-      tabOpen.addClass('active')
-        .siblings().removeClass('active');
-    }
-    else if ($(this).hasClass('ratings-investors')){
-      $(this).addClass('active')
-        .siblings().removeClass('active');
-      tabCompl.addClass('active')
-        .siblings().removeClass('active');
-    }
-
-    $('.js-table-wrapper table').floatThead('reflow');
-  });
 
   $(document).on('click', function(e) {
     console.log('document on click');
