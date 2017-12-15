@@ -127,7 +127,8 @@ class ContractSettings extends React.Component {
             name="duration"
             onChange={this.onFieldEdit}
           />
-          <CurrencyOfContractButton 
+          <CurrencyOfContractButton
+            value={this.props.currency}
             isEditing={this.state.isEditing}
             onCurrencySelected={this.onCurrencySelected}
             currency={this.state.currency}
@@ -147,7 +148,7 @@ class ContractSettings extends React.Component {
             <Desktop>
               <Setting
                 tabIndex={3}
-                header="ROI"
+                header="TARGET PROFIT"
                 value={this.props.roi}
                 dimension="%"
                 isEditing={this.state.isEditing}
@@ -163,7 +164,7 @@ class ContractSettings extends React.Component {
             <Mobile>
               <Setting
                 tabIndex={3}
-                header="ROI"
+                header="TARGET PROFIT"
                 value={this.props.roi}
                 dimension="%"
                 isEditing={this.state.isEditing}
@@ -264,36 +265,41 @@ const EditAmountEntry = ({placeholder, value, onChange, tabIndex}) => (
   </div>
 );
 
-const CurrencyOfContractButton = ({isEditing, onCurrencySelected, currency}) => (
+const CurrencyOfContractButton = ({isEditing, onCurrencySelected, currency, value}) => (
   <div className='currency-button-block setting-block'>
-    {isEditing ? (
       <div className="input-block">
-        <div className="description-text">CURRENCY OF CONTRACT:</div>
-          <div className='input-group'>
-              <span className="input-group-btn only-button">
-                <button
-                  onClick={onCurrencySelected}
-                  name="BTC"
-                  className={classNames('btn', 'btn-secondary', {active: currency === 'BTC'})}
-                  type="button"
-                >BTC</button>
-                <button
-                  onClick={onCurrencySelected}
-                  name="USDT"
-                  className={classNames('btn', 'btn-secondary', {active: currency === 'USDT'})}
-                  type="button"
-                >USDT</button>
-                <button
-                  onClick={onCurrencySelected}
-                  name="ETH"
-                  className={classNames('btn', 'btn-secondary', {active: currency === 'ETH'})}
-                  type="button"
-                >ETH</button>        
-              </span>
-            </div>
-          </div>
-      ) : (<div style={{display: 'none'}}></div>)
-    }
+        <div className="description-text">CURRENCY OF CONTRACT:</div>  
+          {isEditing ? (
+
+                <div className='input-group'>
+                    <span className="input-group-btn only-button">
+                      <button
+                        onClick={onCurrencySelected}
+                        name="BTC"
+                        className={classNames('btn', 'btn-secondary', {active: currency === 'BTC'})}
+                        type="button"
+                      >BTC</button>
+                      <button
+                        onClick={onCurrencySelected}
+                        name="USDT"
+                        className={classNames('btn', 'btn-secondary', {active: currency === 'USDT'})}
+                        type="button"
+                      >USDT</button>
+                      <button
+                        onClick={onCurrencySelected}
+                        name="ETH"
+                        className={classNames('btn', 'btn-secondary', {active: currency === 'ETH'})}
+                        type="button"
+                      >ETH</button>        
+                    </span>
+                  </div>
+
+            ) : (      
+            <SettingEntry
+              value={value}
+            />)
+          }
+    </div>
   </div>
 )
 
