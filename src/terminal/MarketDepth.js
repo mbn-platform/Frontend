@@ -5,6 +5,7 @@ import SerialChar from 'amcharts3/amcharts/serial';
 import DataLoader from 'amcharts3/amcharts/plugins/dataloader/dataloader';
 import AmChartsReact from "@amcharts/amcharts3-react";
 import { getOrderBook } from '../api/bittrex/bittrex';
+import { formatFloat } from '../generic/util';
 
 class MarketDepth extends React.Component {
 
@@ -45,12 +46,7 @@ class MarketDepth extends React.Component {
         buy = buy.slice(0, 100);
         sell = sell.slice(0, 100);
         var res = this.getData(buy, sell);
-        this.setState({data: res})
-        // setTimeout(() => {
-        //   this.setState({guides: this.addGuides(res)})  
-        // },200)
-        
-
+        this.setState({data: res})        
       }
     }).catch(err => console.log('error updating order book', err));
   }
@@ -190,7 +186,7 @@ class MarketDepth extends React.Component {
                   'fontSize': 12,
                   "lineColor": color,
                   'labelOffset': getLabelOffset(arr[i+1]),
-                  "label": parseFloat(arr[i+1].value.toFixed(2)) != 0 ? parseFloat(arr[i+1].value.toFixed(2)) : "",
+                  "label": formatFloat(parseFloat(arr[i+1].value)) != 0 ? formatFloat(parseFloat(arr[i+1].value)) : "",
                   "position": "bottom",
                   "inside": true,
                   "labelRotation": -90,
@@ -226,7 +222,6 @@ class MarketDepth extends React.Component {
             item.labelOffset = 90 + maxOffset - 2 * item.labelOffset;
             console.log(item)
           })
-          // return guides;
           chart.categoryAxis.guides = guides;
         }  
 
@@ -287,6 +282,10 @@ class MarketDepth extends React.Component {
         "startOnAxis": true,
         "showFirstLabel": false,
         "showLastLabel": false,
+        "labelFunction": function(valueText) {
+          console.log(valueText)
+          return valueText ? formatFloat(parseFloat(valueText)) : valueText;
+        }
       },
        "export": {
           "enabled": true
@@ -294,7 +293,6 @@ class MarketDepth extends React.Component {
    "listeners": [{
       "event": "dataUpdated",
       "method": (e) => {
-        // debugger;
         this.addGuides(e.chart)
       }
       }],        
