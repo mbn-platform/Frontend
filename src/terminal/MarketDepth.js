@@ -183,7 +183,7 @@ class MarketDepth extends React.Component {
                   'fontSize': 12,
                   "lineColor": color,
                   'labelOffset': getLabelOffset(arr[i+1]),
-                  "label": parseFloat(arr[i+1].value.toFixed(2)),
+                  "label": parseFloat(arr[i+1].value.toFixed(2)) != 0 ? parseFloat(arr[i+1].value.toFixed(2)) : "",
                   "position": "bottom",
                   "inside": true,
                   "labelRotation": -90,
