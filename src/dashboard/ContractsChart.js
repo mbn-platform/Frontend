@@ -29,7 +29,7 @@ class ContractsChart extends React.Component {
     return (
       <div className="table">
         <div className="table_title_wrapper clearfix">
-          <div className="table_title center">Profit as trader</div>
+          <div className="table_title center">CONTRACTS PROFIT</div>
         </div>
         <div className="chart_title_total">
           <span className="chart_title_total_span">Total:</span> 1.456 btc ~ 24 865 usd
