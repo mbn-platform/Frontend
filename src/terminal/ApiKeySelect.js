@@ -9,6 +9,24 @@ class ApiKeySelect extends React.Component {
     super(props);
     this.state = {isOpen: false};
     this.onKeySelect = this.onKeySelect.bind(this);
+    this.onOutsideClick = this.onOutsideClick.bind(this);
+  }
+
+  onOutsideClick() {
+    this.setState({isOpen: false});
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if(!prevState.isOpen && this.state.isOpen) {
+      document.addEventListener('click', this.onOutsideClick);
+    }
+    if(prevState.isOpen && !this.state.isOpen) {
+      document.removeEventListener('click', this.onOutsideClick);
+    }
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('click', this.onOutsideClick);
   }
 
   onKeySelect(e, key) {
@@ -30,7 +48,12 @@ class ApiKeySelect extends React.Component {
           isOpen={this.state.isOpen}
           innerClassName="popover-body"
         >
-          <div className="dropdown keys">
+          <div
+            onClick={e => {
+              e.stopPropagation();
+              e.nativeEvent.stopImmediatePropagation();
+            }}
+            className="dropdown keys">
             <div className="dropdown__name">
               <span>API KEY</span><span className="arrow_down"></span>
             </div>

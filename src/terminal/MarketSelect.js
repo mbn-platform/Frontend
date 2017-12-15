@@ -10,6 +10,11 @@ class MarketSelect extends React.Component {
     super(props);
     this.state = {selected: this.props.selected, markets: [], isOpen: false};
     this.onItemSelect = this.onItemSelect.bind(this);
+    this.onOutsideClick = this.onOutsideClick.bind(this);
+  }
+
+  onOutsideClick() {
+    this.setState({isOpen: false});
   }
 
   onItemSelect(item) {
@@ -22,6 +27,19 @@ class MarketSelect extends React.Component {
       const markets = json.result;
       this.setState({markets});
     });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if(!prevState.isOpen && this.state.isOpen) {
+      document.addEventListener('click', this.onOutsideClick);
+    }
+    if(prevState.isOpen && !this.state.isOpen) {
+      document.removeEventListener('click', this.onOutsideClick);
+    }
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('click', this.onOutsideClick);
   }
 
   render() {
@@ -73,6 +91,7 @@ class MarketTable extends React.Component {
 
   onBaseCurrencySelected(e, base) {
     e.stopPropagation();
+    e.nativeEvent.stopImmediatePropagation();
     this.setState({
       baseCurrency: base, secondaryCurrency: null,
       markets: this.props.markets.filter(m => m.BaseCurrency === base),
@@ -112,13 +131,16 @@ class MarketTable extends React.Component {
   render() {
     const baseCurrency = this.state.baseCurrency;
     return (
-      <div className="dropdown search">
+      <div onClick={e => {
+        e.stopPropagation();
+        e.nativeEvent.stopImmediatePropagation();
+      }} className="dropdown search">
         <div className="dropdown__name">
           <span>{this.props.market}</span>
           <span onClick={this.props.close} className="arrow_down"></span>
         </div>
         <form action="" className="dropdown__form">
-          <input autocomplete="off" value={this.state.filter} type="text" name="filter" onChange={this.onChange} className="input-search" placeholder="Search..."/>
+          <input autoComplete="off" value={this.state.filter} type="text" name="filter" onChange={this.onChange} className="input-search" placeholder="Search..."/>
         </form>
         <div className="dropdown__btn-wrap">
           <button

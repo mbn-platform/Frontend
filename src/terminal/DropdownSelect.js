@@ -8,11 +8,29 @@ class DropdownSelect extends React.Component {
     super(props);
     this.state = {selected: this.props.selected};
     this.onItemSelect = this.onItemSelect.bind(this);
+    this.onOutsideClick = this.onOutsideClick.bind(this);
+  }
+
+  onOutsideClick() {
+    this.setState({isOpen: false});
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if(!prevState.isOpen && this.state.isOpen) {
+      document.addEventListener('click', this.onOutsideClick);
+    }
+    if(prevState.isOpen && !this.state.isOpen) {
+      document.removeEventListener('click', this.onOutsideClick);
+    }
   }
 
   onItemSelect(e, item) {
     this.setState({isOpen: false});
     this.props.onItemSelect(item);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('click', this.onOutsideClick);
   }
 
   render() {
@@ -29,7 +47,12 @@ class DropdownSelect extends React.Component {
           placement="bottom-start"
           className="dropdown-popover"
         >
-          <div className={classNames('dropdown', this.props.dropdownClassName)}>
+          <div
+            onClick={e => {
+              e.stopPropagation();
+              e.nativeEvent.stopImmediatePropagation();
+            }}
+            className={classNames('dropdown', this.props.dropdownClassName)}>
             <div className="dropdown__name">
               <span>{this.props.selected ? this.props.selected : this.props.header}</span><span class="arrow_down"></span>
             </div>
