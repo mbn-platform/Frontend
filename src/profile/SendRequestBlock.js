@@ -35,6 +35,7 @@ class SendRequestBlock extends React.Component {
       fee: this.props.profile.fee,
       duration: this.props.profile.duration,
       roi: this.props.profile.roi,
+      toUser: [{name: this.props.profile.name, _id: this.props.profile._id}],
     };
     this.props.sendOffer(offer);
   }
