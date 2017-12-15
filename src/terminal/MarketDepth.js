@@ -160,8 +160,8 @@ class MarketDepth extends React.Component {
             return diff;
           }, 0);    
           minItemUpDiffAsks = minItemUpDiffBids = Math.max(minItemUpDiffBids, minItemUpDiffAsks)     
-          let minItemDownDiffAsks = minItemUpDiffAsks / 10;
-          let minItemDownDiffBids = minItemUpDiffBids / 10;
+          let minItemDownDiffAsks = minItemUpDiffAsks / 5;
+          let minItemDownDiffBids = minItemUpDiffBids / 5;
           const guides = []
           let maxOffset = 0
           function addGuides(arr, min, max, type, color, reverse) {
@@ -227,15 +227,15 @@ class MarketDepth extends React.Component {
   balloon(item, graph) {
     let txt = '';
     if (graph.id == "sell") {
-      txt = "Ask: <strong>" + this.formatNumber(item.dataContext.value, graph.chart, 4) + "</strong><br />"
+      txt = "Price: <strong>" + this.formatNumber(item.dataContext.value, graph.chart, 4) + "</strong><br />"
         + "Total volume: <strong>" + this.formatNumber(item.dataContext.selltotalvolume, graph.chart, 4) + "</strong><br />"
-        + "Volume: <strong>" + this.formatNumber(item.dataContext.sellvolume, graph.chart, 4) + "</strong>";
+        + "Amount (BTC): <strong>" + this.formatNumber(item.dataContext.sellvolume, graph.chart, 4) + "</strong>";
     }
     else {
       console.log(this)
-      txt = "Bid: <strong>" + this.formatNumber(item.dataContext.value, graph.chart, 4) + "</strong><br />"
+      txt = "Price: <strong>" + this.formatNumber(item.dataContext.value, graph.chart, 4) + "</strong><br />"
         + "Total volume: <strong>" + this.formatNumber(item.dataContext.buytotalvolume, graph.chart, 4) + "</strong><br />"
-        + "Volume: <strong>" + this.formatNumber(item.dataContext.buyvolume, graph.chart, 4) + "</strong>";
+        + "Amount (BTC): <strong>" + this.formatNumber(item.dataContext.buyvolume, graph.chart, 4) + "</strong>";
     }
     return txt;
   }   
@@ -286,7 +286,6 @@ class MarketDepth extends React.Component {
        "export": {
           "enabled": true
         },
-   "listeners": [],  
       'dataProvider': data
     };
   }  
