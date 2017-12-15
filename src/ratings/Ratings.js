@@ -2,7 +2,6 @@ import React from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import BestTraders from './BestTraders';
 import BestInvestors from './BestInvestors';
-import { Popover } from 'reactstrap';
 import classNames from 'classnames';
 import { generateRatings } from '../demoData/ratings';
 import $ from 'jquery';
@@ -31,9 +30,27 @@ class Ratings extends React.Component {
     this.state = {
       roiIntervalOpen: false,
       nameFilter: '',
-      tab: TAB_TRADERS,
+      tab: TAB_INVESTORS,
       ratings,
     };
+  }
+
+  componentDidUpdate() {
+    $('.all-time').popover({
+      trigger: 'click',
+      container: $('.ratings-main'),
+      html: true,
+      animation: false,
+      placement: 'bottom',
+      template: `
+      <div class="popover dropdown-popover dropdown-popover--select">
+        <div class="popover-body"></div>
+      </div>`,
+      content: function() {
+        return $(this).next('.all-time_dropdown')[0].outerHTML;
+      },
+      offset: '50%p - ' + (($('.all-time').width() / 2) + 8).toString() + 'px, 0'
+    });
   }
 
   onTabClick(tab) {
@@ -122,7 +139,7 @@ class Ratings extends React.Component {
                                 <div className="help" data-toggle="ratings-help-popover" data-placement="bottom" data-total="The total amount of contracts" data-success="The amount of successfully finished contracts">?</div>
                               </th>
                               <th>
-                                <div onClick={() => this.setState({roiIntervalOpen: !this.state.roiIntervalOpen})} id="roi-time"className="all-time">
+                                <div className="all-time">
                                   All time <span className="arrow_down"></span>
                                 </div>
 
@@ -137,18 +154,10 @@ class Ratings extends React.Component {
                               </th>
                               <th></th>
                               <th>
-                                <div className="buttons-wrap">
-                                  <button className="btn btn-active">BTC</button>
-                                  <button className="btn">USD</button>
-                                </div>
                               </th>
                               <th></th>
                               <th></th>
                               <th>
-                                <div className="buttons-wrap">
-                                  <button className="btn btn-active">BTC</button>
-                                  <button className="btn">USD</button>
-                                </div>
                               </th>
                               <th></th>
                             </tr>
@@ -176,7 +185,7 @@ class Ratings extends React.Component {
                               <th className='name'>
                                 <span>Name</span><span className="icon-dir icon-down-dir"></span>
                               </th>
-                              <th className='rank active'>
+                              <th className='rank'>
                                 <span>Rank</span><span className="icon-dir icon-down-dir"></span>
                               </th>
                               <th>
@@ -204,25 +213,21 @@ class Ratings extends React.Component {
                                 <div className="help" data-toggle="ratings-help-popover" data-placement="bottom" data-total="The total amount of contracts" data-success="The amount of successfully finished contracts">?</div>
                               </th>
                               <th>
-                                <div  className="all-time">
-                                  All time
-                                  <span className="arrow_down"></span>
-                                  <div className="all-time_dropdown">
-                                    <a href="#" className="all-time_dropdown-link">1 week</a>
-                                    <a href="#" className="all-time_dropdown-link">1 month</a>
-                                    <a href="#" className="all-time_dropdown-link">3 months</a>
-                                    <a href="#" className="all-time_dropdown-link">6 months</a>
-                                    <a href="#" className="all-time_dropdown-link">12 months</a>
-                                    <a href="#" className="all-time_dropdown-link active">All time</a>
-                                  </div>
+                                <div className="all-time">
+                                  All time <span className="arrow_down"></span>
+                                </div>
+
+                                <div className="all-time_dropdown">
+                                  <a href="#" className="all-time_dropdown-link">1 week</a>
+                                  <a href="#" className="all-time_dropdown-link">1 month</a>
+                                  <a href="#" className="all-time_dropdown-link">3 months</a>
+                                  <a href="#" className="all-time_dropdown-link">6 months</a>
+                                  <a href="#" className="all-time_dropdown-link">12 months</a>
+                                  <a href="#" className="all-time_dropdown-link active">All time</a>
                                 </div>
                               </th>
                               <th></th>
                               <th>
-                                <div className="buttons-wrap">
-                                  <button className="btn btn-active">BTC</button>
-                                  <button className="btn">USD</button>
-                                </div>
                               </th>
                               <th></th>
                             </tr>
@@ -249,6 +254,21 @@ class Ratings extends React.Component {
   }
   componentDidMount() {
     window.customize();
+    $('.all-time').popover({
+      trigger: 'click',
+      container: $('.ratings-main'),
+      html: true,
+      animation: false,
+      placement: 'bottom',
+      template: `
+      <div class="popover dropdown-popover dropdown-popover--select">
+        <div class="popover-body"></div>
+      </div>`,
+      content: function() {
+        return $(this).next('.all-time_dropdown')[0].outerHTML;
+      },
+      offset: '50%p - ' + (($('.all-time').width() / 2) + 8).toString() + 'px, 0'
+    });
   }
 
   componentWillUnmount() {

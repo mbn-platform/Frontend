@@ -96,21 +96,6 @@ window.customize = function() {
   /*
     Ratings: ROI chart period selectbox
     */
-  $('.all-time').popover({
-    trigger: 'click',
-    container: $('.ratings-main'),
-    html: true,
-    animation: false,
-    placement: 'bottom',
-    template: `
-      <div class="popover dropdown-popover dropdown-popover--select">
-        <div class="popover-body"></div>
-      </div>`,
-    content: function() {
-      return $(this).next('.all-time_dropdown')[0].outerHTML;
-    },
-    offset: '50%p - ' + (($('.all-time').width() / 2) + 8).toString() + 'px, 0'
-  });
 
 
   $('.icon-fullscreen').each(function() {
