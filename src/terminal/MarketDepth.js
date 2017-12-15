@@ -45,9 +45,10 @@ class MarketDepth extends React.Component {
         sell = sell.slice(0, 100);
         var res = this.getData(buy, sell);
         this.setState({data: res})
-        this.setState({guides: []})
-        console.log(this.addGuides(res))
-        this.setState({guides: this.addGuides(res)})
+        setTimeout(() => {
+          this.setState({guides: this.addGuides(res)})  
+        },200)
+        
 
       }
     }).catch(err => console.log('error updating order book', err));
@@ -238,7 +239,7 @@ class MarketDepth extends React.Component {
     }
     return txt;
   }   
-  makeConfig(data) {
+  makeConfig(data,guides) {
     return {
       "type": "serial",
       'startDuration': 0,
@@ -285,12 +286,7 @@ class MarketDepth extends React.Component {
        "export": {
           "enabled": true
         },
-   "listeners": [{
-      "event": "rendered",
-      "method": function(e) {
-        e.chart.guides = []
-        }
-      }],  
+   "listeners": [],  
       'dataProvider': data
     };
   }  
