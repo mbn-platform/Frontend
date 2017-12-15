@@ -34,7 +34,7 @@ class ApiKeySelect extends React.Component {
             <div className="dropdown__name">
               <span>API KEY</span><span className="arrow_down"></span>
             </div>
-            {this.props.keys.map(key => (
+            {this.props.keys.slice(0, 5).map(key => (
               <div
                 key={key._id}
                 onClick={e => this.onKeySelect(e, key)}
