@@ -38,7 +38,9 @@ class Terminal extends React.Component {
               <Row className="charts">
                 <Col xs="12" sm="12" md="6" lg="8" className="charts__left">
                   <TradingView />
-                  <MarketDepth />
+                  <MarketDepth 
+                    market={this.props.selectedMarket}
+                  />
                   <Row className="justify-content-between">
                     <PlaceOrder
                       market={this.props.selectedMarket}
