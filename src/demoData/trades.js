@@ -8,8 +8,6 @@ function generateTrade(tx, count, dt) {
     date = (new Date(dt.getTime() + Math.round(count / 4) * 60 * 60 * 1000 +  31 * 24 * 60 * 60 * 1000)).toISOString();    
   }
 
-
-  console.log(date)
   const type = getRandomTradeType();
   const amount = getRandom(100, 20);
   const amountCurrency = getRandomCurrency();

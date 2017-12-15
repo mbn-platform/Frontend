@@ -38,9 +38,12 @@
 			cursor: default;
 		}
 		.menu-text {
-			font-family: 'maven_promedium';
-			font-size: 1.2em;
-			margin-top: 17px;
+		    font-family: 'maven_promedium';
+		    font-size: 1.2em;
+		    margin-top: 17px;
+		    text-transform: uppercase;
+		    letter-spacing: 1px;
+		    font-weight: 400;
 		}
 	}
 	.nav-link.active {
