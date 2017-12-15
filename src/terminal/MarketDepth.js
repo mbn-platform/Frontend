@@ -157,7 +157,8 @@ class MarketDepth extends React.Component {
               minItemBids = i;
             }
             return diff;
-          }, 0);          
+          }, 0);    
+          minItemUpDiffAsks = minItemUpDiffBids = Math.max(minItemUpDiffBids, minItemUpDiffAsks)     
           let minItemDownDiffAsks = minItemUpDiffAsks / 10;
           let minItemDownDiffBids = minItemUpDiffBids / 10;
           const guides = []
