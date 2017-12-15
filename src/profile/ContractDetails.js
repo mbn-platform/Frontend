@@ -12,12 +12,6 @@ class ContractDetails extends React.Component {
               <span className="d-inline-block d-md-none icon icon-details icon-006-wrench"></span>contract details
             </div>
           </div>
-          <div className="row justify-content-center d-flex d-md-none tooltip-text-block">
-            <div className="tooltip-mobile-box">
-              Amount of BTC/USD of your API key<br/>
-              <span className="red">lower than Min contract amount</span>
-            </div>
-          </div>
           <div className="row justify-content-between request-sent-info">
             <div className="container-fluid">
               <ContractDetailRow
