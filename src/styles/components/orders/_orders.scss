@@ -148,6 +148,11 @@
 /*
 	Hide columns on <768px
  */
+@media (min-width: 5000px){
+	.orders-main {
+		height: 1000px!important;
+	}
+}
 @media (max-width: 768px){
 	.orders-main {
 		.orders-tab .table {

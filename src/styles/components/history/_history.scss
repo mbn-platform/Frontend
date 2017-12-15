@@ -87,6 +87,12 @@
 /*
 	Hide columns on <768px
  */
+
+@media (min-width: 5000px){
+	.history-main {
+		height: 1000px!important;
+	}
+} 
 @media (max-width: 768px){
 	.history-main {
 		.table {
