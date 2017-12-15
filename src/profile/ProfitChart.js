@@ -10,7 +10,7 @@ class ProfitChart extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {selectedCurrency: 0, selectedInterval: 4};
+    this.state = {selectedCurrency: 0, selectedInterval: 2};
   }
 
   formatData(trades, selectedInterval) {
