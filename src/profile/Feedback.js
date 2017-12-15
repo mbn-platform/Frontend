@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { Desktop, Mobile } from '../generic/MediaQuery';
 import Pagination from '../generic/Pagination';
 import Scrollbars from 'react-custom-scrollbars';
+import { Link } from 'react-router-dom';
 
 class Feedback extends React.Component {
 
@@ -112,7 +113,7 @@ class Comment extends React.Component {
           <div className="container-fuild">
             <div className="row">
               <div className="col-auto">
-                <div className="name">@<u>{comment.name}</u></div>
+                <div className="name">@<u><Link style={{color: '#bfbfc1', textTransform: 'uppercase'}} to={'/' + comment.name} >{comment.name}</Link></u></div>
               </div>
               <div className="col-auto">
                 <div className="date">{formatDate(new Date(comment.date))}</div>
