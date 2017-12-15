@@ -38,6 +38,7 @@ class MarketDepth extends React.Component {
 
 
   updateOrderBook() {
+    this.setState({currency: this.props.market.split('-')})
     getOrderBook(this.props.market, 'both').then(json => {
       if(json.success) {
         let {buy, sell} = json.result;
@@ -45,9 +46,9 @@ class MarketDepth extends React.Component {
         sell = sell.slice(0, 100);
         var res = this.getData(buy, sell);
         this.setState({data: res})
-        setTimeout(() => {
-          this.setState({guides: this.addGuides(res)})  
-        },200)
+        // setTimeout(() => {
+        //   this.setState({guides: this.addGuides(res)})  
+        // },200)
         
 
       }
@@ -116,10 +117,14 @@ class MarketDepth extends React.Component {
           return res;
   }
 
-  addGuides(res) {
+  addGuides(chart) {
           let type = ['sell', 'buy'],
           asks = [],
-          bids = [];
+          bids = [],
+          res = chart.dataProvider;
+          if(!chart.dataProvider) {
+            return;
+          }
           res.forEach((item) => {
             if(item.hasOwnProperty(type[0] + 'volume')) {
               asks.push(item)
@@ -221,7 +226,8 @@ class MarketDepth extends React.Component {
             item.labelOffset = 90 + maxOffset - 2 * item.labelOffset;
             console.log(item)
           })
-          return guides;
+          // return guides;
+          chart.categoryAxis.guides = guides;
         }  
 
   balloon(item, graph) {
@@ -268,7 +274,6 @@ class MarketDepth extends React.Component {
         }
     
       ],
-      "guides": this.state.guides,
       "categoryField": "value",
       "chartCursor": {},
       "balloon": {
@@ -286,6 +291,13 @@ class MarketDepth extends React.Component {
        "export": {
           "enabled": true
         },
+   "listeners": [{
+      "event": "dataUpdated",
+      "method": (e) => {
+        // debugger;
+        this.addGuides(e.chart)
+      }
+      }],        
       'dataProvider': data
     };
   }  
