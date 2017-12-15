@@ -1,12 +1,12 @@
 import React from 'react';
-import { getOrderBook } from '../api/bittrex/bittrex';
+import { getOrderBook, getTicker} from '../api/bittrex/bittrex';
 import { formatFloat } from '../generic/util';
 
 class OrderBook extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {buy: [], sell: []};
+    this.state = {buy: [], sell: [], last: ''};
   }
 
 
@@ -25,6 +25,7 @@ class OrderBook extends React.Component {
         let {buy, sell} = json.result;
         buy = buy.slice(0, 100);
         sell = sell.slice(0, 100);
+        sell.reverse();
         const maxBuy = buy.reduce((accum, value) => Math.max(accum, value.Quantity), 0);
         const maxSell = sell.reduce((accum, value) => Math.max(accum,value.Quantity), 0);
         const minBuy = buy.reduce((accum, value) => Math.min(accum, value.Quantity), maxBuy);
@@ -34,6 +35,9 @@ class OrderBook extends React.Component {
         this.setState({buy, sell});
       }
     }).catch(err => console.log('error updating order book', err));
+    getTicker(this.props.market).then(json => {
+      this.setState({last: json.result.Last});
+    });
   }
 
   render() {
@@ -75,7 +79,7 @@ class OrderBook extends React.Component {
           </table>
         </div>
         <div className="value row up">
-          <span>0.216</span>
+          <span>{formatFloat(this.state.last)}</span>
           <span className="icon icon-dir icon-up-dir"></span>
         </div>
         <div className="orderbook-table-wrapper js-table-wrapper">
