@@ -45,6 +45,8 @@ class MarketDepth extends React.Component {
         let {buy, sell} = json.result;
         buy = buy.slice(0, 100);
         sell = sell.slice(0, 100);
+
+        buy.sort((b1,b2) => (b1.Rate - b2.Rate))
         var res = this.getData(buy, sell);
         this.setState({data: res})        
       }
@@ -108,8 +110,9 @@ class MarketDepth extends React.Component {
            
           }
           var res = [];
-          processData(sell, "sell", true);
-          processData(buy, "buy", false);
+          processData(buy, "buy", true);          
+          processData(sell, "sell", false);
+
           return res;
   }
 
@@ -161,8 +164,12 @@ class MarketDepth extends React.Component {
             return diff;
           }, 0);    
           minItemUpDiffAsks = minItemUpDiffBids = Math.max(minItemUpDiffBids, minItemUpDiffAsks)     
-          let minItemDownDiffAsks = minItemUpDiffAsks / 5;
-          let minItemDownDiffBids = minItemUpDiffBids / 5;
+          if(chart.valueAxes.length > 0) {
+            minItemUpDiffAsks = minItemUpDiffBids = chart.valueAxes[0].fullMax;
+          }
+          let minItemDownDiffAsks = minItemUpDiffAsks / 10;
+          let minItemDownDiffBids = minItemUpDiffBids / 10;
+          // debugger;
           const guides = []
           let maxOffset = 0
           function addGuides(arr, min, max, type, color, reverse) {
@@ -174,10 +181,12 @@ class MarketDepth extends React.Component {
                 value = valueNext;
                 valueNext = valueChange;
               }
+
               if(valueNext - value >= min && valueNext - value <= max) {
                 if(getLabelOffset(arr[i+1]) > maxOffset) {
                   maxOffset = getLabelOffset(arr[i+1]);
                 }
+                // console.log(arr[i+1], )
                 guides.push( {
                   'above': true,
                   "category": arr[i+1].value,
@@ -197,7 +206,7 @@ class MarketDepth extends React.Component {
             }
           }
           function getLabelOffset(el) {
-            let numb = parseFloat(el.value.toFixed(2)).toString();
+            let numb = formatFloat(parseFloat(el.value));
             return str_size(numb, 'maven_proregular', '12');
           }
 
@@ -216,11 +225,11 @@ class MarketDepth extends React.Component {
               document.body.removeChild(obj);
               return str_size[0];
            }           
-          addGuides(asks, minItemDownDiffAsks, minItemUpDiffAsks, 'sell', '#32b893',true)
-          addGuides(bids, minItemDownDiffBids, minItemUpDiffBids, 'buy', "#c74949")
+          
+          addGuides(bids, minItemDownDiffBids, minItemUpDiffBids, 'buy', "#32b893", true)
+          addGuides(asks, minItemDownDiffAsks, minItemUpDiffAsks, 'sell', '#c74949')
           guides.forEach((item) => {
             item.labelOffset = 90 + maxOffset - 2 * item.labelOffset;
-            console.log(item)
           })
           chart.categoryAxis.guides = guides;
         }  
@@ -249,24 +258,24 @@ class MarketDepth extends React.Component {
       "addClassNames": true,
       'fontFamily': 'maven_proregular',      
       "graphs": [{
-        "id": "sell",
+        "id": "buy",
         "fillAlphas": 0.4,
         "lineAlpha": 1,
         "lineThickness": 2,
         "lineColor": "#32b893",
         "type": "step",
-        "valueField": "selltotalvolume",
+        "valueField": "buytotalvolume",
         "balloonFunction": this.balloon
-      },{
-        "id": "buy",
+        },{
+        "id": "sell",
         "fillAlphas": 0.4,
         "lineAlpha": 1,
         "lineThickness": 2,
         "lineColor": "#c74949",
         "type": "step",
-        "valueField": "buytotalvolume",
+        "valueField": "selltotalvolume",
         "balloonFunction": this.balloon
-        }
+      }
     
       ],
       "categoryField": "value",
@@ -280,10 +289,9 @@ class MarketDepth extends React.Component {
       "categoryAxis": {
         "minHorizontalGap": 100,
         "startOnAxis": true,
-        "showFirstLabel": false,
-        "showLastLabel": false,
+        // "showFirstLabel": false,
+        // "showLastLabel": false,
         "labelFunction": function(valueText) {
-          console.log(valueText)
           return valueText ? formatFloat(parseFloat(valueText)) : valueText;
         }
       },
