@@ -33,6 +33,10 @@ class OrderBook extends React.Component {
         buy.forEach(order => order.relativeSize = relativeSize(minBuy, maxBuy, order.Quantity));
         sell.forEach(order => order.relativeSize = relativeSize(minSell, maxSell, order.Quantity));
         this.setState({buy, sell});
+        if(this.tableSell.scrollTop == 0) {
+          this.tableSell.scrollTop = this.tableSell.scrollHeight - 26.6;          
+        }
+
       }
     }).catch(err => console.log('error updating order book', err));
     getTicker(this.props.market).then(json => {
@@ -50,7 +54,7 @@ class OrderBook extends React.Component {
             <div className="control-dash"></div>
           </div>
         </div>
-        <div className="orderbook-table-wrapper js-table-wrapper">
+        <div className="orderbook-table-wrapper js-table-wrapper" ref={elem => this.tableSell = elem}>
           <table className="table red">
             <thead>
               <tr>
