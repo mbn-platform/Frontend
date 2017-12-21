@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import $ from 'jquery';
 import { formatFloat } from '../generic/util';
+import { Desktop } from '../generic/MediaQuery';
 
 const TAB_OPEN_ORDERS = 0;
 const TAB_COMPLETED_ORDERS = 1;
@@ -37,10 +38,12 @@ class MyOrders extends React.Component {
               Completed orders
             </span>
           </div>
-          <div className="chart-controls align-items-center justify-content-between row">
-            <div className="control-resize"></div>
-            <div className="control-dash"></div>
-          </div>
+          <Desktop>
+            <div className="chart-controls align-items-center justify-content-between row">
+              <div className="control-resize"></div>
+              <div className="control-dash"></div>
+            </div>
+          </Desktop>
         </div>
         <div className="orders-table-tabs">
           {this.state.tab === TAB_OPEN_ORDERS ? (

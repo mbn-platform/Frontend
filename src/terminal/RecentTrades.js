@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { getMarketHistory } from '../api/bittrex/bittrex';
 import { formatFloat } from '../generic/util';
+import { Desktop } from '../generic/MediaQuery';
 
 class RecentTrades extends React.Component {
 
@@ -31,10 +32,12 @@ class RecentTrades extends React.Component {
       <div className="trades-table chart col-12 col-sm-6 col-md-12">
         <div className="chart__top justify-content-between row">
           <div className="chart-name">Recent Trades</div>
-          <div className="chart-controls align-items-center justify-content-between row">
-            <div className="control-resize"></div>
-            <div className="control-dash"></div>
-          </div>
+          <Desktop>
+            <div className="chart-controls align-items-center justify-content-between row">
+              <div className="control-resize"></div>
+              <div className="control-dash"></div>
+            </div>
+          </Desktop>
         </div>
 
         <div className="trades-table-wrapper js-table-wrapper">

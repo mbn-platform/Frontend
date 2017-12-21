@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { getTicker } from '../api/bittrex/bittrex';
 import { formatFloat } from '../generic/util';
+import { Desktop } from '../generic/MediaQuery';
 
 const TAB_BUY = 0;
 const TAB_SELL = 1;
@@ -120,10 +121,12 @@ class PlaceOrder extends React.Component {
               className={classNames('buysell__switch', 'switch-sell', {active: this.state.selectedTab === TAB_SELL})}
             >SELL <span className="val">{formatFloat(this.state.bid)}</span></span>
           </div>
-          <div className="chart-controls align-items-center justify-content-between row">
-            <div className="control-resize"></div>
-            <div className="control-dash"></div>
-          </div>
+          <Desktop>
+            <div className="chart-controls align-items-center justify-content-between row">
+              <div className="control-resize"></div>
+              <div className="control-dash"></div>
+            </div>
+          </Desktop>
         </div>
         <div className="buysell__main">
           <div className={classNames('buysell__main-tab', 'active', this.state.selectedTab === TAB_SELL ? 'sell' : 'buy')}>

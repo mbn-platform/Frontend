@@ -6,6 +6,7 @@ import DataLoader from 'amcharts3/amcharts/plugins/dataloader/dataloader';
 import AmChartsReact from "@amcharts/amcharts3-react";
 import { getOrderBook } from '../api/bittrex/bittrex';
 import { formatFloat } from '../generic/util';
+import { Desktop } from '../generic/MediaQuery';
 
 class MarketDepth extends React.Component {
 
@@ -325,10 +326,12 @@ class MarketDepth extends React.Component {
           <div className="justify-content-start row">
            <div className="chart-name">MARKET DEPTH</div>
           </div>
-          <div className="chart-controls align-items-center justify-content-between row">
-            <div className="control-resize"></div>
-            <div className="control-dash"></div>
-          </div>
+          <Desktop>
+            <div className="chart-controls align-items-center justify-content-between row">
+              <div className="control-resize"></div>
+              <div className="control-dash"></div>
+            </div>
+          </Desktop>
         </Row>
         <div className="marketdepth-chart__graph row col-12" id='chartdiv' >
           {this.renderChart()}

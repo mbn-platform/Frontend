@@ -1,6 +1,7 @@
 import React from 'react';
 import { getOrderBook, getTicker} from '../api/bittrex/bittrex';
 import { formatFloat } from '../generic/util';
+import { Desktop } from '../generic/MediaQuery';
 
 class OrderBook extends React.Component {
 
@@ -49,10 +50,12 @@ class OrderBook extends React.Component {
       <div className="orderbook-table chart col-12 col-sm-6 col-md-12">
         <div className="chart__top justify-content-between row">
           <div className="chart-name">Order Book</div>
-          <div className="chart-controls align-items-center justify-content-between row">
-            <div className="control-resize"></div>
-            <div className="control-dash"></div>
-          </div>
+          <Desktop>
+            <div className="chart-controls align-items-center justify-content-between row">
+              <div className="control-resize"></div>
+              <div className="control-dash"></div>
+            </div>
+          </Desktop>
         </div>
         <div className="orderbook-table-wrapper js-table-wrapper" ref={elem => this.tableSell = elem}>
           <table className="table red">

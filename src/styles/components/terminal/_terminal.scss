@@ -647,11 +647,17 @@
 }
 @media (min-width: 992px) {
 	.orderbook-table{
-	    margin-right: 0;
+	    margin-right: 10px;
 
 	}
 }
 
+@media (min-width: 1027px) {
+	.buysell{
+	    margin-right: 0px;
+
+	}
+}
 
 @media (max-width: 832px) {
 	.header-status {
