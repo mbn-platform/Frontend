@@ -24,8 +24,16 @@ class RecentTrades extends React.Component {
     getMarketHistory(this.props.market).then(json => {
       if(json.success) {
         this.setState({history: json.result});
+        // this.sortColumn()
       }
     }).catch(err => console.log('error updating  history', err));
+  }
+  sortColumn() {
+    this.setState(state => {
+      const history = state.history;
+      history.sort((h1,h2) => h2.Quantity - h1.Quantity)
+      return {history};
+    });
   }
   render() {
     return (
@@ -49,7 +57,7 @@ class RecentTrades extends React.Component {
                   <div>Price ({this.props.market.split('-')[0]}) <span className="icon-dir icon-down-dir"></span></div>
                 </th>
                 <th>
-                  <div>Trade Size <span className="icon-dir icon-down-dir"></span></div>
+                  <div>Trade Size <span className="icon-dir icon-down-dir" onClick={() => this.sortColumn()}></span></div>
                 </th>
                 <th >
                   <div>Time <span className="icon-dir icon-down-dir"></span></div>
