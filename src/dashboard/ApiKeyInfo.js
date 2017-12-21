@@ -197,8 +197,8 @@ const StatusHeader = (onSelectAllClicked) => {
         <div className="green_arrow green_arrow_bottom" ></div>
       </div>
       <div className="title_green_arrows_wrapper">
-        <div onClick={onSelectAllClicked}  className="currency_select_all">All</div>
-        <div  className="currency_status_checkbox selected"></div>
+        <div className="currency_select_all">All</div>
+        <div onClick={onSelectAllClicked} className="currency_status_checkbox selected"></div>
       </div>
     </div>
   );
