@@ -47,8 +47,8 @@ class ProfileInfo extends React.Component {
                 <Stats
                   traderRating={this.props.topTraders}
                   investorRating={this.props.topInvesters}
-                  roiInBTC={15}
-                  roiInUSD={100}
+                  roiInBTC={this.props.roiInBTC}
+                  roiInUSD={this.props.roiInUSD}
                   moneyInManagement={this.props.investmentAmount}
                 />
                 <ContractSettings
@@ -57,6 +57,8 @@ class ProfileInfo extends React.Component {
                   amount={this.props.minAmount}
                   currency={this.props.minAmountCurrency}
                   maxLoss={this.props.maxLoss}
+                  roiInBTC={this.props.roiInBTC}
+                  roiInUSD={this.props.roiInUSD}                  
                   fee={this.props.fee}
                   availableForOffers={this.props.availableForOffers}
                   roi={this.props.roi}

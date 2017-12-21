@@ -156,7 +156,6 @@ const SortableHeader = (header, showSort = true) => (
     <span className="table_header">{header}</span>
     {showSort ? (
       <div className="sort_icon_wrapper" style={{display: 'block', margin: 0}}>
-        <div className="green_arrow green_arrow_bottom" ></div>
       </div>
     ) : null}
   </div>
