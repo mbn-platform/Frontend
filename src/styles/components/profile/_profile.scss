@@ -298,6 +298,17 @@
                     color: #dcb049;
                   }
                 }
+                .star {
+                  width: 12px;
+                  height: 12px;
+                  background-image: url(../img/Rating.svg);
+                  margin-right: 4px;
+                  margin-left: 4px;
+                  display: inline-block;
+                  &.active {
+                    background-image: url(../img/RatingActive.svg);
+                  }
+                }                 
               }
               .text-feedback  {
                 text-transform: none;
