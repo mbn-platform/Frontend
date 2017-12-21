@@ -46,7 +46,7 @@ class RecentTrades extends React.Component {
               <tr>
                 <th>
 
-                  <div>Price ({this.props.market.split('-')[1]}) <span className="icon-dir icon-down-dir"></span></div>
+                  <div>Price ({this.props.market.split('-')[0]}) <span className="icon-dir icon-down-dir"></span></div>
                 </th>
                 <th>
                   <div>Trade Size <span className="icon-dir icon-down-dir"></span></div>
