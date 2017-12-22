@@ -81,6 +81,8 @@ class ProfileInfo extends React.Component {
                   traderRating={this.props.topTraders}
                   investorRating={this.props.topInvesters}
                   roi={15}
+                  roiInBTC={this.props.roiInBTC}
+                  roiInUSD={this.props.roiInUSD}                        
                   moneyInManagement={this.props.investmentAmount}
                 />
                 <SendRequestBlock profile={this.props} />

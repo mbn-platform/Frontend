@@ -74,6 +74,8 @@ Stats.propTypes = {
   traderRating: PropTypes.number.isRequired,
   investorRating: PropTypes.number.isRequired,
   roi: PropTypes.number.isRequired,
+  roiInBTC: PropTypes.number.isRequired,
+  roiInUSD: PropTypes.number.isRequired,  
   moneyInManagement: PropTypes.number.isRequired,
 };
 
