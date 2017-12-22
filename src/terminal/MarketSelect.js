@@ -1,7 +1,7 @@
 import React from 'react';
 import { Popover } from 'reactstrap';
 import classNames from 'classnames';
-import { getMarkets } from '../api/bittrex/bittrex';
+import { getMarketSummaries } from '../api/bittrex/bittrex';
 import $ from 'jquery';
 
 class MarketSelect extends React.Component {
@@ -23,8 +23,17 @@ class MarketSelect extends React.Component {
   }
 
   componentDidMount() {
-    getMarkets().then(json => {
-      const markets = json.result;
+    getMarketSummaries().then(json => {
+      let markets = json.result;
+      markets = markets.map(market => {
+        const currencies = market.MarketName.split('-');
+        return {
+          MarketCurrency: currencies[1],
+          BaseCurrency: currencies[0],
+          Price: market.Last,
+          Volume: market.Volume,
+        };
+      });
       this.setState({markets});
     });
   }
@@ -173,9 +182,9 @@ class MarketTable extends React.Component {
                   .filter(m => m.MarketCurrency.toLowerCase().indexOf(this.state.filter.toLowerCase()) >= 0)
                   .map(m => (
                     <MarketRow
+                      key={m.MarketName}
                       onClick={this.onSecondaryCurrencySelected}
-                      key={m.MarketCurrency}
-                      currency={m.MarketCurrency}
+                      market={m}
                     />
                   ))
               }
@@ -187,11 +196,11 @@ class MarketTable extends React.Component {
   }
 }
 
-const MarketRow = ({currency, onClick}) => (
-  <tr onClick={(e) => onClick(e, currency)} data-currency={currency} className="down">
-    <td>{currency}</td>
-    <td>0.14</td>
-    <td>9843.86</td>
+const MarketRow = ({market, onClick}) => (
+  <tr onClick={(e) => onClick(e, market.MarketCurrency)} className="down">
+    <td>{market.MarketCurrency}</td>
+    <td>{market.Price}</td>
+    <td>{Math.round(market.Volume)}</td>
     <td>-1.12</td>
   </tr>
 );
