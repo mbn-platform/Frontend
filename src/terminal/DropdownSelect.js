@@ -40,7 +40,7 @@ class DropdownSelect extends React.Component {
           <span>{this.props.selected ? this.props.selected : this.props.header} <span className="arrow_down"/></span>
         </div>
         <Popover
-          onClick={() => this.setState({isOpen: false})}
+          onClick={this.onOutsideClick}
           innerClassName="popover-body"
           isOpen={this.state.isOpen}
           target={this.props.targetId}
@@ -54,11 +54,11 @@ class DropdownSelect extends React.Component {
             }}
             className={classNames('dropdown', this.props.dropdownClassName)}>
             <div className="dropdown__name">
-              <span>{this.props.selected ? this.props.selected : this.props.header}</span><span class="arrow_down"></span>
+              <span>{this.props.selected ? this.props.selected : this.props.header}</span><span onClick={this.onOutsideClick} className="arrow_down"></span>
             </div>
             {this.props.items.map(item => (
               <div
-                key="item"
+                key={item}
                 onClick={e => this.onItemSelect(e, item)}
                 className={classNames(this.props.elementClassName, {active: item === this.props.selected})}
               >{item}</div>

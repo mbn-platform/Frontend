@@ -31,6 +31,7 @@ class MarketSelect extends React.Component {
           MarketCurrency: currencies[1],
           BaseCurrency: currencies[0],
           Price: market.Last,
+          MarketName: market.MarketName,
           Volume: market.Volume,
         };
       });
@@ -107,8 +108,9 @@ class MarketTable extends React.Component {
     });
   }
 
-  onSecondaryCurrencySelected(e, currency) {
+  onSecondaryCurrencySelected(e) {
     e.stopPropagation();
+    const currency = e.target.parentElement.dataset.currency;
     this.props.onMarketSelect(this.state.baseCurrency + '-' + currency);
   }
 
@@ -197,7 +199,7 @@ class MarketTable extends React.Component {
 }
 
 const MarketRow = ({market, onClick}) => (
-  <tr onClick={(e) => onClick(e, market.MarketCurrency)} className="down">
+  <tr onClick={onClick} data-currency={market.MarketCurrency} className="down">
     <td>{market.MarketCurrency}</td>
     <td>{market.Price}</td>
     <td>{Math.round(market.Volume)}</td>
