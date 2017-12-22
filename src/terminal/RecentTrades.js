@@ -8,7 +8,7 @@ class RecentTrades extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {history: []};
+    this.state = {history: [], currentSortColumn: '', direction: 'down'};
   }
 
   componentDidMount() {
@@ -24,17 +24,22 @@ class RecentTrades extends React.Component {
     getMarketHistory(this.props.market).then(json => {
       if(json.success) {
         this.setState({history: json.result});
-        // this.sortColumn()
       }
     }).catch(err => console.log('error updating  history', err));
   }
-  sortColumn() {
+  sortColumn(e, type) {
+    let target = e.target
+    debugger;
     this.setState(state => {
       const history = state.history;
-      history.sort((h1,h2) => h2.Quantity - h1.Quantity)
-      return {history};
+      let currentSortColumn = type;
+      const direction = state.direction == 'down' ? 'up' : 'down';
+      target.className = '-sort-' + direction;
+      history.sort((h1,h2) => direction ==  'down' ? h2[type] - h1[type] : h1[type] - h2[type])
+      return {history, currentSortColumn, direction};
     });
   }
+
   render() {
     return (
       <div className="trades-table chart col-12 col-sm-6 col-md-12">
@@ -52,14 +57,14 @@ class RecentTrades extends React.Component {
           <table className="table">
             <thead>
               <tr>
-                <th>
-
+                <th onClick={(e) => this.sortColumn(e, 'Price')}>
                   <div>Price ({this.props.market.split('-')[0]}) <span className="icon-dir icon-down-dir"></span></div>
                 </th>
-                <th>
-                  <div>Trade Size <span className="icon-dir icon-down-dir" onClick={() => this.sortColumn()}></span></div>
+                <th  onClick={e => this.sortColumn(e, 'Quantity')}>
+                  <div>Trade Size <span className="icon-dir icon-down-dir"></span></div>
+
                 </th>
-                <th >
+                <th  onClick={(e) => this.sortColumn(e, 'TimeStamp')}>
                   <div>Time <span className="icon-dir icon-down-dir"></span></div>
                 </th>
                 <th>
@@ -67,9 +72,10 @@ class RecentTrades extends React.Component {
                 </th>
               </tr>
             </thead>
-            <tbody className="tbody">
+            <tbody className="tbody" ref= {ele => {this.tbody = ele}}>
               {this.state.history.map((order, index) => (
                 <OrderHistoryRow
+
                   key={order.Id}
                   price={order.Price}
                   size={order.Quantity}
