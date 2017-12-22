@@ -23,19 +23,28 @@ class RecentTrades extends React.Component {
   updateHistory() {
     getMarketHistory(this.props.market).then(json => {
       if(json.success) {
-        this.setState({history: json.result});
+        this.setState({history: json.result})
+        this.sortColumn()
       }
     }).catch(err => console.log('error updating  history', err));
   }
   sortColumn(e, type) {
-    let target = e.target
-    debugger;
+    let target = null;
+    if(e && e.target) {
+      target = e.target
+    }
     this.setState(state => {
       const history = state.history;
-      let currentSortColumn = type;
-      const direction = state.direction == 'down' ? 'up' : 'down';
-      target.className = '-sort-' + direction;
-      history.sort((h1,h2) => direction ==  'down' ? h2[type] - h1[type] : h1[type] - h2[type])
+      let currentSortColumn = type || state.currentSortColumn;
+      if(!currentSortColumn) {
+        return {history}
+      } 
+      let direction = state.direction     
+      if(target) {
+        direction = direction == 'down' ? 'up' : 'down';
+        target.getElementsByTagName('span')[0].className = "icon-dir icon-" + direction +"-dir";
+      }
+      history.sort((h1,h2) => direction ==  'down' ? h2[currentSortColumn] - h1[currentSortColumn] : h1[currentSortColumn] - h2[currentSortColumn])
       return {history, currentSortColumn, direction};
     });
   }
