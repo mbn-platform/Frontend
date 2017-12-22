@@ -29,6 +29,7 @@ class ApiKeyInfo extends React.Component {
   }
 
   getCurrencies(apiKey) {
+
     if(!apiKey) {
       return [];
     } else {
@@ -46,11 +47,11 @@ class ApiKeyInfo extends React.Component {
 
   onSelectAllClicked(e) {
     e.stopPropagation();
-
     this.setState(state => {
-      if(!state.currencies.length || this.props.apiKey.state === 'USED') {
-        return {currencies, selectedAll}
+      if(!state.currencies || (state.currencies && !state.currencies.length) || (this.props.apiKey && this.props.apiKey.state === 'USED')) {
+        return '';
       }
+
       const currencies = state.currencies.map(c => (c.name != 'USDT' && c.name != 'BTC' && c.name != 'ETH') ? {...c, selected: state.selectedAll ? false : true} : c)
       const selectedAll = state.selectedAll ? '' : 'selected'
       return {currencies, selectedAll,changed: true};
@@ -88,9 +89,13 @@ class ApiKeyInfo extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.apiKey !== this.props.apiKey) {
-      this.setState({changed: false, currencies: this.getCurrencies(nextProps.apiKey)});
+    if(nextProps.apiKey && nextProps.apiKey._id) {
+      let id = this.props.apiKey ? this.props.apiKey._id : '';
+      if(nextProps.apiKey._id !== id) {
+        this.setState({changed: false, currencies: this.getCurrencies(nextProps.apiKey),selectedAll: ''});
+      }      
     }
+
   }
 
   getColumns() {
@@ -201,7 +206,7 @@ const StatusHeader = (onSelectAllClicked, selectedAll) => {
         <div className="green_arrow green_arrow_bottom" ></div>
       </div>
       <div className="title_green_arrows_wrapper">
-        <div className="currency_select_all">All</div>
+        <div onClick={onSelectAllClicked} className="currency_select_all">All</div>
         <div onClick={onSelectAllClicked} className={['currency_status_checkbox', selectedAll].join(' ')}></div>
       </div>
 

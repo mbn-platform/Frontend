@@ -127,7 +127,7 @@ class Contracts extends React.Component {
       minWidth: 70,
       Cell: row => (<div className="contractor_link">@<Link className="table_col_value_a" to={'/' + row.value}>{row.value}</Link></div>),
     }, this.getExpireDateColumn(), {
-      Header: ContractTableHeader('Current\nprofit'),
+      Header: ContractTableHeader('Current\nprofit, %'),
       id: 'currentProfit',
       className: 'table_col_value',
       headerClassName: 'current_profit',
