@@ -30,19 +30,20 @@ class RecentTrades extends React.Component {
   }
   sortColumn(e, type, dtSort) {
     let target = null;
-    if(e && e.target) {
-      target = e.target
+    if(e && e.currentTarget) {
+      target = e.currentTarget
     }
     this.setState(state => {
       const history = state.history;
       let currentSortColumn = type || state.currentSortColumn;
-      const dateSort = state.dateSort || dtSort;
+      let dateSort = state.dateSort || dtSort;
       if(!currentSortColumn) {
         return {history}
       } 
       let direction = state.direction     
       if(target) {
-        direction = direction == 'down' ? 'up' : 'down';
+        target.className = target.className == '-sort-asc' ? '-sort-desc' : '-sort-asc';
+        direction = target.className == '-sort-desc' ? 'up' : 'down';
         target.getElementsByTagName('span')[0].className = "icon-dir icon-" + direction +"-dir";
       }
       if(dateSort) {
@@ -50,6 +51,7 @@ class RecentTrades extends React.Component {
 
       } else {
         history.sort((h1,h2) => direction ==  'down' ? h2[currentSortColumn] - h1[currentSortColumn] : h1[currentSortColumn] - h2[currentSortColumn])  
+        dateSort = false;
       }
       return {history, currentSortColumn, direction, dateSort};
     });
@@ -72,15 +74,15 @@ class RecentTrades extends React.Component {
           <table className="table">
             <thead>
               <tr>
-                <th onClick={(e) => this.sortColumn(e, 'Price')}>
-                  <div>Price ({this.props.market.split('-')[0]}) <span className="icon-dir icon-down-dir"></span></div>
+                <th onClick={(e) => this.sortColumn(e, 'Price')} className='-sort-asc'>
+                  <div>Price ({this.props.market.split('-')[0]}) <span className="icon-dir"></span></div>
                 </th>
-                <th  onClick={e => this.sortColumn(e, 'Quantity')}>
-                  <div>Trade Size <span className="icon-dir icon-down-dir"></span></div>
+                <th  onClick={e => this.sortColumn(e, 'Quantity')} className='-sort-asc'>
+                  <div>Trade Size <span className="icon-dir"></span></div>
 
                 </th>
-                <th  onClick={(e) => this.sortColumn(e, 'TimeStamp', true)}>
-                  <div>Time <span className="icon-dir icon-down-dir"></span></div>
+                <th  onClick={(e) => this.sortColumn(e, 'TimeStamp', true)} className='-sort-asc'>
+                  <div>Time <span className="icon-dir"></span></div>
                 </th>
                 <th>
 

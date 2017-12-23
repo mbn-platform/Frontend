@@ -1,9 +1,19 @@
 .terminal{
 	font-family: "SF-UI"!important;
 	font-weight: 400;
-.amcharts-axis-label.amcharts-guide {
-	
-}
+	.amcharts-axis-label.amcharts-guide {
+		
+	}
+	.-sort-asc {
+		.icon-dir:before {
+			content: '\e808'; 
+		}
+	}
+	.-sort-desc {
+		.icon-dir:before {
+			content: '\e807';
+		}
+	}
 	&-main{
 		> div{
 			margin: 10px!important;
@@ -341,19 +351,19 @@
 					font-weight: 600;
 					margin: .5em 0;
 					justify-content: center;
-					span{
-						margin-right: 6px;
-						color: inherit;
-						&.icon {
-							font-size: 0.9em;
-						}
-						&.icon-up-dir:before {
-							vertical-align: -1px;
-						}
-						&.icon-down-dir:before {
-							vertical-align: -2px;
-						}
-					}
+					// span{
+					// 	margin-right: 6px;
+					// 	color: inherit;
+					// 	&.icon {
+					// 		font-size: 0.9em;
+					// 	}
+					// 	&.icon-up-dir:before {
+					// 		vertical-align: -1px;
+					// 	}
+					// 	&.icon-down-dir:before {
+					// 		vertical-align: -2px;
+					// 	}
+					// }
 					&.up{
 						color: #32B994;
 					}
