@@ -160,7 +160,7 @@ class Contracts extends React.Component {
       headerClassName: 'left_column',
       className: 'table_col_value',
       minWidth: 40,
-      accessor: c => c.left + ' ' + c.currency,
+      accessor: c => c.left + c.startBalance + ' ' + c.currency,
     }, {
       Header: ContractTableHeader('Fee, %'),
       minWidth: 30,
