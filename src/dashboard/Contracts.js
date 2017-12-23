@@ -93,7 +93,7 @@ class Contracts extends React.Component {
         Header: ContractTableHeader('Expire date'),
         id: 'expireDate',
         accessor: c => {
-          return formatTime(c.expireDate - Date.now());
+          return formatDate(new Date(c.expireDate));
         },
         headerClassName: 'expire_date big_column',
         className: 'table_col_value big_column',
@@ -103,7 +103,7 @@ class Contracts extends React.Component {
       }
     } else {
       return {
-        Header: ContractTableHeader('Finished'),
+        Header: ContractTableHeader('Expire date'),
         id: 'expireDate',
         accessor: c => {
           const date = new Date(c.expireDate);
@@ -144,19 +144,19 @@ class Contracts extends React.Component {
       id: 'startBalance',
       className: 'table_col_value',
       headerClassName: 'start_balance',
-      Header: ContractTableHeader('Start\nbalance, %'),
+      Header: ContractTableHeader('Start\nbalance'),
       minWidth: 50,
       accessor: c => c.startBalance + ' ' + c.currency,
     }, {
       id: 'currentBalance',
       headerClassName: 'current_balance',
       className: 'table_col_value',
-      Header: ContractTableHeader('Current\nbalance, %'),
+      Header: ContractTableHeader('Current\nbalance'),
       minWidth: 50,
       accessor: c => c.currentBalance + ' ' + c.currency,
     }, {
       id: 'left',
-      Header: ContractTableHeader('Left'),
+      Header: ContractTableHeader('Target\nbalance'),
       headerClassName: 'left_column',
       className: 'table_col_value',
       minWidth: 40,
@@ -196,7 +196,7 @@ class Contracts extends React.Component {
       headerClassName: 'current_balance',
       className: 'table_col_value',
       minWidth: 82,
-      Header: ContractTableHeader('Current\nbalance, %'),
+      Header: ContractTableHeader('Current\nbalance'),
       accessor: c => c.currentBalance + ' ' + c.currency,
     }, {
       Header: ContractTableHeader('Fee, %'),

@@ -220,6 +220,7 @@
     padding: 0;
     height: 18px;
     line-height: 18px;    
+    background: transparent;
   }  
   .api_key_currencies_table .table_requests_control_wr .table_requests_control_btns {
     margin-top: -1px;

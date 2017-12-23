@@ -20,12 +20,16 @@ class ContractDetails extends React.Component {
                 dim="days"
               />
               <ContractDetailRow
+                name="CURRENCY OF CONTRACT:"
+                value={this.props.currency}
+              />              
+              <ContractDetailRow
                 name="Min contract amount:"
                 value={this.props.amount}
                 dim={this.props.currency}
               />
               <ContractDetailRow
-                name="ROI:"
+                name="TARGET PROFIT:"
                 value={this.props.roi}
                 dim="%"
               />

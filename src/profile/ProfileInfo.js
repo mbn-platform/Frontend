@@ -21,13 +21,10 @@ class ProfileInfo extends React.Component {
   getHeaderSeparator() {
     return (
       <Row className="justify-content-center">
-        <Col md="12" lg="12" xl="12" style={{display: this.props.own ? 'block' : 'none'}} className="separate-block">
-          <div className="separate-line d-none d-md-block"></div>
-        </Col>
-        <Col md="12" lg="12" xl="12" style={{display: (this.props.availableForOffers && !this.props.own ? 'block' : 'none')}} className="accept-request-title-block">
+        <Col md="12" lg="12" xl="12" style={{display: (this.props.availableForOffers ? 'block' : 'none')}} className="accept-request-title-block">
           <div className="accept-request-title-text">accepting requests</div>
         </Col>
-        <Col md="12" lg="12" xl="12" style={{display: (!this.props.availableForOffers && !this.props.own ? 'block' : 'none')}}  className="no-accept-request-title-block">
+        <Col md="12" lg="12" xl="12" style={{display: (!this.props.availableForOffers ? 'block' : 'none')}}  className="no-accept-request-title-block">
           <div className="no-accept-request-title-text">not Accepting requests</div>
         </Col>
       </Row>
@@ -47,8 +44,8 @@ class ProfileInfo extends React.Component {
                 <Stats
                   traderRating={this.props.topTraders}
                   investorRating={this.props.topInvesters}
-                  roiInBTC={15}
-                  roiInUSD={100}
+                  roiInBTC={this.props.roiInBTC}
+                  roiInUSD={this.props.roiInUSD}
                   moneyInManagement={this.props.investmentAmount}
                 />
                 <ContractSettings
@@ -57,6 +54,8 @@ class ProfileInfo extends React.Component {
                   amount={this.props.minAmount}
                   currency={this.props.minAmountCurrency}
                   maxLoss={this.props.maxLoss}
+                  roiInBTC={this.props.roiInBTC}
+                  roiInUSD={this.props.roiInUSD}                  
                   fee={this.props.fee}
                   availableForOffers={this.props.availableForOffers}
                   roi={this.props.roi}
@@ -79,6 +78,8 @@ class ProfileInfo extends React.Component {
                   traderRating={this.props.topTraders}
                   investorRating={this.props.topInvesters}
                   roi={15}
+                  roiInBTC={this.props.roiInBTC}
+                  roiInUSD={this.props.roiInUSD}                        
                   moneyInManagement={this.props.investmentAmount}
                 />
                 <SendRequestBlock profile={this.props} />

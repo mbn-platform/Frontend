@@ -13,7 +13,7 @@ class ApiKeyInfo extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {changed: false, currencies: this.getCurrencies(), filtered: [{id: 'currency', value: ''}, {id: 'selected', value: 'all'}]};
+    this.state = {changed: false, currencies: this.getCurrencies(),selectedAll: '' , filtered: [{id: 'currency', value: ''}, {id: 'selected', value: 'all'}]};
     this.onCurrencyChange = this.onCurrencyChange.bind(this);
     this.onCurrencyStateClicked = this.onCurrencyStateClicked.bind(this);
     this.onSelectAllClicked = this.onSelectAllClicked.bind(this);
@@ -29,6 +29,7 @@ class ApiKeyInfo extends React.Component {
   }
 
   getCurrencies(apiKey) {
+
     if(!apiKey) {
       return [];
     } else {
@@ -47,8 +48,13 @@ class ApiKeyInfo extends React.Component {
   onSelectAllClicked(e) {
     e.stopPropagation();
     this.setState(state => {
-      const filtered = state.filtered.map(f => f.id === 'selected' ? {...f, value: 'all'} : f);
-      return {filtered};
+      if(!state.currencies || (state.currencies && !state.currencies.length) || (this.props.apiKey && this.props.apiKey.state === 'USED')) {
+        return '';
+      }
+
+      const currencies = state.currencies.map(c => (c.name != 'USDT' && c.name != 'BTC' && c.name != 'ETH') ? {...c, selected: state.selectedAll ? false : true} : c)
+      const selectedAll = state.selectedAll ? '' : 'selected'
+      return {currencies, selectedAll,changed: true};
     });
   }
 
@@ -83,9 +89,13 @@ class ApiKeyInfo extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.apiKey !== this.props.apiKey) {
-      this.setState({changed: false, currencies: this.getCurrencies(nextProps.apiKey)});
+    if(nextProps.apiKey && nextProps.apiKey._id) {
+      let id = this.props.apiKey ? this.props.apiKey._id : '';
+      if(nextProps.apiKey._id !== id) {
+        this.setState({changed: false, currencies: this.getCurrencies(nextProps.apiKey),selectedAll: ''});
+      }      
     }
+
   }
 
   getColumns() {
@@ -99,7 +109,7 @@ class ApiKeyInfo extends React.Component {
         className: 'table_col_value'
       }, {
         id: 'selected',
-        Header: StatusHeader(this.onSelectAllClicked),
+        Header: StatusHeader(this.onSelectAllClicked, this.state.selectedAll),
         Cell: StatusCell(this.onCurrencyStateClicked),
         accessor: 'selected',
         headerClassName: 'selected_header',
@@ -184,7 +194,7 @@ const StatusCell = (onClick, apiKey) => rowInfo => {
   return (<div data-currency={rowInfo.original.name} onClick={onClick} className={className}/>);
 };
 
-const StatusHeader = (onSelectAllClicked) => {
+const StatusHeader = (onSelectAllClicked, selectedAll) => {
   return (
     <div className="table_header_wrapper">
       <span className="table_header">Status</span>
@@ -197,8 +207,9 @@ const StatusHeader = (onSelectAllClicked) => {
       </div>
       <div className="title_green_arrows_wrapper">
         <div onClick={onSelectAllClicked} className="currency_select_all">All</div>
-        <div className="currency_status_checkbox selected"></div>
+        <div onClick={onSelectAllClicked} className={['currency_status_checkbox', selectedAll].join(' ')}></div>
       </div>
+
     </div>
   );
 
