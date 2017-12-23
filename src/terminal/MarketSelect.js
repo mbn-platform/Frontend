@@ -23,7 +23,7 @@ class MarketSelect extends React.Component {
     this.props.onItemSelect(item);
   }
 
-  componentDidMount() {
+  updateMarketSummaries() {
     getMarketSummaries().then(json => {
       let markets = json.result;
       markets = markets.map(market => {
@@ -34,10 +34,15 @@ class MarketSelect extends React.Component {
           Price: market.Last,
           MarketName: market.MarketName,
           Volume: market.Volume,
+          Change: (Math.random() * 4 - 2).toFixed(2),
         };
       });
       this.setState({markets});
     });
+  }
+
+  componentDidMount() {
+    this.updateMarketSummaries();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -55,7 +60,13 @@ class MarketSelect extends React.Component {
 
   render() {
     return(
-      <div onClick={() => this.setState({isOpen: !this.state.isOpen})} id={this.props.targetId} className="dropdown-link-wrap">
+      <div
+        onClick={() => {
+          this.setState({isOpen: !this.state.isOpen});
+          this.updateMarketSummaries();
+        }}
+        id={this.props.targetId} className="dropdown-link-wrap"
+      >
         <div className="dropdown-link">
           <span>{this.props.selected ? this.props.selected.replace('-', '/') : this.props.header} <span className="arrow_down"/></span>
         </div>
@@ -202,11 +213,11 @@ class MarketTable extends React.Component {
 }
 
 const MarketRow = ({market, onClick, isBTC}) => (
-  <tr onClick={onClick} data-currency={market.MarketCurrency} className="down">
+  <tr onClick={onClick} data-currency={market.MarketCurrency} className={market.Change > 0 ? 'up' : 'down'}>
     <td>{market.MarketCurrency}</td>
     <td>{formatFloat(market.Price, isBTC)}</td>
     <td>{Math.round(market.Volume)}</td>
-    <td>-1.12</td>
+    <td>{market.Change}%</td>
   </tr>
 );
 
