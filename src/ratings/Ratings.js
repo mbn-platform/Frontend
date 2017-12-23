@@ -126,6 +126,9 @@ class Ratings extends React.Component {
                               <th>
                                 <span>Max&nbsp;loss,&nbsp;%</span><span className="icon-dir icon-down-dir"></span>
                               </th>
+                              <th>
+                                <span>Accepting request</span><span className="icon-dir icon-down-dir"></span>
+                              </th>                              
                             </tr>
 
                             <tr>
@@ -339,6 +342,11 @@ const TraderRatingRow = (props) => (
     <td>
       {props.maxLoss}
     </td>
+    <td>
+      {props.acceptInvestments ? 
+        <span className='accept'/> :
+        <span className='empty'/> }
+    </td>    
   </tr>
 );
 

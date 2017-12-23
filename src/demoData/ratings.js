@@ -21,13 +21,14 @@ function generateTraderRating(rank) {
   const roi = Math.floor(Math.random() * 30 - 15);
   const minAmount = Math.floor(Math.random() * 7 + 4);
   const minAmountCurrency = 'BTC';
+  const acceptInvestments = generateAcceptInvestments()
   const fee = Math.floor(Math.random() * 10 + 10);
   const moneyInManagement = Math.floor(Math.random() * 30 + 10) + ' BTC';
   const maxLoss = Math.floor(Math.random() * 10 + 10);
   return {name, totalContracts, successContracts,
     dateCreated, duration, minAmount, minAmountCurrency,
     fee, moneyInManagement, maxLoss,
-    roi, name, rank};
+    roi, name, rank, acceptInvestments};
 }
 function generateInvestorRating(rank) {
   const name = generateName();
@@ -40,6 +41,11 @@ function generateInvestorRating(rank) {
     name, totalContracts, successContracts, dateCreated, paidExcessProfit, paidInvoices,
   }
 }
+
+function generateAcceptInvestments() {
+  return Math.random() > .5 ? false : true
+}
+
 function generateName() {
   return words[Math.floor(Math.random() * words.length)] + 
     names[Math.floor(Math.random() * names.length)]; 

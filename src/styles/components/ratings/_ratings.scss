@@ -19,6 +19,15 @@
 		min-height: 60vh;
 		.table {
 			margin-bottom: 0;
+			span.accept {
+				background: url(../assets/svg/001-check-mark-grey.svg) no-repeat center center;
+			    width: 100%;
+			    height: 18px;
+			    opacity: .8;
+			    display: inline-block;
+			    background-size: 15px;
+			    margin-top: 5px;				
+			}
 		}
 	}
 	&-tabs{
