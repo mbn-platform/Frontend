@@ -30,7 +30,7 @@ class Ratings extends React.Component {
     this.state = {
       roiIntervalOpen: false,
       nameFilter: '',
-      tab: TAB_INVESTORS,
+      tab: TAB_TRADERS,
       ratings,
     };
   }
