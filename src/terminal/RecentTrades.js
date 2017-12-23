@@ -8,7 +8,7 @@ class RecentTrades extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {history: [], currentSortColumn: '', direction: 'down'};
+    this.state = {history: [], currentSortColumn: '', direction: 'down', dateSort: false};
   }
 
   componentDidMount() {
@@ -28,7 +28,7 @@ class RecentTrades extends React.Component {
       }
     }).catch(err => console.log('error updating  history', err));
   }
-  sortColumn(e, type) {
+  sortColumn(e, type, dtSort) {
     let target = null;
     if(e && e.target) {
       target = e.target
@@ -36,6 +36,7 @@ class RecentTrades extends React.Component {
     this.setState(state => {
       const history = state.history;
       let currentSortColumn = type || state.currentSortColumn;
+      const dateSort = state.dateSort || dtSort;
       if(!currentSortColumn) {
         return {history}
       } 
@@ -44,8 +45,13 @@ class RecentTrades extends React.Component {
         direction = direction == 'down' ? 'up' : 'down';
         target.getElementsByTagName('span')[0].className = "icon-dir icon-" + direction +"-dir";
       }
-      history.sort((h1,h2) => direction ==  'down' ? h2[currentSortColumn] - h1[currentSortColumn] : h1[currentSortColumn] - h2[currentSortColumn])
-      return {history, currentSortColumn, direction};
+      if(dateSort) {
+        history.sort((h1,h2) => direction ==  'down' ? new Date(h2[currentSortColumn]) - new Date(h1[currentSortColumn]) : new Date(h1[currentSortColumn]) - new Date(h2[currentSortColumn]))  
+
+      } else {
+        history.sort((h1,h2) => direction ==  'down' ? h2[currentSortColumn] - h1[currentSortColumn] : h1[currentSortColumn] - h2[currentSortColumn])  
+      }
+      return {history, currentSortColumn, direction, dateSort};
     });
   }
 
@@ -73,7 +79,7 @@ class RecentTrades extends React.Component {
                   <div>Trade Size <span className="icon-dir icon-down-dir"></span></div>
 
                 </th>
-                <th  onClick={(e) => this.sortColumn(e, 'TimeStamp')}>
+                <th  onClick={(e) => this.sortColumn(e, 'TimeStamp', true)}>
                   <div>Time <span className="icon-dir icon-down-dir"></span></div>
                 </th>
                 <th>
