@@ -3,6 +3,7 @@ import { Popover } from 'reactstrap';
 import classNames from 'classnames';
 import { getMarketSummaries } from '../api/bittrex/bittrex';
 import $ from 'jquery';
+import { formatFloat } from '../generic/util';
 
 class MarketSelect extends React.Component {
 
@@ -141,6 +142,7 @@ class MarketTable extends React.Component {
 
   render() {
     const baseCurrency = this.state.baseCurrency;
+    const isBTC = baseCurrency === 'BTC';
     return (
       <div onClick={e => {
         e.stopPropagation();
@@ -184,6 +186,7 @@ class MarketTable extends React.Component {
                   .filter(m => m.MarketCurrency.toLowerCase().indexOf(this.state.filter.toLowerCase()) >= 0)
                   .map(m => (
                     <MarketRow
+                      isBTC={isBTC}
                       key={m.MarketName}
                       onClick={this.onSecondaryCurrencySelected}
                       market={m}
@@ -198,10 +201,10 @@ class MarketTable extends React.Component {
   }
 }
 
-const MarketRow = ({market, onClick}) => (
+const MarketRow = ({market, onClick, isBTC}) => (
   <tr onClick={onClick} data-currency={market.MarketCurrency} className="down">
     <td>{market.MarketCurrency}</td>
-    <td>{market.Price}</td>
+    <td>{formatFloat(market.Price, isBTC)}</td>
     <td>{Math.round(market.Volume)}</td>
     <td>-1.12</td>
   </tr>
