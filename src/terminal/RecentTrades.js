@@ -44,7 +44,6 @@ class RecentTrades extends React.Component {
       if(target) {
         target.className = target.className == '-sort-asc' ? '-sort-desc' : '-sort-asc';
         direction = target.className == '-sort-desc' ? 'up' : 'down';
-        target.getElementsByTagName('span')[0].className = "icon-dir icon-" + direction +"-dir";
       }
       if(dateSort) {
         history.sort((h1,h2) => direction ==  'down' ? new Date(h2[currentSortColumn]) - new Date(h1[currentSortColumn]) : new Date(h1[currentSortColumn]) - new Date(h2[currentSortColumn]))  
