@@ -21,13 +21,10 @@ class ProfileInfo extends React.Component {
   getHeaderSeparator() {
     return (
       <Row className="justify-content-center">
-        <Col md="12" lg="12" xl="12" style={{display: this.props.own ? 'block' : 'none'}} className="separate-block">
-          <div className="separate-line d-none d-md-block"></div>
-        </Col>
-        <Col md="12" lg="12" xl="12" style={{display: (this.props.availableForOffers && !this.props.own ? 'block' : 'none')}} className="accept-request-title-block">
+        <Col md="12" lg="12" xl="12" style={{display: (this.props.availableForOffers ? 'block' : 'none')}} className="accept-request-title-block">
           <div className="accept-request-title-text">accepting requests</div>
         </Col>
-        <Col md="12" lg="12" xl="12" style={{display: (!this.props.availableForOffers && !this.props.own ? 'block' : 'none')}}  className="no-accept-request-title-block">
+        <Col md="12" lg="12" xl="12" style={{display: (!this.props.availableForOffers ? 'block' : 'none')}}  className="no-accept-request-title-block">
           <div className="no-accept-request-title-text">not Accepting requests</div>
         </Col>
       </Row>
