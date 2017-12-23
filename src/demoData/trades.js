@@ -5,7 +5,7 @@ function generateTrade(tx, count, dt) {
   if(count < 32) {
     date = (new Date(dt.getTime() + count * 24 * 60 * 60 * 1000)).toISOString();    
   } else {
-    date = (new Date(dt.getTime() + Math.round(count / 4) * 60 * 60 * 1000 +  31 * 24 * 60 * 60 * 1000)).toISOString();    
+    date = (new Date(dt.getTime() +  (count - 31) * 60 * 60 * 1000 +  31 * 24 * 60 * 60 * 1000)).toISOString();    
   }
 
   const type = getRandomTradeType();
@@ -15,22 +15,10 @@ function generateTrade(tx, count, dt) {
   return { price, date, type, amount, amountCurrency, total, tx };
 }
 
-function generateDate(lastYear) {
-
-  const date = (new Date(Date.now() - getRandom(Date.now() - 1300000000000)))
-  date.setDate((new Date()).getDay() + 3);
-  if(lastYear) {
-    date.setFullYear((new Date()).getFullYear())
-    date.setMonth((new Date()).getMonth())
-  }
-  return date;
-}
-
 function generateTradesBlock(n = 20, tx,count, lastYear) {
   tx = tx || 'https://ropsten.etherscan.io/tx/0xf003ee3bdbd7c278864c2d4317669918e03b3dea7a0f5947051ea30c46e7c6f9';
   const trades = [];
-  const dayPoint = lastYear ? 1 : 0
-  console.log(lastYear)
+  const dayPoint = lastYear ? 2 : 0
   const dateStart = new Date(Date.now() - ((n - count) * 31 * 24* 60 * 60 * 1000))
   for(let i = 0; i < 31 + dayPoint; i++) {
     trades.push(generateTrade(tx,i + 1, dateStart));

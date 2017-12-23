@@ -14,33 +14,57 @@ class ProfitChart extends React.Component {
   }
 
   formatData(trades, selectedInterval) {
+    if(!trades || trades.length == 0) {
+      return;
+    }
     trades = trades.reduce((accum, item)  => accum.concat(item), [])
-    let period = this.getPeriod(selectedInterval)
-    return trades.slice().sort((t1, t2) =>  (new Date(t1.date)) - (new Date(t2.date)))
-    .filter(d => Date.parse(d.date) >= (Date.now() - period))
+
+    trades = trades.slice().sort((t1, t2) =>  (new Date(t1.date)) - (new Date(t2.date)));
+    let lastDate = trades[trades.length - 3].date;    
+    let {period, lastDatePeriod, method} = this.getPeriod(selectedInterval, lastDate)
+    console.log(trades.filter(d => (Date.parse(d.date) >= (Date.now() - period)))
+    .map(t => ({category: t.date, 'column-1': t.price})));
+    return trades.filter(d => (Date.parse(d.date) >= (Date.now() - period)) && (new Date(d.date)[method]() == lastDatePeriod))
     .map(t => ({category: t.date, 'column-1': t.price}));
   }
 
-  getPeriod(selectedInterval) {
+  getDateCurrent(dt,selectedInterval) {
+
+  }
+
+
+  getPeriod(selectedInterval, lastDate) {
     let period = 24*60*60*1000;
+    let lastDatePeriod = new Date(lastDate).getMinutes()
+    let method = 'getMinutes';
     switch(selectedInterval) {
       case 1:
         period = 7*period;
+        lastDatePeriod = new Date(lastDate).getHours()
+        method = 'getHours';
         break;
       case 2: 
         period *= 31;
+        lastDatePeriod = new Date(lastDate).getHours()
+        method = 'getHours';
         break;
       case 3:
         period *= 183;
+        lastDatePeriod = new Date(lastDate).getDate()
+        method = 'getDate';
         break;
       case 4:
         period *= 365;
+        lastDatePeriod = new Date(lastDate).getMonth()
+        method = 'getMonth';
         break
       case 5:
         period = Date.now();
+        lastDatePeriod = new Date(lastDate).getMonth()
+        method = 'getMonth';
         break;
     }
-    return period;
+    return {period,lastDatePeriod, method};
   }
 
   render() {
