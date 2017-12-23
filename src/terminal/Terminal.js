@@ -9,7 +9,7 @@ import MyOrders from './MyOrders';
 import RecentTrades from './RecentTrades';
 import OrderBook from './OrderBook';
 import { connect } from 'react-redux';
-import { selectApiKey, cancelOrder, selectMarket } from '../actions/terminal';
+import { selectApiKey, cancelOrder, selectMarket, placeOrder } from '../actions/terminal';
 import MediaQuery from 'react-responsive';
 
 class Terminal extends React.Component {
@@ -43,6 +43,7 @@ class Terminal extends React.Component {
                   />
                   <Row className="justify-content-between">
                     <PlaceOrder
+                      placeOrder={this.props.placeOrder}
                       market={this.props.selectedMarket}
                     />
                     <MediaQuery query="(min-width: 576px)">
@@ -103,6 +104,7 @@ const TerminalContainer = connect(state => ({
   selectedMarket: state.terminal.selectedMarket,
   orders: state.terminal.orders,
 }), dispatch => ({
+  placeOrder: order => dispatch(placeOrder(order)),
   selectApiKey: key => dispatch(selectApiKey(key)),
   cancelOrder: order => dispatch(cancelOrder(order)),
   selecteMarket: market => dispatch(selectMarket(market)),

@@ -51,12 +51,40 @@ class PlaceOrder extends React.Component {
   onSubmit(e) {
     e.preventDefault();
     switch(this.state.selectedTab) {
-      case TAB_BUY:
-        console.log('placing buy order');
+      case TAB_BUY: {
+        const order = {
+          type: 'buy',
+          market: this.state.amountCurrency + '/' + this.state.orderCurrency,
+          dateOpened: (new Date()).toISOString(),
+          price: parseFloat(this.state.price),
+          unitsTotal: parseFloat(this.state.orderSize),
+          unitsFilled: 0,
+        };
+        this.setState({
+          price: '',
+          orderSize: '',
+          amount: '',
+        });
+        this.props.placeOrder(order);
         break;
-      case TAB_SELL:
-        console.log('placing sell order');
+      }
+      case TAB_SELL: {
+        const order = {
+          type: 'sell',
+          market: this.state.amountCurrency + '/' + this.state.orderCurrency,
+          dateOpened: (new Date()).toISOString(),
+          price: parseFloat(this.state.price),
+          unitsTotal: parseFloat(this.state.orderSize),
+          unitsFilled: 0,
+        };
+        this.setState({
+          price: '',
+          orderSize: '',
+          amount: '',
+        });
+        this.props.placeOrder(order);
         break;
+      }
       default:
         break;
     }
@@ -79,7 +107,6 @@ class PlaceOrder extends React.Component {
       }
       case 'ordersize': {
         const value = parseFloat(e.target.value);
-        console.log(value);
         if(value >= 0) {
           const amount = this.state.price * value;
           this.setState({amount, orderSize: value});
