@@ -120,6 +120,7 @@ class MarketDepth extends React.Component {
   }
 
   addGuides(chart) {
+          let isBTC = true;
           let type = ['sell', 'buy'],
           asks = [],
           bids = [],
@@ -198,7 +199,7 @@ class MarketDepth extends React.Component {
                   'fontSize': 12,
                   "lineColor": color,
                   'labelOffset': getLabelOffset(arr[i+1]),
-                  "label": formatFloat(parseFloat(arr[i+1].value)) != 0 ? formatFloat(parseFloat(arr[i+1].value)) : "",
+                  "label": formatFloat(parseFloat(arr[i+1].value), isBTC) != 0 ? formatFloat(parseFloat(arr[i+1].value), isBTC) : "",
                   "position": "bottom",
                   "inside": true,
                   "labelRotation": -90,
@@ -209,7 +210,7 @@ class MarketDepth extends React.Component {
             }
           }
           function getLabelOffset(el) {
-            let numb = formatFloat(parseFloat(el.value));
+            let numb = formatFloat(parseFloat(el.value), isBTC);
             return str_size(numb, 'maven_proregular', '12');
           }
 
@@ -238,21 +239,24 @@ class MarketDepth extends React.Component {
         }  
 
   balloon(item, graph) {
+    const mainCurr = this.props.market.split('-')[0];
+    const isBTC = mainCurr === 'BTC' || mainCurr === 'ETH';
     let txt = '';
     if (graph.id == "sell") {
-      txt = "Price: <strong>" + this.formatNumber(item.dataContext.value, graph.chart, 4) + "</strong><br />"
+      txt = "Price: <strong>" + this.formatNumber(item.dataContext.value, graph.chart, isBTC ? 8 : 4) + "</strong><br />"
         + "Total volume: <strong>" + this.formatNumber(item.dataContext.selltotalvolume, graph.chart, 4) + "</strong><br />"
         + "Amount (BTC): <strong>" + this.formatNumber(item.dataContext.sellvolume, graph.chart, 4) + "</strong>";
     }
     else {
       console.log(this)
-      txt = "Price: <strong>" + this.formatNumber(item.dataContext.value, graph.chart, 4) + "</strong><br />"
+      txt = "Price: <strong>" + this.formatNumber(item.dataContext.value, graph.chart, isBTC ? 8 : 4) + "</strong><br />"
         + "Total volume: <strong>" + this.formatNumber(item.dataContext.buytotalvolume, graph.chart, 4) + "</strong><br />"
         + "Amount (BTC): <strong>" + this.formatNumber(item.dataContext.buyvolume, graph.chart, 4) + "</strong>";
     }
     return txt;
   }   
   makeConfig(data,guides) {
+    const isBTC = true;
     return {
       "type": "serial",
       'startDuration': 0,
@@ -295,7 +299,7 @@ class MarketDepth extends React.Component {
         // "showFirstLabel": false,
         // "showLastLabel": false,
         "labelFunction": function(valueText) {
-          return valueText ? formatFloat(parseFloat(valueText)) : valueText;
+          return valueText ? formatFloat(parseFloat(valueText), isBTC) : valueText;
         }
       },
        "export": {
