@@ -21,7 +21,7 @@ function padDate(number) {
   return number < 10 ? '0' + number : number;
 }
 
-export function formatFloat(number) {
+export function formatFloat(number, isBTC) {
   if(!number && number !== 0) {
     return '';
   }
@@ -33,6 +33,8 @@ export function formatFloat(number) {
     return number.toFixed(4);
   } else if(number > 0.01) {
     return number.toFixed(4);
+  } else if(isBTC) {
+    return number.toFixed(8);
   } else {
     return number.toFixed(5);
   }

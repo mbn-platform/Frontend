@@ -46,6 +46,9 @@ class OrderBook extends React.Component {
   }
 
   render() {
+    console.log(this.props.market);
+    const isBTC = this.props.market.split('-')[0] === 'BTC';
+    console.log(isBTC);
     return (
       <div className="orderbook-table chart col-12 col-sm-6 col-md-12">
         <div className="chart__top justify-content-between row">
@@ -76,6 +79,7 @@ class OrderBook extends React.Component {
             <tbody className="tbody">
               {this.state.sell.map((order, i) => (
                 <BuyOrderCell
+                  isBTC={isBTC}
                   key={i}
                   price={order.Rate}
                   size={order.Quantity}
@@ -94,6 +98,7 @@ class OrderBook extends React.Component {
             <tbody>
               {this.state.buy.map((order, i) => (
                 <BuyOrderCell
+                  isBTC={isBTC}
                   key={i}
                   price={order.Rate}
                   size={order.Quantity}
@@ -113,11 +118,11 @@ function relativeSize(minSize, maxSize, size) {
   return Math.max((size - minSize) / (maxSize - minSize), 0.02);
 }
 
-const BuyOrderCell = ({price, size, relativeSize} ) => {
+const BuyOrderCell = ({price, size, relativeSize, isBTC} ) => {
   const sizeParts = formatFloat(size).split('.');
   return (
     <tr>
-      <td>{formatFloat(price)}</td>
+      <td>{formatFloat(price, isBTC)}</td>
       <td>
         <span className="white">{sizeParts[0]}.</span>
         <span>{sizeParts[1]}</span>

@@ -32,7 +32,10 @@ class PlaceOrder extends React.Component {
       .then(json => {
         if(json.success) {
           const {Bid: bid, Ask: ask} = json.result;
-          this.setState({bid, ask});
+          this.setState({bid, ask,
+            amountCurrency: this.props.market.split('-')[0],
+            orderCurrency: this.props.market.split('-')[1],
+            });
         }
       })
       .catch(err => console.log(err));
@@ -137,16 +140,22 @@ class PlaceOrder extends React.Component {
   }
 
   render() {
+    const isBTC = this.state.amountCurrency === 'BTC';
+    console.log(isBTC);
+    console.log(this.state.amountCurrency);
+    console.log(this.props.market);
+    console.log(this.state.ask);
+    console.log(this.state.bid);
     return (
       <div className="buysell col-12 col-sm-6 col-md-12">
         <div className="buysell__top justify-content-between row col-12">
           <div className="buysell__switch-wrap ">
             <span onClick={() => this.onTabClick(TAB_BUY)}
               className={classNames('buysell__switch', 'switch-buy', {active: this.state.selectedTab === TAB_BUY})}
-            >BUY <span className="val">{formatFloat(this.state.ask)}</span></span>
+            >BUY <span className="val">{formatFloat(this.state.ask, isBTC)}</span></span>
             <span onClick={() => this.onTabClick(TAB_SELL)}
               className={classNames('buysell__switch', 'switch-sell', {active: this.state.selectedTab === TAB_SELL})}
-            >SELL <span className="val">{formatFloat(this.state.bid)}</span></span>
+            >SELL <span className="val">{formatFloat(this.state.bid, isBTC)}</span></span>
           </div>
           <Desktop>
             <div className="chart-controls align-items-center justify-content-between row">

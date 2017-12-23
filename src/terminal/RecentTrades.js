@@ -8,7 +8,7 @@ class RecentTrades extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {history: [], currentSortColumn: '', direction: 'down', dateSort: false};
+    this.state = {history: [], currentSortColumn: '', direction: 'down', dateSort: false, currency: this.props.market.split('-')[0]};
   }
 
   componentDidMount() {
@@ -23,7 +23,7 @@ class RecentTrades extends React.Component {
   updateHistory() {
     getMarketHistory(this.props.market).then(json => {
       if(json.success) {
-        this.setState({history: json.result})
+        this.setState({history: json.result, currency: this.props.market.split('-')[0]})
         this.sortColumn()
       }
     }).catch(err => console.log('error updating  history', err));
@@ -57,6 +57,7 @@ class RecentTrades extends React.Component {
   }
 
   render() {
+    const isBTC = this.state.currency === 'BTC';
     return (
       <div className="trades-table chart col-12 col-sm-6 col-md-12">
         <div className="chart__top justify-content-between row">
@@ -74,7 +75,7 @@ class RecentTrades extends React.Component {
             <thead>
               <tr>
                 <th onClick={(e) => this.sortColumn(e, 'Price')} className='-sort-asc'>
-                  <div>Price ({this.props.market.split('-')[0]}) <span className="icon-dir"></span></div>
+                  <div>Price ({this.state.currency}) <span className="icon-dir"></span></div>
                 </th>
                 <th  onClick={e => this.sortColumn(e, 'Quantity')} className='-sort-asc'>
                   <div>Trade Size <span className="icon-dir"></span></div>
@@ -93,6 +94,7 @@ class RecentTrades extends React.Component {
                 <OrderHistoryRow
 
                   key={order.Id}
+                  isBTC={isBTC}
                   price={order.Price}
                   size={order.Quantity}
                   type={order.OrderType}
@@ -107,12 +109,12 @@ class RecentTrades extends React.Component {
   }
 }
 
-const OrderHistoryRow = ({type, date, price, size}) => {
+const OrderHistoryRow = ({type, date, price, size, isBTC}) => {
   const isSellOrder = type === 'SELL';
   return (
     <tr className={isSellOrder ? 'down' : 'up'}>
       <td>
-        {formatFloat(price)} <span className={classNames('icon', 'icon-dir',
+        {formatFloat(price, isBTC)} <span className={classNames('icon', 'icon-dir',
           isSellOrder ? 'icon-up-dir' : 'icon-down-dir')}></span>
       </td>
       <td>
