@@ -74,7 +74,6 @@ class Profile extends React.Component {
 
   render() {
     const own = this.props.profile._id && this.state._id && this.props.profile._id === this.state._id;
-    console.log(own);
     return (
       <Container fluid className='profile-item'>
         <Row>
@@ -82,6 +81,7 @@ class Profile extends React.Component {
             onSaveChangesClick={this.onSaveChangesClick}
           />
           <TablesScreen
+            own={own}
             profile={this.state}
             onCurrencyToggle={this.onCurrencyToggle}
             currencies={this.state.currencies}

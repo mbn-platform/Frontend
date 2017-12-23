@@ -47,7 +47,7 @@ class CurrencySettings extends React.Component {
                   <div className="container-fuild h-100">
                     <div className="row align-items-center">
                       <div className="col-auto title-text">
-                        <span className="icon icon-profit icon-002-circle"></span>CURRENCY SETTINGS
+                        <span className="icon icon-profit icon-002-circle"></span>{this.props.own ? 'CURRENCY SETTINGS' : 'PREFERRED CURRENCIES'}
                       </div>
                     </div>
                     <div className="row align-items-center d-flex d-md-none choose-header-block justify-content-center">

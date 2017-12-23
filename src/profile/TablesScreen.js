@@ -24,6 +24,7 @@ class TablesScreen extends React.Component {
                 </Row>
                 <Row className="table-row">
                   <CurrencySettings
+                    own={this.props.own}
                     onCurrencyToggle={this.props.onCurrencyToggle}
                     currencies={this.props.currencies}
                   />
