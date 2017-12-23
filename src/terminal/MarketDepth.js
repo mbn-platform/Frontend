@@ -41,15 +41,17 @@ class MarketDepth extends React.Component {
 
   updateOrderBook() {
     this.setState({currency: this.props.market.split('-')})
-    getOrderBook(this.props.market, 'both').then(json => {
+    getOrderBook(this.props.market, 'buy').then(json => {
       if(json.success) {
-        let {buy, sell} = json.result;
-        buy = buy.slice(0, 100);
-        sell = sell.slice(0, 100);
-
+        let buy = json.result;
         buy.sort((b1,b2) => (b1.Rate - b2.Rate))
-        var res = this.getData(buy, sell);
-        this.setState({data: res})        
+        getOrderBook(this.props.market, 'sell').then(json => {
+          if(json.success) {
+            let sell = json.result;
+            var res = this.getData(buy, sell);
+            this.setState({data: res}) 
+          }          
+        }).catch(err => console.log('error updating order book', err));
       }
     }).catch(err => console.log('error updating order book', err));
   }
