@@ -156,7 +156,7 @@ class Contracts extends React.Component {
       accessor: c => c.currentBalance + ' ' + c.currency,
     }, {
       id: 'left',
-      Header: ContractTableHeader('Left'),
+      Header: ContractTableHeader('Target\nbalance'),
       headerClassName: 'left_column',
       className: 'table_col_value',
       minWidth: 40,
