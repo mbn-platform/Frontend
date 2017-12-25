@@ -38,7 +38,7 @@ function generateInvestorRating(rank) {
   const paidExcessProfit = Math.floor(Math.random() * 30) + 10 + ' BTC';
   const paidInvoices = Math.floor(Math.random() * 10) + 5;
   return {
-    name, totalContracts, successContracts, dateCreated, paidExcessProfit, paidInvoices,
+    name, totalContracts, successContracts, dateCreated, paidExcessProfit, paidInvoices, rank
   }
 }
 

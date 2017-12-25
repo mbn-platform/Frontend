@@ -3,12 +3,16 @@ import classNames from 'classnames';
 import { getMarketHistory } from '../api/bittrex/bittrex';
 import { formatFloat } from '../generic/util';
 import { Desktop } from '../generic/MediaQuery';
+import {sortData, onColumnSort}  from '../generic/terminalSortFunctions';
 
 class RecentTrades extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {history: [], currentSortColumn: '', direction: 'down', dateSort: false, currency: this.props.market.split('-')[0]};
+    this.state = {history: [], currency: this.props.market.split('-')[0], sort: {}};
+    this.sortData = sortData.bind(this);
+    this.onColumnSort = onColumnSort.bind(this);
+    this.sortFunctions = {};    
   }
 
   componentDidMount() {
@@ -24,40 +28,16 @@ class RecentTrades extends React.Component {
     getMarketHistory(this.props.market).then(json => {
       if(json.success) {
         this.setState({history: json.result, currency: this.props.market.split('-')[0]})
-        this.sortColumn()
       }
     }).catch(err => console.log('error updating  history', err));
-  }
-  sortColumn(e, type, dtSort) {
-    let target = null;
-    if(e && e.currentTarget) {
-      target = e.currentTarget
-    }
-    this.setState(state => {
-      const history = state.history;
-      let currentSortColumn = type || state.currentSortColumn;
-      let dateSort = state.dateSort || dtSort;
-      if(!currentSortColumn) {
-        return {history}
-      } 
-      let direction = state.direction     
-      if(target) {
-        target.className = target.className == '-sort-asc' ? '-sort-desc' : '-sort-asc';
-        direction = target.className == '-sort-desc' ? 'up' : 'down';
-      }
-      if(dateSort) {
-        history.sort((h1,h2) => direction ==  'down' ? new Date(h2[currentSortColumn]) - new Date(h1[currentSortColumn]) : new Date(h1[currentSortColumn]) - new Date(h2[currentSortColumn]))  
-
-      } else {
-        history.sort((h1,h2) => direction ==  'down' ? h2[currentSortColumn] - h1[currentSortColumn] : h1[currentSortColumn] - h2[currentSortColumn])  
-        dateSort = false;
-      }
-      return {history, currentSortColumn, direction, dateSort};
-    });
   }
 
   render() {
     const isBTC = this.state.currency === 'BTC';
+    let sortedData = [];
+    if(this.state.history.length) {
+      sortedData = this.sortData(this.state.history);
+    }
     return (
       <div className="trades-table chart col-12 col-sm-6 col-md-12">
         <div className="chart__top justify-content-between row">
@@ -74,15 +54,15 @@ class RecentTrades extends React.Component {
           <table className="table">
             <thead>
               <tr>
-                <th onClick={(e) => this.sortColumn(e, 'Price')} className='-sort-asc'>
-                  <div>Price ({this.state.currency}) <span className="icon-dir"></span></div>
+                <th onClick={() => this.onColumnSort('Price')}>
+                  <div>Price ({this.state.currency}) <span className="icon-dir icon-down-dir"></span></div>
                 </th>
-                <th  onClick={e => this.sortColumn(e, 'Quantity')} className='-sort-asc'>
-                  <div>Trade Size <span className="icon-dir"></span></div>
+                <th onClick={() => this.onColumnSort('Quantity')}>
+                  <div>Trade Size <span className="icon-dir icon-down-dir"></span></div>
 
                 </th>
-                <th  onClick={(e) => this.sortColumn(e, 'TimeStamp', true)} className='-sort-asc'>
-                  <div>Time <span className="icon-dir"></span></div>
+                <th  onClick={() => this.onColumnSort('TimeStamp')}>
+                  <div>Time <span className="icon-dir icon-down-dir"></span></div>
                 </th>
                 <th>
 
@@ -90,7 +70,7 @@ class RecentTrades extends React.Component {
               </tr>
             </thead>
             <tbody className="tbody" ref= {ele => {this.tbody = ele}}>
-              {this.state.history.map((order, index) => (
+              {sortedData.map((order, index) => (
                 <OrderHistoryRow
 
                   key={order.Id}

@@ -5,6 +5,7 @@ import BestInvestors from './BestInvestors';
 import classNames from 'classnames';
 import { generateRatings } from '../demoData/ratings';
 import $ from 'jquery';
+import {sortData, onColumnSort}  from '../generic/terminalSortFunctions';
 
 const TAB_TRADERS = 0;
 const TAB_INVESTORS = 1;
@@ -15,6 +16,9 @@ class Ratings extends React.Component {
     super(props);
     this.onNameFilterChange = this.onNameFilterChange.bind(this);
     this.onTabClick = this.onTabClick.bind(this);
+    this.sortData = sortData.bind(this);
+    this.onColumnSort = onColumnSort.bind(this);
+    this.sortFunctions = {};        
     let ratings = localStorage.getItem('ratings');
     if(!ratings) {
       ratings = generateRatings();
@@ -32,6 +36,7 @@ class Ratings extends React.Component {
       nameFilter: '',
       tab: TAB_TRADERS,
       ratings,
+      sort: {}
     };
   }
 
@@ -68,6 +73,7 @@ class Ratings extends React.Component {
     data = data.filter(profile => {
       return profile.name.toLowerCase().indexOf(this.state.nameFilter.toLowerCase()) >= 0;
     });
+    const sortedData = this.sortData(data);
     return (
       <Container fluid className="ratings">
         <Row>
@@ -99,34 +105,34 @@ class Ratings extends React.Component {
                               <th className="fav">
                                 <span className="star"></span>
                               </th>
-                              <th className="name">
+                              <th onClick={() => this.onColumnSort('name')} className="name">
                                 <span>Name</span><span className="icon-dir icon-down-dir"></span>
                               </th>
-                              <th className="rank">
+                              <th onClick={() => this.onColumnSort('rank')} className="rank">
                                 <span>Rank</span><span className="icon-dir icon-down-dir"></span>
                               </th>
-                              <th>
+                              <th onClick={() => this.onColumnSort('roi')}>
                                 <span>ROI,&nbsp;%</span><span className="icon-dir icon-down-dir"></span>
                               </th>
-                              <th>
+                              <th onClick={() => this.onColumnSort('dateCreated')}>
                                 <span>Since opened</span><span className="icon-dir icon-down-dir"></span>
                               </th>
-                              <th>
+                              <th onClick={() => this.onColumnSort('minAmount')}>
                                 <span>Min contract<br/>amount</span><span className="icon-dir icon-down-dir"></span>
                               </th>
-                              <th>
+                              <th onClick={() => this.onColumnSort(' duration')}>
                                 <span>Duration of the contract</span><span className="icon-dir icon-down-dir"></span>
                               </th>
-                              <th>
+                              <th onClick={() => this.onColumnSort('fee')}>
                                 <span>Fee, %</span><span className="icon-dir icon-down-dir"></span>
                               </th>
-                              <th>
+                              <th onClick={() => this.onColumnSort('moneyInManagement')}>
                                 <span>Money in management</span><span className="icon-dir icon-down-dir"></span>
                               </th>
-                              <th>
+                              <th onClick={() => this.onColumnSort('maxLoss')}>
                                 <span>Max&nbsp;loss,&nbsp;%</span><span className="icon-dir icon-down-dir"></span>
                               </th>
-                              <th>
+                              <th onClick={() => this.onColumnSort('acceptInvestments')}>
                                 <span>Accepting request</span><span className="icon-dir icon-down-dir"></span>
                               </th>                              
                             </tr>
@@ -166,7 +172,7 @@ class Ratings extends React.Component {
                             </tr>
                           </thead>
                           <tbody>
-                            {data.map(rating => <TraderRatingRow {...rating} />)}
+                            {sortedData.map(rating => <TraderRatingRow {...rating} />)}
                           </tbody>
                         </table>
                       </div>
@@ -185,22 +191,22 @@ class Ratings extends React.Component {
                               <th className='fav'>
                                 <span className="star"></span>
                               </th>
-                              <th className='name'>
+                              <th onClick={() => this.onColumnSort('name')} className='name'>
                                 <span>Name</span><span className="icon-dir icon-down-dir"></span>
                               </th>
-                              <th className='rank'>
+                              <th onClick={() => this.onColumnSort('rank')} className='rank'>
                                 <span>Rank</span><span className="icon-dir icon-down-dir"></span>
                               </th>
-                              <th>
+                              <th onClick={() => this.onColumnSort('roi')}>
                                 <span>ROI,&nbsp;%</span><span className="icon-dir icon-down-dir"></span>
                               </th>
-                              <th>
+                              <th onClick={() => this.onColumnSort('dateCreated')}>
                                 <span>Since opened</span><span className="icon-dir icon-down-dir"></span>
                               </th>
-                              <th>
+                              <th onClick={() => this.onColumnSort('paidExcessProfit')}>
                                 <span>Paid excess<br/>profit</span><span className="icon-dir icon-down-dir"></span>
                               </th>
-                              <th>
+                              <th onClick={() => this.onColumnSort('paidInvoices')}>
                                 <span>Amount of paid invoices</span><span className="icon-dir icon-down-dir"></span>
                               </th>
                             </tr>
@@ -236,7 +242,7 @@ class Ratings extends React.Component {
                             </tr>
                           </thead>
                           <tbody>
-                            {data.map(d => <InvestorRatingRow {...d} />)}
+                            {sortedData.map(d => <InvestorRatingRow {...d} />)}
                           </tbody>
                         </table>
                       </div>

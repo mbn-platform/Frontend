@@ -2,12 +2,19 @@ import React from 'react';
 import { getOrderBook, getTicker} from '../api/bittrex/bittrex';
 import { formatFloat } from '../generic/util';
 import { Desktop } from '../generic/MediaQuery';
+import {sortData, onColumnSort}  from '../generic/terminalSortFunctions';
 
 class OrderBook extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {buy: [], sell: [], last: ''};
+    this.state = {buy: [], sell: [], last: '', sort: {}};
+    this.sortData = sortData.bind(this);
+    this.onColumnSort = onColumnSort.bind(this);
+    this.sortFunctions = {
+      price: (a, b) => formatFloat(a.Rate, this.props.market.split('-')[0] === 'BTC') - formatFloat(b.Rate, this.props.market.split('-')[0] === 'BTC'),
+      relativeSize: (a, b) => formatFloat(a.Rate * a.Quantity) - formatFloat(b.Rate * b.Quantity)
+    };    
   }
 
 
@@ -49,6 +56,16 @@ class OrderBook extends React.Component {
     console.log(this.props.market);
     const isBTC = this.props.market.split('-')[0] === 'BTC';
     console.log(isBTC);
+    let sortedDataSell = [];
+    let sortedDataBuy = [];
+    if(this.state.sell.length) {
+      sortedDataSell = this.sortData(this.state.sell);  
+    }
+    
+    if(this.state.buy.length) {
+      sortedDataBuy = this.sortData(this.state.buy);  
+    }
+
     return (
       <div className="orderbook-table chart col-12 col-sm-6 col-md-12">
         <div className="chart__top justify-content-between row">
@@ -64,20 +81,20 @@ class OrderBook extends React.Component {
           <table className="table red">
             <thead>
               <tr>
-                <th>
+                <th onClick={() => this.onColumnSort('price')}>
                   <div>Price <span className="icon-dir icon-down-dir"></span></div>
                 </th>
-                <th>
+                <th onClick={() => this.onColumnSort('Quantity')}>
                   <div>Size <span className="icon-dir icon-down-dir"></span></div>
                 </th>
-                <th>
+                <th onClick={() => this.onColumnSort('relativeSize')}>
                   <div>Total <span className="icon-dir icon-down-dir"></span></div>
                 </th>
                 <th></th>
               </tr>
             </thead>
             <tbody className="tbody">
-              {this.state.sell.map((order, i) => (
+              {sortedDataSell.map((order, i) => (
                 <BuyOrderCell
                   isBTC={isBTC}
                   key={i}
@@ -96,7 +113,7 @@ class OrderBook extends React.Component {
         <div className="orderbook-table-wrapper js-table-wrapper">
           <table className="table green">
             <tbody>
-              {this.state.buy.map((order, i) => (
+              {sortedDataBuy.map((order, i) => (
                 <BuyOrderCell
                   isBTC={isBTC}
                   key={i}

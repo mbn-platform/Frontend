@@ -1,6 +1,16 @@
 import React from 'react';
+import {sortData, onColumnSort}  from '../generic/terminalSortFunctions';
 
 class HistoryTable extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {sort: {}};
+    this.sortData = sortData.bind(this);
+    this.onColumnSort = onColumnSort.bind(this);
+    this.sortFunctions = {};    
+  }
+
   render() {
     return (
       <div className="history-main__block">
