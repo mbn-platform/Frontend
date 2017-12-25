@@ -18,7 +18,9 @@ class Ratings extends React.Component {
     this.onTabClick = this.onTabClick.bind(this);
     this.sortData = sortData.bind(this);
     this.onColumnSort = onColumnSort.bind(this);
-    this.sortFunctions = {};        
+    this.sortFunctions = {
+      dateCreated: (a, b) => (new Date(a.dateCreated)) - (new Date(b.dateCreated)),
+    };        
     let ratings = localStorage.getItem('ratings');
     if(!ratings) {
       ratings = generateRatings();
@@ -120,7 +122,7 @@ class Ratings extends React.Component {
                               <th onClick={() => this.onColumnSort('minAmount')}>
                                 <span>Min contract<br/>amount</span><span className="icon-dir icon-down-dir"></span>
                               </th>
-                              <th onClick={() => this.onColumnSort(' duration')}>
+                              <th onClick={() => this.onColumnSort('duration')}>
                                 <span>Duration of the contract</span><span className="icon-dir icon-down-dir"></span>
                               </th>
                               <th onClick={() => this.onColumnSort('fee')}>

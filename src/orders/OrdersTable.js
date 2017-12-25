@@ -81,21 +81,13 @@ class OrdersTable extends React.Component {
                 <table className="table">
                   <thead>
                     <tr>
-                      <th>Type <span className="icon-dir icon-down-dir"></span>
-                      </th>
-                      <th>Opened <span className="hide-mobile">Date</span>
-                        <span className="icon-dir icon-down-dir"></span>
-                      </th>
-                      <th>Market <span className="icon-dir icon-down-dir"></span>
-                      </th>
-                      <th>Price <span className="icon-dir icon-down-dir"></span>
-                      </th>
-                      <th>Units Total <span className="icon-dir icon-down-dir"></span>
-                      </th>
-                      <th>Units Filed
-                        <span className="icon-dir icon-down-dir"></span></th>
-                      <th><span className="hide-mobile">Estimated</span><span className="show-mobile">Est.</span> Total <span className="icon-dir icon-down-dir"></span></th>
-
+                      <th onClick={() => this.onColumnSort('type')}>Type <span className="icon-dir icon-down-dir"></span></th>
+                      <th onClick={() => this.onColumnSort('opened')}>Opened <span className="hide-mobile">Date</span> <span className="icon-dir icon-down-dir"></span></th>
+                      <th onClick={() => this.onColumnSort('market')}>Market <span className="icon-dir icon-down-dir"></span></th>
+                      <th onClick={() => this.onColumnSort('price')}>Price <span className="icon-dir icon-down-dir"></span></th>
+                      <th onClick={() => this.onColumnSort('unitsFilled')}>Units Filed <span className="icon-dir icon-down-dir"></span></th>
+                      <th onClick={() => this.onColumnSort('unitsTotal')}>Units Total <span className="icon-dir icon-down-dir"></span></th>
+                      <th onClick={() => this.onColumnSort('estimated')}><span className="hide-mobile">Estimated</span><span className="show-mobile">Est.</span> Total <span className="icon-dir icon-down-dir"></span></th>
                     </tr>
                   </thead>
                   <tbody>
