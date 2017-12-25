@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import $ from 'jquery';
 import { formatFloat } from '../generic/util';
 import { Desktop } from '../generic/MediaQuery';
+import {sortData, onColumnSort}  from '../generic/terminalSortFunctions';
 
 const TAB_OPEN_ORDERS = 0;
 const TAB_COMPLETED_ORDERS = 1;
@@ -11,8 +12,13 @@ class MyOrders extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {tab: TAB_OPEN_ORDERS};
+    this.state = {tab: TAB_OPEN_ORDERS, sort: {}};
     this.onTabClick = this.onTabClick.bind(this);
+    this.onColumnSort = onColumnSort.bind(this);
+    this.sortData = sortData.bind(this);
+    this.sortFunctions = {
+      estimated: (a, b) => (a.price * a.unitsTotal) - (b.price * b.unitsTotal),
+    };
   }
 
   onTabClick(tab) {
@@ -23,6 +29,8 @@ class MyOrders extends React.Component {
   }
 
   render() {
+    const data = this.state.tab === TAB_OPEN_ORDERS ? this.props.orders.open : this.props.orders.completed;
+    const sortedData = this.sortData(data);
     return (
       <div className="orders-table chart col-12 col-sm-6 col-md-12 col-lg-6">
         <div className="orders-table__top justify-content-between row col-12">
@@ -53,18 +61,18 @@ class MyOrders extends React.Component {
                 <table className="table">
                   <thead>
                     <tr>
-                      <th>Type <span className="icon-dir icon-down-dir"></span></th>
-                      <th>Opened <span className="hide-mobile">Date</span> <span className="icon-dir icon-down-dir"></span></th>
-                      <th>Market <span className="icon-dir icon-down-dir"></span></th>
-                      <th>Price <span className="icon-dir icon-down-dir"></span></th>
-                      <th>Units Filed <span className="icon-dir icon-down-dir"></span></th>
-                      <th>Units Total <span className="icon-dir icon-down-dir"></span></th>
-                      <th><span className="hide-mobile">Estimated</span><span className="show-mobile">Est.</span> Total <span className="icon-dir icon-down-dir"></span></th>
+                      <th onClick={() => this.onColumnSort('type')}>Type <span className="icon-dir icon-down-dir"></span></th>
+                      <th onClick={() => this.onColumnSort('opened')}>Opened <span className="hide-mobile">Date</span> <span className="icon-dir icon-down-dir"></span></th>
+                      <th onClick={() => this.onColumnSort('market')}>Market <span className="icon-dir icon-down-dir"></span></th>
+                      <th onClick={() => this.onColumnSort('price')}>Price <span className="icon-dir icon-down-dir"></span></th>
+                      <th onClick={() => this.onColumnSort('unitsFilled')}>Units Filed <span className="icon-dir icon-down-dir"></span></th>
+                      <th onClick={() => this.onColumnSort('unitsTotal')}>Units Total <span className="icon-dir icon-down-dir"></span></th>
+                      <th onClick={() => this.onColumnSort('estimated')}><span className="hide-mobile">Estimated</span><span className="show-mobile">Est.</span> Total <span className="icon-dir icon-down-dir"></span></th>
                       <th className="hide-mobile"></th>
                     </tr>
                   </thead>
                   <tbody>
-                    {this.props.orders.open.map(o => (
+                    {sortedData.map(o => (
                       <OpenOrder
                         onOrderCancel={this.props.cancelOrder}
                         key={o._id}
@@ -83,18 +91,18 @@ class MyOrders extends React.Component {
                 <table className="table">
                   <thead>
                     <tr>
-                      <th>Type <span className="icon-dir icon-down-dir"></span></th>
-                      <th>Opened <span className="hide-mobile">Date</span> <span className="icon-dir icon-down-dir"></span></th>
-                      <th>Market <span className="icon-dir icon-down-dir"></span></th>
-                      <th>Price <span className="icon-dir icon-down-dir"></span></th>
-                      <th>Units Filed <span className="icon-dir icon-down-dir"></span></th>
-                      <th>Units Total <span className="icon-dir icon-down-dir"></span></th>
-                      <th><span className="hide-mobile">Estimated</span><span className="show-mobile">Est.</span> Total <span className="icon-dir icon-down-dir"></span></th>
+                      <th onClick={() => this.onColumnSort('type')}>Type <span className="icon-dir icon-down-dir"></span></th>
+                      <th onClick={() => this.onColumnSort('opened')}>Opened <span className="hide-mobile">Date</span> <span className="icon-dir icon-down-dir"></span></th>
+                      <th onClick={() => this.onColumnSort('market')}>Market <span className="icon-dir icon-down-dir"></span></th>
+                      <th onClick={() => this.onColumnSort('price')}>Price <span className="icon-dir icon-down-dir"></span></th>
+                      <th onClick={() => this.onColumnSort('unitsFilled')}>Units Filed <span className="icon-dir icon-down-dir"></span></th>
+                      <th onClick={() => this.onColumnSort('unitsTotal')}>Units Total <span className="icon-dir icon-down-dir"></span></th>
+                      <th onClick={() => this.onColumnSort('estimated')}><span className="hide-mobile">Estimated</span><span className="show-mobile">Est.</span> Total <span className="icon-dir icon-down-dir"></span></th>
                       <th className="hide-mobile"></th>
                     </tr>
                   </thead>
                   <tbody>
-                    {this.props.orders.completed.map(o => (
+                    {sortedData.map(o => (
                       <CompletedOrder
                         key={o._id}
                         order={o}
