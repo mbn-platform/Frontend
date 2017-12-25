@@ -52,7 +52,7 @@ class OrdersTable extends React.Component {
                       <th>Units Filed <span className="icon-dir icon-down-dir"></span></th>
                       <th>Units Total <span className="icon-dir icon-down-dir"></span></th>
                       <th><span className="hide-mobile">Estimated</span><span className="show-mobile">Est.</span> Total <span className="icon-dir icon-down-dir"></span></th>
-                      <th className="hide-mobile"></th>
+                      <th className="show-mobile"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -117,7 +117,7 @@ const OpenOrder = ({order, onOrderCancel}) => (
     <td>{order.unitsFilled}</td>
     <td>{order.unitsTotal}</td>
     <td className="ellipsis-cell">{formatFloat(order.price * order.unitsTotal)}</td>
-    <td onClick={() => onOrderCancel(order)} className="hide-mobile"><span className="remove"></span></td>
+    <td onClick={() => onOrderCancel(order)} className="show-mobile"><span className="remove"></span></td>
   </tr>
 );
 
