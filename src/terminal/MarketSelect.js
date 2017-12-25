@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { getMarketSummaries } from '../api/bittrex/bittrex';
 import $ from 'jquery';
 import { formatFloat } from '../generic/util';
+import {sortData, onColumnSort}  from '../generic/terminalSortFunctions';
 
 class MarketSelect extends React.Component {
 
@@ -11,7 +12,7 @@ class MarketSelect extends React.Component {
     super(props);
     this.state = {selected: this.props.selected, markets: [], isOpen: false};
     this.onItemSelect = this.onItemSelect.bind(this);
-    this.onOutsideClick = this.onOutsideClick.bind(this);
+    this.onOutsideClick = this.onOutsideClick.bind(this);   
   }
 
   onOutsideClick() {
@@ -101,10 +102,16 @@ class MarketTable extends React.Component {
       secondaryCurrency: props.market.split('-')[1],
       filter: '',
       markets: this.props.markets.filter(m => m.BaseCurrency === baseCurrency),
+      sort: {},
     };
     this.onBaseCurrencySelected = this.onBaseCurrencySelected.bind(this);
     this.onSecondaryCurrencySelected = this.onSecondaryCurrencySelected.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.sortData = sortData.bind(this);
+    this.onColumnSort = onColumnSort.bind(this);
+    this.sortFunctions = {
+      Price: (a, b) => formatFloat(a.Price, this.state.baseCurrency === 'BTC') - formatFloat(b.Price, this.state.baseCurrency === 'BTC'),
+    };        
   }
 
   onChange(e) {
@@ -154,6 +161,10 @@ class MarketTable extends React.Component {
   render() {
     const baseCurrency = this.state.baseCurrency;
     const isBTC = baseCurrency === 'BTC';
+    let sortedData = [];
+    if(this.state.markets.length) {
+      sortedData = this.sortData(this.state.markets);  
+    }    
     return (
       <div onClick={e => {
         e.stopPropagation();
@@ -185,15 +196,15 @@ class MarketTable extends React.Component {
           <table className="table">
             <thead>
               <tr>
-                <th>Currency <span className="icon icon-dir icon-down-dir"></span></th>
-                <th>Price <span className="icon icon-dir icon-down-dir"></span></th>
-                <th>Volume <span className="icon icon-dir icon-down-dir"></span></th>
-                <th>Change <span className="icon icon-dir icon-down-dir"></span></th>
+                <th onClick={() => this.onColumnSort('MarketCurrency')}>Currency <span className="icon icon-dir icon-down-dir"></span></th>
+                <th onClick={() => this.onColumnSort('Price')}>Price <span className="icon icon-dir icon-down-dir"></span></th>
+                <th onClick={() => this.onColumnSort('Volume')}>Volume <span className="icon icon-dir icon-down-dir"></span></th>
+                <th onClick={() => this.onColumnSort('Change')}>Change <span className="icon icon-dir icon-down-dir"></span></th>
               </tr>
             </thead>
             <tbody>
               {
-                this.state.markets
+                sortedData
                   .filter(m => m.MarketCurrency.toLowerCase().indexOf(this.state.filter.toLowerCase()) >= 0)
                   .map(m => (
                     <MarketRow
