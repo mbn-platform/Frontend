@@ -117,7 +117,7 @@ const OpenOrder = ({order, onOrderCancel}) => (
     <td>{order.unitsFilled}</td>
     <td>{order.unitsTotal}</td>
     <td className="ellipsis-cell">{formatFloat(order.price * order.unitsTotal)}</td>
-    <td onClick={() => onOrderCancel(order)} className="show-mobile"><span className="remove"></span></td>
+    <td onClick={() => onOrderCancel(order)}><span className="remove"></span></td>
   </tr>
 );
 
