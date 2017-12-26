@@ -16,8 +16,6 @@ export function sortData(data) {
     return data;
   }
   const sortFunction = this.sortFunctions[this.state.sort.column] || defaultSortFunction(this.state.sort.column);
-  console.log(sortFunction);
-  console.log(data);
   const sorted = [...data].sort(sortFunction);
   if(this.state.sort.direction === 'up') {
     sorted.reverse();
