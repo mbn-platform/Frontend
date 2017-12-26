@@ -52,7 +52,7 @@ class OrdersTable extends React.Component {
                       <th>Units Filed <span className="icon-dir icon-down-dir"></span></th>
                       <th>Units Total <span className="icon-dir icon-down-dir"></span></th>
                       <th><span className="hide-mobile">Estimated</span><span className="show-mobile">Est.</span> Total <span className="icon-dir icon-down-dir"></span></th>
-                      <th className="show-mobile"></th>
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody>

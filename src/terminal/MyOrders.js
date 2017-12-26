@@ -68,7 +68,7 @@ class MyOrders extends React.Component {
                       <th onClick={() => this.onColumnSort('unitsFilled')}>Units Filed <span className="icon-dir icon-down-dir"></span></th>
                       <th onClick={() => this.onColumnSort('unitsTotal')}>Units Total <span className="icon-dir icon-down-dir"></span></th>
                       <th onClick={() => this.onColumnSort('estimated')}><span className="hide-mobile">Estimated</span><span className="show-mobile">Est.</span> Total <span className="icon-dir icon-down-dir"></span></th>
-                      <th className="show-mobile"></th>
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
