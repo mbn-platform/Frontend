@@ -47,8 +47,12 @@ class ApiKeyInfo extends React.Component {
 
   onSelectAllClicked(e) {
     e.stopPropagation();
+    if(this.props.apiKey.state === 'USED') {
+      alert("This api key is in use, you cannot change it's settings");
+      return;      
+    }
     this.setState(state => {
-      if(!state.currencies || (state.currencies && !state.currencies.length) || (this.props.apiKey && this.props.apiKey.state === 'USED')) {
+      if(!state.currencies || (state.currencies && !state.currencies.length)) {
         return '';
       }
 
@@ -70,6 +74,7 @@ class ApiKeyInfo extends React.Component {
   onCurrencyStateClicked(e) {
     e.stopPropagation();
     if(this.props.apiKey.state === 'USED') {
+      alert("This api key is in use, you cannot change it's settings");
       return;
     }
     const currency = e.target.dataset.currency;
