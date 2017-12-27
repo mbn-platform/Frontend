@@ -13,7 +13,7 @@ const generateKey = (state, owner, name) => {
       return null;
     }
   }).filter(Boolean);
-  const keyValue = generateId();
+  const keyValue = generateId(20);
   const key = {
     currencies, state, owner, name,
     exchange: exchange.name, key: keyValue,

@@ -220,6 +220,9 @@ class Contracts extends React.Component {
       minWidth: 82,
       Header: ContractTableHeader('Current\nbalance'),
       accessor: c => c.currentBalance + ' ' + c.currency,
+      sortMethod: (a,b, desc) => {
+        return parseFloat(a) - parseFloat(b);
+      }         
     }, {
       Header: ContractTableHeader('Fee, %'),
       headerClassName: 'fee_column',
