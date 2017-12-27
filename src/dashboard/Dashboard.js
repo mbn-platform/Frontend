@@ -135,9 +135,9 @@ class Dashboard extends React.Component {
     if(this.state.selectedContract !== contract) {
       const key = this.props.apiKeys.ownKeys.find(k => k._id === contract.keyId) ||
         this.props.apiKeys.receivedKeys.find(k => k._id === contract.keyId);
+
       this.setState({
         selectedContract: contract,
-        selectedApiKey: key,
         selectedOffer: null
       });
     }
