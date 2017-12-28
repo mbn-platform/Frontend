@@ -124,7 +124,7 @@ const OpenOrder = ({order, onOrderCancel}) => (
     <td>
       <span className="round center"></span>
     </td>
-    <td>{formatDate(new Date(order.dateOpened))}</td>
+    <td>{order.price}</td>
     <td>{order.unitsFilled}</td>
     <td>{order.unitsTotal}</td>
     <td className="ellipsis-cell">{formatFloat(order.price * order.unitsTotal)}</td>
@@ -137,7 +137,7 @@ const CompletedOrder = ({order}) => (
     <td>
       <span className="round center"></span>
     </td>
-    <td>{formatDate(new Date(order.dateOpened))}</td>
+    <td>{order.price}</td>
     <td>{order.unitsFilled}</td>
     <td>{order.unitsTotal}</td>
     <td className="ellipsis-cell">{formatFloat(order.price * order.unitsTotal)}</td>
