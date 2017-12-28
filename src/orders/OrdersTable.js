@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import $ from 'jquery';
 import { formatFloat } from '../generic/util';
-import {sortData, onColumnSort}  from '../generic/terminalSortFunctions';
+import {sortData, onColumnSort, classNameForColumnHeader}  from '../generic/terminalSortFunctions';
 
 const TAB_OPEN_ORDERS = 0;
 const TAB_COMPLETED_ORDERS = 1;
@@ -53,13 +53,13 @@ class OrdersTable extends React.Component {
                 <table className="table">
                   <thead>
                     <tr>
-                      <th onClick={() => this.onColumnSort('type')}>Type <span className="icon-dir icon-down-dir"></span></th>
-                      <th onClick={() => this.onColumnSort('opened')}>Opened <span className="hide-mobile">Date</span> <span className="icon-dir icon-down-dir"></span></th>
-                      <th onClick={() => this.onColumnSort('market')}>Market <span className="icon-dir icon-down-dir"></span></th>
-                      <th onClick={() => this.onColumnSort('price')}>Price <span className="icon-dir icon-down-dir"></span></th>
-                      <th onClick={() => this.onColumnSort('unitsFilled')}>Units Filed <span className="icon-dir icon-down-dir"></span></th>
-                      <th onClick={() => this.onColumnSort('unitsTotal')}>Units Total <span className="icon-dir icon-down-dir"></span></th>
-                      <th onClick={() => this.onColumnSort('estimated')}><span className="hide-mobile">Estimated</span><span className="show-mobile">Est.</span> Total <span className="icon-dir icon-down-dir"></span></th>
+                      <th onClick={() => this.onColumnSort('type')}>Type <span className={classNameForColumnHeader(this.state, 'type')}></span></th>
+                      <th onClick={() => this.onColumnSort('opened')}>Opened <span className="hide-mobile">Date</span> <span className={classNameForColumnHeader(this.state, 'opened')}></span></th>
+                      <th onClick={() => this.onColumnSort('market')}>Market <span className={classNameForColumnHeader(this.state, 'market')}></span></th>
+                      <th onClick={() => this.onColumnSort('price')}>Price <span className={classNameForColumnHeader(this.state, 'price')}></span></th>
+                      <th onClick={() => this.onColumnSort('unitsFilled')}>Units Filed <span className={classNameForColumnHeader(this.state, 'unitsFilled')}></span></th>
+                      <th onClick={() => this.onColumnSort('unitsTotal')}>Units Total <span className={classNameForColumnHeader(this.state, 'unitsTotal')}></span></th>
+                      <th onClick={() => this.onColumnSort('estimated')}><span className="hide-mobile">Estimated</span><span className="show-mobile">Est.</span> Total <span className={classNameForColumnHeader(this.state, 'estimated')}></span></th>
                       <th></th>
                     </tr>
                   </thead>
@@ -81,13 +81,13 @@ class OrdersTable extends React.Component {
                 <table className="table">
                   <thead>
                     <tr>
-                      <th onClick={() => this.onColumnSort('type')}>Type <span className="icon-dir icon-down-dir"></span></th>
-                      <th onClick={() => this.onColumnSort('opened')}>Opened <span className="hide-mobile">Date</span> <span className="icon-dir icon-down-dir"></span></th>
-                      <th onClick={() => this.onColumnSort('market')}>Market <span className="icon-dir icon-down-dir"></span></th>
-                      <th onClick={() => this.onColumnSort('price')}>Price <span className="icon-dir icon-down-dir"></span></th>
-                      <th onClick={() => this.onColumnSort('unitsFilled')}>Units Filed <span className="icon-dir icon-down-dir"></span></th>
-                      <th onClick={() => this.onColumnSort('unitsTotal')}>Units Total <span className="icon-dir icon-down-dir"></span></th>
-                      <th onClick={() => this.onColumnSort('estimated')}><span className="hide-mobile">Estimated</span><span className="show-mobile">Est.</span> Total <span className="icon-dir icon-down-dir"></span></th>
+                      <th onClick={() => this.onColumnSort('type')}>Type <span className={classNameForColumnHeader(this.state, 'type')}></span></th>
+                      <th onClick={() => this.onColumnSort('opened')}>Opened <span className="hide-mobile">Date</span> <span className={classNameForColumnHeader(this.state, 'opened')}></span></th>
+                      <th onClick={() => this.onColumnSort('market')}>Market <span className={classNameForColumnHeader(this.state, 'market')}></span></th>
+                      <th onClick={() => this.onColumnSort('price')}>Price <span className={classNameForColumnHeader(this.state, 'price')}></span></th>
+                      <th onClick={() => this.onColumnSort('unitsFilled')}>Units Filed <span className={classNameForColumnHeader(this.state, 'unitsFilled')}></span></th>
+                      <th onClick={() => this.onColumnSort('unitsTotal')}>Units Total <span className={classNameForColumnHeader(this.state, 'unitsTotal')}></span></th>
+                      <th onClick={() => this.onColumnSort('estimated')}><span className="hide-mobile">Estimated</span><span className="show-mobile">Est.</span> Total <span className={classNameForColumnHeader(this.state, 'estimated')}></span></th>
                     </tr>
                   </thead>
                   <tbody>

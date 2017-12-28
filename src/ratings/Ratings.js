@@ -5,7 +5,7 @@ import BestInvestors from './BestInvestors';
 import classNames from 'classnames';
 import { generateRatings } from '../demoData/ratings';
 import $ from 'jquery';
-import {sortData, onColumnSort}  from '../generic/terminalSortFunctions';
+import {sortData, onColumnSort, classNameForColumnHeader}  from '../generic/terminalSortFunctions';
 
 const TAB_TRADERS = 0;
 const TAB_INVESTORS = 1;
@@ -108,34 +108,34 @@ class Ratings extends React.Component {
                                 <span className="star"></span>
                               </th>
                               <th onClick={() => this.onColumnSort('name')} className="name">
-                                <span>Name</span><span className="icon-dir icon-down-dir"></span>
+                                <span>Name</span><span className={classNameForColumnHeader(this.state, 'name')}></span>
                               </th>
                               <th onClick={() => this.onColumnSort('rank')} className="rank">
-                                <span>Rank</span><span className="icon-dir icon-down-dir"></span>
+                                <span>Rank</span><span className={classNameForColumnHeader(this.state, 'rank')}></span>
                               </th>
                               <th onClick={() => this.onColumnSort('roi')}>
-                                <span>ROI,&nbsp;%</span><span className="icon-dir icon-down-dir"></span>
+                                <span>ROI,&nbsp;%</span><span className={classNameForColumnHeader(this.state, 'roi')}></span>
                               </th>
                               <th onClick={() => this.onColumnSort('dateCreated')}>
-                                <span>Since opened</span><span className="icon-dir icon-down-dir"></span>
+                                <span>Since opened</span><span className={classNameForColumnHeader(this.state, 'dateCreated')}></span>
                               </th>
                               <th onClick={() => this.onColumnSort('minAmount')}>
-                                <span>Min contract<br/>amount</span><span className="icon-dir icon-down-dir"></span>
+                                <span>Min contract<br/>amount</span><span className={classNameForColumnHeader(this.state, 'minAmount')}></span>
                               </th>
                               <th onClick={() => this.onColumnSort('duration')}>
-                                <span>Duration of the contract</span><span className="icon-dir icon-down-dir"></span>
+                                <span>Duration of the contract</span><span className={classNameForColumnHeader(this.state, 'duration')}></span>
                               </th>
                               <th onClick={() => this.onColumnSort('fee')}>
-                                <span>Fee, %</span><span className="icon-dir icon-down-dir"></span>
+                                <span>Fee, %</span><span className={classNameForColumnHeader(this.state, 'fee')}></span>
                               </th>
                               <th onClick={() => this.onColumnSort('moneyInManagement')}>
-                                <span>Money in management</span><span className="icon-dir icon-down-dir"></span>
+                                <span>Money in management</span><span className={classNameForColumnHeader(this.state, 'moneyInManagement')}></span>
                               </th>
                               <th onClick={() => this.onColumnSort('maxLoss')}>
-                                <span>Max&nbsp;loss,&nbsp;%</span><span className="icon-dir icon-down-dir"></span>
+                                <span>Max&nbsp;loss,&nbsp;%</span><span className={classNameForColumnHeader(this.state, 'maxLoss')}></span>
                               </th>
                               <th onClick={() => this.onColumnSort('acceptInvestments')}>
-                                <span>Accepting request</span><span className="icon-dir icon-down-dir"></span>
+                                <span>Accepting request</span><span className={classNameForColumnHeader(this.state, 'acceptInvestments')}></span>
                               </th>                              
                             </tr>
 

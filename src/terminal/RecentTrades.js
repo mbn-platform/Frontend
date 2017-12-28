@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { getMarketHistory } from '../api/bittrex/bittrex';
 import { formatFloat } from '../generic/util';
 import { Desktop } from '../generic/MediaQuery';
-import {sortData, onColumnSort}  from '../generic/terminalSortFunctions';
+import {sortData, onColumnSort, classNameForColumnHeader}  from '../generic/terminalSortFunctions';
 
 class RecentTrades extends React.Component {
 
@@ -35,7 +35,7 @@ class RecentTrades extends React.Component {
   render() {
     const isBTC = this.state.currency === 'BTC';
     let sortedData = [];
-    if(this.state.history.length) {
+    if(this.state.history && this.state.history.length) {
       sortedData = this.sortData(this.state.history);
     }
     return (
@@ -55,14 +55,14 @@ class RecentTrades extends React.Component {
             <thead>
               <tr>
                 <th onClick={() => this.onColumnSort('Price')}>
-                  <div>Price ({this.state.currency}) <span className="icon-dir icon-down-dir"></span></div>
+                  <div>Price ({this.state.currency}) <span className={classNameForColumnHeader(this.state, 'Price')}></span></div>
                 </th>
                 <th onClick={() => this.onColumnSort('Quantity')}>
-                  <div>Trade Size <span className="icon-dir icon-down-dir"></span></div>
+                  <div>Trade Size <span className={classNameForColumnHeader(this.state, 'Quantity')}></span></div>
 
                 </th>
                 <th  onClick={() => this.onColumnSort('TimeStamp')}>
-                  <div>Time <span className="icon-dir icon-down-dir"></span></div>
+                  <div>Time <span className={classNameForColumnHeader(this.state, 'TimeStamp')}></span></div>
                 </th>
                 <th>
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { getOrderBook, getTicker} from '../api/bittrex/bittrex';
 import { formatFloat } from '../generic/util';
 import { Desktop } from '../generic/MediaQuery';
-import {sortData, onColumnSort}  from '../generic/terminalSortFunctions';
+import {sortData, onColumnSort, classNameForColumnHeader}  from '../generic/terminalSortFunctions';
 
 class OrderBook extends React.Component {
 
@@ -82,13 +82,13 @@ class OrderBook extends React.Component {
             <thead>
               <tr>
                 <th onClick={() => this.onColumnSort('price')}>
-                  <div>Price <span className="icon-dir icon-down-dir"></span></div>
+                  <div>Price <span className={classNameForColumnHeader(this.state, 'price')}></span></div>
                 </th>
                 <th onClick={() => this.onColumnSort('Quantity')}>
-                  <div>Size <span className="icon-dir icon-down-dir"></span></div>
+                  <div>Size <span className={classNameForColumnHeader(this.state, 'Quantity')}></span></div>
                 </th>
                 <th onClick={() => this.onColumnSort('relativeSize')}>
-                  <div>Total <span className="icon-dir icon-down-dir"></span></div>
+                  <div>Total <span className={classNameForColumnHeader(this.state, 'relativeSize')}></span></div>
                 </th>
                 <th></th>
               </tr>
