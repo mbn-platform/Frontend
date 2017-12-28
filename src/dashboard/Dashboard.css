@@ -87,7 +87,12 @@
 .legend_pie_wrapper {
   float: right;
   overflow-y: hidden;
+
 }
+.legend_pie_wrapper .trader_legend {
+    overflow-y: hidden;    
+  }
+
 
 .amChartsLegend
 {
