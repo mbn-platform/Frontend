@@ -29,7 +29,9 @@ class MyOrders extends React.Component {
   }
 
   render() {
-    const data = this.state.tab === TAB_OPEN_ORDERS ? this.props.orders.open : this.props.orders.completed;
+    let data = this.state.tab === TAB_OPEN_ORDERS ? this.props.orders.open : this.props.orders.completed;
+    const market = this.props.market ? this.props.market.replace(/-/g, '/') : ''
+    data = data.filter(o => o.market == market);
     const sortedData = this.sortData(data);
     return (
       <div className="orders-table chart col-12 col-sm-6 col-md-12 col-lg-6">
@@ -62,12 +64,10 @@ class MyOrders extends React.Component {
                   <thead>
                     <tr>
                       <th onClick={() => this.onColumnSort('type')}>Type <span className="icon-dir icon-down-dir"></span></th>
-                      <th onClick={() => this.onColumnSort('opened')}>Opened <span className="hide-mobile">Date</span> <span className="icon-dir icon-down-dir"></span></th>
-                      <th onClick={() => this.onColumnSort('market')}>Market <span className="icon-dir icon-down-dir"></span></th>
                       <th onClick={() => this.onColumnSort('price')}>Price <span className="icon-dir icon-down-dir"></span></th>
                       <th onClick={() => this.onColumnSort('unitsFilled')}>Units Filed <span className="icon-dir icon-down-dir"></span></th>
                       <th onClick={() => this.onColumnSort('unitsTotal')}>Units Total <span className="icon-dir icon-down-dir"></span></th>
-                      <th onClick={() => this.onColumnSort('estimated')}><span className="hide-mobile">Estimated</span><span className="show-mobile">Est.</span> Total <span className="icon-dir icon-down-dir"></span></th>
+                      <th onClick={() => this.onColumnSort('estimated')}><span className="hide-mobile">Est.</span><span className="show-mobile">Est.</span> Total <span className="icon-dir icon-down-dir"></span></th>
                       <th></th>
                     </tr>
                   </thead>
@@ -92,12 +92,10 @@ class MyOrders extends React.Component {
                   <thead>
                     <tr>
                       <th onClick={() => this.onColumnSort('type')}>Type <span className="icon-dir icon-down-dir"></span></th>
-                      <th onClick={() => this.onColumnSort('opened')}>Opened <span className="hide-mobile">Date</span> <span className="icon-dir icon-down-dir"></span></th>
-                      <th onClick={() => this.onColumnSort('market')}>Market <span className="icon-dir icon-down-dir"></span></th>
                       <th onClick={() => this.onColumnSort('price')}>Price <span className="icon-dir icon-down-dir"></span></th>
                       <th onClick={() => this.onColumnSort('unitsFilled')}>Units Filed <span className="icon-dir icon-down-dir"></span></th>
                       <th onClick={() => this.onColumnSort('unitsTotal')}>Units Total <span className="icon-dir icon-down-dir"></span></th>
-                      <th onClick={() => this.onColumnSort('estimated')}><span className="hide-mobile">Estimated</span><span className="show-mobile">Est.</span> Total <span className="icon-dir icon-down-dir"></span></th>
+                      <th onClick={() => this.onColumnSort('estimated')}><span className="hide-mobile">Est.</span><span className="show-mobile">Est.</span> Total <span className="icon-dir icon-down-dir"></span></th>
                       <th className="hide-mobile"></th>
                     </tr>
                   </thead>
@@ -124,11 +122,9 @@ class MyOrders extends React.Component {
 const OpenOrder = ({order, onOrderCancel}) => (
   <tr className={order.type}>
     <td>
-      <span className="round"></span> {order.type}
+      <span className="round center"></span>
     </td>
     <td>{formatDate(new Date(order.dateOpened))}</td>
-    <td>{order.market}</td>
-    <td>{order.price}</td>
     <td>{order.unitsFilled}</td>
     <td>{order.unitsTotal}</td>
     <td className="ellipsis-cell">{formatFloat(order.price * order.unitsTotal)}</td>
@@ -139,11 +135,9 @@ const OpenOrder = ({order, onOrderCancel}) => (
 const CompletedOrder = ({order}) => (
   <tr className={order.type}>
     <td>
-      <span className="round"></span> {order.type}
+      <span className="round center"></span>
     </td>
     <td>{formatDate(new Date(order.dateOpened))}</td>
-    <td>{order.market}</td>
-    <td>{order.price}</td>
     <td>{order.unitsFilled}</td>
     <td>{order.unitsTotal}</td>
     <td className="ellipsis-cell">{formatFloat(order.price * order.unitsTotal)}</td>

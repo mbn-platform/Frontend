@@ -42,12 +42,13 @@ class Terminal extends React.Component {
                     market={this.props.selectedMarket}
                   />
                   <Row className="justify-content-between">
-                    <PlaceOrder
+                    <PlaceOrder                    
                       placeOrder={this.props.placeOrder}
                       market={this.props.selectedMarket}
                     />
                     <MediaQuery query="(min-width: 576px)">
                       <MyOrders
+                        market={this.props.selectedMarket}
                         orders={this.props.orders}
                         cancelOrder={this.props.cancelOrder}
                       />
@@ -68,6 +69,7 @@ class Terminal extends React.Component {
                     </MediaQuery>
                     <MediaQuery query="(max-width: 575px)">
                       <MyOrders
+                        market={this.props.selectedMarket}
                         orders={this.props.orders}
                         cancelOrder={this.props.cancelOrder}
                       />

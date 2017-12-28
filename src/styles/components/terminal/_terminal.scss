@@ -327,6 +327,10 @@
 						}
 					}
 					tr{
+						.round.center {
+							margin: 0 auto;
+							display: block;
+						}
 						&.buy{
 							.round{
 								background-color: #32B994;
