@@ -88,43 +88,16 @@ class Contracts extends React.Component {
   }
 
   getExpireDateColumn() {
-    if(this.state.completedTabIndex === 0) {
-      return {
-        Header: ContractTableHeader('Expire date'),
-        id: 'expireDate',
-        accessor: c => {
-          return formatDate(new Date(c.expireDate));
-        },
-        headerClassName: 'expire_date big_column',
-        className: 'table_col_value big_column',
-        minWidth: 60,
-        className: 'table_col_value',
-        headerClassName: 'expire_date',
-        sortMethod: (a,b) => {
-          let dateArrA = a.split('.')
-          let dateArrB = b.split('.')
-          return new Date(dateArrA[2],dateArrA[1],dateArrA[0]) - new Date(dateArrB[2],dateArrB[1],dateArrB[0])
-        }
-      }
-    } else {
-      return {
-        Header: ContractTableHeader('Expire date'),
-        id: 'expireDate',
-        accessor: c => {
-          const date = new Date(c.expireDate);
-          return formatDate(date);
-        },
-        headerClassName: 'expire_date big_column',
-        className: 'table_col_value big_column',
-        minWidth: 60,
-        className: 'table_col_value',
-        headerClassName: 'expire_date',
-        sortMethod: (a,b, desc) => {
-          let dateArrA = a.split('.')
-          let dateArrB = b.split('.')
-          return new Date(dateArrA[2],dateArrA[1],dateArrA[0]) - new Date(dateArrB[2],dateArrB[1],dateArrB[0])
-        }     
-      }
+    return {
+      Header: ContractTableHeader('Expire date'),
+      id: 'expireDate',
+      accessor: 'expireDate',
+      Cell: row => formatDate(new Date(row.value)),
+      headerClassName: 'expire_date big_column',
+      className: 'table_col_value big_column',
+      minWidth: 60,
+      className: 'table_col_value',
+      headerClassName: 'expire_date',
     }
   }
 
