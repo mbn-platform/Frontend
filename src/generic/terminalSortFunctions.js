@@ -1,4 +1,4 @@
-
+import classNames from 'classnames';
 export function onColumnSort(column) {
   const currentSortDirection = this.state.sort.direction;
   let direction;
@@ -33,4 +33,15 @@ export function defaultSortFunction(column) {
       return 0;
     }
   };
+}
+
+export function classNameForColumnHeader(state, column) {
+  const names = ['icon-dir'];
+  if(state.sort.column === column &&
+     state.sort.direction === 'up') {
+    names.push('icon-up-dir');
+  } else {
+    names.push('icon-down-dir');
+  }
+  return classNames(names);
 }
