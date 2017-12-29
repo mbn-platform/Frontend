@@ -138,6 +138,7 @@ class Dashboard extends React.Component {
 
       this.setState({
         selectedContract: contract,
+        selectedApiKey: contract.state == 'FINISHED' ? {} : key,
         selectedOffer: null
       });
     }

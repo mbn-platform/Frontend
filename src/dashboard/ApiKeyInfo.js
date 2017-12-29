@@ -99,6 +99,8 @@ class ApiKeyInfo extends React.Component {
       if(nextProps.apiKey._id !== id) {
         this.setState({changed: false, currencies: this.getCurrencies(nextProps.apiKey),selectedAll: ''});
       }      
+    } else {
+      this.setState({changed: false, currencies: [],selectedAll: ''});
     }
 
   }
