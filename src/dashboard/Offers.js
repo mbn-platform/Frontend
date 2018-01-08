@@ -181,7 +181,7 @@ const SortHeader = header => (
 const OfferCell = (onPayClick, selectedTab) => {
   return rowInfo => {
     let ratio = Math.abs((1 - rowInfo.value / 86400000) * 100);
-    ratio = ratio > 100 ? 1 : ratio;
+    ratio = ratio > 100 ? 3 : ratio;
     const style = {width: Math.floor(ratio) + '%'};
     const progressColor = getColorClass(ratio);
     if(rowInfo.original.state === CONTRACT_STATE_ACCEPTED) {
