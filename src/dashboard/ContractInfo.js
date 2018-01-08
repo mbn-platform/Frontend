@@ -35,16 +35,13 @@ class ContractInfo extends React.Component {
 
 class TimeLeft extends React.Component {
   render() {
-    console.log(this.props);
     const {expireDate} = this.props;
     const difference = expireDate - Date.now();
     const days = Math.floor(difference / 86400000);
     const hours = Math.floor(difference % 86400000 / 3600000);
     const minutes = Math.floor(difference % 60000 / 1000);
     const progress = this.props.progress;
-    console.log('progress', progress)
     const color = getColor(progress);
-    console.log(color);
     return (
       <div className="time_profit_left_border">
         <div className="time_left_wrapper clearfix">
