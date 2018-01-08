@@ -331,6 +331,9 @@
 							margin: 0 auto;
 							display: block;
 						}
+						.round-wrapper {
+							width: 40px;
+						}						
 						&.buy{
 							.round{
 								background-color: #32B994;
@@ -340,6 +343,7 @@
 							.round{
 								background-color: #D74C4C;
 							}
+
 						}
 					}
 				}
@@ -504,8 +508,7 @@
 	
 	.orders-table-tab .table {
 		th, td {
-			&:nth-child(5),
-			&:nth-child(6) {
+			&:nth-child(5){
 				display: none;
 			}
 		}
@@ -556,14 +559,14 @@
 					font-size: 11px;
 
 					span {
-						display: block;
 						font-size: 12px;
 					}
 				}
-
 				td {
 					font-size: 10px;
-
+					.round-wrapper {
+						width: 35px!important;
+					}					
 					&.ellipsis-cell {
 						max-width: 40px;
 						overflow: hidden;
