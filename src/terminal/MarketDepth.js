@@ -48,6 +48,12 @@ class MarketDepth extends React.Component {
         getOrderBook(this.props.market, 'sell').then(json => {
           if(json.success) {
             let sell = json.result;
+            const maxBuy = buy.reduce((accum, value) => Math.max(accum, value.Quantity), 0);
+            const maxSell = sell.reduce((accum, value) => Math.max(accum,value.Quantity), 0);
+            const minBuy = buy.reduce((accum, value) => Math.min(accum, value.Quantity), maxBuy);
+            const minSell = sell.reduce((accum, value) => Math.min(accum, value.Quantity), maxSell);            
+            buy.forEach(order => order.relativeSize = relativeSize(minBuy, maxBuy, order.Quantity));
+            sell.forEach(order => order.relativeSize = relativeSize(minSell, maxSell, order.Quantity));
             var res = this.getData(buy, sell);
             this.setState({data: res}) 
           }          
@@ -63,6 +69,7 @@ class MarketDepth extends React.Component {
               list[i] = {
                 value: Number(list[i].Rate),
                 volume: Number(list[i].Quantity),
+                relativeSize: list[i].relativeSize 
               }
             }
            
@@ -92,6 +99,7 @@ class MarketDepth extends React.Component {
                 dp["value"] = list[i].value;
                 dp[type + "volume"] = list[i].volume;
                 dp[type + "totalvolume"] = list[i].totalvolume;
+                dp[type + "relativeSize"] = list[i].relativeSize;
                 res.unshift(dp);
               }
             }
@@ -107,6 +115,7 @@ class MarketDepth extends React.Component {
                 dp["value"] = list[i].value;
                 dp[type + "volume"] = list[i].volume;
                 dp[type + "totalvolume"] = list[i].totalvolume;
+                dp[type + "relativeSize"] = list[i].relativeSize;
                 res.push(dp);
               }
             }
@@ -173,24 +182,15 @@ class MarketDepth extends React.Component {
           }
           let minItemDownDiffAsks = minItemUpDiffAsks / 10;
           let minItemDownDiffBids = minItemUpDiffBids / 10;
-          // debugger;
           const guides = []
           let maxOffset = 0
           function addGuides(arr, min, max, type, color, reverse) {
-           for(let i = 0; i < arr.length; i++) {
-              let value = arr[i][type + 'totalvolume'];
-              let valueNext = arr[i + 1] ? arr[i + 1][type + 'totalvolume'] : arr[i][type + 'totalvolume']
-              if(reverse) {
-                let valueChange = value;
-                value = valueNext;
-                valueNext = valueChange;
-              }
-
-              if(valueNext - value >= min && valueNext - value <= max) {
+           arr.sort((a1,a2) => a2[type + "relativeSize"] - a1[type + "relativeSize"])
+           const countGuides = arr.length > 4 ? 5 : arr.length;
+           for(let i = 0; i < countGuides; i++) {
                 if(getLabelOffset(arr[i+1]) > maxOffset) {
                   maxOffset = getLabelOffset(arr[i+1]);
                 }
-                // console.log(arr[i+1], )
                 guides.push( {
                   'above': true,
                   "category": arr[i+1].value,
@@ -206,9 +206,9 @@ class MarketDepth extends React.Component {
                   "expand": true,
                   'dashLength': 3
                 } );              
-              }
-            }
-          }
+              }            
+           }
+           
           function getLabelOffset(el) {
             let numb = formatFloat(parseFloat(el.value), isBTC);
             return str_size(numb, 'maven_proregular', '12');
@@ -351,7 +351,7 @@ class MarketDepth extends React.Component {
 }
 
 function relativeSize(minSize, maxSize, size) {
-  return Math.max((size - minSize) / (maxSize - minSize), 0.02);
+  return (size - minSize) / (maxSize - minSize);
 }
 
 export default MarketDepth;
