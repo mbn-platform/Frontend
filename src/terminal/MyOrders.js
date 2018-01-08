@@ -96,7 +96,6 @@ class MyOrders extends React.Component {
                       <th onClick={() => this.onColumnSort('unitsFilled')}>Units Filed <span className={classNameForColumnHeader(this.state, 'unitsFilled')}></span></th>
                       <th onClick={() => this.onColumnSort('unitsTotal')}>Units Total <span className={classNameForColumnHeader(this.state, 'unitsTotal')}></span></th>
                       <th onClick={() => this.onColumnSort('estimated')}><span>Est.</span> Total <span className={classNameForColumnHeader(this.state, 'estimated')}></span></th>
-                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
