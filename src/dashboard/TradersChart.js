@@ -13,7 +13,6 @@ class TradersChart extends React.Component {
   }
 
   formatData(contracts) {
-    console.log(contracts)
     return contracts.filter(c => c.state === 'FINISHED' && c.currentBalance - c.startBalance > 0)
       .sort((c1, c2) => c1.currentBalance - c1.startBalance < c2.currentBalance - c2.startBalance)
       .map(c => ({category: c.contractor, 'column-1': c.currentBalance - c.startBalance}));

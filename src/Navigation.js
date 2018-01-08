@@ -81,8 +81,8 @@ class Navigation extends React.Component {
               <Container fluid className="align-middle">
                 <Row>
                   <Col xs="3" md="12" className="d-flex justify-content-end justify-content-md-center">
-                    <img class='image_menu image' src={icon} alt=""/>
-                    <img class='image_menu_hover image' src={iconHover} alt=""/>
+                    <img className='image_menu image' src={icon} alt=""/>
+                    <img className='image_menu_hover image' src={iconHover} alt=""/>
                   </Col>
                   <Col xs="auto" className="d-flex d-md-none">
                     <div className="gap"/>
