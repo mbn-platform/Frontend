@@ -109,20 +109,30 @@ class Dashboard extends React.Component {
   }
 
   onKeySelected(apiKey) {
-    if(this.state.selectedApiKey !== apiKey) {
-      const { incoming, outgoing } = this.props.offers;
-      const findFunction = elem => elem.keyId === apiKey._id;
-      const offer = incoming.find(findFunction) || outgoing.find(findFunction);
-      const { current, finished } = this.props.contracts;
-      const contract = current.find(findFunction) || finished.find(findFunction);
-      this.setState({selectedApiKey: apiKey, selectedOffer: offer, selectedContract: contract});
+    if(!this.state.selectedApiKey || this.state.selectedApiKey._id !== apiKey._id) {
+      const newState = {selectedApiKey: apiKey, selectedOffer: null, selectedContract: null};
+      if(apiKey.state === 'USED') {
+        const {incoming, outgoing} = this.props.offers;
+        const findFunction = elem => elem.keyId === apiKey._id;
+        const offer = incoming.find(findFunction) || outgoing.find(findFunction);
+        if(offer) {
+          newState.selectedOffer = offer;
+        } else {
+          const contract = this.props.contracts.current.find(findFunction);
+          if(contract) {
+            newState.selectedContract = contract;
+          }
+        }
+      }
+      this.setState(newState);
     }
   }
 
   onOfferSelected(offer) {
     if(this.state.selectedOffer !== offer) {
-      const key = this.props.apiKeys.ownKeys.find(k => k._id === offer.keyId) ||
-        this.props.apiKeys.receivedKeys.find(k => k._id === offer.keyId);
+      const findFunction = elem => elem._id === offer.keyId;
+      const key = this.props.apiKeys.ownKeys.find(findFunction) ||
+        this.props.apiKeys.receivedKeys.find(findFunction);
       this.setState({
         selectedOffer: offer,
         selectedApiKey: key,
@@ -133,14 +143,19 @@ class Dashboard extends React.Component {
 
   onContractSelected(contract) {
     if(this.state.selectedContract !== contract) {
-      const key = this.props.apiKeys.ownKeys.find(k => k._id === contract.keyId) ||
-        this.props.apiKeys.receivedKeys.find(k => k._id === contract.keyId);
-
-      this.setState({
+      const newState = {
         selectedContract: contract,
-        selectedApiKey: contract.state == 'FINISHED' ? {} : key,
-        selectedOffer: null
-      });
+        selectedOffer: null,
+        selectedApiKey: null,
+      };
+      if(contract.state === 'VERIFIED') {
+        const key = this.props.apiKeys.ownKeys.find(k => k._id === contract.keyId) ||
+          this.props.apiKeys.receivedKeys.find(k => k._id === contract.keyId);
+        if(key) {
+          newState.selectedApiKey = key;
+        }
+      }
+      this.setState(newState);
     }
   }
 }
