@@ -330,7 +330,6 @@ const TraderRatingRow = (props) => (
     </td>
     <td>
       <span>{props.roi}</span>
-      <span className="graph"></span>
     </td>
     <td>
       {formatDate(new Date(props.dateCreated))}
@@ -374,7 +373,6 @@ const InvestorRatingRow = (props) => (
     </td>
     <td>
       <span>{props.roi}</span>
-      <span className="graph"></span>
     </td>
     <td>
       {formatDate(new Date(props.dateCreated))}

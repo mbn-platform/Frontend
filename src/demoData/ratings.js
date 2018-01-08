@@ -33,12 +33,13 @@ function generateTraderRating(rank) {
 function generateInvestorRating(rank) {
   const name = generateName();
   const totalContracts = Math.floor(Math.random() * 30);
+  const roi = Math.floor(Math.random() * 30 - 15);
   const successContracts = totalContracts - Math.floor(Math.random() * totalContracts);
   const dateCreated = (new Date(Date.now() - Math.floor(Math.random() * 365 + 20) * 86400000)).toString();
   const paidExcessProfit = Math.floor(Math.random() * 30) + 10 + ' BTC';
   const paidInvoices = Math.floor(Math.random() * 10) + 5;
   return {
-    name, totalContracts, successContracts, dateCreated, paidExcessProfit, paidInvoices, rank
+    name, totalContracts, roi, successContracts, dateCreated, paidExcessProfit, paidInvoices, rank
   }
 }
 
