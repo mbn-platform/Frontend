@@ -396,6 +396,8 @@
 				background-size: contain;
 				background-repeat: no-repeat;
 				background-position: center;
+				margin-left: auto;
+				margin-right: auto;
 			}
 			&.best_alltime{
 				color: #32B994;
@@ -554,6 +556,12 @@
 	}
 }
 
+@media (max-width: 575px){
+	.ratings__best-item{
+		padding: 0;
+	}
+}
+
 @media (min-width: 576px){
 	.ratings__best-item{
 		width: 50%;
@@ -569,9 +577,11 @@
 
 }
 @media (min-width: 998px) {
+
+
 	.ratings__best-item{
 		width: auto;
-		margin-bottom: 0;
+		// margin-bottom: 0;
 		padding-bottom: 0;
 		// &:nth-child(3){
 		// 	border-left: 1px solid #4A4D54;
@@ -580,10 +590,21 @@
 	.ratings__best-list{
 		justify-content: space-evenly;
 		.dash{
-			display: block;
+			display: none;
 		}
 	}
 
+}
+
+@media (min-width: 1500px) {
+	.ratings__best-item{
+		margin-bottom: 0;
+	}
+	.ratings__best-list{
+		.dash{
+			display: block;
+		}
+	}
 }
 @media (max-width: 768px){
 	.ratings-main {
