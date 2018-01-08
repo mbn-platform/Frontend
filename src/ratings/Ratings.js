@@ -117,13 +117,13 @@ class Ratings extends React.Component {
                                 <span>ROI,&nbsp;%</span><span className={classNameForColumnHeader(this.state, 'roi')}></span>
                               </th>
                               <th onClick={() => this.onColumnSort('dateCreated')}>
-                                <span>Since opened</span><span className={classNameForColumnHeader(this.state, 'dateCreated')}></span>
+                                <span>Started since</span><span className={classNameForColumnHeader(this.state, 'dateCreated')}></span>
                               </th>
                               <th onClick={() => this.onColumnSort('minAmount')}>
                                 <span>Min contract<br/>amount</span><span className={classNameForColumnHeader(this.state, 'minAmount')}></span>
                               </th>
                               <th onClick={() => this.onColumnSort('duration')}>
-                                <span>Duration of the contract</span><span className={classNameForColumnHeader(this.state, 'duration')}></span>
+                                <span>Duration of the contract,<br/>days</span><span className={classNameForColumnHeader(this.state, 'duration')}></span>
                               </th>
                               <th onClick={() => this.onColumnSort('fee')}>
                                 <span>Fee, %</span><span className={classNameForColumnHeader(this.state, 'fee')}></span>
