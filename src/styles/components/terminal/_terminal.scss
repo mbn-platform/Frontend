@@ -359,19 +359,19 @@
 					font-weight: 600;
 					margin: .5em 0;
 					justify-content: center;
-					// span{
-					// 	margin-right: 6px;
-					// 	color: inherit;
-					// 	&.icon {
-					// 		font-size: 0.9em;
-					// 	}
-					// 	&.icon-up-dir:before {
-					// 		vertical-align: -1px;
-					// 	}
-					// 	&.icon-down-dir:before {
-					// 		vertical-align: -2px;
-					// 	}
-					// }
+					span{
+						margin-right: 6px;
+					 	color: inherit;
+						 &.icon {
+							 font-size: 0.9em;
+						 }
+						 &.icon-up-dir:before {
+							 vertical-align: -1px;
+						 }
+						 &.icon-down-dir:before {
+							 vertical-align: -2px;
+						 }
+					 }
 					&.up{
 						color: #32B994;
 					}

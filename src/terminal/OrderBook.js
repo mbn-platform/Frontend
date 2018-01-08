@@ -3,18 +3,19 @@ import { getOrderBook, getTicker} from '../api/bittrex/bittrex';
 import { formatFloat } from '../generic/util';
 import { Desktop } from '../generic/MediaQuery';
 import {sortData, onColumnSort, classNameForColumnHeader}  from '../generic/terminalSortFunctions';
+import classNames from 'classnames';
 
 class OrderBook extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {buy: [], sell: [], last: '', sort: {}};
+    this.state = {buy: [], sell: [], last: null, sort: {}, prelast: null};
     this.sortData = sortData.bind(this);
     this.onColumnSort = onColumnSort.bind(this);
     this.sortFunctions = {
       price: (a, b) => formatFloat(a.Rate, this.props.market.split('-')[0] === 'BTC') - formatFloat(b.Rate, this.props.market.split('-')[0] === 'BTC'),
       relativeSize: (a, b) => formatFloat(a.Rate * a.Quantity) - formatFloat(b.Rate * b.Quantity)
-    };    
+    };
   }
 
 
@@ -27,8 +28,26 @@ class OrderBook extends React.Component {
     clearInterval(this.interval);
   }
 
-  updateOrderBook() {
-    getOrderBook(this.props.market, 'both').then(json => {
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.market !== this.props.market) {
+      this.setState({prelast: null, last: null});
+      clearInterval(this.interval);
+      this.interval = setInterval(this.updateOrderBook.bind(this), 5000);
+      this.updateOrderBook(nextProps.market);
+    }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if(nextProps.market === this.props.market && nextState === this.state) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  updateOrderBook(market) {
+    market = market || this.props.market;
+    getOrderBook(market, 'both').then(json => {
       if(json.success) {
         let {buy, sell} = json.result;
         buy = buy.slice(0, 100);
@@ -42,13 +61,15 @@ class OrderBook extends React.Component {
         sell.forEach(order => order.relativeSize = relativeSize(minSell, maxSell, order.Quantity));
         this.setState({buy, sell});
         if(this.tableSell.scrollTop == 0) {
-          this.tableSell.scrollTop = this.tableSell.scrollHeight - 26.6;          
+          this.tableSell.scrollTop = this.tableSell.scrollHeight - 26.6;
         }
 
       }
     }).catch(err => console.log('error updating order book', err));
     getTicker(this.props.market).then(json => {
-      this.setState({last: json.result.Last});
+      this.setState(state => {
+        return {last: json.result.Last, prelast: state.last};
+      });
     });
   }
 
@@ -59,11 +80,11 @@ class OrderBook extends React.Component {
     let sortedDataSell = [];
     let sortedDataBuy = [];
     if(this.state.sell.length) {
-      sortedDataSell = this.sortData(this.state.sell);  
+      sortedDataSell = this.sortData(this.state.sell);
     }
-    
+
     if(this.state.buy.length) {
-      sortedDataBuy = this.sortData(this.state.buy);  
+      sortedDataBuy = this.sortData(this.state.buy);
     }
 
     return (
@@ -106,10 +127,7 @@ class OrderBook extends React.Component {
             </tbody>
           </table>
         </div>
-        <div className="value row up">
-          <span>{formatFloat(this.state.last)}</span>
-          <span className="icon icon-dir icon-up-dir"></span>
-        </div>
+        {this.renderLastPrice()}
         <div className="orderbook-table-wrapper js-table-wrapper">
           <table className="table green">
             <tbody>
@@ -127,6 +145,19 @@ class OrderBook extends React.Component {
         </div>
       </div>
 
+    );
+  }
+  renderLastPrice(price) {
+    let isUp;
+    if(this.state.prelast && this.state.prelast > this.state.last) {
+      isUp = false;
+    } else {
+      isUp = true;
+    }
+    return (
+      <div className={classNames('value', 'row', isUp ? 'up' : 'down')}>
+        <span>{formatFloat(this.state.last)}</span><span className={classNames('icon', 'icon-dir', isUp ? 'icon-up-dir' : 'icon-down-dir')}> </span>
+      </div>
     );
   }
 }
