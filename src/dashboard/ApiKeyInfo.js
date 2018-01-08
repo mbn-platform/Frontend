@@ -48,16 +48,16 @@ class ApiKeyInfo extends React.Component {
   onSelectAllClicked(e) {
     e.stopPropagation();
     if(this.props.apiKey.state === 'USED') {
-      alert("This api key is in use, you cannot change it's settings");
-      return;      
+      alert('This api key is in use, you cannot change it\'s settings');
+      return;
     }
     this.setState(state => {
       if(!state.currencies || (state.currencies && !state.currencies.length)) {
         return '';
       }
 
-      const currencies = state.currencies.map(c => (c.name != 'USDT' && c.name != 'BTC' && c.name != 'ETH') ? {...c, selected: state.selectedAll ? false : true} : c)
-      const selectedAll = state.selectedAll ? '' : 'selected'
+      const currencies = state.currencies.map(c => (c.name !== 'USDT' && c.name !== 'BTC' && c.name !== 'ETH') ? {...c, selected: state.selectedAll ? false : true} : c);
+      const selectedAll = state.selectedAll ? '' : 'selected';
       return {currencies, selectedAll,changed: true};
     });
   }
@@ -74,7 +74,7 @@ class ApiKeyInfo extends React.Component {
   onCurrencyStateClicked(e) {
     e.stopPropagation();
     if(this.props.apiKey.state === 'USED') {
-      alert("This api key is in use, you cannot change it's settings");
+      alert('This api key is in use, you cannot change it\'s settings');
       return;
     }
     const currency = e.target.dataset.currency;
@@ -98,7 +98,7 @@ class ApiKeyInfo extends React.Component {
       let id = this.props.apiKey ? this.props.apiKey._id : '';
       if(nextProps.apiKey._id !== id) {
         this.setState({changed: false, currencies: this.getCurrencies(nextProps.apiKey),selectedAll: ''});
-      }      
+      }
     } else {
       this.setState({changed: false, currencies: [],selectedAll: ''});
     }
@@ -112,7 +112,7 @@ class ApiKeyInfo extends React.Component {
         Header: SearchHeader('Currency', currencyFilter, this.onCurrencyChange),
         id: 'currency',
         accessor: 'name',
-        headerClassName: "filter_align_center",
+        headerClassName: 'filter_align_center',
         className: 'table_col_value'
       }, {
         id: 'selected',

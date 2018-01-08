@@ -55,7 +55,7 @@ class AddApiKey extends React.Component {
                 onChange={this.handleChange}
                 type="text"
                 value={this.state.name}
-                maxlength='20'
+                maxLength='20'
                 name="name"
                 placeholder="Name"
               />
