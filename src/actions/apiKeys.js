@@ -27,17 +27,8 @@ export function addApiKey(key) {
 }
 
 export function updateApiKey(key, original) {
-  const updatedCurrencies = key.currencies.map(c => {
-    const originalCurrency = original.currencies.filter(cur => cur.name === c)[0];
-    if(originalCurrency) {
-      return {name: c, amount: originalCurrency.amount};
-    } else {
-      return {name: c, amount: Math.floor(Math.random() * 100)};
-    }
-  });
-  const apiKey = {...original, currencies: updatedCurrencies};
   return {
     type: UPDATE_API_KEY,
-    apiKey
+    apiKey: key,
   };
 }

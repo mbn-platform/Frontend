@@ -54,6 +54,12 @@ class Dashboard extends React.Component {
   }
 
   render() {
+    let isOwnKey;
+    if(this.state.selectedApiKey && this.props.apiKeys.ownKeys.find(key => key._id === this.state.selectedApiKey._id)) {
+      isOwnKey = true;
+    } else {
+      isOwnKey = false;
+    }
     return (
       <div className="dashboard_wrapper clearfix" >
         <div className="keys_tables_wrapper table_wrapper">
@@ -68,6 +74,7 @@ class Dashboard extends React.Component {
           <AddApiKey/>
           <ApiKeyInfo
             apiKey={this.state.selectedApiKey}
+            isOwnKey={isOwnKey}
             exchanges={this.props.exchanges}
             onKeyUpdateClick={this.props.onKeyUpdateClick}
           />

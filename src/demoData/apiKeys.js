@@ -7,11 +7,8 @@ export const KEY_STATE_USED = 'USED';
 const generateKey = (state, owner, name) => {
   const exchange = getRandomExchange();
   const currencies = exchange.currencies.map(curName => {
-    if(currencyEnabled(curName)) {
-      return {name: curName, amount: getCurrencyValue()};
-    } else {
-      return null;
-    }
+    const enabled = currencyEnabled(curName);
+    return {name: curName, amount: getCurrencyValue(), enabled};
   }).filter(Boolean);
   const keyValue = generateId(20);
   const key = {

@@ -13,7 +13,12 @@ class ApiKeyInfo extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {changed: false, currencies: this.getCurrencies(),selectedAll: '' , filtered: [{id: 'currency', value: ''}, {id: 'selected', value: 'all'}]};
+    this.state = {
+      changed: false,
+      changedCurrencies: {},
+      selectedAll: '' ,
+      filtered: [{id: 'currency', value: ''}, {id: 'selected', value: 'all'}]
+    };
     this.onCurrencyChange = this.onCurrencyChange.bind(this);
     this.onCurrencyStateClicked = this.onCurrencyStateClicked.bind(this);
     this.onSelectAllClicked = this.onSelectAllClicked.bind(this);
@@ -21,27 +26,22 @@ class ApiKeyInfo extends React.Component {
   }
 
   onSaveChangesClick() {
-    const key = {_id: this.props.apiKey._id, key: this.props.apiKey.key,
-      name: this.props.apiKey.name, exchange: this.props.apiKey.exchange,
-      currencies: this.state.currencies.filter(c => c.selected).map(c => c.name)};
-    this.props.onKeyUpdateClick(key, this.props.apiKey);
-    this.setState({changed: false});
+    const currencies = this.props.apiKey.currencies.map(c => {
+      if(this.state.changedCurrencies[c.name]) {
+        return {...c, enabled: !c.enabled};
+      } else {
+        return c;
+      }
+    });
+    const key = {...this.props.apiKey, currencies};
+    this.props.onKeyUpdateClick(key);
+    this.setState({changed: false, changedCurrencies: {}});
   }
 
   getCurrencies(apiKey) {
-
     if(!apiKey) {
       return [];
     } else {
-      const exchange = this.props.exchanges.find(ex => ex.name === apiKey.exchange);
-      return exchange.currencies.map(c => {
-        const inApiKey = apiKey.currencies.find(cur => cur.name === c);
-        if(inApiKey) {
-          return {name: c, selected: true, amount: inApiKey.amount || 0};
-        } else {
-          return {name: c, selected: false, amount: 0};
-        }
-      });
     }
   }
 
@@ -78,14 +78,26 @@ class ApiKeyInfo extends React.Component {
       return;
     }
     const currency = e.target.dataset.currency;
-    console.log(currency);
     if(!this.canChangeCurrency(currency)) {
       return;
     } else {
-      this.setState(state => {
-        const currencies = state.currencies.map(c => c.name === currency ? {...c, selected: !c.selected} : c);
-        return {changed: true, currencies};
-      });
+      const changedCurrencies = this.state.changedCurrencies;
+      if(changedCurrencies[currency]) {
+        delete changedCurrencies[currency];
+      } else {
+        changedCurrencies[currency] = true;
+      }
+      if(Object.keys(changedCurrencies).length) {
+        this.setState({
+          changed: true,
+          changedCurrencies,
+        });
+      } else {
+        this.setState({
+          changed: false,
+          changedCurrencies,
+        });
+      }
     }
   }
 
@@ -97,12 +109,16 @@ class ApiKeyInfo extends React.Component {
     if(nextProps.apiKey && nextProps.apiKey._id) {
       let id = this.props.apiKey ? this.props.apiKey._id : '';
       if(nextProps.apiKey._id !== id) {
-        this.setState({changed: false, currencies: this.getCurrencies(nextProps.apiKey),selectedAll: ''});
+        this.setState({changed: false, changedCurrencies: {},selectedAll: ''});
       }
     } else {
       this.setState({changed: false, currencies: [],selectedAll: ''});
     }
 
+  }
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.apiKey !== this.props.apiKey ||
+      nextState !== this.state;
   }
 
   getColumns() {
@@ -117,14 +133,14 @@ class ApiKeyInfo extends React.Component {
       }, {
         id: 'selected',
         Header: StatusHeader(this.onSelectAllClicked, this.state.selectedAll),
-        Cell: StatusCell(this.onCurrencyStateClicked),
-        accessor: 'selected',
+        Cell: StatusCell(this.onCurrencyStateClicked, this.state.changedCurrencies),
+        accessor: 'enabled',
         headerClassName: 'selected_header',
         filterMethod: (filter, row) => {
           if(filter.value === 'all') {
             return true;
           } else {
-            return filter.value === row.selected;
+            return filter.value === row.enabled;
           }
         }
       }, {
@@ -134,19 +150,20 @@ class ApiKeyInfo extends React.Component {
             <div className="green_arrow green_arrow_bottom" ></div>
           </div>
         </div>),
+        Cell: rowInfo => rowInfo.original.enabled || this.props.isOwnKey ? rowInfo.value : '',
         className: 'table_col_value',
         accessor: 'amount'
       }
     ];
   }
-  renderContent() {
+  renderContent(data) {
     const scrollBarHeight = this.state.changed ? 217 - 44 : 217;
     return (
       <div>
         <Desktop>
           <ReactTable
             style={{height: 312, marginRight: -1}}
-            data={this.state.currencies}
+            data={data}
             columns={this.getColumns()}
             filtered={this.state.filtered}
             onItemSelected={() => {}}
@@ -155,7 +172,7 @@ class ApiKeyInfo extends React.Component {
         </Desktop>
         <Mobile>
           <ReactTable
-            data={this.state.currencies}
+            data={data}
             columns={this.getColumns()}
             filtered={this.state.filtered}
             onItemSelected={() => {}}
@@ -170,7 +187,12 @@ class ApiKeyInfo extends React.Component {
   }
 
   render() {
-
+    let data;
+    if(this.props.apiKey) {
+      data = this.props.apiKey.currencies;
+    } else {
+      data = [];
+    }
     return (
       <div className="api_key_currencies_table table">
         <div className="table_title_wrapper clearfix">
@@ -181,13 +203,13 @@ class ApiKeyInfo extends React.Component {
             {STATUS_HELP}
           </div>
         </Mobile>
-        {this.renderContent()}
+        {this.renderContent(data)}
         {this.state.changed ? (
           <div className="table_requests_control_wr clearfix">
             <div className="table_requests_control_text">save changes?</div>
             <div className="table_requests_control_btns">
               <div onClick={this.onSaveChangesClick} className="table_requests_yes table_requests_btn"><u>Yes</u></div>
-              <div onClick={() => this.setState({changed: false, currencies: this.getCurrencies(this.props.apiKey)})} className="table_requests_no table_requests_btn"><u>No</u></div>
+              <div onClick={() => this.setState({changed: false, changedCurrencies: {}})} className="table_requests_no table_requests_btn"><u>No</u></div>
             </div>
           </div>
         ) : null}
@@ -196,9 +218,15 @@ class ApiKeyInfo extends React.Component {
   }
 }
 
-const StatusCell = (onClick, apiKey) => rowInfo => {
-  const className = classNames('currency_status_checkbox', {selected: rowInfo.value});
-  return (<div data-currency={rowInfo.original.name} onClick={onClick} className={className}/>);
+const StatusCell = (onClick, changedCurrencies) => rowInfo => {
+  let selected;
+  if(changedCurrencies[rowInfo.original.name]) {
+    selected = !rowInfo.value;
+  } else {
+    selected = rowInfo.value;
+  }
+  const className = classNames('currency_status_checkbox', {selected});
+  return (<div data-currency={rowInfo.original.name} data-selected={rowInfo.value} onClick={onClick} className={className}/>);
 };
 
 const StatusHeader = (onSelectAllClicked, selectedAll) => {
