@@ -366,6 +366,8 @@
 			.nickname{
 				font-weight: 500;
 				color: #fff!important;
+				text-overflow: ellipsis;
+				overflow: hidden;				
 			}
 			.value{
 				font-size: 36px;
@@ -389,7 +391,8 @@
 	&-traders{
 		.ratings__best-item{
 			.ratings__best-top{
-		    padding: 0 30px;
+				width: 250px;
+		    	padding: 0 30px;
 				background-size: contain;
 				background-repeat: no-repeat;
 				background-position: center;
@@ -464,7 +467,8 @@
 		}
 		.ratings__best-item{
 			.ratings__best-top{
-		    padding: 0 30px;
+				width: 250px;
+		    	padding: 0 30px;
 				background-size: contain;
 				background-repeat: no-repeat;
 				background-position: center;
