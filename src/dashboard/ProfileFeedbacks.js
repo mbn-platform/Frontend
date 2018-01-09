@@ -1,6 +1,4 @@
 import React from 'react';
-import '../styles/main.css';
-import './ProfileFeedbacks.css';
 import Feedback from '../profile/Feedback';
 
 class ProfileFeedbacks extends React.Component {

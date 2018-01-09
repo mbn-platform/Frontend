@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "amcharts3": "github:amcharts/amcharts3",
     "@amcharts/amcharts3-react": "^3.0.0",
+    "amcharts3": "github:amcharts/amcharts3",
     "bootstrap": "^4.0.0-beta.2",
     "classnames": "^2.2.5",
     "floatthead": "^2.0.3",
@@ -24,6 +24,7 @@
     "readmore-js": "^2.1.0",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
+    "sass-convert": "^0.5.2",
     "tether": "^1.4.0"
   },
   "homepage": "/terminal",

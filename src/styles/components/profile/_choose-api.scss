@@ -3,6 +3,24 @@
     &.container-fluid {
       .info-screen {
         .choose-api-block {
+          .table_header_wrapper
+          {
+            display: inline-block;
+            width: 100%;
+            vertical-align: top;
+            font-family: 'maven_proregular';
+            height: 80px;
+            line-height: 1;
+          }          
+          .table_header
+          {
+            font-size: 1.6em;
+            line-height: 1.4;
+            vertical-align: middle;
+            text-transform: none;
+            color: white;
+            min-height: 50px;
+          }                
           .choose-title {
             .title-text {
               font-size: 1.7em;
@@ -298,6 +316,13 @@
         .info-screen {
           .choose-api-block {
             background-color: #17191b;
+            .table_header_wrapper {
+                text-align: center;
+                height: 74px;
+            }            
+            .table_header {
+                font-size: 1.2em;
+            }            
             .choose-title {
               .title-text {
                 font-size: 1.5em;

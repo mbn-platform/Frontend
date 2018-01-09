@@ -1,5 +1,4 @@
 import React from 'react';
-import './ExchangeSelect.css';
 
 class ExchangeSelect extends React.Component {
 

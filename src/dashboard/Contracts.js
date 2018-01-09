@@ -6,7 +6,6 @@ import SearchHeaderWithoutSort from '../generic/SearchHeaderWithoutSort';
 import { Desktop, Mobile } from '../generic/MediaQuery';
 import Pagination from '../generic/Pagination';
 import { UncontrolledTooltip } from 'reactstrap';
-import './Contracts.css';
 import { CONTRACT_STATE_FINISHED, CONTRACT_STATE_VERIFIED, CONTRACT_STATE_HALTED } from '../constants';
 
 

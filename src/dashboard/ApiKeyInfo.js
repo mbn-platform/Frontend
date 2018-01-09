@@ -5,7 +5,6 @@ import classNames from 'classnames';
 import { UncontrolledTooltip } from 'reactstrap';
 import { Desktop, Mobile } from '../generic/MediaQuery';
 import Pagination from '../generic/Pagination';
-import './ApiKeyInfo.css';
 
 const STATUS_HELP = 'Selected key pairs allowed for trading';
 

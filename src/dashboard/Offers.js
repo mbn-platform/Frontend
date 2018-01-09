@@ -5,7 +5,6 @@ import ReactTable from '../generic/SelectableReactTable';
 import classNames from 'classnames';
 import { Desktop, Mobile } from '../generic/MediaQuery';
 import Pagination from '../generic/Pagination';
-import './Offers.css';
 import { CONTRACT_STATE_INIT, CONTRACT_STATE_ACCEPTED } from '../constants';
 
 

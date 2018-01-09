@@ -1,7 +1,6 @@
 import React from 'react';
 import RatingBar from '../generic/RatingBar';
 import Scrollbars from 'react-custom-scrollbars';
-import './ContractFeedback.css';
 
 const ContractFeedback = ({contract, onContractRate}) => {
   return (

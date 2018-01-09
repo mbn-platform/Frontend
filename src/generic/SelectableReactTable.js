@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactTable, { ReactTableDefaults } from 'react-table';
 //import 'react-table/react-table.css';
-import './SelectableReactTable.css';
 import Scrollbars from 'react-custom-scrollbars';
 
 class SelectableReactTable extends React.Component {

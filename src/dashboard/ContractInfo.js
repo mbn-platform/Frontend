@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import './ContractInfo.css';
 
 class ContractInfo extends React.Component {
 

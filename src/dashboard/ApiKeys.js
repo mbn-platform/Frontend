@@ -7,7 +7,6 @@ import SearchHeader from '../generic/SearchHeader';
 import classNames from 'classnames';
 import { Desktop, Mobile } from '../generic/MediaQuery';
 import Pagination from '../generic/Pagination';
-import './ApiKeys.css';
 
 class ApiKeys extends React.Component {
 

@@ -2,7 +2,6 @@ import React from 'react';
 import ExchangeSelect from './ExchangeSelect';
 import { connect } from 'react-redux';
 import { addApiKey } from '../actions/apiKeys';
-import './AddApiKey.css';
 
 class AddApiKey extends React.Component {
   constructor(props) {

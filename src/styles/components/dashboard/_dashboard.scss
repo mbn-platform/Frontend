@@ -1,0 +1,1889 @@
+.main-panel.container-fluid {
+  .dashboard_wrapper{
+    padding: 55px;
+
+    .ReactTable {
+      overflow: hidden;
+    }
+
+
+    .ReactTable .-loading {
+      display: none;
+    }
+
+    .ReactTable .rt-tr
+    {
+      flex: 1 0 auto;
+      display: inline-flex;
+    }
+
+    .rt-table {
+      height: 100%;
+    }
+
+    .ReactTable .rt-tr:first-child
+    {
+      text-align: center;
+    }
+    .ReactTable .rt-tr > :first-child
+    {
+      margin-left: 15px;
+      text-align: left;
+    }
+    .api_key_currencies_table .ReactTable .rt-tr > :first-child {
+     text-align: center; 
+    }
+    .rt-resizable-header-content
+    {
+      color: #e1e1e1;
+      font-family: 'maven_pro_light300';
+    }
+    .ReactTable .rt-thead .rt-tr
+    {
+      width: 100%;
+      padding-top: 15px;
+    }
+
+    .ReactTable .rt-tr {
+      min-height: 30px;
+    }
+
+    .-filters .rt-th
+    {
+      padding-top: 4px;
+      padding-bottom: 20px;
+    }
+    .rt-thead
+    {
+      border-bottom: 1px solid #494d4d;
+    }
+
+    .ReactTable .rt-tr-group {
+      flex: 1 0 auto;
+      display: -ms-flexbox;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .ReactTable .rt-tbody {
+      flex: 99999 1 auto;
+      display: -ms-flexbox;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ReactTable .rt-table {
+      flex: 1 1 0%;
+      display: -ms-flexbox;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .ReactTable .rt-tr-group .rt-tr.-even {
+      background: #232629;
+    }
+    .ReactTable .rt-tr-group .rt-tr:not(.-padRow):hover {
+      background: #2c2f33;
+    }
+
+    .ReactTable .rt-tr-group .rt-tr {
+      transition: background 400ms;
+      cursor: pointer;
+      border-bottom: 1px solid #2c2f33;
+      min-height: 30px;
+      line-height: 30px;
+    }
+    .ReactTable .rt-tr-group .rt-tr:not(.-padRow).-selected {
+      background: #346255;
+      /*background: linear-gradient(270deg, rgba(52, 98, 85, 0), rgba(52, 98, 85, 0.8), #346255);*/
+    }
+
+
+    .ReactTable .rt-td {
+      text-align: center;
+      overflow: hidden;
+      text-overflow: ellipsis;    
+    }
+    .table_value_red
+    {
+      color: #c34445;
+    }
+    .table_value_green
+    {
+      color: #35b994;
+    }
+    .table_header
+    {
+      font-size: 1.6em;
+      line-height: 1.4;
+      vertical-align: middle;
+      text-transform: none;
+      color: white;
+    }
+    .table_header_wrapper
+    {
+      display: inline-block;
+      width: 100%;
+      vertical-align: top;
+      font-family: 'maven_proregular';
+      height: 80px;
+      line-height: 1;
+    }
+    .table_filter_wrapper
+    {
+      padding: 15px 0 20px 0;
+      max-width: 100px;
+    }
+
+    .filter_align_center .table_filter_wrapper {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .sort_icon_wrapper
+    {
+      vertical-align: middle;
+      text-align: center;
+      display: inline-block;
+      margin-left: 10px;
+    }
+    .sort_icon_wrapper.position_down_icon_wrapper {
+      display: block;
+      margin: 0;
+    }
+    .table_header_help_wrapper
+    {
+      position: absolute;
+      width: 11px;
+      height: 11px;
+      background: url(../img/HelpIcon.png) no-repeat center center;
+      display: inline-block;
+      vertical-align: middle;
+      cursor: pointer;
+      margin-left: 5px;
+      overflow: hidden;
+    }
+    .table_header_help_wrapper:hover
+    {
+      overflow: visible;
+    }
+    .table_header_help_text
+    {
+      position: absolute;
+      height: 0;
+      top: -5px;
+      right: 15px;
+      transition-property: height;
+      transition-duration: 400ms;
+      color: #bdbdbd;
+      font-size: 1.2em;
+      text-align: left;
+      width: 100px;
+      left: -142px;
+      top: -8px;
+    }
+    .table_header_help_text:after
+    {
+      content: "";
+      position: absolute;
+      width: 12px;
+      height: 17px;
+      right: -12px;
+      top: 5px;
+      background: url(../img/HelpLeftTriangle.png) no-repeat center center;
+    }
+    .ReactTable .rt-td.table_col_delete {
+      text-align: left !important;
+    }
+    .table_header_help_wrapper:hover .table_header_help_text
+    {
+      height: auto;
+      line-height: 1.4;
+      background: #2d3034;
+      border: 1px solid #494d4d;
+      padding: 10px;
+      z-index: 2;
+    }
+    .table_col_value.upper
+    {
+      text-transform: uppercase;
+    }
+
+    .table_wrapper
+    {
+      float: left;
+      padding: 15px;
+      box-sizing: border-box;
+    }
+
+    .table_title_wrapper .table_title_tabs_wr
+    {
+      margin-right: 20px;
+      float: right;
+    }
+
+    .table_wrapper .table
+    {
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid #494d4d;
+      border-radius: 4px;
+      position: relative;
+      margin-bottom: 0;
+    }
+    .keys_tables_wrapper
+    {
+      width: 60%;
+    }
+
+    .keys_tables_wrapper .ReactTable .key_name_text_td {
+      text-transform: none;
+    }
+    .requests_table_wrapper
+    {
+      width: 40%;
+    }
+
+    .contracts_table_wrapper
+    {
+      width: 100%;
+    }
+    .selected_contract_table
+    {
+      width: 46%;
+    }
+    .traders_chart,
+    .contracts_chart
+    {
+      width: 27%;
+    }
+
+    .table_title.center
+    {
+      float: none;
+      text-align: center;
+      padding-left: 0;
+    }
+    .chart_title_total
+    {
+      font-size: 1.3em;
+      color: #727274;
+      text-transform: uppercase;
+      text-align: center;
+      padding: 0 30px;
+      height: 30px;
+      line-height: 30px;
+      border-bottom: 1px solid #494d4d;
+    }
+    .chart_title_total_span
+    {
+      color: #adadad;
+    }
+
+    .charts {
+      overflow: hidden;
+      width: 100%;
+      display: block;
+      height: 205px;  
+    }
+
+    .chart_pie, .legend_pie_wrapper {
+      display: inline-block;
+      width: 50%;
+      height: 100%;
+      position: relative;
+
+    }
+
+    .legend_pie_wrapper {
+      float: right;
+      overflow-y: hidden;
+
+    }
+    .legend_pie_wrapper .trader_legend {
+        overflow-y: hidden;    
+      }
+
+
+    .amChartsLegend
+    {
+      letter-spacing: 1px;
+    }
+    .amcharts-chart-div > a
+    {
+      color: white !important;
+    }
+
+    //---------------------------------------- add api keys
+
+    .add_keys_form_wrapper
+    {
+      background-color: #232629;
+      border: 1px solid #494d4d;
+      height: 52px;
+      line-height: 52px;
+      float: left;
+      width: 100%;
+      border-top: 0;
+      box-sizing: border-box;
+      border-radius: 0 0 4px 4px;
+    }
+    .add_keys_form
+    {
+
+    }
+    .add_keys_str
+    {
+      text-align: left;
+      padding-left: 15px;
+    }
+    .add_keys_str .add_keys_field_wr:nth-child(1)
+    {
+      margin-left: 0;
+    }
+    .add_keys_field_wr,
+    .add_keys_double_field_wr
+    {
+      display: inline-block;
+      width: 20%;
+      vertical-align: top;
+      margin-left: 2%;
+    }
+    .add_keys_select_value_bg
+    {
+      background: url(../img/SelectArrow.png) no-repeat center right;
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      float: right;
+      margin-top: 3px;
+      margin-right: 10px;
+      position: absolute;
+      right: 0;
+    }
+    .add_keys_field_wr.select_wr
+    {
+      width: 15%;
+    }
+    .add_keys_select_wr
+    {
+      border: 1px solid #44464a;
+      border-bottom: 0;
+      border-radius: 3px;
+      padding-left: 17px;
+      text-align: left;
+      color: #505153;
+      height: 26px;
+      box-sizing: border-box;
+      line-height: 26px;
+      font-size: 1.3em;
+      background-color: inherit;
+      cursor: pointer;
+      position: relative;
+      transition-property: color, border;
+      transition-duration: 400ms;
+      transition: color 400ms, border 400ms;
+    }
+
+    .add_keys_double_field_wr
+    {
+      width: 50%;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .add_keys_field
+    {
+      border: 1px solid #44464a;
+      border-radius: 3px;
+      padding-left: 17px;
+      text-align: left;
+      color: #7c7c7d;
+      height: 26px;
+      box-sizing: border-box;
+      line-height: 16px;
+      font-size: 1.3em;
+      background-color: inherit;
+      width: 100%;
+      vertical-align: middle;
+      transition-property: color, border-color;
+      transition-duration: 400ms;
+    }
+    .add_keys_field::-webkit-input-placeholder {color:#505153;}
+    .add_keys_field::-moz-placeholder          {color:#505153;}/* Firefox 19+ */
+    .add_keys_field:-moz-placeholder           {color:#505153;}/* Firefox 18- */
+    .add_keys_field:-ms-input-placeholder      {color:#505153;}
+
+    .add_keys_select_wr:hover
+    {
+      border: 1px solid #7c7c7d;
+      color: #7c7c7d;
+      border-radius: 3px 3px 0 0;
+    }
+    .add_keys_select_wr
+    {
+      display: inline-block;
+      vertical-align: middle;
+      width: 100%;
+    }    
+
+    .add_keys_select_values_list_wr
+    {
+      max-height: 0;
+      height: auto;
+      opacity: 1;
+      position: absolute;
+      z-index: 2;
+      background: #232629;
+      left: -1px;
+      right: -1px;
+      border: 1px solid #232629;
+      border-top: 0 !important;
+      border-bottom: 1px solid #44464a;
+      box-sizing: border-box;
+      top: 24px;
+      transition-property: height, border, max-height;
+      transition-duration: 400ms;
+      transition: height 400ms, border 400ms, max-height 400ms;
+      overflow: hidden;
+    }
+    .add_keys_select_wr:hover .add_keys_select_values_list_wr
+    {
+      height: auto;
+      max-height: 400px;
+      opacity: 1;
+      color: #7c7c7d;
+      border: 1px solid #7c7c7d;
+    }
+    .add_keys_select_ul
+    {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .add_keys_select_li
+    {
+      padding: 0 15px;
+      border-bottom: 1px solid #383838;
+      color: #7c7c7d;
+      background: #232629;
+      transition-property: background, color;
+      transition-duration: 400ms;
+      transition: background 400ms, color 400ms;
+    }
+    .add_keys_select_li:hover
+    {
+      background: #3c3c3c;
+    }
+    .add_keys_double_field_wr .add_keys_field:focus
+    {
+      z-index: 2;
+    }
+    .add_keys_double_field_wr .add_keys_field
+    {
+      width: 48%;
+      float: left;
+      position: relative;
+      z-index: 1;
+    }
+
+    .add_keys_field_key
+    {
+      border-radius: 3px 0 0 3px;
+    }
+    .add_keys_field_secret
+    {
+      border-radius: 0 3px 3px 0;
+      margin-left: -1px;
+    }
+
+    .add_keys_field:focus
+    {
+      outline: none;
+      border-color: #7c7c7d;
+    }
+    .add_keys_field:focus::-webkit-input-placeholder {color:#7c7c7d;}
+    .add_keys_field:focus::-moz-placeholder          {color:#7c7c7d;}/* Firefox 19+ */
+    .add_keys_field:focus::-moz-placeholder           {color:#7c7c7d;}/* Firefox 18- */
+    .add_keys_field:focus::-ms-input-placeholder      {color:#7c7c7d;}
+
+    .keys_submit_wrapper
+    {
+      float: right;
+    }
+    .keys_submit
+    {
+      border: 0;
+      width: 54px;
+      height: 51px;
+      border-left: 1px solid #44464a;
+      background-color: #2d3034;
+      cursor: pointer;
+      line-height: 56px;
+      display: inline-block;
+      text-align: center;
+      vertical-align: top;
+      font-size: 0em;
+      color: #7c7c7d;
+      padding: 0;
+      transition-property: color, background-color;
+      transition-duration: 400ms;
+      transition: color 400ms, background-color 400ms;
+      font-family: 'maven_pro_light300';
+      background-image: url(../img/AddKeyIcon.png);
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+    .keys_submit:focus
+    {
+      outline: none;
+    }
+    .keys_submit:hover
+    {
+      background-color: #346255;
+      color: white;
+    }
+
+    //---------------------------------------- api key info
+
+    .api_key_currencies_table
+    {
+      width: 45% !important;
+      float: left;
+      border-top-left-radius: 0 !important;
+      border-bottom-right-radius: 0 !important;
+      border-bottom-left-radius: 0 !important;
+    }
+
+    .api_key_currencies_table .table_title_wrapper
+    {
+      border-radius: 0 4px 0 0;
+    }
+
+    .api_key_currencies_table {
+      float: right;
+      margin-top: -416px;
+      overflow: hidden;
+    }
+
+    .table_requests_control_wr
+    {
+      background: #2d3034;
+      padding: 10px 0;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      text-align: center;
+      border-top: 1px solid #494d4d;
+      z-index: 20;
+    }
+
+    .table_requests_control_text
+    {
+      color: #b8b8ba;
+      font-size: 1.2em;
+      text-transform: uppercase;
+      text-align: 15px;
+      padding-left: 15px;
+      float: left;
+    }
+
+    .table_requests_control_btns
+    {
+      float: right;
+    }
+
+    .table_requests_btn
+    {
+      cursor: pointer;
+      font-size: 1.2em;
+      font-family: 'maven_probold';
+      display: inline-block;
+      vertical-align: middle;
+      text-transform: uppercase;
+    }
+
+    .table_requests_yes
+    {
+      color: #32ba94;
+      margin-right: 20px;
+    }
+    .table_requests_no
+    {
+      color: #c94546;
+      margin-right: 20px;
+    }
+
+    .last_header_column_currencies {
+      display: inline;
+    }
+
+    .last_header_column_currencies .table_header
+    {
+      display: table-cell;
+      height: 40px;
+      white-space: pre;
+    }
+
+    .last_header_column_currencies .sort_icon_wrapper
+    {
+      display: block;
+      height: 30px;
+      margin-left: 0;
+    }
+
+    .api_key_currencies_table .table_title
+    {
+      background: url('../img/Currencies.png') no-repeat left center;
+    }
+
+    .selected_header .sort_icon_wrapper {
+      margin-left: 18px;
+    }
+
+    .currency_status_checkbox
+    {
+      vertical-align: middle;
+      width: 11px;
+      height: 11px;
+      border-radius: 11px;
+      border: 1px solid #32ba94;
+      text-align: center;
+      position: relative;
+      cursor: pointer;
+      display: inline-block;
+      background-color: inherit;
+      transition: background-color 400ms;
+    }
+    .currency_status_checkbox.selected
+    {
+      background-color: #32ba94;
+      background-image: url(../img/StatusSelected.svg);
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: 9px;
+    }
+    .currency_status_checkbox:hover
+    {
+      background-color: rgba(50, 186, 148, 0.56);
+    }
+    .currency_select_all
+    {
+      color: #7c7c7d;
+      font-size: 1.2em;
+      height: 20px;
+      line-height: 20px;
+    }
+
+    //---------------------------------------- api keys
+
+    .keys_tables_wrapper .api_keys_table.table
+    {
+      width: 55%;
+      float: left;
+      border-right: 0;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+
+    .table_title_wrapper
+    {
+      background: #2d3034;
+      max-height: 50px;
+      border-bottom: 1px solid #494d4d;
+      padding-left: 15px;
+      padding-top: 14px;
+      padding-bottom: 14px;
+      box-sizing: border-box;
+    }
+
+    .tooltip-mobile-box {
+      display: none;
+      color: #727274;
+      text-align: center;
+      font-size: .75em;
+      letter-spacing: 1px;
+      border: 1px dashed #727274;
+      line-height: 1.2;
+      letter-spacing: 1.3;
+      padding: 11px;
+      text-transform: none;
+      height: 53px;
+      width: 260px;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: 1.2em;
+      margin-top: 8px;
+
+    }
+
+    .api_keys_table .table_title_wrapper
+    {
+      border-radius: 4px 0 0 0;
+    }
+    .table_title
+    {
+      font-size: 1.8em;
+      text-align: left;
+      color: #727274;
+      font-family: 'maven_proregular';
+      text-transform: uppercase;
+      height: 22px;
+      line-height: 24px;
+      padding-left: 25px;
+      float: left;
+      letter-spacing: 1px;
+    }
+
+    .api_keys_table .table_title
+    {
+      background: url('../img/ApiKeysIcon.png') no-repeat left center;
+    }
+
+    /*.table_col_value_a:before {*/
+      /*content: "@";*/
+      /*display: inline-block;*/
+      /*vertical-align: middle;*/
+      /*font-size: 1.2em;*/
+      /*margin-right: 2px;*/
+    /*}*/
+
+    .delete_key_button
+    {
+      background: url(../img/DeleteKey.svg) no-repeat center center;
+      width: 100%;
+      height: 100%;
+      
+      vertical-align: middle;
+      transition-property: opacity, background-color;
+      transition-duration: 400ms;
+      cursor: pointer;
+      display: none;
+    }
+    .can_delete_key
+    {
+      opacity: .4;
+      background-size: 17px;    
+      display: inline-block;
+    }
+
+    .-selected .can_delete_key {
+      opacity: 1;
+    }
+
+    //---------------------------------------- contract feedback
+
+    .selected_contract_table .table
+    {
+    }
+    .rate_field_wrapper
+    {
+      width: 100%;
+      padding: 0 15px;
+      box-sizing: border-box;
+    }
+
+    .rate_field_wrapper .rating_bar
+    {
+      margin-top: 10px;
+    }
+    .rate_field
+    {
+      width: 100%;
+      background-color: transparent;
+      border-radius: 5px;
+      height: 106px;
+      margin: auto;
+      font-size: 1.4em;
+      padding-left: 10px;
+      padding-top: 15px;
+      box-sizing: border-box;
+      margin-bottom: 20px;
+      margin-top: 20px;
+      resize: none;
+      border-color: #494d4d;
+      outline: none;
+      color: #6c6c6e;
+      transition-property: color, border-color;
+      transition-duration: 400ms;
+    }
+    .rate_field::-webkit-input-placeholder {color:#6c6c6e;}
+    .rate_field::-moz-placeholder          {color:#6c6c6e;}/* Firefox 19+ */
+    .rate_field:-moz-placeholder           {color:#6c6c6e;}/* Firefox 18- */
+    .rate_field:-ms-input-placeholder      {color:#6c6c6e;}
+
+
+    .rate_field:focus
+    {
+      border-color: #7c8888;
+      color: #7c8888;
+    }
+
+    .rate_field:focus::-webkit-input-placeholder {color:#7c8888;}
+    .rate_field:focus::-moz-placeholder          {color:#7c8888;}/* Firefox 19+ */
+    .rate_field:focus::-moz-placeholder           {color:#7c8888;}/* Firefox 18- */
+    .rate_field:focus::-ms-input-placeholder      {color:#7c8888;}
+
+    .send_rate_btn_wr
+    {
+      float: right;
+      text-align: right;
+      padding-right: 15px;
+      box-sizing: border-box;
+      margin-left: 20px;
+    }
+    .send_rate_btn
+    {
+      width: 178px;
+      height: 40px;
+      letter-spacing: 1px;
+      text-align: center;
+      font-size: 1rem;
+      border: 0;
+      padding: 0.5rem 0.75rem;
+      line-height: 1.25;
+      border-radius: 5px;
+      display: inline-block;
+      background: none;
+      outline: none;
+      padding: 0 38px;
+      color: white;
+      text-transform: uppercase;
+      background: #2d3034;
+      cursor: pointer;
+      transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;  
+    }
+    .send_rate_btn:hover
+    {
+      background-color: #346255;
+    }
+    .rate_scale_wrapper
+    {
+      margin-bottom: 35px;
+    }
+    .rate_scale_wrapper.rate_scale_form
+    {
+      float: right;
+      width: 50%;
+    }
+
+    .rate_scale_form .rating_bar
+    {
+      height: 27px;
+      line-height: 25px;
+      float: right;
+    }
+
+    .rate_text
+    {
+      text-indent: 1.5em;
+      font-size: 1.5em;
+      text-align: left;
+      color: #6c6c6e;
+      font-family: 'maven_proregular';
+      padding-right: 10px;
+      padding-bottom: 30px;
+    }
+    .rate_text_wrapper
+    {
+      margin: 35px 15px;
+      margin-bottom: 15px;
+      position: relative;
+    }
+
+    .rate_button_wrapper
+    {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+
+    //---------------------------------------- contract info
+
+    .time_profit_left_border
+    {
+      width: 100%;
+      border: 1px solid #494d4d;
+      border-radius: 4px;
+      margin-bottom: 30px;
+    }
+    .time_left_wrapper
+    {
+      width: 100%;
+    }
+    .time_left_title_wr
+    {
+      background: #2d3034;
+      height: 80px;
+      line-height: 80px;
+      text-align: center;
+      width: 40%;
+      float: left;
+    }
+
+    .time_left_title
+    {
+      display: inline-block;
+      text-transform: uppercase;
+      text-align: center;
+      line-height: 1.4;
+      color: #e1e1e1;
+      font-size: 1.4em;
+      font-family: 'maven_proregular';
+      vertical-align: middle;
+    }
+    .time_left_counts_wrapper
+    {
+      width: 60%;
+      text-align: center;
+      float: left;
+      height: 80px;
+      line-height: 80px;
+    }
+    .time_left_count_wrapper
+    {
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1.4;
+    }
+    .time_left_count_big
+    {
+      font-size: 3.6em;
+      text-align: center;
+      display: inline-block;
+      width: 100%;
+      font-family: 'maven_proregular';
+    }
+    .time_left_count_small
+    {
+      font-size: 1.2em;
+      text-align: center;
+      text-transform: uppercase;
+      width: 100%;
+      display: inline-block;
+    }
+    .dots_couple
+    {
+      font-size: 5em;
+      line-height: 9px;
+    }
+    .time_left_count_big.green,
+    .dots_couple.green
+    {
+      color: rgb(82, 224, 105);
+      text-shadow: 0px 0px 16px  rgba(82,224,105,1);
+    }
+    .progress_bar_wrapper
+    {
+      width: 100%;
+      height: 5px;
+      text-align: center;
+      margin-bottom: 53px;
+      background-color: #2d3034;
+      border-radius: 2px;
+    }
+    .progress_bar
+    {
+      height: 5px;
+      float: left;
+      border-radius: 2px;
+    }
+    .progress_bar.green
+    {
+      background: #52e069;
+      box-shadow: 0px 0px 26px -1px rgba(82,224,105,1);
+    }
+    .progress_bar.yellow
+    {
+      background: #dcb14a;
+      box-shadow: 0px 0px 26px -1px rgba(220,177,74,1);
+    }
+    .progress_bar.red
+    {
+      background: #dc4337;
+      box-shadow: 0px 0px 26px 1px rgba(220,67,55,0.86);
+    }
+    .profit_left_count
+    {
+      font-size: 4.3em;
+    }
+    .profit_left_count_valute
+    {
+      text-transform: uppercase;
+      display: inline-block;
+      vertical-align: top;
+      font-size: 0.58em;
+    }
+
+    .selected_contract_table .yellow
+    {
+      color: #dcb14a;
+      text-shadow: 0px 0px 26px rgba(220,177,74,1);
+    }
+
+    .selected_contract_table .red
+    {
+      color: #dc4337;
+      text-shadow: 0px 0px 16px rgba(220,67,55,0.86);
+    }
+
+    .selected_contract_table .green
+    {
+      color: #52e069;
+      text-shadow: 0px 0px 26px rgba(82,224,105,1);
+    }
+
+
+    //---------------------------------------- contracts
+
+    .contracts_table
+    {
+    }
+
+    .status_circle
+    {
+      display: inline-block;
+      vertical-align: middle;
+      width: 6px;
+      height: 6px;
+      border-radius: 6px;
+    }
+    .status_circle.red
+    {
+      background: #c94546;
+    }
+    .status_circle.green
+    {
+      background: #60a754;
+    }
+    .status_circle.yellow
+    {
+      background: #dcb14a;
+    }
+
+    .status_desc_item
+    {
+      text-align: left;
+      margin-bottom: 10px;
+    }
+    .status_desc_item_cyrcle.green
+    {
+      background: #60a754;
+    }
+    .status_desc_item_cyrcle.yellow
+    {
+      background: #dcb14a;
+    }
+    .status_desc_item_cyrcle.red
+    {
+      background: #c94546;
+    }
+    .status_desc_item_text
+    {
+      color: #7c7c7d;
+      text-transform: uppercase;
+      text-align: left;
+      display: inline-block;
+      font-size: 1em;
+      line-height: 1;
+      vertical-align: middle;
+    }
+    .status_desc_item_cyrcle
+    {
+      width: 6px;
+      height: 6px;
+      border-radius: 6px;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 12px;
+    }
+    .table_header_wrapper.contract_header_wrapper
+    {
+      display: inline;
+    }
+
+    .contract_header_wrapper .table_header
+    {
+      display: table-cell;
+      height: 50px;
+      white-space: pre;
+    }
+
+    .contract_header_wrapper .sort_icon_wrapper
+    {
+      display: block;
+      height: 30px;
+      margin-left: 0;
+    }
+
+
+    //---------------------------------------- exchange select
+
+    .add_keys_select_li.upper
+    {
+      text-transform: uppercase;
+    }
+    .add_keys_select_value.upper
+    {
+      text-transform: uppercase;
+    }
+
+
+    //---------------------------------------- offers
+    .requests_table .table_title
+    {
+      background: url('../img/RequestsIcon.png') no-repeat left center;
+    }
+    .pay_request_wrapper
+    {
+      border-radius: 5px;
+      background-color: #2b2f34;
+      max-width: 93px;
+      width: 100%;
+      height: 24px;
+      line-height: normal;
+      margin: auto;
+      transition-property: color, background-color;
+      transition-duration: 400ms;
+      margin-top: 3px;
+    }
+    .pay_request_wrapper:hover
+    {
+      background-color: #b8b8ba;
+    }
+    .pay_request_wrapper:hover .pay_request_btn_txt
+    {
+      color: #1f2225;
+    }
+    .pay_request_btn_txt
+    {
+      line-height: 18px;
+      font-size: 1em;
+      text-transform: uppercase;
+      color: #868788;
+      text-align: center;
+      transition-property: color;
+      transition-duration: 400ms;
+    }
+
+    .request_progress_txt
+    {
+      line-height: 23px;
+    }
+    .request_progress_wr
+    {
+      width: 100%;
+      height: 2px;
+      background: #494d4d;
+      text-align: left;
+      line-height: 2px;
+      max-width: 70px;
+      margin: auto;
+      margin-bottom: 5px;
+    }
+    .request_progress
+    {
+      display: inline-block;
+      vertical-align: top;
+      height: 2px;
+    }
+
+    //---------------------------------------- profile feedbacks
+
+
+    .feedback-profile .profile-item.container-fluid .table-screen {
+      padding: 0;
+    }
+
+    .feedback-profile .profile-item.container-fluid .feedback-block {
+      padding: 0;
+    }
+
+    .feedback-profile .profile-item.container-fluid .feedback-block {
+      height: 287px !important;
+    }
+
+
+    .feedback-profile .profile-item.container-fluid .feedback-block.col-xl-4 {
+      max-width: 100%;
+      flex: 0 0 100%;
+    }
+    .feedback-profile .profile-item.container-fluid .table-screen .table-row .card .card-header .title-text .icon {
+        margin-right: 12px;
+        margin-left: 15px;  
+    }
+
+    .feedback-profile .profile-item.container-fluid .table-screen .table-row .feedback-block .feedback-card .card-header {
+      margin-top: 0;
+    }
+
+    .feedback-profile .profile-item.container-fluid .table-screen .table-row .feedback-block .feedback-card .card-header {
+      min-height: 40px;
+    }
+
+    .feedback-profile .profile-item.container-fluid .card .card-header {
+      height: 50px;
+    }
+
+    .feedback-profile .profile-item.container-fluid .feedback-block .feedback-card .card-body {
+      min-height: 200px;
+    }
+
+    .feedback-profile .profile-item.container-fluid .feedback-block .feedback-card .card-body .feedback-body {
+      min-height: 207px;
+    }
+
+    @media only screen and (max-width : 1027px) {
+      .feedback-profile .profile-item.container-fluid .table-screen .table-row .feedback-block .feedback-card .card-body ul {
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+
+    }    
+
+    //---------------------------------------- 
+  }
+  @media only screen and (max-width : 1400px) {
+    .dashboard_wrapper {
+      .keys_tables_wrapper,
+      .requests_table_wrapper,
+      .selected_contract_table
+      {
+        width: 100%;
+      }
+      .contracts_chart, .traders_chart
+      {
+        width: 49%;
+      }
+      .traders_chart
+      {
+        margin-right: 1%;
+      }
+
+      .contracts_chart
+      {
+        margin-left: 1%;
+      }
+
+      .profit_left .progress_bar_wrapper {
+        margin-bottom: 0px;
+      }      
+    }
+
+
+  }
+
+  @media only screen and (max-width : 1028px) {
+    .dashboard_wrapper {
+      padding: 10px;
+      .api_keys_table, .add_keys_form_wrapper {
+        background-color: #1f2225;
+      }
+      .api_key_currencies_table {
+        background-color: #17191b;
+      }  
+      .add_keys_form .add_keys_field_wr, .add_keys_form .add_keys_double_field_wr {
+        background-color: #1f2225;
+      }
+
+      .contracts_table, .selected_contract_table {
+        background-color: #17191b;    
+      }  
+
+      .requests_table_wrapper .ReactTable {
+        margin-bottom: 12px;
+      }
+      .contracts_table .table_title_wrapper {
+        padding-top: 23px;
+      }
+
+      .table_rewind_page {
+        margin-top: 15px;
+        margin-bottom: 24px;
+      }
+      .selected_contract_table .table_rewind_page {
+        margin-bottom: 24px;
+      }
+      .selected_contract_table .table_title_wrapper {
+        margin-top: 0;
+        padding-top: 0;
+        padding-left: 0;
+      }
+      .selected_contract_table .rate_field_wrapper .rate_field {
+        margin-top: 0px;
+      }
+      .selected_contract_table .rate_field_wrapper .rating_bar {
+        margin-top: 0;
+        margin-bottom: 20px;
+      }
+      .api_key_currencies_table  .table_rewind_page {
+       margin-bottom: 24px; 
+      }
+
+      .api_key_currencies_table .table_rewind_page {
+        margin-bottom: 30px;
+      }
+
+
+      .keys_tables_wrapper .api_keys_table,
+      .keys_tables_wrapper .api_key_currencies_table
+      {
+        width: 100% !important;
+        border-radius: 4px;
+      }
+      .api_keys_table .add_keys_select_value {
+        text-align: center;
+        margin-right: 12px;
+      }
+
+      .api_keys_table .add_keys_select_wr {
+        padding-left: 0 !important;
+      }
+
+      .api_keys_table .add_keys_select_value .add_keys_select_value_bg {
+        margin-top: 1px;
+      }
+
+      .api_key_currencies_table {
+        float: inherit;
+        margin-top: 0;
+      }
+
+      /*.add_keys_form_wrapper .table_title_wrapper {
+        display: block;
+      }*/
+
+      .keys_tables_wrapper .table_title_wrapper {
+        margin-top: 0px;
+      }
+
+
+      .api_key_currencies_table .ReactTable .rt-tr > :first-child {
+        text-align: center;
+      }
+
+      .keys_tables_wrapper .ReactTable .key_name_text_td {
+        width: 60px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center
+
+      }
+
+
+      .table_wrapper .table {
+        border: 0;
+      }
+
+
+      .table_title_wrapper {
+        border-bottom: 0;
+        background: transparent;
+        padding-top: 21px;
+      }
+      .api_keys_table .table_title {
+        background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAzUlEQVQokYXQoUoEURSA4W9mp4rYbVtsVl9At+prLIrhMqAm+3ANglarWLQIshYRdi0Gg80XMC4MW0QYgw4Mg7Nz2vnv/8PhJlVV6ZsQ8iOcYJH0BSHk5zio97RHvmnIb9jLOsRVPGCrgV9iLO6yhrSJbXxjH8O/pxL3uIWkqioh5BcYd1w2j7FYq5dBWS7GOO2Q33E5Gu1Ma5DhuEOGsxiLqyZIsb4kGLZBiuclwcd/wWGH/IrrNhzMZtPPyeTxCRtYwdzvF+7GWHy1gx9CoDso+t0bEgAAAABJRU5ErkJggg==) no-repeat 4px center;
+      }
+
+      .table_title {
+        font-size: 1.4em;
+        padding-left: 28px;
+      }
+
+      .table_title_tabs_wr {
+        border-radius: 3px;
+        margin-right: 26px;
+        height: 22px;
+      }
+      .table_title_tab {
+        height: 22px;
+        line-height: 22px;
+        padding: 0;
+        background-color: #232629;
+      }
+
+      .table_header_wrapper {
+        text-align: center;
+        height: 74px;
+      }
+      .table_header {
+        font-size: 1.2em;
+      }
+      .last_header_column_currencies .table_header {
+        height: auto;
+      }
+      .table_header br {
+        display: none;
+      }
+      .table_col_value {
+        font-size: 1.2em;    
+      }
+      .ReactTable .rt-thead .rt-tr {
+        padding-top: 22px;
+      }
+      .rt-thead
+      {
+        border-bottom: 0;
+      }
+      .ReactTable .rt-tr > :first-child {
+        margin-left: 0px;
+      }
+      .ReactTable .rt-td {
+        text-align: center;
+        overflow: hidden;
+        text-overflow: ellipsis;  
+        white-space: nowrap;  
+      }
+      .ReactTable .rt-tr-group .rt-tr {
+        border-bottom: 0;
+      }
+      .rt-tbody {
+        border-top: 0;
+      }
+
+      .api_key_currencies_table .ReactTable .rt-tr-group .rt-tr.-odd,
+      .contracts_table_wrapper .ReactTable .rt-tr-group .rt-tr.-odd {
+        background: #232629;
+      }
+
+      .api_key_currencies_table .ReactTable .rt-tr-group .rt-tr.-even,
+      .contracts_table_wrapper .ReactTable .rt-tr-group .rt-tr.-even {
+        background: transparent;
+      }
+
+      .ReactTable .rt-tr-group .rt-tr:not(.-padRow):hover {
+        background: #2c2f33;
+      }
+
+
+      .api_keys_table .ReactTable .rt-tr-group .rt-tr {
+        min-height: 30px;
+        line-height: 30px;
+      }  
+      .api_key_currencies_table .ReactTable .rt-tr-group .rt-tr {
+        min-height: 20px;
+        line-height: 20px;
+      }
+      .api_key_currencies_table .table_requests_control_wr {
+        border-top: 0;
+        padding: 0;
+        height: 18px;
+        line-height: 18px;    
+        background: transparent;
+      }  
+      .api_key_currencies_table .table_requests_control_wr .table_requests_control_btns {
+        margin-top: -1px;
+      }
+      .api_key_currencies_table .table_requests_control_wr .table_requests_control_text {
+        padding-left: 34px;
+        font-style: 1em;
+      }
+      .api_key_currencies_table .table_requests_control_wr .table_requests_no {
+        margin-right: 53px;
+      }
+      .table_header_help_wrapper {
+        display: none;
+      }
+
+      .tooltip-mobile-box {
+        display: block;
+      }
+
+      .sort_icon_wrapper {
+        display: block; 
+        margin-left: 0px;
+        margin-top: 8px;
+      }
+      .sort_icon_wrapper.position_down_icon_wrapper {
+       margin-top: 8px; 
+      }
+
+      .selected_header .sort_icon_wrapper {
+        margin-left: 0px;
+      }
+
+      .table_filter_wrapper {
+        max-width: 90px;
+        padding: 10px 0 10px 0;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      /*.api_keys_table .rt-tr-group:nth-child(n+6), .api_key_currencies_table .rt-tr-group:nth-child(n+6) {
+        display: none;
+      }*/
+
+
+      .requests_table .ReactTable .rt-tr-group .rt-tr {
+        min-height: 24px;
+        line-height: 24px;
+      }
+      .requests_table .ReactTable .rt-tr-group .rt-tr .rt-td {
+        height: 30px;
+        line-height: 30px;
+      }
+
+      .requests_table .request_progress_txt {
+        font-size: .9em;
+      }
+      .requests_table .request_progress_txt .request_progress_wr {
+        margin-top: 0;
+        margin-bottom: 2px;
+      }
+
+      .requests_table .table_requests_control_wr {
+        padding: 0;
+        border-top: 0;
+        background-color: transparent;
+        position: relative;
+        margin-bottom: 17px;
+      }
+
+      .requests_table .ReactTable .contractor_link {
+        text-align: center;
+        height: 100%;
+      }
+
+      .requests_table .ReactTable .pay_request_wrapper {
+        box-shadow: none;
+      }
+
+      .requests_table .table_requests_control_wr .table_requests_control_text {
+        font-size: 1.05em;
+        padding-left: 33px;
+      }
+      .requests_table .table_requests_control_wr .table_requests_control_btns .table_requests_btn {
+        text-decoration: underline;
+      }
+      .requests_table .table_requests_control_wr .table_requests_control_btns .table_requests_no {
+        margin-right: 51px;
+      }
+
+      .requests_table .table_title_tabs_wr .table_title_tab {
+        padding: 0 12px;
+      }
+
+      .requests_table .table_title_wrapper {
+        padding-bottom: 0;
+      }
+      .requests_table .ReactTable .rt-thead .rt-tr {
+        padding-top: 18px;
+      }
+
+      .requests_table .ReactTable .table_header_wrapper {
+        height: 50px !important;
+      }
+
+      .contract_header_wrapper .table_header {
+        height: auto;
+      }
+
+      .ReactTable .rt-tr-group .rt-tr:not(.-padRow).-selected {
+        background: transparent;
+      }  
+
+      .ReactTable .rt-tr-group .rt-tr.-selected:not(.-padRow):hover {
+        background: transparent;
+      }    
+
+      .ReactTable .rt-tr-group .rt-tr:not(.-padRow).-selected .rt-td:first-child {
+        background: linear-gradient(90deg, rgba(52, 98, 85, 0), #346255);
+      }
+      .ReactTable .rt-tr-group .rt-tr:not(.-padRow).-selected .rt-td:last-child {
+        background: linear-gradient(90deg, #346255, rgba(52, 98, 85, 0.2))
+      }  
+      .ReactTable .rt-tr-group .rt-tr:not(.-padRow).-selected .rt-td {
+        background-color: #346255;
+      }
+
+      .contracts_table .table_title {
+        background: url(../img/Contracts.png) no-repeat left center;
+      }
+      
+      .contracts_table .ReactTable .rt-tr-group .rt-tr {
+        min-height: 25px;
+        line-height: 25px;
+      }
+
+      .contracts_table .fee_column .contract_header_wrapper .sort_icon_wrapper,
+      .contracts_table .status_column .contract_header_wrapper .sort_icon_wrapper
+       {
+        margin-top: 16px;
+      }
+      .contracts_table .current_balance .contract_header_wrapper .sort_icon_wrapper {
+        margin-top: 0px;
+      }
+
+
+      .contracts_table_wrapper .table_title_wrapper{
+        margin-top: 0px;
+      }
+      .contracts_table_wrapper .ReactTable .contractor_link {
+        width: 68px;
+        -o-text-overflow: ellipsis;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+      }
+
+      .contracts_table_wrapper .ReactTable .rt-td.table_col_delete {
+        text-align: left !important;
+      }
+
+      .contracts_table_wrapper .ReactTable .tx_column {
+        text-align: center;
+      }
+      .selected_contract_table .profit_time_wrapper_block {
+        width: 100%;
+      }
+      .selected_contract_table .profit_time_wrapper_block .profit_time_block {
+        margin-left: auto;
+        margin-right: auto;
+        width: 270px;
+      }  
+      .selected_contract_table  .time_profit_left_border {
+        border: 0;
+        margin-bottom: 4px;
+        /*width: 48%;*/
+      }
+      .selected_contract_table .time_left_count_wrapper {
+        line-height: 1;
+      }
+      .selected_contract_table .time_left_count_wrapper:nth-child(2n) {
+        margin-top: -5px;
+      }
+      .selected_contract_table .time_left_wrapper {
+        width: auto;
+      }
+      .selected_contract_table .time_left_title_wr {
+        display: inline-block;
+        background: transparent;
+        float: none;
+        width: auto;
+        height: 20px;
+        line-height: 20px;
+        text-align: left;
+        margin-left: 0;
+      }
+
+      .selected_contract_table .time_left_title_wr .time_left_title {
+        font-size: .8em;
+      }
+      .selected_contract_table .time_left_counts_wrapper {
+        width: auto;
+        margin-left: 0;
+        height: 40px;
+        line-height: 40px;    
+      }
+      .selected_contract_table .time_left_counts_wrapper  .time_left_count_big {
+        font-size: 2.2em;
+        width: auto;
+      }
+      .selected_contract_table .time_left_counts_wrapper .time_left_count_small {
+        font-size: .8em;
+        width: auto;
+        display: block;
+      }
+      .selected_contract_table .time_left_counts_wrapper .dots_couple {
+        font-size: 2em;
+      }
+      .selected_contract_table .progress_bar_wrapper {
+        height: 2px;
+        width: 126px;
+        display: inline-block;
+        margin-left: 0;
+        margin-bottom: 30px;
+      }
+      .selected_contract_table .progress_bar {
+        height: 2px;
+      }  
+
+      .selected_contract_table .time_left {
+        display: inline-block;
+        width: 48%;
+      }
+      .selected_contract_table .time_left_wrapper {
+        /*margin-left: auto;*/
+        min-width: 100px;
+      }
+      .selected_contract_table .profit_left {
+        display: inline-block;
+        width: 46%;
+        margin-left: 16px;
+      }
+      .selected_contract_table .profit_left .profit_left_count {
+        font-size: 2.7em;
+      }
+      .selected_contract_table .profit_left .time_left_title_wr {
+        margin-left: 0px;
+      }
+      .selected_contract_table .profit_left .time_left_counts_wrapper {
+        margin-left: 0px;
+      }
+
+      .selected_contract_table .profit_left .progress_bar_wrapper {
+        margin-left: 0;
+      }
+
+      .selected_contract_table .time_left_counts_wrapper .time_left_count_wrapper.days {
+        margin-right: 10px;
+      }
+
+      .selected_contract_table .time_left_counts_wrapper .time_left_count_wrapper.hours {
+        margin-right: 5px;
+      }  
+      .selected_contract_table .time_left_counts_wrapper .time_left_count_wrapper.dots-second {
+        margin-right: 8px;
+      }    
+      .table_title_wrapper {
+        margin-top: 14px;
+      }
+      .contracts_chart {
+        background-color: #17191b;
+      }
+
+      .traders_chart .chart_title_total {
+        margin-top: 7px;  
+        border-bottom: 0;
+      }
+
+      .contracts_chart .chart_title_total {
+        border: 0;
+      }
+
+      .traders_chart
+      {
+        margin-right: 0;
+      }
+      .contracts_chart
+      {
+        margin-left: 0;
+      }
+
+      .send_rate_btn_wr
+      {
+        width: 100%;
+        text-align: center;
+        padding-right: 0;
+        margin-bottom: 10px;
+      }
+      .send_rate_btn {
+        width: 148px;
+        border-radius: 2px;
+        height: 30px;
+        font-size: 12px;    
+      }
+      .rate_scale_wrapper.rate_scale_form
+      {
+        float: left;
+        width: 100%;
+        margin-bottom: 15px;
+      }
+      .rate_scale_form .rating_bar
+      {
+        float: none;
+      }
+      .table_wrapper
+      {
+        width: 100% !important;
+      }      
+    }
+  }
+  @media only screen and (max-width : 1028px) {
+    .dashboard_wrapper
+    {
+      padding: 0px;
+    }
+  }
+  @media only screen and (max-width : 1028px) {
+    .dashboard_wrapper {
+      .table_wrapper
+      {
+        padding: 0;
+      }
+      .add_keys_form_wrapper
+      {
+        height: auto;
+        border: 0;
+      }
+      .add_keys_str
+      {
+        padding-top: 15px;
+        margin-right: 15px;
+        float: none;
+        line-height: 11.5px;
+      }
+      .add_keys_str > div
+      {
+        width: 100% !important;
+      }
+      .add_keys_field_wr.select_wr
+      {
+        margin: 0;
+      }
+      .add_keys_double_field_wr
+      {
+        margin-left: 0;
+      }
+      .add_keys_double_field_wr .add_keys_field
+      {
+        width: 50%;
+      }
+      .add_keys_field_wr,
+      .add_keys_field_wr.select_wr,
+      .add_keys_double_field_wr
+      {
+        height: 30px;
+        line-height: 1;
+        vertical-align: top;
+        margin-bottom: 10px;
+      }
+      .keys_submit_wrapper
+      {
+        text-align: center;
+        background: none;
+        border: none;
+        margin-bottom: 20px;
+      }
+      .keys_submit
+      {
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+        border: 1px solid #44464a;
+        background-image: none;
+        font-size: 1.6em;
+        color: #7c7c7d;
+        max-width: 200px;
+      }  
+
+      .ReactTable .add_keys_field {
+        width: 60px;
+        height: 22px;
+        padding-left: 13px;
+        font-size: 1em;
+      }
+      .ReactTable .add_keys_select_wr {
+        height: 22px;
+        line-height: 22px;
+        padding-left: 33px;
+        font-size: 1em;
+      }
+      .ReactTable .add_keys_select_values_list_wr {
+        top: 20px;
+      }
+    }
+
+  }
+
+}
+
