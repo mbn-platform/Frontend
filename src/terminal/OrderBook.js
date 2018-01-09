@@ -67,7 +67,7 @@ class OrderBook extends React.Component {
 
       }
     }).catch(err => console.log('error updating order book', err));
-    getTicker(this.props.market).then(json => {
+    getTicker(market).then(json => {
       this.setState(state => {
         return {last: json.result.Last, prelast: state.last};
       });
@@ -156,7 +156,7 @@ class OrderBook extends React.Component {
     }
     return (
       <div className={classNames('value', 'row', isUp ? 'up' : 'down')}>
-        <span>{formatFloat(this.state.last)}</span><span className={classNames('icon', 'icon-dir', isUp ? 'icon-up-dir' : 'icon-down-dir')}> </span>
+        <span>{formatFloat(this.state.last, true)}</span><span className={classNames('icon', 'icon-dir', isUp ? 'icon-up-dir' : 'icon-down-dir')}> </span>
       </div>
     );
   }
@@ -176,7 +176,7 @@ const BuyOrderCell = ({price, size, relativeSize, isBTC} ) => {
         <span>{sizeParts[1]}</span>
       </td>
       <td>
-        {formatFloat(price * size)}
+        {formatFloat(price * size, isBTC)}
       </td>
       <td>
         <span className="dash" style={{width: relativeSize * 100 + '%'}}/>
