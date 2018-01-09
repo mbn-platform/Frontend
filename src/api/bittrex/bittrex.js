@@ -1,0 +1,38 @@
+
+const API_URL = 'https://api-bittrex.mercatus.im/api/v1.1/public';
+export function getTicker(market) {
+  const url = '/getticker';
+  const params = `market=${market}`;
+  return apiCall(url, params);
+}
+
+export function getMarkets() {
+  return apiCall('/getmarkets');
+}
+
+export function getCurrencies() {
+  return apiCall('/getcurrencies');
+}
+
+export function getMarketSummaries() {
+  return apiCall('/getmarketsummaries');
+}
+
+export function getMarketSummary(market) {
+  return apiCall('/getmarketsummary', `market=${market}`);
+}
+
+export function getOrderBook(market, type) {
+  return apiCall('/getorderbook', `market=${market}&type=${type}`);
+}
+
+export function getMarketHistory(market) {
+  return apiCall('/getmarkethistory', `market=${market}`);
+}
+
+
+function apiCall(url, params) {
+  const fullUrl = API_URL + url + '?' + (params || '');
+  return fetch(fullUrl)
+    .then(res => res.json());
+}

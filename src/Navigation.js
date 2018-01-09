@@ -6,12 +6,12 @@ import DashboardIcon from './img/MenuIconDashboard.svg';
 import DashboardIconHover from './img/MenuIconDashboardHover.svg';
 import ProfileIcon from './img/profile.svg';
 import ProfileIconHover from './img/profile_hover.svg';
-import TermianlIcon from './img/terminal.svg';
-import TermianlIconHover from './img/terminal_hover.svg';
-import OrdersIcon from './img/orders.svg';
-import OrdersIconHover from './img/orders_hover.svg';
-import HistoryIcon from './img/history.svg';
-import HistoryIconHover from './img/history_hover.svg';
+import TermianlIcon from './assets/svg/terminal.svg';
+import TermianlIconHover from './assets/svg/terminal_hover.svg';
+import OrdersIcon from './assets/svg/orders.svg';
+import OrdersIconHover from './assets/svg/orders_hover.svg';
+import HistoryIcon from './assets/svg/history.svg';
+import HistoryIconHover from './assets/svg/history_hover.svg';
 import RaitingIcon from './img/MenuIconRatings.svg';
 import RaitingIconHover from './img/MenuIconRatingsHover.svg';
 import { connect } from 'react-redux';
@@ -19,7 +19,6 @@ import { withRouter } from 'react-router';
 import { Navbar, NavbarToggler, NavbarBrand, Nav, Collapse, Col } from 'reactstrap';
 import { Desktop, Mobile } from './generic/MediaQuery';
 import { Container, Row } from 'reactstrap';
-import classNames from 'classnames';
 
 class Navigation extends React.Component {
 
@@ -45,7 +44,7 @@ class Navigation extends React.Component {
   }
   render() {
     return (
-      <Col xs="12" md="auto" className="d-block d-md-block menu-panel ">
+      <Col xs="12" md="auto" className="d-block menu-panel">
         <Navbar expand="md"  >
           <NavbarBrand className="d-inline-block d-md-none" tag="div">
             <img src={LogoMobile} alt=""/>
@@ -65,19 +64,19 @@ class Navigation extends React.Component {
                 {this.getLogo()}
                 {this.getLinks().map(this.getBar)}
               </Nav>
-            </Collapse>          
+            </Collapse>
           </Mobile>
         </Navbar>
       </Col>
     );
   }
 
-  getBar({name, to, imgClass,icon, iconHover}) {
+  getBar({name, to, imgClass, icon, iconHover}) {
     return (
       <NavLink to={to} key={name} className="nav-link">
         <Container className="h-100" fluid >
           <Row className="h-100">
-            <Col xs="12" className="align-self-center">           
+            <Col xs="12" className="align-self-center">
               <Container fluid className="align-middle">
                 <Row>
                   <Col xs="3" md="12" className="d-flex justify-content-end justify-content-md-center">
@@ -120,43 +119,43 @@ class Navigation extends React.Component {
   getLinks() {
     return [
       {
-        name: 'Dashboard', 
-        to: '/dashboard', 
+        name: 'Dashboard',
+        to: '/dashboard',
         imgClass: 'dashboard',
         icon: DashboardIcon,
         iconHover: DashboardIconHover
       },
       {
-        name: 'Profile', 
-        to: this.props.auth.profile ? '/' + this.props.auth.profile.name : '/profile', 
+        name: 'Profile',
+        to: this.props.auth.profile ? '/' + this.props.auth.profile.name : '/profile',
         imgClass: 'profile',
         icon: ProfileIcon,
         iconHover: ProfileIconHover
       },
       {
-        name: 'Terminal', 
-        to: '/terminal', 
+        name: 'Terminal',
+        to: '/terminal',
         imgClass: 'terminal',
         icon: TermianlIcon,
         iconHover: TermianlIconHover
       },
       {
-        name: 'Orders', 
-        to: '/orders', 
+        name: 'Orders',
+        to: '/orders',
         imgClass: 'orders',
         icon: OrdersIcon,
         iconHover: OrdersIconHover
       },
       {
-        name: 'History', 
-        to: '/history', 
+        name: 'History',
+        to: '/history',
         imgClass: 'history',
         icon: HistoryIcon,
         iconHover: HistoryIconHover
       },
       {
-        name: 'Ratings', 
-        to: '/ratings', 
+        name: 'Ratings',
+        to: '/ratings',
         imgClass: 'ratings',
         icon: RaitingIcon,
         iconHover: RaitingIconHover

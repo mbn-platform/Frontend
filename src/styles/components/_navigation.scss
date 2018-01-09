@@ -53,7 +53,7 @@
 	.nav-link:hover, .nav-link.active {
 		&:not(.no-hover-link) {
 			background-color: rgba(58, 62, 66,.7) !important;
-			color: #e1e1e1 !important;		
+			color: #e1e1e1 !important;
 		}
 		.image_menu {
 			display: none;
@@ -68,8 +68,6 @@
 	.image_menu_hover {
 		display: none;
 	}	
-
-
 	.show > .nav-pills .nav-link {
 		background-color: #2d3034;
 	}
@@ -86,7 +84,6 @@
 		background-repeat: no-repeat;
 
 	}
-
 }
 
 .no-gutters {

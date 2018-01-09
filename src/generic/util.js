@@ -20,3 +20,22 @@ export function formatDate(date) {
 function padDate(number) {
   return number < 10 ? '0' + number : number;
 }
+
+export function formatFloat(number, isBTC) {
+  if(!number && number !== 0) {
+    return '';
+  }
+  if(number > 10) {
+    return number.toFixed(2);
+  } else if(number > 1) {
+    return number.toFixed(3);
+  } else if(number > 0.1) {
+    return number.toFixed(4);
+  } else if(number > 0.01) {
+    return number.toFixed(4);
+  } else if(isBTC) {
+    return number.toFixed(8);
+  } else {
+    return number.toFixed(5);
+  }
+}

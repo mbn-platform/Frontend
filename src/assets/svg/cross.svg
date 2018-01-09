@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="8px" height="9px" viewBox="0 0 8 9" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
+    <title>glyph/cross</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Orders-/-Open-/-mini" transform="translate(-447.000000, -78.000000)">
+            <g id="Orders-/-Open">
+                <g id="glyph/cross" transform="translate(444.000000, 78.000000)">
+                    <g id="X" transform="translate(3.000000, 0.500000)">
+                        <circle id="Oval" fill="#4F525D" cx="4" cy="4" r="4"></circle>
+                        <path d="M5.5,2.5 L2.5,5.5" id="Path-3" stroke="#161721" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <path d="M5.5,2.5 L2.5,5.5" id="Path-3" stroke="#161721" stroke-linecap="round" stroke-linejoin="round" transform="translate(4.000000, 4.000000) scale(-1, 1) translate(-4.000000, -4.000000) "></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
