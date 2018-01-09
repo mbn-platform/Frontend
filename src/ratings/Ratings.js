@@ -113,6 +113,9 @@ class Ratings extends React.Component {
                               <th onClick={() => this.onColumnSort('rank')} className="rank">
                                 <span>Rank</span><span className={classNameForColumnHeader(this.state, 'rank')}></span>
                               </th>
+                              <th onClick={() => this.onColumnSort('acceptInvestments')}>
+                                <span>Accepting request</span><span className={classNameForColumnHeader(this.state, 'acceptInvestments')}></span>
+                              </th>
                               <th onClick={() => this.onColumnSort('roi')}>
                                 <span>ROI,&nbsp;%</span><span className={classNameForColumnHeader(this.state, 'roi')}></span>
                               </th>
@@ -134,9 +137,6 @@ class Ratings extends React.Component {
                               <th onClick={() => this.onColumnSort('maxLoss')}>
                                 <span>Max&nbsp;loss,&nbsp;%</span><span className={classNameForColumnHeader(this.state, 'maxLoss')}></span>
                               </th>
-                              <th onClick={() => this.onColumnSort('acceptInvestments')}>
-                                <span>Accepting request</span><span className={classNameForColumnHeader(this.state, 'acceptInvestments')}></span>
-                              </th>                              
                             </tr>
 
                             <tr>
@@ -149,6 +149,7 @@ class Ratings extends React.Component {
                               <th>
                                 <div className="help" data-toggle="ratings-help-popover" data-placement="bottom" data-total="The total amount of contracts" data-success="The amount of successfully finished contracts">?</div>
                               </th>
+                              <th></th>
                               <th>
                                 <div className="all-time">
                                   All time <span className="arrow_down"></span>
@@ -163,7 +164,6 @@ class Ratings extends React.Component {
                                   <a href="#" className="all-time_dropdown-link active">All time</a>
                                 </div>
                               </th>
-                              <th></th>
                               <th>
                               </th>
                               <th></th>
@@ -329,6 +329,11 @@ const TraderRatingRow = (props) => (
       <span className="success">{props.successContracts}</span>
     </td>
     <td>
+      {props.acceptInvestments ?
+        <span className='accept'/> :
+        <span className='empty'/> }
+    </td>
+    <td>
       <span>{props.roi}</span>
     </td>
     <td>
@@ -349,11 +354,6 @@ const TraderRatingRow = (props) => (
     <td>
       {props.maxLoss}
     </td>
-    <td>
-      {props.acceptInvestments ? 
-        <span className='accept'/> :
-        <span className='empty'/> }
-    </td>    
   </tr>
 );
 
