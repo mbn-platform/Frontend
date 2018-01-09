@@ -20,7 +20,7 @@ class Ratings extends React.Component {
     this.onColumnSort = onColumnSort.bind(this);
     this.sortFunctions = {
       dateCreated: (a, b) => (new Date(a.dateCreated)) - (new Date(b.dateCreated)),
-    };        
+    };
     let ratings = localStorage.getItem('ratings');
     if(!ratings) {
       ratings = generateRatings();
@@ -154,7 +154,6 @@ class Ratings extends React.Component {
                                 <div className="all-time">
                                   All time <span className="arrow_down"></span>
                                 </div>
-
                                 <div className="all-time_dropdown">
                                   <a href="#" className="all-time_dropdown-link">1 week</a>
                                   <a href="#" className="all-time_dropdown-link">1 month</a>
@@ -203,7 +202,7 @@ class Ratings extends React.Component {
                                 <span>ROI,&nbsp;%</span><span className="icon-dir icon-down-dir"></span>
                               </th>
                               <th onClick={() => this.onColumnSort('dateCreated')}>
-                                <span>Since opened</span><span className="icon-dir icon-down-dir"></span>
+                                <span>Started since</span><span className="icon-dir icon-down-dir"></span>
                               </th>
                               <th onClick={() => this.onColumnSort('paidExcessProfit')}>
                                 <span>Paid excess<br/>profit</span><span className="icon-dir icon-down-dir"></span>
