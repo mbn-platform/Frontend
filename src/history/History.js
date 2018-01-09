@@ -28,7 +28,9 @@ class History extends React.Component {
                   onApiKeySelect={key => this.props.selectApiKey(key)}
                 />
               </div>
-              <HistoryTable />
+              <HistoryTable 
+                history={this.props.history}
+              />
             </div>
           </Col>
         </Row>
@@ -53,8 +55,10 @@ const HistoryContainer = connect(state => ({
   apiKeys: state.apiKeys,
   selectedApiKey: state.terminal.selectedApiKey,
   selectedMarket: state.terminal.selectedMarket,
+  history: state.terminal.history,
 }), dispatch => ({
   selectApiKey: key => dispatch(selectApiKey(key)),
 }))(History);
+
 
 export default HistoryContainer;

@@ -4,6 +4,7 @@ import { generateOffer, getRandomState } from './demoData/offers';
 import { generateContract } from './demoData/contracts';
 import { generateProfile } from './demoData/profile';
 import { generateOrders } from './demoData/orders';
+import { generateHistory } from './demoData/history';
 
 import { CONTRACT_STATE_VERIFIED, CONTRACT_STATE_HALTED, CONTRACT_STATE_FINISHED } from './constants';
 
@@ -50,7 +51,8 @@ export default function generateData() {
     }
   }
   const orders = generateOrders();
-  const terminal = {selectedMarket: 'USDT-BTC', orders, selectedApiKey: apiKeys.ownKeys[0]};
+  const history = generateHistory();
+  const terminal = {selectedMarket: 'USDT-BTC', orders, history, selectedApiKey: apiKeys.ownKeys[0]};
 
 
 
