@@ -92,10 +92,10 @@ class RecentTrades extends React.Component {
 const OrderHistoryRow = ({type, date, price, size, isBTC}) => {
   const isSellOrder = type === 'SELL';
   return (
-    <tr className={isSellOrder ? 'down' : 'up'}>
+    <tr className={isSellOrder ? 'up' : 'down'}>
       <td>
         {formatFloat(price, isBTC)} <span className={classNames('icon', 'icon-dir',
-          isSellOrder ? 'icon-up-dir' : 'icon-down-dir')}></span>
+          isSellOrder ? 'icon-down-dir' : 'icon-up-dir')}></span>
       </td>
       <td>
         {formatFloat(size)}
