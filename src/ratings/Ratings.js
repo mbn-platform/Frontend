@@ -177,10 +177,6 @@ class Ratings extends React.Component {
                           </tbody>
                         </table>
                       </div>
-                      <div className="table-rewind table-rewind--dark hide-desktop">
-                        <button className="table-rewind__button table-rewind__button--prev"><span className="arrow"></span></button>
-                        <button className="table-rewind__button table-rewind__button--next"><span className="arrow"></span></button>
-                      </div>
                       <BestTraders />
                     </div>
                   ) : (
@@ -246,10 +242,6 @@ class Ratings extends React.Component {
                             {sortedData.map(d => <InvestorRatingRow {...d} />)}
                           </tbody>
                         </table>
-                      </div>
-                      <div className="table-rewind table-rewind--dark hide-desktop">
-                        <button className="table-rewind__button table-rewind__button--prev"><span className="arrow"></span></button>
-                        <button className="table-rewind__button table-rewind__button--next"><span className="arrow"></span></button>
                       </div>
                       <BestInvestors />
                     </div>
