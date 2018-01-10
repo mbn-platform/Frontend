@@ -1,6 +1,9 @@
 .terminal{
+	letter-spacing: 1px;
 	font-family: "SF-UI"!important;
 	font-weight: 400;
+    -webkit-font-smoothing: auto;
+    -moz-osx-font-smoothing: auto;
 	.amcharts-axis-label.amcharts-guide {
 		
 	}

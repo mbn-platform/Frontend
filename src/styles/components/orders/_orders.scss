@@ -1,9 +1,12 @@
 .orders{
+	letter-spacing: 1px;
 	font-family: "SF-UI"!important;
 	font-weight: 400;
 	text-transform: none;
 	color: #fff;
 	height: 100%;
+    -webkit-font-smoothing: auto;
+    -moz-osx-font-smoothing: auto;	
 	&>.row{
 		height: 100%;
 		&>div{
