@@ -18,7 +18,7 @@ export function addApiKey(key) {
   resultKey.state = 'FREE';
   resultKey.currencies = resultKey.currencies.map(c => {
     const amount = Math.floor(Math.random() * 100);
-    return {name: c, amount};
+    return {name: c, amount, enabled: true};
   });
   return {
     type: ADD_API_KEY,
