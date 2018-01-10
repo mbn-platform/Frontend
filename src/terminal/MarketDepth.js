@@ -69,7 +69,8 @@ class MarketDepth extends React.Component {
               list[i] = {
                 value: Number(list[i].Rate),
                 volume: Number(list[i].Quantity),
-                relativeSize: list[i].relativeSize 
+                relativeSize: list[i].relativeSize,
+                amount: 0
               }
             }
            
@@ -91,15 +92,18 @@ class MarketDepth extends React.Component {
               for(var i = list.length - 1; i >= 0; i--) {
                 if (i < (list.length - 1)) {
                   list[i].totalvolume = list[i+1].totalvolume + list[i].volume;
+                  list[i].amount = list[i+1].amount + list[i].totalvolume * list[i].value;
                 }
                 else {
                   list[i].totalvolume = list[i].volume;
+                  list[i].amount = list[i].totalvolume * list[i].value; 
                 }
                 var dp = {};
                 dp["value"] = list[i].value;
                 dp[type + "volume"] = list[i].volume;
                 dp[type + "totalvolume"] = list[i].totalvolume;
                 dp[type + "relativeSize"] = list[i].relativeSize;
+                dp[type + "amount"] = list[i].amount;
                 res.unshift(dp);
               }
             }
@@ -107,15 +111,18 @@ class MarketDepth extends React.Component {
               for(var i = 0; i < list.length; i++) {
                 if (i > 0) {
                   list[i].totalvolume = list[i-1].totalvolume + list[i].volume;
+                  list[i].amount = list[i-1].amount + list[i].totalvolume * list[i].value;
                 }
                 else {
                   list[i].totalvolume = list[i].volume;
+                  list[i].amount = list[i].totalvolume * list[i].value; 
                 }
                 var dp = {};
                 dp["value"] = list[i].value;
                 dp[type + "volume"] = list[i].volume;
                 dp[type + "totalvolume"] = list[i].totalvolume;
                 dp[type + "relativeSize"] = list[i].relativeSize;
+                dp[type + "amount"] = list[i].amount;
                 res.push(dp);
               }
             }
@@ -240,23 +247,25 @@ class MarketDepth extends React.Component {
 
   balloon(item, graph) {
     const mainCurr = this.props.market.split('-')[0];
+    const secCurr = this.props.market.split('-')[1];
     const isBTC = mainCurr === 'BTC' || mainCurr === 'ETH';
     let txt = '';
     if (graph.id == "sell") {
       txt = "Price: <strong>" + this.formatNumber(item.dataContext.value, graph.chart, isBTC ? 8 : 4) + "</strong><br />"
-        + "Total volume: <strong>" + this.formatNumber(item.dataContext.selltotalvolume, graph.chart, 4) + "</strong><br />"
-        + "Amount (BTC): <strong>" + this.formatNumber(item.dataContext.sellvolume, graph.chart, 4) + "</strong>";
+        + "Total volume ("+ secCurr +"): <strong>" + this.formatNumber(item.dataContext.selltotalvolume, graph.chart, 4) + "</strong><br />"
+        + "Amount ("+ mainCurr +"): <strong>" + this.formatNumber(item.dataContext.sellamount, graph.chart, 4) + "</strong>";
     }
     else {
       console.log(this)
       txt = "Price: <strong>" + this.formatNumber(item.dataContext.value, graph.chart, isBTC ? 8 : 4) + "</strong><br />"
-        + "Total volume: <strong>" + this.formatNumber(item.dataContext.buytotalvolume, graph.chart, 4) + "</strong><br />"
-        + "Amount (BTC): <strong>" + this.formatNumber(item.dataContext.buyvolume, graph.chart, 4) + "</strong>";
+        + "Total volume ("+ secCurr +"): <strong>" + this.formatNumber(item.dataContext.buytotalvolume, graph.chart, 4) + "</strong><br />"
+        + "Amount ("+ mainCurr +"): <strong>" + this.formatNumber(item.dataContext.buyamount, graph.chart, 4) + "</strong>";
     }
     return txt;
   }   
   makeConfig(data,guides) {
-    const isBTC = true;
+    const mainCurr = this.props.market.split('-')[0];
+    const isBTC = mainCurr === 'BTC' || mainCurr === 'ETH';
     return {
       "type": "serial",
       'startDuration': 0,
