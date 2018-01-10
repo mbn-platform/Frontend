@@ -183,6 +183,7 @@ class ProfitChart extends React.Component {
       'categoryField': 'category',
       'startDuration': 0,
       'fontSize': 10,
+      "hideCredits": true,
       'color': '#6f6f71',
       'fontFamily': 'maven_proregular',
       'trendLines': [],

@@ -29,6 +29,7 @@ class TradersChart extends React.Component {
     this.chart = window.AmCharts.makeChart('trader_pie',
       {
         'type': 'pie',
+        "hideCredits": true,
         'fontFamily': 'maven_probold',
         'letterSpacing': '1px',
         'colors': [
@@ -85,6 +86,7 @@ class TradersChart extends React.Component {
                          options={{
                           'type': 'pie',
                           'fontFamily': 'maven_probold',
+                          "hideCredits": true,
                           'letterSpacing': '1px',
                           'colors': [
                             '#6c6c6e',

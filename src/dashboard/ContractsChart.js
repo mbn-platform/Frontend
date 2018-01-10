@@ -41,6 +41,7 @@ class ContractsChart extends React.Component {
                           'type': 'pie',
                           'fontFamily': 'maven_probold',
                           'letterSpacing': '1px',
+                          "hideCredits": true,
                           'colors': [
                             '#6c6c6e',
                             '#dcb049',
