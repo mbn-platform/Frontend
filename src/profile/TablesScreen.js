@@ -14,7 +14,9 @@ class TablesScreen extends React.Component {
             <Col xs="12" sm="12" md="12" lg="12" xl="12">
               <Container fluid className="h-custom-100">
                 <Row className="table-row">
-                  <ProfitChart trades={this.props.profile.trades || []}/>
+                  <ProfitChart trades={this.props.profile.trades || []}
+                    tradesAsInvestor={this.props.profile.tradesAsInvestor || []}
+                  />
                   <Feedback
                     comments={this.props.profile.feedbacks || []}
                   />

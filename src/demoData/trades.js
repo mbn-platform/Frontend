@@ -1,6 +1,6 @@
 import { getRandom } from './util';
+import  rates from './rates';
 function generateTrade(tx, count, dt) {
-  const price = getRandomPrice();
   let date = '';
   if(count < 32) {
     date = (new Date(dt.getTime() + count * 24 * 60 * 60 * 1000)).toISOString();    
@@ -9,17 +9,20 @@ function generateTrade(tx, count, dt) {
   }
 
   const type = getRandomTradeType();
-  const amount = getRandom(100, 20);
   const amountCurrency = getRandomCurrency();
-  const total = (price * amount).toFixed(5);
+  const fixedPrice = rates.BTC[amountCurrency];
+  const percent = (Math.random() * 2 - 1) / 10 + 1;
+  const price = parseFloat((fixedPrice * percent).toFixed(8));
+  const amount = parseFloat(((Math.random() * 2 + 0.01) / price).toFixed(2));
+  const total = parseFloat((amount * price).toFixed(8));
   return { price, date, type, amount, amountCurrency, total, tx };
 }
 
 function generateTradesBlock(n = 20, tx,count, lastYear) {
   tx = tx || 'https://ropsten.etherscan.io/tx/0xf003ee3bdbd7c278864c2d4317669918e03b3dea7a0f5947051ea30c46e7c6f9';
   const trades = [];
-  const dayPoint = lastYear ? 2 : 0
-  const dateStart = new Date(Date.now() - ((n - count) * 31 * 24* 60 * 60 * 1000))
+  const dayPoint = lastYear ? 2 : 0;
+  const dateStart = new Date(Date.now() - ((n - count) * 31 * 24* 60 * 60 * 1000));
   for(let i = 0; i < 31 + dayPoint; i++) {
     trades.push(generateTrade(tx,i + 1, dateStart));
   }
@@ -36,7 +39,7 @@ function getRandomPrice() {
   return value;
 }
 
-const buyCurrencies = ['USDT', 'ETH', 'XRP', 'BCH', 'LTC'];
+const buyCurrencies = ['ETH', 'XRP', 'BCC', 'LTC'];
 function getRandomCurrency() {
   return buyCurrencies[getRandom(buyCurrencies.length)];
 }

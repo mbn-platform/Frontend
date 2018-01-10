@@ -2,69 +2,58 @@ import React from 'react';
 import SegmentedControl from '../generic/SegmentedControl';
 import { Col } from 'reactstrap';
 import { Desktop, Mobile } from '../generic/MediaQuery';
-import AmCharts from 'amcharts3/amcharts/amcharts';
-import SerialChar from 'amcharts3/amcharts/serial';
-import AmChartsReact from "@amcharts/amcharts3-react";
+import AmChartsReact from '@amcharts/amcharts3-react';
 
 class ProfitChart extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {selectedCurrency: 0, selectedInterval: 2};
+    const trades = [].concat.apply([], props.trades);
+    const tradesAsInvestor = [].concat.apply([], props.tradesAsInvestor);
+    const profit = calculateAllProfit(trades);
+    const profitAsInvestor = calculateAllProfit(tradesAsInvestor);
+    this.state = {selectedCurrency: 0, selectedInterval: 2, trades, profit, tradesAsInvestor, profitAsInvestor};
   }
 
-  formatData(trades, selectedInterval) {
-    if(!trades || trades.length == 0) {
-      return;
-    }
-    trades = trades.reduce((accum, item)  => accum.concat(item), [])
-
-    trades = trades.slice().sort((t1, t2) =>  (new Date(t1.date)) - (new Date(t2.date)));
-    let lastDate = trades[trades.length - 3].date;    
-    let {period, lastDatePeriod, method} = this.getPeriod(selectedInterval, lastDate)
-    console.log(trades.filter(d => (Date.parse(d.date) >= (Date.now() - period)))
-    .map(t => ({category: t.date, 'column-1': t.price})));
-    return trades.filter(d => (Date.parse(d.date) >= (Date.now() - period)) && (new Date(d.date)[method]() == lastDatePeriod))
-    .map(t => ({category: t.date, 'column-1': t.price}));
+  componentWillReceiveProps(nextProps) {
+    const trades = [].concat.apply([], nextProps.trades);
+    const profit = calculateAllProfit(trades);
+    this.setState({trades, profit});
   }
-
-  getDateCurrent(dt,selectedInterval) {
-
-  }
-
-
-  getPeriod(selectedInterval, lastDate) {
-    let period = 24*60*60*1000;
-    let lastDatePeriod = new Date(lastDate).getMinutes()
-    let method = 'getMinutes';
+  formatData(selectedInterval) {
+    let data = this.state.profit;
+    let dataAsInvestor = this.state.profitAsInvestor;
+    let now = Date.now();
     switch(selectedInterval) {
-      case 1:
-        period = 7*period;
-        lastDatePeriod = new Date(lastDate).getHours()
-        method = 'getHours';
+      case 0:
+        data = data.filter(p => now - new Date(p[0]) < 86400000);
         break;
-      case 2: 
-        period *= 31;
-        lastDatePeriod = new Date(lastDate).getHours()
-        method = 'getHours';
+      case 1:
+        data = data.filter(p => now - new Date(p[0]) < 86400000 * 7);
+        data = normalize(data, 8640000);
+        break;
+      case 2:
+        data = data.filter(p => now - new Date(p[0]) < 86400000 * 30);
+        data = normalize(data, 86400000);
         break;
       case 3:
-        period *= 183;
-        lastDatePeriod = new Date(lastDate).getDate()
-        method = 'getDate';
+        data = data.filter(p => now - new Date(p[0]) < 86400000 * 180);
+        data = normalize(data, 86400000 * 12);
         break;
       case 4:
-        period *= 365;
-        lastDatePeriod = new Date(lastDate).getMonth()
-        method = 'getMonth';
-        break
+        data = data.filter(p => now - new Date(p[0]) < 86400000 * 360);
+        data = normalize(data, 86400000 * 24);
+        break;
       case 5:
-        period = Date.now();
-        lastDatePeriod = new Date(lastDate).getMonth()
-        method = 'getMonth';
+        data = normalize(data, 86400000 * 24);
+        break;
+      default:
         break;
     }
-    return {period,lastDatePeriod, method};
+    return data.map(p => ({
+      category: p[0],
+      'column-1': p[1],
+    }));
   }
 
   render() {
@@ -84,7 +73,7 @@ class ProfitChart extends React.Component {
                       segments={['USD', 'BTC']}
                       selectedIndex={this.state.selectedCurrency}
                       onChange={i => this.setState({selectedCurrency: i})}
-                    />                  
+                    />
                   </Desktop>
                   <Mobile>
                     <SegmentedControl
@@ -93,7 +82,7 @@ class ProfitChart extends React.Component {
                       segmentWidth={50}
                       selectedIndex={this.state.selectedCurrency}
                       onChange={i => this.setState({selectedCurrency: i})}
-                    />                       
+                    />
                   </Mobile>
 
                 </Col>
@@ -124,7 +113,6 @@ class ProfitChart extends React.Component {
                     selectedIndex={this.state.selectedInterval}
                     onChange={i => {
                       this.setState({selectedInterval: i});
-                      this.setState({data: this.formatData(this.props.trades, i)});
                     }}
                   />
                 </Desktop>
@@ -135,10 +123,9 @@ class ProfitChart extends React.Component {
                     selectedIndex={this.state.selectedInterval}
                     onChange={i => {
                       this.setState({selectedInterval: i});
-                      this.setState({data: this.formatData(this.props.trades, i)});
                     }}
                   />
-                </Mobile>                
+                </Mobile>
               </div>
               <div className="row order-4 d-flex d-md-none justify-content-center ">
                 <div className="container-fuild alltime-block">
@@ -173,35 +160,32 @@ class ProfitChart extends React.Component {
       'fontSize': 10,
       'color': '#6f6f71',
       'fontFamily': 'maven_proregular',
-      'categoryAxis': {
-        'gridPosition': 'start'
-      },
       'trendLines': [],
       'colors': [
         '#0a87b8',
         '#32ba94',
       ],
-      "categoryAxis": {
-        "equalSpacing": true,
-        "gridPosition": "start",
-        "minPeriod": ['hh','DD', 'DD','MM', 'MM', 'MM'][this.state.selectedInterval],
-        "parseDates": true
-      },        
+      'categoryAxis': {
+        'equalSpacing': true,
+        'gridPosition': 'start',
+        'minPeriod': 'hh',
+        'parseDates': true
+      },
       'graphs': [
         {
           'balloonText': '[[title]] of [[category]]:[[value]]',
           'id': 'AmGraph-1',
-          'title': 'graph 1',
           'lineAlpha': 1,
           'lineThickness': 2,
           'visibleInLegend': false,
           'type': 'smoothedLine',
           'valueField': 'column-1'
-        }
+        },
       ],
       'guides': [],
       'valueAxes': [
         {
+          'title': this.state.selectedCurrency ? 'BTC' : 'USD',
           'id': 'ValueAxis-1',
           'position': 'right',
         }
@@ -214,17 +198,77 @@ class ProfitChart extends React.Component {
       },
       'titles': [
       ],
-      'dataProvider': this.formatData(this.props.trades, selectedInterval)
+      'dataProvider': this.formatData(selectedInterval)
     };
   }
 
   renderChart() {
-    const config = this.makeConfig(this.state.selectedInterval)
-          return ( 
-            <AmChartsReact.React  style={{height: '100%', width: '100%', backgroundColor: 'transparent',position: 'absolute'}}
-           options={config} />
-           )
+    const config = this.makeConfig(this.state.selectedInterval);
+    return (
+      <AmChartsReact.React  style={{height: '100%', width: '100%', backgroundColor: 'transparent',position: 'absolute'}}
+        options={config} />
+    );
   }
 }
+
+function calculateAllProfit(trades) {
+  let profit = [];
+  const buys = {};
+
+  for(let trade of trades) {
+    if(trade.type === 'Buy') {
+      let info = buys[trade.amountCurrency];
+      if(!info) {
+        info = {amount: trade.amount, price: trade.price};
+        buys[trade.amountCurrency] = info;
+      } else {
+        let price = (info.amount * info.price + trade.amount * trade.price) /
+          (info.amount + trade.amount);
+        price = parseFloat(price.toFixed(8));
+        info.amount += trade.amount;
+        info.price = price;
+      }
+    } else {
+      const info = buys[trade.amountCurrency];
+      if(!info) {
+        continue;
+      } else if(info.amount < trade.amount) {
+        continue;
+      };
+      const plus = parseFloat(((trade.price - info.price) * trade.amount).toFixed(8));
+      profit.push([new Date(trade.date).getTime(), plus]);
+
+      info.amount -= trade.amount;
+    }
+  }
+  return profit;
+};
+
+function normalize(profit, interval) {
+  const normalized = [];
+  let cur;
+  let curMax;
+  let curMin;
+  for(let i = profit.length - 1; i >= 0; i--) {
+    let p = profit[i];
+    if(!curMax) {
+      curMax = p[0];
+      curMin = p[0];
+      cur = p[1];
+      continue;
+    }
+    if(curMax - p[0] < interval) {
+      curMin = p[0];
+      cur += p[1];
+    } else {
+      normalized.unshift([(curMax + curMin) / 2, cur]);
+      curMax = p[0];
+      cur = p[1];
+    }
+  }
+  normalized.unshift([(curMax + curMin) / 2, cur]);
+  return normalized;
+}
+
 
 export default ProfitChart;
