@@ -23,7 +23,7 @@ class MarketDepth extends React.Component {
       {
         precision: precision ? precision : graphChart.precision, 
         decimalSeparator: graphChart.decimalSeparator,
-        thousandsSeparator: graphChart.thousandsSeparator
+        thousandsSeparator: ' '
       }
     );
   }  
@@ -51,7 +51,7 @@ class MarketDepth extends React.Component {
             const maxBuy = buy.reduce((accum, value) => Math.max(accum, value.Quantity), 0);
             const maxSell = sell.reduce((accum, value) => Math.max(accum,value.Quantity), 0);
             const minBuy = buy.reduce((accum, value) => Math.min(accum, value.Quantity), maxBuy);
-            const minSell = sell.reduce((accum, value) => Math.min(accum, value.Quantity), maxSell);            
+            const minSell = sell.reduce((accum, value) => Math.min(accum, value.Quantity), maxSell);   
             buy.forEach(order => order.relativeSize = relativeSize(minBuy, maxBuy, order.Quantity));
             sell.forEach(order => order.relativeSize = relativeSize(minSell, maxSell, order.Quantity));
             var res = this.getData(buy, sell);
@@ -195,18 +195,17 @@ class MarketDepth extends React.Component {
            arr.sort((a1,a2) => a2[type + "relativeSize"] - a1[type + "relativeSize"])
            const countGuides = arr.length > 4 ? 5 : arr.length;
            for(let i = 0; i < countGuides; i++) {
-                if(getLabelOffset(arr[i+1]) > maxOffset) {
-                  maxOffset = getLabelOffset(arr[i+1]);
-                }
+
+                maxOffset = getLabelOffset(arr[i]);
                 guides.push( {
                   'above': true,
-                  "category": arr[i+1].value,
+                  "category": arr[i].value,
                   "lineAlpha": 1,
                   "fillAlpha": 1,
                   'fontSize': 12,
                   "lineColor": color,
-                  'labelOffset': getLabelOffset(arr[i+1]),
-                  "label": formatFloat(parseFloat(arr[i+1].value), isBTC) != 0 ? formatFloat(parseFloat(arr[i+1].value), isBTC) : "",
+                  'labelOffset': getLabelOffset(arr[i]),
+                  "label": formatFloat(parseFloat(arr[i].value), isBTC) != 0 ? formatFloat(parseFloat(arr[i].value), isBTC) : "",
                   "position": "bottom",
                   "inside": true,
                   "labelRotation": -90,
