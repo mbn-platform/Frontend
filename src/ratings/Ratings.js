@@ -6,6 +6,7 @@ import classNames from 'classnames';
 import { generateRatings } from '../demoData/ratings';
 import $ from 'jquery';
 import {sortData, onColumnSort, classNameForColumnHeader}  from '../generic/terminalSortFunctions';
+import { Link } from 'react-router-dom';
 
 const TAB_TRADERS = 0;
 const TAB_INVESTORS = 1;
@@ -311,7 +312,7 @@ const TraderRatingRow = (props) => (
       <span className="star"></span>
     </td>
     <td>
-      <a style={{color: 'white', textTransform: 'uppercase'}} href={'/' + props.name}><div className="nickname">@{props.name}</div></a>
+      <Link style={{color: 'white', textTransform: 'uppercase'}} to={'/' + props.name}><div className="nickname">@{props.name}</div></Link>
     </td>
     <td>
       <span className="rank">{props.rank}</span>
@@ -354,7 +355,7 @@ const InvestorRatingRow = (props) => (
       <span className="star"></span>
     </td>
     <td>
-      <a style={{color: 'white', textTransform: 'uppercase'}} href={'/' + props.name}><div className="nickname">@{props.name}</div></a>
+      <Link style={{color: 'white', textTransform: 'uppercase'}} to={'/' + props.name}><div className="nickname">@{props.name}</div></Link>
     </td>
     <td>
       <span className="rank">{props.rank}</span>
