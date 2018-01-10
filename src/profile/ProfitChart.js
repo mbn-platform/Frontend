@@ -12,13 +12,15 @@ class ProfitChart extends React.Component {
     const tradesAsInvestor = [].concat.apply([], props.tradesAsInvestor);
     const profit = calculateAllProfit(trades);
     const profitAsInvestor = calculateAllProfit(tradesAsInvestor);
-    this.state = {selectedCurrency: 0, selectedInterval: 2, trades, profit, tradesAsInvestor, profitAsInvestor};
+    this.state = {selectedCurrency: 0, selectedInterval: 2, profit, profitAsInvestor};
   }
 
   componentWillReceiveProps(nextProps) {
     const trades = [].concat.apply([], nextProps.trades);
     const profit = calculateAllProfit(trades);
-    this.setState({trades, profit});
+    const tradesAsInvestor = [].concat.apply([], nextProps.tradesAsInvestor);
+    const profitAsInvestor = calculateAllProfit(tradesAsInvestor);
+    this.setState({trades, profit, profitAsInvestor});
   }
   formatData(selectedInterval) {
     let data = this.state.profit;
@@ -28,33 +30,52 @@ class ProfitChart extends React.Component {
     switch(selectedInterval) {
       case 0:
         data = data.filter(p => now - new Date(p[0]) < 86400000);
+        dataAsInvestor = dataAsInvestor.filter(p => now - new Date(p[0]) < 86400000);
+        if(isUsd) {
+          data = data.map(p => [p[0], p[2]]);
+          data = dataAsInvestor.map(p => [p[0], p[2]]);
+        }
         break;
       case 1:
         data = data.filter(p => now - new Date(p[0]) < 86400000 * 7);
         data = normalize(data, 8640000, isUsd);
+        dataAsInvestor = dataAsInvestor.filter(p => now - new Date(p[0]) < 86400000 * 7);
+        dataAsInvestor = normalize(dataAsInvestor, 8640000, isUsd);
         break;
       case 2:
         data = data.filter(p => now - new Date(p[0]) < 86400000 * 30);
         data = normalize(data, 86400000, isUsd);
+        dataAsInvestor = dataAsInvestor.filter(p => now - new Date(p[0]) < 86400000 * 30);
+        dataAsInvestor = normalize(dataAsInvestor, 86400000, isUsd);
         break;
       case 3:
         data = data.filter(p => now - new Date(p[0]) < 86400000 * 180);
         data = normalize(data, 86400000 * 12, isUsd);
+        dataAsInvestor = dataAsInvestor.filter(p => now - new Date(p[0]) < 86400000 * 180);
+        dataAsInvestor = normalize(dataAsInvestor, 86400000 * 12, isUsd);
         break;
       case 4:
         data = data.filter(p => now - new Date(p[0]) < 86400000 * 360);
         data = normalize(data, 86400000 * 24, isUsd);
+        dataAsInvestor = dataAsInvestor.filter(p => now - new Date(p[0]) < 86400000 * 360);
+        dataAsInvestor = normalize(dataAsInvestor, 86400000 * 24, isUsd);
         break;
       case 5:
         data = normalize(data, 86400000 * 24, isUsd);
+        dataAsInvestor = normalize(dataAsInvestor, 86400000 * 24, isUsd);
         break;
       default:
         break;
     }
-    return data.map(p => ({
+    const shared = dataAsInvestor.map(p => ({
+      category: p[0],
+      investor_profit: p[1],
+    })).concat(data.map(p => ({
       category: p[0],
       'column-1': p[1],
-    }));
+    })));
+    shared.sort((p1, p2) => p1.category - p2.category);
+    return shared;
   }
 
   render() {
@@ -181,6 +202,15 @@ class ProfitChart extends React.Component {
           'visibleInLegend': false,
           'type': 'smoothedLine',
           'valueField': 'column-1'
+        },
+        {
+          'balloonText': '[[title]] of [[category]]:[[value]]',
+          'id': 'investor_profit',
+          'lineAlpha': 1,
+          'lineThickness': 2,
+          'visibleInLegend': false,
+          'type': 'smoothedLine',
+          'valueField': 'investor_profit'
         },
       ],
       'guides': [],
