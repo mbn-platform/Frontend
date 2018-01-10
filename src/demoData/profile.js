@@ -21,11 +21,12 @@ export const generateProfile = (profileName) => {
   const roiInBTC = getRandom(98, 2);
   const roiInUSD = getRandom(96, 4);
   const trades = generateTrades();
+  const tradesAsInvestor = generateTrades;
   return {
     _id, addr, feedbacks, availableForOffers,
     investmentAmount, fee, minAmount, minAmountCurrency,
     duration, maxLoss, name, currencies, roi, roiInBTC, roiInUSD,
-    topTraders, topInvesters, trades
+    topTraders, topInvesters, trades, tradesAsInvestor,
   };
 };
 
