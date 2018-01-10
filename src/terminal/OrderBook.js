@@ -9,7 +9,7 @@ class OrderBook extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {buy: [], sell: [], last: null, sort: {}, prelast: null};
+    this.state = {buy: [], sell: [], last: null, sort: {}, prelast: null, scroll: false};
     this.sortData = sortData.bind(this);
     this.onColumnSort = onColumnSort.bind(this);
     this.sortFunctions = {
@@ -60,7 +60,8 @@ class OrderBook extends React.Component {
         buy.forEach(order => order.relativeSize = relativeSize(minBuy, maxBuy, order.Quantity));
         sell.forEach(order => order.relativeSize = relativeSize(minSell, maxSell, order.Quantity));
         this.setState({buy, sell});
-        if(this.tableSell.scrollTop == 0) {
+        if(this.tableSell.scrollTop == 0 && !this.state.scroll) {
+          this.setState({scroll: true})
           this.tableSell.scrollTop = this.tableSell.scrollHeight - 26.6;
         }
 
@@ -99,7 +100,7 @@ class OrderBook extends React.Component {
           </Desktop>
         </div>
         <div className="orderbook-table-wrapper js-table-wrapper" ref={elem => this.tableSell = elem}>
-          <table className="table red">
+          <table className="table red" onScroll={() => this.scrollTable()}>
             <thead>
               <tr>
                 <th onClick={() => this.onColumnSort('price')}>
@@ -146,6 +147,9 @@ class OrderBook extends React.Component {
       </div>
 
     );
+  }
+  scrollTable() {
+    console.log('scroll table')
   }
   renderLastPrice(price) {
     let isUp;
