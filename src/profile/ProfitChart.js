@@ -24,28 +24,29 @@ class ProfitChart extends React.Component {
     let data = this.state.profit;
     let dataAsInvestor = this.state.profitAsInvestor;
     let now = Date.now();
+    const isUsd = this.state.selectedCurrency === 0;
     switch(selectedInterval) {
       case 0:
         data = data.filter(p => now - new Date(p[0]) < 86400000);
         break;
       case 1:
         data = data.filter(p => now - new Date(p[0]) < 86400000 * 7);
-        data = normalize(data, 8640000);
+        data = normalize(data, 8640000, isUsd);
         break;
       case 2:
         data = data.filter(p => now - new Date(p[0]) < 86400000 * 30);
-        data = normalize(data, 86400000);
+        data = normalize(data, 86400000, isUsd);
         break;
       case 3:
         data = data.filter(p => now - new Date(p[0]) < 86400000 * 180);
-        data = normalize(data, 86400000 * 12);
+        data = normalize(data, 86400000 * 12, isUsd);
         break;
       case 4:
         data = data.filter(p => now - new Date(p[0]) < 86400000 * 360);
-        data = normalize(data, 86400000 * 24);
+        data = normalize(data, 86400000 * 24, isUsd);
         break;
       case 5:
-        data = normalize(data, 86400000 * 24);
+        data = normalize(data, 86400000 * 24, isUsd);
         break;
       default:
         break;
@@ -236,7 +237,8 @@ function calculateAllProfit(trades) {
         continue;
       };
       const plus = parseFloat(((trade.price - info.price) * trade.amount).toFixed(8));
-      profit.push([new Date(trade.date).getTime(), plus]);
+      const plusInUsd = parseFloat((trade.usdtToBtcRate * plus).toFixed(2));
+      profit.push([new Date(trade.date).getTime(), plus, plusInUsd]);
 
       info.amount -= trade.amount;
     }
@@ -244,7 +246,9 @@ function calculateAllProfit(trades) {
   return profit;
 };
 
-function normalize(profit, interval) {
+function normalize(profit, interval, isUsd) {
+  console.log(profit);
+  const plusIndex = isUsd ? 2 : 1;
   const normalized = [];
   let cur;
   let curMax;
@@ -254,16 +258,16 @@ function normalize(profit, interval) {
     if(!curMax) {
       curMax = p[0];
       curMin = p[0];
-      cur = p[1];
+      cur = p[plusIndex];
       continue;
     }
     if(curMax - p[0] < interval) {
       curMin = p[0];
-      cur += p[1];
+      cur += p[plusIndex];
     } else {
       normalized.unshift([(curMax + curMin) / 2, cur]);
       curMax = p[0];
-      cur = p[1];
+      cur = p[plusIndex];
     }
   }
   normalized.unshift([(curMax + curMin) / 2, cur]);

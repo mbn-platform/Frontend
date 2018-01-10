@@ -11,11 +11,12 @@ function generateTrade(tx, count, dt) {
   const type = getRandomTradeType();
   const amountCurrency = getRandomCurrency();
   const fixedPrice = rates.BTC[amountCurrency];
-  const percent = (Math.random() * 2 - 1) / 10 + 1;
+  const percent = ((Math.random() * 2 - 1) / 10 + 1);
   const price = parseFloat((fixedPrice * percent).toFixed(8));
   const amount = parseFloat(((Math.random() * 2 + 0.01) / price).toFixed(2));
   const total = parseFloat((amount * price).toFixed(8));
-  return { price, date, type, amount, amountCurrency, total, tx };
+  const usdtToBtcRate = rates.USDT['BTC'] * ((Math.random() * 2 - 1) / 10 + 1);
+  return { price, date, type, amount, amountCurrency, total, tx, usdtToBtcRate: parseFloat(usdtToBtcRate.toFixed(2)) };
 }
 
 function generateTradesBlock(n = 20, tx,count, lastYear) {
