@@ -10,7 +10,7 @@ class MarketSelect extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {selected: this.props.selected, markets: [], isOpen: false, marketLastValues: {}};
+    this.state = {selected: this.props.selected, markets: [], isOpen: false};
     this.onItemSelect = this.onItemSelect.bind(this);
     this.onOutsideClick = this.onOutsideClick.bind(this);   
     this.updateMarketSummaries = this.updateMarketSummaries.bind(this);
@@ -28,31 +28,24 @@ class MarketSelect extends React.Component {
   updateMarketSummaries() {
     getMarketSummaries().then(json => {
       let markets = json.result;
-      const lastValues = this.state.marketLastValues;
       markets = markets.map(market => {
         const currencies = market.MarketName.split('-');
-        const last = this.state.marketLastValues[market.MarketName];
-        lastValues[market.MarketName] = market.Last;
         return {
           MarketCurrency: currencies[1],
           BaseCurrency: currencies[0],
           Price: market.Last,
           MarketName: market.MarketName,
           Volume: market.Volume,
-          last,
+          PrevDay: market.PrevDay,
         };
       });
-      this.setState({markets, marketLastValues: lastValues});
+      this.setState({markets});
     });
   }
 
   componentDidMount() {
     this.interval = setInterval(this.updateMarketSummaries, 5000);
     this.updateMarketSummaries();
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.interval);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -66,6 +59,7 @@ class MarketSelect extends React.Component {
 
   componentWillUnmount() {
     document.removeEventListener('click', this.onOutsideClick);
+    clearInterval(this.interval);
   }
 
   render() {
@@ -233,22 +227,15 @@ class MarketTable extends React.Component {
 }
 
 const MarketRow = ({market, onClick, isBTC}) => {
-  let change;
-  let changeString;
-  console.log(market.last);
-
-  if(Number(market.last)) {
-    change = (market.Price / market.last * 100 - 100);
-    changeString = change.toFixed(2) + '%';
-  }
+  const change = (market.Price / market.PrevDay - 1) * 100;
   return (
     <tr onClick={onClick} data-currency={market.MarketCurrency} className={change >= 0 ? 'up' : 'down'}>
       <td>{market.MarketCurrency}</td>
       <td>{formatFloat(market.Price, isBTC)}</td>
       <td>{Math.round(market.Volume)}</td>
-      <td>{changeString}</td>
+      <td>{change.toFixed(2) + '%'}</td>
     </tr>
-  )
+  );
 };
 
 export default MarketSelect;
