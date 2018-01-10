@@ -75,9 +75,7 @@ class OrderBook extends React.Component {
   }
 
   render() {
-    console.log(this.props.market);
     const isBTC = this.props.market.split('-')[0] === 'BTC';
-    console.log(isBTC);
     let sortedDataSell = [];
     let sortedDataBuy = [];
     if(this.state.sell.length) {
@@ -100,7 +98,7 @@ class OrderBook extends React.Component {
           </Desktop>
         </div>
         <div className="orderbook-table-wrapper js-table-wrapper" ref={elem => this.tableSell = elem}>
-          <table className="table red" onScroll={() => this.scrollTable()}>
+          <table className="table red">
             <thead>
               <tr>
                 <th onClick={() => this.onColumnSort('price')}>
@@ -148,9 +146,7 @@ class OrderBook extends React.Component {
 
     );
   }
-  scrollTable() {
-    console.log('scroll table')
-  }
+
   renderLastPrice(price) {
     let isUp;
     if(this.state.prelast && this.state.prelast > this.state.last) {
