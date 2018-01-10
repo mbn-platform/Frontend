@@ -39,3 +39,12 @@ export function formatFloat(number, isBTC) {
     return number.toFixed(5);
   }
 }
+
+export function formatBTCValue(value) {
+  const number = Number(value);
+  if(isNaN(number)) {
+    return '';
+  } else {
+    return number.toFixed(8);
+  }
+}

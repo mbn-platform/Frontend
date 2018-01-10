@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { getTicker } from '../api/bittrex/bittrex';
-import { formatFloat } from '../generic/util';
+import { formatFloat, formatBTCValue } from '../generic/util';
 import { Desktop } from '../generic/MediaQuery';
 
 const TAB_BUY = 0;
@@ -111,7 +111,12 @@ class PlaceOrder extends React.Component {
       case 'ordersize': {
         const value = parseFloat(e.target.value);
         if(value >= 0) {
-          const amount = this.state.price * value;
+          let amount;
+          if(this.state.amountCurrency !== 'USDT') {
+            amount = formatBTCValue(this.state.price * value);
+          } else {
+            amount = (this.state.price * value).toFixed(2);
+          }
           this.setState({amount, orderSize: value});
         }
         break;
@@ -119,7 +124,7 @@ class PlaceOrder extends React.Component {
       case 'amount': {
         const value = parseFloat(e.target.value);
         if(value >= 0) {
-          const orderSize = value / this.state.price;
+          const orderSize = formatBTCValue(value / this.state.price);
           this.setState({orderSize, amount: value});
         }
         break;
