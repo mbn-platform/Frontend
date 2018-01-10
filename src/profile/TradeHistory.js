@@ -106,7 +106,6 @@ class TradeHistory extends React.Component {
             <ReactTable
               getTrProps={(state, rowInfo, column, instance) => {
                 if(rowInfo.original.first) {
-                  console.log('first row');
                   return {
                     className: 'first-row'
                   };
