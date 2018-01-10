@@ -185,7 +185,17 @@
 					th {
 						vertical-align: bottom;
 						white-space: nowrap;
-						opacity: .5;
+						span:not(.icon-dir) {
+							opacity: .5;	
+						}
+						
+						.icon-dir {
+							opacity: .7;
+							color: #fff;
+							&.sort {
+								opacity: 1;
+							}
+						}						
 						span{
 							white-space: normal;
 						}
@@ -207,7 +217,11 @@
 					font-size: 12px;
 					font-family: "SF-UI"!important;
 					font-weight: 500;
+
 					&:hover{
+						.icon-dir {
+							opacity: 1;
+						}
 						opacity: 1;
 					}
 					&.fav.active{

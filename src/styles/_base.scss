@@ -348,11 +348,20 @@ input[type=number]::-webkit-outer-spin-button {
 				border: none;
 				text-transform: none;
 				font-size: 12px;
-					white-space: nowrap;
+				white-space: nowrap;
 				font-family: "SF-UI"!important;
 				color: #5B5F67;
-				&:hover{
+				.icon-dir {
 					opacity: .7;
+					color: #fff;
+					&.sort {
+						opacity: 1;
+					}
+				}
+				&:hover{
+					.icon-dir {
+						opacity: 1;
+					}
 					color: #fff;
 				}
 			}

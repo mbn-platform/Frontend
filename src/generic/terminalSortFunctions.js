@@ -37,11 +37,18 @@ export function defaultSortFunction(column) {
 
 export function classNameForColumnHeader(state, column) {
   const names = ['icon-dir'];
+
   if(state.sort.column === column &&
      state.sort.direction === 'up') {
-    names.push('icon-up-dir');
+
+    names.push('icon-up-dir', 'sort');
   } else {
-    names.push('icon-down-dir');
+    if(state.sort.column === column) {
+      names.push('icon-down-dir', 'sort');  
+    } else {
+      names.push('icon-down-dir');  
+    }
+    
   }
   return classNames(names);
 }
