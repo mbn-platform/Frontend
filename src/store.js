@@ -27,6 +27,9 @@ function getReduxState() {
   if(Date.now() - lastUpdated < 30 * 60 * 1000 && state) {
     try {
       const json = JSON.parse(state);
+      if(!json.terminal.selectedApiKey) {
+        json.terminal.selectedApiKey = json.apiKeys.ownKeys[0];
+      }
       saveState(json);
       return json;
     } catch(e) {
