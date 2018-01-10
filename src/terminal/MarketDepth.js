@@ -270,6 +270,7 @@ class MarketDepth extends React.Component {
       "type": "serial",
       'startDuration': 0,
       'fontSize': 10,
+      "hideCredits": true,
       'color': '#6f6f71',
       "addClassNames": true,
       'fontFamily': 'maven_proregular',      
