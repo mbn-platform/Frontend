@@ -92,11 +92,11 @@ class MarketDepth extends React.Component {
               for(var i = list.length - 1; i >= 0; i--) {
                 if (i < (list.length - 1)) {
                   list[i].totalvolume = list[i+1].totalvolume + list[i].volume;
-                  list[i].amount = list[i+1].amount + list[i].totalvolume * list[i].value;
+                  list[i].amount = list[i+1].amount + list[i].volume * list[i].value;
                 }
                 else {
                   list[i].totalvolume = list[i].volume;
-                  list[i].amount = list[i].totalvolume * list[i].value; 
+                  list[i].amount = list[i].volume * list[i].value; 
                 }
                 var dp = {};
                 dp["value"] = list[i].value;
@@ -111,11 +111,11 @@ class MarketDepth extends React.Component {
               for(var i = 0; i < list.length; i++) {
                 if (i > 0) {
                   list[i].totalvolume = list[i-1].totalvolume + list[i].volume;
-                  list[i].amount = list[i-1].amount + list[i].totalvolume * list[i].value;
+                  list[i].amount = list[i-1].amount + list[i].volume * list[i].value;
                 }
                 else {
                   list[i].totalvolume = list[i].volume;
-                  list[i].amount = list[i].totalvolume * list[i].value; 
+                  list[i].amount = list[i].volume * list[i].value; 
                 }
                 var dp = {};
                 dp["value"] = list[i].value;
