@@ -776,10 +776,47 @@ body {
 	  position: relative;
 	}
 
-	//-------------------------------- 
-
-
+	
 }
+//-------------------------------- tooltip contracts
+.status_desc_item
+{
+  text-align: left;
+  margin-bottom: 10px;
+}
+.status_desc_item_cyrcle.green
+{
+  background: #60a754;
+}
+.status_desc_item_cyrcle.yellow
+{
+  background: #dcb14a;
+}
+.status_desc_item_cyrcle.red
+{
+  background: #c94546;
+}
+.status_desc_item_text
+{
+  color: #7c7c7d;
+  text-transform: uppercase;
+  text-align: left;
+  display: inline-block;
+  font-size: 1em;
+  line-height: 1;
+  vertical-align: middle;
+}
+.status_desc_item_cyrcle
+{
+  width: 6px;
+  height: 6px;
+  border-radius: 6px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 12px;
+}
+
+//------------
 
 *, :focus, :visited {
     outline: none!important;
