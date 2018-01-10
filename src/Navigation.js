@@ -47,7 +47,9 @@ class Navigation extends React.Component {
       <Col xs="12" md="auto" className="d-block menu-panel">
         <Navbar expand="md"  >
           <NavbarBrand className="d-inline-block d-md-none" tag="div">
-            <img src={LogoMobile} alt=""/>
+            <a href="https://mercatus.im">
+              <img src={LogoMobile} alt=""/>
+            </a>
           </NavbarBrand>
           <NavbarToggler onClick={this.toggle} className={this.state.isOpen ? '' : 'collapsed'} />
           <Desktop>
@@ -100,7 +102,7 @@ class Navigation extends React.Component {
 
   getLogo() {
     return (
-      <NavLink exact to="/" key="root" className="nav-link d-none d-md-flex no-hover-link">
+      <a href="https://mercatus.im" className="nav-link d-none d-md-flex no-hover-link">
         <Container fluid className="h-100">
           <Row className="h-100">
             <Col xs="12" className="align-self-center">
@@ -112,7 +114,7 @@ class Navigation extends React.Component {
             </Col>
           </Row>
         </Container>
-      </NavLink>
+      </a>
     );
   }
 
