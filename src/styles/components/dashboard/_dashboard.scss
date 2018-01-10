@@ -1136,6 +1136,20 @@
 
 
     //---------------------------------------- offers
+
+    .green-m
+    {
+      background: #60a754;
+    }
+    .yellow-m
+    {
+      background: #dcb14a;
+    }
+    .red-m
+    {
+      background: #c94546;
+    }
+        
     .requests_table .table_title
     {
       background: url('../img/RequestsIcon.png') no-repeat left center;
@@ -1175,6 +1189,7 @@
     .request_progress_txt
     {
       line-height: 23px;
+      text-transform: none;
     }
     .request_progress_wr
     {
