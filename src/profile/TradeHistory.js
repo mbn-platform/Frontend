@@ -54,7 +54,7 @@ class TradeHistory extends React.Component {
         Cell: TradeTypeCell,
         accessor: 'type',
         minWidth: 50,
-        className: 'table_col_value',
+        className: 'table_col_value text-capitalize',
         sortable: false,
       },
       {
