@@ -232,7 +232,7 @@ const MarketRow = ({market, onClick, isBTC}) => {
     <tr onClick={onClick} data-currency={market.MarketCurrency} className={change >= 0 ? 'up' : 'down'}>
       <td>{market.MarketCurrency}</td>
       <td>{formatFloat(market.Price, isBTC)}</td>
-      <td>{Math.round(market.Volume)}</td>
+      <td>{Math.round(market.Volume * market.Price)}</td>
       <td>{change.toFixed(2) + '%'}</td>
     </tr>
   );
