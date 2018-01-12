@@ -12,9 +12,11 @@ class MarketDepth extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {selectedCurrency: 0, selectedInterval: 0};
+    const isDesktop = window.innerWidth > 768;
+    this.state = {selectedCurrency: 0, selectedInterval: 0, isDesktop};
     this.formatNumber = this.formatNumber.bind(this);
     this.balloon = this.balloon.bind(this);
+    this.onResize = this.onResize.bind(this);
   }
 
   formatNumber(val, graphChart, precision) {
@@ -31,13 +33,20 @@ class MarketDepth extends React.Component {
   componentDidMount() {
     this.interval = setInterval(this.updateOrderBook.bind(this), 5000);
     this.updateOrderBook();
+    window.addEventListener("resize", this.onResize);
   }
 
   componentWillUnmount() {
     clearInterval(this.interval);
+    window.removeEventListener("resize", this.onResize);
   }
 
-
+  onResize() {
+    const isDesktop = window.innerWidth > 768;
+    if(this.state.isDesktop !== isDesktop) {
+      this.setState({isDesktop});
+    }
+  }
 
   updateOrderBook() {
     this.setState({currency: this.props.market.split('-')})
@@ -135,7 +144,7 @@ class MarketDepth extends React.Component {
           return res;
   }
 
-  addGuides(chart) {
+  addGuides(chart, dashLength) {
           let isBTC = true;
           let type = ['sell', 'buy'],
           asks = [],
@@ -210,7 +219,7 @@ class MarketDepth extends React.Component {
                   "inside": true,
                   "labelRotation": -90,
                   "expand": true,
-                  'dashLength': window.innerWidth > 576 ? 3 : 0
+                  'dashLength': dashLength ? 3 : 0
                 } );              
               }            
            }
@@ -317,7 +326,7 @@ class MarketDepth extends React.Component {
    "listeners": [{
       "event": "dataUpdated",
       "method": (e) => {
-        this.addGuides(e.chart)
+        this.addGuides(e.chart, this.state.isDesktop)
       }
       }],        
       'dataProvider': data
