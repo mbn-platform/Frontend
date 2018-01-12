@@ -75,7 +75,8 @@ class OrderBook extends React.Component {
   }
 
   render() {
-    const isBTC = this.props.market.split('-')[0] === 'BTC';
+    const currency = this.props.market.split('-')[0] ? this.props.market.split('-')[0] : '    ';
+    const isBTC = currency === 'BTC';
     let sortedDataSell = [];
     let sortedDataBuy = [];
     if(this.state.sell.length) {
@@ -108,7 +109,7 @@ class OrderBook extends React.Component {
                   <div>Size <span className={classNameForColumnHeader(this.state, 'Quantity')}></span></div>
                 </th>
                 <th onClick={() => this.onColumnSort('relativeSize')}>
-                  <div>Total <span className={classNameForColumnHeader(this.state, 'relativeSize')}></span></div>
+                  <div>Total ({currency}) <span className={classNameForColumnHeader(this.state, 'relativeSize')}></span></div>
                 </th>
                 <th></th>
               </tr>
