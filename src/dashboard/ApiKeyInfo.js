@@ -76,7 +76,11 @@ class ApiKeyInfo extends React.Component {
       alert('This api key is in use, you cannot change it\'s settings');
       return;
     }
-    const currency = e.target.dataset.currency;
+    const currency = e.target.dataset.currency;    
+    if(currency === 'USDT' || currency === 'BTC' || currency === 'ETH') {
+      alert('BTC/ETH/USDT should be always available for trading');
+      return;
+    }
     if(!this.canChangeCurrency(currency)) {
       return;
     } else {
