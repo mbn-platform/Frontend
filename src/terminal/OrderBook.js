@@ -75,8 +75,8 @@ class OrderBook extends React.Component {
   }
 
   render() {
-    const currency = this.props.market.split('-')[0] ? this.props.market.split('-')[0] : '    ';
-    const isBTC = currency === 'BTC';
+    const currency = this.props.market.split('-')[0];
+    const isBTC = currency === 'BTC' || currency === 'ETH';
     let sortedDataSell = [];
     let sortedDataBuy = [];
     if(this.state.sell.length) {
