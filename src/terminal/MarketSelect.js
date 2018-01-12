@@ -200,7 +200,7 @@ class MarketTable extends React.Component {
             <thead>
               <tr>
                 <th onClick={() => this.onColumnSort('MarketCurrency')}>Currency <span className={classNameForColumnHeader(this.state, 'MarketCurrency')}></span></th>
-                <th onClick={() => this.onColumnSort('Price')}>Price <span className={classNameForColumnHeader(this.state, 'Price')}>></span></th>
+                <th onClick={() => this.onColumnSort('Price')}>Price <span className={classNameForColumnHeader(this.state, 'Price')}></span></th>
                 <th onClick={() => this.onColumnSort('Volume')}>Volume <span className={classNameForColumnHeader(this.state, 'Volume')}></span></th>
                 <th onClick={() => this.onColumnSort('Change')}>Change <span className={classNameForColumnHeader(this.state, 'Change')}></span></th>
               </tr>
