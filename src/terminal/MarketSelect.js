@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { getMarketSummaries } from '../api/bittrex/bittrex';
 import $ from 'jquery';
 import { formatFloat } from '../generic/util';
-import {sortData, onColumnSort}  from '../generic/terminalSortFunctions';
+import {sortData, onColumnSort, classNameForColumnHeader}  from '../generic/terminalSortFunctions';
 
 class MarketSelect extends React.Component {
 
@@ -199,10 +199,10 @@ class MarketTable extends React.Component {
           <table className="table">
             <thead>
               <tr>
-                <th onClick={() => this.onColumnSort('MarketCurrency')}>Currency <span className="icon icon-dir icon-down-dir"></span></th>
-                <th onClick={() => this.onColumnSort('Price')}>Price <span className="icon icon-dir icon-down-dir"></span></th>
-                <th onClick={() => this.onColumnSort('Volume')}>Volume <span className="icon icon-dir icon-down-dir"></span></th>
-                <th onClick={() => this.onColumnSort('Change')}>Change <span className="icon icon-dir icon-down-dir"></span></th>
+                <th onClick={() => this.onColumnSort('MarketCurrency')}>Currency <span className={classNameForColumnHeader(this.state, 'MarketCurrency')}></span></th>
+                <th onClick={() => this.onColumnSort('Price')}>Price <span className={classNameForColumnHeader(this.state, 'Price')}>></span></th>
+                <th onClick={() => this.onColumnSort('Volume')}>Volume <span className={classNameForColumnHeader(this.state, 'Volume')}></span></th>
+                <th onClick={() => this.onColumnSort('Change')}>Change <span className={classNameForColumnHeader(this.state, 'Change')}></span></th>
               </tr>
             </thead>
             <tbody>
