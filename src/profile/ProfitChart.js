@@ -26,55 +26,58 @@ class ProfitChart extends React.Component {
     let data = this.state.profit;
     let dataAsInvestor = this.state.profitAsInvestor;
     let now = Date.now();
-    const isUsd = this.state.selectedCurrency === 0;
+    let endDate = now - now % 3600000;
+    let numberOfPoints;
+    let startDate;
     switch(selectedInterval) {
       case 0:
-        data = data.filter(p => now - new Date(p[0]) < 86400000);
-        dataAsInvestor = dataAsInvestor.filter(p => now - new Date(p[0]) < 86400000);
-        if(isUsd) {
-          data = data.map(p => [p[0], p[2]]);
-          data = dataAsInvestor.map(p => [p[0], p[2]]);
-        }
+        startDate = endDate - 86400000;
+        numberOfPoints = 25;
         break;
       case 1:
-        data = data.filter(p => now - new Date(p[0]) < 86400000 * 7);
-        data = normalize(data, 8640000, isUsd);
-        dataAsInvestor = dataAsInvestor.filter(p => now - new Date(p[0]) < 86400000 * 7);
-        dataAsInvestor = normalize(dataAsInvestor, 8640000, isUsd);
+        startDate = endDate - 86400000 * 7;
+        numberOfPoints = 29;
         break;
       case 2:
-        data = data.filter(p => now - new Date(p[0]) < 86400000 * 30);
-        data = normalize(data, 86400000, isUsd);
-        dataAsInvestor = dataAsInvestor.filter(p => now - new Date(p[0]) < 86400000 * 30);
-        dataAsInvestor = normalize(dataAsInvestor, 86400000, isUsd);
+        startDate = endDate - 86400000 * 30;
+        numberOfPoints = 31;
         break;
       case 3:
-        data = data.filter(p => now - new Date(p[0]) < 86400000 * 180);
-        data = normalize(data, 86400000 * 12, isUsd);
-        dataAsInvestor = dataAsInvestor.filter(p => now - new Date(p[0]) < 86400000 * 180);
-        dataAsInvestor = normalize(dataAsInvestor, 86400000 * 12, isUsd);
+        startDate = endDate - 86400000 * 180;
+        numberOfPoints = 31
         break;
       case 4:
-        data = data.filter(p => now - new Date(p[0]) < 86400000 * 360);
-        data = normalize(data, 86400000 * 24, isUsd);
-        dataAsInvestor = dataAsInvestor.filter(p => now - new Date(p[0]) < 86400000 * 360);
-        dataAsInvestor = normalize(dataAsInvestor, 86400000 * 24, isUsd);
+        startDate = endDate - 86400000 * 360;
+        numberOfPoints = 31;
         break;
       case 5:
-        data = normalize(data, 86400000 * 24, isUsd);
-        dataAsInvestor = normalize(dataAsInvestor, 86400000 * 24, isUsd);
-        break;
-      default:
-        break;
+        if(data.length === 0 && dataAsInvestor.length === 0) {
+          startDate = endDate - 8640000;
+          numberOfPoints = 2;
+        } else {
+          let traderFirst = data[0];
+          let investorFirst = dataAsInvestor[0];
+          if(traderFirst && investorFirst) {
+            startDate = Math.min(traderFirst[0], investorFirst[0]);
+          } else if(!traderFirst) {
+            startDate = investorFirst[0];
+          } else {
+            startDate = traderFirst[0];
+          }
+          numberOfPoints = 18;
+        }
     }
-    const shared = dataAsInvestor.map(p => ({
-      category: p[0],
-      investor_profit: p[1],
-    })).concat(data.map(p => ({
-      category: p[0],
-      'column-1': p[1],
-    })));
-    shared.sort((p1, p2) => p1.category - p2.category);
+    const isUsd = this.state.selectedCurrency === 0;
+    data = calculatePoints(startDate, endDate, numberOfPoints, data, isUsd);
+    dataAsInvestor = calculatePoints(startDate, endDate, numberOfPoints, dataAsInvestor, isUsd);
+    const shared = [];
+    for(let i = 0; i < data.length; i++) {
+      shared.push({
+        category: data[i][0],
+        'column-1': data[i][1],
+        investor_profit: dataAsInvestor[i][1],
+      });
+    }
     return shared;
   }
 
@@ -243,7 +246,10 @@ class ProfitChart extends React.Component {
 }
 
 function calculateAllProfit(trades) {
-  let profit = [];
+  trades = trades.map(t => ({...t, date: new Date(t.date).getTime()}));
+  trades.sort((t1, t2) => t1.date - t2.date);
+  const profitPoints = [];
+  let totalProfit = 0;
   const buys = {};
 
   for(let trade of trades) {
@@ -266,43 +272,50 @@ function calculateAllProfit(trades) {
       } else if(info.amount < trade.amount) {
         continue;
       };
-      const plus = parseFloat(((trade.price - info.price) * trade.amount).toFixed(8));
-      const plusInUsd = parseFloat((trade.usdtToBtcRate * plus).toFixed(2));
-      profit.push([new Date(trade.date).getTime(), plus, plusInUsd]);
-
+      const profitInBtc = parseFloat(((trade.price - info.price) * trade.amount).toFixed(8));
+      totalProfit += profitInBtc;
+      const totalProfitInUsd = parseFloat((totalProfit * trade.usdtToBtcRate).toFixed(2));
+      profitPoints.push([trade.date, totalProfit, totalProfitInUsd]);
       info.amount -= trade.amount;
     }
   }
-  return profit;
+  return profitPoints;
 };
 
-function normalize(profit, interval, isUsd) {
-  console.log(profit);
-  const plusIndex = isUsd ? 2 : 1;
-  const normalized = [];
-  let cur;
-  let curMax;
-  let curMin;
-  for(let i = profit.length - 1; i >= 0; i--) {
-    let p = profit[i];
-    if(!curMax) {
-      curMax = p[0];
-      curMin = p[0];
-      cur = p[plusIndex];
-      continue;
-    }
-    if(curMax - p[0] < interval) {
-      curMin = p[0];
-      cur += p[plusIndex];
-    } else {
-      normalized.unshift([(curMax + curMin) / 2, cur]);
-      curMax = p[0];
-      cur = p[plusIndex];
-    }
+function calculatePoints(startDate, endDate, n, profitPoints, isUsd) {
+  n = n - 1;
+  const points = [];
+  const interval = (endDate - startDate) / n;
+  const searchPoint = closure(profitPoints, isUsd);
+  for(let i = 0; i <= n; i++) {
+    const date = startDate + i * interval;
+    points.push([date, searchPoint(date)]);
   }
-  normalized.unshift([(curMax + curMin) / 2, cur]);
-  return normalized;
+  return points;
 }
 
+function closure(array, isUsd) {
+  if(array.length === 0) {
+    return () => 0;
+  } else {
+    let startIndex = 0;
+    let valueIndex = isUsd ? 2 : 1;
+    return value => {
+      for(let i = startIndex; i < array.length; i++) {
+        const point = array[i];
+        if(point[0] <= value) {
+          startIndex = i;
+          continue;
+        } else if(i === 0) {
+          return 0;
+        } else {
+          startIndex = i;
+          return array[i - 1][valueIndex];
+        }
+      }
+      return array[startIndex][valueIndex];
+    };
+  }
+}
 
 export default ProfitChart;
