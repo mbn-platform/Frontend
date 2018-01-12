@@ -114,12 +114,12 @@ class Ratings extends React.Component {
                               <th onClick={() => this.onColumnSort('rank')} className="rank">
                                 <span>Rank</span><span className={classNameForColumnHeader(this.state, 'rank')}></span>
                               </th>
-                              <th onClick={() => this.onColumnSort('acceptInvestments')}>
-                                <span>Accepting request</span><span className={classNameForColumnHeader(this.state, 'acceptInvestments')}></span>
-                              </th>
                               <th onClick={() => this.onColumnSort('roi')}>
                                 <span>ROI,&nbsp;%</span><span className={classNameForColumnHeader(this.state, 'roi')}></span>
                               </th>
+                              <th onClick={() => this.onColumnSort('acceptInvestments')}>
+                                <span>Accepting request</span><span className={classNameForColumnHeader(this.state, 'acceptInvestments')}></span>
+                              </th>                              
                               <th onClick={() => this.onColumnSort('dateCreated')}>
                                 <span>Started since</span><span className={classNameForColumnHeader(this.state, 'dateCreated')}></span>
                               </th>
@@ -321,13 +321,13 @@ const TraderRatingRow = (props) => (
       <span className="success">{props.successContracts}</span>
     </td>
     <td>
+      <span>{props.roi}</span>
+    </td>
+    <td>
       {props.acceptInvestments ?
         <span className='accept'/> :
         <span className='empty'/> }
-    </td>
-    <td>
-      <span>{props.roi}</span>
-    </td>
+    </td>    
     <td>
       {formatDate(new Date(props.dateCreated))}
     </td>
