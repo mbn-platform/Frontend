@@ -20,6 +20,7 @@
     	height: 300px;
 		margin-bottom: 30px;
 		min-height: 50vh;
+		overflow-x: hidden;
 		.table {
 			margin-bottom: 0;
 			span.accept {
@@ -817,6 +818,20 @@
 						max-width: 35px;
 					}
 				}
+			}
+			@media (max-width: 768px){
+			.ratings-traders .table {
+				thead tr th {
+					&:nth-child(5) {
+						min-width: 50px;
+						max-width: 55px;
+					}
+					&:nth-child(8) {
+						min-width: auto;
+						max-width: 35px;
+					}
+				}
+			}
 			}
 
 			.ratings-investors .table {

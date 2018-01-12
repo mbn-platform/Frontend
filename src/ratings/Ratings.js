@@ -127,7 +127,7 @@ class Ratings extends React.Component {
                                 <span>Min contract<br/>amount</span><span className={classNameForColumnHeader(this.state, 'minAmount')}></span>
                               </th>
                               <th onClick={() => this.onColumnSort('duration')}>
-                                <span>Duration of the contract,<br/>days</span><span className={classNameForColumnHeader(this.state, 'duration')}></span>
+                                <span><span className="show-mobile">Dur.,</span><span className='hide-mobile'>Duration of the contract,<br/></span>days</span><span className={classNameForColumnHeader(this.state, 'duration')}></span>
                               </th>
                               <th onClick={() => this.onColumnSort('fee')}>
                                 <span>Fee, %</span><span className={classNameForColumnHeader(this.state, 'fee')}></span>
@@ -136,7 +136,7 @@ class Ratings extends React.Component {
                                 <span>Money in management</span><span className={classNameForColumnHeader(this.state, 'moneyInManagement')}></span>
                               </th>
                               <th onClick={() => this.onColumnSort('maxLoss')}>
-                                <span>Max&nbsp;loss,&nbsp;%</span><span className={classNameForColumnHeader(this.state, 'maxLoss')}></span>
+                                <span>Max loss,&nbsp;%</span><span className={classNameForColumnHeader(this.state, 'maxLoss')}></span>
                               </th>
                             </tr>
 
