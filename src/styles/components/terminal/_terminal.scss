@@ -292,6 +292,7 @@
 				&-wrapper {
 					overflow: auto;
 					position: relative;
+					overflow-x: hidden;
 				}
 				.table {
 			    color: rgba(#9094A1,.5);
@@ -356,6 +357,7 @@
 				&-wrapper {
 					overflow: auto;
 					position: relative;
+					overflow-x: hidden;
 				}
 				.value{
 					font-size: 18px;
@@ -470,6 +472,7 @@
 				&-wrapper {
 					overflow: auto;
 					position: relative;
+					overflow-x: hidden;
 				}
 				.table{
 					margin-bottom: 0;
