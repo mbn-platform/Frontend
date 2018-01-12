@@ -193,7 +193,7 @@ class MarketDepth extends React.Component {
           let maxOffset = 0
           function addGuides(arr, min, max, type, color, reverse) {
            arr.sort((a1,a2) => a2[type + "relativeSize"] - a1[type + "relativeSize"])
-           const countGuides = arr.length > 4 ? 5 : arr.length;
+           const countGuides = arr.length > 3 ? 3 : arr.length;
            for(let i = 0; i < countGuides; i++) {
 
                 maxOffset = getLabelOffset(arr[i]);
@@ -210,7 +210,7 @@ class MarketDepth extends React.Component {
                   "inside": true,
                   "labelRotation": -90,
                   "expand": true,
-                  'dashLength': 3
+                  'dashLength': window.innerWidth > 576 ? 3 : 0
                 } );              
               }            
            }
