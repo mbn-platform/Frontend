@@ -135,6 +135,13 @@ class Navigation extends React.Component {
         iconHover: ProfileIconHover
       },
       {
+        name: 'Ratings',
+        to: '/ratings',
+        imgClass: 'ratings',
+        icon: RaitingIcon,
+        iconHover: RaitingIconHover
+      },      
+      {
         name: 'Terminal',
         to: '/terminal',
         imgClass: 'terminal',
@@ -154,13 +161,6 @@ class Navigation extends React.Component {
         imgClass: 'history',
         icon: HistoryIcon,
         iconHover: HistoryIconHover
-      },
-      {
-        name: 'Ratings',
-        to: '/ratings',
-        imgClass: 'ratings',
-        icon: RaitingIcon,
-        iconHover: RaitingIconHover
       },
     ];
   }
