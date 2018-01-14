@@ -3,9 +3,9 @@ export function onColumnSort(column) {
   const currentSortDirection = this.state.sort.direction;
   let direction;
   if(this.state.sort.column === column) {
-    direction = currentSortDirection === 'down' ? 'up' : 'down';
+    direction = currentSortDirection === 'asc' ? 'desc' : 'asc';
   } else {
-    direction = 'up';
+    direction = 'desc';
   }
 
   this.setState({sort: {column: column, direction}});
@@ -17,7 +17,7 @@ export function sortData(data) {
   }
   const sortFunction = this.sortFunctions[this.state.sort.column] || defaultSortFunction(this.state.sort.column);
   const sorted = [...data].sort(sortFunction);
-  if(this.state.sort.direction === 'up') {
+  if(this.state.sort.direction === 'desc') {
     sorted.reverse();
   }
   return sorted;
@@ -39,16 +39,16 @@ export function classNameForColumnHeader(state, column) {
   const names = ['icon-dir'];
 
   if(state.sort.column === column &&
-     state.sort.direction === 'up') {
+     state.sort.direction === 'desc') {
 
-    names.push('icon-up-dir', 'sort');
+    names.push('icon-down-dir', 'sort');
   } else {
     if(state.sort.column === column) {
-      names.push('icon-down-dir', 'sort');  
+      names.push('icon-up-dir', 'sort');
     } else {
-      names.push('icon-down-dir');  
+      names.push('icon-down-dir');
     }
-    
+
   }
   return classNames(names);
 }
