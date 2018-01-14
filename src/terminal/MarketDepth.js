@@ -218,7 +218,6 @@ class MarketDepth extends React.Component {
                   "position": "bottom",
                   "inside": true,
                   "labelRotation": -90,
-                  "expand": true,
                   'dashLength': dashLength ? 3 : 0
                 } );              
               }            
