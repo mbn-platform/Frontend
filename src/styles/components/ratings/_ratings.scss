@@ -186,15 +186,16 @@
 					th {
 						vertical-align: bottom;
 						white-space: nowrap;
+						cursor: pointer;
 						span:not(.icon-dir) {
 							opacity: .5;	
 						}
 						
 						.icon-dir {
-							opacity: .7;
-							color: #fff;
+
 							&.sort {
-								opacity: 1;
+								opacity: .7;
+								color: #fff;								
 							}
 						}						
 						span{
