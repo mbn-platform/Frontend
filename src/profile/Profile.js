@@ -4,9 +4,11 @@ import TablesScreen from './TablesScreen';
 import { Row, Container } from 'reactstrap';
 import { connect } from 'react-redux';
 import { fetchDashboardData } from '../actions/dashboard';
-import { updateExchagnes } from '../actions/exchanges';
+import { updateExchanges } from '../actions/exchanges';
 import { updateProfile } from '../actions/profile';
 import { generateProfile } from '../demoData/profile';
+import { apiGet } from '../generic/apiCall';
+import { ApiError } from '../generic/apiCall';
 
 class Profile extends React.Component {
 
@@ -54,11 +56,23 @@ class Profile extends React.Component {
   }
 
   updateProfile(name) {
-    if(name === this.props.profile.name) {
-      this.setState(this.props.profile);
-    } else {
-      this.setState(generateProfile(name));
-    }
+    apiGet(`/api/profile/${name}`)
+      .then(profile => {
+        this.setState(profile);
+      })
+      .catch(e => {
+        if(e.apiErrorCode) {
+          switch(e.apiErrorCode) {
+            case ApiError.NOT_FOUND:
+              console.log('no such profile:', name);
+              break;
+            default:
+              console.log('unhandled api error', e.apiErrorCode);
+          }
+        } else {
+          console.log('failed to load profile');
+        }
+      });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -99,7 +113,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   updateProfile: profile => dispatch(updateProfile(profile)),
   fetchDashboardData: () => dispatch(fetchDashboardData()),
-  updateExchanges: () => dispatch(updateExchagnes()),
+  updateExchanges: () => dispatch(updateExchanges()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

@@ -1,60 +1,70 @@
-import { LOGGED_OUT } from '../actions/auth';
-const errors = {
-  FORBIDDEN: -103
+export class ApiError extends Error {
+  constructor(code) {
+    super();
+    this.apiErrorCode = code;
+  }
+}
+
+
+const defaultPostParams = {
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  credentials: 'same-origin',
+  method: 'POST',
 };
 
-export function apiGet(url, params, dispatch) {
-  params = {credentials: 'same-origin', ...params};
-  return window.fetch(url, params)
-    .then(res => handleRequest(dispatch, res));
-}
+const defaultGetParams = {
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  credentials: 'same-origin',
+  method: 'GET',
+};
 
-export function apiDelete(url, dispatch) {
-  return window.fetch(url, {
-    method: 'delete',
-    credentials: 'same-origin'
-  }).then(res => handleRequest(dispatch, res));
-}
 
-export function apiPost(url, params, dispatch) {
-  params = {
-    method: 'post',
-    credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json'
-    }, ...params
-  };
-  return window.fetch(url, params).then(res => handleRequest(dispatch, res));
-}
 
-export function apiPut(url, params, dispatch) {
-  params = {
-    method: 'put',
-    credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json'
-    }, ...params
-  };
-  return window.fetch(url, params).then(res => handleRequest(dispatch, res));
-}
+ApiError.FORBIDDEN = -103;
+ApiError.NOT_FOUND = -104;
 
-function handleRequest(dispatch, response) {
-  return response.json()
+function jsonRequest(request) {
+  return request.then(res => res.json())
     .then(json => {
-      if(json.error) {
-        handleError(dispatch, json.error);
+      const error = json.error;
+      if(error) {
+        throw new ApiError(error);
+      } else {
+        return json;
       }
-      return json;
     });
 }
 
-const handleError = (dispatch, error) => {
-  switch(error) {
-    case errors.FORBIDDEN:
-      dispatch({type: LOGGED_OUT});
-      break;
-    default:
-      console.log('unhandled error', error);
-  }
-  throw error;
+
+export function apiPost(url, params, data) {
+  params = {...defaultPostParams, ...params, body: JSON.stringify(data)};
+  return jsonRequest(window.fetch(url, params));
+}
+
+export function apiPut(url, params, data) {
+  return apiPost(url, {...params, method: 'PUT'}, data);
+}
+
+export function apiDelete(url, params) {
+  params = {...defaultDeleteParams, ...params};
+  return jsonRequest(window.fetch(url, params));
+}
+
+const defaultDeleteParams = {
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  credentials: 'same-origin',
+  method: 'DELETE',
 };
+
+
+export function apiGet(url, params) {
+  params = {...defaultGetParams, ...params};
+  return jsonRequest(window.fetch(url, params));
+}
+
