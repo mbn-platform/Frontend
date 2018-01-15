@@ -178,7 +178,9 @@ input[type=number]::-webkit-outer-spin-button {
 				background-position: center;
 			}
 		}
-
+		&.keys {
+			min-width: 160px;
+		}
 		&.time,&.exchange,&.keys{
 			padding: 0 !important;
 			.dropdown{
