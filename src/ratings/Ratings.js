@@ -127,7 +127,10 @@ class Ratings extends React.Component {
                                 <span>Min contract<br/>amount</span><span className={classNameForColumnHeader(this.state, 'minAmount')}></span>
                               </th>
                               <th onClick={() => this.onColumnSort('duration')}>
-                                <span><span className="show-mobile">Dur.,</span><span className='hide-mobile'>Duration of the contract,<br/></span>days</span><span className={classNameForColumnHeader(this.state, 'duration')}></span>
+                                <span className="show-mobile">Dur.,</span>
+                                <span className='hide-mobile'>Duration of the contract,<br/></span>
+                                <span>days</span>
+                                <span className={classNameForColumnHeader(this.state, 'duration')}></span>
                               </th>
                               <th onClick={() => this.onColumnSort('fee')}>
                                 <span>Fee, %</span><span className={classNameForColumnHeader(this.state, 'fee')}></span>
