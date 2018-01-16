@@ -152,7 +152,7 @@ class Ratings extends React.Component {
                               </th>
                               <th></th>
                               <th>
-                                <div className="all-time">
+                                <div className="hide-mobile all-time">
                                   All time <span className="arrow_down"></span>
                                 </div>
                                 <div className="all-time_dropdown">
