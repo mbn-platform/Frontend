@@ -16,7 +16,7 @@ class HistoryTable extends React.Component {
 
 
   render() {
-    const data = this.props.history
+    const data = this.props.history || [];
     const sortedData = this.sortData(data);
     return (
       <div className="history-main__block">
