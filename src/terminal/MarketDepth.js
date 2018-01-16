@@ -204,7 +204,13 @@ class MarketDepth extends React.Component {
            arr.sort((a1,a2) => a2[type + "relativeSize"] - a1[type + "relativeSize"])
            const countGuides = arr.length > 3 ? 3 : arr.length;
            for(let i = 0; i < countGuides; i++) {
-
+                if(i > 0) {
+                  if((arr[i].value > arr[i - 1].value && arr[i].value / 10 < arr[i].value - arr[i - 1].value) ||
+                    (arr[i-1].value > arr[i].value && arr[i-1].value / 10 < arr[i-1].value - arr[i].value)) {
+                    continue;  
+                  }
+                  
+                }
                 maxOffset = getLabelOffset(arr[i]);
                 guides.push( {
                   'above': true,
