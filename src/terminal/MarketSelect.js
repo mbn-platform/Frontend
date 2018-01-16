@@ -36,7 +36,7 @@ class MarketSelect extends React.Component {
           Price: market.Last,
           MarketName: market.MarketName,
           Volume: market.Volume,
-          PrevDay: market.PrevDay,
+          Change: market.Last / market.PrevDay * 100 - 100,
         };
       });
       this.setState({markets});
@@ -227,13 +227,12 @@ class MarketTable extends React.Component {
 }
 
 const MarketRow = ({market, onClick, isBTC}) => {
-  const change = (market.Price / market.PrevDay - 1) * 100;
   return (
-    <tr onClick={onClick} data-currency={market.MarketCurrency} className={change >= 0 ? 'up' : 'down'}>
+    <tr onClick={onClick} data-currency={market.MarketCurrency} className={market.Change >= 0 ? 'up' : 'down'}>
       <td>{market.MarketCurrency}</td>
       <td>{formatFloat(market.Price, isBTC)}</td>
       <td>{Math.round(market.Volume * market.Price)}</td>
-      <td>{change.toFixed(2) + '%'}</td>
+      <td>{market.Change.toFixed(2) + '%'}</td>
     </tr>
   );
 };
