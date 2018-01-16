@@ -1,4 +1,5 @@
-import { apiGet } from '../generic/apiCall';
+import { apiGet, ApiError } from '../generic/apiCall';
+import defaultErrorHandler from '../generic/defaultErrorHandler';
 export const UPDATE_DASHBOARD = 'UPDATE_DASHBOARD';
 
 export function fetchDashboardData() {
@@ -8,6 +9,8 @@ export function fetchDashboardData() {
         type: UPDATE_DASHBOARD,
         data: json
       }))
-      .catch(err => console.log('catched eror', err));
+      .catch(err => {
+        defaultErrorHandler(err, dispatch);
+      });
   };
 }

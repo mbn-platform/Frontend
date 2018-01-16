@@ -1,4 +1,4 @@
-import { apiPost } from '../generic/apiCall';
+import { apiPost, ApiError } from '../generic/apiCall';
 
 export const LOGGED_OUT = 'LOGGED_OUT';
 export const LOGGED_IN = 'LOGGED_IN';
@@ -15,14 +15,7 @@ export function logIn() {
       const message = window.web3.sha3('MercatusLogin');
       window.web3.eth.sign(acc, message, (err, result) => {
         if(!err) {
-          window.fetch('/api/auth', {
-            credentials: 'same-origin',
-            method: 'post',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({sgn: result, addr: acc})
-          }).then(res => res.json())
+          apiPost('/api/auth', null, {sgn: result, addr: acc})
             .then(json => {
               if(!json.name) {
                 dispatch(nameRequiredAction());
@@ -30,7 +23,7 @@ export function logIn() {
                 dispatch(loggedInAction(json));
               }
             })
-            .catch(err => console.log(err));
+            .catch(err => alert(err.apiErrorCode));
         }
       });
     });
@@ -44,7 +37,19 @@ export function addName(name) {
         dispatch(loggedInAction(response));
       })
       .catch(e => {
-        console.log('failed to log in', e.description);
+        if(e.apiErrorCode) {
+          switch(e.apiErrorCode) {
+            case ApiError.FORBIDDEN:
+              dispatch({
+                type: 'LOGGED_OUT',
+              });
+              break;
+            default:
+              console.log('unhandled api error');
+          }
+        } else {
+          console.log('failed to log in', e.description);
+        }
       });
   };
 }
