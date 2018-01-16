@@ -57,6 +57,7 @@ class Navigation extends React.Component {
               <Nav pills className="flex-column w-100 align-middle" tag="div">
                 {this.getLogo()}
                 {this.getLinks().map(this.getBar)}
+                {this.signOutButton()}
               </Nav>
             </Collapse>
           </Desktop>
@@ -65,11 +66,45 @@ class Navigation extends React.Component {
               <Nav pills className="flex-column w-100 align-middle" tag="div">
                 {this.getLogo()}
                 {this.getLinks().map(this.getBar)}
+                {this.signOutButton()}
               </Nav>
             </Collapse>
           </Mobile>
         </Navbar>
       </Col>
+    );
+  }
+
+  signOutButton() {
+    const onClick = e => {
+      e.preventDefault();
+      this.props.dispatch({
+        type: 'LOGGED_OUT',
+      });
+    }
+    return (
+      <a onClick={onClick} href="/" className="nav-link">
+        <Container className="h-100" fluid >
+          <Row className="h-100">
+            <Col xs="12" className="align-self-center">
+              <Container fluid className="align-middle">
+                <Row>
+                  <Col xs="3" md="12" className="d-flex justify-content-end justify-content-md-center">
+                    <img className='image_menu image' alt=""/>
+                    <img className='image_menu_hover image' alt=""/>
+                  </Col>
+                  <Col xs="auto" className="d-flex d-md-none">
+                    <div className="gap"/>
+                  </Col>
+                  <Col xs="3" md="12" className="d-flex justify-content-start justify-content-md-center">
+                    <div className="menu-text">Sign out</div>
+                  </Col>
+                </Row>
+              </Container>
+            </Col>
+          </Row>
+        </Container>
+      </a>
     );
   }
 
