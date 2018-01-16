@@ -39,11 +39,12 @@ export function logIn() {
 
 export function addName(name) {
   return dispatch => {
-    apiPost('/api/addName', {
-      body: JSON.stringify({name})
-    }, dispatch)
-      .then(json => {
-        dispatch(loggedInAction(json));
+    apiPost('/api/addName', null, {name})
+      .then(response => {
+        dispatch(loggedInAction(response));
+      })
+      .catch(e => {
+        console.log('failed to log in', e.description);
       });
   };
 }
