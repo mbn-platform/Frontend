@@ -15,22 +15,22 @@ class HeaderStatus extends React.Component {
   }
 
   render() {
-    let currencies;
-    if(this.props.apiKey) {
-      const currencies = this.props.market.split('-').map(c => ({name: c}));
-      const value0 = this.props.apiKey.currencies.find(c => c.name === currencies[0].name);
-      const value1 = this.props.apiKey.currencies.find(c => c.name === currencies[1].name);
-      if(value0) {
-        currencies[0].value = value0.amount;
-      }
-      if(value1) {
-        currencies[1].value = value1.amount;
-      } else {
-        currencies[1].value = (0).toFixed(2);
-      }
-    } else {
-      currencies = [{}, {}];
-    }
+      const currencies = [{}, {}];
+    //if(this.props.apiKey) {
+      //const currencies = this.props.market.split('-').map(c => ({name: c}));
+      //const value0 = this.props.apiKey.currencies.find(c => c.name === currencies[0].name);
+      //const value1 = this.props.apiKey.currencies.find(c => c.name === currencies[1].name);
+      //if(value0) {
+        //currencies[0].value = value0.amount;
+      //}
+      //if(value1) {
+        //currencies[1].value = value1.amount;
+      //} else {
+        //currencies[1].value = (0).toFixed(2);
+      //}
+    //} else {
+      //currencies = [{}, {}];
+    //}
     return (
       <header className="header-status">
         <Container fluid className="h-100">
