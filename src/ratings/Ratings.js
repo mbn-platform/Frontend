@@ -3,6 +3,7 @@ import { Container, Row, Col } from 'reactstrap';
 import BestTraders from './BestTraders';
 import BestInvestors from './BestInvestors';
 import classNames from 'classnames';
+import DropdownSelect from '../terminal/DropdownSelect';
 import { generateRatings } from '../demoData/ratings';
 import $ from 'jquery';
 import {sortData, onColumnSort, classNameForColumnHeader}  from '../generic/terminalSortFunctions';
@@ -10,6 +11,7 @@ import { Link } from 'react-router-dom';
 
 const TAB_TRADERS = 0;
 const TAB_INVESTORS = 1;
+const TIME_RANGE_OPTIONS = ['1 week', '1 month', '3 months', '6 months', '12 months', 'All time'];
 
 class Ratings extends React.Component {
 
@@ -39,6 +41,7 @@ class Ratings extends React.Component {
       nameFilter: '',
       tab: TAB_TRADERS,
       ratings,
+      selectedPeriod: 'All time',
       sort: {}
     };
   }
@@ -73,8 +76,11 @@ class Ratings extends React.Component {
 
   render() {
     let data = this.state.tab === TAB_TRADERS ? this.state.ratings.traders : this.state.ratings.investors;
+    let period = this.state.selectedPeriod;
     data = data.filter(profile => {
       return profile.name.toLowerCase().indexOf(this.state.nameFilter.toLowerCase()) >= 0;
+    }).map(profile => {
+      return {...profile, roi: profile.rois[period]}
     });
     const sortedData = this.sortData(data);
     return (
@@ -153,20 +159,17 @@ class Ratings extends React.Component {
                               <th>
                                 <div className="help" data-toggle="ratings-help-popover" data-placement="bottom" data-total="The total amount of contracts" data-success="The amount of successfully finished contracts">?</div>
                               </th>
-                              <th></th>
                               <th>
-                                <div className="hide-mobile all-time">
-                                  All time <span className="arrow_down"></span>
-                                </div>
-                                <div className="all-time_dropdown">
-                                  <a href="#" className="all-time_dropdown-link">1 week</a>
-                                  <a href="#" className="all-time_dropdown-link">1 month</a>
-                                  <a href="#" className="all-time_dropdown-link">3 months</a>
-                                  <a href="#" className="all-time_dropdown-link">6 months</a>
-                                  <a href="#" className="all-time_dropdown-link">12 months</a>
-                                  <a href="#" className="all-time_dropdown-link active">All time</a>
-                                </div>
-                              </th>
+                                <DropdownSelect
+                                  selected={this.state.selectedPeriod}
+                                  items={TIME_RANGE_OPTIONS}
+                                  targetId="time_select"
+                                  elementClassName="time__switch"
+                                  dropdownClassName="roi"
+                                  onItemSelect={item => this.setState({selectedPeriod: item})}
+                                />
+                              </th>                              
+                              <th></th>
                               <th>
                               </th>
                               <th></th>
@@ -223,18 +226,14 @@ class Ratings extends React.Component {
                                 <div className="help" data-toggle="ratings-help-popover" data-placement="bottom" data-total="The total amount of contracts" data-success="The amount of successfully finished contracts">?</div>
                               </th>
                               <th>
-                                <div className="all-time">
-                                  All time <span className="arrow_down"></span>
-                                </div>
-
-                                <div className="all-time_dropdown">
-                                  <a href="#" className="all-time_dropdown-link">1 week</a>
-                                  <a href="#" className="all-time_dropdown-link">1 month</a>
-                                  <a href="#" className="all-time_dropdown-link">3 months</a>
-                                  <a href="#" className="all-time_dropdown-link">6 months</a>
-                                  <a href="#" className="all-time_dropdown-link">12 months</a>
-                                  <a href="#" className="all-time_dropdown-link active">All time</a>
-                                </div>
+                                <DropdownSelect
+                                  selected={this.state.selectedPeriod}
+                                  items={TIME_RANGE_OPTIONS}
+                                  targetId="time_select"
+                                  elementClassName="time__switch"
+                                  dropdownClassName="roi"
+                                  onItemSelect={item => this.setState({selectedPeriod: item})}
+                                />
                               </th>
                               <th></th>
                               <th>

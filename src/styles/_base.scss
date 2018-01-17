@@ -181,7 +181,11 @@ input[type=number]::-webkit-outer-spin-button {
 		&.keys {
 			min-width: 160px;
 		}
-		&.time,&.exchange,&.keys{
+		&.roi {
+			text-transform: none;
+			min-width: 106px;
+		}
+		&.roi, &.time,&.exchange,&.keys{
 			padding: 0 !important;
 			.dropdown{
 				&__name{

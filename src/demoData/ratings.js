@@ -18,7 +18,8 @@ function generateTraderRating(rank) {
   const successContracts = totalContracts - Math.floor(Math.random() * totalContracts);
   const dateCreated = (new Date(Date.now() - Math.floor(Math.random() * 365 + 20) * 86400000)).toString();
   const duration = Math.floor(Math.random() * 20 + 15);
-  const roi = Math.floor(Math.random() * 30 - 15);
+  // const roi = Math.floor(Math.random() * 30 - 15);
+  const rois = generateRoi();
   const minAmount = Math.floor(Math.random() * 7 + 4);
   const minAmountCurrency = 'BTC';
   const acceptInvestments = generateAcceptInvestments()
@@ -28,19 +29,28 @@ function generateTraderRating(rank) {
   return {name, totalContracts, successContracts,
     dateCreated, duration, minAmount, minAmountCurrency,
     fee, moneyInManagement, maxLoss,
-    roi, name, rank, acceptInvestments};
+    rois, name, rank, acceptInvestments};
 }
 function generateInvestorRating(rank) {
   const name = generateName();
   const totalContracts = Math.floor(Math.random() * 30);
-  const roi = Math.floor(Math.random() * 30 - 15);
+  const rois = generateRoi();
   const successContracts = totalContracts - Math.floor(Math.random() * totalContracts);
   const dateCreated = (new Date(Date.now() - Math.floor(Math.random() * 365 + 20) * 86400000)).toString();
   const paidExcessProfit = Math.floor(Math.random() * 30) + 10 + ' BTC';
   const paidInvoices = Math.floor(Math.random() * 10) + 5;
   return {
-    name, totalContracts, roi, successContracts, dateCreated, paidExcessProfit, paidInvoices, rank
+    name, totalContracts, rois, successContracts, dateCreated, paidExcessProfit, paidInvoices, rank
   }
+}
+
+function generateRoi() {
+  let rois = {}
+  let period = ['1 week', '1 month', '3 months', '6 months', '12 months', 'All time']
+  for(let i = 0; i < 6; i++) {
+    rois[period[i]] = Math.floor(Math.random() * 30 - 15)
+  }
+  return rois;
 }
 
 function generateAcceptInvestments() {

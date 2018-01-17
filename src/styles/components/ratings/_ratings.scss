@@ -523,19 +523,27 @@
 		}
 	}
 
-	.all-time {
+	.dropdown-link-wrap {
 		font-size: 12px;
 		cursor: pointer;
 		color: #7E8190;
 		position: relative;
 		height: 18px;
-		width: 88px;
+		width: 106px;
 		border: 1px solid #4A4D54;
 		border-radius: 2px;
 		display: flex;
 		align-items: center;
 		justify-content: space-around;
-
+		.dropdown-link {
+			width: 100%;
+			div {
+				width: 106px;
+				display: flex;
+				align-items: center;
+				justify-content: space-around;				
+			}
+		}
 		&:hover {
 			color: rgba(#fff,.5);
 		}
