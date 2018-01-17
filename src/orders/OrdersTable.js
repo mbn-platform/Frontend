@@ -67,7 +67,7 @@ class OrdersTable extends React.Component {
                     {sortedData.map(o => (
                       <OpenOrder
                         key={o._id}
-                        onOrderCancel={this.props.cancelOrder}
+                        onOrderCancel={() => this.props.cancelOrder(o)}
                         order={o}
                       />
                     ))}
@@ -111,12 +111,12 @@ const OpenOrder = ({order, onOrderCancel}) => (
     <td className="text-capitalize">
       <span className="round"></span> {order.type}
     </td>
-    <td>{formatDate(new Date(order.dateOpened))}</td>
+    <td>{formatDate(new Date(order.dt))}</td>
     <td>{order.market}</td>
-    <td>{order.price}</td>
-    <td>{order.unitsFilled}</td>
-    <td>{order.unitsTotal}</td>
-    <td className="ellipsis-cell">{formatFloat(order.price * order.unitsTotal)}</td>
+    <td>{order.rate}</td>
+    <td>{order.filled}</td>
+    <td>{order.quantity}</td>
+    <td className="ellipsis-cell">{formatFloat(order.rate * order.quantity)}</td>
     <td onClick={() => onOrderCancel(order)}><span className="remove"></span></td>
   </tr>
 );
@@ -126,12 +126,12 @@ const CompletedOrder = ({order}) => (
     <td className="text-capitalize">
       <span className="round"></span> {order.type}
     </td>
-    <td>{formatDate(new Date(order.dateOpened))}</td>
+    <td>{formatDate(new Date(order.dt))}</td>
     <td>{order.market}</td>
-    <td>{order.price}</td>
-    <td>{order.unitsFilled}</td>
-    <td>{order.unitsTotal}</td>
-    <td className="ellipsis-cell">{formatFloat(order.price * order.unitsTotal)}</td>
+    <td>{order.rate}</td>
+    <td>{order.filled}</td>
+    <td>{order.quantity}</td>
+    <td className="ellipsis-cell">{formatFloat(order.price * order.quantity)}</td>
   </tr>
 )
 

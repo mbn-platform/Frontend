@@ -30,8 +30,7 @@ class MyOrders extends React.Component {
 
   render() {
     let data = this.state.tab === TAB_OPEN_ORDERS ? this.props.orders.open : this.props.orders.completed;
-    const market = this.props.market ? this.props.market.replace(/-/g, '/') : ''
-    data = data.filter(o => o.market == market);
+    data = data.filter(o => o.market === this.props.market);
     const sortedData = this.sortData(data);
     return (
       <div className="orders-table chart col-12 col-sm-6 col-md-12 col-lg-6">
@@ -74,7 +73,7 @@ class MyOrders extends React.Component {
                   <tbody>
                     {sortedData.map(o => (
                       <OpenOrder
-                        onOrderCancel={this.props.cancelOrder}
+                        onOrderCancel={() => this.props.cancelOrder(o)}
                         key={o._id}
                         order={o}
                       />
@@ -125,10 +124,10 @@ const OpenOrder = ({order, onOrderCancel}) => (
         <span className="round center"></span>
       </div>
     </td>
-    <td>{order.price}</td>
-    <td>{order.unitsFilled}</td>
-    <td>{order.unitsTotal}</td>
-    <td className="ellipsis-cell">{formatFloat(order.price * order.unitsTotal)}</td>
+    <td>{order.rate}</td>
+    <td>{order.filled}</td>
+    <td>{order.quantity}</td>
+    <td className="ellipsis-cell">{formatFloat(order.rate * order.quantity)}</td>
     <td onClick={() => onOrderCancel(order)}><span className="remove"></span></td>
   </tr>
 );
@@ -140,10 +139,10 @@ const CompletedOrder = ({order}) => (
         <span className="round center"></span>
       </div>
     </td>
-    <td>{order.price}</td>
-    <td>{order.unitsFilled}</td>
-    <td>{order.unitsTotal}</td>
-    <td className="ellipsis-cell">{formatFloat(order.price * order.unitsTotal)}</td>
+    <td>{order.rate}</td>
+    <td>{order.filled}</td>
+    <td>{order.quantity}</td>
+    <td className="ellipsis-cell">{formatFloat(order.rate * order.quantity)}</td>
   </tr>
 )
 

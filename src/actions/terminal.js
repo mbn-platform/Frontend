@@ -1,4 +1,4 @@
-import { apiGet } from '../generic/apiCall';
+import { apiGet, apiPost, ApiError } from '../generic/apiCall';
 export const SELECT_API_KEY = 'SELECT_API_KEY';
 export const CANCEL_ORDER = 'CANCEL_ORDER';
 export const SELECT_MARKET = 'SELECT_MARKET';
@@ -26,11 +26,28 @@ export function getMyOrders(key) {
 }
 
 export function cancelOrder(order) {
-  console.log('canceling order');
-  return {
-    type: CANCEL_ORDER,
-    order
-  };
+  return dispatch => {
+    apiPost('/api/order/' + order._id + '/cancel')
+      .then(() => {
+        dispatch({
+          type: CANCEL_ORDER,
+          order,
+        });
+      })
+      .catch(err => {
+        if(err.apiErrorCode) {
+          switch(err.apiErrorCode) {
+            case ApiError.ORDER_NOT_OPEN:
+              alert('this order is already closed');
+              break;
+            default:
+              console.log('unhandled api error', err.apiErrorCode);
+          }
+        } else {
+          console.log('error performing request');
+        }
+      });
+  }
 }
 
 export function selectMarket(market) {
