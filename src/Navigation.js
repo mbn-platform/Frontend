@@ -158,18 +158,18 @@ class Navigation extends React.Component {
   getLinks() {
     return [
       {
-        name: 'Dashboard',
-        to: '/dashboard',
-        imgClass: 'dashboard',
-        icon: DashboardIcon,
-        iconHover: DashboardIconHover
-      },
-      {
         name: 'Profile',
         to: this.props.auth.profile ? '/' + this.props.auth.profile.name : '/profile',
         imgClass: 'profile',
         icon: ProfileIcon,
         iconHover: ProfileIconHover
+      },    
+      {
+        name: 'Dashboard',
+        to: '/dashboard',
+        imgClass: 'dashboard',
+        icon: DashboardIcon,
+        iconHover: DashboardIconHover
       },
       {
         name: 'Ratings',
