@@ -4,9 +4,22 @@ import HeaderStatus from '../terminal/HeaderStatus';
 import Controls from './Controls';
 import OrdersTable from './OrdersTable';
 import { connect } from 'react-redux';
-import { selectApiKey, cancelOrder } from '../actions/terminal';
+import { selectApiKey, cancelOrder, getMyOrders } from '../actions/terminal';
 
 class Orders extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.update = this.update.bind(this);
+  }
+
+
+  update() {
+    if(this.props.selectedApiKey) {
+      this.props.getMyOrders(this.props.selectedApiKey);
+    }
+    this.timeout = setTimeout(this.update, 5000);
+  }
 
   render() {
     return (
@@ -44,10 +57,12 @@ class Orders extends React.Component {
       const key = this.props.apiKeys.ownKeys[0] || this.props.apiKeys.receivedKeys[0];
       this.props.selectApiKey(key);
     }
+    this.update();
   }
 
   componentWillUnmount() {
     window.uncustomize();
+    clearTimeout(this.timeout);
   }
 }
 
@@ -59,6 +74,7 @@ const OrdersContainer = connect(state => ({
 }), dispatch => ({
   selectApiKey: key => dispatch(selectApiKey(key)),
   cancelOrder: order => dispatch(cancelOrder(order)),
+  getMyOrders: key => dispatch(getMyOrders(key)),
 }))(Orders);
 
 export default OrdersContainer;
