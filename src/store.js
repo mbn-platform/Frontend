@@ -2,6 +2,7 @@ import { createStore, compose, applyMiddleware } from 'redux';
 import reducer from './rootReducer';
 import thunk from 'redux-thunk';
 import generateData from './demoData';
+const VERSION = 1;
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
@@ -24,7 +25,8 @@ function newFakeData() {
 function getReduxState() {
   const state = localStorage.getItem('reduxState');
   const lastUpdated = localStorage.getItem('demoDataLastUpdated') || 0;
-  if(Date.now() - lastUpdated < 30 * 60 * 1000 && state) {
+  const version = parseInt(localStorage.getItem('mercatusVersion')) || 0 ;
+  if(VERSION === version && Date.now() - lastUpdated < 30 * 60 * 1000 && state) {
     try {
       const json = JSON.parse(state);
       if(!json.terminal.selectedApiKey) {
@@ -38,6 +40,8 @@ function getReduxState() {
       return data;
     }
   } else {
+    localStorage.setItem('mercatusVersion', VERSION);
+    localStorage.removeItem('ratings');
     const data = newFakeData();
     saveState(data);
     return data;
