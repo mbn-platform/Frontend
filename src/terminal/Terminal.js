@@ -10,6 +10,7 @@ import RecentTrades from './RecentTrades';
 import OrderBook from './OrderBook';
 import { connect } from 'react-redux';
 import { selectApiKey, cancelOrder, selectMarket, placeOrder, getMyOrders } from '../actions/terminal';
+import { fetchDashboardData } from '../actions/dashboard';
 import MediaQuery from 'react-responsive';
 
 class Terminal extends React.Component {
@@ -102,6 +103,7 @@ class Terminal extends React.Component {
       this.props.selectApiKey(key);
     }
     this.updateTerminal();
+    this.props.fetchDashboardData();
   }
 
   componentWillUnmount() {
@@ -121,5 +123,6 @@ const TerminalContainer = connect(state => ({
   cancelOrder: order => dispatch(cancelOrder(order)),
   selecteMarket: market => dispatch(selectMarket(market)),
   getMyOrders: key => dispatch(getMyOrders(key)),
+  fetchDashboardData: () => dispatch(fetchDashboardData()),
 }))(Terminal);
 export default TerminalContainer;

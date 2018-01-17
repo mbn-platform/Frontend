@@ -5,6 +5,7 @@ import Controls from './Controls';
 import HistoryTable from './HistoryTable';
 import { connect } from 'react-redux';
 import { selectApiKey } from '../actions/terminal';
+import { fetchDashboardData } from '../actions/dashboard';
 
 class History extends React.Component {
 
@@ -43,6 +44,8 @@ class History extends React.Component {
       const key = this.props.apiKeys.ownKeys[0] || this.props.apiKeys.receivedKeys[0];
       this.props.selectApiKey(key);
     }
+    this.props.getHistory();
+    this.props.fetchDashboardData();
   }
 
   componentWillUnmount() {
@@ -58,6 +61,7 @@ const HistoryContainer = connect(state => ({
   history: state.terminal.history,
 }), dispatch => ({
   selectApiKey: key => dispatch(selectApiKey(key)),
+  fetchDashboardData: () => dispatch(fetchDashboardData()),
 }))(History);
 
 

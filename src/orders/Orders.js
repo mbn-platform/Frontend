@@ -5,6 +5,7 @@ import Controls from './Controls';
 import OrdersTable from './OrdersTable';
 import { connect } from 'react-redux';
 import { selectApiKey, cancelOrder, getMyOrders } from '../actions/terminal';
+import { fetchDashboardData } from '../actions/dashboard';
 
 class Orders extends React.Component {
 
@@ -58,6 +59,7 @@ class Orders extends React.Component {
       this.props.selectApiKey(key);
     }
     this.update();
+    this.props.fetchDashboardData();
   }
 
   componentWillUnmount() {
@@ -75,6 +77,7 @@ const OrdersContainer = connect(state => ({
   selectApiKey: key => dispatch(selectApiKey(key)),
   cancelOrder: order => dispatch(cancelOrder(order)),
   getMyOrders: key => dispatch(getMyOrders(key)),
+  fetchDashboardData: () => dispatch(fetchDashboardData()),
 }))(Orders);
 
 export default OrdersContainer;
