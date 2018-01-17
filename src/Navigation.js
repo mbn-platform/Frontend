@@ -14,6 +14,8 @@ import HistoryIcon from './assets/svg/history.svg';
 import HistoryIconHover from './assets/svg/history_hover.svg';
 import RaitingIcon from './img/MenuIconRatings.svg';
 import RaitingIconHover from './img/MenuIconRatingsHover.svg';
+import SignOut from './img/SignOut.svg';
+import SignOutHover from './img/SignOutHover.svg';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { Navbar, NavbarToggler, NavbarBrand, Nav, Collapse, Col } from 'reactstrap';
@@ -90,8 +92,8 @@ class Navigation extends React.Component {
               <Container fluid className="align-middle">
                 <Row>
                   <Col xs="3" md="12" className="d-flex justify-content-end justify-content-md-center">
-                    <img className='image_menu image' alt=""/>
-                    <img className='image_menu_hover image' alt=""/>
+                    <img className='image_menu image' src={SignOut} alt=""/>
+                    <img className='image_menu_hover image' src={SignOutHover} alt=""/>
                   </Col>
                   <Col xs="auto" className="d-flex d-md-none">
                     <div className="gap"/>
