@@ -1,3 +1,6 @@
+.login_steps {
+  text-transform: none;
+}
 .login_step_login_text {
   font-size: 2.3em;
   text-align: center;
