@@ -1,4 +1,4 @@
-import { SELECT_API_KEY, CANCEL_ORDER, SELECT_MARKET, PLACE_ORDER } from '../actions/terminal';
+import { SELECT_API_KEY, CANCEL_ORDER, SELECT_MARKET, PLACE_ORDER, GET_MY_ORDERS } from '../actions/terminal';
 import { ADD_API_KEY } from '../actions/apiKeys';
 import { generateId } from '../demoData/util';
 
@@ -30,6 +30,10 @@ export default function(state = {
       } else {
         return state;
       }
+    case GET_MY_ORDERS: {
+      const {openTrades: open, closedTrades: completed} = action.orders;
+      return {...state, orders: {open, completed}};
+    }
     default:
       return state;
   }

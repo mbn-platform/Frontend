@@ -9,13 +9,21 @@ import MyOrders from './MyOrders';
 import RecentTrades from './RecentTrades';
 import OrderBook from './OrderBook';
 import { connect } from 'react-redux';
-import { selectApiKey, cancelOrder, selectMarket, placeOrder } from '../actions/terminal';
+import { selectApiKey, cancelOrder, selectMarket, placeOrder, getMyOrders } from '../actions/terminal';
 import MediaQuery from 'react-responsive';
 
 class Terminal extends React.Component {
 
   constructor(props) {
     super(props);
+    this.updateTerminal = this.updateTerminal.bind(this);
+  }
+
+  updateTerminal() {
+    if(this.props.selectedApiKey) {
+      this.props.getMyOrders(this.props.selectedApiKey);
+    }
+    this.timeout = setTimeout(this.updateTerminal, 5000);
   }
 
   render() {
@@ -93,10 +101,12 @@ class Terminal extends React.Component {
       const key = this.props.apiKeys.ownKeys[0] || this.props.apiKeys.receivedKeys[0];
       this.props.selectApiKey(key);
     }
+    this.updateTerminal();
   }
 
   componentWillUnmount() {
     window.uncustomize();
+    clearTimeout(this.timeout);
   }
 }
 
@@ -110,5 +120,6 @@ const TerminalContainer = connect(state => ({
   selectApiKey: key => dispatch(selectApiKey(key)),
   cancelOrder: order => dispatch(cancelOrder(order)),
   selecteMarket: market => dispatch(selectMarket(market)),
+  getMyOrders: key => dispatch(getMyOrders(key)),
 }))(Terminal);
 export default TerminalContainer;
