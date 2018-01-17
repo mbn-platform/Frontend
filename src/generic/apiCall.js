@@ -26,6 +26,8 @@ const defaultGetParams = {
 
 ApiError.FORBIDDEN = -103;
 ApiError.NOT_FOUND = -104;
+ApiError.ORDER_NOT_OPEN = -501;
+ApiError.MARKET_ERROR = -599;
 
 function jsonRequest(request) {
   return request.then(res => res.json())

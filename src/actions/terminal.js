@@ -47,8 +47,9 @@ export function cancelOrder(order) {
           console.log('error performing request');
         }
       });
-  }
+  };
 }
+
 
 export function selectMarket(market) {
   return {
@@ -57,10 +58,39 @@ export function selectMarket(market) {
   };
 }
 
-export function placeOrder(order) {
-  return {
-    type: PLACE_ORDER,
-    order,
+
+export function placeOrder(order, type) {
+  return dispatch => {
+    let url;
+    switch(type) {
+      case 'buy':
+        url = '/api/order/buy';
+        break;
+      case 'sell':
+        url = '/api/order/sell';
+        break;
+      default:
+        alert('error');
+    }
+    apiPost(url, null, order)
+      .then(order => {
+        dispatch({
+          type: PLACE_ORDER,
+          order,
+        });
+      })
+      .catch(err => {
+        if(err.apiErrorCode) {
+          switch(err.apiErrorCode) {
+            case ApiError.MARKET_ERROR:
+              alert('market error');
+              break;
+            default:
+              console.log('unhandled api error', err.apiErrorCode);
+          }
+        } else {
+          console.log('error');
+        }
+      });
   };
 }
- 

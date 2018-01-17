@@ -53,6 +53,8 @@ class Terminal extends React.Component {
                   <Row className="justify-content-between">
                     <PlaceOrder                    
                       placeOrder={this.props.placeOrder}
+                      selectedApiKey={this.props.selectedApiKey}
+                      placeOrder={this.props.placeOrder}
                       market={this.props.selectedMarket}
                     />
                     <MediaQuery query="(min-width: 576px)">
@@ -124,5 +126,6 @@ const TerminalContainer = connect(state => ({
   selecteMarket: market => dispatch(selectMarket(market)),
   getMyOrders: key => dispatch(getMyOrders(key)),
   fetchDashboardData: () => dispatch(fetchDashboardData()),
+  placeOrder: (order, type) => dispatch(placeOrder(order, type)),
 }))(Terminal);
 export default TerminalContainer;

@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { getTicker } from '../api/bittrex/bittrex';
 import { formatFloat, formatBTCValue } from '../generic/util';
 import { Desktop } from '../generic/MediaQuery';
+import { apiPost } from '../generic/apiCall';
 
 const TAB_BUY = 0;
 const TAB_SELL = 1;
@@ -53,44 +54,27 @@ class PlaceOrder extends React.Component {
 
   onSubmit(e) {
     e.preventDefault();
+    if(!this.props.selectedApiKey) {
+      alert('select api key');
+      return;
+    }
+    const keyId = this.props.selectedApiKey._id;
+    const params = {
+      market: this.props.market,
+      quantity: parseFloat(this.state.orderSize),
+      rate: parseFloat(this.state.price),
+      keyId,
+    };
+    console.log(params);
     switch(this.state.selectedTab) {
-      case TAB_BUY: {
-        const order = {
-          type: 'buy',
-          market: this.state.amountCurrency + '/' + this.state.orderCurrency,
-          dateOpened: (new Date()).toISOString(),
-          price: parseFloat(this.state.price),
-          unitsTotal: parseFloat(this.state.orderSize),
-          unitsFilled: 0,
-        };
-        this.setState({
-          price: '',
-          orderSize: '',
-          amount: '',
-        });
-        this.props.placeOrder(order);
+      case TAB_BUY:
+        this.props.placeOrder(params, 'buy');
         break;
-      }
-      case TAB_SELL: {
-        const order = {
-          type: 'sell',
-          market: this.state.amountCurrency + '/' + this.state.orderCurrency,
-          dateOpened: (new Date()).toISOString(),
-          price: parseFloat(this.state.price),
-          unitsTotal: parseFloat(this.state.orderSize),
-          unitsFilled: 0,
-        };
-        this.setState({
-          price: '',
-          orderSize: '',
-          amount: '',
-        });
-        this.props.placeOrder(order);
-        break;
-      }
-      default:
+      case TAB_SELL:
+        this.props.placeOrder(params, 'sell');
         break;
     }
+    return;
   }
 
   onChange(e) {
