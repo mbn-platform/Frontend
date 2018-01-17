@@ -129,6 +129,7 @@ class MarketTable extends React.Component {
       baseCurrency: base, secondaryCurrency: null,
       markets: this.props.markets.filter(m => m.BaseCurrency === base),
     });
+    $('.popover-body .js-dropdown-table-wrapper table').floatThead('reflow');
   }
 
   onSecondaryCurrencySelected(e) {
