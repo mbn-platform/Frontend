@@ -114,6 +114,7 @@ class MarketTable extends React.Component {
     this.onColumnSort = onColumnSort.bind(this);
     this.sortFunctions = {
       Price: (a, b) => formatFloat(a.Price, this.state.baseCurrency === 'BTC') - formatFloat(b.Price, this.state.baseCurrency === 'BTC'),
+      Volume: (a, b) => (a.Volume * a.Price) - (b.Volume * b.Price),
     };        
   }
 
