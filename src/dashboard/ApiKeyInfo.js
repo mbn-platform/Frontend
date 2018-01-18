@@ -153,9 +153,9 @@ class ApiKeyInfo extends React.Component {
             <div className="green_arrow green_arrow_bottom" ></div>
           </div>
         </div>),
-        Cell: rowInfo => rowInfo.original.enabled || this.props.isOwnKey ? rowInfo.value : '',
+        Cell: rowInfo => rowInfo.original.enabled || this.props.isOwnKey ? rowInfo.value || 0 : '',
         className: 'table_col_value',
-        accessor: 'amount'
+        accessor: 'value'
       }
     ];
   }
