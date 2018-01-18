@@ -10,32 +10,60 @@ export const PAY_OFFER = 'PAY_OFFER';
 
 
 export function acceptOffer(offer) {
-  return {
-    type: ACCEPT_OFFER,
-    offer
+  return dispatch => {
+    apiPost(`/api/offer/${offer._id}/accept`)
+      .then(json => {
+        dispatch({
+          type: ACCEPT_OFFER,
+          offer
+        });
+      });
   };
 }
 
 export function cancelOffer(offer) {
-  return {
-    type: CANCEL_OFFER,
-    offer
+  return dispatch => {
+    apiDelete(`/api/offer/${offer._id}`)
+      .then(json => {
+        dispatch({
+          type: CANCEL_OFFER,
+          offer
+        });
+      });
   };
 }
 
 export function rejectOffer(offer) {
-  return {
-    type: REJECT_OFFER,
-    offer
+  return dispatch => {
+    apiPost(`/api/offer/${offer._id}/reject`)
+      .then(json => {
+        if(json.offerId) {
+          dispatch({
+            type: REJECT_OFFER,
+            offer
+          });
+        }
+      });
   };
 }
 
 export function sendOffer(offer) {
-  return {
-    type: SEND_OFFER,
-    offer
-  }
+  console.log(offer);
+  return dispatch => {
+    apiPost('/api/offer', null, offer)
+      .then(json => {
+        dispatch({
+          type: SEND_OFFER,
+          offer: json
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        console.log(err.apiErrorCode);
+      });
+  };
 }
+
 export function payOffer(offer) {
   return {
     type: PAY_OFFER,

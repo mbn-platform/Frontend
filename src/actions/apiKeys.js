@@ -1,3 +1,4 @@
+import { apiPut } from '../generic/apiCall';
 import { LOGGED_OUT } from '../actions/auth';
 export const DELETE_API_KEY = 'DELETE_API_KEY';
 export const ADD_API_KEY = 'ADD_API_KEY';
@@ -111,10 +112,18 @@ export function apiGet(url, params) {
   params = {...defaultGetParams, ...params};
   return jsonRequest(window.fetch(url, params));
 }
-
-export function updateApiKey(key, original) {
-  return {
-    type: UPDATE_API_KEY,
-    apiKey: key,
+export function updateApiKey(key) {
+  return dispatch => {
+    apiPut('/api/key/' + key._id, null, {currencies: key.currencies})
+      .then(apiKey => {
+        dispatch({
+          type: UPDATE_API_KEY,
+          apiKey,
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        console.log(err.apiErrorCode);
+      });
   };
 }
