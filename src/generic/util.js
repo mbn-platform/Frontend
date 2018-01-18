@@ -48,3 +48,54 @@ export function formatBTCValue(value) {
     return number.toFixed(8);
   }
 }
+
+export function calculateKeyBalance(key, currency, rates) {
+  return key.currencies.reduce((balance, cur) => {
+    const {name, value} = cur;
+    let add;
+    if(name === currency) {
+      add = value;
+    } else {
+      switch(currency) {
+        case 'BTC': {
+          if(name === 'USDT') {
+            let rate = rates.USDT.BTC;
+            if(rate) {
+              add = value / rate;
+            }
+            break;
+          } else {
+            add = convert(rates, currency, name, value);
+            break;
+          }
+        }
+        case 'ETH': {
+          if(name === 'USDT' || name === 'BTC') {
+            let rate = rates[name].ETH || 0;
+            if(rate) {
+              add = value / rate;
+            }
+            break;
+          } else {
+            add = convert(rates, currency, name, value);
+            break;
+          }
+        }
+        default: {
+          add = convert(rates, currency, name, value);
+          break;
+        }
+      }
+    }
+    return balance + add;
+  }, 0);
+}
+
+function convert(rates, main, secondary, value) {
+  let rate = rates[main][secondary];
+  if(rate === undefined) {
+    return 0;
+  } else {
+    return rate * value || 0;
+  }
+}
