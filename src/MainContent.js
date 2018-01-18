@@ -12,7 +12,7 @@ import { Col } from 'reactstrap';
 const MainContent = ({ loggedIn, profile }) => (
   <Col xs="12" md>
     <Switch>
-      <Redirect from="/login" to="/dashboard" />
+      <Redirect from="/login" to="/profile" />
       <Route exact path="/dashboard" component={Dashboard} />
       <Route exact path="/terminal" component={Terminal} />
       <Route exact path="/history" component={History} />
@@ -20,7 +20,7 @@ const MainContent = ({ loggedIn, profile }) => (
       <Route exact path="/ratings" component={Ratings} />
       <Redirect exact from="/profile" to={profile.name} />
       <Route exact path="/:id" component={Profile} />
-      <Redirect from="/" to="/dashboard" />
+      <Redirect from="/" to="/profile" />
     </Switch>
   </Col>
 );
