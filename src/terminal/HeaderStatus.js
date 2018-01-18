@@ -15,22 +15,15 @@ class HeaderStatus extends React.Component {
   }
 
   render() {
-      const currencies = [{}, {}];
-    //if(this.props.apiKey) {
-      //const currencies = this.props.market.split('-').map(c => ({name: c}));
-      //const value0 = this.props.apiKey.currencies.find(c => c.name === currencies[0].name);
-      //const value1 = this.props.apiKey.currencies.find(c => c.name === currencies[1].name);
-      //if(value0) {
-        //currencies[0].value = value0.amount;
-      //}
-      //if(value1) {
-        //currencies[1].value = value1.amount;
-      //} else {
-        //currencies[1].value = (0).toFixed(2);
-      //}
-    //} else {
-      //currencies = [{}, {}];
-    //}
+    let currencies;
+    if(this.props.apiKey) {
+      const cur = this.props.market.split('-');
+      const currency1 = this.props.apiKey.currencies.find(c => c.name === cur[0]) || {name: cur[0]};
+      const currency2 = this.props.apiKey.currencies.find(c => c.name === cur[1]) || {name: cur[1]};
+      currencies = [currency1, currency2];
+    } else {
+      currencies = [{}, {}];
+    }
     return (
       <header className="header-status">
         <Container fluid className="h-100">
@@ -117,7 +110,7 @@ const Balance = ({first, second}) => (
 const BalanceValue = ({name, value}) => (
   <Row className="balance justify-content-center align-items-center">
     <div className="balance-name">{name}</div>
-    <div className="balance-val">{value}</div>
+    <div className="balance-val">{value || 0}</div>
   </Row>
 );
 
