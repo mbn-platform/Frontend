@@ -139,7 +139,7 @@ class Navigation extends React.Component {
 
   getLogo() {
     return (
-      <a href="https://mercatus.im" className="nav-link d-none d-md-flex no-hover-link">
+      <a href="https://mercatus.im" className="nav-link d-none d-md-flex">
         <Container fluid className="h-100">
           <Row className="h-100">
             <Col xs="12" className="align-self-center">

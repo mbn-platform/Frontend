@@ -24,7 +24,7 @@
 		.table {
 			margin-bottom: 0;
 			span.accept {
-				background: url(../assets/svg/001-check-mark-grey.svg) no-repeat center center;
+				background: url(../assets/svg/001-check-mark-grey.svg) no-repeat left center;
 			    width: 100%;
 			    height: 18px;
 			    opacity: .8;
@@ -186,15 +186,16 @@
 					th {
 						vertical-align: bottom;
 						white-space: nowrap;
+						cursor: pointer;
 						span:not(.icon-dir) {
 							opacity: .5;	
 						}
 						
 						.icon-dir {
-							opacity: .7;
-							color: #fff;
+
 							&.sort {
-								opacity: 1;
+								opacity: .7;
+								color: #fff;								
 							}
 						}						
 						span{
@@ -492,6 +493,8 @@
 				background-size: contain;
 				background-repeat: no-repeat;
 				background-position: center;
+				margin-left: auto;
+				margin-right: auto;				
 			}
 			&.best_alltime{
 				color: #0290E5;
@@ -520,19 +523,27 @@
 		}
 	}
 
-	.all-time {
+	.dropdown-link-wrap {
 		font-size: 12px;
 		cursor: pointer;
 		color: #7E8190;
 		position: relative;
 		height: 18px;
-		width: 88px;
+		width: 106px;
 		border: 1px solid #4A4D54;
 		border-radius: 2px;
 		display: flex;
 		align-items: center;
 		justify-content: space-around;
-
+		.dropdown-link {
+			width: 100%;
+			div {
+				width: 106px;
+				display: flex;
+				align-items: center;
+				justify-content: space-around;				
+			}
+		}
 		&:hover {
 			color: rgba(#fff,.5);
 		}

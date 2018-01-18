@@ -37,7 +37,7 @@ class DropdownSelect extends React.Component {
     return(
       <div onClick={() => this.setState({isOpen: !this.state.isOpen})} id={this.props.targetId} className="dropdown-link-wrap">
         <div className="dropdown-link">
-          <span>{this.props.selected ? this.props.selected : this.props.header} <span className="arrow_down"/></span>
+          <div>{this.props.selected ? this.props.selected : this.props.header} <span className="arrow_down"/></div>
         </div>
         <Popover
           onClick={this.onOutsideClick}

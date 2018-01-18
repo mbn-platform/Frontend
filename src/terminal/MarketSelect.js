@@ -36,7 +36,7 @@ class MarketSelect extends React.Component {
           Price: market.Last,
           MarketName: market.MarketName,
           Volume: market.Volume,
-          PrevDay: market.PrevDay,
+          Change: market.Last / market.PrevDay * 100 - 100,
         };
       });
       this.setState({markets});
@@ -114,6 +114,7 @@ class MarketTable extends React.Component {
     this.onColumnSort = onColumnSort.bind(this);
     this.sortFunctions = {
       Price: (a, b) => formatFloat(a.Price, this.state.baseCurrency === 'BTC') - formatFloat(b.Price, this.state.baseCurrency === 'BTC'),
+      Volume: (a, b) => (a.Volume * a.Price) - (b.Volume * b.Price),
     };        
   }
 
@@ -128,6 +129,7 @@ class MarketTable extends React.Component {
       baseCurrency: base, secondaryCurrency: null,
       markets: this.props.markets.filter(m => m.BaseCurrency === base),
     });
+    $('.popover-body .js-dropdown-table-wrapper table').floatThead('reflow');
   }
 
   onSecondaryCurrencySelected(e) {
@@ -201,7 +203,7 @@ class MarketTable extends React.Component {
               <tr>
                 <th onClick={() => this.onColumnSort('MarketCurrency')}>Currency <span className={classNameForColumnHeader(this.state, 'MarketCurrency')}></span></th>
                 <th onClick={() => this.onColumnSort('Price')}>Price <span className={classNameForColumnHeader(this.state, 'Price')}></span></th>
-                <th onClick={() => this.onColumnSort('Volume')}>Volume <span className={classNameForColumnHeader(this.state, 'Volume')}></span></th>
+                <th onClick={() => this.onColumnSort('Volume')}>Volume({baseCurrency}) <span className={classNameForColumnHeader(this.state, 'Volume')}></span></th>
                 <th onClick={() => this.onColumnSort('Change')}>Change <span className={classNameForColumnHeader(this.state, 'Change')}></span></th>
               </tr>
             </thead>
@@ -227,13 +229,12 @@ class MarketTable extends React.Component {
 }
 
 const MarketRow = ({market, onClick, isBTC}) => {
-  const change = (market.Price / market.PrevDay - 1) * 100;
   return (
-    <tr onClick={onClick} data-currency={market.MarketCurrency} className={change >= 0 ? 'up' : 'down'}>
+    <tr onClick={onClick} data-currency={market.MarketCurrency} className={market.Change >= 0 ? 'up' : 'down'}>
       <td>{market.MarketCurrency}</td>
       <td>{formatFloat(market.Price, isBTC)}</td>
       <td>{Math.round(market.Volume * market.Price)}</td>
-      <td>{change.toFixed(2) + '%'}</td>
+      <td>{market.Change.toFixed(2) + '%'}</td>
     </tr>
   );
 };
