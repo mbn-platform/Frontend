@@ -1,10 +1,12 @@
 import { apiGet, apiPost, ApiError } from '../generic/apiCall';
 import { fetchDashboardData } from '../actions/dashboard';
+import { getMarketSummaries } from '../api/bittrex/bittrex';
 export const SELECT_API_KEY = 'SELECT_API_KEY';
 export const CANCEL_ORDER = 'CANCEL_ORDER';
 export const SELECT_MARKET = 'SELECT_MARKET';
 export const PLACE_ORDER = 'PLACE_ORDER';
 export const GET_MY_ORDERS = 'GET_MY_ORDERS';
+export const UPDATE_EXCHANGE_RATES = 'UPDATE_EXCHANGE_RATES';
 
 export function selectApiKey(key) {
   return {
@@ -91,7 +93,7 @@ export function placeOrder(order, type) {
               alert('Not enough funds');
               break;
             case ApiError.MIN_TRADE_REQUIREMENT_NOT_MET:
-              alert('Order size is less than minimal order size for this market')
+              alert('Order size is less than minimal order size for this market');
               break;
             default:
               console.log('unhandled api error', err.apiErrorCode);
@@ -100,5 +102,24 @@ export function placeOrder(order, type) {
           console.log('error');
         }
       });
+  };
+}
+
+
+export function updateRates() {
+  return dispatch => {
+    getMarketSummaries().then(json => {
+      if(json.success) {
+        const rates = json.result.reduce((accum, rate) => {
+          const [main, second] = rate.MarketName.split('-');
+          accum[main][second] = rate.Last;
+          return accum;
+        }, {USDT: {}, BTC: {}, ETH: {}});
+        dispatch({
+          type: UPDATE_EXCHANGE_RATES,
+          rates,
+        });
+      }
+    }).catch(e => console.log(e));
   };
 }

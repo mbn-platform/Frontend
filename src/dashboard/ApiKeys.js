@@ -86,7 +86,7 @@ class ApiKeys extends React.Component {
           }
         }
       }, {
-        id: '_id',
+        id: 'balance',
         className: 'table_col_value',
         minWidth: 80,
         Header: (<div className="table_header_wrapper">
@@ -96,7 +96,7 @@ class ApiKeys extends React.Component {
           </div>
         </div>),
         accessor: key => {
-          return key.currencies ? (key.currencies.reduce((sum, c) => sum + parseFloat((c.amount || 0)), 0)).toFixed(2) : 0
+          return key.balance || 0;
         }
       }, {
         Header: '',
@@ -117,7 +117,7 @@ class ApiKeys extends React.Component {
   }
   renderContent() {
     const { apiKeys } = this.props;
-    const data = this.state.selectedTab ? apiKeys.receivedKeys : apiKeys.ownKeys;
+    const data = this.state.selectedTab ? apiKeys.receivedKeys : apiKeys.ownKeys.filter(key => key.state !== 'INVALID');
     return (
       <div>
         <Desktop>

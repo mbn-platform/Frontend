@@ -19,6 +19,12 @@ class Dashboard extends React.Component {
   }
   componentDidMount() {
     this.props.onDashboardMounted();
+    this.props.updateRates();
+    this.interval = setInterval(this.props.updateRates, 10000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   onContractRate(feedback) {

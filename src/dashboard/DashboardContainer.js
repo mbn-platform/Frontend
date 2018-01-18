@@ -5,6 +5,7 @@ import { acceptOffer, cancelOffer, rejectOffer, payOffer } from '../actions/offe
 import { fetchDashboardData } from '../actions/dashboard';
 import { updateExchanges } from '../actions/exchanges';
 import { rateContract } from '../actions/contracts';
+import { updateRates } from '../actions/terminal';
 
 const mapStateToProps = state => {
   return {
@@ -38,6 +39,7 @@ const mapDispatchToProps = dispatch => {
     onOfferRejected: offer => dispatch(rejectOffer(offer)),
     onOfferCanceled: offer => dispatch(cancelOffer(offer)),
     onContractRate: (feedback, userName, time) => dispatch(rateContract(feedback, userName, time)),
+    updateRates: () => dispatch(updateRates()),
   };
 };
 
