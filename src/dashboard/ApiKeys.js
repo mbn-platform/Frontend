@@ -6,6 +6,7 @@ import ExchangeSelect from './ExchangeSelect';
 import SearchHeader from '../generic/SearchHeader';
 import classNames from 'classnames';
 import { Desktop, Mobile } from '../generic/MediaQuery';
+import { calculateKeyBalance } from '../generic/util';
 import Pagination from '../generic/Pagination';
 
 class ApiKeys extends React.Component {
@@ -76,7 +77,7 @@ class ApiKeys extends React.Component {
         Header: ExchangeHeader(this.props.exchanges, exchangeFilter, this.onExchangeChange),
         accessor: 'exchange',
         minWidth: 100,
-        headerClassName: "filter_align_center",
+        headerClassName: 'filter_align_center',
         className: 'table_col_value upper',
         filterMethod: (filter, row) => {
           if(filter.value === 'All') {
@@ -96,7 +97,7 @@ class ApiKeys extends React.Component {
           </div>
         </div>),
         accessor: key => {
-          return key.balance || 0;
+          return calculateKeyBalance(key, 'BTC', this.props.rates).toFixed(8);
         }
       }, {
         Header: '',
