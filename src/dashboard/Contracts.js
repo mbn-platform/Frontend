@@ -89,9 +89,13 @@ class Contracts extends React.Component {
   getExpireDateColumn() {
     return {
       Header: ContractTableHeader('Expire date'),
-      id: 'expireDate',
-      accessor: 'expireDate',
-      Cell: row => formatDate(new Date(row.value)),
+      id: 'date',
+      accessor: 'date',
+      Cell: row => {
+        const date = new Date(row.value);
+        date.setDate(date.getDate() + row.original.duration);
+        return formatDate(date);
+      },
       headerClassName: 'expire_date big_column',
       className: 'table_col_value big_column',
       minWidth: 60,
@@ -102,10 +106,11 @@ class Contracts extends React.Component {
 
   getTableColumns() {
     return [{
+      id: 'contractor',
       Header: SearchHeaderWithoutSort('Contractor', '', () => {}),
       headerClassName: 'contractor',
       className: 'table_col_value',
-      accessor: 'contractor',
+      accessor: c => c.toUser[0].name,
       minWidth: 70,
       Cell: row => (<div className="contractor_link">@<Link className="table_col_value_a" to={'/' + row.value}>{row.value}</Link></div>),
     }, this.getExpireDateColumn(), {
@@ -131,30 +136,30 @@ class Contracts extends React.Component {
       headerClassName: 'start_balance',
       Header: ContractTableHeader('Start\nbalance'),
       minWidth: 50,
-      accessor: c => c.startBalance + ' ' + c.currency,
+      accessor: c => (c.startBalance / 100000000).toFixed(2) + ' ' + c.currency,
       sortMethod: (a,b, desc) => {
         return parseFloat(a) - parseFloat(b);
-      }      
+      }
     }, {
       id: 'currentBalance',
       headerClassName: 'current_balance',
       className: 'table_col_value',
       Header: ContractTableHeader('Current\nbalance'),
       minWidth: 50,
-      accessor: c => c.currentBalance + ' ' + c.currency,
+      accessor: c => (c.currentBalance / 100000000).toFixed(2) + ' ' + c.currency,
       sortMethod: (a,b, desc) => {
         return parseFloat(a) - parseFloat(b);
-      }            
+      }
     }, {
       id: 'left',
       Header: ContractTableHeader('Target\nbalance'),
       headerClassName: 'left_column',
       className: 'table_col_value',
       minWidth: 40,
-      accessor: c => c.left + c.startBalance + ' ' + c.currency,
+      accessor: c => (c.targetBalance / 100000000).toFixed(2) + ' ' + c.currency,
       sortMethod: (a,b, desc) => {
         return parseFloat(a) - parseFloat(b);
-      }            
+      }
     }, {
       Header: ContractTableHeader('Fee, %'),
       minWidth: 30,
@@ -194,7 +199,7 @@ class Contracts extends React.Component {
       accessor: c => c.currentBalance + ' ' + c.currency,
       sortMethod: (a,b, desc) => {
         return parseFloat(a) - parseFloat(b);
-      }         
+      }
     }, {
       Header: ContractTableHeader('Fee, %'),
       headerClassName: 'fee_column',

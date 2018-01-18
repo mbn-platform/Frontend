@@ -6,8 +6,8 @@ class ContractInfo extends React.Component {
 
   render() {
     const now = Date.now();
-    const expireDate = this.props.contract.expireDate;
-    const startDate = this.props.contract.startDate;
+    const startDate = new Date(this.props.contract.date);
+    const expireDate = new Date(startDate.getTime() + this.props.contract.duration * 86400000);
     const progress = (expireDate - now) / (expireDate - startDate) * 100;
     const { startBalance, currentBalance, left} = this.props.contract;
     const profitProgress = currentBalance > startBalance ? (1 - left / (left + currentBalance)) * 100 : 0;
@@ -17,7 +17,7 @@ class ContractInfo extends React.Component {
           <div className="profit_time_block">
             <div className="time_left">
               <div className="time_left_wrapper">
-                <TimeLeft startDate={this.props.contract.startDate} expireDate={this.props.contract.expireDate} progress={progress}/>
+                <TimeLeft startDate={startDate} expireDate={expireDate} progress={progress}/>
                 <ProgressBar progress={progress} />
               </div>
             </div>
