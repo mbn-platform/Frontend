@@ -11,11 +11,11 @@ export const ABI = [
         "type": "uint256"
       },
       {
-        "name": "_startBallance",
+        "name": "_startBalance",
         "type": "uint256"
       },
       {
-        "name": "_targetBallance",
+        "name": "_targetBalance",
         "type": "uint256"
       },
       {
@@ -82,4 +82,4 @@ export const ABI = [
   }
 ];
 
-export const ADDRESS = '0x660b2cad9c4d81c97ddb3069987927283c9887b2';
+export const ADDRESS = '0xc4d5335e87b220a172ec48ff3ef07394f887adfd';
