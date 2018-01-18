@@ -1,4 +1,5 @@
 import { apiGet, apiPost, ApiError } from '../generic/apiCall';
+import { fetchDashboardData } from '../actions/dashboard';
 export const SELECT_API_KEY = 'SELECT_API_KEY';
 export const CANCEL_ORDER = 'CANCEL_ORDER';
 export const SELECT_MARKET = 'SELECT_MARKET';
@@ -78,12 +79,19 @@ export function placeOrder(order, type) {
           type: PLACE_ORDER,
           order,
         });
+        dispatch(fetchDashboardData());
       })
       .catch(err => {
         if(err.apiErrorCode) {
           switch(err.apiErrorCode) {
-            case ApiError.MARKET_ERROR:
-              alert('market error');
+            case ApiError.EXCHANGE_ERROR:
+              alert('Exchange error');
+              break;
+            case ApiError.INSUFFICIENT_FUNDS:
+              alert('Not enough funds');
+              break;
+            case ApiError.MIN_TRADE_REQUIREMENT_NOT_MET:
+              alert('Order size is less than minimal order size for this market')
               break;
             default:
               console.log('unhandled api error', err.apiErrorCode);
