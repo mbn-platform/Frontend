@@ -21,14 +21,14 @@ const MainContent = ({ loggedIn, profile }) => (
       <ProtectedRoute exact path="/ratings" component={Ratings} loggedIn={loggedIn} />
       <Redirect exact from="/profile" to={profile ? `/${profile.name}` : '/login'} />
       <Route exact path="/:id" component={Profile} />
-      <Redirect from="/" to="/dashboard" />
+      <Redirect from="/" to="/profile" />
     </Switch>
   </Col>
 );
 
 const LoginRoute = ({ loggedIn, ...props }) => {
   if(loggedIn) {
-    return (<Redirect to="/dashboard" />);
+    return (<Redirect to="/profile" />);
   } else {
     return (<Route  {...props} component={Login} />);
   }
