@@ -44,7 +44,6 @@ class History extends React.Component {
       const key = this.props.apiKeys.ownKeys[0] || this.props.apiKeys.receivedKeys[0];
       this.props.selectApiKey(key);
     }
-    this.props.getHistory();
     this.props.fetchDashboardData();
   }
 
