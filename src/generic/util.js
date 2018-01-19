@@ -64,7 +64,7 @@ export function calculateKeyBalance(key, currency, rates) {
           if(name === 'USDT') {
             let rate = rates.USDT.BTC;
             if(rate) {
-              add = value / rate;
+              add = value / rate || 0;
             }
             break;
           } else {
@@ -76,7 +76,7 @@ export function calculateKeyBalance(key, currency, rates) {
           if(name === 'USDT' || name === 'BTC') {
             let rate = rates[name].ETH || 0;
             if(rate) {
-              add = value / rate;
+              add = value / rate || 0;
             }
             break;
           } else {
