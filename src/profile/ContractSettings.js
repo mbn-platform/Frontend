@@ -25,16 +25,21 @@ class ContractSettings extends React.Component {
   onEditButtonClick() {
     const isEditing = this.state.isEditing;
     if(isEditing) {
-      const update = {
-        fee: parseInt(this.state.fee, 10) || this.props.fee,
-        minAmount: parseInt(this.state.amount, 10) || this.props.amount,
-        minAmountCurrency: this.state.currency || this.props.currency,
-        roi: parseInt(this.state.roi, 10) || this.props.roi,
-        maxLoss: parseInt(this.state.maxLoss, 10) || this.props.maxLoss,
-        duration: parseInt(this.state.duration, 10) || this.props.duration,
-      };
-      this.props.onSaveChangesClick(update);
-      this.setState(this.getInitialState());
+      const fee = parseInt(this.state.fee, 10) || this.props.fee;
+      const minAmount = parseInt(this.state.amount, 10) || this.props.amount;
+      const minAmountCurrency = this.state.currency || this.props.currency;
+      const roi = parseInt(this.state.roi, 10) || this.props.roi;
+      const maxLoss = parseInt(this.state.maxLoss, 10) || this.props.maxLoss;
+      const duration = parseInt(this.state.duration, 10) || this.props.duration;
+      if(fee >= 100 || fee <= 0 || minAmount <= 0 || roi <= 0 ||
+        duration <= 0 || maxLoss <= 0) {
+        alert('Enter all contract settings');
+        return;
+      } else {
+        const update = { fee, minAmount, minAmountCurrency, roi, maxLoss, duration };
+        this.props.onSaveChangesClick(update);
+        this.setState(this.getInitialState());
+      }
     } else {
       this.setState({...this.getInitialState(), isEditing: true});
     }
@@ -54,7 +59,13 @@ class ContractSettings extends React.Component {
 
 
   onToggleClick(e) {
-    this.props.onSaveChangesClick({availableForOffers: !this.props.availableForOffers});
+    const { minAmount, fee, maxLoss, duration, roi } = this.props;
+    if(fee >= 100 || fee <= 0 || minAmount <= 0 || roi <= 0 ||
+      duration <= 0 || maxLoss <= 0) {
+      alert('You need to edit your contract settings first');
+      return;
+    }
+    this.props.onToggleClick(!this.props.availableForOffers);
   }
 
   renderAcceptsRequests() {

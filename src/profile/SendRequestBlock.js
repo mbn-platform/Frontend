@@ -54,6 +54,7 @@ class SendRequestBlock extends React.Component {
         return (
           <ContractDetails
             onOfferSendClick={() => this.setState({visibleBlock: SEND_REQUEST_BLOCK_SELECT_API})}
+            availableForOffers={this.props.profile.availableForOffers}
             duration={this.props.profile.duration}
             amount={this.props.profile.minAmount}
             currency={this.props.profile.minAmountCurrency}

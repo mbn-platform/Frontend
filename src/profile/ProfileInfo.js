@@ -12,7 +12,7 @@ class ProfileInfo extends React.Component {
     return (
       <Row className="justify-content-center">
         <Col xs="12" className="text-center align-middle info-screen-title title-text">
-          @{this.props.name}
+          @{this.props.profile.name}
         </Col>
       </Row>
     );
@@ -21,10 +21,10 @@ class ProfileInfo extends React.Component {
   getHeaderSeparator() {
     return (
       <Row className="justify-content-center">
-        <Col md="12" lg="12" xl="12" style={{display: (this.props.availableForOffers ? 'block' : 'none')}} className="accept-request-title-block">
+        <Col md="12" lg="12" xl="12" style={{display: (this.props.profile.availableForOffers ? 'block' : 'none')}} className="accept-request-title-block">
           <div className="accept-request-title-text">accepting requests</div>
         </Col>
-        <Col md="12" lg="12" xl="12" style={{display: (!this.props.availableForOffers ? 'block' : 'none')}}  className="no-accept-request-title-block">
+        <Col md="12" lg="12" xl="12" style={{display: (!this.props.profile.availableForOffers ? 'block' : 'none')}}  className="no-accept-request-title-block">
           <div className="no-accept-request-title-text">not Accepting requests</div>
         </Col>
       </Row>
@@ -32,6 +32,7 @@ class ProfileInfo extends React.Component {
   }
 
   render() {
+    const profile = this.props.profile;
     if(this.props.own) {
       return (
         <Col xs="12" md="auto" sm="12" className="item-screen info-screen contract-block">
@@ -42,23 +43,24 @@ class ProfileInfo extends React.Component {
                 {this.getHeaderSeparator()}
                 <RatingBar rating={2}/>
                 <Stats
-                  traderRating={this.props.topTraders}
-                  investorRating={this.props.topInvesters}
-                  roiInBTC={this.props.roiInBTC}
-                  roiInUSD={this.props.roiInUSD}
-                  moneyInManagement={this.props.investmentAmount}
+                  traderRating={profile.topTraders}
+                  jnvestorRating={profile.topInvesters}
+                  joiInBTC={profile.roiInBTC}
+                  roiInUSD={profile.roiInUSD}
+                  moneyInManagement={profile.investmentAmount}
                 />
                 <ContractSettings
                   onSaveChangesClick={this.props.onSaveChangesClick}
-                  duration={this.props.duration}
-                  amount={this.props.minAmount}
-                  currency={this.props.minAmountCurrency}
-                  maxLoss={this.props.maxLoss}
-                  roiInBTC={this.props.roiInBTC}
-                  roiInUSD={this.props.roiInUSD}                  
-                  fee={this.props.fee}
-                  availableForOffers={this.props.availableForOffers}
-                  roi={this.props.roi}
+                  onToggleClick={this.props.onToggleClick}
+                  duration={profile.duration}
+                  amount={profile.minAmount}
+                  currency={profile.minAmountCurrency}
+                  maxLoss={profile.maxLoss}
+                  roiInBTC={profile.roiInBTC}
+                  roiInUSD={profile.roiInUSD}                  
+                  fee={profile.fee}
+                  availableForOffers={profile.availableForOffers}
+                  roi={profile.roi}
                 />
               </Col>
             </Row>
@@ -75,14 +77,14 @@ class ProfileInfo extends React.Component {
                 {this.getHeaderSeparator()}
                 <RatingBar rating={2}/>
                 <Stats
-                  traderRating={this.props.topTraders}
-                  investorRating={this.props.topInvesters}
+                  traderRating={profile.topTraders}
+                  investorRating={profile.topInvesters}
                   roi={15}
-                  roiInBTC={this.props.roiInBTC}
-                  roiInUSD={this.props.roiInUSD}                        
-                  moneyInManagement={this.props.investmentAmount}
+                  roiInBTC={profile.roiInBTC}
+                  roiInUSD={profile.roiInUSD}                        
+                  moneyInManagement={profile.investmentAmount}
                 />
-                <SendRequestBlock profile={this.props} />
+                <SendRequestBlock profile={profile} />
               </Col>
             </Row>
           </Container>
