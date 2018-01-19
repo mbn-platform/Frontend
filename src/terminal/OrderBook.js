@@ -53,9 +53,7 @@ class OrderBook extends React.Component {
       const minBuy = buy.reduce((accum, value) => Math.min(accum, value.Quantity), maxBuy);
       const minSell = sell.reduce((accum, value) => Math.min(accum, value.Quantity), maxSell);
       buy.forEach(order => order.relativeSize = relativeSize(minBuy, maxBuy, order.Quantity));
-      sell.forEach(order => order.relativeSize = relativeSize(minSell, maxSell, order.Quantity)); 
-      sell = this.sortData(sell);
-      buy = this.sortData(buy);      
+      sell.forEach(order => order.relativeSize = relativeSize(minSell, maxSell, order.Quantity));    
       this.setState({buy,sell}); 
     }
   }
@@ -71,7 +69,15 @@ class OrderBook extends React.Component {
   render() {
     const currency = this.props.market.split('-')[0];
     const isBTC = currency === 'BTC' || currency === 'ETH';
+    let sortedDataSell = [];
+    let sortedDataBuy = [];
+    if(this.state.sell.length) {
+     sortedDataSell = this.sortData(this.state.sell);
+    }
 
+    if(this.state.buy.length) {
+     sortedDataBuy = this.sortData(this.state.buy);
+    }
     return (
       <div className="orderbook-table chart col-12 col-sm-6 col-md-12">
         <div className="chart__top justify-content-between row">
@@ -100,7 +106,7 @@ class OrderBook extends React.Component {
               </tr>
             </thead>
             <tbody className="tbody">
-              {this.state.sell.map((order, i) => (
+              {sortedDataSell.map((order, i) => (
                 <BuyOrderCell
                   isBTC={isBTC}
                   key={i}
@@ -116,7 +122,7 @@ class OrderBook extends React.Component {
         <div className="orderbook-table-wrapper js-table-wrapper">
           <table className="table green">
             <tbody>
-              {this.state.buy.map((order, i) => (
+              {sortedDataBuy.map((order, i) => (
                 <BuyOrderCell
                   isBTC={isBTC}
                   key={i}
