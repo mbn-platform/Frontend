@@ -1,5 +1,5 @@
 import { SELECT_API_KEY, CANCEL_ORDER, SELECT_MARKET, PLACE_ORDER, GET_MY_ORDERS } from '../actions/terminal';
-import { ADD_API_KEY } from '../actions/apiKeys';
+import { ADD_API_KEY, DELETE_API_KEY } from '../actions/apiKeys';
 import { generateId } from '../demoData/util';
 
 export default function(state = {
@@ -34,6 +34,12 @@ export default function(state = {
       const {openTrades: open, closedTrades: completed} = action.orders;
       return {...state, orders: {open, completed}};
     }
+    case DELETE_API_KEY:
+      if(state.selectedApiKey && state.selectedApiKey._id === action.apiKey._id) {
+        return {...state, selectedApiKey: null};
+      } else {
+        return state;
+      }
     default:
       return state;
   }
