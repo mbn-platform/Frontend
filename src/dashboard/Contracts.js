@@ -184,10 +184,11 @@ class Contracts extends React.Component {
 
   getTableMobileColumns() {
     return [{
+      id: 'contractor',
       Header: SearchHeaderWithoutSort('Contractor', '', () => {}),
       headerClassName: 'contractor',
       className: 'table_col_value',
-      accessor: 'contractor',
+      accessor: c => c.toUser[0].name,
       minWidth: 84,
       Cell: row => (<div className="contractor_link">@<Link className="table_col_value_a" to={'/' + row.value}>{row.value}</Link></div>),
     }, {
