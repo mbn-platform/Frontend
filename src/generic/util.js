@@ -51,7 +51,10 @@ export function formatBTCValue(value) {
 
 export function calculateKeyBalance(key, currency, rates) {
   return key.currencies.reduce((balance, cur) => {
-    const {name, value} = cur;
+    const {name, value, enabled} = cur;
+    if(!enabled || !value) {
+      return balance;
+    }
     let add;
     if(name === currency) {
       add = value;
