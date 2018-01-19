@@ -78,6 +78,9 @@ class Navigation extends React.Component {
   }
 
   signOutButton() {
+    if(!this.props.auth.loggedIn) {
+      return null;
+    }
     const onClick = e => {
       e.preventDefault();
       this.props.dispatch({
