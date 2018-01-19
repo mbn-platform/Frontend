@@ -12,7 +12,13 @@ export function logIn() {
       if(!acc) {
         return;
       }
-      const message = window.web3.sha3('MercatusLogin');
+      let message;
+      const userAgent = window.navigator.userAgent;
+      if(userAgent.indexOf('Cipher') !== -1) {
+        message = '0x4d657263617475734c6f67696e';
+      } else {
+        message = window.web3.sha3('\x19Ethereum Signed Message:\n13MercatusLogin');
+      }
       window.web3.eth.sign(acc, message, (err, result) => {
         if(!err) {
           apiPost('/api/auth', null, {sgn: result, addr: acc})
