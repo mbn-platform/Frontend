@@ -16,13 +16,13 @@ class HeaderStatus extends React.Component {
 
   render() {
     let currencies;
+    const cur = this.props.market.split('-');
     if(this.props.apiKey) {
-      const cur = this.props.market.split('-');
       const currency1 = this.props.apiKey.currencies.find(c => c.name === cur[0]) || {name: cur[0]};
       const currency2 = this.props.apiKey.currencies.find(c => c.name === cur[1]) || {name: cur[1]};
       currencies = [currency1, currency2];
     } else {
-      currencies = [{}, {}];
+      currencies = [{name: cur[0]}, {name: cur[1]}];
     }
     return (
       <header className="header-status">
