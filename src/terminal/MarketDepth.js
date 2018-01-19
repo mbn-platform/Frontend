@@ -133,7 +133,7 @@ class MarketDepth extends React.Component {
           return res;
   }
 
-  addGuides(chart, dashLength) {
+  addGuides(chart, isDesktop) {
           let isBTC = true;
           let type = ['sell', 'buy'],
           asks = [],
@@ -191,15 +191,28 @@ class MarketDepth extends React.Component {
           let maxOffset = 0
           function addGuides(arr, min, max, type, color, reverse) {
            arr.sort((a1,a2) => a2[type + "relativeSize"] - a1[type + "relativeSize"])
-           const countGuides = arr.length > 3 ? 3 : arr.length;
-           for(let i = 0; i < countGuides; i++) {
-                if(i > 0) {
-                  if((arr[i].value > arr[i - 1].value && arr[i].value / 10 < arr[i].value - arr[i - 1].value) ||
-                    (arr[i-1].value > arr[i].value && arr[i-1].value / 10 < arr[i-1].value - arr[i].value)) {
-                    continue;  
-                  }
-                  
+           let countGuides = 0;
+           const maxValue = arr.reduce((accum, value) => Math.max(accum,value.value), 0);
+           const minValue = arr.reduce((accum, value) => Math.min(accum,value.value), maxValue);
+           const gap = isDesktop ? 8 : 2;
+           let lastValues = [];       
+           for(let i = 0; i < arr.length; i++) {
+                if(countGuides == 3) {
+                  break;
                 }
+                if(i > 0) {
+                  let valid = true;
+                  for(let j = 0; j < lastValues.length; j++) {
+                    if(Math.abs(lastValues[j] - arr[i].value) < (maxValue - minValue) / gap) {
+                      valid = false;
+                    }                    
+                  }
+                  if(!valid) {
+                    continue;
+                  }
+                }
+                lastValues.push(arr[i].value);
+                countGuides++;
                 maxOffset = getLabelOffset(arr[i]);
                 guides.push( {
                   'above': true,
@@ -213,7 +226,7 @@ class MarketDepth extends React.Component {
                   "position": "bottom",
                   "inside": true,
                   "labelRotation": -90,
-                  'dashLength': dashLength ? 3 : 0
+                  'dashLength': isDesktop ? 3 : 0
                 } );              
               }            
            }
