@@ -81,6 +81,10 @@ class PlaceOrder extends React.Component {
     const {name} = e.target;
     switch(name) {
       case 'price': {
+        const stringValue = e.target.value;
+        if(!stringValue) {
+          this.setState({price: '', amount: ''});
+        }
         const value = parseFloat(e.target.value);
         if(value >= 0) {
           if(this.state.orderSize > 0) {
@@ -93,6 +97,10 @@ class PlaceOrder extends React.Component {
         break;
       }
       case 'ordersize': {
+        const stringValue = e.target.value;
+        if(!stringValue) {
+          this.setState({amount: '', orderSize: ''});
+        }
         const value = parseFloat(e.target.value);
         if(value >= 0) {
           let amount;
@@ -106,6 +114,10 @@ class PlaceOrder extends React.Component {
         break;
       }
       case 'amount': {
+        const stringValue = e.target.value;
+        if(!stringValue) {
+          this.setState({amount: '', orderSize: ''});
+        }
         const value = parseFloat(e.target.value);
         if(value >= 0) {
           const orderSize = formatBTCValue(value / this.state.price);
