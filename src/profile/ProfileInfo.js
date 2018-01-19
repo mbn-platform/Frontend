@@ -44,8 +44,8 @@ class ProfileInfo extends React.Component {
                 <RatingBar rating={2}/>
                 <Stats
                   traderRating={profile.topTraders}
-                  jnvestorRating={profile.topInvesters}
-                  joiInBTC={profile.roiInBTC}
+                  investorRating={profile.topInvesters}
+                  roiInBTC={profile.roiInBTC}
                   roiInUSD={profile.roiInUSD}
                   moneyInManagement={profile.investmentAmount}
                 />
