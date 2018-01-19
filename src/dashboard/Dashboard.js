@@ -16,11 +16,17 @@ class Dashboard extends React.Component {
     this.onOfferSelected = this.onOfferSelected.bind(this);
     this.onContractSelected = this.onContractSelected.bind(this);
     this.onContractRate = this.onContractRate.bind(this);
+    this.update = this.update.bind(this);
+  }
+
+  update() {
+    this.props.updateRates();
+    this.props.fetchDashboardData();
   }
   componentDidMount() {
-    this.props.onDashboardMounted();
-    this.props.updateRates();
-    this.interval = setInterval(this.props.updateRates, 10000);
+    this.update();
+    this.props.updateExchanges();
+    this.interval = setInterval(this.update, 10000);
   }
 
   componentWillUnmount() {

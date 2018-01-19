@@ -31,10 +31,8 @@ const mapDispatchToProps = dispatch => {
       }
     },
     onKeyUpdateClick: (apiKey, original) => dispatch(updateApiKey(apiKey, original)),
-    onDashboardMounted: () => {
-      dispatch(fetchDashboardData());
-      dispatch(updateExchanges());
-    },
+    fetchDashboardData: () => dispatch(fetchDashboardData()),
+    updateExchanges: () => dispatch(updateExchanges()),
     onOfferPay: offer => dispatch(payOffer(offer)),
     onOfferAccepted: offer => dispatch(acceptOffer(offer)),
     onOfferRejected: offer => dispatch(rejectOffer(offer)),

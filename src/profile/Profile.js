@@ -62,6 +62,8 @@ class Profile extends React.Component {
   componentDidMount() {
     const name = this.props.match.params.id;
     this.loadProfile(name);
+    this.props.fetchDashboardData();
+    this.props.updateExchanges();
   }
 
 
