@@ -94,9 +94,5 @@ class ProfileInfo extends React.Component {
   }
 }
 
-ProfileInfo.propTypes = {
-  name: PropTypes.string.isRequired
-};
-
 
 export default ProfileInfo;

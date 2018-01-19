@@ -75,7 +75,7 @@ class ContractSettings extends React.Component {
           <Row className="justify-content-between accept-block">
             <Col xs="auto" className="text">ACCEPT REQUESTS?</Col>
             <Col xs="auto" className="switch">
-              <input className="cmn-toggle cmn-toggle-round-flat" type="checkbox" onChange={this.onToggleClick} checked={this.props.availableForOffers}/>
+              <input className="cmn-toggle cmn-toggle-round-flat" type="checkbox" onChange={this.onToggleClick} checked={this.props.availableForOffers || false}/>
               <label onClick={this.onToggleClick} className="cmn-toggle-background"/>
               <label className="cmn-text cmn-yes-text">YES</label>
               <label className="cmn-text cmn-no-text">NO</label>

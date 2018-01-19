@@ -71,12 +71,12 @@ const Stats = ({ traderRating, investorRating, roiInUSD, roiInBTC, moneyInManage
 );
 
 Stats.propTypes = {
-  traderRating: PropTypes.number.isRequired,
-  investorRating: PropTypes.number.isRequired,
-  roi: PropTypes.number.isRequired,
-  roiInBTC: PropTypes.number.isRequired,
-  roiInUSD: PropTypes.number.isRequired,  
-  moneyInManagement: PropTypes.number.isRequired,
+  traderRating: PropTypes.number,
+  investorRating: PropTypes.number,
+  roi: PropTypes.number,
+  roiInBTC: PropTypes.number,
+  roiInUSD: PropTypes.number,
+  moneyInManagement: PropTypes.number,
 };
 
 export default Stats;
