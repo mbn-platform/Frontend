@@ -113,8 +113,16 @@ const Balance = ({first, second}) => (
 const BalanceValue = ({name, value}) => (
   <Row className="balance justify-content-center align-items-center">
     <div className="balance-name">{name}</div>
-    <div className="balance-val">{value || 0}</div>
+    <div className="balance-val">{formatBalance(value, name)}</div>
   </Row>
 );
+
+function formatBalance(value, name) {
+  if(name === 'BTC') {
+    return (value || 0).toFixed(8);
+  } else {
+    return (value || 0).toFixed(2);
+  }
+}
 
 export default HeaderStatus;
