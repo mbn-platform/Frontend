@@ -31,13 +31,10 @@ class MarketDepth extends React.Component {
   }  
 
   componentDidMount() {
-    this.interval = setInterval(this.updateOrderBook.bind(this), 5000);
-    this.updateOrderBook();
     window.addEventListener("resize", this.onResize);
   }
 
   componentWillUnmount() {
-    clearInterval(this.interval);
     window.removeEventListener("resize", this.onResize);
   }
 
@@ -48,27 +45,19 @@ class MarketDepth extends React.Component {
     }
   }
 
-  updateOrderBook() {
-    this.setState({currency: this.props.market.split('-')})
-    getOrderBook(this.props.market, 'buy').then(json => {
-      if(json.success) {
-        let buy = json.result;
-        buy.sort((b1,b2) => (b1.Rate - b2.Rate))
-        getOrderBook(this.props.market, 'sell').then(json => {
-          if(json.success) {
-            let sell = json.result;
-            const maxBuy = buy.reduce((accum, value) => Math.max(accum, value.Quantity), 0);
-            const maxSell = sell.reduce((accum, value) => Math.max(accum,value.Quantity), 0);
-            const minBuy = buy.reduce((accum, value) => Math.min(accum, value.Quantity), maxBuy);
-            const minSell = sell.reduce((accum, value) => Math.min(accum, value.Quantity), maxSell);   
-            buy.forEach(order => order.relativeSize = relativeSize(minBuy, maxBuy, order.Quantity));
-            sell.forEach(order => order.relativeSize = relativeSize(minSell, maxSell, order.Quantity));
-            var res = this.getData(buy, sell);
-            this.setState({data: res}) 
-          }          
-        }).catch(err => console.log('error updating order book', err));
-      }
-    }).catch(err => console.log('error updating order book', err));
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.buy && nextProps.sell) {
+        let sell = nextProps.sell.slice();
+        let buy = nextProps.buy.slice();
+        const maxBuy = buy.reduce((accum, value) => Math.max(accum, value.Quantity), 0);
+        const maxSell = sell.reduce((accum, value) => Math.max(accum,value.Quantity), 0);
+        const minBuy = buy.reduce((accum, value) => Math.min(accum, value.Quantity), maxBuy);
+        const minSell = sell.reduce((accum, value) => Math.min(accum, value.Quantity), maxSell);   
+        buy.forEach(order => order.relativeSize = relativeSize(minBuy, maxBuy, order.Quantity));
+        sell.forEach(order => order.relativeSize = relativeSize(minSell, maxSell, order.Quantity));
+        var res = this.getData(buy, sell);      
+        this.setState({data: res}) 
+    }
   }
 
   getData(buy, sell) {

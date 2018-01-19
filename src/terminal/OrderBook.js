@@ -12,16 +12,27 @@ class OrderBook extends React.Component {
     this.state = {buy: [], sell: [], last: null, sort: {}, prelast: null, scroll: false};
     this.sortData = sortData.bind(this);
     this.onColumnSort = onColumnSort.bind(this);
+    this.fireOnScroll = this.fireOnScroll.bind(this);    
     this.sortFunctions = {
       price: (a, b) => formatFloat(a.Rate, this.props.market.split('-')[0] === 'BTC') - formatFloat(b.Rate, this.props.market.split('-')[0] === 'BTC'),
       relativeSize: (a, b) => formatFloat(a.Rate * a.Quantity) - formatFloat(b.Rate * b.Quantity)
     };
   }
 
+  fireOnScroll() {
+    this.setState({scroll: true})
+    this.tableSell.removeEventListener('scroll', this.fireOnScroll);
+  }
 
   componentDidMount() {
-    this.interval = setInterval(this.updateOrderBook.bind(this), 5000);
-    this.updateOrderBook();
+    this.tableSell.addEventListener('scroll', this.fireOnScroll);
+  }
+
+  componentDidUpdate() {
+    if(this.tableSell && this.tableSell.scrollTop == 0 && !this.state.scroll) {
+      this.tableSell.scrollTop = this.tableSell.scrollHeight - 26.6;
+    }               
+
   }
 
   componentWillUnmount() {
@@ -31,61 +42,35 @@ class OrderBook extends React.Component {
   componentWillReceiveProps(nextProps) {
     if(nextProps.market !== this.props.market) {
       this.setState({prelast: null, last: null});
-      clearInterval(this.interval);
-      this.interval = setInterval(this.updateOrderBook.bind(this), 5000);
-      this.updateOrderBook(nextProps.market);
+    }
+    if(nextProps.buy && nextProps.sell) {
+      let sell = nextProps.sell.slice();
+      let buy = nextProps.buy.slice();
+      sell.reverse();
+
+      const maxBuy = buy.reduce((accum, value) => Math.max(accum, value.Quantity), 0);
+      const maxSell = sell.reduce((accum, value) => Math.max(accum,value.Quantity), 0);
+      const minBuy = buy.reduce((accum, value) => Math.min(accum, value.Quantity), maxBuy);
+      const minSell = sell.reduce((accum, value) => Math.min(accum, value.Quantity), maxSell);
+      buy.forEach(order => order.relativeSize = relativeSize(minBuy, maxBuy, order.Quantity));
+      sell.forEach(order => order.relativeSize = relativeSize(minSell, maxSell, order.Quantity)); 
+      sell = this.sortData(sell);
+      buy = this.sortData(buy);      
+      this.setState({buy,sell}); 
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps, nextState) {  
     if(nextProps.market === this.props.market && nextState === this.state) {
       return false;
     } else {
       return true;
-    }
-  }
-
-  updateOrderBook(market) {
-    market = market || this.props.market;
-    getOrderBook(market, 'both').then(json => {
-      if(json.success) {
-        let {buy, sell} = json.result;
-        buy = buy.slice(0, 100);
-        sell = sell.slice(0, 100);
-        sell.reverse();
-        const maxBuy = buy.reduce((accum, value) => Math.max(accum, value.Quantity), 0);
-        const maxSell = sell.reduce((accum, value) => Math.max(accum,value.Quantity), 0);
-        const minBuy = buy.reduce((accum, value) => Math.min(accum, value.Quantity), maxBuy);
-        const minSell = sell.reduce((accum, value) => Math.min(accum, value.Quantity), maxSell);
-        buy.forEach(order => order.relativeSize = relativeSize(minBuy, maxBuy, order.Quantity));
-        sell.forEach(order => order.relativeSize = relativeSize(minSell, maxSell, order.Quantity));
-        this.setState({buy, sell});
-        if(this.tableSell.scrollTop == 0 && !this.state.scroll) {
-          this.setState({scroll: true})
-          this.tableSell.scrollTop = this.tableSell.scrollHeight - 26.6;
-        }
-
-      }
-    }).catch(err => console.log('error updating order book', err));
-    getTicker(market).then(json => {
-      this.setState(state => {
-        return {last: json.result.Last, prelast: state.last};
-      });
-    });
+    }                 
   }
 
   render() {
     const currency = this.props.market.split('-')[0];
     const isBTC = currency === 'BTC' || currency === 'ETH';
-    let sortedDataSell = [];
-    let sortedDataBuy = [];
-    if(this.state.sell.length) {
-      sortedDataSell = this.sortData(this.state.sell);
-    }
-
-    if(this.state.buy.length) {
-      sortedDataBuy = this.sortData(this.state.buy);
-    }
 
     return (
       <div className="orderbook-table chart col-12 col-sm-6 col-md-12">
@@ -115,7 +100,7 @@ class OrderBook extends React.Component {
               </tr>
             </thead>
             <tbody className="tbody">
-              {sortedDataSell.map((order, i) => (
+              {this.state.sell.map((order, i) => (
                 <BuyOrderCell
                   isBTC={isBTC}
                   key={i}
@@ -131,7 +116,7 @@ class OrderBook extends React.Component {
         <div className="orderbook-table-wrapper js-table-wrapper">
           <table className="table green">
             <tbody>
-              {sortedDataBuy.map((order, i) => (
+              {this.state.buy.map((order, i) => (
                 <BuyOrderCell
                   isBTC={isBTC}
                   key={i}

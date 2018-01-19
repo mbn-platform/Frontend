@@ -8,6 +8,7 @@ import PlaceOrder from './PlaceOrder';
 import MyOrders from './MyOrders';
 import RecentTrades from './RecentTrades';
 import OrderBook from './OrderBook';
+import { getOrderBook} from '../api/bittrex/bittrex';
 import { connect } from 'react-redux';
 import { selectApiKey, cancelOrder, selectMarket, placeOrder } from '../actions/terminal';
 import MediaQuery from 'react-responsive';
@@ -16,7 +17,24 @@ class Terminal extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state = {buy: [], sell: []}
   }
+
+
+  updateOrderBook(market) {
+    getOrderBook(this.props.selectedMarket, 'buy').then(json => {
+      if(json.success) {
+        let buy = json.result;
+        buy.sort((b1,b2) => (b1.Rate - b2.Rate))
+        getOrderBook(this.props.selectedMarket, 'sell').then(json => {
+          if(json.success) {
+            let sell = json.result;
+            this.setState({buy: buy, sell: sell});
+          }          
+        }).catch(err => console.log('error updating order book', err));
+      }
+    }).catch(err => console.log('error updating order book', err));
+  }  
 
   render() {
     return (
@@ -39,6 +57,8 @@ class Terminal extends React.Component {
                 <Col xs="12" sm="12" md="6" lg="8" className="charts__left">
                   <TradingView />
                   <MarketDepth 
+                    buy={this.state.buy}
+                    sell={this.state.sell}                  
                     market={this.props.selectedMarket}
                   />
                   <Row className="justify-content-between">
@@ -55,6 +75,8 @@ class Terminal extends React.Component {
                     </MediaQuery>
                     <MediaQuery query="(max-width: 575px)">
                       <OrderBook
+                        buy={this.state.buy}
+                        sell={this.state.sell}
                         market={this.props.selectedMarket}
                       />
                     </MediaQuery>
@@ -64,6 +86,8 @@ class Terminal extends React.Component {
                   <Row>
                     <MediaQuery query="(min-width: 576px)">
                       <OrderBook
+                        buy={this.state.buy}
+                        sell={this.state.sell}                      
                         market={this.props.selectedMarket}
                       />
                     </MediaQuery>
@@ -93,10 +117,13 @@ class Terminal extends React.Component {
       const key = this.props.apiKeys.ownKeys[0] || this.props.apiKeys.receivedKeys[0];
       this.props.selectApiKey(key);
     }
+    this.interval = setInterval(this.updateOrderBook.bind(this), 5000);
+    this.updateOrderBook();    
   }
 
   componentWillUnmount() {
     window.uncustomize();
+    clearInterval(this.interval);
   }
 }
 
