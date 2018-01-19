@@ -6,6 +6,7 @@ import classNames from 'classnames';
 import { Desktop, Mobile } from '../generic/MediaQuery';
 import Pagination from '../generic/Pagination';
 import { CONTRACT_STATE_INIT, CONTRACT_STATE_ACCEPTED } from '../constants';
+import { calculateKeyBalance } from '../generic/util';
 
 
 const TAB_INBOX = 0;
@@ -129,7 +130,20 @@ class Offers extends React.Component {
       Header: SortHeader('Sum'),
       className: 'table_col_value',
       id: 'amount',
-      accessor: offer => offer.amount + ' ' + offer.currency,
+      accessor: offer => {
+        if(offer.state === CONTRACT_STATE_INIT) {
+          const apiKeys = this.state.selectedTab === TAB_INBOX ? this.props.apiKeys.receivedKeys : this.props.apiKeys.ownKeys;
+          const key = apiKeys.find(k => k._id === offer.keyId);
+          if(key) {
+            const balance = calculateKeyBalance(key, offer.currency, this.props.rates);
+            return formatBalance(balance, offer.currency)  + ' ' + offer.currency;
+          } else {
+            return '';
+          }
+        } else {
+          return formatBalance(offer.startBalance / 100000000) + ' ' + offer.currency;
+        }
+      },
     }];
 
 
@@ -239,4 +253,11 @@ function formatTime(difference){
   const hours = Math.floor(left / 1000 / 3600);
   const minutes = Math.floor(left / 1000 % 3600 / 60);
   return `${hours} h ${minutes} m`;
+}
+function formatBalance(value, name) {
+  if(name === 'USDT') {
+    return (value || 0).toFixed(2);
+  } else {
+    return (value || 0).toFixed(8);
+  }
 }
