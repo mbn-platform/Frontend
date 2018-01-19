@@ -45,6 +45,7 @@ class ContractDetails extends React.Component {
               />
             </div>
           </div>
+          {this.props.availableForOffers ? (
           <div className="row justify-content-center">
             <div className="col-auto">
               <button onClick={this.props.onOfferSendClick} type="button" className="send-request-btn btn btn-secondary active">
@@ -57,6 +58,8 @@ class ContractDetails extends React.Component {
 
             </div>
           </div>
+          ) : null}
+          {this.props.availableForOffers ? (
           <div className="row justify-content-center d-flex d-md-none">
             <div className="col-auto">
               <div className="popover-send-text">
@@ -64,6 +67,7 @@ class ContractDetails extends React.Component {
               </div>
             </div>
           </div>
+          ) : null}
         </div>
       </div>
 
