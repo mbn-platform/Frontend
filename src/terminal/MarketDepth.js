@@ -31,13 +31,10 @@ class MarketDepth extends React.Component {
   }  
 
   componentDidMount() {
-    this.interval = setInterval(this.updateOrderBook.bind(this), 5000);
-    this.updateOrderBook();
     window.addEventListener("resize", this.onResize);
   }
 
   componentWillUnmount() {
-    clearInterval(this.interval);
     window.removeEventListener("resize", this.onResize);
   }
 
@@ -48,27 +45,19 @@ class MarketDepth extends React.Component {
     }
   }
 
-  updateOrderBook() {
-    this.setState({currency: this.props.market.split('-')})
-    getOrderBook(this.props.market, 'buy').then(json => {
-      if(json.success) {
-        let buy = json.result;
-        buy.sort((b1,b2) => (b1.Rate - b2.Rate))
-        getOrderBook(this.props.market, 'sell').then(json => {
-          if(json.success) {
-            let sell = json.result;
-            const maxBuy = buy.reduce((accum, value) => Math.max(accum, value.Quantity), 0);
-            const maxSell = sell.reduce((accum, value) => Math.max(accum,value.Quantity), 0);
-            const minBuy = buy.reduce((accum, value) => Math.min(accum, value.Quantity), maxBuy);
-            const minSell = sell.reduce((accum, value) => Math.min(accum, value.Quantity), maxSell);   
-            buy.forEach(order => order.relativeSize = relativeSize(minBuy, maxBuy, order.Quantity));
-            sell.forEach(order => order.relativeSize = relativeSize(minSell, maxSell, order.Quantity));
-            var res = this.getData(buy, sell);
-            this.setState({data: res}) 
-          }          
-        }).catch(err => console.log('error updating order book', err));
-      }
-    }).catch(err => console.log('error updating order book', err));
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.buy && nextProps.sell) {
+        let sell = nextProps.sell.slice();
+        let buy = nextProps.buy.slice();
+        const maxBuy = buy.reduce((accum, value) => Math.max(accum, value.Quantity), 0);
+        const maxSell = sell.reduce((accum, value) => Math.max(accum,value.Quantity), 0);
+        const minBuy = buy.reduce((accum, value) => Math.min(accum, value.Quantity), maxBuy);
+        const minSell = sell.reduce((accum, value) => Math.min(accum, value.Quantity), maxSell);   
+        buy.forEach(order => order.relativeSize = relativeSize(minBuy, maxBuy, order.Quantity));
+        sell.forEach(order => order.relativeSize = relativeSize(minSell, maxSell, order.Quantity));
+        var res = this.getData(buy, sell);      
+        this.setState({data: res}) 
+    }
   }
 
   getData(buy, sell) {
@@ -144,7 +133,7 @@ class MarketDepth extends React.Component {
           return res;
   }
 
-  addGuides(chart, dashLength) {
+  addGuides(chart, isDesktop) {
           let isBTC = true;
           let type = ['sell', 'buy'],
           asks = [],
@@ -202,15 +191,28 @@ class MarketDepth extends React.Component {
           let maxOffset = 0
           function addGuides(arr, min, max, type, color, reverse) {
            arr.sort((a1,a2) => a2[type + "relativeSize"] - a1[type + "relativeSize"])
-           const countGuides = arr.length > 3 ? 3 : arr.length;
-           for(let i = 0; i < countGuides; i++) {
-                if(i > 0) {
-                  if((arr[i].value > arr[i - 1].value && arr[i].value / 10 < arr[i].value - arr[i - 1].value) ||
-                    (arr[i-1].value > arr[i].value && arr[i-1].value / 10 < arr[i-1].value - arr[i].value)) {
-                    continue;  
-                  }
-                  
+           let countGuides = 0;
+           const maxValue = arr.reduce((accum, value) => Math.max(accum,value.value), 0);
+           const minValue = arr.reduce((accum, value) => Math.min(accum,value.value), maxValue);
+           const gap = isDesktop ? 8 : 2;
+           let lastValues = [];       
+           for(let i = 0; i < arr.length; i++) {
+                if(countGuides == 3) {
+                  break;
                 }
+                if(i > 0) {
+                  let valid = true;
+                  for(let j = 0; j < lastValues.length; j++) {
+                    if(Math.abs(lastValues[j] - arr[i].value) < (maxValue - minValue) / gap) {
+                      valid = false;
+                    }                    
+                  }
+                  if(!valid) {
+                    continue;
+                  }
+                }
+                lastValues.push(arr[i].value);
+                countGuides++;
                 maxOffset = getLabelOffset(arr[i]);
                 guides.push( {
                   'above': true,
@@ -224,7 +226,7 @@ class MarketDepth extends React.Component {
                   "position": "bottom",
                   "inside": true,
                   "labelRotation": -90,
-                  'dashLength': dashLength ? 3 : 0
+                  'dashLength': isDesktop ? 3 : 0
                 } );              
               }            
            }
