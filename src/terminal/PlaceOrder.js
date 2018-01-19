@@ -146,11 +146,6 @@ class PlaceOrder extends React.Component {
 
   render() {
     const isBTC = this.state.amountCurrency === 'BTC';
-    console.log(isBTC);
-    console.log(this.state.amountCurrency);
-    console.log(this.props.market);
-    console.log(this.state.ask);
-    console.log(this.state.bid);
     return (
       <div className="buysell col-12 col-sm-6 col-md-12">
         <div className="buysell__top justify-content-between row col-12">
