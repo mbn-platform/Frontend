@@ -4,7 +4,6 @@ import BestTraders from './BestTraders';
 import BestInvestors from './BestInvestors';
 import classNames from 'classnames';
 import DropdownSelect from '../terminal/DropdownSelect';
-import { generateRatings } from '../demoData/ratings';
 import $ from 'jquery';
 import {sortData, onColumnSort, classNameForColumnHeader}  from '../generic/terminalSortFunctions';
 import { Link } from 'react-router-dom';
@@ -24,18 +23,7 @@ class Ratings extends React.Component {
     this.sortFunctions = {
       dateCreated: (a, b) => (new Date(a.dateCreated)) - (new Date(b.dateCreated)),
     };
-    let ratings = localStorage.getItem('ratings');
-    if(!ratings) {
-      ratings = generateRatings();
-      localStorage.setItem('ratings', JSON.stringify(ratings));
-    } else {
-      try {
-        ratings = JSON.parse(ratings);
-      } catch(e) {
-        ratings = generateRatings();
-        localStorage.setItem('ratings', JSON.stringify(ratings));
-      }
-    }
+    let ratings = {traders: [], investors: []};
     this.state = {
       roiIntervalOpen: false,
       nameFilter: '',
