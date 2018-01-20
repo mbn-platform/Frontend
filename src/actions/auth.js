@@ -50,6 +50,9 @@ export function addName(name) {
                 type: 'LOGGED_OUT',
               });
               break;
+            case ApiError.NAME_ALREADY_SET:
+              alert('You cannot use that name, please enter another one');
+              break;
             default:
               console.log('unhandled api error');
           }

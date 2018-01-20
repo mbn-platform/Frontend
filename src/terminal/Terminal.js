@@ -133,9 +133,15 @@ class Terminal extends React.Component {
 
   componentDidMount() {
     window.customize();
+    const allowed = this.allowedApiKeys();
     if(!this.props.selectedApiKey) {
-      const key = this.allowedApiKeys()[0]
+      const key = allowed[0]
       this.props.selectApiKey(key);
+    } else {
+      const key = allowed.find(k => k._id === this.props.selectedApiKey._id);
+      if(!key) {
+        this.props.selectApiKey(null);
+      }
     }
     this.updateTerminal();
     this.props.fetchDashboardData();

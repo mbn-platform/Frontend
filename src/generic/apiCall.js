@@ -24,6 +24,7 @@ const defaultGetParams = {
 
 
 
+ApiError.NAME_ALREADY_SET = -41;
 ApiError.FORBIDDEN = -103;
 ApiError.NOT_FOUND = -104;
 ApiError.ORDER_NOT_OPEN = -501;

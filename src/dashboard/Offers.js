@@ -132,9 +132,9 @@ class Offers extends React.Component {
       id: 'amount',
       accessor: offer => {
         if(offer.state === CONTRACT_STATE_INIT) {
-          return formatBalance(offer.balance) + ' ' + offer.currency;
+          return formatBalance(offer.balance, offer.currency) + ' ' + offer.currency;
         } else {
-          return formatBalance(offer.startBalance / 100000000) + ' ' + offer.currency;
+          return formatBalance(offer.startBalance / 100000000, offer.currency) + ' ' + offer.currency;
         }
       },
     }];
