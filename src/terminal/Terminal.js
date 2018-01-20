@@ -10,7 +10,7 @@ import RecentTrades from './RecentTrades';
 import OrderBook from './OrderBook';
 import { getOrderBook} from '../api/bittrex/bittrex';
 import { connect } from 'react-redux';
-import { selectApiKey, cancelOrder, selectMarket, placeOrder, getMyOrders } from '../actions/terminal';
+import { selectApiKey, cancelOrder, selectMarket, placeOrder, getMyOrders, updateTicker } from '../actions/terminal';
 import { fetchDashboardData } from '../actions/dashboard';
 import MediaQuery from 'react-responsive';
 
@@ -38,6 +38,15 @@ class Terminal extends React.Component {
     this.timeout = setTimeout(this.updateTerminal, 5000);
   }
 
+
+  componentWillReceiveProps(props) {
+    if(props.selectedMarket !== this.props.selectedMarket) {
+      const market = props.selectedMarket;
+      clearInterval(this.tickerInterval);
+      this.tickerInterval = setInterval(() => this.props.updateTicker(market), 5000);
+      this.props.updateTicker(market);
+    }
+  }
 
   updateOrderBook(market) {
     getOrderBook(this.props.selectedMarket, 'buy').then(json => {
@@ -81,9 +90,9 @@ class Terminal extends React.Component {
                   />
                   <Row className="justify-content-between">
                     <PlaceOrder                    
+                      ticker={this.props.ticker}
                       placeOrder={this.props.placeOrder}
                       selectedApiKey={this.props.selectedApiKey}
-                      placeOrder={this.props.placeOrder}
                       market={this.props.selectedMarket}
                     />
                     <MediaQuery query="(min-width: 576px)">
@@ -147,12 +156,16 @@ class Terminal extends React.Component {
     this.props.fetchDashboardData();
     this.interval = setInterval(this.updateOrderBook.bind(this), 5000);
     this.updateOrderBook();    
+    const market = this.props.selectedMarket;
+    this.tickerInterval = setInterval(() => this.props.updateTicker(market), 5000);
+    this.props.updateTicker(market);
   }
 
   componentWillUnmount() {
     window.uncustomize();
     clearTimeout(this.timeout);
     clearInterval(this.interval);
+    clearInterval(this.tickerInterval);
   }
 }
 
@@ -162,13 +175,14 @@ const TerminalContainer = connect(state => ({
   selectedApiKey: state.terminal.selectedApiKey,
   selectedMarket: state.terminal.selectedMarket,
   orders: state.terminal.orders,
+  ticker: state.terminal.ticker,
 }), dispatch => ({
-  placeOrder: order => dispatch(placeOrder(order)),
   selectApiKey: key => dispatch(selectApiKey(key)),
   cancelOrder: order => dispatch(cancelOrder(order)),
   selecteMarket: market => dispatch(selectMarket(market)),
   getMyOrders: key => dispatch(getMyOrders(key)),
   fetchDashboardData: () => dispatch(fetchDashboardData()),
   placeOrder: (order, type) => dispatch(placeOrder(order, type)),
+  updateTicker: market => dispatch(updateTicker(market)),
 }))(Terminal);
 export default TerminalContainer;

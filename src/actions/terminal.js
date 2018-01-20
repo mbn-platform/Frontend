@@ -1,6 +1,6 @@
 import { apiGet, apiPost, ApiError } from '../generic/apiCall';
 import { fetchDashboardData } from '../actions/dashboard';
-import { getMarketSummaries } from '../api/bittrex/bittrex';
+import { getMarketSummaries, getTicker } from '../api/bittrex/bittrex';
 export const SELECT_API_KEY = 'SELECT_API_KEY';
 export const CANCEL_ORDER = 'CANCEL_ORDER';
 export const SELECT_MARKET = 'SELECT_MARKET';
@@ -8,6 +8,7 @@ export const PLACE_ORDER = 'PLACE_ORDER';
 export const GET_MY_ORDERS = 'GET_MY_ORDERS';
 export const UPDATE_EXCHANGE_RATES = 'UPDATE_EXCHANGE_RATES';
 export const UPDATE_RATINGS = 'UPDATE_RATINGS';
+export const UPDATE_TICKER = 'UPDATE_TICKER';
 
 export function selectApiKey(key) {
   return {
@@ -139,4 +140,18 @@ export function updateRatings() {
       })
       .catch(e => console.log('error'));
   }
+}
+
+export function updateTicker(market) {
+  return dispatch => {
+    getTicker(market).then(json => {
+      if(json.success) {
+        const {Bid: bid, Ask: ask, Last: last} = json.result;
+        dispatch({
+          type: UPDATE_TICKER,
+          ticker: {bid, ask, last},
+        });
+      }
+    });
+  };
 }

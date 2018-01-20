@@ -17,39 +17,12 @@ class PlaceOrder extends React.Component {
       price: '',
       orderSize: '',
       amount: '',
-      bid: '',
-      ask: '',
       amountCurrency: this.props.market.split('-')[0],
       orderCurrency: this.props.market.split('-')[1],
     };
     this.onTabClick = this.onTabClick.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
-    this.updateTicker = this.updateTicker.bind(this);
-  }
-
-  updateTicker() {
-    getTicker(this.props.market)
-      .then(json => {
-        if(json.success) {
-          const {Bid: bid, Ask: ask} = json.result;
-          this.setState({bid, ask,
-            amountCurrency: this.props.market.split('-')[0],
-            orderCurrency: this.props.market.split('-')[1],
-            });
-        }
-      })
-      .catch(err => console.log(err));
-  }
-
-  componentDidMount() {
-    const interval = setInterval(this.updateTicker, 5000);
-    this.interval = interval;
-    this.updateTicker();
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.interval);
   }
 
   onSubmit(e) {
@@ -137,7 +110,7 @@ class PlaceOrder extends React.Component {
   }
 
   onTabClick(tab) {
-    const price = tab === TAB_SELL ? this.state.bid : this.state.ask;
+    const price = tab === TAB_SELL ? this.props.ticker.bid : this.props.ticker.ask;
     const amount = this.state.orderSize > 0 ? this.state.orderSize * price : this.state.amount;
     this.setState({
       selectedTab: tab,
@@ -154,10 +127,10 @@ class PlaceOrder extends React.Component {
           <div className="buysell__switch-wrap ">
             <span onClick={() => this.onTabClick(TAB_BUY)}
               className={classNames('buysell__switch', 'switch-buy', {active: this.state.selectedTab === TAB_BUY})}
-            >BUY <span className="val">{formatFloat(this.state.ask, isBTC)}</span></span>
+            >BUY <span className="val">{formatFloat(this.props.ticker.ask, isBTC)}</span></span>
             <span onClick={() => this.onTabClick(TAB_SELL)}
               className={classNames('buysell__switch', 'switch-sell', {active: this.state.selectedTab === TAB_SELL})}
-            >SELL <span className="val">{formatFloat(this.state.bid, isBTC)}</span></span>
+            >SELL <span className="val">{formatFloat(this.props.ticker.bid, isBTC)}</span></span>
           </div>
           <Desktop>
             <div className="chart-controls align-items-center justify-content-between row">
