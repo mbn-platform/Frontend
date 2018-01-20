@@ -161,8 +161,8 @@ class ProfitChart extends React.Component {
                     <div className="col-auto">
                       <div className="d-flex flex-column">
                         <div className="alltime">alltime</div>
-                        <div className="percent">634.6%</div>
-                        <div className="date">Since Sep 16th, 2016</div>
+                        <div className="percent">0%</div>
+                        <div className="date">Since {formatDate(new Date(this.props.dt || Date.now()))}</div>
                       </div>
                     </div>
                   </div>
@@ -293,6 +293,19 @@ function calculatePoints(startDate, endDate, n, profitPoints, isUsd) {
     points.push([date, searchPoint(date)]);
   }
   return points;
+}
+
+function formatDate(date) {
+  const year = date.getFullYear();
+  let month = date.getMonth() + 1;
+  if(month < 10) {
+    month = '0' + month;
+  }
+  let day = date.getDate();
+  if(day < 10) {
+    day = '0' + day;
+  }
+  return day + '.' + month + '.' + year;
 }
 
 function closure(array, isUsd) {
