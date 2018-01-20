@@ -25,7 +25,7 @@ export default function(state = {
       return {...state, orders: {open: openOrders, completed: state.orders.completed}};
     }
     case SELECT_MARKET: {
-      if(action.selectedMarket === state.market) {
+      if(action.selectedMarket === state.selectedMarket) {
         return state;
       } else {
         return {...state, selectedMarket: action.market, ticker: {}, orderBook: {sell: [], buy: []}};

@@ -9,7 +9,7 @@ class OrderBook extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {buy: [], sell: [], last: null, sort: {}, prelast: null, scroll: false};
+    this.state = {last: null, sort: {}, prelast: null, scroll: false};
     this.sortData = sortData.bind(this);
     this.onColumnSort = onColumnSort.bind(this);
     this.fireOnScroll = this.fireOnScroll.bind(this);    
@@ -42,29 +42,20 @@ class OrderBook extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.market !== this.props.market) {
-      this.setState({prelast: null, last: null});
+      this.setState({prelast: null});
     }
-    if(nextProps.buy && nextProps.sell) {
-      let sell = nextProps.sell.slice();
-      let buy = nextProps.buy.slice();
-      sell.reverse();
-
+    if(nextProps.ticker !== this.props.ticker) {
+      this.setState({prelast: this.props.ticker.last});
+    }
+    if(nextProps.orderBook !== this.props.orderBook) {
+      const { sell, buy } = nextProps.orderBook;
       const maxBuy = buy.reduce((accum, value) => Math.max(accum, value.Quantity), 0);
       const maxSell = sell.reduce((accum, value) => Math.max(accum,value.Quantity), 0);
       const minBuy = buy.reduce((accum, value) => Math.min(accum, value.Quantity), maxBuy);
       const minSell = sell.reduce((accum, value) => Math.min(accum, value.Quantity), maxSell);
       buy.forEach(order => order.relativeSize = relativeSize(minBuy, maxBuy, order.Quantity));
       sell.forEach(order => order.relativeSize = relativeSize(minSell, maxSell, order.Quantity));    
-      this.setState({buy,sell}); 
     }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {  
-    if(nextProps.market === this.props.market && nextState === this.state) {
-      return false;
-    } else {
-      return true;
-    }                 
   }
 
   render() {
@@ -72,12 +63,18 @@ class OrderBook extends React.Component {
     const isBTC = currency === 'BTC' || currency === 'ETH';
     let sortedDataSell = [];
     let sortedDataBuy = [];
-    if(this.state.sell.length) {
-     sortedDataSell = this.sortData(this.state.sell);
+    const { sell, buy } = this.props.orderBook;
+    if(sell.length) {
+      sortedDataSell = this.sortData(sell);
+      if(sortedDataSell === sell) {
+        sortedDataSell = sell.slice(0, 50).reverse();
+      } else {
+        sortedDataSell = sortedDataSell.slice(0, 50);
+      }
     }
 
-    if(this.state.buy.length) {
-     sortedDataBuy = this.sortData(this.state.buy);
+    if(buy.length) {
+      sortedDataBuy = this.sortData(buy).slice(0, 50);
     }
     return (
       <div className="orderbook-table chart col-12 col-sm-6 col-md-12">
@@ -142,14 +139,16 @@ class OrderBook extends React.Component {
 
   renderLastPrice(price) {
     let isUp;
-    if(this.state.prelast && this.state.prelast > this.state.last) {
+    const last = this.props.ticker.last;
+    const prelast = this.state.prelast;
+    if(prelast && last && prelast > last) {
       isUp = false;
     } else {
       isUp = true;
     }
     return (
       <div className={classNames('value', 'row', isUp ? 'up' : 'down')}>
-        <span>{formatFloat(this.state.last, true)}</span><span className={classNames('icon', 'icon-dir', isUp ? 'icon-up-dir' : 'icon-down-dir')}> </span>
+        <span>{formatFloat(last, true)}</span><span className={classNames('icon', 'icon-dir', isUp ? 'icon-up-dir' : 'icon-down-dir')}> </span>
       </div>
     );
   }

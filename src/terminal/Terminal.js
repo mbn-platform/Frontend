@@ -75,8 +75,7 @@ class Terminal extends React.Component {
                     </MediaQuery>
                     <MediaQuery query="(max-width: 575px)">
                       <OrderBook
-                        buy={this.props.orderBook.buy}
-                        sell={this.props.orderBook.sell}
+                        orderBook={this.props.orderBook}
                         ticker={this.props.ticker}
                         market={this.props.selectedMarket}
                       />
@@ -87,8 +86,7 @@ class Terminal extends React.Component {
                   <Row>
                     <MediaQuery query="(min-width: 576px)">
                       <OrderBook
-                        buy={this.props.orderBook.buy}
-                        sell={this.props.orderBook.sell}
+                        orderBook={this.props.orderBook}
                         ticker={this.props.ticker}
                         market={this.props.selectedMarket}
                       />
