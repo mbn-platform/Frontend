@@ -36,6 +36,7 @@ class OrderBook extends React.Component {
   }
 
   componentWillUnmount() {
+    this.tableSell.removeEventListener('scroll', this.fireOnScroll);
     clearInterval(this.interval);
   }
 
