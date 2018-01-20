@@ -78,7 +78,7 @@ class TradersChart extends React.Component {
           <div className="table_title center">TRADERS PROFIT</div>
         </div>
         <div className="chart_title_total">
-          <span className="chart_title_total_span">Total:</span> {this.state.data.reduce((sum, entry) => sum + entry['column-1'], 0)} BTC
+          <span className="chart_title_total_span">Total:</span> 0 BTC
         </div>
         <div className="charts">
           <div className="chart_pie">

@@ -32,7 +32,7 @@ class ContractsChart extends React.Component {
           <div className="table_title center">CONTRACTS PROFIT</div>
         </div>
         <div className="chart_title_total">
-          <span className="chart_title_total_span">Total:</span> 1.456 btc ~ 24 865 usd
+          <span className="chart_title_total_span">Total:</span> 0 BTC
         </div>
         <div className="charts">
           <div className="chart_pie">
