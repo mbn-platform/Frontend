@@ -27,8 +27,8 @@ class Terminal extends React.Component {
   componentWillReceiveProps(props) {
     if(props.selectedMarket !== this.props.selectedMarket) {
       const market = props.selectedMarket;
-      this.clearIntervals();
-      this.setIntervals(market);
+      clearTimeout(this.updatesTimeout);
+      this.loopUpdates(market);
       this.props.updateTicker(market);
       this.props.updateOrderBook(market);
     }
@@ -127,21 +127,26 @@ class Terminal extends React.Component {
     const market = this.props.selectedMarket;
     this.props.updateOrderBook(market);
     this.props.updateTicker(market);
-    this.setIntervals(market);
+    this.loopUpdates(market);
   }
 
-  setIntervals(market) {
-    this.tickerInterval = setInterval(() => this.props.updateTicker(market), 5000);
-    this.orderBookInterval = setInterval(() => this.props.updateOrderBook(market), 5000);
+  loopUpdates(market) {
+    console.log('loop updates');
+    this.props.updateTicker(market);
+    this.updatesTimeout = setTimeout(() => {
+      this.props.updateOrderBook(market);
+      this.updatesTimeout = setTimeout(() => this.loopUpdates(market), 3000);
+    }, 3000);
   }
-  clearIntervals() {
-    clearInterval(this.tickerInterval);
-    clearInterval(this.orderBookInterval);
+
+  updateTicker(market) {
+    this.props.updateTicker(market);
+    this.updateTimeout = setTimeout(() => this.updateTicker(market), 3000);
   }
 
   componentWillUnmount() {
     window.uncustomize();
-    this.clearIntervals();
+    clearTimeout(this.updatesTimeout);
   }
 }
 
