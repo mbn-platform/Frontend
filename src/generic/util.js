@@ -49,56 +49,45 @@ export function formatBTCValue(value) {
   }
 }
 
-export function calculateKeyBalance(key, currency, rates) {
-  return key.currencies.reduce((balance, cur) => {
+function convert(currencies, currency, rates) {
+  let balance = 0;
+  for(let i = 0; i < currencies.length; i++) {
+    const cur = currencies[i];
     const {name, value, enabled} = cur;
     if(!enabled || !value) {
-      return balance;
+      continue;
     }
-    let add = 0;
-    if(name === currency) {
-      add = value;
-    } else {
-      switch(currency) {
-        case 'BTC': {
-          if(name === 'USDT') {
-            let rate = rates.USDT.BTC;
-            if(rate) {
-              add = value / rate || 0;
-            }
-            break;
-          } else {
-            add = convert(rates, currency, name, value);
-            break;
-          }
-        }
-        case 'ETH': {
-          if(name === 'USDT' || name === 'BTC') {
-            let rate = rates[name].ETH || 0;
-            if(rate) {
-              add = value / rate || 0;
-            }
-            break;
-          } else {
-            add = convert(rates, currency, name, value);
-            break;
-          }
-        }
-        default: {
-          add = convert(rates, currency, name, value);
-          break;
-        }
+    switch(name) {
+      case 'BTC':
+        balance += value;
+        break;
+      case 'USDT': {
+        const rate = rates.USDT.BTC;
+        const add = value / rate || 0;
+        balance += add;
+        break;
+      }
+      default: {
+        const rate = rates.BTC[name];
+        const add = value * rate || 0;
+        balance += add;
       }
     }
-    return balance + add;
-  }, 0);
+  }
+  switch(currency) {
+    case 'BTC':
+      return balance;
+    case 'USDT': {
+      const rate = rates.USDT.BTC;
+      return rate * balance || 0;
+    }
+    default: {
+      const rate = rates.BTC[currency];
+      return balance / rate || 0;
+    }
+  }
 }
 
-function convert(rates, main, secondary, value) {
-  let rate = rates[main][secondary];
-  if(rate === undefined) {
-    return 0;
-  } else {
-    return rate * value || 0;
-  }
+export function calculateKeyBalance(key, currency, rates) {
+  return convert(key.currencies, currency, rates);
 }
