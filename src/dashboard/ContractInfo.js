@@ -9,7 +9,9 @@ class ContractInfo extends React.Component {
     const startDate = new Date(this.props.contract.date);
     const expireDate = new Date(startDate.getTime() + this.props.contract.duration * 86400000);
     const progress = (expireDate - now) / (expireDate - startDate) * 100;
-    const { startBalance, currentBalance, left} = this.props.contract;
+    const currentBalance = this.props.contract.balance;
+    const startBalance = this.props.contract.startBalance / 100000000;
+    const left = this.props.contract.targetBalance / 100000000 - currentBalance;
     const profitProgress = currentBalance > startBalance ? (1 - left / (left + currentBalance)) * 100 : 0;
     return (
       <div>
@@ -22,7 +24,7 @@ class ContractInfo extends React.Component {
               </div>
             </div>
             <div className="profit_left">
-              <ProfitLeft {...this.props.contract} progress={profitProgress}/>
+              <ProfitLeft left={left < 0 ? 0 : left} currency={this.props.contract.currency} progress={profitProgress}/>
               <ProgressBar progress={profitProgress} />
             </div>
           </div>
@@ -88,7 +90,7 @@ const ProfitLeft = ({left, currency, progress}) => (
       <div className="time_left_counts_wrapper">
         <div className="profit_left_count_wr">
           <div className={classNames('profit_left_count', getColor(progress))}>
-            <span className="profit_left_count_value">{left}</span> <span className="profit_left_count_valute">{currency}</span></div>
+            <span className="profit_left_count_value">{formatBalance(left, currency)}</span> <span className="profit_left_count_valute">{currency}</span></div>
         </div>
       </div>
     </div>
@@ -98,6 +100,8 @@ const ProfitLeft = ({left, currency, progress}) => (
 const ProgressBar = ({ progress }) => {
   if(progress < 1) {
     progress = 1;
+  } else if(progress > 100) {
+    progress = 100;
   }
   let className;
   if(progress > 66) {
@@ -118,6 +122,13 @@ ContractInfo.propTypes = {
   contract: PropTypes.object,
   onCommentLeft: PropTypes.func.isRequired
 };
+function formatBalance(value, name) {
+  if(name === 'USDT') {
+    return (value || 0).toFixed(2);
+  } else {
+    return (value || 0).toFixed(8);
+  }
+}
 
 
 export default ContractInfo;

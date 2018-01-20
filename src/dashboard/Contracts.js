@@ -118,7 +118,10 @@ class Contracts extends React.Component {
       id: 'currentProfit',
       className: 'table_col_value',
       headerClassName: 'current_profit',
-      accessor: c => ((c.currentBalance / c.startBalance - 1) * 100).toFixed(2),
+      accessor: c => {
+        const percent = ((c.balance / (c.startBalance / 100000000) || 0) * 100 - 100).toFixed(2);
+        return percent;
+      },
       minWidth: 50,
       Cell: NegativeValuesCell,
       sortMethod: (a,b, desc) => {
@@ -136,7 +139,7 @@ class Contracts extends React.Component {
       headerClassName: 'start_balance',
       Header: ContractTableHeader('Start\nbalance'),
       minWidth: 50,
-      accessor: c => (c.startBalance / 100000000).toFixed(2) + ' ' + c.currency,
+      accessor: c => formatBalance(c.startBalance / 100000000, c.currency) + ' ' + c.currency,
       sortMethod: (a,b, desc) => {
         return parseFloat(a) - parseFloat(b);
       }
@@ -146,7 +149,10 @@ class Contracts extends React.Component {
       className: 'table_col_value',
       Header: ContractTableHeader('Current\nbalance'),
       minWidth: 50,
-      accessor: c => (c.currentBalance / 100000000).toFixed(2) + ' ' + c.currency,
+      accessor: c => {
+        const currentBalance = c.balance;
+        return formatBalance(currentBalance, c.currency) + ' ' + c.currency;
+      },
       sortMethod: (a,b, desc) => {
         return parseFloat(a) - parseFloat(b);
       }
@@ -156,7 +162,7 @@ class Contracts extends React.Component {
       headerClassName: 'left_column',
       className: 'table_col_value',
       minWidth: 40,
-      accessor: c => (c.targetBalance / 100000000).toFixed(2) + ' ' + c.currency,
+      accessor: c => formatBalance(c.targetBalance / 100000000, c.currency) + ' ' + c.currency,
       sortMethod: (a,b, desc) => {
         return parseFloat(a) - parseFloat(b);
       }
@@ -197,7 +203,10 @@ class Contracts extends React.Component {
       className: 'table_col_value',
       minWidth: 82,
       Header: ContractTableHeader('Current\nbalance'),
-      accessor: c => c.currentBalance + ' ' + c.currency,
+      accessor: c => {
+        const currentBalance = c.balance;
+        return formatBalance(currentBalance, c.currency) + ' ' + c.currency;
+      },
       sortMethod: (a,b, desc) => {
         return parseFloat(a) - parseFloat(b);
       }
@@ -328,4 +337,11 @@ function formatDate(date) {
     day = '0' + day;
   }
   return day + '.' + month + '.' + year;
+}
+function formatBalance(value, name) {
+  if(name === 'USDT') {
+    return (value || 0).toFixed(2);
+  } else {
+    return (value || 0).toFixed(8);
+  }
 }
