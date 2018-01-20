@@ -425,11 +425,8 @@
 						width: 25%;
 						overflow: hidden;
 					}
-					th:last-child, td:last-child {
-						width: 15%;
-					}
 					td:nth-child(3),th:nth-child(3){
-						width: 35%;
+						width: 30%;
 					}
 					// th{
 					// 	padding: 5px 15px;
@@ -598,11 +595,8 @@
 			}	
 			.orderbook-table{
 					.table{ 
-						th:last-child, td:last-child {
-							width: 10%;
-						}
 						td:nth-child(3),th:nth-child(3){
-							width: 40%;
+							width: 30%;
 						}			
 				    }
 			}			
