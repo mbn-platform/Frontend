@@ -8,10 +8,10 @@ class BestTraders extends React.Component {
           <li className="ratings__best-item best_alltime">
             <div className="ratings__best-top">
               <div className="time">All the time best trader</div>
-              <div className="nickname">@COINTRADERGUY</div>
+              <div className="nickname">to be determined</div>
             </div>
             <div className="ratings__best-bottom">
-              <div className="value">28,912</div>
+              <div className="value"></div>
               <span className="text">ROI, %</span>
             </div>
           </li>
@@ -19,10 +19,10 @@ class BestTraders extends React.Component {
           <li className="ratings__best-item best_year">
             <div className="ratings__best-top">
               <div className="time">Best trader of <span className="year">2017</span></div>
-              <div className="nickname">@CRYPTOGOD</div>
+              <div className="nickname">to be determined</div>
             </div>
             <div className="ratings__best-bottom">
-              <div className="value">17,397</div>
+              <div className="value"></div>
               <span className="text">ROI, %</span>
             </div>
 
@@ -31,10 +31,10 @@ class BestTraders extends React.Component {
           <li className="ratings__best-item best_quart">
             <div className="ratings__best-top">
               <div className="time">Best trader of quart</div>
-              <div className="nickname">@LOOMDART</div>
+              <div className="nickname">to be determined</div>
             </div>
             <div className="ratings__best-bottom">
-              <div className="value">9,254</div>
+              <div className="value"></div>
               <span className="text">ROI, %</span>
             </div>
 
@@ -43,12 +43,12 @@ class BestTraders extends React.Component {
           <li className="ratings__best-item best_month">
             <div className="ratings__best-top">
               <div className="time">
-                Best trader of <span className="month">November</span>
+                Best trader of <span className="month">January</span>
               </div>
-              <div className="nickname">@COINTRADERGUY</div>
+              <div className="nickname">to be determined</div>
             </div>
             <div className="ratings__best-bottom">
-              <div className="value">31,568</div>
+              <div className="value"></div>
               <span className="text">ROI, %</span>
             </div>
 
