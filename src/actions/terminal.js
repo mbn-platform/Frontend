@@ -87,6 +87,9 @@ export function placeOrder(order, type) {
       .catch(err => {
         if(err.apiErrorCode) {
           switch(err.apiErrorCode) {
+            case ApiError.FORBIDDEN:
+              alert('The key does not allow to trade this pair');
+              break;
             case ApiError.EXCHANGE_ERROR:
               alert('Exchange error');
               break;

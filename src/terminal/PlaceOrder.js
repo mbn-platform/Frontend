@@ -58,6 +58,12 @@ class PlaceOrder extends React.Component {
       alert('select api key');
       return;
     }
+    const second = this.props.market.split('-')[1];
+    const cur = this.props.selectedApiKey.currencies.find(c => c.name === second);
+    if(!(cur && cur.enabled)) {
+      alert('The key does not allow to trade this pair');
+      return;
+    }
     const keyId = this.props.selectedApiKey._id;
     const params = {
       market: this.props.market,
