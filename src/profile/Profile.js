@@ -8,6 +8,7 @@ import { updateExchanges } from '../actions/exchanges';
 import { updateProfile } from '../actions/profile';
 import { apiGet } from '../generic/apiCall';
 import { ApiError } from '../generic/apiCall';
+import { updateRates } from '../actions/terminal';
 
 class Profile extends React.Component {
 
@@ -64,6 +65,7 @@ class Profile extends React.Component {
     this.loadProfile(name);
     this.props.fetchDashboardData();
     this.props.updateExchanges();
+    this.props.updateRates();
   }
 
 
@@ -138,6 +140,7 @@ const mapDispatchToProps = dispatch => ({
   updateProfile: profile => dispatch(updateProfile(profile)),
   fetchDashboardData: () => dispatch(fetchDashboardData()),
   updateExchanges: () => dispatch(updateExchanges()),
+  updateRates: () => dispatch(updateRates()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

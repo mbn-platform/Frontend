@@ -5,6 +5,7 @@ import SearchHeader from '../generic/SearchHeader';
 import { Desktop, Mobile } from '../generic/MediaQuery';
 import Pagination from '../generic/Pagination';
 import ExchangeSelect from '../dashboard/ExchangeSelect';
+import { calculateKeyBalance } from '../generic/util';
 
 
 class SelectApiKey extends React.Component {
@@ -82,7 +83,9 @@ class SelectApiKey extends React.Component {
           </div>
         </div>),
         accessor: key => {
-          return key.currencies ? (key.currencies.reduce((sum, c) => sum + parseFloat((c.amount || 0)), 0)).toFixed(2) : 0
+          const balance = calculateKeyBalance(key, this.props.currency, this.props.rates);
+          const format = formatBalance(balance, this.props.currency);
+          return format + ' ' + this.props.currency;
         }
       }
     ];    
@@ -118,6 +121,13 @@ class SelectApiKey extends React.Component {
         </Mobile>
       </div>
     );
+  }
+}
+function formatBalance(value, name) {
+  if(name === 'USDT') {
+    return (value || 0).toFixed(2);
+  } else {
+    return (value || 0).toFixed(8);
   }
 }
 

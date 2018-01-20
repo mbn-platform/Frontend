@@ -70,6 +70,8 @@ class SendRequestBlock extends React.Component {
             onOfferSendClick={this.onOfferSendClick}
             exchanges={this.props.exchanges}
             apiKeys={this.props.apiKeys}
+            rates={this.props.rates}
+            currency={this.props.profile.minAmountCurrency}
             selectedApiKey={this.state.selectedApiKey}
             onCancelClick={() => this.setState({visibleBlock:SEND_REQUEST_BLOCK_DETAILS})}
             onSendOfferClick={this.onSendOfferClick}
@@ -109,6 +111,7 @@ const mapStateToProps = state => ({
   apiKeys: state.apiKeys.ownKeys.filter(k => k.state === 'FREE'),
   exchanges: state.exchanges,
   request: state.request,
+  rates: state.rates,
 });
 
 const mapDispatchToProps = dispatch => ({
