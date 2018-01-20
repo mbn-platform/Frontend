@@ -22,6 +22,15 @@ class Terminal extends React.Component {
     this.updateTerminal = this.updateTerminal.bind(this);
   }
 
+  allowedApiKeys() {
+    const allowedOwnKeys = this.props.apiKeys.ownKeys.filter(k => k.state === 'FREE');
+    const allowedReceivedKeys = this.props.apiKeys.receivedKeys.filter(k => {
+      const contract = this.props.contracts.find(c => c.keyId === k._id);
+      return !!contract;
+    });
+    return allowedOwnKeys.concat(allowedReceivedKeys);
+  }
+
   updateTerminal() {
     if(this.props.selectedApiKey) {
       this.props.getMyOrders(this.props.selectedApiKey);
@@ -57,7 +66,7 @@ class Terminal extends React.Component {
             <div className="terminal-main">
               <Controls
                 market={this.props.selectedMarket}
-                apiKeys={[...this.props.apiKeys.ownKeys, ...this.props.apiKeys.receivedKeys]}
+                apiKeys={this.allowedApiKeys()}
                 selectedApiKey={this.props.selectedApiKey}
                 onApiKeySelect={key => this.props.selectApiKey(key)}
                 onMarketSelect={this.props.selecteMarket}
@@ -125,7 +134,7 @@ class Terminal extends React.Component {
   componentDidMount() {
     window.customize();
     if(!this.props.selectedApiKey) {
-      const key = this.props.apiKeys.ownKeys[0] || this.props.apiKeys.receivedKeys[0];
+      const key = this.allowedApiKeys()[0]
       this.props.selectApiKey(key);
     }
     this.updateTerminal();
@@ -143,6 +152,7 @@ class Terminal extends React.Component {
 
 const TerminalContainer = connect(state => ({
   apiKeys: state.apiKeys,
+  contracts: state.contracts.current,
   selectedApiKey: state.terminal.selectedApiKey,
   selectedMarket: state.terminal.selectedMarket,
   orders: state.terminal.orders,
