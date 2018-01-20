@@ -8,19 +8,12 @@ import PlaceOrder from './PlaceOrder';
 import MyOrders from './MyOrders';
 import RecentTrades from './RecentTrades';
 import OrderBook from './OrderBook';
-import { getOrderBook} from '../api/bittrex/bittrex';
 import { connect } from 'react-redux';
-import { selectApiKey, cancelOrder, selectMarket, placeOrder, getMyOrders, updateTicker } from '../actions/terminal';
+import { selectApiKey, cancelOrder, selectMarket, placeOrder, getMyOrders, updateTicker, updateOrderBook } from '../actions/terminal';
 import { fetchDashboardData } from '../actions/dashboard';
 import MediaQuery from 'react-responsive';
 
 class Terminal extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {buy: [], sell: []}
-    this.updateTerminal = this.updateTerminal.bind(this);
-  }
 
   allowedApiKeys() {
     const allowedOwnKeys = this.props.apiKeys.ownKeys.filter(k => k.state === 'FREE');
@@ -31,37 +24,15 @@ class Terminal extends React.Component {
     return allowedOwnKeys.concat(allowedReceivedKeys);
   }
 
-  updateTerminal() {
-    if(this.props.selectedApiKey) {
-      this.props.getMyOrders(this.props.selectedApiKey);
-    }
-    this.timeout = setTimeout(this.updateTerminal, 5000);
-  }
-
-
   componentWillReceiveProps(props) {
     if(props.selectedMarket !== this.props.selectedMarket) {
       const market = props.selectedMarket;
-      clearInterval(this.tickerInterval);
-      this.tickerInterval = setInterval(() => this.props.updateTicker(market), 5000);
+      this.clearIntervals();
+      this.setIntervals(market);
       this.props.updateTicker(market);
+      this.props.updateOrderBook(market);
     }
   }
-
-  updateOrderBook(market) {
-    getOrderBook(this.props.selectedMarket, 'buy').then(json => {
-      if(json.success) {
-        let buy = json.result;
-        buy.sort((b1,b2) => (b1.Rate - b2.Rate))
-        getOrderBook(this.props.selectedMarket, 'sell').then(json => {
-          if(json.success) {
-            let sell = json.result;
-            this.setState({buy: buy, sell: sell});
-          }          
-        }).catch(err => console.log('error updating order book', err));
-      }
-    }).catch(err => console.log('error updating order book', err));
-  }  
 
   render() {
     return (
@@ -78,14 +49,14 @@ class Terminal extends React.Component {
                 apiKeys={this.allowedApiKeys()}
                 selectedApiKey={this.props.selectedApiKey}
                 onApiKeySelect={key => this.props.selectApiKey(key)}
-                onMarketSelect={this.props.selecteMarket}
+                onMarketSelect={this.props.selectMarket}
               />
               <Row className="charts">
                 <Col xs="12" sm="12" md="6" lg="8" className="charts__left">
                   <TradingView />
                   <MarketDepth 
-                    buy={this.state.buy}
-                    sell={this.state.sell}                  
+                    buy={this.props.orderBook.buy}
+                    sell={this.props.orderBook.sell}                  
                     market={this.props.selectedMarket}
                   />
                   <Row className="justify-content-between">
@@ -104,8 +75,9 @@ class Terminal extends React.Component {
                     </MediaQuery>
                     <MediaQuery query="(max-width: 575px)">
                       <OrderBook
-                        buy={this.state.buy}
-                        sell={this.state.sell}
+                        buy={this.props.orderBook.buy}
+                        sell={this.props.orderBook.sell}
+                        ticker={this.props.ticker}
                         market={this.props.selectedMarket}
                       />
                     </MediaQuery>
@@ -115,8 +87,9 @@ class Terminal extends React.Component {
                   <Row>
                     <MediaQuery query="(min-width: 576px)">
                       <OrderBook
-                        buy={this.state.buy}
-                        sell={this.state.sell}                      
+                        buy={this.props.orderBook.buy}
+                        sell={this.props.orderBook.sell}
+                        ticker={this.props.ticker}
                         market={this.props.selectedMarket}
                       />
                     </MediaQuery>
@@ -144,7 +117,7 @@ class Terminal extends React.Component {
     window.customize();
     const allowed = this.allowedApiKeys();
     if(!this.props.selectedApiKey) {
-      const key = allowed[0]
+      const key = allowed[0];
       this.props.selectApiKey(key);
     } else {
       const key = allowed.find(k => k._id === this.props.selectedApiKey._id);
@@ -152,20 +125,25 @@ class Terminal extends React.Component {
         this.props.selectApiKey(null);
       }
     }
-    this.updateTerminal();
     this.props.fetchDashboardData();
-    this.interval = setInterval(this.updateOrderBook.bind(this), 5000);
-    this.updateOrderBook();    
     const market = this.props.selectedMarket;
-    this.tickerInterval = setInterval(() => this.props.updateTicker(market), 5000);
+    this.props.updateOrderBook(market);
     this.props.updateTicker(market);
+    this.setIntervals(market);
+  }
+
+  setIntervals(market) {
+    this.tickerInterval = setInterval(() => this.props.updateTicker(market), 5000);
+    this.orderBookInterval = setInterval(() => this.props.updateOrderBook(market), 5000);
+  }
+  clearIntervals() {
+    clearInterval(this.tickerInterval);
+    clearInterval(this.orderBookInterval);
   }
 
   componentWillUnmount() {
     window.uncustomize();
-    clearTimeout(this.timeout);
-    clearInterval(this.interval);
-    clearInterval(this.tickerInterval);
+    this.clearIntervals();
   }
 }
 
@@ -176,13 +154,15 @@ const TerminalContainer = connect(state => ({
   selectedMarket: state.terminal.selectedMarket,
   orders: state.terminal.orders,
   ticker: state.terminal.ticker,
+  orderBook: state.terminal.orderBook,
 }), dispatch => ({
   selectApiKey: key => dispatch(selectApiKey(key)),
   cancelOrder: order => dispatch(cancelOrder(order)),
-  selecteMarket: market => dispatch(selectMarket(market)),
+  selectMarket: market => dispatch(selectMarket(market)),
   getMyOrders: key => dispatch(getMyOrders(key)),
   fetchDashboardData: () => dispatch(fetchDashboardData()),
   placeOrder: (order, type) => dispatch(placeOrder(order, type)),
   updateTicker: market => dispatch(updateTicker(market)),
+  updateOrderBook: market => dispatch(updateOrderBook(market)),
 }))(Terminal);
 export default TerminalContainer;

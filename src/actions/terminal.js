@@ -1,6 +1,6 @@
 import { apiGet, apiPost, ApiError } from '../generic/apiCall';
 import { fetchDashboardData } from '../actions/dashboard';
-import { getMarketSummaries, getTicker } from '../api/bittrex/bittrex';
+import { getMarketSummaries, getTicker, getOrderBook } from '../api/bittrex/bittrex';
 export const SELECT_API_KEY = 'SELECT_API_KEY';
 export const CANCEL_ORDER = 'CANCEL_ORDER';
 export const SELECT_MARKET = 'SELECT_MARKET';
@@ -9,6 +9,7 @@ export const GET_MY_ORDERS = 'GET_MY_ORDERS';
 export const UPDATE_EXCHANGE_RATES = 'UPDATE_EXCHANGE_RATES';
 export const UPDATE_RATINGS = 'UPDATE_RATINGS';
 export const UPDATE_TICKER = 'UPDATE_TICKER';
+export const UPDATE_ORDER_BOOK = 'UPDATE_ORDER_BOOK';
 
 export function selectApiKey(key) {
   return {
@@ -153,5 +154,26 @@ export function updateTicker(market) {
         });
       }
     });
+  };
+}
+
+export function updateOrderBook(market) {
+  return dispatch => {
+    getOrderBook(market, 'sell')
+      .then(json => {
+        if(json.success) {
+          const sell = json.result;
+          return getOrderBook(market, 'buy').then(json => {
+            if(json.success) {
+              const buy = json.result;
+              dispatch({
+                type: UPDATE_ORDER_BOOK,
+                orderBook: {buy, sell},
+              });
+            }
+          });
+        }
+      })
+      .catch(e => console.log('failed to update order book'));
   };
 }
