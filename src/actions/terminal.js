@@ -7,6 +7,7 @@ export const SELECT_MARKET = 'SELECT_MARKET';
 export const PLACE_ORDER = 'PLACE_ORDER';
 export const GET_MY_ORDERS = 'GET_MY_ORDERS';
 export const UPDATE_EXCHANGE_RATES = 'UPDATE_EXCHANGE_RATES';
+export const UPDATE_RATINGS = 'UPDATE_RATINGS';
 
 export function selectApiKey(key) {
   return {
@@ -122,4 +123,17 @@ export function updateRates() {
       }
     }).catch(e => console.log(e));
   };
+}
+
+export function updateRatings() {
+  return dispatch => {
+    apiGet('/api/rating')
+      .then(ratings => {
+        dispatch({
+          type: UPDATE_RATINGS,
+          ratings,
+        });
+      })
+      .catch(e => console.log('error'));
+  }
 }

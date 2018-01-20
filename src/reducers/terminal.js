@@ -1,4 +1,5 @@
-import { SELECT_API_KEY, CANCEL_ORDER, SELECT_MARKET, PLACE_ORDER, GET_MY_ORDERS } from '../actions/terminal';
+import { SELECT_API_KEY, CANCEL_ORDER, SELECT_MARKET,
+  PLACE_ORDER, GET_MY_ORDERS, UPDATE_RATINGS } from '../actions/terminal';
 import { ADD_API_KEY, DELETE_API_KEY } from '../actions/apiKeys';
 import { generateId } from '../demoData/util';
 
@@ -6,6 +7,7 @@ export default function(state = {
   selectedApiKey: null,
   selectedMarket: 'USDT-BTC',
   orders: {open: [], completed: []},
+  ratings: [],
 }, action) {
   switch(action.type) {
     case SELECT_API_KEY: {
@@ -40,6 +42,8 @@ export default function(state = {
       } else {
         return state;
       }
+    case UPDATE_RATINGS:
+      return {...state, ratings: action.ratings};
     default:
       return state;
   }

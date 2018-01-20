@@ -7,6 +7,8 @@ import DropdownSelect from '../terminal/DropdownSelect';
 import $ from 'jquery';
 import {sortData, onColumnSort, classNameForColumnHeader}  from '../generic/terminalSortFunctions';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { updateRatings } from '../actions/terminal';
 
 const TAB_TRADERS = 0;
 const TAB_INVESTORS = 1;
@@ -23,12 +25,10 @@ class Ratings extends React.Component {
     this.sortFunctions = {
       dateCreated: (a, b) => (new Date(a.dateCreated)) - (new Date(b.dateCreated)),
     };
-    let ratings = {traders: [], investors: []};
     this.state = {
       roiIntervalOpen: false,
       nameFilter: '',
       tab: TAB_TRADERS,
-      ratings,
       selectedPeriod: 'All time',
       sort: {}
     };
@@ -63,12 +63,10 @@ class Ratings extends React.Component {
   }
 
   render() {
-    let data = this.state.tab === TAB_TRADERS ? this.state.ratings.traders : this.state.ratings.investors;
+    let data = this.props.ratings;
     let period = this.state.selectedPeriod;
     data = data.filter(profile => {
       return profile.name.toLowerCase().indexOf(this.state.nameFilter.toLowerCase()) >= 0;
-    }).map(profile => {
-      return {...profile, roi: profile.rois[period]}
     });
     const sortedData = this.sortData(data);
     return (
@@ -262,38 +260,13 @@ class Ratings extends React.Component {
       },
       offset: '50%p - ' + (($('.all-time').width() / 2) + 8).toString() + 'px, 0'
     });
+    console.log(this.props);
+    this.props.updateRatings();
   }
 
   componentWillUnmount() {
     window.uncustomize();
   }
-}
-
-function fakeDataTraders() {
-  let ratings = [];
-  for(let i = 0; i < 18; i++) {
-    const rating = {};
-    rating.name = 'COINTRADERGUY';
-    rating.rank = 1;
-    rating.totalContracts = 7;
-    rating.successContracts = 8;
-    rating.roi = -34.7;
-    ratings.push(rating);
-  }
-  return ratings;
-}
-function fakeDataInvestors() {
-  let ratings = [];
-  for(let i = 0; i < 6; i++) {
-    const rating = {};
-    rating.name = 'COINTRADERGUY';
-    rating.rank = 1;
-    rating.totalContracts = 7;
-    rating.successContracts = 8;
-    rating.roi = -34.7;
-    ratings.push(rating);
-  }
-  return ratings;
 }
 
 const TraderRatingRow = (props) => (
@@ -311,15 +284,15 @@ const TraderRatingRow = (props) => (
       <span className="success">{props.successContracts}</span>
     </td>
     <td>
-      <span>{props.roi}</span>
+      <span>{0}</span>
     </td>
     <td>
-      {props.acceptInvestments ?
+      {props.availableForOffers ?
         <span className='accept'/> :
         <span className='empty'/> }
     </td>    
     <td>
-      {formatDate(new Date(props.dateCreated))}
+      {formatDate(new Date(props.dt || Date.now()))}
     </td>
     <td>
       {props.minAmount + ' ' + props.minAmountCurrency}
@@ -331,7 +304,7 @@ const TraderRatingRow = (props) => (
       {props.fee}
     </td>
     <td>
-      {props.moneyInManagement}
+      {props.moneyInManagement || 0}
     </td>
     <td>
       {props.maxLoss}
@@ -354,16 +327,16 @@ const InvestorRatingRow = (props) => (
       <span className="success">{props.successContracts}</span>
     </td>
     <td>
-      <span>{props.roi}</span>
+      <span>{0}</span>
     </td>
     <td>
-      {formatDate(new Date(props.dateCreated))}
+      {formatDate(new Date(props.dt || Date.now()))}
     </td>
     <td>
-      {props.paidExcessProfit}
+      {props.paidExcessProfit || 0}
     </td>
     <td>
-      {props.paidInvoices}
+      {props.paidInvoices || 0}
     </td>
   </tr>
 );
@@ -382,4 +355,7 @@ function formatDate(date) {
   return day + '.' + month + '.' + year;
 }
 
-export default Ratings;
+export default connect(
+  state => ({ratings: state.terminal.ratings}),
+  dispatch => ({updateRatings: () => dispatch(updateRatings())}),
+)(Ratings);
