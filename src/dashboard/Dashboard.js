@@ -100,16 +100,12 @@ class Dashboard extends React.Component {
             onOfferPay={this.props.onOfferPay}
 
             offers={this.props.offers}
-            rates={this.props.rates}
-            apiKeys={this.props.apiKeys}
             selectedOffer={this.state.selectedOffer}
             onOfferSelected={this.onOfferSelected}
           />
         </div>
         <div className="table_wrapper contracts_table_wrapper">
           <Contracts
-            rates={this.props.rates}
-            apiKeys={this.props.apiKeys}
             contracts={this.props.contracts}
             selectedContract={this.state.selectedContract}
             onContractSelected={this.onContractSelected}

@@ -132,14 +132,7 @@ class Offers extends React.Component {
       id: 'amount',
       accessor: offer => {
         if(offer.state === CONTRACT_STATE_INIT) {
-          const apiKeys = this.state.selectedTab === TAB_INBOX ? this.props.apiKeys.receivedKeys : this.props.apiKeys.ownKeys;
-          const key = apiKeys.find(k => k._id === offer.keyId);
-          if(key) {
-            const balance = calculateKeyBalance(key, offer.currency, this.props.rates);
-            return formatBalance(balance, offer.currency)  + ' ' + offer.currency;
-          } else {
-            return '';
-          }
+          return formatBalance(offer.balance) + ' ' + offer.currency;
         } else {
           return formatBalance(offer.startBalance / 100000000) + ' ' + offer.currency;
         }
