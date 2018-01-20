@@ -55,7 +55,7 @@ export function calculateKeyBalance(key, currency, rates) {
     if(!enabled || !value) {
       return balance;
     }
-    let add;
+    let add = 0;
     if(name === currency) {
       add = value;
     } else {
