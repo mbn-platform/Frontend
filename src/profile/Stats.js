@@ -14,7 +14,7 @@ const Stats = ({ traderRating, investorRating, roiInUSD, roiInBTC, moneyInManage
               Rank in traders rating:
             </div>
             <div className="value-text">
-              <span className="number-value-text">#</span><span className="text-underline">{traderRating}<hr/></span>
+              <span className="number-value-text">#</span><span className="text-underline">{}<hr/></span>
             </div>
           </Col>
         </div>
@@ -47,7 +47,7 @@ const Stats = ({ traderRating, investorRating, roiInUSD, roiInBTC, moneyInManage
               Rank in investors rating:
             </div>
             <div className="value-text green">
-              <span className="number-value-text">#</span><span className="text-underline">{investorRating}<hr/></span>
+              <span className="number-value-text">#</span><span className="text-underline">{}<hr/></span>
             </div>
           </Col>
         </div>

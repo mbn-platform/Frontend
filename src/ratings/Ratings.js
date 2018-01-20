@@ -279,9 +279,9 @@ const TraderRatingRow = (props) => (
     </td>
     <td>
       <span className="rank">{props.rank}</span>
-      <span className="total">{props.totalContracts}</span>
+      <span className="total">{props.totalContracts || 0}</span>
       <span className="total">/</span>
-      <span className="success">{props.successContracts}</span>
+      <span className="success">{props.successContracts || 0}</span>
     </td>
     <td>
       <span>{0}</span>
