@@ -70,6 +70,7 @@ class AddApiKey extends React.Component {
               <input className="add_keys_field add_keys_field_key"
                 type="text"
                 name="value"
+                autoComplete="off"
                 value={this.state.value}
                 onChange={this.handleChange}
                 placeholder="Key"
@@ -79,6 +80,7 @@ class AddApiKey extends React.Component {
                 type="text"
                 value={this.state.secret}
                 name="secret"
+                autoComplete="off"
                 onChange={this.handleChange}
                 placeholder="Secret"
               />
