@@ -8,11 +8,6 @@ export function updateContracts(contracts) {
   };
 }
 
-export function rateContract(feedback, userId, time) {
-  return({
-    type: RATE_CONTRACT,
-    feedback,
-    userId,
-    time,
-  });
+export function rateContract(feedback) {
+  return dispatch => {};
 }
