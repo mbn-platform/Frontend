@@ -131,7 +131,6 @@ class Terminal extends React.Component {
   }
 
   loopUpdates(market) {
-    console.log('loop updates');
     this.props.updateTicker(market);
     this.updatesTimeout = setTimeout(() => {
       this.props.updateOrderBook(market);

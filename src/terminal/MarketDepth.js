@@ -271,7 +271,6 @@ class MarketDepth extends React.Component {
         + "Amount ("+ mainCurr +"): <strong>" + this.formatNumber(item.dataContext.sellamount, graph.chart, 4) + "</strong>";
     }
     else {
-      console.log(this)
       txt = "Price: <strong>" + this.formatNumber(item.dataContext.value, graph.chart, isBTC ? 8 : 4) + "</strong><br />"
         + "Total volume ("+ secCurr +"): <strong>" + this.formatNumber(item.dataContext.buytotalvolume, graph.chart, 4) + "</strong><br />"
         + "Amount ("+ mainCurr +"): <strong>" + this.formatNumber(item.dataContext.buyamount, graph.chart, 4) + "</strong>";
