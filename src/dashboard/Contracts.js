@@ -92,9 +92,13 @@ class Contracts extends React.Component {
       id: 'date',
       accessor: 'date',
       Cell: row => {
-        const date = new Date(row.value);
-        date.setDate(date.getDate() + row.original.duration);
-        return formatDate(date);
+        let date;
+        if(row.original.state === CONTRACT_STATE_VERIFIED) {
+          date = row.value;
+        } else {
+          date = row.original.finishDate;
+        }
+        return formatDate(new Date(date));
       },
       headerClassName: 'expire_date big_column',
       className: 'table_col_value big_column',
@@ -119,7 +123,17 @@ class Contracts extends React.Component {
       className: 'table_col_value',
       headerClassName: 'current_profit',
       accessor: c => {
-        const percent = ((c.balance / (c.startBalance / 100000000) || 0) * 100 - 100).toFixed(2);
+        let balance;
+        switch(c.state) {
+          case CONTRACT_STATE_VERIFIED:
+            balance = c.balance;
+            break;
+          case CONTRACT_STATE_HALTED:
+          case CONTRACT_STATE_FINISHED:
+            balance = c.finishBalance / 100000000;
+            break;
+        }
+        const percent = ((balance / (c.startBalance / 100000000) || 0) * 100 - 100).toFixed(2);
         return percent;
       },
       minWidth: 50,
@@ -150,8 +164,17 @@ class Contracts extends React.Component {
       Header: ContractTableHeader('Current\nbalance'),
       minWidth: 50,
       accessor: c => {
-        const currentBalance = c.balance;
-        return formatBalance(currentBalance, c.currency) + ' ' + c.currency;
+        let balance;
+        switch(c.state) {
+          case CONTRACT_STATE_VERIFIED:
+            balance = c.balance;
+            break;
+          case CONTRACT_STATE_HALTED:
+          case CONTRACT_STATE_FINISHED:
+            balance = c.finishBalance / 100000000;
+            break;
+        }
+        return formatBalance(balance, c.currency) + ' ' + c.currency;
       },
       sortMethod: (a,b, desc) => {
         return parseFloat(a) - parseFloat(b);
@@ -177,6 +200,7 @@ class Contracts extends React.Component {
       Cell: TXCell,
       minWidth: 30,
       sortable: false,
+      accessor: 'addr',
       headerClassName: 'tx_column',
       className: 'tx_column'
     }, {
@@ -288,7 +312,7 @@ const NegativeValuesCell = row => (
 );
 
 const TXCell = ({original}) => (
-  <Link className="tx_link" to={original.txLink || 'https://etherscan.io'} />
+  <a className="tx_link" target="_blank" href={'https://ropsten.etherscan.io/address/' + original.addr || 'https://etherscan.io'} />
 );
 
 const StatusCell = ({value}) => {
