@@ -6,10 +6,12 @@ import ContractSent from './ContractSent';
 import { connect } from 'react-redux';
 import { sendOffer } from '../actions/offers';
 import { clearRequest } from '../actions/request';
+import { Redirect } from 'react-router-dom';
 
 const SEND_REQUEST_BLOCK_DETAILS = 0;
 const SEND_REQUEST_BLOCK_SELECT_API = 1;
 const SEND_REQUEST_BLOCK_SENT = 2;
+const REDIRECT_TO_DASHBOARD = 3;
 
 class SendRequestBlock extends React.Component {
 
@@ -44,7 +46,7 @@ class SendRequestBlock extends React.Component {
     if(nextProps.request.sendOffer === 'success') {
       this.setState({visibleBlock: SEND_REQUEST_BLOCK_SENT});
     } else if(this.state.visibleBlock === SEND_REQUEST_BLOCK_SENT) {
-      this.setState({visibleBlock: SEND_REQUEST_BLOCK_DETAILS});
+      this.setState({visibleBlock: REDIRECT_TO_DASHBOARD});
     }
   }
 
@@ -86,6 +88,8 @@ class SendRequestBlock extends React.Component {
           />
         );
       }
+      case REDIRECT_TO_DASHBOARD:
+        return <Redirect to="/dashboard" />;
       default:
         return null;
     }
