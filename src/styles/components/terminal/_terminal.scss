@@ -425,8 +425,11 @@
 						width: 25%;
 						overflow: hidden;
 					}
+					td:nth-child(1),th:nth-child(1){
+						width: 35%;
+					}
 					td:nth-child(3),th:nth-child(3){
-						width: 30%;
+						width: 35%;
 					}
 					// th{
 					// 	padding: 5px 15px;
