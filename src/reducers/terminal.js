@@ -12,13 +12,23 @@ export default function(state = {
   orderBook: {sell: [], buy: []},
 }, action) {
   switch(action.type) {
-    case UPDATE_TICKER:
-      return {...state, ticker: action.ticker};
+    case UPDATE_TICKER: {
+      if(state.selectedMarket === action.market) {
+        return {...state, ticker: action.ticker};
+      } else {
+        return state;
+      }
+    }
     case SELECT_API_KEY: {
       return {...state, selectedApiKey: action.key};
     }
-    case UPDATE_ORDER_BOOK:
-      return {...state, orderBook: action.orderBook};
+    case UPDATE_ORDER_BOOK: {
+      if(action.market === state.selectedMarket) {
+        return {...state, orderBook: action.orderBook};
+      } else {
+        return state;
+      }
+    }
     case CANCEL_ORDER: {
       const id = action.order._id;
       const openOrders = state.orders.open.filter(o => o._id !== id);

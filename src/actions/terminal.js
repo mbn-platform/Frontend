@@ -151,6 +151,7 @@ export function updateTicker(market) {
         dispatch({
           type: UPDATE_TICKER,
           ticker: {bid, ask, last},
+          market,
         });
       }
     });
@@ -169,6 +170,7 @@ export function updateOrderBook(market) {
               dispatch({
                 type: UPDATE_ORDER_BOOK,
                 orderBook: {buy, sell},
+                market,
               });
             }
           });
