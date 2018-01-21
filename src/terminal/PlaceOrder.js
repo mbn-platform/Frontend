@@ -17,8 +17,6 @@ class PlaceOrder extends React.Component {
       price: '',
       orderSize: '',
       amount: '',
-      amountCurrency: this.props.market.split('-')[0],
-      orderCurrency: this.props.market.split('-')[1],
     };
     this.onTabClick = this.onTabClick.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -121,6 +119,8 @@ class PlaceOrder extends React.Component {
 
   render() {
     const isBTC = this.state.amountCurrency === 'BTC';
+    const amountCurrency = this.props.market.split('-')[0];
+    const orderCurrency = this.props.market.split('-')[1];
     return (
       <div className="buysell col-12 col-sm-6 col-md-12">
         <div className="buysell__top justify-content-between row col-12">
@@ -145,7 +145,7 @@ class PlaceOrder extends React.Component {
               <div className="buysell__form-row">
                 <div className="buysell__form-input-wrap">
                   <label className="buysell__form-label">
-                    Order size ({this.state.orderCurrency})
+                    Order size ({orderCurrency})
                   </label>
                   <input value={this.state.orderSize} type="number" name='ordersize' className="buysell__form-input"/>
                 </div>
@@ -159,7 +159,7 @@ class PlaceOrder extends React.Component {
               <div className="buysell__form-row">
                 <div className="buysell__form-input-wrap">
                   <label className="buysell__form-label">
-                    Amount ({this.state.amountCurrency})
+                    Amount ({amountCurrency})
                   </label>
                   <input type="number" value={this.state.amount} name="amount" className="buysell__form-input"/>
                 </div>
