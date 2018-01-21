@@ -23,6 +23,9 @@ class Contracts extends React.Component {
     if(!nextProps.selectedContract) {
       return;
     }
+    if(this.props.selectedContract && this.props.selectedContract._id === nextProps.selectedContract) {
+      return;
+    }
     if(nextProps.selectedContract !== this.props.selectedContract) {
       let requiredTab;
       if(nextProps.selectedContract.state === CONTRACT_STATE_FINISHED || nextProps.selectedContract.state === CONTRACT_STATE_HALTED) {
@@ -90,11 +93,11 @@ class Contracts extends React.Component {
     return {
       Header: ContractTableHeader('Expire date'),
       id: 'date',
-      accessor: 'date',
+      accessor: 'start',
       Cell: row => {
         let date;
         if(row.original.state === CONTRACT_STATE_VERIFIED) {
-          date = row.value;
+          date = row.value * 1000;
         } else {
           date = row.original.finishDate;
         }

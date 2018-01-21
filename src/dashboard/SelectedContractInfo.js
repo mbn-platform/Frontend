@@ -6,7 +6,7 @@ import ProfileFeedbacks from './ProfileFeedbacks';
 import { Desktop, Mobile } from '../generic/MediaQuery';
 import { CONTRACT_STATE_FINISHED, CONTRACT_STATE_HALTED } from '../constants';
 
-const SelectedContractInfo = ({ contract, onContractRate }) => {
+const SelectedContractInfo = ({ contract, onContractRate, time }) => {
   if(!contract) {
     let dateNow = Date.now();
     let contractDefault = {}
@@ -30,7 +30,7 @@ const SelectedContractInfo = ({ contract, onContractRate }) => {
       }
 
     } else {
-      return (<ContractInfo contract={contract}/>);
+      return (<ContractInfo time={time} contract={contract}/>);
     }
   }
 };

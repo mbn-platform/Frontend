@@ -5,10 +5,9 @@ import classNames from 'classnames';
 class ContractInfo extends React.Component {
 
   render() {
-    const now = Date.now();
-    const startDate = new Date(this.props.contract.date);
+    const startDate = new Date(this.props.contract.start * 1000);
     const expireDate = new Date(startDate.getTime() + this.props.contract.duration * 86400000);
-    const progress = (expireDate - now) / (expireDate - startDate) * 100;
+    const progress = (expireDate - this.props.time) / (expireDate - startDate) * 100;
     const currentBalance = this.props.contract.balance;
     const startBalance = this.props.contract.startBalance / 100000000;
     const left = this.props.contract.targetBalance / 100000000 - currentBalance;
@@ -19,7 +18,7 @@ class ContractInfo extends React.Component {
           <div className="profit_time_block">
             <div className="time_left">
               <div className="time_left_wrapper">
-                <TimeLeft startDate={startDate} expireDate={expireDate} progress={progress}/>
+                <TimeLeft startDate={startDate} expireDate={expireDate} time={this.props.time} progress={progress}/>
                 <ProgressBar progress={progress} />
               </div>
             </div>
@@ -37,10 +36,11 @@ class ContractInfo extends React.Component {
 class TimeLeft extends React.Component {
   render() {
     const {expireDate} = this.props;
-    const difference = expireDate - Date.now();
+    const difference = expireDate - this.props.time;
+    console.log(difference);
     const days = Math.floor(difference / 86400000);
     const hours = Math.floor(difference % 86400000 / 3600000);
-    const minutes = Math.floor(difference % 60000 / 1000);
+    const minutes = Math.floor(difference % 3600000 / 60000);
     const progress = this.props.progress;
     const color = getColor(progress);
     return (
