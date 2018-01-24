@@ -35,6 +35,13 @@ class Navigation extends React.Component {
     this.setState({isOpen: !this.state.isOpen});
   }
 
+  componentWillReceiveProps(nextProps) {
+    if(this.props.auth.loggedIn && !nextProps.auth.loggedIn) {
+      console.log('redirecting to login');
+      nextProps.history.push('/login');
+    }
+  }
+
   brand() {
     return (
       <div className="left_col_logo_wrapper">
