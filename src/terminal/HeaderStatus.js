@@ -110,10 +110,10 @@ const Balance = ({first, second}) => (
   </Col>
 );
 
-const BalanceValue = ({name, value}) => (
+const BalanceValue = ({name, availableBalance}) => (
   <Row className="balance justify-content-center align-items-center">
     <div className="balance-name">{name}</div>
-    <div className="balance-val">{formatBalance(value, name)}</div>
+    <div className="balance-val">{formatBalance(availableBalance, name)}</div>
   </Row>
 );
 

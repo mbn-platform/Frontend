@@ -53,23 +53,23 @@ function convert(currencies, currency, rates) {
   let balance = 0;
   for(let i = 0; i < currencies.length; i++) {
     const cur = currencies[i];
-    const {name, value, enabled} = cur;
-    if(!enabled || !value) {
+    const {name, totalBalance, enabled} = cur;
+    if(!enabled || !totalBalance) {
       continue;
     }
     switch(name) {
       case 'BTC':
-        balance += value;
+        balance += totalBalance;
         break;
       case 'USDT': {
         const rate = rates.USDT.BTC;
-        const add = value / rate || 0;
+        const add = totalBalance / rate || 0;
         balance += add;
         break;
       }
       default: {
         const rate = rates.BTC[name];
-        const add = value * rate || 0;
+        const add = totalBalance * rate || 0;
         balance += add;
       }
     }

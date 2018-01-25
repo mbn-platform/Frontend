@@ -155,7 +155,7 @@ class ApiKeyInfo extends React.Component {
         </div>),
         Cell: rowInfo => rowInfo.original.enabled || this.props.isOwnKey ? rowInfo.value || 0 : '',
         className: 'table_col_value',
-        accessor: 'value'
+        accessor: 'totalBalance'
       }
     ];
   }
