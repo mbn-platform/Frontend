@@ -1,6 +1,5 @@
 import React from 'react';
 import classNames from 'classnames';
-import { getMarketHistory } from '../api/bittrex/bittrex';
 import { formatFloat } from '../generic/util';
 import { Desktop } from '../generic/MediaQuery';
 import {sortData, onColumnSort, classNameForColumnHeader}  from '../generic/terminalSortFunctions';
@@ -15,28 +14,21 @@ class RecentTrades extends React.Component {
     this.sortFunctions = {};    
   }
 
-  componentDidMount() {
-    this.interval = setInterval(this.updateHistory.bind(this), 12000);
-    this.updateHistory();
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
-
-  updateHistory() {
-    getMarketHistory(this.props.market).then(json => {
-      if(json.success) {
-        this.setState({history: json.result, currency: this.props.market.split('-')[0]})
-      }
-    }).catch(err => console.log('error updating  history', err));
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.market !== this.props.market) {
+      this.setState({currency: this.props.market.split('-')[0]})
+    }
+    if(nextProps.history !== this.props.history) {
+      this.setState({history: nextProps.history})
+    }
   }
 
   render() {
     const isBTC = this.state.currency === 'BTC';
     let sortedData = [];
-    if(this.state.history && this.state.history.length) {
-      sortedData = this.sortData(this.state.history);
+    const history = this.state.history;
+    if(history && history.length) {
+      sortedData = this.sortData(history);
     }
     return (
       <div className="trades-table chart col-12 col-sm-6 col-md-12">

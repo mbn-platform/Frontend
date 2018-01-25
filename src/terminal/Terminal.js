@@ -9,7 +9,7 @@ import MyOrders from './MyOrders';
 import RecentTrades from './RecentTrades';
 import OrderBook from './OrderBook';
 import { connect } from 'react-redux';
-import { selectApiKey, cancelOrder, selectMarket, placeOrder, getMyOrders, updateTicker, updateOrderBook } from '../actions/terminal';
+import { selectApiKey, cancelOrder, selectMarket, placeOrder, getMyOrders, updateTicker, updateOrderBook, updateHistory } from '../actions/terminal';
 import { fetchDashboardData } from '../actions/dashboard';
 import MediaQuery from 'react-responsive';
 
@@ -31,6 +31,13 @@ class Terminal extends React.Component {
       this.loopUpdates(market);
       this.props.updateTicker(market);
       this.props.updateOrderBook(market);
+
+    }
+    if(props.selectedMarket !== this.props.selectedMarket) {
+      const market = props.selectedMarket;
+      clearTimeout(this.updatesRecentTableTimeout);
+      this.loopRecentTablesUpdates(market);      
+      this.props.updateHistory(market);      
     }
   }
 
@@ -100,6 +107,7 @@ class Terminal extends React.Component {
                     </MediaQuery>
                     <RecentTrades
                       market={this.props.selectedMarket}
+                      history={this.props.history}
                     />
                   </Row>
                 </Col>
@@ -127,7 +135,9 @@ class Terminal extends React.Component {
     const market = this.props.selectedMarket;
     this.props.updateOrderBook(market);
     this.props.updateTicker(market);
+    this.props.updateHistory(market);
     this.loopUpdates(market);
+    this.loopRecentTablesUpdates(market);
   }
 
   loopUpdates(market) {
@@ -136,6 +146,14 @@ class Terminal extends React.Component {
       this.props.updateOrderBook(market);
       this.updatesTimeout = setTimeout(() => this.loopUpdates(market), 3000);
     }, 3000);
+
+  }
+
+  loopRecentTablesUpdates(market) {
+    this.updatesRecentTableTimeout = setTimeout(() => {
+      this.props.updateHistory(market);
+      this.updatesRecentTableTimeout = setTimeout(() => this.loopRecentTablesUpdates(market), 12000);
+    }, 12000);    
   }
 
   updateTicker(market) {
@@ -157,6 +175,7 @@ const TerminalContainer = connect(state => ({
   orders: state.terminal.orders,
   ticker: state.terminal.ticker,
   orderBook: state.terminal.orderBook,
+  history: state.terminal.history,
 }), dispatch => ({
   selectApiKey: key => dispatch(selectApiKey(key)),
   cancelOrder: order => dispatch(cancelOrder(order)),
@@ -166,5 +185,6 @@ const TerminalContainer = connect(state => ({
   placeOrder: (order, type) => dispatch(placeOrder(order, type)),
   updateTicker: market => dispatch(updateTicker(market)),
   updateOrderBook: market => dispatch(updateOrderBook(market)),
+  updateHistory: market => dispatch(updateHistory(market)),
 }))(Terminal);
 export default TerminalContainer;

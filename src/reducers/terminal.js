@@ -1,5 +1,5 @@
 import { SELECT_API_KEY, CANCEL_ORDER, SELECT_MARKET,
-  PLACE_ORDER, GET_MY_ORDERS, UPDATE_RATINGS, UPDATE_TICKER, UPDATE_ORDER_BOOK } from '../actions/terminal';
+  PLACE_ORDER, GET_MY_ORDERS, UPDATE_RATINGS, UPDATE_TICKER, UPDATE_ORDER_BOOK, UPDATE_HISTORY } from '../actions/terminal';
 import { ADD_API_KEY, DELETE_API_KEY } from '../actions/apiKeys';
 import { generateId } from '../demoData/util';
 
@@ -10,6 +10,7 @@ export default function(state = {
   ratings: [],
   ticker: {},
   orderBook: {sell: [], buy: []},
+  history: [],
 }, action) {
   switch(action.type) {
     case UPDATE_TICKER: {
@@ -38,7 +39,7 @@ export default function(state = {
       if(action.market === state.selectedMarket) {
         return state;
       } else {
-        return {...state, selectedMarket: action.market, ticker: {}, orderBook: {sell: [], buy: []}};
+        return {...state, selectedMarket: action.market, ticker: {}, orderBook: {sell: [], buy: []}, history: []};
       }
     }
     case PLACE_ORDER: {
@@ -65,6 +66,8 @@ export default function(state = {
       }
     case UPDATE_RATINGS:
       return {...state, ratings: action.ratings};
+    case UPDATE_HISTORY:
+      return {...state, history: action.history};      
     default:
       return state;
   }
