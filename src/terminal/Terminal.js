@@ -25,7 +25,7 @@ class Terminal extends React.Component {
   }
 
   componentWillReceiveProps(props) {
-    if(props.selectedMarket !== this.props.selectedMarket) {
+    if(props.selectedMarket !== this.props.selectedMarket || props.selectedApiKey !== this.props.selectedApiKey) {
       const market = props.selectedMarket;
       clearTimeout(this.updatesTimeout);
       this.loopUpdates(market);
