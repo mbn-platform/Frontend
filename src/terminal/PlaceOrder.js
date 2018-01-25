@@ -13,6 +13,8 @@ class PlaceOrder extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      bid: null,
+      ask: null,
       selectedTab: TAB_BUY,
       price: '',
       orderSize: '',
@@ -52,6 +54,19 @@ class PlaceOrder extends React.Component {
         break;
     }
     return;
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(this.props.market !== nextProps.market) {
+      this.setState({bid: null, ask: null, price: ''});
+    }
+    if(!this.props.ticker.bid &&
+      this.props.ticker !== nextProps.ticker) {
+      let price = nextProps.ticker.last || 0;
+      const isUSDT = nextProps.market.split('-')[0] === 'USDT';
+      price = isUSDT ? price.toFixed(2) : price.toFixed(8);
+      this.setState({bid: nextProps.ticker.bid, ask: nextProps.ticker.ask, price});
+    }
   }
 
   onChange(e) {
@@ -118,19 +133,19 @@ class PlaceOrder extends React.Component {
   }
 
   render() {
-    const isBTC = this.state.amountCurrency === 'BTC';
     const amountCurrency = this.props.market.split('-')[0];
     const orderCurrency = this.props.market.split('-')[1];
+    const usdtMarket = amountCurrency === 'USDT';
     return (
       <div className="buysell col-12 col-sm-6 col-md-12">
         <div className="buysell__top justify-content-between row col-12">
           <div className="buysell__switch-wrap ">
             <span onClick={() => this.onTabClick(TAB_BUY)}
               className={classNames('buysell__switch', 'switch-buy', {active: this.state.selectedTab === TAB_BUY})}
-            >BUY <span className="val">{formatFloat(this.props.ticker.ask, isBTC)}</span></span>
+            >BUY <span className="val">{formatFloat(this.state.ask, !usdtMarket)}</span></span>
             <span onClick={() => this.onTabClick(TAB_SELL)}
               className={classNames('buysell__switch', 'switch-sell', {active: this.state.selectedTab === TAB_SELL})}
-            >SELL <span className="val">{formatFloat(this.props.ticker.bid, isBTC)}</span></span>
+            >SELL <span className="val">{formatFloat(this.state.bid, !usdtMarket)}</span></span>
           </div>
           <Desktop>
             <div className="chart-controls align-items-center justify-content-between row">
