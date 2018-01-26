@@ -5,7 +5,7 @@
   font-size: 2.6em;
   color: #e84c4c;
   text-transform: uppercase;
-  padding-left: 50px;
+  padding-left: 50px !important;
   text-align: center;
   background: url(../img/Warning.png) no-repeat left center;
   line-height: 1;
@@ -38,6 +38,13 @@
   font-size: 2.5em;
   text-align: left;
   color: #e8821e;
+}
+.metamask_text_title.cipher {
+  color: #3646a7;
+}
+.metamask_text_wrapper {
+  padding-left: 15px !important;
+  padding-right: 15px !important;
 }
 .metamask_text {
   font-size: 2em;
@@ -77,6 +84,9 @@
   }
 
 }
+.cipher_link_img {
+  width: 100px;
+}
 @media only screen and (max-width: 992px) {
   .metamask_link_wrapper, .metamask_text_title, .metamask_text {
     text-align: center;
@@ -93,9 +103,9 @@
     padding: 0 20px;
   }
   .login_no_metamask_title {
-    padding-left: 0;
+    padding-left: 0 !important;
+    background: none;
     width: 330px;
-    text-align: right;
   }
 }
 @media only screen and (max-width: 470px) {
