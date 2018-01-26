@@ -85,12 +85,14 @@ class Orders extends React.Component {
   componentDidMount() {
     window.customize();
     this.update();
+    this.keysUpdatesTimeout = setInterval(() => this.props.fetchDashboardData(), 5000);
     this.props.fetchDashboardData();
   }
 
   componentWillUnmount() {
     window.uncustomize();
     clearTimeout(this.timeout);
+    clearInterval(this.keysUpdatesTimeout);
   }
 }
 

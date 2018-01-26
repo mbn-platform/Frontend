@@ -124,6 +124,7 @@ class Terminal extends React.Component {
     this.updatesTimeout = setTimeout(() => {
       this.loopUpdates(market);
     }, 5000);
+    this.keysUpdatesTimeout = setInterval(() => this.props.fetchDashboardData(), 5000);
     this.props.fetchDashboardData();
   }
 
@@ -155,6 +156,7 @@ class Terminal extends React.Component {
   componentWillUnmount() {
     window.uncustomize();
     clearTimeout(this.updatesTimeout);
+    clearInterval(this.keysUpdatesTimeout);
   }
 }
 
