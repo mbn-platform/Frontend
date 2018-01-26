@@ -32,7 +32,7 @@ const root = (state, action) => {
       newState.offers.outgoing.forEach(c => {
         c.balance = getItemBalance(c, newState.apiKeys, newState.rates);
       });
-      const allowed = allowedApiKeys(newState.apiKeys, newState.contracts);
+      const allowed = allowedApiKeys(newState.apiKeys, newState.contracts.current);
       let selectedApiKey;
       if(newState.selectedApiKey) {
         selectedApiKey = allowed.find(k => k._id === newState.terminal.selectedApiKey);

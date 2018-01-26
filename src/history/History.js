@@ -98,7 +98,7 @@ class History extends React.Component {
 
 const HistoryContainer = connect(state => ({
   apiKeys: state.apiKeys,
-  contracts: state.contracts,
+  contracts: state.contracts.current,
   selectedApiKey: state.terminal.selectedApiKey,
   selectedMarket: state.terminal.selectedMarket,
   history: state.terminal.myHistory,
