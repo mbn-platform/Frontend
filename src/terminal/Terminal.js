@@ -25,19 +25,17 @@ class Terminal extends React.Component {
   }
 
   componentWillReceiveProps(props) {
-    if(props.selectedMarket !== this.props.selectedMarket || props.selectedApiKey !== this.props.selectedApiKey) {
-      const market = props.selectedMarket;
-      clearTimeout(this.updatesTimeout);
-      this.loopUpdates(market);
-      this.props.updateTicker(market);
-      this.props.updateOrderBook(market);
-
-    }
     if(props.selectedMarket !== this.props.selectedMarket) {
       const market = props.selectedMarket;
-      clearTimeout(this.updatesRecentTableTimeout);
-      this.loopRecentTablesUpdates(market);      
-      this.props.updateHistory(market);      
+      clearTimeout(this.updatesTimeout);
+      this.updateInfo(market)
+      this.updatesTimeout = setTimeout(() => {
+        this.loopUpdates(market);
+      }, 5000);
+    }
+    if(props.selectedApiKey && (!this.props.selectedApiKey ||
+      this.props.selectedApiKey._id !== props.selectedApiKey._id)) {
+      this.props.getMyOrders(props.selectedApiKey);
     }
   }
 
@@ -121,44 +119,36 @@ class Terminal extends React.Component {
 
   componentDidMount() {
     window.customize();
-    const allowed = this.allowedApiKeys();
-    if(!this.props.selectedApiKey) {
-      const key = allowed[0];
-      this.props.selectApiKey(key);
-    } else {
-      const key = allowed.find(k => k._id === this.props.selectedApiKey._id);
-      if(!key) {
-        this.props.selectApiKey(null);
-      }
-    }
-    this.props.fetchDashboardData();
     const market = this.props.selectedMarket;
+    this.updateInfo(market);
+    this.updatesTimeout = setTimeout(() => {
+      this.loopUpdates(market);
+    }, 5000);
+  }
+
+  updateInfo(market) {
     this.props.updateOrderBook(market);
     this.props.updateTicker(market);
     this.props.updateHistory(market);
-    this.loopUpdates(market);
-    this.loopRecentTablesUpdates(market);
+    if(this.props.selectedApiKey) {
+      this.props.getMyOrders(this.props.selectedApiKey);
+    }
   }
 
   loopUpdates(market) {
     this.props.updateTicker(market);
     this.updatesTimeout = setTimeout(() => {
+
       this.props.updateOrderBook(market);
-      this.updatesTimeout = setTimeout(() => this.loopUpdates(market), 3000);
+      if(this.props.selectedApiKey) {
+        this.props.getMyOrders(this.props.selectedApiKey);
+      }
+      this.updatesTimeout = setTimeout(() => {
+
+        this.props.updateHistory(market);
+        this.updatesTimeout = setTimeout(() => this.loopUpdates(market), 3000);
+      }, 3000);
     }, 3000);
-
-  }
-
-  loopRecentTablesUpdates(market) {
-    this.updatesRecentTableTimeout = setTimeout(() => {
-      this.props.updateHistory(market);
-      this.updatesRecentTableTimeout = setTimeout(() => this.loopRecentTablesUpdates(market), 12000);
-    }, 12000);    
-  }
-
-  updateTicker(market) {
-    this.props.updateTicker(market);
-    this.updateTimeout = setTimeout(() => this.updateTicker(market), 3000);
   }
 
   componentWillUnmount() {

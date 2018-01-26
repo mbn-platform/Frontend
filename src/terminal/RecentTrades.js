@@ -18,15 +18,12 @@ class RecentTrades extends React.Component {
     if(nextProps.market !== this.props.market) {
       this.setState({currency: this.props.market.split('-')[0]})
     }
-    if(nextProps.history !== this.props.history) {
-      this.setState({history: nextProps.history})
-    }
   }
 
   render() {
     const isBTC = this.state.currency === 'BTC';
     let sortedData = [];
-    const history = this.state.history;
+    const history = this.props.history;
     if(history && history.length) {
       sortedData = this.sortData(history);
     }
