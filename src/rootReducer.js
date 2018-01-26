@@ -32,12 +32,27 @@ const root = (state, action) => {
       newState.offers.outgoing.forEach(c => {
         c.balance = getItemBalance(c, newState.apiKeys, newState.rates);
       });
-      return newState;
+      const allowed = allowedApiKeys(newState.apiKeys, newState.contracts);
+      let selectedApiKey;
+      if(newState.selectedApiKey) {
+        selectedApiKey = allowed.find(k => k._id === newState.terminal.selectedApiKey);
+      } else {
+        selectedApiKey = allowed[0] || null;
+      }
+      return {...newState, terminal: {...newState.terminal, selectedApiKey}};
     }
     default:
       return newState;
   }
 };
+function allowedApiKeys(apiKeys, contracts) {
+  const allowedOwnKeys = apiKeys.ownKeys.filter(k => k.state === 'FREE');
+  const allowedReceivedKeys = apiKeys.receivedKeys.filter(k => {
+    const contract = contracts.find(c => c.keyId === k._id);
+    return !!contract;
+  });
+  return allowedOwnKeys.concat(allowedReceivedKeys);
+}
 
 function getItemBalance(item, apiKeys, rates) {
   const key = apiKeys.ownKeys.findById(item.keyId) ||

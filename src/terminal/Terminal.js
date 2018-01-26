@@ -15,10 +15,10 @@ import MediaQuery from 'react-responsive';
 
 class Terminal extends React.Component {
 
-  allowedApiKeys() {
-    const allowedOwnKeys = this.props.apiKeys.ownKeys.filter(k => k.state === 'FREE');
-    const allowedReceivedKeys = this.props.apiKeys.receivedKeys.filter(k => {
-      const contract = this.props.contracts.find(c => c.keyId === k._id);
+  allowedApiKeys(apiKeys, contracts) {
+    const allowedOwnKeys = apiKeys.ownKeys.filter(k => k.state === 'FREE');
+    const allowedReceivedKeys = apiKeys.receivedKeys.filter(k => {
+      const contract = contracts.find(c => c.keyId === k._id);
       return !!contract;
     });
     return allowedOwnKeys.concat(allowedReceivedKeys);
@@ -51,7 +51,7 @@ class Terminal extends React.Component {
             <div className="terminal-main">
               <Controls
                 market={this.props.selectedMarket}
-                apiKeys={this.allowedApiKeys()}
+                apiKeys={this.allowedApiKeys(this.props.apiKeys, this.props.contracts)}
                 selectedApiKey={this.props.selectedApiKey}
                 onApiKeySelect={key => this.props.selectApiKey(key)}
                 onMarketSelect={this.props.selectMarket}
@@ -124,6 +124,7 @@ class Terminal extends React.Component {
     this.updatesTimeout = setTimeout(() => {
       this.loopUpdates(market);
     }, 5000);
+    this.props.fetchDashboardData();
   }
 
   updateInfo(market) {
