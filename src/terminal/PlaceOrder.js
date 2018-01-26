@@ -60,7 +60,7 @@ class PlaceOrder extends React.Component {
     if(this.props.market !== nextProps.market) {
       this.setState({bid: null, ask: null, price: ''});
     }
-    if(!this.props.ticker.bid &&
+    if(!this.props.ticker.bid ||
       this.props.ticker !== nextProps.ticker) {
       let price = nextProps.ticker.last || 0;
       const isUSDT = nextProps.market.split('-')[0] === 'USDT';
