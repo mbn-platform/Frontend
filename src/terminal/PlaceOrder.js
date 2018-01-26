@@ -179,7 +179,9 @@ class PlaceOrder extends React.Component {
                   </label>
                   <input type="number" value={this.state.amount} name="amount" className="buysell__form-input"/>
                 </div>
-                <button type="submit" onClick={this.onSubmit} className="buysell__form-submit"> Place order</button>
+                <button type="submit" onClick={this.onSubmit} className="buysell__form-submit">
+                  {this.state.selectedTab === TAB_SELL ? 'SELL' : 'BUY'}
+                </button>
               </div>
             </form>
           </div>
