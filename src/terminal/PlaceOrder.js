@@ -70,6 +70,7 @@ class PlaceOrder extends React.Component {
   }
 
   onChange(e) {
+    const amountCurrency = this.props.market.split('-')[0];
     const {name} = e.target;
     switch(name) {
       case 'price': {
@@ -96,7 +97,7 @@ class PlaceOrder extends React.Component {
         const value = parseFloat(e.target.value);
         if(value >= 0) {
           let amount;
-          if(this.state.amountCurrency !== 'USDT') {
+          if(amountCurrency !== 'USDT') {
             amount = formatBTCValue(this.state.price * value);
           } else {
             amount = (this.state.price * value).toFixed(2);
