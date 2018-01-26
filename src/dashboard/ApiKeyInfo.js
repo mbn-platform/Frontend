@@ -15,8 +15,8 @@ class ApiKeyInfo extends React.Component {
     this.state = {
       changed: false,
       changedCurrencies: {},
-      selectedAll: '' ,
-      filtered: [{id: 'currency', value: ''}, {id: 'selected', value: 'all'}]
+      filtered: [{id: 'currency', value: ''},],
+      allSelected: this.isAllSelected(props.apiKey, {}),
     };
     this.onCurrencyChange = this.onCurrencyChange.bind(this);
     this.onCurrencyStateClicked = this.onCurrencyStateClicked.bind(this);
@@ -37,6 +37,18 @@ class ApiKeyInfo extends React.Component {
     this.setState({changed: false, changedCurrencies: {}});
   }
 
+  isAllSelected(key, changed) {
+    if(!key) {
+      return false;
+    }
+    for(let c of key.currencies) {
+      if(!c.enabled && !changed[c.name]) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   getCurrencies(apiKey) {
     if(!apiKey) {
       return [];
@@ -46,19 +58,30 @@ class ApiKeyInfo extends React.Component {
 
   onSelectAllClicked(e) {
     e.stopPropagation();
-    if(this.props.apiKey.state === 'USED') {
+    if(!this.props.apiKey) {
+      return;
+    } else if(this.props.apiKey.state === 'USED') {
       alert('This api key is in use, you cannot change it\'s settings');
       return;
-    }
-    this.setState(state => {
-      if(!state.currencies || (state.currencies && !state.currencies.length)) {
-        return '';
+    } else {
+      const change = {};
+      if(!this.state.allSelected) {
+        this.props.apiKey.currencies.reduce((changed, c) => {
+          if(!c.enabled) {
+            changed[c.name] = true;
+          }
+          return changed;
+        }, change);
+      } else {
+        this.props.apiKey.currencies.reduce((changed, c) => {
+          if(c.enabled && c.name !== 'USDT' && c.name !== 'ETH' && c.name !== 'BTC') {
+            changed[c.name] = true;
+          }
+          return changed;
+        }, change);
       }
-
-      const currencies = state.currencies.map(c => (c.name !== 'USDT' && c.name !== 'BTC' && c.name !== 'ETH') ? {...c, selected: state.selectedAll ? false : true} : c);
-      const selectedAll = state.selectedAll ? '' : 'selected';
-      return {currencies, selectedAll,changed: true};
-    });
+      this.setState({changed: Object.keys(change).length > 0, changedCurrencies: change, allSelected: !this.state.allSelected});
+    }
   }
 
 
@@ -76,7 +99,7 @@ class ApiKeyInfo extends React.Component {
       alert('This api key is in use, you cannot change it\'s settings');
       return;
     }
-    const currency = e.target.dataset.currency;    
+    const currency = e.target.dataset.currency;
     if(currency === 'USDT' || currency === 'BTC' || currency === 'ETH') {
       alert('BTC/ETH/USDT should be always available for trading');
       return;
@@ -90,15 +113,18 @@ class ApiKeyInfo extends React.Component {
       } else {
         changedCurrencies[currency] = true;
       }
+      const allSelected = this.isAllSelected(this.props.apiKey, changedCurrencies);
       if(Object.keys(changedCurrencies).length) {
         this.setState({
           changed: true,
           changedCurrencies,
+          allSelected,
         });
       } else {
         this.setState({
           changed: false,
           changedCurrencies,
+          allSelected,
         });
       }
     }
@@ -109,16 +135,14 @@ class ApiKeyInfo extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.apiKey && nextProps.apiKey._id) {
-      let id = this.props.apiKey ? this.props.apiKey._id : '';
-      if(nextProps.apiKey._id !== id) {
-        this.setState({changed: false, changedCurrencies: {},selectedAll: ''});
-      }
-    } else {
-      this.setState({changed: false, currencies: [],selectedAll: ''});
+    if(
+      !nextProps.apiKey || !this.props.apiKey ||
+      nextProps.apiKey._id !== this.props.apiKey._id
+    ) {
+      this.setState({changed: false, allSelected: this.isAllSelected(nextProps.apiKey, {}), changedCurrencies: {}});
     }
-
   }
+
   shouldComponentUpdate(nextProps, nextState) {
     return nextProps.apiKey !== this.props.apiKey ||
       nextState !== this.state;
@@ -135,7 +159,7 @@ class ApiKeyInfo extends React.Component {
         className: 'table_col_value'
       }, {
         id: 'selected',
-        Header: StatusHeader(this.onSelectAllClicked, this.state.selectedAll),
+        Header: StatusHeader(this.onSelectAllClicked, this.state.allSelected),
         Cell: StatusCell(this.onCurrencyStateClicked, this.state.changedCurrencies),
         accessor: 'enabled',
         headerClassName: 'selected_header',
@@ -212,7 +236,12 @@ class ApiKeyInfo extends React.Component {
             <div className="table_requests_control_text">save changes?</div>
             <div className="table_requests_control_btns">
               <div onClick={this.onSaveChangesClick} className="table_requests_yes table_requests_btn"><u>Yes</u></div>
-              <div onClick={() => this.setState({changed: false, changedCurrencies: {}})} className="table_requests_no table_requests_btn"><u>No</u></div>
+              <div
+                className="table_requests_no table_requests_btn"
+                onClick={() => this.setState({changed: false,
+                  changedCurrencies: {},
+                  allSelected: this.isAllSelected(this.props.apiKey, {})})}
+                ><u>No</u></div>
             </div>
           </div>
         ) : null}
@@ -245,7 +274,7 @@ const StatusHeader = (onSelectAllClicked, selectedAll) => {
       </div>
       <div className="title_green_arrows_wrapper">
         <div onClick={onSelectAllClicked} className="currency_select_all">All</div>
-        <div onClick={onSelectAllClicked} className={['currency_status_checkbox', selectedAll].join(' ')}></div>
+        <div onClick={onSelectAllClicked} className={classNames('currency_status_checkbox', {selected: selectedAll})}></div>
       </div>
 
     </div>
