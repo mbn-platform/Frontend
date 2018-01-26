@@ -131,7 +131,7 @@ const CompletedOrder = ({order}) => (
     <td>{order.rate}</td>
     <td>{order.filled}</td>
     <td>{order.quantity}</td>
-    <td className="ellipsis-cell">{formatFloat(order.price * order.quantity)}</td>
+    <td className="ellipsis-cell">{formatFloat(order.rate * order.quantity)}</td>
   </tr>
 )
 
