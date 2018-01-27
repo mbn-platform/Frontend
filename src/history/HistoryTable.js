@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import $ from 'jquery';
-import { formatFloat } from '../generic/util';
+import { formatFloat, formatFloatValue } from '../generic/util';
 import {sortData, onColumnSort, classNameForColumnHeader}  from '../generic/terminalSortFunctions';
 
 class HistoryTable extends React.Component {
@@ -48,19 +48,21 @@ class HistoryTable extends React.Component {
   }
 }
 
-const History = ({history}) => (
-
-  <tr className={history.type}>
-    <td>{history.market}</td>
-    <td className="text-capitalize">
-      <span className="round"></span> {history.history}
-    </td>
-    <td>{history.price}</td>
-    <td>{history.amount}</td>
-    <td>{history.total}</td>
-    <td>{formatDate(new Date(history.dateOpened))}</td>
-  </tr>
-);
+const History = ({history}) => {
+  const [first, second] = history.market.split('-');
+  return (
+    <tr className={history.type}>
+      <td>{history.market}</td>
+      <td className="text-capitalize">
+        <span className="round"></span> {history.history}
+      </td>
+      <td>{history.rate}</td>
+      <td>{formatFloatValue(history.quantity, second) + ' ' + second}</td>
+      <td>{formatFloatValue(history.quantity * history.rate, first) + ' ' + first}</td>
+      <td>{formatDate(new Date(history.dt))}</td>
+    </tr>
+  );
+}
 
 function padDate(number) {
   return number < 10 ? '0' + number : number;

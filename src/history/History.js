@@ -101,7 +101,7 @@ const HistoryContainer = connect(state => ({
   contracts: state.contracts.current,
   selectedApiKey: state.terminal.selectedApiKey,
   selectedMarket: state.terminal.selectedMarket,
-  history: state.terminal.myHistory,
+  history: state.terminal.orders.completed,
 }), dispatch => ({
   fetchDashboardData: () => dispatch(fetchDashboardData()),
   getMyOrders: key => dispatch(getMyOrders(key)),

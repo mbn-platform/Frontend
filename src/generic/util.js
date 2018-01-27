@@ -21,6 +21,18 @@ function padDate(number) {
   return number < 10 ? '0' + number : number;
 }
 
+export function formatFloatValue(value, currency) {
+  if(currency === 'USDT') {
+    return value.toFixed(2);
+  } else {
+    if(Number.isInteger(value)) {
+      return value.toString();
+    } else {
+      return value.toFixed(8);
+    }
+  }
+}
+
 export function formatFloat(number, isBTC) {
   if(!number && number !== 0) {
     return '';
