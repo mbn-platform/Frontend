@@ -1,9 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-import { getTicker } from '../api/bittrex/bittrex';
 import { formatFloat, formatBTCValue } from '../generic/util';
 import { Desktop } from '../generic/MediaQuery';
-import { apiPost } from '../generic/apiCall';
 
 const TAB_BUY = 0;
 const TAB_SELL = 1;
@@ -12,13 +10,20 @@ class PlaceOrder extends React.Component {
 
   constructor(props) {
     super(props);
+    const [main, secondary] = props.market.split('-');
+    let price = props.ticker.last || '';
+    if(price) {
+      price = main === 'USDT' ? price.toFixed(2) : price.toFixed(8);
+    }
     this.state = {
-      bid: null,
-      ask: null,
+      main,
+      secondary,
       selectedTab: TAB_BUY,
-      price: '',
       orderSize: '',
       amount: '',
+      price,
+      ask : props.ticker.ask || null,
+      bid : props.ticker.bid || null,
     };
     this.onTabClick = this.onTabClick.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -31,8 +36,7 @@ class PlaceOrder extends React.Component {
       alert('select api key');
       return;
     }
-    const second = this.props.market.split('-')[1];
-    const cur = this.props.selectedApiKey.currencies.find(c => c.name === second);
+    const cur = this.props.selectedApiKey.currencies.find(c => c.name === this.state.secondary);
     if(!(cur && cur.enabled)) {
       alert('The key does not allow to trade this pair');
       return;
@@ -44,7 +48,6 @@ class PlaceOrder extends React.Component {
       rate: parseFloat(this.state.price),
       keyId,
     };
-    console.log(params);
     switch(this.state.selectedTab) {
       case TAB_BUY:
         this.props.placeOrder(params, 'buy');
@@ -52,13 +55,16 @@ class PlaceOrder extends React.Component {
       case TAB_SELL:
         this.props.placeOrder(params, 'sell');
         break;
+      default:
+        break;
     }
     return;
   }
 
   componentWillReceiveProps(nextProps) {
     if(this.props.market !== nextProps.market) {
-      this.setState({bid: null, ask: null, price: ''});
+      const [main, secondary] = nextProps.market.split('-');
+      this.setState({bid: null, ask: null, price: '', main, secondary});
     }
     if(!this.props.ticker.bid &&
       this.props.ticker !== nextProps.ticker) {
@@ -70,7 +76,7 @@ class PlaceOrder extends React.Component {
   }
 
   onChange(e) {
-    const amountCurrency = this.props.market.split('-')[0];
+    const amountCurrency = this.state.main;
     const {name} = e.target;
     switch(name) {
       case 'price': {
@@ -134,9 +140,7 @@ class PlaceOrder extends React.Component {
   }
 
   render() {
-    const amountCurrency = this.props.market.split('-')[0];
-    const orderCurrency = this.props.market.split('-')[1];
-    const usdtMarket = amountCurrency === 'USDT';
+    const usdtMarket = this.state.main === 'USDT';
     return (
       <div className="buysell col-12 col-sm-6 col-md-12">
         <div className="buysell__top justify-content-between row col-12">
@@ -157,27 +161,27 @@ class PlaceOrder extends React.Component {
         </div>
         <div className="buysell__main">
           <div className={classNames('buysell__main-tab', 'active', this.state.selectedTab === TAB_SELL ? 'sell' : 'buy')}>
-            <form onChange={this.onChange} className="buysell__form">
+            <form className="buysell__form">
               <div className="buysell__form-row">
                 <div className="buysell__form-input-wrap">
                   <label className="buysell__form-label">
-                    Order size ({orderCurrency})
+                    Order size ({this.state.secondary})
                   </label>
-                  <input value={this.state.orderSize} type="number" name='ordersize' className="buysell__form-input"/>
+                  <input onChange={this.onChange} value={this.state.orderSize} type="number" name='ordersize' className="buysell__form-input"/>
                 </div>
                 <div className="buysell__form-input-wrap">
                   <label className="buysell__form-label">
                     Price
                   </label>
-                  <input value={this.state.price} type="number" name="price" className="buysell__form-input"/>
+                  <input onChange={this.onChange} value={this.state.price} type="number" name="price" className="buysell__form-input"/>
                 </div>
               </div>
               <div className="buysell__form-row">
                 <div className="buysell__form-input-wrap">
                   <label className="buysell__form-label">
-                    Amount ({amountCurrency})
+                    Amount ({this.state.main})
                   </label>
-                  <input type="number" value={this.state.amount} name="amount" className="buysell__form-input"/>
+                  <input onChange={this.onChange} type="number" value={this.state.amount} name="amount" className="buysell__form-input"/>
                 </div>
                 <button type="submit" onClick={this.onSubmit} className="buysell__form-submit">
                   {this.state.selectedTab === TAB_SELL ? 'SELL' : 'BUY'}
