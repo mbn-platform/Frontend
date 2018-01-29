@@ -89,6 +89,8 @@ export function payOffer(offer) {
                 const traderAddress = offer.toUser[0].addr;
                 let currency;
                 switch(offer.currency) {
+                  case 'ETH':
+                    currency = 2;
                   case 'BTC':
                     currency = 1;
                     break;
@@ -99,7 +101,7 @@ export function payOffer(offer) {
                     alert(offer.currency + ' not supoorted for contract yet');
                     return;
                 }
-                contract.makeInstance(
+                contract.makeDeal(
                   duration,
                   maxLoss,
                   startBalance,

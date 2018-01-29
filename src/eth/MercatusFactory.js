@@ -1,5 +1,180 @@
 export const ABI = [
   {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "deals",
+    "outputs": [
+      {
+        "name": "currentState",
+        "type": "uint8"
+      },
+      {
+        "name": "start",
+        "type": "uint256"
+      },
+      {
+        "name": "deadline",
+        "type": "uint256"
+      },
+      {
+        "name": "maxLoss",
+        "type": "uint256"
+      },
+      {
+        "name": "startBalance",
+        "type": "uint256"
+      },
+      {
+        "name": "targetBalance",
+        "type": "uint256"
+      },
+      {
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "name": "currency",
+        "type": "uint8"
+      },
+      {
+        "name": "investor",
+        "type": "string"
+      },
+      {
+        "name": "investorAddress",
+        "type": "address"
+      },
+      {
+        "name": "trader",
+        "type": "string"
+      },
+      {
+        "name": "traderAddress",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "dealId",
+        "type": "uint256"
+      }
+    ],
+    "name": "setHalted",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "dealId",
+        "type": "uint256"
+      }
+    ],
+    "name": "setVerified",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "dealId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getState",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "dealId",
+        "type": "uint256"
+      },
+      {
+        "name": "finishAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "setFinished",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "be",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "getDealsCount",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "dealId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getStart",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "constant": false,
     "inputs": [
       {
@@ -47,11 +222,22 @@ export const ABI = [
         "type": "uint256"
       }
     ],
-    "name": "makeInstance",
+    "name": "makeDeal",
     "outputs": [],
     "payable": true,
     "stateMutability": "payable",
     "type": "function"
+  },
+  {
+    "inputs": [],
+    "payable": true,
+    "stateMutability": "payable",
+    "type": "constructor"
+  },
+  {
+    "payable": true,
+    "stateMutability": "payable",
+    "type": "fallback"
   },
   {
     "anonymous": false,
@@ -63,8 +249,8 @@ export const ABI = [
       },
       {
         "indexed": true,
-        "name": "instance",
-        "type": "address"
+        "name": "dealId",
+        "type": "uint256"
       },
       {
         "indexed": false,
@@ -82,4 +268,4 @@ export const ABI = [
   }
 ];
 
-export const ADDRESS = '0xf1b89d5d3d215c1081f6ee91fb901a89e523bbb5';
+export const ADDRESS = '0xf4d7173a51a6dbe51c6519bed9a3870abed55567';
