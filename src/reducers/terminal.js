@@ -65,7 +65,8 @@ export default function(state = {
         return state;
       }
     case UPDATE_RATINGS:
-      return {...state, ratings: action.ratings};
+      const ratings = action.ratings.filter(r => !!r.name);
+      return {...state, ratings: ratings};
     case UPDATE_HISTORY:
       return {...state, history: action.history};      
     default:
