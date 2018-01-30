@@ -16,7 +16,7 @@ class Orders extends React.Component {
   }
 
   allowedApiKeys(apiKeys, contracts) {
-    const allowedOwnKeys = apiKeys.ownKeys;
+    const allowedOwnKeys = apiKeys.ownKeys.filter(k => k.state !== 'INVALID');
     const allowedReceivedKeys = apiKeys.receivedKeys.filter(k => {
       const contract = contracts.find(c => c.keyId === k._id);
       return !!contract;
