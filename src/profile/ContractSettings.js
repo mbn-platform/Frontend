@@ -239,11 +239,12 @@ const Setting = ({className, header, value, dimension, isEditing, editValue, onC
   </div>
 );
 
-const SettingAmount = ({isEditing, value, dimension, editValue, onChange, tabIndex}) => (
+const SettingAmount = ({isEditing, value, dimension, editValue, onChange, tabIndex, editCurrency}) => (
   <div className="loss-block setting-block">
     <div className="description-text">MIN CONTRACT AMOUNT:</div>
     {isEditing ? (
       <EditAmountEntry
+        dimension={editCurrency}
         tabIndex={tabIndex}
         onChange={onChange}
         value={editValue}
@@ -259,7 +260,7 @@ const SettingAmount = ({isEditing, value, dimension, editValue, onChange, tabInd
   </div>
 );
 
-const EditAmountEntry = ({placeholder, value, onChange, tabIndex}) => (
+const EditAmountEntry = ({placeholder, value, onChange, tabIndex, dimension}) => (
   <div className="amount-input-block input-block">
     <div className="input-group">
       <input
@@ -272,6 +273,9 @@ const EditAmountEntry = ({placeholder, value, onChange, tabIndex}) => (
         placeholder={placeholder}
         aria-label={placeholder}
       />
+      <span className="input-group-btn">
+        <button className="btn btn-secondary" type="button">{dimension}</button>
+      </span>
     </div>
   </div>
 );
