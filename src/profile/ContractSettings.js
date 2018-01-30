@@ -26,7 +26,7 @@ class ContractSettings extends React.Component {
     const isEditing = this.state.isEditing;
     if(isEditing) {
       const fee = parseInt(this.state.fee, 10) || this.props.fee;
-      const minAmount = parseInt(this.state.amount, 10) || this.props.amount;
+      let minAmount = parseFloat(this.state.amount);
       const minAmountCurrency = this.state.currency || this.props.currency;
       const roi = parseInt(this.state.roi, 10) || this.props.roi;
       const maxLoss = parseInt(this.state.maxLoss, 10) || this.props.maxLoss;
