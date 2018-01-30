@@ -16,7 +16,7 @@ class HistoryTable extends React.Component {
 
 
   render() {
-    const data = this.props.history || [];
+    const data = (this.props.history || []).filter(h => h.filled > 0);
     const sortedData = this.sortData(data);
     return (
       <div className="history-main__block">
@@ -57,8 +57,8 @@ const History = ({history}) => {
         <span className="round"></span> {history.history}
       </td>
       <td>{history.rate}</td>
-      <td>{formatFloatValue(history.quantity, second) + ' ' + second}</td>
-      <td>{formatFloatValue(history.quantity * history.rate, first) + ' ' + first}</td>
+      <td>{formatFloatValue(history.filled, second) + ' ' + second}</td>
+      <td>{formatFloatValue(history.filled * history.rate, first) + ' ' + first}</td>
       <td>{formatDate(new Date(history.dt))}</td>
     </tr>
   );
