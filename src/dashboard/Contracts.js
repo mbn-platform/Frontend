@@ -103,12 +103,10 @@ class Contracts extends React.Component {
         }
         return formatDate(new Date(date));
       },
-      headerClassName: 'expire_date big_column',
-      className: 'table_col_value big_column',
       minWidth: 60,
       className: 'table_col_value',
       headerClassName: 'expire_date',
-    }
+    };
   }
 
   getTableColumns() {
@@ -138,6 +136,8 @@ class Contracts extends React.Component {
           case CONTRACT_STATE_FINISHED:
             balance = c.finishBalance / 100000000;
             break;
+          default:
+            console.log('invalid contract state');
         }
         const percent = ((balance / (c.startBalance / 100000000) || 0) * 100 - 100).toFixed(2);
         return percent;
@@ -182,6 +182,8 @@ class Contracts extends React.Component {
           case CONTRACT_STATE_FINISHED:
             balance = c.finishBalance / 100000000;
             break;
+          default:
+            console.log('invalid contract state');
         }
         return formatBalance(balance, c.currency) + ' ' + c.currency;
       },
@@ -345,20 +347,7 @@ const StatusCell = ({value}) => {
 };
 
 export default Contracts;
-function formatTime(difference){
-  const components = [];
-  const days = Math.floor(difference / 86400000);
-  if(days > 0) {
-    components.push(`${days} d`);
-  }
-  const hours = Math.floor(difference % 86400000 / 1000 / 3600);
-  components.push(`${hours} h`);
-  if(components.length < 2) {
-  const minutes = Math.floor(difference / 1000 % 3600 / 60);
-    components.push(`{minutes} m`);
-  }
-  return components.join(' ');
-}
+
 function formatDate(date) {
   const year = date.getFullYear();
   let month = date.getMonth() + 1;
