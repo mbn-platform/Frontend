@@ -130,6 +130,9 @@ class Contracts extends React.Component {
         switch(c.state) {
           case CONTRACT_STATE_VERIFIED:
             balance = c.balance;
+            if(balance === null) {
+              return null;
+            }
             break;
           case CONTRACT_STATE_HALTED:
           case CONTRACT_STATE_FINISHED:
@@ -171,6 +174,9 @@ class Contracts extends React.Component {
         switch(c.state) {
           case CONTRACT_STATE_VERIFIED:
             balance = c.balance;
+            if(balance === null) {
+              return null;
+            }
             break;
           case CONTRACT_STATE_HALTED:
           case CONTRACT_STATE_FINISHED:

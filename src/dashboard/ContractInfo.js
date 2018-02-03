@@ -10,8 +10,11 @@ class ContractInfo extends React.Component {
     const progress = (expireDate - this.props.time) / (expireDate - startDate) * 100;
     const currentBalance = this.props.contract.balance;
     const startBalance = this.props.contract.startBalance / 100000000;
-    const left = this.props.contract.targetBalance / 100000000 - currentBalance;
-    const profitProgress = currentBalance > startBalance ? (1 - left / (left + currentBalance)) * 100 : 0;
+    let left = null, profitProgress = null;
+    if(currentBalance !== null) {
+      left = this.props.contract.targetBalance / 100000000 - currentBalance;
+      profitProgress = currentBalance > startBalance ? (1 - left / (left + currentBalance)) * 100 : 0;
+    }
     return (
       <div>
         <div className="profit_time_wrapper_block">
@@ -23,7 +26,7 @@ class ContractInfo extends React.Component {
               </div>
             </div>
             <div className="profit_left">
-              <ProfitLeft left={left < 0 ? 0 : left} currency={this.props.contract.currency} progress={profitProgress}/>
+              <ProfitLeft left={left} currency={this.props.contract.currency} progress={profitProgress}/>
               <ProgressBar progress={profitProgress} />
             </div>
           </div>
@@ -37,7 +40,6 @@ class TimeLeft extends React.Component {
   render() {
     const {expireDate} = this.props;
     const difference = expireDate - this.props.time;
-    console.log(difference);
     const days = Math.floor(difference / 86400000);
     const hours = Math.floor(difference % 86400000 / 3600000);
     const minutes = Math.floor(difference % 3600000 / 60000);
@@ -89,8 +91,13 @@ const ProfitLeft = ({left, currency, progress}) => (
       </div>
       <div className="time_left_counts_wrapper">
         <div className="profit_left_count_wr">
-          <div className={classNames('profit_left_count', getColor(progress))}>
-            <span className="profit_left_count_value">{formatBalance(left, currency)}</span> <span className="profit_left_count_valute">{currency}</span></div>
+          {left == null ? (
+            <div className={classNames('profit_left_count', 'green')}></div>
+          ) : (
+            <div className={classNames('profit_left_count', getColor(progress))}>
+              <span className="profit_left_count_value">{formatBalance(left, currency)}</span> <span className="profit_left_count_valute">{currency}</span>
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -98,6 +105,12 @@ const ProfitLeft = ({left, currency, progress}) => (
 );
 
 const ProgressBar = ({ progress }) => {
+  if(progress === null) {
+    return (
+    <div className="progress_bar_wrapper clearfix">
+    </div>
+    );
+  }
   if(progress < 1) {
     progress = 1;
   } else if(progress > 100) {

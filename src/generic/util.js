@@ -101,5 +101,5 @@ function convert(currencies, currency, rates) {
 }
 
 export function calculateKeyBalance(key, currency, rates) {
-  return convert(key.currencies, currency, rates);
+  return rates ? convert(key.currencies, currency, rates) : null;
 }

@@ -97,7 +97,12 @@ class ApiKeys extends React.Component {
           </div>
         </div>),
         accessor: key => {
-          return calculateKeyBalance(key, 'BTC', this.props.rates).toFixed(8);
+          const balance = calculateKeyBalance(key, 'BTC', this.props.rates);
+          if(balance === null) {
+            return null;
+          } else {
+            return balance.toFixed(8);
+          }
         }
       }, {
         Header: '',

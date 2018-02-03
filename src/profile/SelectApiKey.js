@@ -84,6 +84,9 @@ class SelectApiKey extends React.Component {
         </div>),
         accessor: key => {
           const balance = calculateKeyBalance(key, this.props.currency, this.props.rates);
+          if(balance === null) {
+            return null;
+          }
           const format = formatBalance(balance, this.props.currency);
           return format + ' ' + this.props.currency;
         }

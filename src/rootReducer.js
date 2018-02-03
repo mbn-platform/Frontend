@@ -68,7 +68,7 @@ function getItemBalance(item, apiKeys, rates) {
   if(key) {
     return calculateKeyBalance(key, item.currency, rates);
   } else {
-    return 0;
+    return null;
   }
 }
 function calculateBalances(array, apiKeys, rates) {
