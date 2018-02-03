@@ -27,6 +27,8 @@ const defaultGetParams = {
 ApiError.NAME_ALREADY_SET = -41;
 ApiError.FORBIDDEN = -103;
 ApiError.NOT_FOUND = -104;
+//key balance lower than min amount
+ApiError.WRONG_MIN_AMOUNT = -73;
 ApiError.ORDER_NOT_OPEN = -501;
 ApiError.EXCHANGE_ERROR = -599;
 ApiError.MIN_TRADE_REQUIREMENT_NOT_MET = -502;

@@ -1,4 +1,5 @@
-import { apiPost, apiDelete } from '../generic/apiCall';
+import { apiPost, apiDelete, ApiError } from '../generic/apiCall';
+import defaultErrorHandler from '../generic/defaultErrorHandler';
 import { ABI, ADDRESS } from '../eth/MercatusFactory';
 import { makeId } from '../generic/util';
 
@@ -48,7 +49,6 @@ export function rejectOffer(offer) {
 }
 
 export function sendOffer(offer) {
-  console.log(offer);
   return dispatch => {
     apiPost('/api/offer', null, offer)
       .then(json => {
@@ -58,6 +58,16 @@ export function sendOffer(offer) {
         });
       })
       .catch(err => {
+        if(err.apiErrorCode) {
+          switch(err.apiErrorCode) {
+            case ApiError.WRONG_MIN_AMOUNT: {
+              alert('Your api key balance is lower that trader\'s minmum contract amount');
+              break;
+            }
+            default:
+              defaultErrorHandler(err, dispatch);
+          }
+        }
         console.log(err);
         console.log(err.apiErrorCode);
       });
