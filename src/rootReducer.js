@@ -10,9 +10,17 @@ import rates from './reducers/rates';
 import { combineReducers } from 'redux';
 import { calculateKeyBalance } from './generic/util';
 
+import { LOGGED_OUT } from './actions/auth';
+
 const combined = combineReducers({apiKeys, contracts, offers, auth, exchanges, time, request, terminal, rates});
 
 const root = (state, action) => {
+  switch(action.type) {
+    case LOGGED_OUT: {
+      localStorage.setItem('reduxState', JSON.stringify({auth: {loggedIn: false}}));
+      return combined(undefined, action);
+    }
+  };
   let newState = combined(state, action);
   switch(action.type) {
     case 'UPDATE_EXCHANGE_RATES': {
