@@ -1,7 +1,6 @@
 import { apiPost, apiDelete, ApiError } from '../generic/apiCall';
 import defaultErrorHandler from '../generic/defaultErrorHandler';
 import { ABI, ADDRESS } from '../eth/MercatusFactory';
-import { makeId } from '../generic/util';
 
 export const ACCEPT_OFFER = 'ACCEPT_OFFER';
 export const REJECT_OFFER = 'REJECT_OFFER';
@@ -139,6 +138,6 @@ export function payOffer(offer) {
         }
       }
     });
-  }
+  };
 }
 
