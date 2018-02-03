@@ -91,6 +91,7 @@ export function payOffer(offer) {
                 switch(offer.currency) {
                   case 'ETH':
                     currency = 2;
+                    break;
                   case 'BTC':
                     currency = 1;
                     break;
