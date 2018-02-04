@@ -1,5 +1,5 @@
 
-const API_URL = 'https://api-bittrex.mercatus.im/api/v1.1/public';
+const API_URL = '/bittrexApi/api/v1.1/public';
 export function getTicker(market) {
   const url = '/getticker';
   const params = `market=${market}`;
