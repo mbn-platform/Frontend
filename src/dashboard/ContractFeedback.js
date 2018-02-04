@@ -8,14 +8,10 @@ const ContractFeedback = ({contract, onContractRate}) => {
       <div className="table_title_wrapper clearfix">
         <div className="table_title center">Rate the contract</div>
       </div>
-      {contract.feedbacks && contract.feedbacks.length ? (
-        <LeftComment {...contract.feedbacks[0]} />
-      ) : (
-        <LeaveComment
-          onContractRate={onContractRate}
-          id={contract._id}
-        />
-      )}
+      <LeaveComment
+        onContractRate={onContractRate}
+        id={contract._id}
+      />
     </div>
   );
 };

@@ -113,6 +113,7 @@ class Dashboard extends React.Component {
         </div>
         <div className="table_wrapper selected_contract_table">
           <SelectedContractInfo
+            userId={this.props.userId}
             time={this.props.time}
             onContractRate={this.onContractRate}
             contract={this.state.selectedContract} />

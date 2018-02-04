@@ -99,7 +99,7 @@ class Comment extends React.Component {
   renderStars() {
     const stars = [];
     for(let i = 0; i < 5; i++) {
-      const className = classNames('star', {active: i < this.props.comment.raiting});
+      const className = classNames('star', {active: i < this.props.comment.rate});
       stars.push((<span key={i} className={className} />));
     }
     return stars;
@@ -113,10 +113,10 @@ class Comment extends React.Component {
           <div className="container-fuild">
             <div className="row">
               <div className="col-auto">
-                <div className="name">@<u><Link style={{color: '#bfbfc1', textTransform: 'uppercase'}} to={'/' + comment.name} >{comment.name}</Link></u></div>
+                <div className="name">@<u><Link style={{color: '#bfbfc1', textTransform: 'uppercase'}} to={'/' + comment.authorName} >{comment.authorName}</Link></u></div>
               </div>
               <div className="col-auto">
-                <div className="date">{formatDate(new Date(comment.date))}</div>
+                <div className="date">{formatDate(new Date(comment.dt))}</div>
               </div>
               <div className="col-auto">
                 <div className="raiting">
