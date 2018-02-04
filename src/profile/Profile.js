@@ -94,14 +94,8 @@ class Profile extends React.Component {
   componentWillReceiveProps(nextProps) {
     const name = nextProps.match.params.id;
     if(this.props.match.params.id !== name) {
+      this.setState({profile: {}});
       this.loadProfile(name);
-      if(nextProps.auth.profile.name === name) {
-        this.setState({profile: nextProps.auth.profile});
-      }
-    } else {
-      if(nextProps.auth.profile && nextProps.auth.profile !== this.state.profile) {
-        this.setState({profile: nextProps.auth.profile});
-      }
     }
   }
 
@@ -115,6 +109,7 @@ class Profile extends React.Component {
       <Container fluid className='profile-item'>
         <Row>
           <ProfileInfo
+            rates={this.props.rates}
             own={own}
             profile={this.state.profile}
             onSaveChangesClick={this.onSaveChangesClick}
@@ -134,6 +129,7 @@ class Profile extends React.Component {
 
 const mapStateToProps = state => ({
   auth: state.auth,
+  rates: state.rates,
 });
 
 const mapDispatchToProps = dispatch => ({

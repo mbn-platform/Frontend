@@ -4,7 +4,7 @@ import { Row, Col } from 'reactstrap';
 import { UncontrolledTooltip } from 'reactstrap';
 
 
-const Stats = ({ traderRating, investorRating, roiInUSD, roiInBTC, moneyInManagement })  => (
+const Stats = ({ traderRating, investorRating, roiInUSD, roiInBTC, moneyInManagement, rates })  => (
   <Row className="justify-content-between raiting-block">
     <Col xs="auto" className="raiting-left-item">
       <div className="content-fuild">
@@ -26,7 +26,7 @@ const Stats = ({ traderRating, investorRating, roiInUSD, roiInBTC, moneyInManage
             <div className="value-text">
               {roiInUSD}<span className="currency-value-usd-text letter-spacing-1"> % in usd</span>
 
-               <span className="icon icon-help icon-help-web-button"  id="help-icon-roi"></span>
+              <span className="icon icon-help icon-help-web-button"  id="help-icon-roi"></span>
               <UncontrolledTooltip target="help-icon-roi">
                 ROI CALCULATED BY MERCATUS ANALYSIS SYSTEM
               </UncontrolledTooltip>
@@ -57,10 +57,10 @@ const Stats = ({ traderRating, investorRating, roiInUSD, roiInBTC, moneyInManage
               money in <br/> management:
             </div>
             <div className="value-text green">
-              {moneyInManagement}<span className="currency-value-usd-text"> usd</span>
+              {(moneyInManagement || 0).toFixed(2)}<span className="currency-value-usd-text"> usd</span>
             </div>
             <div className="description-text btc-text">
-              ~ {moneyInManagement} <span className="currency-value-btc-text">btc</span>
+              ~{moneyInManagementBTC(moneyInManagement, rates)} <span className="currency-value-btc-text">btc</span>
             </div>
           </div>
 
@@ -69,6 +69,16 @@ const Stats = ({ traderRating, investorRating, roiInUSD, roiInBTC, moneyInManage
     </Col>
   </Row>
 );
+
+function moneyInManagementBTC(mim, rates) {
+  if(!rates) {
+    return null;
+  } else if(mim === 0) {
+    return '0';
+  } else {
+    return (mim / rates.USDT.BTC).toFixed(8);
+  }
+}
 
 Stats.propTypes = {
   traderRating: PropTypes.number,

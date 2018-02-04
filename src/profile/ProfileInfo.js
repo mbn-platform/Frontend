@@ -43,11 +43,12 @@ class ProfileInfo extends React.Component {
                 {this.getHeaderSeparator()}
                 <RatingBar rating={2}/>
                 <Stats
+                  rates={this.props.rates}
                   traderRating={profile.topTraders}
                   investorRating={profile.topInvesters}
                   roiInBTC={profile.roiInBTC}
                   roiInUSD={profile.roiInUSD}
-                  moneyInManagement={profile.investmentAmount}
+                  moneyInManagement={profile.inManagement}
                 />
                 <ContractSettings
                   onSaveChangesClick={this.props.onSaveChangesClick}
@@ -77,12 +78,13 @@ class ProfileInfo extends React.Component {
                 {this.getHeaderSeparator()}
                 <RatingBar rating={2}/>
                 <Stats
+                  rates={this.props.rates}
                   traderRating={profile.topTraders}
                   investorRating={profile.topInvesters}
                   roi={15}
                   roiInBTC={profile.roiInBTC}
                   roiInUSD={profile.roiInUSD}                        
-                  moneyInManagement={profile.investmentAmount}
+                  moneyInManagement={profile.inManagement}
                 />
                 <SendRequestBlock profile={profile} />
               </Col>

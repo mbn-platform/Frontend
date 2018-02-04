@@ -127,8 +127,8 @@ class Ratings extends React.Component {
                               <th onClick={() => this.onColumnSort('fee')}>
                                 <span>Fee, %</span><span className={classNameForColumnHeader(this.state, 'fee')}></span>
                               </th>
-                              <th onClick={() => this.onColumnSort('moneyInManagement')}>
-                                <span>Money in management</span><span className={classNameForColumnHeader(this.state, 'moneyInManagement')}></span>
+                              <th onClick={() => this.onColumnSort('inManagement')}>
+                                <span>Money in management</span><span className={classNameForColumnHeader(this.state, 'inManagement')}></span>
                               </th>
                               <th onClick={() => this.onColumnSort('maxLoss')}>
                                 <span>Max loss,&nbsp;%</span><span className={classNameForColumnHeader(this.state, 'maxLoss')}></span>
@@ -304,7 +304,7 @@ const TraderRatingRow = (props) => (
       {props.fee}
     </td>
     <td>
-      {props.moneyInManagement || 0}
+      {(props.inManagement || 0).toFixed(2) + ' USDT'}
     </td>
     <td>
       {props.maxLoss}
