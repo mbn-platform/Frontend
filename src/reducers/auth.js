@@ -1,5 +1,5 @@
 import { LOGGED_IN, NAME_REQUIRED } from '../actions/auth';
-import { UPDATE_PROFILE } from '../actions/profile';
+import { UPDATE_PROFILE, GET_PROFILE } from '../actions/profile';
 
 export default function reducer(auth = {}, action) {
   switch(action.type) {
@@ -13,25 +13,28 @@ export default function reducer(auth = {}, action) {
       localStorage.setItem('reduxState', JSON.stringify({auth: state}));
       return state;
     }
-    case UPDATE_PROFILE: {
-      console.log(action);
+    case GET_PROFILE: {
       const profile = action.profile;
-      const currentProfile = auth.profile;
-      const update = {...currentProfile, ...profile};
-      let currencies = action.profile.currencies;
-      if(currencies !== currentProfile.currencies) {
-        currencies.forEach(c => {
-          const current = currentProfile.currencies;
-          const cc = current.find(c1 => c1.name === c.name);
-          if(!cc) {
-            return;
-          };
-          c.tradeVolume = cc.tradeVolume;
-          c.roi = cc.roi;
-        });
-        update.currencies = currencies;
+      if(auth.loggedIn && auth.profile._id === profile._id) {
+        const state = {...auth, profile};
+        localStorage.setItem('reduxState', JSON.stringify({auth: state}));
+        return state;
       }
-      return {...auth, profile: update};
+      return auth;
+    }
+    case UPDATE_PROFILE: {
+      if(!auth.loggedIn) {
+        return auth;
+      }
+      const {availableForOffers, fee, minAmount, roi, minAmountCurrency, duration, maxLoss, currencies} = action.profile;
+      const currentProfile = auth.profile;
+      const update = {...currentProfile, availableForOffers, fee,
+        minAmount, roi, minAmountCurrency, duration,
+        maxLoss, currencies,
+      };
+      const state = {...auth, profile: update};
+      localStorage.setItem('reduxState', JSON.stringify({auth: state}));
+      return state;
     }
     default:
       return auth;

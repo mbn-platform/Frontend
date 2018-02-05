@@ -5,16 +5,19 @@ import { Row, Container } from 'reactstrap';
 import { connect } from 'react-redux';
 import { fetchDashboardData } from '../actions/dashboard';
 import { updateExchanges } from '../actions/exchanges';
-import { updateProfile } from '../actions/profile';
-import { apiGet } from '../generic/apiCall';
-import { ApiError } from '../generic/apiCall';
+import { updateProfile, getProfile } from '../actions/profile';
 import { updateRates } from '../actions/terminal';
 
 class Profile extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {profile: {}};
+    const name = this.props.match.params.id;
+    if(name !== this.props.profile.name) {
+      this.state = {profile: {}};
+    } else {
+      this.state = {profile: this.props.profile};
+    }
     this.onSaveChangesClick = this.onSaveChangesClick.bind(this);
     this.onCurrencyToggle = this.onCurrencyToggle.bind(this);
     this.onToggleClick = this.onToggleClick.bind(this);
@@ -41,7 +44,6 @@ class Profile extends React.Component {
       minAmount, fee, maxLoss, duration, currencies, roi,
       availableForOffers, name, minAmountCurrency,
     };
-    console.log(profile);
     this.props.updateProfile(profile);
   }
 
@@ -62,40 +64,20 @@ class Profile extends React.Component {
 
   componentDidMount() {
     const name = this.props.match.params.id;
-    this.loadProfile(name);
+    this.props.getProfile(name);
     this.props.fetchDashboardData();
     this.props.updateExchanges();
     this.props.updateRates();
   }
 
-
-
-  loadProfile(name) {
-    console.log('loading profile', name);
-    apiGet(`/api/profile/${name}`)
-      .then(profile => {
-        this.setState({profile});
-      })
-      .catch(e => {
-        if(e.apiErrorCode) {
-          switch(e.apiErrorCode) {
-            case ApiError.NOT_FOUND:
-              alert('no such profile');
-              break;
-            default:
-              console.log('unhandled api error', e.apiErrorCode);
-          }
-        } else {
-          console.log(e);
-        }
-      });
-  }
-
   componentWillReceiveProps(nextProps) {
     const name = nextProps.match.params.id;
+    if(nextProps.profile !== this.props.profile) {
+      this.setState({profile: nextProps.profile});
+    }
     if(this.props.match.params.id !== name) {
       this.setState({profile: {}});
-      this.loadProfile(name);
+      this.props.getProfile(name);
     }
   }
 
@@ -130,6 +112,7 @@ class Profile extends React.Component {
 const mapStateToProps = state => ({
   auth: state.auth,
   rates: state.rates,
+  profile: state.profile,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -137,6 +120,7 @@ const mapDispatchToProps = dispatch => ({
   fetchDashboardData: () => dispatch(fetchDashboardData()),
   updateExchanges: () => dispatch(updateExchanges()),
   updateRates: () => dispatch(updateRates()),
+  getProfile: name => dispatch(getProfile(name)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

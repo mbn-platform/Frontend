@@ -71,7 +71,7 @@ const Stats = ({ traderRating, investorRating, roiInUSD, roiInBTC, moneyInManage
 );
 
 function moneyInManagementBTC(mim, rates) {
-  if(!rates) {
+  if(!rates || !Number.isFinite(mim)) {
     return null;
   } else if(mim === 0) {
     return '0';
