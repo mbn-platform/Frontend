@@ -109,8 +109,8 @@ class Ratings extends React.Component {
                               <th onClick={() => this.onColumnSort('roi')}>
                                 <span>ROI,&nbsp;%</span><span className={classNameForColumnHeader(this.state, 'roi')}></span>
                               </th>
-                              <th onClick={() => this.onColumnSort('acceptInvestments')}>
-                                <span>Accepting request</span><span className={classNameForColumnHeader(this.state, 'acceptInvestments')}></span>
+                              <th onClick={() => this.onColumnSort('availableForOffers')}>
+                                <span>Accepting request</span><span className={classNameForColumnHeader(this.state, 'availableForOffers')}></span>
                               </th>                              
                               <th onClick={() => this.onColumnSort('dateCreated')}>
                                 <span>Started since</span><span className={classNameForColumnHeader(this.state, 'dateCreated')}></span>
