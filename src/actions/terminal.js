@@ -81,6 +81,7 @@ export function placeOrder(order, type) {
     }
     apiPost(url, null, order)
       .then(order => {
+        alert('Order has benn placed');
         dispatch({
           type: PLACE_ORDER,
           order,

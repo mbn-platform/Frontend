@@ -51,9 +51,11 @@ class PlaceOrder extends React.Component {
     switch(this.state.selectedTab) {
       case TAB_BUY:
         this.props.placeOrder(params, 'buy');
+        this.setState({amount: '', orderSize: ''});
         break;
       case TAB_SELL:
         this.props.placeOrder(params, 'sell');
+        this.setState({amount: '', orderSize: ''});
         break;
       default:
         break;

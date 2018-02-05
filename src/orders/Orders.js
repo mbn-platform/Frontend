@@ -98,7 +98,7 @@ class Orders extends React.Component {
 
 const OrdersContainer = connect(state => ({
   apiKeys: state.apiKeys,
-  contracts: state.contracts.contracts,
+  contracts: state.contracts.current,
   selectedApiKey: state.terminal.selectedApiKey,
   orders: state.terminal.orders,
   selectedMarket: state.terminal.selectedMarket,
