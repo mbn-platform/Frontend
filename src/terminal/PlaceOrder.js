@@ -48,6 +48,11 @@ class PlaceOrder extends React.Component {
       rate: parseFloat(this.state.price),
       keyId,
     };
+    const marketInfo = this.props.exchangeInfo.markets[this.props.market];
+    if(marketInfo.minTradeSize > params.quantity) {
+      alert(`The minimal trade size for this pair is ${marketInfo.minTradeSize} ${this.props.market.split('-')[1]}`);
+      return;
+    }
     switch(this.state.selectedTab) {
       case TAB_BUY:
         this.props.placeOrder(params, 'buy');
