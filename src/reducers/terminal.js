@@ -56,7 +56,7 @@ export default function(state = {
       }
     case GET_MY_ORDERS: {
       const {openTrades: open, closedTrades: completed} = action.orders;
-      return {...state, orders: {open, completed}};
+      return {...state, orders: {open, completed: completed.filter(o => o.filled > 0)}};
     }
     case DELETE_API_KEY:
       if(state.selectedApiKey && state.selectedApiKey._id === action.apiKey._id) {
