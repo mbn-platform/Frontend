@@ -106,7 +106,7 @@ export function placeOrder(order, type) {
     }
     apiPost(url, null, order)
       .then(order => {
-        alert('Order has benn placed');
+        alert('Order has been placed');
         dispatch({
           type: PLACE_ORDER,
           order,
