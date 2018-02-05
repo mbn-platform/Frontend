@@ -9,7 +9,8 @@ import MyOrders from './MyOrders';
 import RecentTrades from './RecentTrades';
 import OrderBook from './OrderBook';
 import { connect } from 'react-redux';
-import { selectApiKey, cancelOrder, selectMarket, placeOrder, getMyOrders, updateTicker, updateOrderBook, updateHistory } from '../actions/terminal';
+import { selectApiKey, cancelOrder, selectMarket, placeOrder, getMyOrders,
+  updateTicker, updateOrderBook, updateHistory, getExchangeMarkets } from '../actions/terminal';
 import { fetchDashboardData } from '../actions/dashboard';
 import MediaQuery from 'react-responsive';
 
@@ -66,6 +67,7 @@ class Terminal extends React.Component {
                   />
                   <Row className="justify-content-between">
                     <PlaceOrder                    
+                      exchangeInfo={this.props.exchangesInfo['bittrex']}
                       ticker={this.props.ticker}
                       placeOrder={this.props.placeOrder}
                       selectedApiKey={this.props.selectedApiKey}
@@ -126,6 +128,10 @@ class Terminal extends React.Component {
     }, 5000);
     this.keysUpdatesTimeout = setInterval(() => this.props.fetchDashboardData(), 5000);
     this.props.fetchDashboardData();
+    const exchangeInfo = this.props.exchangesInfo.bittrex;
+    if(!exchangeInfo || !exchangeInfo.markets) {
+      this.props.getExchangeMarkets('bittrex');
+    }
   }
 
   updateInfo(market) {
@@ -169,6 +175,7 @@ const TerminalContainer = connect(state => ({
   ticker: state.terminal.ticker,
   orderBook: state.terminal.orderBook,
   history: state.terminal.history,
+  exchangesInfo: state.exchangesInfo,
 }), dispatch => ({
   selectApiKey: key => dispatch(selectApiKey(key)),
   cancelOrder: order => dispatch(cancelOrder(order)),
@@ -179,5 +186,6 @@ const TerminalContainer = connect(state => ({
   updateTicker: market => dispatch(updateTicker(market)),
   updateOrderBook: market => dispatch(updateOrderBook(market)),
   updateHistory: market => dispatch(updateHistory(market)),
+  getExchangeMarkets: market => dispatch(getExchangeMarkets(market)),
 }))(Terminal);
 export default TerminalContainer;

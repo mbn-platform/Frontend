@@ -8,12 +8,13 @@ import terminal from './reducers/terminal';
 import request from './reducers/request';
 import rates from './reducers/rates';
 import profile from './reducers/profile';
+import exchangesInfo from './reducers/exchangesInfo';
 import { combineReducers } from 'redux';
 import { calculateKeyBalance } from './generic/util';
 
 import { LOGGED_OUT } from './actions/auth';
 
-const combined = combineReducers({apiKeys, contracts, offers, auth, exchanges, time, request, terminal, rates, profile});
+const combined = combineReducers({apiKeys, contracts, offers, auth, exchanges, time, request, terminal, rates, profile, exchangesInfo});
 
 const root = (state, action) => {
   switch(action.type) {

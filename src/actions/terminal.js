@@ -1,6 +1,6 @@
 import { apiGet, apiPost, ApiError } from '../generic/apiCall';
 import { fetchDashboardData } from '../actions/dashboard';
-import { getMarketSummaries, getTicker, getOrderBook, getMarketHistory } from '../api/bittrex/bittrex';
+import { getMarketSummaries, getTicker, getOrderBook, getMarketHistory, getMarkets } from '../api/bittrex/bittrex';
 export const SELECT_API_KEY = 'SELECT_API_KEY';
 export const CANCEL_ORDER = 'CANCEL_ORDER';
 export const SELECT_MARKET = 'SELECT_MARKET';
@@ -11,6 +11,7 @@ export const UPDATE_RATINGS = 'UPDATE_RATINGS';
 export const UPDATE_TICKER = 'UPDATE_TICKER';
 export const UPDATE_ORDER_BOOK = 'UPDATE_ORDER_BOOK';
 export const UPDATE_HISTORY = 'UPDATE_HISTORY';
+export const GET_EXCHANGE_MARKETS = 'GET_EXCHANGE_MARKETS';
 
 export function selectApiKey(key) {
   return {
@@ -53,6 +54,30 @@ export function cancelOrder(order) {
         } else {
           console.log('error performing request');
         }
+      });
+  };
+}
+
+export function getExchangeMarkets(exchange) {
+  return dispatch => {
+    getMarkets()
+      .then(response => {
+        if(response.success) {
+          const marketsArray = response.result;
+          const marketsObject = marketsArray.reduce((accum, market) => {
+            const m = market.MarketName;
+            accum[m] = {minTradeSize: market.MinTradeSize};
+            return accum;
+          }, {});
+          dispatch({
+            type: GET_EXCHANGE_MARKETS,
+            exchange,
+            markets: marketsObject,
+          });
+        }
+      })
+      .catch(err => {
+        console.log('failed to get exchange markets');
       });
   };
 }
@@ -142,7 +167,7 @@ export function updateRatings() {
         });
       })
       .catch(e => console.log('error'));
-  }
+  };
 }
 
 export function updateTicker(market) {
@@ -185,15 +210,15 @@ export function updateOrderBook(market) {
 export function updateHistory(market) {
   return dispatch => {
     getMarketHistory(market)
-    .then(json => {
-      const history = json.result;
-      if(json.success) {
-            dispatch({
-              type: UPDATE_HISTORY,
-              history: history,
-              market,
-            });        
-      }
-    }).catch(err => console.log('error updating  history', err));
-  }
+      .then(json => {
+        const history = json.result;
+        if(json.success) {
+          dispatch({
+            type: UPDATE_HISTORY,
+            history: history,
+            market,
+          });        
+        }
+      }).catch(err => console.log('error updating  history', err));
+  };
 } 
