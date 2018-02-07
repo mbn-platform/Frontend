@@ -29,6 +29,7 @@ ApiError.FORBIDDEN = -103;
 ApiError.NOT_FOUND = -104;
 //key balance lower than min amount
 ApiError.WRONG_MIN_AMOUNT = -73;
+ApiError.WRONG_DEAL_TERMS = -74;
 ApiError.ORDER_NOT_OPEN = -501;
 ApiError.WRONB_API_KEY = -504;
 ApiError.EXCHANGE_ERROR = -599;

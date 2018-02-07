@@ -63,6 +63,9 @@ export function sendOffer(offer) {
               alert('Your api key balance is lower that trader\'s minmum contract amount');
               break;
             }
+            case ApiError.WRONG_DEAL_TERMS:
+              alert('Trader has changed contract settings, please reload page');
+              break;
             default:
               defaultErrorHandler(err, dispatch);
           }
