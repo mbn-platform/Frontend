@@ -1,2 +1,2 @@
 # Frontend
-Frontend of the Mercatus platform
+Frontend of the Membrana platform

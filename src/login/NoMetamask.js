@@ -9,7 +9,7 @@ export default () => {
     return (
       <div className="login_no_metamask">
         <div className="login_no_metamask_title">Please, install Cipher Browser</div>
-        <div className="login_no_metamask_text">To use Mercatus Platform on mobile devices you need to install Cipher Browser:</div>
+        <div className="login_no_metamask_text">To use Membrana Platform on mobile devices you need to install Cipher Browser:</div>
         <div className='row justify-content-around'>
           <div className="metamask_link_wrapper col-12 d-flex  justify-content-center  col-md-auto">
             <a

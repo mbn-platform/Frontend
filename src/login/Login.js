@@ -37,7 +37,7 @@ class Login extends React.Component {
 
   onDemoClick() {
     console.log(' on demo click');
-    window.location = 'http://demo.mercatus.im';
+    window.location = 'http://demo.membrana.io';
   }
 
   renderStep() {

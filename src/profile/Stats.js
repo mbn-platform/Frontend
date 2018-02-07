@@ -28,7 +28,7 @@ const Stats = ({ traderRating, investorRating, roiInUSD, roiInBTC, moneyInManage
 
               <span className="icon icon-help icon-help-web-button"  id="help-icon-roi"></span>
               <UncontrolledTooltip target="help-icon-roi">
-                ROI CALCULATED BY MERCATUS ANALYSIS SYSTEM
+                ROI CALCULATED BY MEMBRANA ANALYSIS SYSTEM
               </UncontrolledTooltip>
 
             </div>
