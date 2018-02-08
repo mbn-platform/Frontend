@@ -109,6 +109,7 @@ class Dashboard extends React.Component {
             contracts={this.props.contracts}
             selectedContract={this.state.selectedContract}
             onContractSelected={this.onContractSelected}
+            selectedNet={this.props.selectedNet}
           />
         </div>
         <div className="table_wrapper selected_contract_table">

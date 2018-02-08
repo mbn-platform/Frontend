@@ -90,8 +90,9 @@ class Contracts extends React.Component {
   }
 
   getExpireDateColumn() {
+    const header = this.state.completedTabIndex ? 'Finished at' : 'Expire date';
     return {
-      Header: ContractTableHeader('Expire date'),
+      Header: ContractTableHeader(header),
       id: 'date',
       accessor: 'start',
       Cell: row => {
@@ -208,7 +209,7 @@ class Contracts extends React.Component {
       accessor: 'fee'
     }, {
       Header: <TXHeader />,
-      Cell: TXCell,
+      Cell: TXCell(this.props.selectedNet),
       minWidth: 30,
       sortable: false,
       accessor: 'addr',
@@ -259,7 +260,7 @@ class Contracts extends React.Component {
       headerClassName: 'status_column'
     }, {
       Header: <TXHeader />,
-      Cell: TXCell,
+      Cell: TXCell(this.props.selectedNet),
       sortable: false,
       minWidth: 45,
       headerClassName: 'tx_column',
@@ -322,9 +323,22 @@ const NegativeValuesCell = row => (
   <div className={parseFloat(row.value) < 0 ? 'table_value_red' : 'table_value_green'}>{row.value}</div>
 );
 
-const TXCell = ({original}) => (
-  <a className="tx_link" target="_blank" href={'https://ropsten.etherscan.io/address/' + original.addr || 'https://etherscan.io'} />
+const TXCell = selectedNet => ({original}) => (
+  <a className="tx_link" target="_blank" href={etherscanLink(selectedNet, original.value)} />
 );
+
+function etherscanLink(net, tx) {
+  let url;
+  switch(net) {
+    case 'mainnet':
+      url = 'https://etherscan.io/tx/';
+      break;
+    case 'testnet':
+      url = 'https://ropsten.etherscan.io/tx/';
+      break;
+  }
+  return url + tx;
+}
 
 const StatusCell = ({value}) => {
   let className = 'status_circle ';
