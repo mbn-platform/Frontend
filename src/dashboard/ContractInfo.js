@@ -13,7 +13,8 @@ class ContractInfo extends React.Component {
     let left = null, profitProgress = null;
     if(currentBalance !== null) {
       left = this.props.contract.targetBalance / 100000000 - currentBalance;
-      profitProgress = currentBalance > startBalance ? (1 - left / (left + currentBalance)) * 100 : 0;
+      profitProgress = currentBalance > startBalance ?
+        (currentBalance - startBalance) / (this.props.contract.targetBalance / 100000000 - startBalance) * 100 : 0;
     }
     return (
       <div>
@@ -107,8 +108,8 @@ const ProfitLeft = ({left, currency, progress}) => (
 const ProgressBar = ({ progress }) => {
   if(progress === null) {
     return (
-    <div className="progress_bar_wrapper clearfix">
-    </div>
+      <div className="progress_bar_wrapper clearfix">
+      </div>
     );
   }
   if(progress < 1) {
