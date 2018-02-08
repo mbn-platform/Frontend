@@ -38,5 +38,5 @@
   "devDependencies": {
     "npm-run-all": "^4.1.2"
   },
-  "proxy": "https://alpha.mercatus.im"
+  "proxy": "https://alpha.membrana.io"
 }
