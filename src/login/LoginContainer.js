@@ -4,7 +4,7 @@ import Login from './Login';
 
 const mapStateToProps = state => ({
   nameRequired: state.auth.nameRequired,
-  isMainNet: state.isMainNet,
+  isMainNet: state.selectedNet === 'mainnet',
 });
 
 

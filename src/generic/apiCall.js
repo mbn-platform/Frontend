@@ -36,8 +36,13 @@ ApiError.EXCHANGE_ERROR = -599;
 ApiError.MIN_TRADE_REQUIREMENT_NOT_MET = -502;
 ApiError.INSUFFICIENT_FUNDS = -503;
 
-function jsonRequest(request) {
-  return request.then(res => res.json())
+function getSelectedNet() {
+  return window.localStorage.getItem('selectedNet') || 'mainnet';
+}
+
+function jsonRequest(url, params) {
+  params.headers['X-Network'] = getSelectedNet();
+  return window.fetch(url, params).then(res => res.json())
     .then(json => {
       const error = json.error;
       if(error) {
@@ -51,7 +56,7 @@ function jsonRequest(request) {
 
 export function apiPost(url, params, data) {
   params = {...defaultPostParams, ...params, body: JSON.stringify(data)};
-  return jsonRequest(window.fetch(url, params));
+  return jsonRequest(url, params);
 }
 
 export function apiPut(url, params, data) {
@@ -60,7 +65,7 @@ export function apiPut(url, params, data) {
 
 export function apiDelete(url, params) {
   params = {...defaultDeleteParams, ...params};
-  return jsonRequest(window.fetch(url, params));
+  return jsonRequest(url, params);
 }
 
 const defaultDeleteParams = {
@@ -74,6 +79,6 @@ const defaultDeleteParams = {
 
 export function apiGet(url, params) {
   params = {...defaultGetParams, ...params};
-  return jsonRequest(window.fetch(url, params));
+  return jsonRequest(url, params);
 }
 

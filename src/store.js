@@ -16,12 +16,10 @@ export default store;
 
 function getReduxState() {
   let state = localStorage.getItem('reduxState');
-  let isMainNet = localStorage.getItem('isMainNet');
+  let selectedNet = localStorage.getItem('selectedNet') || 'mainnet';
   if(state) {
     state = JSON.parse(state);
-    if(isMainNet !== null) {
-      state.isMainNet = JSON.parse(isMainNet);
-    }
+    state.selectedNet = selectedNet;
   } else {
     state = {};
   }

@@ -30,9 +30,12 @@ export function getMarketHistory(market) {
   return apiCall('/getmarkethistory', `market=${market}`);
 }
 
+function getSelectedNet() {
+  return window.localStorage.getItem('selectedNet') || 'mainnet';
+}
 
 function apiCall(url, params) {
   const fullUrl = API_URL + url + '?' + (params || '');
-  return fetch(fullUrl)
+  return window.fetch(fullUrl, {headers: {'X-Network': getSelectedNet()}})
     .then(res => res.json());
 }
