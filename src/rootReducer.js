@@ -52,6 +52,7 @@ const root = (state, action) => {
       return {...newState, terminal: {...newState.terminal, selectedApiKey}};
     }
     case 'ON_NET_SELECT':
+      localStorage.setItem('isMainNet', !newState.isMainNet);
       return {...newState, isMainNet: !newState.isMainNet};
     default:
       return newState;
