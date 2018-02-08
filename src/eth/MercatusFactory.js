@@ -269,4 +269,4 @@ export const ABI = [
 ];
 
 export const ADDRESS = '0x49eC146e6385777c41A8b4637fA4416Eb667549b';
-export const MAIN_NET_ADDRESS = '0x4c28c3825f65d8d49bce14a022e8c56fcd913148';
+export const MAIN_NET_ADDRESS = '0x9afed4763f4f367973f42b67c56add4006aa648d';
