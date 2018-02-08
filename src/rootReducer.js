@@ -14,7 +14,7 @@ import { calculateKeyBalance } from './generic/util';
 
 import { LOGGED_OUT } from './actions/auth';
 
-const combined = combineReducers({apiKeys, contracts, offers, auth, exchanges, time, request, terminal, rates, profile, exchangesInfo});
+const combined = combineReducers({apiKeys, contracts, offers, auth, exchanges, time, request, terminal, rates, profile, exchangesInfo, isMainNet: (state = true) => state});
 
 const root = (state, action) => {
   switch(action.type) {
@@ -51,6 +51,8 @@ const root = (state, action) => {
       }
       return {...newState, terminal: {...newState.terminal, selectedApiKey}};
     }
+    case 'ON_NET_SELECT':
+      return {...newState, isMainNet: !newState.isMainNet};
     default:
       return newState;
   }

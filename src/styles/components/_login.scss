@@ -1,0 +1,92 @@
+.login_step_login {
+	.switch {
+		display: inline-block;
+		position: relative;
+		margin-bottom: 20px;
+		.net-name {
+			font-size: 2.3em;
+			text-align: center;
+			color: #e1e1e1;
+		}
+		.cmn-toggle {
+			position: absolute;
+			margin-left: -9999px;
+			visibility: hidden;
+		}
+		.cmn-toggle + label {
+			display: block;
+			position: relative;
+			cursor: pointer;
+			outline: none;
+			user-select: none;
+		}
+		input.cmn-toggle-round-flat + label.cmn-toggle-background {
+			padding: 2px;
+			width: 64px;
+			height: 24px;
+			background-color: #494d4d;
+			border-radius: 24px;
+			transition: background 0.4s;
+		}
+		input.cmn-toggle-round-flat + label.cmn-toggle-background:before, input.cmn-toggle-round-flat + label.cmn-toggle-background:after {
+			display: block;
+			position: absolute;
+			content: "";
+		}
+		input.cmn-toggle-round-flat + label.cmn-toggle-background:before {
+			top: 2px;
+			left: 2px;
+			bottom: 2px;
+			right: 2px;
+			background-color: #494d4d;
+			border-radius: 24px;
+			transition: background 0.4s;
+		}
+		input.cmn-toggle-round-flat + label.cmn-toggle-background:after {
+			top: 0px;
+			left: 0px;
+			bottom: 0px;
+			width: 24px;
+			background-color: #bfbfc1;
+			border-radius: 24px;
+			transition: margin 0.4s, background 0.4s;
+			box-shadow: 6px 0 1px rgba(0, 0, 0, 0.1);
+
+		}
+		input.cmn-toggle-round-flat:checked + label.cmn-toggle-background {
+			background-color: #346255;
+		}
+		input.cmn-toggle-round-flat:checked + label.cmn-toggle-background:after {
+			margin-left: 41px;
+			background-color: #bfbfc1;
+			box-shadow: -6px 0 1px rgba(0, 0, 0, 0.1);
+		}			
+		input.cmn-toggle-round-flat:checked + label.cmn-toggle-background:before {
+			background-color: #346255;
+		}
+		.cmn-text {
+			position: absolute;
+			top: 4px;
+			color: #bfbfc1;
+			font-size: 1em;
+		}
+		label.cmn-no-text {
+			display: block;
+			left: 36px;
+			color: #bfbfc1;
+
+		}				
+		label.cmn-yes-text {
+			color: #bfbfc1;
+			left: 12px;
+			display: none;
+		}						
+		input.cmn-toggle-round-flat:checked ~ label.cmn-no-text {
+			display: none;
+		}
+		input.cmn-toggle-round-flat:checked ~ label.cmn-yes-text {
+			display: block;
+		}				
+	}					
+
+}

@@ -46,7 +46,12 @@ class Login extends React.Component {
     } else if(this.props.nameRequired) {
       return (<EnterNickname onNicknameSet={this.props.onNicknameSet} />);
     } else {
-      return (<LoginStep onClick={this.props.onLoginClick} hasActiveAccount={this.state.hasActiveAccount} />);
+      return (
+        <LoginStep onClick={this.props.onLoginClick} hasActiveAccount={this.state.hasActiveAccount}
+          onNetSelect={this.props.onNetSelect}
+          isMainNet={this.props.isMainNet}
+        />
+      );
     }
   }
 
