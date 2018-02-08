@@ -212,7 +212,7 @@ class Contracts extends React.Component {
       Cell: TXCell(this.props.selectedNet),
       minWidth: 30,
       sortable: false,
-      accessor: 'addr',
+      accessor: 'tx',
       headerClassName: 'tx_column',
       className: 'tx_column'
     }, {
@@ -261,6 +261,7 @@ class Contracts extends React.Component {
     }, {
       Header: <TXHeader />,
       Cell: TXCell(this.props.selectedNet),
+      accessor: 'tx',
       sortable: false,
       minWidth: 45,
       headerClassName: 'tx_column',
@@ -323,8 +324,8 @@ const NegativeValuesCell = row => (
   <div className={parseFloat(row.value) < 0 ? 'table_value_red' : 'table_value_green'}>{row.value}</div>
 );
 
-const TXCell = selectedNet => ({original}) => (
-  <a className="tx_link" target="_blank" href={etherscanLink(selectedNet, original.value)} />
+const TXCell = selectedNet => ({value}) => (
+  <a className="tx_link" target="_blank" href={etherscanLink(selectedNet, value)} />
 );
 
 function etherscanLink(net, tx) {
