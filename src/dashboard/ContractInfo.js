@@ -133,7 +133,6 @@ const ProgressBar = ({ progress }) => {
 
 ContractInfo.propTypes = {
   contract: PropTypes.object,
-  onCommentLeft: PropTypes.func.isRequired
 };
 function formatBalance(value, name) {
   if(name === 'USDT') {
