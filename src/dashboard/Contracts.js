@@ -97,7 +97,7 @@ class Contracts extends React.Component {
       Cell: row => {
         let date;
         if(row.original.state === CONTRACT_STATE_VERIFIED) {
-          date = row.value * 1000;
+          date = row.value * 1000 + row.original.duration * 86400000;
         } else {
           date = row.original.finishDate;
         }
