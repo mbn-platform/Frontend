@@ -14,14 +14,12 @@ const LoginStep = ({ onClick, hasActiveAccount, onNetSelect, isMainNet }) => {
 
 const MetamaskAccountNotActive = () => (
   <div className="login_step_login">
-    <div className="login_step_has_account">Thank you for installing Metamask!</div>
     <div className="login_step_login_text">Please login into your Metamask account or check demo version.</div>
   </div>
 );
 
 const MetamaskAccountActive = ({ onClick, onNetSelect, isMainNet }) => (
   <div className="login_step_login">
-    <div className="login_step_has_account">Thank you for installing Metamask!</div>
     <div className="login_step_login_text">Please click the login button and button sign to reach dashboard:</div>
     <NetSelector
       onNetSelect={onNetSelect}
