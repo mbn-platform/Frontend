@@ -253,6 +253,22 @@
 						}
 					}
 				}
+				.balance {
+					margin-top: 10px;
+					&-name,&-title{
+						color: #9094A1;
+					}
+					&-name{
+						margin-right: 6px;
+					}
+					&-title {
+						margin-right: 22px;
+					}
+					&-val{
+						color: #fff;
+					}
+				}
+
 			}
 			.orders-table{
 				&__top{
@@ -702,21 +718,10 @@
 }
 
 @media (min-width: 833px) {
-	.balance.row:last-child:before{
-		content: '';
-		display: block;
-		background-color: rgba(#fff,.1);
-		height: 32px;
-		width: 1px;
-		margin: 0 10px;
-	}
 	.header-status {
 		.curses{
 			display: flex;
 		// text-align: left;
-		}
-		.balance-wrap{
-			width: auto;
 		}
 	}	
 
@@ -755,18 +760,6 @@
 
 		.curses {
 			padding: 10px 0 0 !important;
-		}
-
-		.balance {
-			&-wrap {
-				margin-right: 0;
-			}
-
-			&-title {
-				width: 100%;
-				margin-right: 0;
-				text-align: center;
-			}
 		}
 	}
 }

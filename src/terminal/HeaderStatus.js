@@ -15,15 +15,6 @@ class HeaderStatus extends React.Component {
   }
 
   render() {
-    let currencies;
-    const cur = this.props.market.split('-');
-    if(this.props.apiKey) {
-      const currency1 = this.props.apiKey.currencies.find(c => c.name === cur[0]) || {name: cur[0]};
-      const currency2 = this.props.apiKey.currencies.find(c => c.name === cur[1]) || {name: cur[1]};
-      currencies = [currency1, currency2];
-    } else {
-      currencies = [{name: cur[0]}, {name: cur[1]}];
-    }
     return (
       <header className="header-status">
         <Container fluid className="h-100">
@@ -94,31 +85,6 @@ const Rate = ({ pair, val, change }) => {
       </Col>
     </Col>
   );
-}
-
-const Balance = ({first, second}) => (
-  <Col xs="4" sm="4" md="4" lg="3" xl="2" className="row justify-content-end align-items-center">
-    <div className="balance-title"> BALANCE:</div>
-    <div className="balance-wrap">
-      <BalanceValue {...first} />
-      <BalanceValue {...second} />
-    </div>
-  </Col>
-);
-
-const BalanceValue = ({name, availableBalance}) => (
-  <Row className="balance justify-content-center align-items-center">
-    <div className="balance-name">{name}</div>
-    <div className="balance-val">{formatBalance(availableBalance, name)}</div>
-  </Row>
-);
-
-function formatBalance(value, name) {
-  if(name === 'BTC') {
-    return (value || 0).toFixed(8);
-  } else {
-    return (value || 0).toFixed(2);
-  }
-}
+};
 
 export default HeaderStatus;

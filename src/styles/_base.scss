@@ -74,30 +74,6 @@ input[type=number]::-webkit-outer-spin-button {
 			line-height: 10px;
 		}
 	}
-
-	.balance{
-		&-wrap{
-			display: flex;
-			align-items: center;
-			width: 100%;
-			justify-content: space-around;
-		}
-		&-wrap {
-			margin-right: 1px;
-		}
-		&-name,&-title{
-			color: #9094A1;
-		}
-		&-name{
-			margin-right: 6px;
-		}
-		&-title {
-			margin-right: 22px;
-		}
-		&-val{
-			color: #fff;
-		}
-	}
 }
 
 .container-fluid {

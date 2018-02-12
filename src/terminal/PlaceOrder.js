@@ -147,6 +147,11 @@ class PlaceOrder extends React.Component {
   }
 
   render() {
+    let minTradeSize = '';
+    if(this.props.exchangeInfo && this.props.exchangeInfo.markets) {
+      const marketInfo = this.props.exchangeInfo.markets[this.props.market];
+      minTradeSize = marketInfo ? marketInfo.minTradeSize : '';
+    }
     const usdtMarket = this.state.main === 'USDT';
     return (
       <div className="buysell col-12 col-sm-6 col-md-12">
@@ -154,10 +159,10 @@ class PlaceOrder extends React.Component {
           <div className="buysell__switch-wrap ">
             <span onClick={() => this.onTabClick(TAB_BUY)}
               className={classNames('buysell__switch', 'switch-buy', {active: this.state.selectedTab === TAB_BUY})}
-            >BUY <span className="val">{formatFloat(this.state.ask, !usdtMarket)}</span></span>
+            >BUY</span>
             <span onClick={() => this.onTabClick(TAB_SELL)}
               className={classNames('buysell__switch', 'switch-sell', {active: this.state.selectedTab === TAB_SELL})}
-            >SELL <span className="val">{formatFloat(this.state.bid, !usdtMarket)}</span></span>
+            >SELL</span>
           </div>
           <Desktop>
             <div className="chart-controls align-items-center justify-content-between row">
@@ -174,7 +179,9 @@ class PlaceOrder extends React.Component {
                   <label className="buysell__form-label">
                     Order size ({this.state.secondary})
                   </label>
-                  <input onChange={this.onChange} value={this.state.orderSize} type="number" name='ordersize' className="buysell__form-input"/>
+                  <input onChange={this.onChange}
+                    placeholder={'min ' + minTradeSize}
+                    value={this.state.orderSize} type="number" name='ordersize' className="buysell__form-input"/>
                 </div>
                 <div className="buysell__form-input-wrap">
                   <label className="buysell__form-label">
@@ -196,11 +203,49 @@ class PlaceOrder extends React.Component {
               </div>
             </form>
           </div>
+          <Balances
+            main={this.state.main}
+            secondary={this.state.secondary}
+            apiKey={this.props.selectedApiKey}
+          />
 
         </div>
       </div>
     );
   }
 }
+
+const Balances = ({apiKey, main, secondary}) => {
+  let value1, value2;
+  if(apiKey) {
+    value1 = apiKey.currencies.find(c => c.name === main);
+    value1 = value1 ? value1.avaliableBalance : undefined;
+    value2 = apiKey.currencies.find(c => c.name === secondary);
+    value2 = value2 ? value2.availableBalance : undefined;
+  }
+  return (
+    <div className="balance-wrap">
+      <Balance name={main} value={value1} />
+      <Balance name={secondary} value={value2}/>
+    </div>
+  );
+};
+function formatBalance(value, name) {
+  if(value === undefined) {
+    return null;
+  }
+  if(name === 'BTC') {
+    return (value || 0).toFixed(8);
+  } else {
+    return (value || 0).toFixed(2);
+  }
+}
+
+const Balance = ({name, value}) => (
+  <div className="balance row">
+    <div className="balance-name">{name}</div>
+    <div className="balance-val">{formatBalance(value, name)}</div>
+  </div>
+);
 
 export default PlaceOrder;
