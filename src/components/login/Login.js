@@ -1,8 +1,11 @@
 import React from 'react';
 import EnterNickname from './EnterNickname';
 import './Login.css';
+import './LoginStep.css';
 import NoMetamask from './NoMetamask';
-import LoginStep from './LoginStep';
+import MetamaskClosed from './MetamaskClosed';
+import LoginForm from './LoginForm';
+
 
 
 class Login extends React.Component {
@@ -47,10 +50,15 @@ class Login extends React.Component {
       return (<EnterNickname onNicknameSet={this.props.onNicknameSet} />);
     } else {
       return (
-        <LoginStep onClick={this.props.onLoginClick} hasActiveAccount={this.state.hasActiveAccount}
-          onNetSelect={this.props.onNetSelect}
-          isMainNet={this.props.isMainNet}
-        />
+        this.state.hasActiveAccount ? (
+          <LoginForm 
+            onClick={this.props.onLoginClick}
+            onNetSelect={this.props.onNetSelect}
+            isMainNet={this.props.isMainNet}
+          />
+        ) : (
+          <MetamaskClosed />
+        )
       );
     }
   }
@@ -64,9 +72,6 @@ class Login extends React.Component {
               <div className="login_title_text">Alpha</div>
             </div>
             {this.renderStep()}
-            <div className="demo_button_wr">
-              <button onClick={this.onDemoClick} className="login_step_login_submit">DEMO</button>
-            </div>
           </div>
         </div>
       </div>

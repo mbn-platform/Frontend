@@ -1,6 +1,7 @@
 import React from 'react';
-import Metamask from '../img/Metamask.png';
-import Cipher from '../img/Cipher.png';
+import Metamask from '../../img/Metamask.png';
+import Cipher from '../../img/Cipher.png';
+import DemoButton from './DemoButton';
 import './NoMetamask.css';
 
 export default () => {
@@ -44,6 +45,7 @@ export default () => {
             <div className="metamask_text">MetaMask is a bridge that allows you to visit the distributed web of tomorrow in your browser today. It allows you to run Ethereum dApps right in your  browser without running a full Ethereum node. MetaMask includes a secure identity vault, providing a user interface to manage your identities on different sites and sign blockchain transactions.</div>
           </div>
         </div>
+        <DemoButton />
       </div>
     );
   }

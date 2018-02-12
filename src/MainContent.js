@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import Login from './login/LoginContainer';
+import Login from './components/login/LoginContainer';
 import Dashboard from './dashboard/DashboardContainer';
 import Terminal from './terminal/Terminal';
 import Ratings from './ratings/Ratings';
