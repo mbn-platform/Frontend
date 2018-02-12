@@ -17,6 +17,14 @@ class OrderBook extends React.Component {
       price: (a, b) => formatFloat(a.Rate, this.props.market.split('-')[0] === 'BTC') - formatFloat(b.Rate, this.props.market.split('-')[0] === 'BTC'),
       relativeSize: (a, b) => formatFloat(a.Rate * a.Quantity) - formatFloat(b.Rate * b.Quantity)
     };
+
+    this.onOrderClick = this.onOrderClick.bind(this);
+  }
+
+  onOrderClick(e) {
+    e.stopPropagation();
+    const target = e.currentTarget;
+    this.props.onOrderSelect(target.dataset.price, target.dataset.size);
   }
 
   fireOnScroll() {
@@ -106,6 +114,7 @@ class OrderBook extends React.Component {
             <tbody className="tbody">
               {sortedDataSell.map((order, i) => (
                 <BuyOrderCell
+                  onClickCapture={this.onOrderClick}
                   isBTC={isBTC}
                   key={i}
                   price={order.Rate}
@@ -122,6 +131,7 @@ class OrderBook extends React.Component {
             <tbody>
               {sortedDataBuy.map((order, i) => (
                 <BuyOrderCell
+                  onClickCapture={this.onOrderClick}
                   isBTC={isBTC}
                   key={i}
                   price={order.Rate}
@@ -148,7 +158,9 @@ class OrderBook extends React.Component {
     }
     return (
       <div className={classNames('value', 'row', isUp ? 'up' : 'down')}>
-        <span>{formatFloat(last, true)}</span><span className={classNames('icon', 'icon-dir', isUp ? 'icon-up-dir' : 'icon-down-dir')}> </span>
+        <span onClick={() => this.props.onOrderSelect(last)}>
+          {formatFloat(last, true)}</span>
+        <span className={classNames('icon', 'icon-dir', isUp ? 'icon-up-dir' : 'icon-down-dir')}> </span>
       </div>
     );
   }
@@ -158,10 +170,10 @@ function relativeSize(minSize, maxSize, size) {
   return Math.max((size - minSize) / (maxSize - minSize), 0.02);
 }
 
-const BuyOrderCell = ({price, size, relativeSize, isBTC} ) => {
+const BuyOrderCell = ({price, size, relativeSize, isBTC, onClickCapture} ) => {
   const sizeParts = formatFloat(size).split('.');
   return (
-    <tr>
+    <tr onClickCapture={onClickCapture} data-price={price} data-size={size} >
       <td>{formatFloat(price, isBTC)}</td>
       <td>
         <span className="white">{sizeParts[0]}.</span>

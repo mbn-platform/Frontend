@@ -16,6 +16,16 @@ import MediaQuery from 'react-responsive';
 
 class Terminal extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {};
+    this.onOrderSelect = this.onOrderSelect.bind(this);
+  }
+
+  onOrderSelect(price, size) {
+    this.setState({price, size});
+  }
+
   allowedApiKeys(apiKeys, contracts) {
     const allowedOwnKeys = apiKeys.ownKeys.filter(k => k.state === 'FREE');
     const allowedReceivedKeys = apiKeys.receivedKeys.filter(k => {
@@ -67,6 +77,8 @@ class Terminal extends React.Component {
                   />
                   <Row className="justify-content-between">
                     <PlaceOrder                    
+                      price={this.state.price}
+                      size={this.state.size}
                       exchangeInfo={this.props.exchangesInfo['bittrex']}
                       ticker={this.props.ticker}
                       placeOrder={this.props.placeOrder}
@@ -82,6 +94,7 @@ class Terminal extends React.Component {
                     </MediaQuery>
                     <MediaQuery query="(max-width: 575px)">
                       <OrderBook
+                        onOrderSelect={this.onOrderSelect}
                         orderBook={this.props.orderBook}
                         ticker={this.props.ticker}
                         market={this.props.selectedMarket}
@@ -93,6 +106,7 @@ class Terminal extends React.Component {
                   <Row>
                     <MediaQuery query="(min-width: 576px)">
                       <OrderBook
+                        onOrderSelect={this.onOrderSelect}
                         orderBook={this.props.orderBook}
                         ticker={this.props.ticker}
                         market={this.props.selectedMarket}
