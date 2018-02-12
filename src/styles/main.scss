@@ -294,16 +294,16 @@ body {
       display: inline-block;
       vertical-align: middle;
       cursor: pointer;
-      background: url(../img/GreenTriangleTopGray.png) no-repeat center center
+      background: url(../img/GreenTriangleTopGray.svg) no-repeat center center
     }
 
     .-sort-asc .green_arrow
     {
-      background: url(../img/GreenTriangleBottom.png) no-repeat center center
+      background: url(../img/GreenTriangleBottom.svg) no-repeat center center
     }
     .-sort-desc .green_arrow
     {
-      background: url(../img/GreenTriangleTop.png) no-repeat center center
+      background: url(../img/GreenTriangleTop.svg) no-repeat center center
     }
     .table_col_value
     {
@@ -489,7 +489,7 @@ body {
 	  position: absolute;
 	  width: 11px;
 	  height: 11px;
-	  background: url(../img/HelpIcon.png) no-repeat center center;
+	  background: url(../img/HelpIcon.svg) no-repeat center center;
 	  display: inline-block;
 	  vertical-align: middle;
 	  cursor: pointer;
@@ -765,7 +765,7 @@ body {
 	  top: 4px;
 	  width: 11px;
 	  height: 11px;
-	  background: url(../img/HelpIcon.png) no-repeat center center;
+	  background: url(../img/HelpIcon.svg) no-repeat center center;
 	  transition-property: opacity, background;
 	  transition-duration: 400ms;
 	  display: inline-block;
