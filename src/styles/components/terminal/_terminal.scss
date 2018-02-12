@@ -95,7 +95,7 @@
 				}
 			}
 			.price-chart{
-				height: 253px;
+				min-height: 253px;
 		    background-image: url(../img/price_chart.png);
 		    background-repeat: no-repeat;
 		    background-size: 100% 100%;
@@ -141,7 +141,7 @@
 				// }
 			}
 			.marketdepth-chart{
-				height: 240px;
+				min-height: 240px;
 		    // background-image: url('../img/marketdepth_chart.png');
 			  background-repeat: no-repeat;
 			  background-size: 100% 100%;
@@ -526,6 +526,51 @@
 		}
 	}
 
+}
+@include media-breakpoint-up(lg) {
+	.terminal {
+		height: 100%;
+		> .row {
+			height: 100%;
+			.terminal-main {
+				height: calc(100% - 80px);
+				.charts {
+					height: calc(100% - 50px);
+					.price-chart, .marketdepth-chart {
+						height: calc(50% - 165px);
+					}
+					.charts__right > .row {
+						height: 100%;
+					}
+					.orderbook-table, .trades-table {
+						height: calc(50% - 20px);
+					}
+
+					.trades-table .floatThead-wrapper {
+						height: calc(100% - 15px);
+						.trades-table-wrapper {
+							position: absolute;
+							height: calc(100% - 28px);
+						}
+					}
+					.orderbook-table {
+						.floatThead-wrapper {
+							height: calc(50% - 28px);
+							.orderbook-table-wrapper {
+								position: absolute;
+								height: calc(100% - 28px);
+							}
+						}
+						> .orderbook-table-wrapper {
+							margin-right: 15px;
+							position: absolute;
+							height: calc(50% - 53px);
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 @include media-breakpoint-down(xs) {
