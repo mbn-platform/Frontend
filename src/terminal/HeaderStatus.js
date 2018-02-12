@@ -28,7 +28,7 @@ class HeaderStatus extends React.Component {
       <header className="header-status">
         <Container fluid className="h-100">
           <Row className="h-100 justify-content-between">
-            <Col xs="8" sm="8" md="8" lg="7" xl="4" className="curses-wrap row">
+            <Col xs="12" sm="12" md="8" lg="7" xl="4" className="curses-wrap row">
               <Rate
                 pair="BTC/USD"
                 val={this.state['USDT-BTC'].Last ? Math.floor(this.state['USDT-BTC'].Last) : ''}
@@ -45,10 +45,6 @@ class HeaderStatus extends React.Component {
                 change={this.state['BTC-ETH'].PrevDay}
               />
             </Col>
-            <Balance
-              first={currencies[0]}
-              second={currencies[1]}
-            />
           </Row>
         </Container>
       </header>
