@@ -57,6 +57,8 @@ class AddApiKey extends React.Component {
                 maxLength='20'
                 name="name"
                 placeholder="Name"
+                autoCorrect="off"
+                spellCheck="false"
               />
             </div>
             <div className="add_keys_field_wr select_wr">
@@ -74,6 +76,8 @@ class AddApiKey extends React.Component {
                 value={this.state.value}
                 onChange={this.handleChange}
                 placeholder="Key"
+                autoCorrect="off"
+                spellCheck="false"
               />
               <input
                 className="add_keys_field add_keys_field_secret"
@@ -83,6 +87,8 @@ class AddApiKey extends React.Component {
                 autoComplete="off"
                 onChange={this.handleChange}
                 placeholder="Secret"
+                autoCorrect="off"
+                spellCheck="false"
               />
             </div>
             <div className="keys_submit_wrapper">
