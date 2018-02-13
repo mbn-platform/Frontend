@@ -228,9 +228,9 @@ const Balances = ({apiKey, main, secondary}) => {
   let value1, value2;
   if(apiKey) {
     value1 = apiKey.currencies.find(c => c.name === main);
-    value1 = value1 ? value1.avaliableBalance : undefined;
+    value1 = value1 ? value1.availableBalance || 0 : undefined;
     value2 = apiKey.currencies.find(c => c.name === secondary);
-    value2 = value2 ? value2.availableBalance : undefined;
+    value2 = value2 ? value2.availableBalance || 0 : undefined;
   }
   return (
     <div className="balance-wrap">
@@ -243,10 +243,10 @@ function formatBalance(value, name) {
   if(value === undefined) {
     return null;
   }
-  if(name === 'BTC') {
-    return (value || 0).toFixed(8);
-  } else {
+  if(name === 'USDT') {
     return (value || 0).toFixed(2);
+  } else {
+    return (value || 0).toFixed(8);
   }
 }
 
