@@ -170,7 +170,6 @@ class Ratings extends React.Component {
                           </tbody>
                         </table>
                       </div>
-                      <BestTraders />
                     </div>
                   ) : (
                     <div className="ratings-tab ratings-investors active">
@@ -232,10 +231,12 @@ class Ratings extends React.Component {
                           </tbody>
                         </table>
                       </div>
-                      <BestInvestors />
                     </div>
                   )}
                 </div>
+              </div>
+              <div className="ratings-best__block">
+                {this.state.tab === TAB_TRADERS ? <BestTraders /> : <BestInvestors />}
               </div>
             </div>
           </Col>

@@ -3,7 +3,7 @@ import React from 'react';
 class BestInvestors extends React.Component {
   render() {
     return (
-      <div className="ratings__best">
+      <div className="ratings-investors ratings__best">
         <ul className="ratings__best-list">
           <li className="ratings__best-item best_alltime">
             <div className="ratings__best-top">
