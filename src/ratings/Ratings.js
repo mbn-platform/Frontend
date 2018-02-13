@@ -166,7 +166,7 @@ class Ratings extends React.Component {
                             </tr>
                           </thead>
                           <tbody>
-                            {sortedData.map(rating => <TraderRatingRow {...rating} />)}
+                            {sortedData.map(rating => <TraderRatingRow key={rating._id} {...rating} />)}
                           </tbody>
                         </table>
                       </div>
@@ -227,7 +227,7 @@ class Ratings extends React.Component {
                             </tr>
                           </thead>
                           <tbody>
-                            {sortedData.map(d => <InvestorRatingRow {...d} />)}
+                            {sortedData.map(d => <InvestorRatingRow key={d._id} {...d} />)}
                           </tbody>
                         </table>
                       </div>
@@ -261,7 +261,6 @@ class Ratings extends React.Component {
       },
       offset: '50%p - ' + (($('.all-time').width() / 2) + 8).toString() + 'px, 0'
     });
-    console.log(this.props);
     this.props.updateRatings();
   }
 
