@@ -77,8 +77,8 @@ class SelectApiKey extends React.Component {
         id: '_id',
         className: 'table_col_value',
         Header: (<div className="table_header_wrapper">
-          <span className="table_header">Balance,<br/>BTC</span>
-          <div className="sort_icon_wrapper" style={{display: 'block', margin: 0}}>
+          <span className="table_header">Balance</span>
+          <div className="sort_icon_wrapper">
             <div className="green_arrow green_arrow_bottom" ></div>
           </div>
         </div>),
