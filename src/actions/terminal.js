@@ -181,7 +181,7 @@ export function updateTicker(market) {
           market,
         });
       }
-    });
+    }).catch(e => console.log('failed to get ticker'));
   };
 }
 
