@@ -79,11 +79,11 @@ class Offers extends React.Component {
         return (
           <div className="table_requests_control_wr clearfix">
             <div className="table_requests_control_text">accept this request?</div>
-            <div className="table_requests_control_btns">
+            <div className="table_requests_control_btns offer_controls">
               <a onClick={onAcceptClick}
-                className="table_requests_yes table_requests_btn" href="">Yes</a>
+                className="table_requests_yes table_requests_btn" href=""><u>Yes</u></a>
               <a onClick={onRejectClick}
-                className="table_requests_no table_requests_btn" href="">No</a>
+                className="table_requests_no table_requests_btn" href=""><u>No</u></a>
             </div>
           </div>
         );
@@ -96,10 +96,10 @@ class Offers extends React.Component {
         return (
           <div className="table_requests_control_wr clearfix">
             <div className="table_requests_control_text">Cancel this request?</div>
-            <div className="table_requests_control_btns">
+            <div className="table_requests_control_btns offer_controls">
               <a
                 onClick={onClick}
-                className="table_requests_yes table_requests_btn" href="">Yes</a>
+                className="table_requests_yes table_requests_btn" href=""><u>Yes</u></a>
             </div>
           </div>
         );

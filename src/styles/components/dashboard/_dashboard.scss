@@ -593,9 +593,12 @@
       float: left;
     }
 
-    .table_requests_control_btns
-    {
-      float: right;
+    .table_requests_control_btns {
+			float: right;
+			&.offer_controls {
+				margin-left: 10px;
+				float: left;
+			}
     }
 
     .table_requests_btn
