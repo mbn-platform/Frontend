@@ -80,13 +80,13 @@ class PlaceOrder extends React.Component {
       price = isUSDT ? price.toFixed(2) : price.toFixed(8);
       this.setState({bid: nextProps.ticker.bid, ask: nextProps.ticker.ask, price});
     }
-    if(nextProps.price && nextProps.price !== this.state.price) {
+    if(nextProps.price && nextProps.price !== this.props.price) {
       console.log(nextProps.price);
       console.log(this.state.main);
       const price = this.state.main === 'USDT' ? parseFloat(nextProps.price).toFixed(2) : parseFloat(nextProps.price).toFixed(8);
       this.setState({price});
     }
-    if(nextProps.size && nextProps.size !== this.state.size) {
+    if(nextProps.size && nextProps.size !== this.props.size) {
       this.setState({orderSize: nextProps.size});
     }
   }
