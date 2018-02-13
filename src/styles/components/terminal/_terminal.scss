@@ -95,7 +95,7 @@
 				}
 			}
 			.price-chart{
-				min-height: 253px;
+				height: 253px;
 		    background-image: url(../img/price_chart.png);
 		    background-repeat: no-repeat;
 		    background-size: 100% 100%;
@@ -141,7 +141,7 @@
 				// }
 			}
 			.marketdepth-chart{
-				min-height: 240px;
+				height: 240px;
 		    // background-image: url('../img/marketdepth_chart.png');
 			  background-repeat: no-repeat;
 			  background-size: 100% 100%;
@@ -555,6 +555,12 @@
 				height: calc(100% - 80px);
 				.charts {
 					height: calc(100% - 50px);
+					.price-chart {
+						min-height: 253px;
+					}
+					.marketdepth-chart {
+						min-height: 240px;
+					}
 					.price-chart, .marketdepth-chart {
 						height: calc(50% - 165px);
 					}
