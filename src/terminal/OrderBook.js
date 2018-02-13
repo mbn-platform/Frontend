@@ -1,9 +1,9 @@
 import React from 'react';
-import { getOrderBook, getTicker} from '../api/bittrex/bittrex';
 import { formatFloat } from '../generic/util';
 import { Desktop } from '../generic/MediaQuery';
 import {sortData, onColumnSort, classNameForColumnHeader}  from '../generic/terminalSortFunctions';
 import classNames from 'classnames';
+import $ from 'jquery';
 
 class OrderBook extends React.Component {
 
@@ -28,16 +28,44 @@ class OrderBook extends React.Component {
   }
 
   fireOnScroll() {
-    this.setState({scroll: true})
+    this.setState({scroll: true});
     this.tableSell.removeEventListener('scroll', this.fireOnScroll);
   }
 
   componentDidMount() {
+    let processScrollableTable = function($table) {
+      $table.on('reflowed', function(e, $floatContainer) {
+        let headHeight = $('tr', this).first().height();
+
+        $floatContainer.parent('.floatThead-wrapper').css({'padding-top': headHeight});
+        $(this).css('margin-top', -headHeight);
+      });
+      $table.floatThead({
+        scrollContainer: function($table){
+          let $container = $table.parents('.js-table-wrapper');
+          if (!$container.length) {
+            $container = $table.parents('.js-dropdown-table-wrapper');
+          }
+
+          return $container;
+        },
+        position: 'absolute',
+        autoReflow: 'true',
+        width: '100px',
+        debug: true
+      });
+    };
+    $('.orderbook-table .js-table-wrapper table').each(function(index, el) {
+      let $table = $(el);
+      processScrollableTable($table);
+    });
+    console.log('did mount');
+    $('.js-table-wrapper table').floatThead('reflow');
     this.tableSell.addEventListener('scroll', this.fireOnScroll);
   }
 
   componentDidUpdate() {
-    if(this.tableSell && this.tableSell.scrollTop == 0 && !this.state.scroll) {
+    if(this.tableSell && this.tableSell.scrollTop === 0 && !this.state.scroll) {
       this.tableSell.scrollTop = this.tableSell.scrollHeight - 26.6;
     }               
 
