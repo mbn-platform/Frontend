@@ -1,6 +1,7 @@
 import { apiPut, apiGet, ApiError } from '../generic/apiCall';
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
 export const GET_PROFILE = 'GET_PROFILE';
+export const TRADES_FOR_USER = 'TRADES_FOR_USER';
 
 export function updateProfile(profile) {
   return dispatch => {
@@ -22,6 +23,7 @@ export function getProfile(name) {
           type: GET_PROFILE,
           profile,
         });
+        dispatch(getTradesForUser(name));
       })
       .catch(e => {
         if(e.apiErrorCode) {
@@ -39,3 +41,15 @@ export function getProfile(name) {
   };
 }
 
+export function getTradesForUser(name) {
+  return dispatch => {
+    apiGet(`/api/tradesForUser/${name}`)
+      .then(trades => {
+        dispatch({
+          type: TRADES_FOR_USER,
+          name,
+          trades,
+        });
+      });
+  }
+}

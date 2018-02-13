@@ -14,9 +14,10 @@ class TablesScreen extends React.Component {
             <Col xs="12" sm="12" md="12" lg="12" xl="12">
               <Container fluid className="h-custom-100">
                 <Row className="table-row">
-                  <ProfitChart trades={this.props.profile.trades || []}
+                  <ProfitChart trades={(this.props.profile.trades ? this.props.profile.trades.asTrader : []) || [] }
+                    rates={this.props.rates}
                     dt={this.props.profile.dt}
-                    tradesAsInvestor={this.props.profile.tradesAsInvestor || []}
+                    tradesAsInvestor={(this.props.profile.trades ? this.props.profile.trades.asInvestor : []) || [] }
                   />
                   <Feedback
                     comments={this.props.profile.feedbacks || []}
@@ -32,7 +33,7 @@ class TablesScreen extends React.Component {
                     currencies={this.props.currencies}
                   />
                   <TradeHistory
-                    trades={this.props.profile.trades || []}
+                    trades={this.props.profile.trades || {asTrader: [], asInvestor:[]}}
                   />
                 </Row>
               </Container>

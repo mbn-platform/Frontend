@@ -8,8 +8,8 @@ class ProfitChart extends React.Component {
 
   constructor(props) {
     super(props);
-    const trades = [].concat.apply([], props.trades);
-    const tradesAsInvestor = [].concat.apply([], props.tradesAsInvestor);
+    const trades = props.trades;
+    const tradesAsInvestor =  props.tradesAsInvestor;
     const profit = calculateAllProfit(trades);
     const profitAsInvestor = calculateAllProfit(tradesAsInvestor);
     this.state = {selectedCurrency: 0, selectedInterval: 2, profit, profitAsInvestor};
@@ -26,7 +26,7 @@ class ProfitChart extends React.Component {
     let data = this.state.profit;
     let dataAsInvestor = this.state.profitAsInvestor;
     let now = Date.now();
-    let endDate = now - now % 3600000;
+    let endDate = (now - now % 3600000) + 3600000;
     let numberOfPoints;
     let startDate;
     switch(selectedInterval) {
@@ -44,7 +44,7 @@ class ProfitChart extends React.Component {
         break;
       case 3:
         startDate = endDate - 86400000 * 180;
-        numberOfPoints = 31
+        numberOfPoints = 31;
         break;
       case 4:
         startDate = endDate - 86400000 * 360;
@@ -60,16 +60,16 @@ class ProfitChart extends React.Component {
           if(traderFirst && investorFirst) {
             startDate = Math.min(traderFirst[0], investorFirst[0]);
           } else if(!traderFirst) {
-            startDate = investorFirst[0];
+            startDate = investorFirst[0] - 864000000;
           } else {
-            startDate = traderFirst[0];
+            startDate = traderFirst[0] - 864000000;
           }
           numberOfPoints = 18;
         }
     }
     const isUsd = this.state.selectedCurrency === 0;
-    data = calculatePoints(startDate, endDate, numberOfPoints, data, isUsd);
-    dataAsInvestor = calculatePoints(startDate, endDate, numberOfPoints, dataAsInvestor, isUsd);
+    data = calculatePoints(startDate, endDate, numberOfPoints, data, isUsd, this.props.rates);
+    dataAsInvestor = calculatePoints(startDate, endDate, numberOfPoints, dataAsInvestor, isUsd, this.props.rates);
     const shared = [];
     for(let i = 0; i < data.length; i++) {
       shared.push({
@@ -178,6 +178,10 @@ class ProfitChart extends React.Component {
   }
 
   makeConfig(selectedInterval) {
+    const dataProvider = this.formatData(selectedInterval);
+    const maximum = dataProvider.reduce((max, d) => Math.max(max, d['column-1']), 0);
+    const minimum = dataProvider.reduce((min, d) => Math.min(min, d['column-1']), maximum);
+    const offset = (maximum - minimum) * 0.1;
     return {
       'type': 'serial',
       'categoryField': 'category',
@@ -220,6 +224,8 @@ class ProfitChart extends React.Component {
       'guides': [],
       'valueAxes': [
         {
+          'minimum': minimum - offset,
+          'maximum': maximum + offset,
           'title': this.state.selectedCurrency ? 'BTC' : 'USD',
           'id': 'ValueAxis-1',
           'position': 'right',
@@ -233,7 +239,7 @@ class ProfitChart extends React.Component {
       },
       'titles': [
       ],
-      'dataProvider': this.formatData(selectedInterval)
+      'dataProvider': dataProvider,
     };
   }
 
@@ -247,18 +253,17 @@ class ProfitChart extends React.Component {
 }
 
 function calculateAllProfit(trades) {
-  trades = trades.map(t => ({...t, date: new Date(t.date).getTime()}));
   trades.sort((t1, t2) => t1.date - t2.date);
   const profitPoints = [];
-  let totalProfit = 0;
-  const buys = {};
+  const totalProfit = {ETH: 0, BTC: 0, USDT: 0};
+  const buys = {BTC: {}, USDT: {}, ETH: {}};
 
   for(let trade of trades) {
-    if(trade.type === 'Buy') {
-      let info = buys[trade.amountCurrency];
+    if(trade.type === 'buy') {
+      let info = buys[trade.mainCurrency][trade.amountCurrency];
       if(!info) {
         info = {amount: trade.amount, price: trade.price};
-        buys[trade.amountCurrency] = info;
+        buys[trade.mainCurrency][trade.amountCurrency] = info;
       } else {
         let price = (info.amount * info.price + trade.amount * trade.price) /
           (info.amount + trade.amount);
@@ -267,27 +272,27 @@ function calculateAllProfit(trades) {
         info.price = price;
       }
     } else {
-      const info = buys[trade.amountCurrency];
+      const info = buys[trade.mainCurrency][trade.amountCurrency];
       if(!info) {
         continue;
       } else if(info.amount < trade.amount) {
         continue;
       };
-      const profitInBtc = parseFloat(((trade.price - info.price) * trade.amount).toFixed(8));
-      totalProfit += profitInBtc;
-      const totalProfitInUsd = parseFloat((totalProfit * trade.usdtToBtcRate).toFixed(2));
-      profitPoints.push([trade.date, totalProfit, totalProfitInUsd]);
+      const profit = parseFloat(((trade.price - info.price) * trade.amount).toFixed(8));
+      const total = {...totalProfit, [trade.mainCurrency]: totalProfit[trade.mainCurrency] + profit};
+      totalProfit[trade.mainCurrency] += profit;
+      profitPoints.push([trade.date, total]);
       info.amount -= trade.amount;
     }
   }
   return profitPoints;
 };
 
-function calculatePoints(startDate, endDate, n, profitPoints, isUsd) {
+function calculatePoints(startDate, endDate, n, profitPoints, isUsd, rates) {
   n = n - 1;
   const points = [];
   const interval = (endDate - startDate) / n;
-  const searchPoint = closure(profitPoints, isUsd);
+  const searchPoint = closure(profitPoints, isUsd, rates);
   for(let i = 0; i <= n; i++) {
     const date = startDate + i * interval;
     points.push([date, searchPoint(date)]);
@@ -308,12 +313,11 @@ function formatDate(date) {
   return day + '.' + month + '.' + year;
 }
 
-function closure(array, isUsd) {
+function closure(array, isUsd, rates) {
   if(array.length === 0) {
     return () => 0;
   } else {
     let startIndex = 0;
-    let valueIndex = isUsd ? 2 : 1;
     return value => {
       for(let i = startIndex; i < array.length; i++) {
         const point = array[i];
@@ -324,10 +328,32 @@ function closure(array, isUsd) {
           return 0;
         } else {
           startIndex = i;
-          return array[i - 1][valueIndex];
+          const profit = array[i - 1][1];
+          let total = 0;
+          if(isUsd) {
+            total += profit.USDT;
+            total += (profit.BTC * rates.USDT.BTC) || 0;
+            total += (profit.ETH * rates.USDT.ETH) || 0;
+          } else {
+            total += profit.BTC;
+            total += (profit.ETH * rates.BTC.ETH) || 0;
+            total += (profit.USDT / rates.USDT.BTC) || 0;
+          }
+          return total;
         }
       }
-      return array[startIndex][valueIndex];
+      const profit = array[startIndex][1];
+      let total = 0;
+      if(isUsd) {
+        total += profit.USDT;
+        total += (profit.BTC * rates.USDT.BTC) || 0;
+        total += (profit.ETH * rates.USDT.ETH) || 0;
+      } else {
+        total += profit.BTC;
+        total += (profit.ETH * rates.BTC.ETH) || 0;
+        total += (profit.USDT / rates.USDT.BTC) || 0;
+      }
+      return total;
     };
   }
 }

@@ -98,6 +98,7 @@ class Profile extends React.Component {
             onToggleClick={this.onToggleClick}
           />
           <TablesScreen
+            rates={this.props.rates}
             own={own}
             profile={this.state.profile}
             onCurrencyToggle={this.onCurrencyToggle}

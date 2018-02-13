@@ -58,7 +58,8 @@ class TradeHistory extends React.Component {
         sortable: false,
       },
       {
-        Header: SortableHeader('Price, BTC'),
+        Header: SortableHeader('Price'),
+        Cell: row =>  formatFloat(row.value, row.original.mainCurrency) + ' ' + row.original.mainCurrency,
         accessor: 'price',
         minWidth: 50,
         className: 'table_col_value',
@@ -67,13 +68,15 @@ class TradeHistory extends React.Component {
       {
         Header: SortableHeader('Amount'),
         id: 'amount',
-        accessor: trade => trade.amountCurrency + ' ' + trade.amount,
+        accessor: 'amount',
+        Cell: row =>  formatFloat(row.value, row.original.amountCurrency) + ' ' + row.original.amountCurrency,
         minWidth: 50,
         className: 'table_col_value',
         sortable: false,
       },
       {
-        Header: SortableHeader('Total, BTC'),
+        Header: SortableHeader('Total'),
+        Cell: row =>  formatFloat(row.value, row.original.mainCurrency) + ' ' + row.original.mainCurrency,
         accessor: 'total',
         minWidth: 50,
         className: 'table_col_value',
@@ -90,7 +93,9 @@ class TradeHistory extends React.Component {
     ];
   }
   renderTable() {
-    const data = this.props.trades.reduce((accum, value) => {
+    const data = this.props.trades.asTrader.concat(this.props.trades.asInvestor)
+      .sort((t1, t2) => t2.date - t1.date)
+      .reduce((accum, value) => {
       if(value.length) {
         const first = value[0];
         const updatedFirst = {...first, first: true};
@@ -150,6 +155,14 @@ class TradeHistory extends React.Component {
   }
 }
 
+function formatFloat(value, currency) {
+  if(currency === 'USDT') {
+    return value.toFixed(2);
+  } else {
+    return value.toFixed(8);
+  }
+}
+
 const SortableHeader = (header, showSort = true) => (
   <div className="table_header_wrapper contract_header_wrapper">
     <span className="table_header">{header}</span>
@@ -161,7 +174,7 @@ const SortableHeader = (header, showSort = true) => (
 );
 
 const TradeTypeCell = row => {
-  const className = row.original.type === 'Buy' ? 'green' : 'red';
+  const className = row.original.type === 'buy' ? 'green' : 'red';
   return (<div className={className}>{row.original.type}</div>);
 };
 
