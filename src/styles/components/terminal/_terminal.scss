@@ -157,6 +157,9 @@
 				}
 			}
 			.buysell{
+				input::placeholder {
+					color: #495057;
+				}
 				background-color: #2C2F33;
 				padding: 15px;
 				color: #9094A1;
