@@ -205,7 +205,7 @@ class ApiKeyInfo extends React.Component {
             onItemSelected={() => {}}
             minRows={5}
             showPagination={true}
-            defaultPageSize={5}
+            defaultPageSize={15}
             PaginationComponent={Pagination}
           />
         </Mobile>
