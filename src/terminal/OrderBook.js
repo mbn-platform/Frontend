@@ -64,11 +64,13 @@ class OrderBook extends React.Component {
     this.tableSell.addEventListener('scroll', this.fireOnScroll);
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps, prevState) {
     if(this.tableSell && this.tableSell.scrollTop === 0 && !this.state.scroll) {
       this.tableSell.scrollTop = this.tableSell.scrollHeight - 26.6;
-    }               
-
+    } else if(prevState.sort !== this.state.sort && this.tableSell) {
+      this.tableSell.scrollTop = 0;
+      this.tableBuy.scrollTop = 0;
+    }
   }
 
   componentWillUnmount() {
@@ -153,7 +155,7 @@ class OrderBook extends React.Component {
           </table>
         </div>
         {this.renderLastPrice()}
-        <div className="orderbook-table-wrapper js-table-wrapper">
+        <div className="orderbook-table-wrapper js-table-wrapper" ref={elem => this.tableBuy = elem}>
           <table className="table green">
             <tbody>
               {sortedDataBuy.map((order, i) => (
