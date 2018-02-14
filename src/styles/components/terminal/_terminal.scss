@@ -77,7 +77,6 @@
 					margin-left: 11px;
 				}
 				&-controls{
-					width: 46px;
 			    position: absolute;
 			    right: 15px;
 			    top: 15px;
@@ -85,12 +84,6 @@
 						width: 12px;
 						height: 12px;
 						background-image: url('../assets/svg/resize.svg');
-					}
-					.control-dash{
-						width: 20px;
-						height: 7px;
-						background-image: url('../assets/svg/2dash.svg');
-
 					}
 				}
 			}

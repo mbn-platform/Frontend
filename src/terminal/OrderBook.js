@@ -119,7 +119,6 @@ class OrderBook extends React.Component {
           <Desktop>
             <div className="chart-controls align-items-center justify-content-between row">
               <div className="control-resize"></div>
-              <div className="control-dash"></div>
             </div>
           </Desktop>
         </div>
