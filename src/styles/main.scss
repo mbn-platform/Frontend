@@ -1117,7 +1117,7 @@ body {
 /*
 	ohO_oho: Mobile layout (<576px)
  */
-@include media-breakpoint-down(xs) {
+@include media-breakpoint-down(sm) {
 	.main-panel.container-fluid {
 		& > .row {
 			min-height: auto;

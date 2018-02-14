@@ -760,6 +760,11 @@
 
 	}
 }
+@include media-breakpoint-down(sm) {
+	.header-status {
+		margin-top: 10px;
+	}
+}
 
 @media (max-width: 832px) {
 	.header-status {
