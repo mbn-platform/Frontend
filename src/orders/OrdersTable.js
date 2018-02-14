@@ -53,7 +53,7 @@ class OrdersTable extends React.Component {
                 <table className="table">
                   <thead>
                     <tr>
-                      <th onClick={() => this.onColumnSort('type')}>Type <span className={classNameForColumnHeader(this.state, 'type')}></span></th>
+                      <th onClick={() => this.onColumnSort('type')}><br className="show-mobile"/><span className={classNameForColumnHeader(this.state, 'type')}></span></th>
                       <th onClick={() => this.onColumnSort('opened')}>Opened <span className="hide-mobile">Date</span> <span className={classNameForColumnHeader(this.state, 'opened')}></span></th>
                       <th onClick={() => this.onColumnSort('market')}>Market <span className={classNameForColumnHeader(this.state, 'market')}></span></th>
                       <th onClick={() => this.onColumnSort('price')}>Price <span className={classNameForColumnHeader(this.state, 'price')}></span></th>
@@ -81,7 +81,7 @@ class OrdersTable extends React.Component {
                 <table className="table">
                   <thead>
                     <tr>
-                      <th onClick={() => this.onColumnSort('type')}>Type <span className={classNameForColumnHeader(this.state, 'type')}></span></th>
+                      <th onClick={() => this.onColumnSort('type')}><br className="show-mobile"/><span className={classNameForColumnHeader(this.state, 'type')}></span></th>
                       <th onClick={() => this.onColumnSort('opened')}>Opened <span className="hide-mobile">Date</span> <span className={classNameForColumnHeader(this.state, 'opened')}></span></th>
                       <th onClick={() => this.onColumnSort('market')}>Market <span className={classNameForColumnHeader(this.state, 'market')}></span></th>
                       <th onClick={() => this.onColumnSort('price')}>Price <span className={classNameForColumnHeader(this.state, 'price')}></span></th>
@@ -109,7 +109,7 @@ class OrdersTable extends React.Component {
 const OpenOrder = ({order, onOrderCancel}) => (
   <tr className={order.type}>
     <td className="text-capitalize">
-      <span className="round"></span> {order.type}
+      <span className="round"></span>
     </td>
     <td>{formatDate(new Date(order.dt))}</td>
     <td>{order.market}</td>
@@ -124,7 +124,7 @@ const OpenOrder = ({order, onOrderCancel}) => (
 const CompletedOrder = ({order}) => (
   <tr className={order.type}>
     <td className="text-capitalize">
-      <span className="round"></span> {order.type}
+      <span className="round"></span>
     </td>
     <td>{formatDate(new Date(order.dt))}</td>
     <td>{order.market}</td>
