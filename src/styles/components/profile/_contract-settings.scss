@@ -272,7 +272,7 @@
 						.accept-requests {
 							//padding: 0 80px;
 							margin-top: 28px;
-							height: 34px;
+							height: 36px;
 							background-color: #202224;
 							.accept-block {
 								 // padding: 24px 80px 0px;
@@ -283,14 +283,14 @@
 								.switch {
 									margin-top: -2px;
 									input.cmn-toggle-round-flat + label.cmn-toggle-background {
-										width: 49px;
-										height: 18px;
+										width: 52px;
+										height: 22px;
 										background-color: #494d4d;
-										border-radius: 10px;
+										border-radius: 12px;
 									}
 									input.cmn-toggle-round-flat + label.cmn-toggle-background:after {
-										width: 19px;
-										border-radius: 19px;
+										width: 22px;
+										border-radius: 22px;
 									}
 									input.cmn-toggle-round-flat:checked + label.cmn-toggle-background:after {
 										margin-left: 29px;
@@ -302,7 +302,6 @@
 										left: 7px;
 									}
 									.cmn-text {
-										font-size: .9em;
 										top: 3px;
 									}
 								}
