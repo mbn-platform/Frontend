@@ -44,8 +44,8 @@ const root = (state, action) => {
       });
       const allowed = allowedApiKeys(newState.apiKeys, newState.contracts.current);
       let selectedApiKey;
-      if(newState.selectedApiKey) {
-        selectedApiKey = allowed.find(k => k._id === newState.terminal.selectedApiKey);
+      if(newState.terminal.selectedApiKey) {
+        selectedApiKey = allowed.find(k => k._id === newState.terminal.selectedApiKey._id);
       } else {
         selectedApiKey = allowed[0] || null;
       }
