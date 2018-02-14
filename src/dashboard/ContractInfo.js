@@ -40,7 +40,10 @@ class ContractInfo extends React.Component {
 class TimeLeft extends React.Component {
   render() {
     const {expireDate} = this.props;
-    const difference = expireDate - this.props.time;
+    let difference = expireDate - this.props.time;
+    if(difference < 0) {
+      difference = 0;
+    }
     const days = Math.floor(difference / 86400000);
     const hours = Math.floor(difference % 86400000 / 3600000);
     const minutes = Math.floor(difference % 3600000 / 60000);
