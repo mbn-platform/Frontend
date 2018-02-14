@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import SegmentedControl from '../generic/SegmentedControl';
 import ReactTable from '../generic/SelectableReactTable';
@@ -341,23 +342,29 @@ function etherscanLink(net, tx) {
   return url + tx;
 }
 
-const StatusCell = ({value}) => {
-  let className = 'status_circle ';
+const StatusCell = ({value, original}) => {
+  let colorClassName;
   switch(value) {
     case CONTRACT_STATE_FINISHED:
-      className += 'green';
+      switch(original.reason) {
+        case 'targetBalance':
+          colorClassName = 'green';
+          break;
+        default:
+          colorClassName = 'red';
+      }
       break;
     case CONTRACT_STATE_VERIFIED:
-      className += 'yellow';
+      colorClassName = 'yellow';
       break;
     case CONTRACT_STATE_HALTED:
-      className += 'red';
+      colorClassName = 'red';
       break;
     default:
       break;
   }
   return (
-    <div className={className}></div>
+    <div className={classNames('status_circle', colorClassName)}></div>
   );
 };
 
