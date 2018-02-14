@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { formatFloat } from '../generic/util';
+import { formatFloat, defaultFormatValue } from '../generic/util';
 import { Desktop } from '../generic/MediaQuery';
 import {sortData, onColumnSort, classNameForColumnHeader}  from '../generic/terminalSortFunctions';
 
@@ -11,12 +11,11 @@ class RecentTrades extends React.Component {
     this.state = {history: [], sort: {}};
     this.sortData = sortData.bind(this);
     this.onColumnSort = onColumnSort.bind(this);
-    this.sortFunctions = {};    
+    this.sortFunctions = {};
   }
 
 
   render() {
-    const isBTC = this.state.currency === 'BTC';
     let sortedData = [];
     const history = this.props.history;
     if(history && history.length) {
@@ -54,13 +53,12 @@ class RecentTrades extends React.Component {
                 </th>
               </tr>
             </thead>
-            <tbody className="tbody" ref= {ele => {this.tbody = ele}}>
+            <tbody className="tbody">
               {sortedData.map((order, index) => (
                 <OrderHistoryRow
 
                   key={order.Id}
-                  isBTC={isBTC}
-                  price={order.Price}
+                  price={defaultFormatValue(order.Price, base)}
                   size={order.Quantity}
                   type={order.OrderType}
                   date={new Date(order.TimeStamp)}
@@ -79,7 +77,7 @@ const OrderHistoryRow = ({type, date, price, size, isBTC}) => {
   return (
     <tr className={isSellOrder ? 'up' : 'down'}>
       <td>
-        {formatFloat(price, isBTC)} <span className={classNames('icon', 'icon-dir',
+        {price} <span className={classNames('icon', 'icon-dir',
           isSellOrder ? 'icon-down-dir' : 'icon-up-dir')}></span>
       </td>
       <td>

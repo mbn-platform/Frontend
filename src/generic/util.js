@@ -100,6 +100,14 @@ function convert(currencies, currency, rates) {
   }
 }
 
+export function defaultFormatValue(value, currency) {
+  if(currency === 'USDT') {
+    return value.toFixed(2);
+  } else {
+    return value.toFixed(8);
+  }
+}
+
 export function calculateKeyBalance(key, currency, rates) {
   return rates ? convert(key.currencies, currency, rates) : null;
 }
