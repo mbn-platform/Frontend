@@ -32,6 +32,12 @@ class Ratings extends React.Component {
       selectedPeriod: 'All time',
       sort: {}
     };
+    this.onRowClick = this.onRowClick.bind(this);
+  }
+
+  onRowClick(e) {
+    const name = e.currentTarget.dataset.name;
+    this.props.history.push(`/${name}`);
   }
 
   componentDidUpdate() {
@@ -166,7 +172,7 @@ class Ratings extends React.Component {
                             </tr>
                           </thead>
                           <tbody>
-                            {sortedData.map(rating => <TraderRatingRow key={rating._id} {...rating} />)}
+                            {sortedData.map(rating => <TraderRatingRow key={rating._id} {...rating} onClick={this.onRowClick} />)}
                           </tbody>
                         </table>
                       </div>
@@ -227,7 +233,7 @@ class Ratings extends React.Component {
                             </tr>
                           </thead>
                           <tbody>
-                            {sortedData.map(d => <InvestorRatingRow key={d._id} {...d} />)}
+                            {sortedData.map(d => <InvestorRatingRow key={d._id} {...d} onClick={this.onRowClick} />)}
                           </tbody>
                         </table>
                       </div>
@@ -270,12 +276,12 @@ class Ratings extends React.Component {
 }
 
 const TraderRatingRow = (props) => (
-  <tr>
+  <tr data-name={props.name} onClick={props.onClick}>
     <td>
       <span className="star"></span>
     </td>
     <td>
-      <Link style={{color: 'white', textTransform: 'uppercase'}} to={'/' + props.name}><div className="nickname">@{props.name}</div></Link>
+      <div className="nickname">@{props.name}</div>
     </td>
     <td>
       <span className="rank">{props.rank}</span>
@@ -313,12 +319,12 @@ const TraderRatingRow = (props) => (
 );
 
 const InvestorRatingRow = (props) => (
-  <tr>
+  <tr data-name={props.name} onClick={props.onClick}>
     <td>
       <span className="star"></span>
     </td>
     <td>
-      <Link style={{color: 'white', textTransform: 'uppercase'}} to={'/' + props.name}><div className="nickname">@{props.name}</div></Link>
+      <div className="nickname">@{props.name}</div>
     </td>
     <td>
       <span className="rank">{props.rank}</span>
