@@ -24,9 +24,9 @@ class HistoryTable extends React.Component {
           <table className="table">
             <thead>
               <tr>
+                <th onClick={() => this.onColumnSort('type')}><br className="show-mobile"/><span className={classNameForColumnHeader(this.state, 'type')}></span></th>
                 <th onClick={() => this.onColumnSort('market')}>Market <span className={classNameForColumnHeader(this.state, 'market')}></span></th>                      
-                <th onClick={() => this.onColumnSort('type')}>Type <span className={classNameForColumnHeader(this.state, 'type')}></span></th>
-                <th onClick={() => this.onColumnSort('price')}>Price<span className="hide-mobile">/Share </span><span className={classNameForColumnHeader(this.state, 'price')}></span></th>
+                <th onClick={() => this.onColumnSort('price')}>Price <span className={classNameForColumnHeader(this.state, 'price')}></span></th>
                 <th onClick={() => this.onColumnSort('amount')}>Amount <span className={classNameForColumnHeader(this.state, 'amount')}></span></th>
                 <th onClick={() => this.onColumnSort('total')}>Total <span className={classNameForColumnHeader(this.state, 'total')}></span></th>
                 <th onClick={() => this.onColumnSort('dateOpened')}><span className="hide-mobile">Transacton</span> Date <span className={classNameForColumnHeader(this.state, 'dateOpened')}></span></th>
@@ -52,10 +52,10 @@ const History = ({history}) => {
   const [first, second] = history.market.split('-');
   return (
     <tr className={history.type}>
-      <td>{history.market}</td>
       <td className="text-capitalize">
-        <span className="round"></span> {history.history}
+        <span className="round"></span>
       </td>
+      <td>{history.market}</td>
       <td>{history.rate}</td>
       <td>{formatFloatValue(history.filled, second) + ' ' + second}</td>
       <td>{formatFloatValue(history.filled * history.rate, first) + ' ' + first}</td>
