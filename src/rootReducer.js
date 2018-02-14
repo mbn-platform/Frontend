@@ -20,7 +20,9 @@ const root = (state, action) => {
   switch(action.type) {
     case LOGGED_OUT: {
       localStorage.setItem('reduxState', JSON.stringify({auth: {loggedIn: false}}));
-      return combined(undefined, action);
+      const newState = combined(undefined, action);
+      newState.selectedNet = state.selectedNet;
+      return newState;
     }
   };
   let newState = combined(state, action);
