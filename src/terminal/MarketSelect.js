@@ -175,9 +175,9 @@ class MarketTable extends React.Component {
         e.stopPropagation();
         e.nativeEvent.stopImmediatePropagation();
       }} className="dropdown search">
-        <div className="dropdown__name">
+        <div onClick={this.props.close} className="dropdown__name">
           <span>{this.props.market}</span>
-          <span onClick={this.props.close} className="arrow_down"></span>
+          <span className="arrow_down"></span>
         </div>
         <form action="" className="dropdown__form">
           <input autoComplete="off" value={this.state.filter} type="text" name="filter" onChange={this.onChange} className="input-search" placeholder="Search..."/>
