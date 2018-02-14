@@ -3,8 +3,8 @@ import classNames from 'classnames';
 import { formatFloat, formatBTCValue } from '../generic/util';
 import { Desktop } from '../generic/MediaQuery';
 
-const TAB_BUY = 0;
-const TAB_SELL = 1;
+export const TAB_BUY = 'buy';
+export const TAB_SELL = 'sell';
 
 class PlaceOrder extends React.Component {
 
@@ -88,6 +88,9 @@ class PlaceOrder extends React.Component {
     }
     if(nextProps.size && nextProps.size !== this.props.size) {
       this.setState({orderSize: nextProps.size});
+    }
+    if(nextProps.type && nextProps.type !== this.state.selectedTab) {
+      this.setState({selectedTab: nextProps.type});
     }
   }
 

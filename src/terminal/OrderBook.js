@@ -18,13 +18,12 @@ class OrderBook extends React.Component {
       relativeSize: (a, b) => formatFloat(a.Rate * a.Quantity) - formatFloat(b.Rate * b.Quantity)
     };
 
-    this.onOrderClick = this.onOrderClick.bind(this);
   }
 
-  onOrderClick(e) {
+  onOrderClick(type, e) {
     e.stopPropagation();
     const target = e.currentTarget;
-    this.props.onOrderSelect(target.dataset.price, target.dataset.size);
+    this.props.onOrderSelect(target.dataset.price, target.dataset.size, type);
   }
 
   fireOnScroll() {
@@ -143,7 +142,7 @@ class OrderBook extends React.Component {
             <tbody className="tbody">
               {sortedDataSell.map((order, i) => (
                 <BuyOrderCell
-                  onClickCapture={this.onOrderClick}
+                  onClickCapture={this.onOrderClick.bind(this, 'sell')}
                   isBTC={isBTC}
                   key={i}
                   price={order.Rate}
@@ -160,7 +159,7 @@ class OrderBook extends React.Component {
             <tbody>
               {sortedDataBuy.map((order, i) => (
                 <BuyOrderCell
-                  onClickCapture={this.onOrderClick}
+                  onClickCapture={this.onOrderClick.bind(this, 'buy')}
                   isBTC={isBTC}
                   key={i}
                   price={order.Rate}

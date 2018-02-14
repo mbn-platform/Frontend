@@ -22,8 +22,8 @@ class Terminal extends React.Component {
     this.onOrderSelect = this.onOrderSelect.bind(this);
   }
 
-  onOrderSelect(price, size) {
-    this.setState({price, size});
+  onOrderSelect(price, size, type) {
+    this.setState({price, size, type});
   }
 
   allowedApiKeys(apiKeys, contracts) {
@@ -78,6 +78,7 @@ class Terminal extends React.Component {
                   <Row className="justify-content-between">
                     <PlaceOrder                    
                       price={this.state.price}
+                      type={this.state.type}
                       size={this.state.size}
                       exchangeInfo={this.props.exchangesInfo['bittrex']}
                       ticker={this.props.ticker}
