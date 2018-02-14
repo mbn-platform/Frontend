@@ -8,17 +8,12 @@ class RecentTrades extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {history: [], currency: this.props.market.split('-')[0], sort: {}};
+    this.state = {history: [], sort: {}};
     this.sortData = sortData.bind(this);
     this.onColumnSort = onColumnSort.bind(this);
     this.sortFunctions = {};    
   }
 
-  componentWillReceiveProps(nextProps) {
-    if(nextProps.market !== this.props.market) {
-      this.setState({currency: this.props.market.split('-')[0]})
-    }
-  }
 
   render() {
     const isBTC = this.state.currency === 'BTC';
@@ -27,6 +22,7 @@ class RecentTrades extends React.Component {
     if(history && history.length) {
       sortedData = this.sortData(history);
     }
+    const [base] = this.props.market.split('-');
     return (
       <div className="trades-table chart col-12 col-sm-6 col-md-12">
         <div className="chart__top justify-content-between row">
@@ -44,7 +40,7 @@ class RecentTrades extends React.Component {
             <thead>
               <tr>
                 <th onClick={() => this.onColumnSort('Price')}>
-                  <div>Price ({this.state.currency}) <span className={classNameForColumnHeader(this.state, 'Price')}></span></div>
+                  <div>Price ({base}) <span className={classNameForColumnHeader(this.state, 'Price')}></span></div>
                 </th>
                 <th onClick={() => this.onColumnSort('Quantity')}>
                   <div>Trade Size <span className={classNameForColumnHeader(this.state, 'Quantity')}></span></div>
