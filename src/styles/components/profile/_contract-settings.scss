@@ -54,7 +54,7 @@
 								color: #bfbfc1;
 							}
 							.switch {
-								padding-right: 35px;
+								margin-right: 35px;
 								margin-top: -1px;
 								display: inline-block;
 								position: relative;
@@ -115,6 +115,7 @@
 								  background-color: #346255;
 								}
 								.cmn-text {
+									cursor: pointer;
 									position: absolute;
 								    top: 4px;
 								    color: #bfbfc1;
