@@ -85,7 +85,7 @@ class Navigation extends React.Component {
   }
 
   signOutButton() {
-    if(!this.props.auth.loggedIn) {
+    if(!this.props.auth.loggedIn && !this.props.auth.nameRequired) {
       return null;
     }
     const onClick = e => {
