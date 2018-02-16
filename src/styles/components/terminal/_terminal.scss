@@ -250,6 +250,9 @@
 					}
 				}
 				.balance {
+					&-wrap {
+						font-size: 14px;
+					}
 					margin-top: 10px;
 					&-name,&-title{
 						color: #9094A1;
