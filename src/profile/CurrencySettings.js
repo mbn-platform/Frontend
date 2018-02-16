@@ -47,14 +47,23 @@ class CurrencySettings extends React.Component {
                   <div className="container-fuild h-100">
                     <div className="row align-items-center">
                       <div className="col-auto title-text">
-                        <span className="icon icon-profit icon-002-circle"></span>{this.props.own ? 'CURRENCY SETTINGS' : 'PREFERRED CURRENCIES'}
+                        <span className="icon icon-profit icon-002-circle"></span>CURRENCY PREFERENCES
                       </div>
                     </div>
                     <div className="row align-items-center d-flex d-md-none choose-header-block justify-content-center">
                       <div className="col-12  d-flex justify-content-center">
-                        <div className="change-currency-block">
-                          Choose your prefered currencies by clicking on <span className="icon icon-star"></span>
-                        </div>
+                        {
+                          this.props.own ? (
+                            <div className="change-currency-block">
+                              Choose your prefered currencies by clicking on <span className="icon icon-star"></span>
+                            </div>
+                          ) : (
+                            <div className="change-currency-block">
+                              Currencies preferred<br/> by trader <span className="icon icon-star"></span>
+
+                            </div>
+                          )
+                        }
                       </div>
                     </div>
                   </div>
@@ -87,7 +96,7 @@ class CurrencySettings extends React.Component {
       }, {
         id: 'selected',
         minWidth: 80,
-        Header: StatusHeader(this.onSelectAllClicked),
+        Header: StatusHeader(this.onSelectAllClicked, this.props.own),
         Cell: row => (
           <span
             onClick={e => {
@@ -155,7 +164,7 @@ const SortableTableHeader = header => (
   </div>
 );
 
-const StatusHeader = (onSelectAllClicked) => {
+const StatusHeader = (onSelectAllClicked, own) => {
   return (
     <div className="table_header_wrapper contract_header_wrapper">
       <div className="table_header">
@@ -163,7 +172,7 @@ const StatusHeader = (onSelectAllClicked) => {
       </div>
       <div id="help-icon-preferred-currencies" className="table_header_help_wrapper" style={{paddingTop: 32, marginLeft: 0}}></div>
       <UncontrolledTooltip target="help-icon-preferred-currencies" placement="right">
-        Choose your preferred currencies
+        {own ? 'Choose your preferred currencies' : 'Currencies preferred by trader'}
       </UncontrolledTooltip>
       <div className="sort_icon_wrapper">
         <div className="green_arrow"></div>

@@ -1186,12 +1186,13 @@
                                     .choose-header-block {
                                         .change-currency-block {
                                             max-width: 258px;
+                                            text-align: center;
                                             margin-top: 14px;
                                             text-transform: none;
                                             font-size: 1.2em;
                                             height: 54px;
                                             width: 100%;
-                                            padding: 9px 50px 9px 21px;
+                                            padding: 9px 30px 9px 30px;
                                             border: 1px dashed #7c7c7d;
                                             color: #7c7c7d;
                                             min-width: 254px;
@@ -1518,6 +1519,14 @@
             }
         }
     }
+}
+
+@include media-breakpoint-down(sm) {
+	.profile-item {
+		.table_header_help_wrapper {
+			display: none !important;
+		}
+	}
 }
 
 @import './contract-settings';
