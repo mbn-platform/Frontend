@@ -118,7 +118,7 @@ input[type=number]::-webkit-outer-spin-button {
 	border: 1px solid #4F525D !important;
 	padding: 0 !important;
 	margin-top: -29px !important;
-	max-width: 370px !important;
+	max-width: 500px !important;
 
 	&--select {
 		border-radius: 2px !important;
@@ -294,12 +294,12 @@ input[type=number]::-webkit-outer-spin-button {
 			}
 			tr{
 				&.down{
-					td:last-child{
+					td:nth-child(4){
 						color: #D74C4C;
 					}
 				}
 				&.up{
-					td:last-child{
+					td:nth-child(4){
 						color: #32B994;
 					}
 				}
@@ -450,5 +450,19 @@ input[type=number]::-webkit-outer-spin-button {
 @include media-breakpoint-up(sm) {
 	.table-rewind {
 		display: none;
+	}
+}
+
+@include media-breakpoint-down(xs) {
+	.dropdown-popover {
+		width: 100vw !important;
+		max-width: 370px;
+		.dropdown .table {
+			th, td {
+				&:last-child {
+					display: none;
+				}
+			}
+		}
 	}
 }

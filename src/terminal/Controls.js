@@ -33,6 +33,7 @@ class Controls extends React.Component {
           onItemSelect={item => this.setState({selectedExchange: item})}
         />
         <MarketSelect
+          selectedApiKey={this.props.selectedApiKey}
           selected={this.props.market}
           targetId="market_select"
           onItemSelect={item => this.props.onMarketSelect(item)}

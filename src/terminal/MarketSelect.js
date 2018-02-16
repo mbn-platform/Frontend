@@ -12,7 +12,7 @@ class MarketSelect extends React.Component {
     super(props);
     this.state = {selected: this.props.selected, markets: [], isOpen: false};
     this.onItemSelect = this.onItemSelect.bind(this);
-    this.onOutsideClick = this.onOutsideClick.bind(this);   
+    this.onOutsideClick = this.onOutsideClick.bind(this);
     this.updateMarketSummaries = this.updateMarketSummaries.bind(this);
   }
 
@@ -83,6 +83,7 @@ class MarketSelect extends React.Component {
           className="dropdown-popover"
         >
           <MarketTable
+            selectedApiKey={this.props.selectedApiKey}
             markets={this.state.markets}
             market={this.props.selected}
             mainCurrency={this.props.selected.split('-')[0]}
@@ -115,7 +116,14 @@ class MarketTable extends React.Component {
     this.sortFunctions = {
       Price: (a, b) => formatFloat(a.Price, this.state.baseCurrency === 'BTC') - formatFloat(b.Price, this.state.baseCurrency === 'BTC'),
       Volume: (a, b) => (a.Volume * a.Price) - (b.Volume * b.Price),
-    };        
+      Balance: (a, b) => {
+        const first = this.props.selectedApiKey.currencies.find(c => c.name === a.MarketCurrency);
+        const bFirst = first ? (first.availableBalance || 0) : 0;
+        const second = this.props.selectedApiKey.currencies.find(c => c.name === a.MarketCurrency);
+        const bSecond = second ? (second.availableBalance || 0) : 0;
+        return bFirst * a.Price - bSecond * b.Price;
+      },
+    };
   }
 
   onChange(e) {
@@ -130,6 +138,12 @@ class MarketTable extends React.Component {
       markets: this.props.markets.filter(m => m.BaseCurrency === base),
     });
     $('.popover-body .js-dropdown-table-wrapper table').floatThead('reflow');
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.selectedApiKey && !this.props.selectedApiKey) {
+      $('.popover-body .js-dropdown-table-wrapper table').floatThead('reflow');
+    }
   }
 
   onSecondaryCurrencySelected(e) {
@@ -168,8 +182,8 @@ class MarketTable extends React.Component {
     const isBTC = baseCurrency === 'BTC';
     let sortedData = [];
     if(this.state.markets.length) {
-      sortedData = this.sortData(this.state.markets);  
-    }    
+      sortedData = this.sortData(this.state.markets);
+    }
     return (
       <div onClick={e => {
         e.stopPropagation();
@@ -205,6 +219,9 @@ class MarketTable extends React.Component {
                 <th onClick={() => this.onColumnSort('Price')}>Price <span className={classNameForColumnHeader(this.state, 'Price')}></span></th>
                 <th onClick={() => this.onColumnSort('Volume')}>Volume({baseCurrency}) <span className={classNameForColumnHeader(this.state, 'Volume')}></span></th>
                 <th onClick={() => this.onColumnSort('Change')}>Change <span className={classNameForColumnHeader(this.state, 'Change')}></span></th>
+                {this.props.selectedApiKey ? (
+                  <th onClick={() => this.onColumnSort('Balance')}>Balance, BTC <span className={classNameForColumnHeader(this.state, 'Balance')}></span></th>
+                ) : null}
               </tr>
             </thead>
             <tbody>
@@ -213,6 +230,7 @@ class MarketTable extends React.Component {
                   .filter(m => m.MarketCurrency.toLowerCase().indexOf(this.state.filter.toLowerCase()) >= 0)
                   .map(m => (
                     <MarketRow
+                      selectedApiKey={this.props.selectedApiKey}
                       isBTC={isBTC}
                       key={m.MarketName}
                       onClick={this.onSecondaryCurrencySelected}
@@ -228,13 +246,21 @@ class MarketTable extends React.Component {
   }
 }
 
-const MarketRow = ({market, onClick, isBTC}) => {
+const MarketRow = ({selectedApiKey, market, onClick, isBTC}) => {
+  let balance;
+  if(selectedApiKey) {
+    const c = selectedApiKey.currencies.find(c => c.name === market.MarketCurrency);
+    if(c) {
+      balance = (c.availableBalance || 0).toFixed(8);
+    }
+  }
   return (
     <tr onClick={onClick} data-currency={market.MarketCurrency} className={market.Change >= 0 ? 'up' : 'down'}>
       <td>{market.MarketCurrency}</td>
       <td>{formatFloat(market.Price, isBTC)}</td>
       <td>{Math.round(market.Volume * market.Price)}</td>
       <td>{market.Change.toFixed(2) + '%'}</td>
+      {selectedApiKey ?  (<td>{balance}</td>) : null}
     </tr>
   );
 };
