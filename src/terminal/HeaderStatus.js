@@ -66,9 +66,11 @@ class HeaderStatus extends React.Component {
 
   updateRates() {
     ['USDT-BTC', 'USDT-ETH', 'BTC-ETH'].forEach(pair => {
-      getMarketSummary(pair).then(json => {
-        this.updatePair(pair, json.result[0]);
-      });
+      getMarketSummary(pair)
+        .then(json => {
+          this.updatePair(pair, json.result[0]);
+        })
+        .catch(e => console.log('failed to update pair'));
     });
   }
 }
