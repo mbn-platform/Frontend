@@ -455,7 +455,9 @@ input[type=number]::-webkit-outer-spin-button {
 
 @include media-breakpoint-down(xs) {
 	.dropdown-popover {
-		width: 100vw !important;
+		.dropdown-table-wrapper {
+			max-height: 60vh;
+		}
 		max-width: 370px;
 		.dropdown .table {
 			th, td {
