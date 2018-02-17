@@ -461,7 +461,7 @@ input[type=number]::-webkit-outer-spin-button {
 		max-width: 370px;
 		.dropdown .table {
 			th, td {
-				&:last-child {
+				&:nth-child(5) {
 					display: none;
 				}
 			}
