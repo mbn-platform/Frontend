@@ -447,6 +447,9 @@
 					td:nth-child(3),th:nth-child(3){
 						width: 35%;
 					}
+					th:nth-child(3) {
+						overflow: visible;
+					}
 					// th{
 					// 	padding: 5px 15px;
 					// }
