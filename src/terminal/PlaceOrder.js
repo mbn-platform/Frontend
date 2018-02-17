@@ -254,7 +254,7 @@ function formatBalance(value, name) {
 
 const Balance = ({name, value}) => (
   <div className="balance row">
-    <div className="balance-name">{name}</div>
+    <div className="balance-name">{name}:</div>
     <div className="balance-val">{formatBalance(value, name)}</div>
   </div>
 );
