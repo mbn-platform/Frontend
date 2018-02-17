@@ -12,6 +12,7 @@ export const UPDATE_TICKER = 'UPDATE_TICKER';
 export const UPDATE_ORDER_BOOK = 'UPDATE_ORDER_BOOK';
 export const UPDATE_HISTORY = 'UPDATE_HISTORY';
 export const GET_EXCHANGE_MARKETS = 'GET_EXCHANGE_MARKETS';
+export const UPDATE_MARKET_SUMMARIES = 'UPDATE_MARKET_SUMMARIES';
 
 export function selectApiKey(key) {
   return {
@@ -151,6 +152,10 @@ export function updateRates() {
         dispatch({
           type: UPDATE_EXCHANGE_RATES,
           rates,
+        });
+        dispatch({
+          type: UPDATE_MARKET_SUMMARIES,
+          summaries: json.result,
         });
       }
     }).catch(e => console.log(e));

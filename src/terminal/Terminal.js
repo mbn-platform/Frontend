@@ -9,7 +9,7 @@ import MyOrders from './MyOrders';
 import RecentTrades from './RecentTrades';
 import OrderBook from './OrderBook';
 import { connect } from 'react-redux';
-import { selectApiKey, cancelOrder, selectMarket, placeOrder, getMyOrders,
+import { selectApiKey, cancelOrder, placeOrder, getMyOrders,
   updateTicker, updateOrderBook, updateHistory, getExchangeMarkets } from '../actions/terminal';
 import { fetchDashboardData } from '../actions/dashboard';
 import MediaQuery from 'react-responsive';
@@ -65,7 +65,6 @@ class Terminal extends React.Component {
                 apiKeys={this.allowedApiKeys(this.props.apiKeys, this.props.contracts)}
                 selectedApiKey={this.props.selectedApiKey}
                 onApiKeySelect={key => this.props.selectApiKey(key)}
-                onMarketSelect={this.props.selectMarket}
               />
               <Row className="charts">
                 <Col xs="12" sm="12" md="6" lg="8" className="charts__left">
@@ -194,7 +193,6 @@ const TerminalContainer = connect(state => ({
 }), dispatch => ({
   selectApiKey: key => dispatch(selectApiKey(key)),
   cancelOrder: order => dispatch(cancelOrder(order)),
-  selectMarket: market => dispatch(selectMarket(market)),
   getMyOrders: key => dispatch(getMyOrders(key)),
   fetchDashboardData: () => dispatch(fetchDashboardData()),
   placeOrder: (order, type) => dispatch(placeOrder(order, type)),
