@@ -1,5 +1,5 @@
 import React from 'react';
-import { formatFloat } from '../generic/util';
+import { formatFloat, defaultFormatValue } from '../generic/util';
 import { Desktop } from '../generic/MediaQuery';
 import {sortData, onColumnSort, classNameForColumnHeader}  from '../generic/terminalSortFunctions';
 import classNames from 'classnames';
@@ -13,8 +13,8 @@ class OrderBook extends React.Component {
     this.onColumnSort = onColumnSort.bind(this);
     this.fireOnScroll = this.fireOnScroll.bind(this);
     this.sortFunctions = {
-      price: (a, b) => formatFloat(a.Rate, this.props.market.split('-')[0] === 'BTC') - formatFloat(b.Rate, this.props.market.split('-')[0] === 'BTC'),
-      relativeSize: (a, b) => formatFloat(a.Rate * a.Quantity) - formatFloat(b.Rate * b.Quantity)
+      price: (a, b) => a.Rate - b.Rate,
+      relativeSize: (a, b) => a.Rate * a.Quantity - b.Rate * b.Quantity,
     };
     const {buy, sell} = props.orderBook;
     const maxBuy = buy.reduce((accum, value) => Math.max(accum, value.Quantity * value.Rate), 0);
@@ -99,7 +99,6 @@ class OrderBook extends React.Component {
 
   render() {
     const currency = this.props.market.split('-')[0];
-    const isBTC = currency === 'BTC' || currency === 'ETH';
     let sortedDataSell = [];
     let sortedDataBuy = [];
     const { sell, buy } = this.props.orderBook;
@@ -145,7 +144,7 @@ class OrderBook extends React.Component {
               {sortedDataSell.map((order, i) => (
                 <BuyOrderCell
                   onClickCapture={this.onOrderClick.bind(this, 'sell')}
-                  isBTC={isBTC}
+                  currency={currency}
                   key={i}
                   price={order.Rate}
                   size={order.Quantity}
@@ -162,7 +161,7 @@ class OrderBook extends React.Component {
               {sortedDataBuy.map((order, i) => (
                 <BuyOrderCell
                   onClickCapture={this.onOrderClick.bind(this, 'buy')}
-                  isBTC={isBTC}
+                  currency={currency}
                   key={i}
                   price={order.Rate}
                   size={order.Quantity}
@@ -200,17 +199,17 @@ function relativeSize(minSize, maxSize, size) {
   return Math.max((size - minSize) / (maxSize - minSize), 0.02);
 }
 
-const BuyOrderCell = ({price, size, relativeSize, isBTC, onClickCapture} ) => {
+const BuyOrderCell = ({price, size, relativeSize, currency, onClickCapture} ) => {
   const sizeParts = formatFloat(size).split('.');
   return (
     <tr onClickCapture={onClickCapture} data-price={price} data-size={size} >
-      <td>{formatFloat(price, isBTC)}</td>
+      <td>{defaultFormatValue(price, currency)}</td>
       <td>
         <span className="white">{sizeParts[0]}.</span>
         <span>{sizeParts[1]}</span>
       </td>
       <td>
-        {formatFloat(price * size, isBTC)}
+        {defaultFormatValue(price * size, currency)}
       </td>
       <td>
         <span className="dash" style={{width: relativeSize * 100 + '%'}}/>
