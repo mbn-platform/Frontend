@@ -81,68 +81,73 @@ class PlaceOrder extends React.Component {
       this.setState({bid: nextProps.ticker.bid, ask: nextProps.ticker.ask, price});
     }
     if(nextProps.price && nextProps.price !== this.props.price) {
-      console.log(nextProps.price);
-      console.log(this.state.main);
-      const price = this.state.main === 'USDT' ? parseFloat(nextProps.price).toFixed(2) : parseFloat(nextProps.price).toFixed(8);
-      this.setState({price});
+      this.setPrice(nextProps.price);
     }
     if(nextProps.size && nextProps.size !== this.props.size) {
-      this.setState({orderSize: nextProps.size});
+      this.setOrderSize(nextProps.size);
     }
     if(nextProps.type && nextProps.type !== this.state.selectedTab) {
       this.setState({selectedTab: nextProps.type});
     }
   }
 
-  onChange(e) {
+
+  setPrice(price) {
+    if(!price) {
+      this.setState({price: '', amount: ''});
+      return;
+    }
+    const value = parseFloat(price);
+    if(value >= 0) {
+      const newState = {price};
+      if(this.state.orderSize > 0) {
+        newState.amount = this.state.orderSize * value;
+      }
+      this.setState(newState);
+    }
+  }
+
+  setAmount(amount) {
+    if(!amount) {
+      this.setState({amount: '', orderSize: ''});
+    }
+    const value = parseFloat(amount);
+    if(value >= 0) {
+      const orderSize = formatBTCValue(value / this.state.price);
+      this.setState({orderSize, amount: value});
+    }
+  }
+
+  setOrderSize(orderSize) {
+    if(!orderSize) {
+      this.setState({amount: '', orderSize: ''});
+    }
     const amountCurrency = this.state.main;
+    const value = parseFloat(orderSize);
+    if(value >= 0) {
+      let amount;
+      if(amountCurrency !== 'USDT') {
+        amount = formatBTCValue(this.state.price * value);
+      } else {
+        amount = (this.state.price * value).toFixed(2);
+      }
+      this.setState({amount, orderSize: value});
+    }
+  }
+
+
+  onChange(e) {
     const {name} = e.target;
     switch(name) {
-      case 'price': {
-        const stringValue = e.target.value;
-        if(!stringValue) {
-          this.setState({price: '', amount: ''});
-        }
-        const value = parseFloat(e.target.value);
-        if(value >= 0) {
-          if(this.state.orderSize > 0) {
-            const amount = this.state.orderSize * value;
-            this.setState({amount, price: value});
-          } else {
-            this.setState({price: value});
-          }
-        }
+      case 'price':
+        this.setPrice(e.target.value);
         break;
-      }
-      case 'ordersize': {
-        const stringValue = e.target.value;
-        if(!stringValue) {
-          this.setState({amount: '', orderSize: ''});
-        }
-        const value = parseFloat(e.target.value);
-        if(value >= 0) {
-          let amount;
-          if(amountCurrency !== 'USDT') {
-            amount = formatBTCValue(this.state.price * value);
-          } else {
-            amount = (this.state.price * value).toFixed(2);
-          }
-          this.setState({amount, orderSize: value});
-        }
+      case 'ordersize':
+        this.setOrderSize(e.target.value);
         break;
-      }
-      case 'amount': {
-        const stringValue = e.target.value;
-        if(!stringValue) {
-          this.setState({amount: '', orderSize: ''});
-        }
-        const value = parseFloat(e.target.value);
-        if(value >= 0) {
-          const orderSize = formatBTCValue(value / this.state.price);
-          this.setState({orderSize, amount: value});
-        }
+      case 'amount':
+        this.setAmount(e.target.value);
         break;
-      }
       default:
         break;
     }
@@ -215,9 +220,11 @@ class PlaceOrder extends React.Component {
             </form>
           </div>
           <Balances
-            main={this.state.main}
-            secondary={this.state.secondary}
             apiKey={this.props.selectedApiKey}
+            main={this.state.main}
+            onMainClick={e => this.setAmount(e.target.innerHTML)}
+            secondary={this.state.secondary}
+            onSecondaryClick={e => this.setOrderSize(e.target.innerHTML)}
           />
 
         </div>
@@ -226,7 +233,7 @@ class PlaceOrder extends React.Component {
   }
 }
 
-const Balances = ({apiKey, main, secondary}) => {
+const Balances = ({apiKey, main, secondary, onMainClick, onSecondaryClick}) => {
   let value1, value2;
   if(apiKey) {
     value1 = apiKey.currencies.find(c => c.name === main);
@@ -236,8 +243,8 @@ const Balances = ({apiKey, main, secondary}) => {
   }
   return (
     <div className="balance-wrap">
-      <Balance name={main} value={value1} />
-      <Balance name={secondary} value={value2}/>
+      <Balance onClick={onMainClick} name={main} value={value1} />
+      <Balance onClick={onSecondaryClick} name={secondary} value={value2}/>
     </div>
   );
 };
@@ -252,10 +259,10 @@ function formatBalance(value, name) {
   }
 }
 
-const Balance = ({name, value}) => (
+const Balance = ({name, value, onClick}) => (
   <div className="balance row">
     <div className="balance-name">{name}:</div>
-    <div className="balance-val">{formatBalance(value, name)}</div>
+    <div onClick={onClick} className="balance-val">{formatBalance(value, name)}</div>
   </div>
 );
 
