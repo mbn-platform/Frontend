@@ -25,9 +25,9 @@ class MarketSelectTable extends React.Component {
       Volume: (a, b) => (a.Volume * a.Price) - (b.Volume * b.Price),
       Balance: (a, b) => {
         const first = this.props.selectedApiKey.currencies.find(c => c.name === a.MarketCurrency);
-        const bFirst = first ? (first.availableBalance || 0) : 0;
-        const second = this.props.selectedApiKey.currencies.find(c => c.name === a.MarketCurrency);
-        const bSecond = second ? (second.availableBalance || 0) : 0;
+        const bFirst = first ? (first.totalBalance || 0) : 0;
+        const second = this.props.selectedApiKey.currencies.find(c => c.name === b.MarketCurrency);
+        const bSecond = second ? (second.totalBalance || 0) : 0;
         return bFirst * a.Price - bSecond * b.Price;
       },
     };
@@ -127,7 +127,7 @@ class MarketSelectTable extends React.Component {
                 <th onClick={() => this.onColumnSort('Volume')}>Volume({baseCurrency}) <span className={classNameForColumnHeader(this.state, 'Volume')}></span></th>
                 <th onClick={() => this.onColumnSort('Change')}>Change <span className={classNameForColumnHeader(this.state, 'Change')}></span></th>
                 {this.props.selectedApiKey ? (
-                  <th onClick={() => this.onColumnSort('Balance')}>Balance ({baseCurrency === 'USDT' ? 'USDT' : 'BTC'}) <span className={classNameForColumnHeader(this.state, 'Balance')}></span></th>
+                  <th onClick={() => this.onColumnSort('Balance')}>Balance ({baseCurrency}) <span className={classNameForColumnHeader(this.state, 'Balance')}></span></th>
                 ) : null}
               </tr>
             </thead>
@@ -162,11 +162,7 @@ const MarketRow = ({selectedApiKey, market, onClick, isBTC, rates}) => {
       balance = c.availableBalance;
     }
     balance = balance || 0;
-    if(market.BaseCurrency === 'ETH') {
-      balance = balance * rates.BTC[market.MarketCurrency];
-    } else {
-      balance = balance * rates[market.BaseCurrency][market.MarketCurrency];
-    }
+    balance = balance * rates[market.BaseCurrency][market.MarketCurrency];
   }
   return (
     <tr onClick={onClick} data-currency={market.MarketCurrency} className={market.Change >= 0 ? 'up' : 'down'}>
