@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import $ from 'jquery';
-import { formatFloat } from '../generic/util';
+import { defaultFormatValue } from '../generic/util';
 import {sortData, onColumnSort, classNameForColumnHeader}  from '../generic/terminalSortFunctions';
 
 const TAB_OPEN_ORDERS = 0;
@@ -106,34 +106,40 @@ class OrdersTable extends React.Component {
   }
 }
 
-const OpenOrder = ({order, onOrderCancel}) => (
-  <tr className={order.type}>
-    <td className="text-capitalize">
-      <span className="round"></span>
-    </td>
-    <td>{formatDate(new Date(order.dt))}</td>
-    <td>{order.market}</td>
-    <td>{order.rate}</td>
-    <td>{order.filled}</td>
-    <td>{order.quantity}</td>
-    <td className="ellipsis-cell">{formatFloat(order.rate * order.quantity)}</td>
-    <td onClick={() => onOrderCancel(order)}><span className="remove"></span></td>
-  </tr>
-);
+const OpenOrder = ({order, onOrderCancel}) => {
+  const currency = order.market.split('-')[0];
+  return (
+    <tr className={order.type}>
+      <td className="text-capitalize">
+        <span className="round"></span>
+      </td>
+      <td>{formatDate(new Date(order.dt))}</td>
+      <td>{order.market}</td>
+      <td>{defaultFormatValue(order.rate, currency)}</td>
+      <td>{order.filled}</td>
+      <td>{order.quantity}</td>
+      <td className="ellipsis-cell">{defaultFormatValue(order.rate, currency)}</td>
+      <td onClick={() => onOrderCancel(order)}><span className="remove"></span></td>
+    </tr>
+  );
+};
 
-const CompletedOrder = ({order}) => (
-  <tr className={order.type}>
-    <td className="text-capitalize">
-      <span className="round"></span>
-    </td>
-    <td>{formatDate(new Date(order.dt))}</td>
-    <td>{order.market}</td>
-    <td>{order.rate}</td>
-    <td>{order.filled}</td>
-    <td>{order.quantity}</td>
-    <td className="ellipsis-cell">{formatFloat(order.rate * order.quantity)}</td>
-  </tr>
-)
+const CompletedOrder = ({order}) => {
+  const currency = order.market.split('-')[0];
+  return (
+    <tr className={order.type}>
+      <td className="text-capitalize">
+        <span className="round"></span>
+      </td>
+      <td>{formatDate(new Date(order.dt))}</td>
+      <td>{order.market}</td>
+      <td>{defaultFormatValue(order.rate, order.market.split('-')[0])}</td>
+      <td>{order.filled}</td>
+      <td>{order.quantity}</td>
+      <td className="ellipsis-cell">{defaultFormatValue(order.rate * order.quantity)}</td>
+    </tr>
+  )
+};
 
 function padDate(number) {
   return number < 10 ? '0' + number : number;

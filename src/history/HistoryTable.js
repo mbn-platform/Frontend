@@ -1,7 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
-import $ from 'jquery';
-import { formatFloat, formatFloatValue } from '../generic/util';
+import { defaultFormatValue } from '../generic/util';
 import {sortData, onColumnSort, classNameForColumnHeader}  from '../generic/terminalSortFunctions';
 
 class HistoryTable extends React.Component {
@@ -49,33 +47,33 @@ class HistoryTable extends React.Component {
 }
 
 const History = ({history}) => {
-  const [first, second] = history.market.split('-');
+  const [first] = history.market.split('-');
   return (
     <tr className={history.type}>
       <td className="text-capitalize">
         <span className="round"></span>
       </td>
       <td>{history.market}</td>
-      <td>{history.rate}</td>
-      <td>{formatFloatValue(history.filled, second) + ' ' + second}</td>
-      <td>{formatFloatValue(history.filled * history.rate, first) + ' ' + first}</td>
+      <td>{defaultFormatValue(history.rate, first)}</td>
+      <td>{history.filled}</td>
+      <td>{defaultFormatValue(history.filled * history.rate, first) + ' ' + first}</td>
       <td>{formatDate(new Date(history.dt))}</td>
     </tr>
   );
-}
+};
 
 function padDate(number) {
   return number < 10 ? '0' + number : number;
 };
 
 function formatDate(date) {
-    let year = date.getFullYear();
-    let month = date.getMonth() + 1;
-    let day = date.getDate();
-    year = padDate(year);
-    month = padDate(month);
-    day = padDate(day);
-    return day + '.' + month + '.' + year;
+  let year = date.getFullYear();
+  let month = date.getMonth() + 1;
+  let day = date.getDate();
+  year = padDate(year);
+  month = padDate(month);
+  day = padDate(day);
+  return day + '.' + month + '.' + year;
 }  
 
 export default HistoryTable;
