@@ -574,12 +574,12 @@
 						height: calc(100% - 15px);
 						.trades-table-wrapper {
 							position: absolute;
-							height: calc(100% - 28px);
+							height: calc(100% - 32px);
 						}
 					}
 					.orderbook-table {
 						.floatThead-wrapper {
-							height: calc(50% - 28px);
+							height: calc(50% - 24px);
 							.orderbook-table-wrapper {
 								position: absolute;
 								height: calc(100% - 28px);
@@ -588,7 +588,7 @@
 						> .orderbook-table-wrapper {
 							margin-right: 15px;
 							position: absolute;
-							height: calc(50% - 53px);
+							height: calc(50% - 67px);
 						}
 					}
 				}
