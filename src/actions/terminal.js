@@ -192,25 +192,20 @@ export function updateTicker(market) {
 
 export function updateOrderBook(market) {
   return dispatch => {
-    getOrderBook(market, 'sell')
-      .then(json => {
-        if(json.success) {
-          const sell = json.result;
-          return getOrderBook(market, 'buy').then(json => {
-            if(json.success) {
-              const buy = json.result;
-              dispatch({
-                type: UPDATE_ORDER_BOOK,
-                orderBook: {buy, sell},
-                market,
-              });
-            }
+    Promise.all([getOrderBook(market, 'sell'), getOrderBook(market, 'buy')])
+      .then(([resultSell, resultBuy]) => {
+        if(resultSell.success && resultSell.result &&
+          resultBuy.success && resultBuy.result) {
+          dispatch({
+            type: UPDATE_ORDER_BOOK,
+            orderBook: {buy: resultBuy.result, sell: resultSell.result},
+            market,
           });
         }
       })
-      .catch(e => console.log('failed to update order book'));
-  }; 
-}
+      .catch(e =>  console.log('failed to update order book'));
+  }
+};
 
 export function updateHistory(market) {
   return dispatch => {
