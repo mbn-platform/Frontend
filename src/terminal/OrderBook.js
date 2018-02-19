@@ -166,7 +166,7 @@ class OrderBook extends React.Component {
                   key={i}
                   price={order.Rate}
                   size={order.Quantity}
-                  relativeSize={relativeSize(this.state.minSell, this.state.maxSell, order.Quantity * order.Rate)}
+                  relativeSize={relativeSize(this.state.minBuy, this.state.maxBuy, order.Quantity * order.Rate)}
                 />
               ))}
             </tbody>
