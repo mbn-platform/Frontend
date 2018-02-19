@@ -24,6 +24,7 @@ export default () => {
             <div className="metamask_text">Cipher Browser is the world's first full-featured mobile dapp browser and wallet for the Ethereum blockchain. Cipher allows you to interact with dapps powered by Ethereum on your mobile device and makes it easy for you to securely store, send and receive Ether and ERC20 tokens.</div>
           </div>
         </div>
+        <DemoButton />
       </div>
     );
   }
