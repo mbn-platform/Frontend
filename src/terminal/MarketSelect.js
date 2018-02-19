@@ -57,7 +57,7 @@ class MarketSelect extends React.Component {
           innerClassName="popover-body"
           isOpen={this.state.isOpen}
           target={this.props.targetId}
-          placement="bottom-start"
+          placement="top-start"
           className="dropdown-popover"
         >
           <MarketTable
