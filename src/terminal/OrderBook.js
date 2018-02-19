@@ -9,15 +9,19 @@ class OrderBook extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {last: null, sort: {}, prelast: null, scroll: false};
     this.sortData = sortData.bind(this);
     this.onColumnSort = onColumnSort.bind(this);
-    this.fireOnScroll = this.fireOnScroll.bind(this);    
+    this.fireOnScroll = this.fireOnScroll.bind(this);
     this.sortFunctions = {
       price: (a, b) => formatFloat(a.Rate, this.props.market.split('-')[0] === 'BTC') - formatFloat(b.Rate, this.props.market.split('-')[0] === 'BTC'),
       relativeSize: (a, b) => formatFloat(a.Rate * a.Quantity) - formatFloat(b.Rate * b.Quantity)
     };
-
+    const {buy, sell} = props.orderBook;
+    const maxBuy = buy.reduce((accum, value) => Math.max(accum, value.Quantity * value.Rate), 0);
+    const maxSell = sell.reduce((accum, value) => Math.max(accum, value.Quantity * value.Rate), 0);
+    const minBuy = buy.reduce((accum, value) => Math.min(accum, value.Quantity * value.Rate), maxBuy);
+    const minSell = sell.reduce((accum, value) => Math.min(accum, value.Quantity * value.Rate), maxSell);
+    this.state = {last: null, sort: {}, prelast: null, scroll: false, maxBuy, maxSell, minBuy, minSell};
   }
 
   onOrderClick(type, e) {
@@ -58,7 +62,6 @@ class OrderBook extends React.Component {
       let $table = $(el);
       processScrollableTable($table);
     });
-    console.log('did mount');
     $('.js-table-wrapper table').floatThead('reflow');
     this.tableSell.addEventListener('scroll', this.fireOnScroll);
   }
@@ -86,12 +89,11 @@ class OrderBook extends React.Component {
     }
     if(nextProps.orderBook !== this.props.orderBook) {
       const { sell, buy } = nextProps.orderBook;
-      const maxBuy = buy.reduce((accum, value) => Math.max(accum, value.Quantity), 0);
-      const maxSell = sell.reduce((accum, value) => Math.max(accum,value.Quantity), 0);
-      const minBuy = buy.reduce((accum, value) => Math.min(accum, value.Quantity), maxBuy);
-      const minSell = sell.reduce((accum, value) => Math.min(accum, value.Quantity), maxSell);
-      buy.forEach(order => order.relativeSize = relativeSize(minBuy, maxBuy, order.Quantity));
-      sell.forEach(order => order.relativeSize = relativeSize(minSell, maxSell, order.Quantity));    
+      const maxBuy = buy.reduce((accum, value) => Math.max(accum, value.Quantity * value.Rate), 0);
+      const maxSell = sell.reduce((accum, value) => Math.max(accum, value.Quantity * value.Rate), 0);
+      const minBuy = buy.reduce((accum, value) => Math.min(accum, value.Quantity * value.Rate), maxBuy);
+      const minSell = sell.reduce((accum, value) => Math.min(accum, value.Quantity * value.Rate), maxSell);
+      this.setState({maxBuy, maxSell, minSell, minBuy});
     }
   }
 
@@ -147,7 +149,7 @@ class OrderBook extends React.Component {
                   key={i}
                   price={order.Rate}
                   size={order.Quantity}
-                  relativeSize={order.relativeSize}
+                  relativeSize={relativeSize(this.state.minSell, this.state.maxSell, order.Quantity * order.Rate)}
                 />
               ))}
             </tbody>
@@ -164,7 +166,7 @@ class OrderBook extends React.Component {
                   key={i}
                   price={order.Rate}
                   size={order.Quantity}
-                  relativeSize={order.relativeSize}
+                  relativeSize={relativeSize(this.state.minSell, this.state.maxSell, order.Quantity * order.Rate)}
                 />
               ))}
             </tbody>
