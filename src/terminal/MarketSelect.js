@@ -58,7 +58,7 @@ class MarketSelect extends React.Component {
           isOpen={this.state.isOpen}
           target={this.props.targetId}
           placement="top-start"
-          className="dropdown-popover"
+          className="dropdown-popover market-select"
         >
           <MarketTable
             selectedApiKey={this.props.selectedApiKey}
