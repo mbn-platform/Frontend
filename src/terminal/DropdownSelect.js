@@ -53,8 +53,8 @@ class DropdownSelect extends React.Component {
               e.nativeEvent.stopImmediatePropagation();
             }}
             className={classNames('dropdown', this.props.dropdownClassName)}>
-            <div className="dropdown__name">
-              <span>{this.props.selected ? this.props.selected : this.props.header}</span><span onClick={this.onOutsideClick} className="arrow_down"></span>
+            <div className="dropdown__name" onClick={this.onOutsideClick}>
+              <span>{this.props.selected ? this.props.selected : this.props.header}</span><span className="arrow_down"></span>
             </div>
             {this.props.items.map(item => (
               <div
