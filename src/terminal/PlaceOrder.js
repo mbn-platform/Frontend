@@ -86,7 +86,7 @@ class PlaceOrder extends React.Component {
     if(nextProps.size && nextProps.size !== this.props.size) {
       this.setOrderSize(nextProps.size);
     }
-    if(nextProps.type && nextProps.type !== this.state.selectedTab) {
+    if(nextProps.type && nextProps.type !== this.props.type) {
       this.setState({selectedTab: nextProps.type});
     }
   }
