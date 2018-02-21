@@ -159,7 +159,7 @@ const MarketRow = ({selectedApiKey, market, onClick, isBTC, rates}) => {
   if(selectedApiKey) {
     const c = selectedApiKey.currencies.find(c => c.name === market.MarketCurrency);
     if(c) {
-      balance = c.availableBalance;
+      balance = c.totalBalance;
     }
     balance = balance || 0;
     balance = balance * rates[market.BaseCurrency][market.MarketCurrency];
