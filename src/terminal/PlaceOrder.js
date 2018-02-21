@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { formatFloat, formatBTCValue } from '../generic/util';
+import { defaultFormatValue, formatFloat, formatBTCValue } from '../generic/util';
 import { Desktop } from '../generic/MediaQuery';
 
 export const TAB_BUY = 'buy';
@@ -81,7 +81,7 @@ class PlaceOrder extends React.Component {
       this.setState({bid: nextProps.ticker.bid, ask: nextProps.ticker.ask, price});
     }
     if(nextProps.price && nextProps.price !== this.props.price) {
-      this.setPrice(nextProps.price);
+      this.setPrice(defaultFormatValue(nextProps.price, this.state.main));
     }
     if(nextProps.size && nextProps.size !== this.props.size) {
       this.setOrderSize(nextProps.size);
