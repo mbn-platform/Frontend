@@ -27,7 +27,7 @@ class OrderBook extends React.Component {
   onOrderClick(type, e) {
     e.stopPropagation();
     const target = e.currentTarget;
-    this.props.onOrderSelect(target.dataset.price, target.dataset.size, type);
+    this.props.onOrderSelect(parseFloat(target.dataset.price), target.dataset.size, type);
   }
 
   fireOnScroll() {
@@ -177,6 +177,7 @@ class OrderBook extends React.Component {
   }
 
   renderLastPrice(price) {
+    const main = this.props.market.split('-')[0];
     let isUp;
     const last = this.props.ticker.last;
     const prelast = this.state.prelast;
@@ -186,9 +187,9 @@ class OrderBook extends React.Component {
       isUp = true;
     }
     return (
-      <div className={classNames('value', 'row', isUp ? 'up' : 'down')}>
+      <div className={classNames('value', 'last-price', 'row', isUp ? 'up' : 'down')}>
         <span onClick={() => this.props.onOrderSelect(last)}>
-          {formatFloat(last, true)}</span>
+          {last ? defaultFormatValue(last, main) : null}</span>
         <span className={classNames('icon', 'icon-dir', isUp ? 'icon-up-dir' : 'icon-down-dir')}> </span>
       </div>
     );
