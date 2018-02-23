@@ -25,6 +25,11 @@ export default function(state = {
     }
     case UPDATE_ORDER_BOOK: {
       if(action.market === state.selectedMarket) {
+        const {buy, sell} = action.orderBook;
+        action.orderBook.maxBuy = buy.reduce((accum, value) => Math.max(accum, value.Quantity * value.Rate), 0);
+        action.orderBook.maxSell = sell.reduce((accum, value) => Math.max(accum, value.Quantity * value.Rate), 0);
+        action.orderBook.minBuy = buy.reduce((accum, value) => Math.min(accum, value.Quantity * value.Rate), action.orderBook.maxBuy);
+        action.orderBook.minSell = sell.reduce((accum, value) => Math.min(accum, value.Quantity * value.Rate), action.orderBook.maxSell);
         return {...state, orderBook: action.orderBook};
       } else {
         return state;

@@ -70,9 +70,8 @@ class Terminal extends React.Component {
                 <Col xs="12" sm="12" md="6" lg="8" className="charts__left">
                   <TradingView />
                   <MarketDepth 
-                    buy={this.props.orderBook.buy}
-                    sell={this.props.orderBook.sell}                  
                     market={this.props.selectedMarket}
+                    {...this.props.orderBook}
                   />
                   <Row className="justify-content-between">
                     <PlaceOrder                    

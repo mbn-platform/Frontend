@@ -16,12 +16,7 @@ class OrderBook extends React.Component {
       price: (a, b) => a.Rate - b.Rate,
       relativeSize: (a, b) => a.Rate * a.Quantity - b.Rate * b.Quantity,
     };
-    const {buy, sell} = props.orderBook;
-    const maxBuy = buy.reduce((accum, value) => Math.max(accum, value.Quantity * value.Rate), 0);
-    const maxSell = sell.reduce((accum, value) => Math.max(accum, value.Quantity * value.Rate), 0);
-    const minBuy = buy.reduce((accum, value) => Math.min(accum, value.Quantity * value.Rate), maxBuy);
-    const minSell = sell.reduce((accum, value) => Math.min(accum, value.Quantity * value.Rate), maxSell);
-    this.state = {last: null, sort: {}, prelast: null, scroll: false, maxBuy, maxSell, minBuy, minSell};
+    this.state = {last: null, sort: {}, prelast: null, scroll: false};
   }
 
   onOrderClick(type, e) {
@@ -148,7 +143,7 @@ class OrderBook extends React.Component {
                   key={i}
                   price={order.Rate}
                   size={order.Quantity}
-                  relativeSize={relativeSize(this.state.minSell, this.state.maxSell, order.Quantity * order.Rate)}
+                  relativeSize={relativeSize(this.props.orderBook.minSell, this.props.orderBook.maxSell, order.Quantity * order.Rate)}
                 />
               ))}
             </tbody>
@@ -165,7 +160,7 @@ class OrderBook extends React.Component {
                   key={i}
                   price={order.Rate}
                   size={order.Quantity}
-                  relativeSize={relativeSize(this.state.minBuy, this.state.maxBuy, order.Quantity * order.Rate)}
+                  relativeSize={relativeSize(this.props.orderBook.minBuy, this.props.orderBook.maxBuy, order.Quantity * order.Rate)}
                 />
               ))}
             </tbody>
