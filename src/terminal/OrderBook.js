@@ -115,7 +115,6 @@ class OrderBook extends React.Component {
           <div className="chart-name">Order Book</div>
           <Desktop>
             <div className="chart-controls align-items-center justify-content-between row">
-              <div className="control-resize"></div>
             </div>
           </Desktop>
         </div>

@@ -183,7 +183,6 @@ class PlaceOrder extends React.Component {
           </div>
           <Desktop>
             <div className="chart-controls align-items-center justify-content-between row">
-              <div className="control-resize"></div>
             </div>
           </Desktop>
         </div>

@@ -28,7 +28,6 @@ class RecentTrades extends React.Component {
           <div className="chart-name">Recent Trades</div>
           <Desktop>
             <div className="chart-controls align-items-center justify-content-between row">
-              <div className="control-resize"></div>
             </div>
           </Desktop>
         </div>

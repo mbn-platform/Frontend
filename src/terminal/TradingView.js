@@ -9,7 +9,6 @@ class TradingView extends React.Component {
         <div className="price-chart__top justify-content-between row col-12">
           <Desktop>
             <Row className="chart-controls align-items-center justify-content-between">
-              <div className="control-resize"></div>
             </Row>
           </Desktop>
         </div>
