@@ -33,29 +33,16 @@ class Ratings extends React.Component {
       sort: {}
     };
     this.onRowClick = this.onRowClick.bind(this);
+    this.onInputBlur = this.onInputBlur.bind(this);
+  }
+
+  onInputBlur(e) {
+    this.shouldFocus = true;
   }
 
   onRowClick(e) {
     const name = e.currentTarget.dataset.name;
     this.props.history.push(`/${name}`);
-  }
-
-  componentDidUpdate() {
-    $('.all-time').popover({
-      trigger: 'click',
-      container: $('.ratings-main'),
-      html: true,
-      animation: false,
-      placement: 'bottom',
-      template: `
-      <div class="popover dropdown-popover dropdown-popover--select">
-        <div class="popover-body"></div>
-      </div>`,
-      content: function() {
-        return $(this).next('.all-time_dropdown')[0].outerHTML;
-      },
-      offset: '50%p - ' + (($('.all-time').width() / 2) + 8).toString() + 'px, 0'
-    });
   }
 
   onTabClick(tab) {
@@ -117,7 +104,7 @@ class Ratings extends React.Component {
                               </th>
                               <th onClick={() => this.onColumnSort('availableForOffers')}>
                                 <span>Accepting request</span><span className={classNameForColumnHeader(this.state, 'availableForOffers')}></span>
-                              </th>                              
+                              </th>
                               <th onClick={() => this.onColumnSort('dateCreated')}>
                                 <span>Started since</span><span className={classNameForColumnHeader(this.state, 'dateCreated')}></span>
                               </th>
@@ -145,7 +132,7 @@ class Ratings extends React.Component {
                               <th></th>
                               <th>
                                 <div>
-                                  <input value={this.state.nameFilter} onChange={this.onNameFilterChange} type="text" className="input_search" placeholder="Search" />
+                                  <input onBlur={this.onInputBlur} value={this.state.nameFilter} onChange={this.onNameFilterChange} type="text" className="input_search" placeholder="Search" />
                                 </div>
                               </th>
                               <th>
@@ -160,7 +147,7 @@ class Ratings extends React.Component {
                                   dropdownClassName="roi"
                                   onItemSelect={item => this.setState({selectedPeriod: item})}
                                 />
-                              </th>                              
+                              </th>
                               <th></th>
                               <th>
                               </th>
@@ -186,23 +173,23 @@ class Ratings extends React.Component {
                               <th className='fav'>
                                 <span className="star"></span>
                               </th>
-                              <th onClick={() => this.onColumnSort('name')} className='name'>
-                                <span>Name</span><span className="icon-dir icon-down-dir"></span>
+                              <th onClick={() => this.onColumnSort('name')} className="name">
+                                <span>Name</span><span className={classNameForColumnHeader(this.state, 'name')}></span>
                               </th>
                               <th onClick={() => this.onColumnSort('rank')} className='rank'>
-                                <span>Rank</span><span className="icon-dir icon-down-dir"></span>
+                                <span>Rank</span><span className={classNameForColumnHeader(this.state, 'rank')}></span>
                               </th>
                               <th onClick={() => this.onColumnSort('roi')}>
-                                <span>ROI,&nbsp;%</span><span className="icon-dir icon-down-dir"></span>
+                                <span>ROI,&nbsp;%</span><span className={classNameForColumnHeader(this.state, 'roi')}></span>
                               </th>
                               <th onClick={() => this.onColumnSort('dateCreated')}>
-                                <span>Started since</span><span className="icon-dir icon-down-dir"></span>
+                                <span>Started since</span><span className={classNameForColumnHeader(this.state, 'dateCreated')}></span>
                               </th>
                               <th onClick={() => this.onColumnSort('paidExcessProfit')}>
-                                <span>Paid excess<br/>profit</span><span className="icon-dir icon-down-dir"></span>
+                                <span>Paid excess<br/>profit</span><span className={classNameForColumnHeader(this.state, 'paidExcessProfit')}></span>
                               </th>
                               <th onClick={() => this.onColumnSort('paidInvoices')}>
-                                <span>Amount of paid invoices</span><span className="icon-dir icon-down-dir"></span>
+                                <span>Amount of paid invoices</span><span className={classNameForColumnHeader(this.state, 'paidInvoices')}></span>
                               </th>
                             </tr>
 
@@ -252,25 +239,20 @@ class Ratings extends React.Component {
   }
   componentDidMount() {
     window.customize();
-    $('.all-time').popover({
-      trigger: 'click',
-      container: $('.ratings-main'),
-      html: true,
-      animation: false,
-      placement: 'bottom',
-      template: `
-      <div class="popover dropdown-popover dropdown-popover--select">
-        <div class="popover-body"></div>
-      </div>`,
-      content: function() {
-        return $(this).next('.all-time_dropdown')[0].outerHTML;
-      },
-      offset: '50%p - ' + (($('.all-time').width() / 2) + 8).toString() + 'px, 0'
+    const $table = $('.js-table-wrapper .table');
+    $table.on('reflowed', (e, $container) => {
+      if(this.shouldFocus) {
+        $($container).find('input').focus();
+        this.shouldFocus = false;
+      }
     });
+
     this.props.updateRatings();
   }
 
   componentWillUnmount() {
+    const $table = $('js-table-wrapper table');
+    $table.off();
     window.uncustomize();
   }
 }
@@ -296,7 +278,7 @@ const TraderRatingRow = (props) => (
       {props.availableForOffers ?
         <span className='accept'/> :
         <span className='empty'/> }
-    </td>    
+    </td>
     <td>
       {formatDate(new Date(props.dt || Date.now()))}
     </td>
