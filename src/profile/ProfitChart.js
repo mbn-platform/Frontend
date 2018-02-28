@@ -178,7 +178,12 @@ class ProfitChart extends React.Component {
   }
 
   makeConfig(selectedInterval) {
-    const dataProvider = this.formatData(selectedInterval);
+    let dataProvider;
+    if(this.props.rates) {
+      dataProvider = this.formatData(selectedInterval);
+    } else {
+      dataProvider = [];
+    }
     const maximum = dataProvider.reduce((max, d) => Math.max(max, d['column-1']), 0);
     const minimum = dataProvider.reduce((min, d) => Math.min(min, d['column-1']), maximum);
     const offset = (maximum - minimum) * 0.1;
