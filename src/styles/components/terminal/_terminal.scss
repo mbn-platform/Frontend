@@ -784,3 +784,26 @@
 
 
 
+.dropdown.search {
+	.currency_status_checkbox
+	{
+		vertical-align: middle;
+		width: 10px;
+		height: 10px;
+		border: 1px solid #32ba94;
+		text-align: center;
+		position: relative;
+		cursor: pointer;
+		display: inline-block;
+		background-color: inherit;
+		transition: background-color 400ms;
+	}
+	.currency_status_checkbox.selected
+	{
+		background-color: #32ba94;
+		background-image: url(../img/StatusSelected.svg);
+		background-repeat: no-repeat;
+		background-position: center center;
+		background-size: 9px;
+	}
+}

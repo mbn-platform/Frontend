@@ -14,6 +14,7 @@ class MarketSelectTable extends React.Component {
       filter: '',
       markets: this.props.marketSummaries.filter(m => m.BaseCurrency === base),
       sort: {},
+      hideZeros: false,
     };
     this.onBaseCurrencySelected = this.onBaseCurrencySelected.bind(this);
     this.onSecondaryCurrencySelected = this.onSecondaryCurrencySelected.bind(this);
@@ -31,6 +32,13 @@ class MarketSelectTable extends React.Component {
         return bFirst * a.Price - bSecond * b.Price;
       },
     };
+    this.onHideZeroClick = this.onHideZeroClick.bind(this);
+  }
+
+  onHideZeroClick(e) {
+    e.stopPropagation();
+    e.nativeEvent.stopImmediatePropagation();
+    this.setState({hideZeros: !this.state.hideZeros});
   }
 
   onChange(e) {
@@ -91,6 +99,12 @@ class MarketSelectTable extends React.Component {
     if(this.state.markets.length) {
       sortedData = this.sortData(this.state.markets);
     }
+    if(this.props.selectedApiKey && this.state.hideZeros) {
+      sortedData = sortedData.filter(m => {
+        const c = this.props.selectedApiKey.currencies.find(c => c.name === m.MarketCurrency);
+        return c && c.totalBalance > 0;
+      });
+    }
     return (
       <div onClick={e => {
         e.stopPropagation();
@@ -127,7 +141,10 @@ class MarketSelectTable extends React.Component {
                 <th onClick={() => this.onColumnSort('Volume')}>Volume({baseCurrency}) <span className={classNameForColumnHeader(this.state, 'Volume')}></span></th>
                 <th onClick={() => this.onColumnSort('Change')}>Change <span className={classNameForColumnHeader(this.state, 'Change')}></span></th>
                 {this.props.selectedApiKey ? (
-                  <th onClick={() => this.onColumnSort('Balance')}>Balance ({baseCurrency}) <span className={classNameForColumnHeader(this.state, 'Balance')}></span></th>
+                  <th onClick={() => this.onColumnSort('Balance')}>Balance ({baseCurrency}) <span className={classNameForColumnHeader(this.state, 'Balance')}></span><br/>
+                    <div onClick={this.onHideZeroClick}>Hide zeros <div className={classNames('currency_status_checkbox', {selected: this.state.hideZeros})}/> 
+                    </div>
+                  </th>
                 ) : null}
               </tr>
             </thead>
