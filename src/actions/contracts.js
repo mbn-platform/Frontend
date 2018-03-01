@@ -17,6 +17,14 @@ export function rateContract(feedback) {
           type: RATE_CONTRACT,
           contract: json
         });
+      })
+      .catch(error => {
+        if(error.apiErrorCode) {
+          switch(error.apiErrorCode) {
+            default:
+              console.log('unhandled api error', error.apiErrorCode);
+          }
+        }
       });
   };
 }
