@@ -42,8 +42,11 @@ export function addApiKey(key) {
       .catch(error => {
         if(error.apiErrorCode) {
           switch(error.apiErrorCode) {
-            case ApiError.WRONB_API_KEY:
+            case ApiError.WRONG_API_KEY:
               alert('Invalid API key');
+              return;
+            case ApiError.DUPLICATE_KEY:
+              alert('This key is already used');
               return;
             default:
               console.log('unhandled api error', error.apiErrorCode);
