@@ -17,7 +17,7 @@ class MyOrders extends React.Component {
     this.onColumnSort = onColumnSort.bind(this);
     this.sortData = sortData.bind(this);
     this.sortFunctions = {
-      estimated: (a, b) => (a.price * a.unitsTotal) - (b.price * b.unitsTotal),
+      estimated: (a, b) => (a.rate * a.quantity) - (b.rate * b.quantity),
     };
   }
 
@@ -61,9 +61,9 @@ class MyOrders extends React.Component {
                   <thead>
                     <tr>
                       <th onClick={() => this.onColumnSort('type')}>Type <span className={classNameForColumnHeader(this.state, 'type')}></span></th>
-                      <th onClick={() => this.onColumnSort('price')}>Price <span className={classNameForColumnHeader(this.state, 'price')}></span></th>
-                      <th onClick={() => this.onColumnSort('unitsFilled')}>Units Filed <span className={classNameForColumnHeader(this.state, 'unitsFilled')}></span></th>
-                      <th onClick={() => this.onColumnSort('unitsTotal')}>Units Total <span className={classNameForColumnHeader(this.state, 'unitsTotal')}></span></th>
+                      <th onClick={() => this.onColumnSort('rate')}>Price <span className={classNameForColumnHeader(this.state, 'rate')}></span></th>
+                      <th onClick={() => this.onColumnSort('filled')}>Units Filed <span className={classNameForColumnHeader(this.state, 'filled')}></span></th>
+                      <th onClick={() => this.onColumnSort('quantity')}>Units Total <span className={classNameForColumnHeader(this.state, 'quantity')}></span></th>
                       <th onClick={() => this.onColumnSort('estimated')}><span>Est.</span> Total <span className={classNameForColumnHeader(this.state, 'estimated')}></span></th>
                       <th></th>
                     </tr>
@@ -89,9 +89,9 @@ class MyOrders extends React.Component {
                   <thead>
                     <tr>
                       <th onClick={() => this.onColumnSort('type')}>Type <span className={classNameForColumnHeader(this.state, 'type')}></span></th>
-                      <th onClick={() => this.onColumnSort('price')}>Price <span className={classNameForColumnHeader(this.state, 'price')}></span></th>
-                      <th onClick={() => this.onColumnSort('unitsFilled')}>Units Filed <span className={classNameForColumnHeader(this.state, 'unitsFilled')}></span></th>
-                      <th onClick={() => this.onColumnSort('unitsTotal')}>Units Total <span className={classNameForColumnHeader(this.state, 'unitsTotal')}></span></th>
+                      <th onClick={() => this.onColumnSort('rate')}>Price <span className={classNameForColumnHeader(this.state, 'rate')}></span></th>
+                      <th onClick={() => this.onColumnSort('filled')}>Units Filed <span className={classNameForColumnHeader(this.state, 'filled')}></span></th>
+                      <th onClick={() => this.onColumnSort('quantity')}>Units Total <span className={classNameForColumnHeader(this.state, 'quantity')}></span></th>
                       <th onClick={() => this.onColumnSort('estimated')}><span>Est.</span> Total <span className={classNameForColumnHeader(this.state, 'estimated')}></span></th>
                     </tr>
                   </thead>
