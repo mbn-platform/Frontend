@@ -175,12 +175,9 @@ class MarketDepth extends React.Component {
       let countGuides = 0;
       const maxValue = arr.reduce((accum, value) => Math.max(accum,value.value), 0);
       const minValue = arr.reduce((accum, value) => Math.min(accum,value.value), maxValue);
-      const gap = isDesktop ? 8 : 2;
+      const gap = isDesktop ? 15 : 4;
       let lastValues = [];
       for(let i = 0; i < arr.length; i++) {
-        if(countGuides === 3) {
-          break;
-        }
         if(i > 0) {
           let valid = true;
           for(let j = 0; j < lastValues.length; j++) {
@@ -193,7 +190,6 @@ class MarketDepth extends React.Component {
           }
         }
         lastValues.push(arr[i].value);
-        countGuides++;
         maxOffset = getLabelOffset(arr[i]);
         guides.push( {
           'above': true,
@@ -202,13 +198,16 @@ class MarketDepth extends React.Component {
           'fillAlpha': 1,
           'fontSize': 12,
           'lineColor': color,
-          'labelOffset': getLabelOffset(arr[i]),
           'label': formatFloat(parseFloat(arr[i].value), isBTC) !== 0 ? formatFloat(parseFloat(arr[i].value), isBTC) : '',
           'position': 'bottom',
           'inside': true,
           'labelRotation': -90,
           'dashLength': isDesktop ? 3 : 0
         } );
+        countGuides++;
+        if(countGuides === 3) {
+          break;
+        }
       }
     }
 
