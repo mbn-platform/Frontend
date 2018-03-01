@@ -9,7 +9,9 @@ class HistoryTable extends React.Component {
     this.state = {sort: {}};
     this.sortData = sortData.bind(this);
     this.onColumnSort = onColumnSort.bind(this);
-    this.sortFunctions = {};    
+    this.sortFunctions = {
+      total: (t1, t2) => t1.rate * t1.quantity - t2.rate * t2.quantity,
+    };
   }
 
 
@@ -23,11 +25,11 @@ class HistoryTable extends React.Component {
             <thead>
               <tr>
                 <th onClick={() => this.onColumnSort('type')}><br className="show-mobile"/><span className={classNameForColumnHeader(this.state, 'type')}></span></th>
-                <th onClick={() => this.onColumnSort('market')}>Market <span className={classNameForColumnHeader(this.state, 'market')}></span></th>                      
-                <th onClick={() => this.onColumnSort('price')}>Price <span className={classNameForColumnHeader(this.state, 'price')}></span></th>
-                <th onClick={() => this.onColumnSort('amount')}>Amount <span className={classNameForColumnHeader(this.state, 'amount')}></span></th>
+                <th onClick={() => this.onColumnSort('market')}>Market <span className={classNameForColumnHeader(this.state, 'market')}></span></th>
+                <th onClick={() => this.onColumnSort('rate')}>Price <span className={classNameForColumnHeader(this.state, 'rate')}></span></th>
+                <th onClick={() => this.onColumnSort('quantity')}>Amount <span className={classNameForColumnHeader(this.state, 'quantity')}></span></th>
                 <th onClick={() => this.onColumnSort('total')}>Total <span className={classNameForColumnHeader(this.state, 'total')}></span></th>
-                <th onClick={() => this.onColumnSort('dateOpened')}><span className="hide-mobile">Transacton</span> Date <span className={classNameForColumnHeader(this.state, 'dateOpened')}></span></th>
+                <th onClick={() => this.onColumnSort('dt')}><span className="hide-mobile">Transacton</span> Date <span className={classNameForColumnHeader(this.state, 'dt')}></span></th>
                 <th></th>
               </tr>
             </thead>
@@ -74,6 +76,6 @@ function formatDate(date) {
   month = padDate(month);
   day = padDate(day);
   return day + '.' + month + '.' + year;
-}  
+}
 
 export default HistoryTable;
