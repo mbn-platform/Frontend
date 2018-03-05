@@ -41,7 +41,7 @@ class ProfileInfo extends React.Component {
               <Col xs="12">
                 {this.getHeader()}
                 {this.getHeaderSeparator()}
-                <RatingBar rating={2}/>
+                <RatingBar rating={0}/>
                 <Stats
                   rates={this.props.rates}
                   traderRating={profile.topTraders}
@@ -76,7 +76,7 @@ class ProfileInfo extends React.Component {
               <Col xs="12">
                 {this.getHeader()}
                 {this.getHeaderSeparator()}
-                <RatingBar rating={2}/>
+                <RatingBar rating={0}/>
                 <Stats
                   rates={this.props.rates}
                   traderRating={profile.topTraders}
