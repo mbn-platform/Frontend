@@ -69,7 +69,7 @@ class CurrencySettings extends React.Component {
                   </div>
                 </div>
                 <div className="card-body"  ref={element => this.divRef = element}>
-                  {this.renderTable()}
+                  <div className="under_construction">Under construction</div>
                 </div>
               </div>
             </Col>

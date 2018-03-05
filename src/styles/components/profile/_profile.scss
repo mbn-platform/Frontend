@@ -659,6 +659,13 @@
                         .search-button {
                             margin-top: 10px;
                         }
+												.under_construction {
+													position: absolute;
+													top: 50%;
+													text-align: center;
+													width: 100%;
+													font-size: 1.8em;
+												}
                     }
                 }
             }
@@ -1204,10 +1211,14 @@
                                     }
                                 }
                                 .card-body {
-                                    min-height: auto !important;
+                                    min-height: 40px !important;
                                     position: relative;
                                     overflow-y: visible !important;
                                     overflow-x: visible !important;
+                                    .under_construction {
+                                      position: auto;
+                                      top: 0;
+                                    }
                                     .header-table-block {
                                         height: 70px;
                                         font-size: .8em;
