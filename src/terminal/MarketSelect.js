@@ -50,7 +50,7 @@ class MarketSelect extends React.Component {
         id={this.props.targetId} className="dropdown-link-wrap"
       >
         <div className="dropdown-link">
-          <span>{this.props.selectedMarket.replace('-', '/')} <span className="arrow_down"/></span>
+          <span>{this.props.selectedMarket.split('-').reverse().join('/')} <span className="arrow_down"/></span>
         </div>
         <Popover
           container=".terminal.container-fluid"
