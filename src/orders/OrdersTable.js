@@ -107,32 +107,32 @@ class OrdersTable extends React.Component {
 }
 
 const OpenOrder = ({order, onOrderCancel}) => {
-  const currency = order.market.split('-')[0];
+  const [main, secondary] = order.market.split('-');
   return (
     <tr className={order.type}>
       <td className="text-capitalize">
         <span className="round"></span>
       </td>
       <td>{formatDate(new Date(order.dt))}</td>
-      <td>{order.market}</td>
-      <td>{defaultFormatValue(order.rate, currency)}</td>
+      <td>{secondary + '/' + main}</td>
+      <td>{defaultFormatValue(order.rate, main)}</td>
       <td>{order.filled}</td>
       <td>{order.quantity}</td>
-      <td className="ellipsis-cell">{defaultFormatValue(order.rate, currency)}</td>
+      <td className="ellipsis-cell">{defaultFormatValue(order.rate, main)}</td>
       <td onClick={() => onOrderCancel(order)}><span className="remove"></span></td>
     </tr>
   );
 };
 
 const CompletedOrder = ({order}) => {
-  const currency = order.market.split('-')[0];
+  const [main, secondary] = order.market.split('-');
   return (
     <tr className={order.type}>
       <td className="text-capitalize">
         <span className="round"></span>
       </td>
       <td>{formatDate(new Date(order.dt))}</td>
-      <td>{order.market}</td>
+      <td>{secondary + '/' + main}</td>
       <td>{defaultFormatValue(order.rate, order.market.split('-')[0])}</td>
       <td>{order.filled}</td>
       <td>{order.quantity}</td>

@@ -49,16 +49,16 @@ class HistoryTable extends React.Component {
 }
 
 const History = ({history}) => {
-  const [first] = history.market.split('-');
+  const [main, secondary] = history.market.split('-');
   return (
     <tr className={history.type}>
       <td className="text-capitalize">
         <span className="round"></span>
       </td>
-      <td>{history.market}</td>
-      <td>{defaultFormatValue(history.rate, first)}</td>
+      <td>{main + '/' + secondary}</td>
+      <td>{defaultFormatValue(history.rate, main)}</td>
       <td>{history.filled}</td>
-      <td>{defaultFormatValue(history.filled * history.rate, first) + ' ' + first}</td>
+      <td>{defaultFormatValue(history.filled * history.rate, main) + ' ' + main}</td>
       <td>{formatDate(new Date(history.dt))}</td>
     </tr>
   );
