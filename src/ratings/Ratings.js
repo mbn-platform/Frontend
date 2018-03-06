@@ -23,7 +23,7 @@ class Ratings extends React.Component {
     this.sortData = sortData.bind(this);
     this.onColumnSort = onColumnSort.bind(this);
     this.sortFunctions = {
-      dateCreated: (a, b) => (new Date(a.dateCreated)) - (new Date(b.dateCreated)),
+      dateCreated: (a, b) => a.dt - b.dt,
     };
     this.state = {
       roiIntervalOpen: false,
