@@ -118,7 +118,7 @@ const OpenOrder = ({order, onOrderCancel}) => {
       <td>{defaultFormatValue(order.rate, main)}</td>
       <td>{order.filled}</td>
       <td>{order.quantity}</td>
-      <td className="ellipsis-cell">{defaultFormatValue(order.rate, main)}</td>
+      <td className="ellipsis-cell">{defaultFormatValue(order.rate * order.quantity, main)}</td>
       <td onClick={() => onOrderCancel(order)}><span className="remove"></span></td>
     </tr>
   );
