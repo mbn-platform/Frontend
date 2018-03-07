@@ -268,5 +268,5 @@ export const ABI = [
   }
 ];
 
-export const ADDRESS = '0x95896420f4b8f0c503730463e9143a399682c328';
-export const MAIN_NET_ADDRESS = '0x49ec146e6385777c41a8b4637fa4416eb667549b';
+export const ADDRESS = '0x849b42447aa2b163d4dd34062342affff47ce92d';
+export const MAIN_NET_ADDRESS = '0xcabdff9789c92ac0f8a02b820c3148f15b61ea9b';
