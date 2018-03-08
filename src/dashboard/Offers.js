@@ -6,7 +6,6 @@ import classNames from 'classnames';
 import { Desktop, Mobile } from '../generic/MediaQuery';
 import Pagination from '../generic/Pagination';
 import { CONTRACT_STATE_INIT, CONTRACT_STATE_ACCEPTED } from '../constants';
-import { calculateKeyBalance } from '../generic/util';
 
 
 const TAB_INBOX = 0;
@@ -29,6 +28,9 @@ class Offers extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if(!nextProps.selectedOffer) {
+      return;
+    }
+    if(this.props.selectedOffer && this.props.selectedOffer._id === nextProps.selectedOffer._id) {
       return;
     }
     if(this.props.offers.incoming.find(o => o._id === nextProps.selectedOffer._id)) {

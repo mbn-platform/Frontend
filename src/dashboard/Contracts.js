@@ -24,7 +24,7 @@ class Contracts extends React.Component {
     if(!nextProps.selectedContract) {
       return;
     }
-    if(this.props.selectedContract && this.props.selectedContract._id === nextProps.selectedContract) {
+    if(this.props.selectedContract && this.props.selectedContract._id === nextProps.selectedContract._id) {
       return;
     }
     if(nextProps.selectedContract !== this.props.selectedContract) {

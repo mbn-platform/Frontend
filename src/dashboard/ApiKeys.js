@@ -9,6 +9,9 @@ import { Desktop, Mobile } from '../generic/MediaQuery';
 import { calculateKeyBalance } from '../generic/util';
 import Pagination from '../generic/Pagination';
 
+const TAB_OWN_KEYS = 0;
+const TAB_RECEIVED_KEYS = 1;
+
 class ApiKeys extends React.Component {
 
   constructor(props) {
@@ -39,11 +42,17 @@ class ApiKeys extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.selectedApiKey && nextProps.selectedApiKey !== this.props.selectedApiKey) {
-      const requiredTab = nextProps.selectedApiKey.owner === nextProps.userId ? 0 : 1;
-      if(this.state.selectedTab !== requiredTab) {
-        this.setState({selectedTab: requiredTab});
-      }
+    if(!nextProps.selectedApiKey) {
+      return;
+    }
+    if(this.props.selectedApiKey && this.props.selectedApiKey._id === nextProps.selectedApiKey._id) {
+      return;
+    }
+    const isOwnKey = nextProps.selectedApiKey.owner === nextProps.userId;
+    if(isOwnKey) {
+      this.setState({selectedTab: TAB_OWN_KEYS});
+    } else {
+      this.setState({selectedTab: TAB_RECEIVED_KEYS});
     }
   }
 
@@ -123,7 +132,7 @@ class ApiKeys extends React.Component {
   }
   renderContent() {
     const { apiKeys } = this.props;
-    const data = this.state.selectedTab ? apiKeys.receivedKeys : apiKeys.ownKeys.filter(key => key.state !== 'INVALID');
+    const data = this.state.selectedTab === TAB_OWN_KEYS ? apiKeys.ownKeys.filter(key => key.state !== 'INVALID') : apiKeys.receivedKeys;
     return (
       <div>
         <Desktop>
