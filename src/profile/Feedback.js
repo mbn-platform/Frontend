@@ -44,37 +44,43 @@ class Feedback extends React.Component {
                     </div>
                   </div>
                 </div>
-                
-                  <div className="card-body">
-                    <Desktop>
-                    
-                      <div className="feedback-body">        
-                      
-                        <Scrollbars style={{height: '100%',width: 'calc(100% - 25px)'}}
-                          autoHeight
-                          autoHeightMin={207}
-                          autoHeightMax={'100%'}>
-                            <ul className="list-group" style={{width: 'calc(100% - 50px)'}}>
-                              {this.props.comments.map((c, i) => <Comment key={i} comment={c}/>)}
-                            </ul>
-                        </Scrollbars>
-                      
+                <div className="card-body">
+                  {this.props.comments.length
+                    ? (
+                      <div>
+                        <Desktop>
+                          <div className="feedback-body">
+                            <Scrollbars style={{ height: '100%', width: 'calc(100% - 25px)' }}
+                              autoHeight
+                              autoHeightMin={207}
+                              autoHeightMax={'100%'}
+                            >
+                              <ul className="list-group" style={{ width: 'calc(100% - 50px)' }}>
+                                {this.props.comments.map((c, i) => <Comment key={i} comment={c} />)}
+                              </ul>
+                            </Scrollbars>
+                          </div>
+                        </Desktop>
+                        <Mobile>
+                          <ul className="list-group">
+                            {this.renderMobile()}
+                          </ul>
+                          <Pagination
+                            page={this.state.page}
+                            canNext={this.state.canNext}
+                            canPrevious={this.state.canPrevious}
+                            onPageChange={this.onPageChange}
+                          />
+                        </Mobile>
                       </div>
-                    </Desktop>
-                    <Mobile>
-                      <ul className="list-group">
-                        {this.renderMobile()}
-                      </ul>
-                      <Pagination
-                        page={this.state.page}
-                        canNext={this.state.canNext}
-                        canPrevious={this.state.canPrevious}
-                        onPageChange={this.onPageChange}
-                      />
-                    </Mobile>                  
-                  </div>
-
-                
+                    )
+                    : (
+                      <div className="feedback-message">
+                        This user did not get any feedbacks yet.
+                      </div>
+                    )
+                  }
+                </div>
               </div>
             </Col>
           </Row>
