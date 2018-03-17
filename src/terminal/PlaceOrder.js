@@ -154,12 +154,8 @@ class PlaceOrder extends React.Component {
   }
 
   onTabClick(tab) {
-    const price = tab === TAB_SELL ? this.props.ticker.bid : this.props.ticker.ask;
-    const amount = this.state.orderSize > 0 ? this.state.orderSize * price : this.state.amount;
     this.setState({
       selectedTab: tab,
-      price: formatFloat(price, true),
-      amount,
     });
   }
 
