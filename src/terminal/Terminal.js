@@ -23,7 +23,7 @@ class Terminal extends React.Component {
   }
 
   onOrderSelect(price, size, type) {
-    this.setState({price, size, type});
+    this.setState({price, size, type: type || this.state.type});
   }
 
   allowedApiKeys(apiKeys, contracts) {

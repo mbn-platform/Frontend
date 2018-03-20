@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { defaultFormatValue, formatFloat, formatBTCValue } from '../generic/util';
+import { defaultFormatValue } from '../generic/util';
 import { Desktop } from '../generic/MediaQuery';
 
 export const TAB_BUY = 'buy';
@@ -13,7 +13,7 @@ class PlaceOrder extends React.Component {
     const [main, secondary] = props.market.split('-');
     let price = props.ticker.last || '';
     if(price) {
-      price = main === 'USDT' ? price.toFixed(2) : price.toFixed(8);
+      price = price.toString();
     }
     this.state = {
       main,
@@ -76,18 +76,22 @@ class PlaceOrder extends React.Component {
     if(!this.props.ticker.bid &&
       this.props.ticker !== nextProps.ticker) {
       let price = nextProps.ticker.last || 0;
-      const isUSDT = nextProps.market.split('-')[0] === 'USDT';
-      price = isUSDT ? price.toFixed(2) : price.toFixed(8);
+      price = price.toFixed(8);
       this.setState({bid: nextProps.ticker.bid, ask: nextProps.ticker.ask, price});
     }
-    if(nextProps.price && nextProps.price !== this.props.price) {
-      this.setPrice(defaultFormatValue(nextProps.price, this.state.main));
-    }
-    if(nextProps.size && nextProps.size !== this.props.size) {
-      this.setOrderSize(nextProps.size);
-    }
-    if(nextProps.type && nextProps.type !== this.props.type) {
-      this.setState({selectedTab: nextProps.type});
+    if((nextProps.price && nextProps.price !== this.props.price) ||
+      (nextProps.size && nextProps.size !== this.props.size) ||
+      (nextProps.type && nextProps.type !== this.props.type)) {
+      let price = nextProps.price || this.state.price;
+      let orderSize = nextProps.size || this.state.orderSize;
+      price = parseFloat(price);
+      orderSize = parseFloat(orderSize);
+      const newState = {price, orderSize, selectedTab: nextProps.type};
+      if(price >= 0 && orderSize >= 0) {
+        const amount = orderSize * price * (nextProps.type === TAB_BUY ? 1.0025 : 0.9975);
+        newState.amount = defaultFormatValue(amount);
+      }
+      this.setState(newState);
     }
   }
 
@@ -100,8 +104,10 @@ class PlaceOrder extends React.Component {
     const value = parseFloat(price);
     if(value >= 0) {
       const newState = {price};
-      if(this.state.orderSize > 0) {
-        newState.amount = this.state.orderSize * value;
+      const orderSize = parseFloat(this.state.orderSize);
+      if(orderSize >= 0) {
+        const amount = price * orderSize * this.commissionPercent;
+        newState.amount = defaultFormatValue(amount);
       }
       this.setState(newState);
     }
@@ -113,8 +119,13 @@ class PlaceOrder extends React.Component {
     }
     const value = parseFloat(amount);
     if(value >= 0) {
-      const orderSize = formatBTCValue(value / this.state.price);
-      this.setState({orderSize, amount: value});
+      const newState = {amount};
+      const price = parseFloat(this.state.price);
+      if(price >= 0) {
+        const orderSize = value / this.commissionPercent / price;
+        newState.orderSize = defaultFormatValue(orderSize);
+      }
+      this.setState(newState);
     }
   }
 
@@ -122,22 +133,29 @@ class PlaceOrder extends React.Component {
     if(!orderSize) {
       this.setState({amount: '', orderSize: ''});
     }
-    const amountCurrency = this.state.main;
     const value = parseFloat(orderSize);
     if(value >= 0) {
-      let amount;
-      if(amountCurrency !== 'USDT') {
-        amount = formatBTCValue(this.state.price * value);
-      } else {
-        amount = (this.state.price * value).toFixed(2);
+      const newState = {orderSize: value};
+      const price = parseFloat(this.state.price);
+      if(price >= 0) {
+        const amount = value * price * this.commissionPercent;
+        newState.amount = defaultFormatValue(amount);
       }
-      this.setState({amount, orderSize: value});
+      this.setState(newState);
     }
+  }
+
+  get commissionPercent() {
+    return this.state.selectedTab === TAB_BUY ? 1.0025 : 0.9975;
   }
 
 
   onChange(e) {
-    const {name} = e.target;
+    const {name, value} = e.target;
+    const components = value.split('.');
+    if(components[1] && components[1].length > 8) {
+      return;
+    }
     switch(name) {
       case 'price':
         this.setPrice(e.target.value);
@@ -154,9 +172,14 @@ class PlaceOrder extends React.Component {
   }
 
   onTabClick(tab) {
-    this.setState({
-      selectedTab: tab,
-    });
+    const newState = {selectedTab: tab};
+    const orderSize = parseFloat(this.state.orderSize);
+    const price = parseFloat(this.state.price);
+    if(orderSize >= 0 && price >= 0) {
+      const amount = orderSize * price * (tab === TAB_BUY ? 1.0025 : 0.9975);
+      newState.amount = defaultFormatValue(amount);
+    }
+    this.setState(newState);
   }
 
   render() {
@@ -165,7 +188,6 @@ class PlaceOrder extends React.Component {
       const marketInfo = this.props.exchangeInfo.markets[this.props.market];
       minTradeSize = marketInfo ? marketInfo.minTradeSize : '';
     }
-    const usdtMarket = this.state.main === 'USDT';
     return (
       <div className="buysell col-12 col-sm-6 col-md-12">
         <div className="buysell__top justify-content-between row col-12">
@@ -247,11 +269,7 @@ function formatBalance(value, name) {
   if(value === undefined) {
     return null;
   }
-  if(name === 'USDT') {
-    return (value || 0).toFixed(2);
-  } else {
-    return (value || 0).toFixed(8);
-  }
+  return defaultFormatValue(value);
 }
 
 const Balance = ({name, value, onClick}) => (
