@@ -33,6 +33,17 @@ class MarketSelectTable extends React.Component {
       },
     };
     this.onHideZeroClick = this.onHideZeroClick.bind(this);
+    this.onResize = this.onResize.bind(this);
+  }
+
+  onResize() {
+    const $controls = $('.row.dropdowns');
+    const $md = $('.marketdepth-chart');
+    const total = $md.offset().top + $md.outerHeight() - $controls.offset().top - 145;
+    if(this.tableHeigth !== total) {
+      this.tableHeight = total;
+      this.forceUpdate();
+    }
   }
 
   onHideZeroClick(e) {
@@ -67,7 +78,12 @@ class MarketSelectTable extends React.Component {
     this.props.onMarketSelect(this.state.baseCurrency + '-' + currency);
   }
 
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.onResize);
+  }
+
   componentDidMount() {
+    window.addEventListener('resize', this.onResize);
     const $table = $('.popover-body .js-dropdown-table-wrapper table');
     $table.on('reflowed', function(e, $floatContainer) {
       let headHeight = $('tr', this).first().height();
@@ -93,6 +109,12 @@ class MarketSelectTable extends React.Component {
   };
 
   render() {
+    if(!this.tableHeight) {
+      const $controls = $('.row.dropdowns');
+      const $md = $('.marketdepth-chart');
+      const total = $md.offset().top + $md.outerHeight() - $controls.offset().top - 145;
+      this.tableHeight = total;
+    }
     const baseCurrency = this.state.baseCurrency;
     const isBTC = baseCurrency === 'BTC';
     let sortedData = [];
@@ -132,7 +154,7 @@ class MarketSelectTable extends React.Component {
           >USDT</button>
         </div>
 
-        <div className="dropdown-table-wrapper js-dropdown-table-wrapper">
+        <div style={{height: this.tableHeight + 'px'}} className="dropdown-table-wrapper js-dropdown-table-wrapper">
           <table className="table">
             <thead>
               <tr>
