@@ -368,7 +368,7 @@
     }
     .add_keys_field_wr.select_wr
     {
-      width: 15%;
+      width: 20%;
     }
     .add_keys_select_wr
     {
@@ -392,7 +392,7 @@
 
     .add_keys_double_field_wr
     {
-      width: 50%;
+      width: 45%;
       display: inline-block;
       vertical-align: middle;
     }
@@ -1353,7 +1353,6 @@
       }
 
       .keys_tables_wrapper .ReactTable .key_name_text_td {
-        width: 60px;
         text-overflow: ellipsis;
         overflow: hidden;
         margin-left: auto;
@@ -1611,7 +1610,6 @@
         margin-top: 0px;
       }
       .contracts_table_wrapper .ReactTable .contractor_link {
-        width: 68px;
         -o-text-overflow: ellipsis;
         text-overflow: ellipsis;
         overflow: hidden;
