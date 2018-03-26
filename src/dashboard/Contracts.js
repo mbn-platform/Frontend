@@ -105,7 +105,7 @@ class Contracts extends React.Component {
         }
         return formatDate(new Date(date));
       },
-      minWidth: 60,
+      minWidth: 80,
       className: 'table_col_value',
       headerClassName: 'expire_date',
     };
@@ -144,7 +144,7 @@ class Contracts extends React.Component {
         const percent = ((balance / (c.startBalance / 100000000) || 0) * 100 - 100).toFixed(2);
         return percent;
       },
-      minWidth: 50,
+      minWidth: 55,
       Cell: NegativeValuesCell,
       sortMethod: (a,b, desc) => {
         return parseFloat(a) - parseFloat(b);
@@ -153,14 +153,14 @@ class Contracts extends React.Component {
       Header: ContractTableHeader('Max\nloss, %'),
       className: 'table_col_value',
       headerClassName: 'max_loss',
-      minWidth: 50,
+      minWidth: 55,
       accessor: 'maxLoss',
     }, {
       id: 'startBalance',
       className: 'table_col_value',
       headerClassName: 'start_balance',
       Header: ContractTableHeader('Start\nbalance'),
-      minWidth: 50,
+      minWidth: 110,
       accessor: c => formatBalance(c.startBalance / 100000000, c.currency) + ' ' + c.currency,
       sortMethod: (a,b, desc) => {
         return parseFloat(a) - parseFloat(b);
@@ -170,7 +170,7 @@ class Contracts extends React.Component {
       headerClassName: 'current_balance',
       className: 'table_col_value',
       Header: ContractTableHeader('Current\nbalance'),
-      minWidth: 50,
+      minWidth: 110,
       accessor: c => {
         let balance;
         switch(c.state) {
@@ -197,14 +197,14 @@ class Contracts extends React.Component {
       Header: ContractTableHeader('Target\nbalance'),
       headerClassName: 'left_column',
       className: 'table_col_value',
-      minWidth: 40,
+      minWidth: 110,
       accessor: c => formatBalance(c.targetBalance / 100000000, c.currency) + ' ' + c.currency,
       sortMethod: (a,b, desc) => {
         return parseFloat(a) - parseFloat(b);
       }
     }, {
       Header: ContractTableHeader('Fee, %'),
-      minWidth: 30,
+      minWidth: 50,
       headerClassName: 'fee_column',
       className: 'table_col_value',
       accessor: 'fee'
@@ -238,7 +238,7 @@ class Contracts extends React.Component {
       id: 'currentBalance',
       headerClassName: 'current_balance',
       className: 'table_col_value',
-      minWidth: 82,
+      minWidth: 110,
       Header: ContractTableHeader('Current\nbalance'),
       accessor: c => {
         const currentBalance = c.balance;

@@ -165,7 +165,7 @@
       display: inline-block;
       vertical-align: middle;
       cursor: pointer;
-      margin-left: 5px;
+      margin-left: 0;
       overflow: hidden;
     }
     .table_header_help_wrapper:hover
@@ -1016,7 +1016,7 @@
     }
     .profit_left_count
     {
-      font-size: 4.3em;
+      font-size: 4em;
     }
     .profit_left_count_valute
     {
@@ -1236,6 +1236,7 @@
   }
   @media only screen and (max-width : 1400px) {
     .dashboard_wrapper {
+			padding: 30px;
       .keys_tables_wrapper,
       .requests_table_wrapper,
       .selected_contract_table
@@ -1705,7 +1706,7 @@
         margin-left: 16px;
       }
       .selected_contract_table .profit_left .profit_left_count {
-        font-size: 2.7em;
+        font-size: 1.6em;
       }
       .selected_contract_table .profit_left .time_left_title_wr {
         margin-left: 0px;
