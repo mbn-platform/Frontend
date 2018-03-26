@@ -163,6 +163,7 @@ class ApiKeyInfo extends React.Component {
         Cell: StatusCell(this.onCurrencyStateClicked, this.state.changedCurrencies),
         accessor: 'enabled',
         headerClassName: 'selected_header',
+        maxWidth: 50,
         filterMethod: (filter, row) => {
           if(filter.value === 'all') {
             return true;
@@ -179,6 +180,7 @@ class ApiKeyInfo extends React.Component {
         </div>),
         Cell: rowInfo => rowInfo.original.enabled || this.props.isOwnKey ? rowInfo.value || 0 : '',
         className: 'table_col_value',
+        minWidth: 110,
         accessor: 'totalBalance'
       }
     ];
