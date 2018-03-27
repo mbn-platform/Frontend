@@ -37,9 +37,7 @@ class MarketSelectTable extends React.Component {
   }
 
   onResize() {
-    const $controls = $('.row.dropdowns');
-    const $md = $('.marketdepth-chart');
-    const total = $md.offset().top + $md.outerHeight() - $controls.offset().top - 145;
+    const total = this.getTableHeight();
     if(this.tableHeigth !== total) {
       this.tableHeight = total;
       this.forceUpdate();
@@ -108,12 +106,20 @@ class MarketSelectTable extends React.Component {
 
   };
 
+  getTableHeight() {
+    const $controls = $('.row.dropdowns');
+    const $md = $('.marketdepth-chart');
+    const total = $md.offset().top + $md.outerHeight() - $controls.offset().top - 145;
+    if(this.props.selectedApiKey) {
+      return total - 15;
+    } else {
+      return total;
+    }
+  }
+
   render() {
     if(!this.tableHeight) {
-      const $controls = $('.row.dropdowns');
-      const $md = $('.marketdepth-chart');
-      const total = $md.offset().top + $md.outerHeight() - $controls.offset().top - 145;
-      this.tableHeight = total;
+      this.tableHeight = this.getTableHeight();
     }
     const baseCurrency = this.state.baseCurrency;
     const isBTC = baseCurrency === 'BTC';
