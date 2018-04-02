@@ -10,7 +10,6 @@ class Controls extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedExchange: 'BITTREX',
       selectedTime: '1 H',
     }
   }
@@ -20,17 +19,17 @@ class Controls extends React.Component {
       <div className="row dropdowns">
         <ApiKeySelect
           container=".terminal.container-fluid"
-          keys={this.props.apiKeys}
-          selectedKey={this.props.selectedApiKey}
+          apiKeys={this.props.apiKeys}
+          selectedKey={this.props.apiKey}
           onApiKeySelect={this.props.onApiKeySelect}
         />
         <DropdownSelect
-          selected={this.state.selectedExchange}
-          items={['BITTREX']}
+          selected={this.props.exchange}
+          items={['bittrex', 'binance']}
           targetId="exchange_select"
           elementClassName="exchange__switch"
           dropdownClassName="exchange"
-          onItemSelect={item => this.setState({selectedExchange: item})}
+          onItemSelect={this.props.onExchangeSelect}
         />
         <MarketSelect
           targetId="market_select"

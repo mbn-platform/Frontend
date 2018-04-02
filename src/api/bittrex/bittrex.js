@@ -1,5 +1,5 @@
 
-const API_URL = '/bittrexApi/api/v1.1/public';
+const API_URL = '/api/v2/exchange';
 export function getTicker(market) {
   const url = '/getticker';
   const params = `market=${market}`;
@@ -7,15 +7,15 @@ export function getTicker(market) {
 }
 
 export function getMarkets() {
-  return apiCall('/getmarkets');
+  return apiCall('/markets');
 }
 
 export function getCurrencies() {
   return apiCall('/getcurrencies');
 }
 
-export function getMarketSummaries() {
-  return apiCall('/getmarketsummaries');
+export function getMarketSummaries(exchange) {
+  return apiCall('/markets', `exchange=bittrex`);
 }
 
 export function getMarketSummary(market) {

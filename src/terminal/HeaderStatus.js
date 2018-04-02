@@ -1,20 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Container, Row, Col } from 'reactstrap';
-import { getMarketSummary } from '../api/bittrex/bittrex';
 import classNames from 'classnames';
 
 class HeaderStatus extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      'USDT-BTC': {},
-      'USDT-ETH': {},
-      'BTC-ETH': {},
-    };
-  }
-
   render() {
+    const rates = this.props.rates || {};
+    const markets = this.props.markets || [];
     return (
       <header className="header-status">
         <Container fluid className="h-100">
@@ -22,18 +15,18 @@ class HeaderStatus extends React.Component {
             <Col xs="12" sm="12" md="8" lg="7" xl="4" className="curses-wrap row">
               <Rate
                 pair="BTC/USD"
-                val={this.state['USDT-BTC'].Last ? Math.floor(this.state['USDT-BTC'].Last) : ''}
-                change={this.state['USDT-BTC'].PrevDay}
+                val={rates['USDT-BTC'] ? Math.floor(rates['USDT-BTC']) : ''}
+                marketInfo={markets.find(m => m.symbol === 'USDT-BTC')}
               />
               <Rate
                 pair="ETH/USD"
-                val={this.state['USDT-ETH'].Last ? this.state['USDT-ETH'].Last.toFixed(2) : ''}
-                change={this.state['USDT-ETH'].PrevDay}
+                val={rates['USDT-ETH'] ? rates['USDT-ETH'].toFixed(2) : ''}
+                marketInfo={markets.find(m => m.symbol === 'USDT-ETH')}
               />
               <Rate
                 pair="BTC/ETH"
-                val={this.state['BTC-ETH'].Last ? parseFloat(this.state['BTC-ETH'].Last.toFixed(4)) : ''}
-                change={this.state['BTC-ETH'].PrevDay}
+                val={rates['BTC-ETH'] ? rates['BTC-ETH'].toFixed(4) : ''}
+                marketInfo={markets.find(m => m.symbol === 'BTC-ETH')}
               />
             </Col>
           </Row>
@@ -41,42 +34,16 @@ class HeaderStatus extends React.Component {
       </header>
     );
   }
-  componentWillMount() {
-    this.interval = setInterval(this.updateRates.bind(this), 5000);
-    this.updateRates();
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
-
-  updatePair(pair, newValue) {
-    const oldValue = this.state[pair];
-    if(oldValue) {
-      const last = ((newValue.Last / oldValue.Last - 1) * 100);
-      if(last !== 0) {
-        this.setState({[pair]: {...newValue, last}});
-      } else {
-        this.setState({[pair]: {...newValue, last: oldValue.last}});
-      }
-    } else {
-      this.setState({[pair]: newValue});
-    }
-  }
-
-  updateRates() {
-    ['USDT-BTC', 'USDT-ETH', 'BTC-ETH'].forEach(pair => {
-      getMarketSummary(pair)
-        .then(json => {
-          this.updatePair(pair, json.result[0]);
-        })
-        .catch(e => console.log('failed to update pair'));
-    });
-  }
 }
 
-const Rate = ({ pair, val, change }) => {
-  change = change ? (val / change * 100 - 100) : null;
+HeaderStatus.propTypes = {
+  rates: PropTypes.object,
+  markets: PropTypes.array,
+};
+
+const Rate = ({ pair, marketInfo, val }) => {
+  const prevDay = marketInfo && marketInfo.prevDay;
+  const change = prevDay ? (val / prevDay * 100 - 100) : null;
   return (
     <Col sm="4" md="4" lg="4" xs="4" className="curses row h-100 align-items-center justify-content-between">
       <Col xs="auto" className="curses-name">{pair}</Col>

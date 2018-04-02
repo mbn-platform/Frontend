@@ -2,6 +2,7 @@ import io from 'socket.io-client';
 import { WEBSOCKET_CONNECT, WEBSOCKET_DISCONNECT } from './actions/websocket';
 import { SELECT_MARKET } from './actions/terminal';
 import { LOGGED_OUT, LOGGED_IN } from './actions/auth';
+import {updateOrderBook, updateHistory, updateRates} from './actions/terminal';
 let socket;
 const socketMiddleware = store => next => action => {
   switch(action.type) {
@@ -10,8 +11,24 @@ const socketMiddleware = store => next => action => {
         socket = io('http://localhost:7001');
         socket.on('connect', () => {
           const state = store.getState();
-          socket.emit('market', {exchange: 'bittrex', symbol: state.terminal.selectedMarket});
-          socket.emit('candles', {exchange: 'bittrex', symbol: state.terminal.selectedMarket, interval: state.terminal.interval});
+          const {exchange, market: symbol, interval} = state.terminal;
+          socket.emit('market', {exchange, symbol});
+          socket.emit('candles', {exchange, symbol, interval});
+          socket.emit('rates', );
+        });
+        socket.on('orders', ({name, content}) => {
+          const [exchange, orders, market] = name.split('.');
+          const buy = content.bids;
+          const sell = content.asks;
+          store.dispatch(updateOrderBook(exchange, market, {buy, sell}));
+        });
+        socket.on('trades', ({name, content}) => {
+          const [exchange, trades, market] = name.split('.');
+          store.dispatch(updateHistory(exchange, market, content.trades))
+        });
+        socket.on('rates', ({name, content} ) => {
+          const [exchange] = name.split('.');
+          store.dispatch(updateRates(exchange, content.rates));
         });
       }
       return;
@@ -24,13 +41,18 @@ const socketMiddleware = store => next => action => {
       return;
     case SELECT_MARKET: {
       if(socket) {
-        socket.emit('market', {exchange: 'bittrex', symbol: action.market});
+        const state = store.getState();
+        const {exchange} = state.terminal;
+        const symbol = action.market;
+        socket.emit('market', {exchange, symbol});
       }
       break;
     }
     case 'SELECT_INTERVAL': {
       if(socket) {
-        socket.emit('candles', {exchange: 'bittrex', symbol: store.getState().terminal.selectedMarket, interval: action.interval});
+        const state = store.getState();
+        const {exchange, symbol} = state.terminal; 
+        socket.emit('candles', {exchange, symbol, interval: action.interval});
       }
       break;
     }

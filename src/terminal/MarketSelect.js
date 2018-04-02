@@ -22,11 +22,6 @@ class MarketSelect extends React.Component {
     this.props.onItemSelect(item);
   }
 
-  componentDidMount() {
-    this.interval = setInterval(this.props.updateRates, 5000);
-    this.props.updateRates();
-  }
-
   componentDidUpdate(prevProps, prevState) {
     if(!prevState.isOpen && this.state.isOpen) {
       document.addEventListener('click', this.onOutsideClick);
@@ -38,7 +33,6 @@ class MarketSelect extends React.Component {
 
   componentWillUnmount() {
     document.removeEventListener('click', this.onOutsideClick);
-    clearInterval(this.interval);
   }
 
   render() {
@@ -50,7 +44,7 @@ class MarketSelect extends React.Component {
         id={this.props.targetId} className="dropdown-link-wrap"
       >
         <div className="dropdown-link">
-          <span>{this.props.selectedMarket.split('-').reverse().join('/')} <span className="arrow_down"/></span>
+          <span>{this.props.market.split('-').reverse().join('/')} <span className="arrow_down"/></span>
         </div>
         <Popover
           container=".terminal.container-fluid"
@@ -61,10 +55,10 @@ class MarketSelect extends React.Component {
           className="dropdown-popover market-select"
         >
           <MarketTable
-            selectedApiKey={this.props.selectedApiKey}
-            selectedMarket={this.props.selectedMarket}
-            marketSummaries={this.props.marketSummaries}
-            rates={this.props.rates}
+            apiKey={this.props.apiKey}
+            market={this.props.market}
+            markets={this.props.exchangeInfo.markets}
+            rates={this.props.exchangeInfo.rates}
             onMarketSelect={this.props.selectMarket}
             close={e => this.setState({isOpen: false})}
           />
@@ -75,10 +69,9 @@ class MarketSelect extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  selectedApiKey: state.terminal.selectedApiKey,
-  selectedMarket: state.terminal.selectedMarket,
-  marketSummaries: (state.exchangesInfo.bittrex || {}).summaries || [],
-  rates: state.rates,
+  apiKey: state.terminal.apiKey,
+  market: state.terminal.market,
+  exchangeInfo: state.exchangesInfo[state.terminal.exchange] || {},
 });
 
 const mapDispatchToProps = dispatch => ({

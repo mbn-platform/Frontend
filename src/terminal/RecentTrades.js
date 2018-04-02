@@ -55,11 +55,11 @@ class RecentTrades extends React.Component {
               {sortedData.map((order, index) => (
                 <OrderHistoryRow
 
-                  key={order.Id}
-                  price={defaultFormatValue(order.Price, base)}
-                  size={order.Quantity}
-                  type={order.OrderType}
-                  date={new Date(order.TimeStamp)}
+                  key={order.id}
+                  price={defaultFormatValue(order.price, base)}
+                  size={order.amount}
+                  type={order.type}
+                  date={new Date(order.dt)}
                 />
               ))}
             </tbody>
