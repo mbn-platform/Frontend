@@ -332,7 +332,7 @@ class MarketDepth extends React.Component {
 
   render() {
     return (
-      <Col xs="12" className="marketdepth-chart chart">
+      <Col className="marketdepth-chart chart">
         <Row className="chart__top justify-content-between">
           <div className="justify-content-start row">
             <div className="chart-name">MARKET DEPTH</div>
