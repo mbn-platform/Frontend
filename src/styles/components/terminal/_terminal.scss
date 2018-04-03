@@ -669,6 +669,20 @@
 	}
 }
 
+@include media-breakpoint-down(sm) {
+  .terminal-main .charts .chart.trades-table {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+}
+@include media-breakpoint-only(sm) {
+  .terminal-main .charts .chart.trades-table {
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+}
+
+
 @media (max-width: 575px) {
 	.terminal-main {
 		.charts	{
