@@ -1,19 +1,21 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import $ from 'jquery';
 import classNames from 'classnames';
 import { defaultFormatValue } from '../generic/util';
 import {sortData, onColumnSort, classNameForColumnHeader}  from '../generic/terminalSortFunctions';
+import {selectMarket} from '../actions/terminal';
+import { connect } from 'react-redux';
 
 class MarketSelectTable extends React.Component {
   constructor(props) {
     super(props);
     const [base, secondary] = props.market.split('-');
-    const markets = this.props.exchangeInfo.markets || [];
     this.state = {
       baseCurrency: base,
       secondaryCurrency: secondary,
       filter: '',
-      markets: markets.filter(m => m.base === base),
+      markets: props.markets.filter(m => m.base === base),
       sort: {},
       hideZeros: false,
     };
@@ -25,9 +27,9 @@ class MarketSelectTable extends React.Component {
     this.sortFunctions = {
       volume: (a, b) => (a.volume * a.last) - (b.volume * b.last),
       Balance: (a, b) => {
-        const first = this.props.selectedApiKey.currencies.find(c => c.name === a.MarketCurrency);
+        const first = this.props.apiKey.currencies.find(c => c.name === a.MarketCurrency);
         const bFirst = first ? (first.totalBalance || 0) : 0;
-        const second = this.props.selectedApiKey.currencies.find(c => c.name === b.MarketCurrency);
+        const second = this.props.apiKey.currencies.find(c => c.name === b.MarketCurrency);
         const bSecond = second ? (second.totalBalance || 0) : 0;
         return bFirst * a.Price - bSecond * b.Price;
       },
@@ -65,15 +67,26 @@ class MarketSelectTable extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.selectedApiKey && !this.props.selectedApiKey) {
+    if(nextProps.apiKey && !this.props.apiKey) {
       $('.popover-body .js-dropdown-table-wrapper table').floatThead('reflow');
+    }
+    if(nextProps.markets !== this.props.markets || nextProps.market !== this.props.market) {
+      const [base, secondary] = nextProps.market.split('-');
+      this.setState({
+        baseCurrency: base,
+        secondaryCurrency: secondary,
+        markets: nextProps.markets.filter(m => m.base === base)
+      });
     }
   }
 
   onSecondaryCurrencySelected(e) {
     e.stopPropagation();
     const currency = e.target.parentElement.dataset.currency;
-    this.props.onMarketSelect(this.state.baseCurrency + '-' + currency);
+    const market = this.state.baseCurrency + '-' + currency;
+    if(market !== this.props.market) {
+      this.props.selectMarket(this.state.baseCurrency + '-' + currency);
+    }
   }
 
   componentWillUnmount() {
@@ -110,7 +123,7 @@ class MarketSelectTable extends React.Component {
     const $controls = $('.row.dropdowns');
     const $md = $('.marketdepth-chart');
     const total = $md.offset().top + $md.outerHeight() - $controls.offset().top - 145;
-    if(this.props.selectedApiKey) {
+    if(this.props.apiKey) {
       return total - 15;
     } else {
       return total;
@@ -127,9 +140,9 @@ class MarketSelectTable extends React.Component {
     if(this.state.markets.length) {
       sortedData = this.sortData(this.state.markets);
     }
-    if(this.props.selectedApiKey && this.state.hideZeros) {
+    if(this.props.apiKey && this.state.hideZeros) {
       sortedData = sortedData.filter(m => {
-        const c = this.props.selectedApiKey.currencies.find(c => c.name === m.MarketCurrency);
+        const c = this.props.apiKey.currencies.find(c => c.name === m.MarketCurrency);
         return c && c.totalBalance > 0;
       });
     }
@@ -139,7 +152,7 @@ class MarketSelectTable extends React.Component {
         e.nativeEvent.stopImmediatePropagation();
       }} className="dropdown search">
         <div onClick={this.props.close} className="dropdown__name">
-          <span>{this.props.selectedMarket}</span>
+          <span>{this.props.market}</span>
           <span className="arrow_down"></span>
         </div>
         <form action="" className="dropdown__form">
@@ -168,7 +181,7 @@ class MarketSelectTable extends React.Component {
                 <th onClick={() => this.onColumnSort('last')}>Price <span className={classNameForColumnHeader(this.state, 'last')}></span></th>
                 <th onClick={() => this.onColumnSort('volume')}>Volume({baseCurrency}) <span className={classNameForColumnHeader(this.state, 'volume')}></span></th>
                 <th onClick={() => this.onColumnSort('change')}>Change <span className={classNameForColumnHeader(this.state, 'change')}></span></th>
-                {this.props.selectedApiKey ? (
+                {this.props.apiKey ? (
                   <th onClick={() => this.onColumnSort('Balance')}>Balance ({baseCurrency}) <span className={classNameForColumnHeader(this.state, 'Balance')}></span><br/>
                     <div onClick={this.onHideZeroClick}>Hide zeros <div className={classNames('currency_status_checkbox', {selected: this.state.hideZeros})}/>
                     </div>
@@ -183,7 +196,7 @@ class MarketSelectTable extends React.Component {
                   .map(m => (
                     <MarketRow
                       rates={this.props.rates}
-                      selectedApiKey={this.props.apiKey}
+                      apiKey={this.props.apiKey}
                       isBTC={isBTC}
                       key={m.symbol}
                       onClick={this.onSecondaryCurrencySelected}
@@ -199,10 +212,18 @@ class MarketSelectTable extends React.Component {
   }
 }
 
-const MarketRow = ({selectedApiKey, market, onClick, isBTC, rates}) => {
+MarketSelectTable.propTypes = {
+  apiKey: PropTypes.object,
+  market: PropTypes.string.isRequired,
+  markets: PropTypes.array.isRequired,
+  rates: PropTypes.object.isRequired,
+  selectMarket: PropTypes.func.isRequired,
+};
+
+const MarketRow = ({apiKey, market, onClick, isBTC, rates}) => {
   let balance;
-  if(selectedApiKey) {
-    const c = selectedApiKey.currencies.find(c => c.name === market.second);
+  if(apiKey) {
+    const c = apiKey.currencies.find(c => c.name === market.second);
     if(c) {
       balance = c.totalBalance;
     }
@@ -215,9 +236,23 @@ const MarketRow = ({selectedApiKey, market, onClick, isBTC, rates}) => {
       <td>{defaultFormatValue(market.last, market.base)}</td>
       <td>{Math.round(market.volume * market.last)}</td>
       <td>{market.change.toFixed(2) + '%'}</td>
-      {selectedApiKey ?  (<td>{defaultFormatValue(balance, market.base)}</td>) : null}
+      {apiKey ?  (<td>{defaultFormatValue(balance, market.base)}</td>) : null}
     </tr>
   );
 };
 
-export default MarketSelectTable;
+const mapStateToProps = state => {
+  const exchange = state.terminal.exchange;
+  const info = state.exchangesInfo[exchange];
+  return {
+    apiKey: state.terminal.apiKey,
+    market: state.terminal.market,
+    rates: info && info.rates || {},
+    markets: info && info.markets || [],
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  selectMarket: market => dispatch(selectMarket(market)),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(MarketSelectTable);

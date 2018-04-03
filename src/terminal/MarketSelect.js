@@ -1,6 +1,5 @@
 import React from 'react';
 import { Popover } from 'reactstrap';
-import { connect } from 'react-redux';
 import { selectMarket, updateRates } from '../actions/terminal';
 import MarketTable from './MarketSelectTable';
 
@@ -55,11 +54,6 @@ class MarketSelect extends React.Component {
           className="dropdown-popover market-select"
         >
           <MarketTable
-            apiKey={this.props.apiKey}
-            market={this.props.market}
-            markets={this.props.exchangeInfo.markets}
-            rates={this.props.exchangeInfo.rates}
-            onMarketSelect={this.props.selectMarket}
             close={e => this.setState({isOpen: false})}
           />
         </Popover>
@@ -68,15 +62,4 @@ class MarketSelect extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  apiKey: state.terminal.apiKey,
-  market: state.terminal.market,
-  exchangeInfo: state.exchangesInfo[state.terminal.exchange] || {},
-});
-
-const mapDispatchToProps = dispatch => ({
-  selectMarket: market => dispatch(selectMarket(market)),
-  updateRates: () => dispatch(updateRates()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(MarketSelect);
+export default MarketSelect;

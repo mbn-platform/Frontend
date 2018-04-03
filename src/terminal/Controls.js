@@ -32,6 +32,7 @@ class Controls extends React.Component {
           onItemSelect={this.props.onExchangeSelect}
         />
         <MarketSelect
+          market={this.props.market}
           targetId="market_select"
         />
         <DropdownSelect
