@@ -1,6 +1,5 @@
 import { apiGet, apiPost, ApiError } from '../generic/apiCall';
 import { fetchDashboardData } from '../actions/dashboard';
-import { getMarketSummaries, getTicker, getOrderBook, getMarketHistory, getMarkets } from '../api/bittrex/bittrex';
 export const SELECT_API_KEY = 'SELECT_API_KEY';
 export const SELECT_MARKET = 'SELECT_MARKET';
 export const SELECT_EXCHANGE = 'SELECT_EXCHANGE';
@@ -160,21 +159,6 @@ export function updateRatings() {
         });
       })
       .catch(e => console.log('error'));
-  };
-}
-
-export function updateTicker(market) {
-  return dispatch => {
-    getTicker(market).then(json => {
-      if(json.success) {
-        const {Bid: bid, Ask: ask, Last: last} = json.result;
-        dispatch({
-          type: UPDATE_TICKER,
-          ticker: {bid, ask, last},
-          market,
-        });
-      }
-    }).catch(e => console.log('failed to get ticker'));
   };
 }
 
