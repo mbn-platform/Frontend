@@ -20,7 +20,6 @@ class Dashboard extends React.Component {
   }
 
   update() {
-    this.props.updateRates();
     this.props.fetchDashboardData();
   }
   componentDidMount() {

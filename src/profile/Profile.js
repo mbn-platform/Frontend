@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { fetchDashboardData } from '../actions/dashboard';
 import { updateExchanges } from '../actions/exchanges';
 import { updateProfile, getProfile } from '../actions/profile';
-import { updateRates } from '../actions/terminal';
 
 class Profile extends React.Component {
 
@@ -67,7 +66,6 @@ class Profile extends React.Component {
     this.props.getProfile(name);
     this.props.fetchDashboardData();
     this.props.updateExchanges();
-    this.props.updateRates();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -120,7 +118,6 @@ const mapDispatchToProps = dispatch => ({
   updateProfile: profile => dispatch(updateProfile(profile)),
   fetchDashboardData: () => dispatch(fetchDashboardData()),
   updateExchanges: () => dispatch(updateExchanges()),
-  updateRates: () => dispatch(updateRates()),
   getProfile: name => dispatch(getProfile(name)),
 });
 
