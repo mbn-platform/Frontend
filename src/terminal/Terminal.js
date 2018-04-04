@@ -54,7 +54,7 @@ class Terminal extends React.Component {
     return (
       <Container fluid className="terminal">
         <Row>
-          <Col xs="12" sm="12" md="12" lg="12">
+          <Col xs="12" sm="12" md="12" lg="12" className="terminal-container">
             <HeaderStatus
               apiKey={this.props.selectedApiKey}
               market={this.props.selectedMarket}

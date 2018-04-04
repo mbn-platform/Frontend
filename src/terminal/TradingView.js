@@ -5,7 +5,7 @@ import { Desktop } from '../generic/MediaQuery';
 class TradingView extends React.Component {
   render() {
     return (
-      <Col xs="12" className="price-chart chart">
+      <Col className="price-chart chart">
         <div className="price-chart__top justify-content-between row col-12">
           <Desktop>
             <Row className="chart-controls align-items-center justify-content-between">
