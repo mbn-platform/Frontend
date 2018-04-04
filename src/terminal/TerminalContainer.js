@@ -11,6 +11,7 @@ import { WEBSOCKET_CONNECT } from '../actions/websocket';
 
 const mapStateToProps = state => ({
   ...state.terminal,
+  orders: state.orders,
   exchangeInfo: state.exchangesInfo[state.terminal.exchange],
   apiKeys: state.apiKeys,
 });

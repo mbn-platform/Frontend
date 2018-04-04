@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { defaultFormatValue } from '../generic/util';
 import { Desktop } from '../generic/MediaQuery';
@@ -22,8 +23,8 @@ class PlaceOrder extends React.Component {
       orderSize: '',
       amount: '',
       price,
-      ask : props.ticker.ask || null,
-      bid : props.ticker.bid || null,
+      tickerSet: false,
+      marketInfo: props.markets.find(m => m.symbol === props.market),
     };
     this.onTabClick = this.onTabClick.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -71,13 +72,14 @@ class PlaceOrder extends React.Component {
   componentWillReceiveProps(nextProps) {
     if(this.props.market !== nextProps.market) {
       const [main, secondary] = nextProps.market.split('-');
-      this.setState({bid: null, ask: null, price: '', main, secondary});
+      this.setState({tickerSet: false, price: '', main, secondary, marketInfo: nextProps.markets.find(m => m.symbol === nextProps.market)});
     }
-    if(!this.props.ticker.bid &&
-      this.props.ticker !== nextProps.ticker) {
-      let price = nextProps.ticker.last || 0;
-      price = price.toFixed(8);
-      this.setState({bid: nextProps.ticker.bid, ask: nextProps.ticker.ask, price});
+    if(this.props.markets !== nextProps.markets) {
+      this.setState({marketInfo: nextProps.markets.find(m => m.symbol === nextProps.market)});
+    }
+    if(this.props.ticker !== nextProps.ticker &&
+      !this.state.price && !this.state.tickerSet && nextProps.ticker.l) {
+      this.setState({price: nextProps.ticker.l, tickerSet: true});
     }
     if((nextProps.price && nextProps.price !== this.props.price) ||
       (nextProps.size && nextProps.size !== this.props.size) ||
@@ -183,11 +185,7 @@ class PlaceOrder extends React.Component {
   }
 
   render() {
-    let minTradeSize = '';
-    if(this.props.exchangeInfo && this.props.exchangeInfo.markets) {
-      const marketInfo = this.props.exchangeInfo.markets[this.props.market];
-      minTradeSize = marketInfo ? marketInfo.minTradeSize : '';
-    }
+    const minTradeSize = this.state.marketInfo ? this.state.marketInfo.minTradeSize : '';
     return (
       <div className="buysell col-12 col-sm-6 col-md-12">
         <div className="buysell__top justify-content-between row col-12">
@@ -248,6 +246,12 @@ class PlaceOrder extends React.Component {
       </div>
     );
   }
+}
+
+PlaceOrder.propTypes = {
+  market: PropTypes.string.isRequired,
+  markets: PropTypes.array.isRequired,
+  placeOrder: PropTypes.func.isRequired,
 }
 
 const Balances = ({apiKey, main, secondary, onMainClick, onSecondaryClick}) => {

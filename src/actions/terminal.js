@@ -187,3 +187,10 @@ export function updateRates(exchange, rates) {
     rates,
   };
 }
+
+export function updateTicker(exchange, market, ticker) {
+  return {
+    type: UPDATE_TICKER,
+    exchange, market, ticker,
+  };
+}

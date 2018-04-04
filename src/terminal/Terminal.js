@@ -59,14 +59,22 @@ class Terminal extends React.Component {
                     {...this.props.orderBook}
                   />
                   <Row className="justify-content-between">
-                    <MediaQuery query="(min-width: 576px)">
-                    </MediaQuery>
+                    <PlaceOrder
+                      price={this.state.price}
+                      type={this.state.type}
+                      size={this.state.size}
+                      markets={(this.props.exchangeInfo || {}).markets || []}
+                      ticker={this.props.ticker || {}}
+                      placeOrder={this.props.placeOrder}
+                      selectedApiKey={this.props.apiKey}
+                      market={this.props.market}
+                    />
                     <MediaQuery query="(max-width: 575px)">
                       <OrderBook
                         onOrderSelect={this.onOrderSelect}
                         orderBook={this.props.orderBook}
-                        ticker={this.props.ticker || {}}
                         market={this.props.market}
+                        ticker={this.props.ticker}
                       />
                     </MediaQuery>
                   </Row>

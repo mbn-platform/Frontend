@@ -2,7 +2,7 @@ import io from 'socket.io-client';
 import { WEBSOCKET_CONNECT, WEBSOCKET_DISCONNECT } from './actions/websocket';
 import { SELECT_MARKET } from './actions/terminal';
 import { LOGGED_OUT, LOGGED_IN } from './actions/auth';
-import {updateOrderBook, updateHistory, updateRates} from './actions/terminal';
+import {updateOrderBook, updateHistory, updateRates, updateTicker} from './actions/terminal';
 let socket;
 const socketMiddleware = store => next => action => {
   switch(action.type) {
@@ -14,7 +14,7 @@ const socketMiddleware = store => next => action => {
           const {exchange, market: symbol, interval} = state.terminal;
           socket.emit('market', {exchange, symbol});
           socket.emit('candles', {exchange, symbol, interval});
-          socket.emit('rates', );
+          socket.emit('rates');
         });
         socket.on('orders', ({name, content}) => {
           const [exchange, orders, market] = name.split('.');
@@ -29,6 +29,11 @@ const socketMiddleware = store => next => action => {
         socket.on('rates', ({name, content} ) => {
           const [exchange] = name.split('.');
           store.dispatch(updateRates(exchange, content.rates));
+        });
+        socket.on('ticker', ({name, content}) => {
+          const [exchange, ticker, market] = name.split('.');
+          store.dispatch(updateTicker(exchange, market, content));
+
         });
       }
       return;

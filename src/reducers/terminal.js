@@ -1,5 +1,5 @@
 import {SELECT_API_KEY, SELECT_EXCHANGE, SELECT_MARKET, SELECT_INTERVAL} from '../actions/terminal';
-import {UPDATE_ORDER_BOOK, UPDATE_HISTORY} from '../actions/terminal';
+import {UPDATE_ORDER_BOOK, UPDATE_HISTORY, UPDATE_TICKER} from '../actions/terminal';
 
 export default function(state = {
   apiKey: null,
@@ -8,6 +8,7 @@ export default function(state = {
   interval: '5m',
   orderBook: {sell: [], buy: [], smap: {}, bmap: {}},
   history: [],
+  ticker: null,
 }, action) {
   switch(action.type) {
     case SELECT_API_KEY: {
@@ -80,6 +81,12 @@ export default function(state = {
         dt: t[2],
       }));
       return {...state, history: history.concat(state.history).slice(0, 50)};
+    }
+    case UPDATE_TICKER: {
+      if(action.exchange === state.exchange && action.market === state.market) {
+        return {...state, ticker: action.ticker};
+      }
+      return state;
     }
     default:
       return state;
