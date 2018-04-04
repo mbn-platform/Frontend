@@ -344,6 +344,6 @@ function formatDate(date) {
 }
 
 export default connect(
-  state => ({ratings: state.terminal.ratings}),
+  state => ({ratings: []}),
   dispatch => ({updateRatings: () => dispatch(updateRatings())}),
 )(Ratings);
