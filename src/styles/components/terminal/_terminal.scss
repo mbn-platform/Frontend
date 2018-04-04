@@ -670,8 +670,10 @@
 }
 
 @include media-breakpoint-down(sm) {
-  .terminal-main .charts .chart.trades-table {
+  .terminal-main .charts .chart.orders-table, .terminal-main .charts .chart.trades-table {
     margin-top: 20px;
+  }
+  .terminal-main .charts .chart.trades-table {
     margin-bottom: 20px;
   }
 }
