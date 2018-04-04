@@ -64,6 +64,7 @@ class MarketSelect extends React.Component {
             selectedApiKey={this.props.selectedApiKey}
             selectedMarket={this.props.selectedMarket}
             marketSummaries={this.props.marketSummaries}
+            marketNames={this.props.marketNames}
             rates={this.props.rates}
             onMarketSelect={this.props.selectMarket}
             close={e => this.setState({isOpen: false})}
@@ -78,6 +79,7 @@ const mapStateToProps = state => ({
   selectedApiKey: state.terminal.selectedApiKey,
   selectedMarket: state.terminal.selectedMarket,
   marketSummaries: (state.exchangesInfo.bittrex || {}).summaries || [],
+  marketNames: (state.exchangesInfo.bittrex || {}).marketNames || {},
   rates: state.rates,
 });
 

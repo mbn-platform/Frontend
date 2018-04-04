@@ -65,15 +65,17 @@ export function getExchangeMarkets(exchange) {
       .then(response => {
         if(response.success) {
           const marketsArray = response.result;
-          const marketsObject = marketsArray.reduce((accum, market) => {
-            const m = market.MarketName;
-            accum[m] = {minTradeSize: market.MinTradeSize};
-            return accum;
-          }, {});
+          const marketNames = {}
+          const marketsObject = {}
+          marketsArray.forEach(market => {
+            marketNames[market.MarketCurrency] = market.MarketCurrencyLong
+            marketsObject[market.MarketName] = {minTradeSize: market.MinTradeSize};
+          });
           dispatch({
             type: GET_EXCHANGE_MARKETS,
             exchange,
             markets: marketsObject,
+            marketNames
           });
         }
       })

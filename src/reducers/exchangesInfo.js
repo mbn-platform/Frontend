@@ -4,7 +4,7 @@ export default function(exchangesInfo = {}, action) {
   switch(action.type) {
     case GET_EXCHANGE_MARKETS: {
       const exchange = action.exchange;
-      return {...exchangesInfo, [exchange]: {...exchangesInfo[exchange], markets: action.markets}};
+      return {...exchangesInfo, [exchange]: {...exchangesInfo[exchange], markets: action.markets, marketNames: action.marketNames}};
     }
     case UPDATE_MARKET_SUMMARIES: {
       const summaries = action.summaries.map(market => {

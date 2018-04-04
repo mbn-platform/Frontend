@@ -13,6 +13,7 @@ class MarketSelectTable extends React.Component {
       secondaryCurrency: secondary,
       filter: '',
       markets: this.props.marketSummaries.filter(m => m.BaseCurrency === base),
+      marketNames: this.props.marketNames,
       sort: {},
       hideZeros: false,
     };
@@ -179,7 +180,10 @@ class MarketSelectTable extends React.Component {
             <tbody>
               {
                 sortedData
-                  .filter(m => m.MarketCurrency.toLowerCase().indexOf(this.state.filter.toLowerCase()) >= 0)
+                  .filter((m) => {
+                    return (m.MarketCurrency.toLowerCase().indexOf(this.state.filter.toLowerCase()) >= 0)
+                    || (this.state.marketNames[m.MarketCurrency].toLowerCase().indexOf(this.state.filter.toLowerCase()) >= 0);
+                  })
                   .map(m => (
                     <MarketRow
                       rates={this.props.rates}
