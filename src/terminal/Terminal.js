@@ -54,7 +54,7 @@ class Terminal extends React.Component {
               <Row className="charts">
                 <Col xs="12" sm="12" md="6" lg="8" className="charts__left">
                   <TradingView />
-                  <MarketDepth 
+                  <MarketDepth
                     market={this.props.market}
                     {...this.props.orderBook}
                   />
@@ -69,6 +69,13 @@ class Terminal extends React.Component {
                       selectedApiKey={this.props.apiKey}
                       market={this.props.market}
                     />
+                    <MediaQuery query="(min-width: 576px)">
+                      <MyOrders
+                        market={this.props.market}
+                        orders={{open: [], completed: []}}
+                        cancelOrder={this.props.cancelOrder}
+                      />
+                    </MediaQuery>
                     <MediaQuery query="(max-width: 575px)">
                       <OrderBook
                         onOrderSelect={this.onOrderSelect}
@@ -91,8 +98,8 @@ class Terminal extends React.Component {
                     </MediaQuery>
                     <MediaQuery query="(max-width: 575px)">
                       <MyOrders
-                        market={this.props.selectedMarket}
-                        orders={this.props.orders}
+                        market={this.props.market}
+                        orders={{open: [], completed: []}}
                         cancelOrder={this.props.cancelOrder}
                       />
                     </MediaQuery>
