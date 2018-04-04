@@ -10,8 +10,6 @@ import TermianlIcon from './assets/svg/terminal.svg';
 import TermianlIconHover from './assets/svg/terminal_hover.svg';
 import OrdersIcon from './assets/svg/orders.svg';
 import OrdersIconHover from './assets/svg/orders_hover.svg';
-import HistoryIcon from './assets/svg/history.svg';
-import HistoryIconHover from './assets/svg/history_hover.svg';
 import RaitingIcon from './img/MenuIconRatings.svg';
 import RaitingIconHover from './img/MenuIconRatingsHover.svg';
 import SignOut from './img/SignOut.svg';
@@ -201,14 +199,7 @@ class Navigation extends React.Component {
         imgClass: 'orders',
         icon: OrdersIcon,
         iconHover: OrdersIconHover
-      },
-      {
-        name: 'History',
-        to: '/history',
-        imgClass: 'history',
-        icon: HistoryIcon,
-        iconHover: HistoryIconHover
-      },
+      }
     ];
   }
 

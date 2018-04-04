@@ -195,18 +195,6 @@ window.customize = function() {
         autoExpandScrollbar:true,
         theme: 'dark'
       });
-      $('.trade-history tbody').height($('.trade-history .card-body').outerHeight() - $('.trade-history thead th').outerHeight());
-      $('.trade-history tbody').mCustomScrollbar({
-        theme:'light-3',
-        scrollButtons:{
-          enable:false
-        },
-        setHeight: ($('.trade-history .card-body').outerHeight() - $('.trade-history thead th').outerHeight()),
-        mouseWheel:{ preventDefault: true },
-        scrollbarPosition: 'inside',
-        autoExpandScrollbar:true,
-        theme: 'dark'
-      });
 
       $('.feedback-card .card-body .list-group').height($('.feedback-card .card-body').outerHeight() - 50);
       $('.feedback-card .card-body .list-group').mCustomScrollbar({
@@ -232,7 +220,6 @@ window.customize = function() {
       //$(selector).mCustomScrollbar("destroy"); //destroy scrollbar
       $('article').readmore('destroy');
       $('.currency-settings tbody').mCustomScrollbar('destroy');
-      $('.trade-history tbody').mCustomScrollbar('destroy');
 
       $('.feedback-card .card-body .list-group').mCustomScrollbar('destroy');
 
