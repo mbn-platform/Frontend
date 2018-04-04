@@ -26,8 +26,10 @@ class OrderBook extends React.Component {
   }
 
   fireOnScroll() {
-    this.setState({scroll: true});
-    this.tableSell.removeEventListener('scroll', this.fireOnScroll);
+    if (this.props.orderBook.sell.length > 0) {
+      this.setState({scroll: true});
+      this.tableSell.removeEventListener('scroll', this.fireOnScroll);
+    }
   }
 
   componentDidMount() {
@@ -62,7 +64,13 @@ class OrderBook extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(this.tableSell && this.tableSell.scrollTop === 0 && !this.state.scroll) {
+    if (prevProps.market !== this.props.market) {
+      if (this.state.scroll) {
+        this.tableSell.addEventListener('scroll', this.fireOnScroll);
+      }
+      this.setState({scroll: false, sort: {}});
+    }
+    if(this.tableSell && this.tableSell.scrollTop === 0 && !this.state.scroll && (!this.state.sort.column)) {
       this.tableSell.scrollTop = this.tableSell.scrollHeight - 26.6;
     } else if(prevState.sort !== this.state.sort && this.tableSell) {
       this.tableSell.scrollTop = 0;
