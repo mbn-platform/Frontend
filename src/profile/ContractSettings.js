@@ -22,7 +22,7 @@ class ContractSettings extends React.Component {
     this.setState({[e.target.name]: e.target.value});
   }
 
-  onEditButtonClick() {
+  async onEditButtonClick() {
     const isEditing = this.state.isEditing;
     if(isEditing) {
       const fee = parseInt(this.state.fee, 10) || this.props.fee;
@@ -40,7 +40,8 @@ class ContractSettings extends React.Component {
         return;
       } else {
         const update = { fee, minAmount, minAmountCurrency, roi, maxLoss, duration };
-        this.props.onSaveChangesClick(update);
+        this.setState({isLoading: true});
+        await this.props.onSaveChangesClick(update).finally(() => this.setState({isLoading: false}));
         this.setState(this.getInitialState());
       }
     } else {
@@ -107,7 +108,7 @@ class ContractSettings extends React.Component {
         {this.state.isEditing ? (
           <div className="col-12 d-flex align-items-center justify-content-between choose-btn-group">
             <button tabIndex={9} onClick={() => this.setState({isEditing: false})} type="button" className="edit-btn cancel-btn btn btn-secondary">CANCEL</button>
-            <button tabIndex={10} onClick={this.onEditButtonClick} type="button" className="edit-btn send-request-btn btn btn-secondary active">
+            <button tabIndex={10} onClick={this.onEditButtonClick} disabled={this.state.isLoading} type="button" className="edit-btn send-request-btn btn btn-secondary active">
               SAVE CHANGES</button>
           </div>
         ) : (

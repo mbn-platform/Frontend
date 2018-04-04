@@ -59,7 +59,7 @@ class Profile extends React.Component {
       roi,
       duration, ...update
     };
-    this.props.updateProfile(profile);
+    return this.props.updateProfile(profile);
   }
 
   componentDidMount() {

@@ -7,7 +7,7 @@ export function updateProfile(profile) {
   return dispatch => {
     const name = profile.name;
     delete profile.name;
-    apiPut('/api/profile/' + name, null, profile)
+    return apiPut('/api/profile/' + name, null, profile)
       .then(json => dispatch({
         type: UPDATE_PROFILE,
         profile: json,
