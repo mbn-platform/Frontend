@@ -1,5 +1,6 @@
 import React from 'react';
 import ApiKeySelect from '../terminal/ApiKeySelect';
+import DropdownSelect from '../terminal/DropdownSelect';
 
 class Controls extends React.Component {
   render() {
@@ -7,22 +8,18 @@ class Controls extends React.Component {
       <div className="row dropdowns pt-2">
         <ApiKeySelect
           container=".orders.container-fluid"
-          keys={this.props.apiKeys}
-          selectedKey={this.props.selectedApiKey}
+          apiKeys={this.props.apiKeys}
+          apiKey={this.props.apiKey}
           onApiKeySelect={this.props.onApiKeySelect}
         />
-        <div className="dropdown-link-wrap">
-          <a href="#" className="dropdown-link">BITTREX <span className="arrow_down"></span></a>
-          <div className="dropdown exchange">
-            <div className="dropdown__name">
-              <span>BITTREX</span>
-              <span className="arrow_down"></span>
-            </div>
-            <div className="exchange__switch">Poloniex</div>
-            <div className="exchange__switch">Bitfinex</div>
-            <div className="exchange__switch active">BITTREX</div>
-          </div>
-        </div>
+        <DropdownSelect
+          selected={this.props.exchange}
+          items={['bittrex']}
+          targetId="exchange_select"
+          elementClassName="exchange__switch"
+          dropdownClassName="exchange"
+          onItemSelect={this.props.onExchangeSelect}
+        />
       </div>
     );
   }

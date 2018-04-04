@@ -4,15 +4,14 @@ import HeaderStatus from '../terminal/HeaderStatus';
 import Controls from './Controls';
 import OrdersTable from './OrdersTable';
 import { connect } from 'react-redux';
-import { cancelOrder, getMyOrders } from '../actions/terminal';
+import { cancelOrder, getMyOrders, selectExchange, selectApiKey, getExchangeMarkets } from '../actions/terminal';
 import { fetchDashboardData } from '../actions/dashboard';
+import { WEBSOCKET_CONNECT } from '../actions/websocket';
 
 class Orders extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {selectedApiKey: this.props.selectedApiKey || this.allowedApiKeys(props.apiKeys, props.contracts)[0]};
-    this.update = this.update.bind(this);
   }
 
   allowedApiKeys(apiKeys, contracts) {
@@ -24,33 +23,6 @@ class Orders extends React.Component {
     return allowedOwnKeys.concat(allowedReceivedKeys);
   }
 
-  update() {
-    if(this.state.selectedApiKey) {
-      this.props.getMyOrders(this.state.selectedApiKey);
-    }
-    this.timeout = setTimeout(this.update, 5000);
-  }
-
-  componentWillReceiveProps(props) {
-    if(props.apiKeys !== this.props.apiKeys) {
-      const allowed = this.allowedApiKeys(props.apiKeys, props.contracts);
-      let key;
-      if(this.state.selectedApiKey) {
-        key = allowed.find(k => k._id === this.state.selectedApiKey._id) || allowed[0];
-      } else {
-        key = allowed[0];
-      }
-      this.setState({selectedApiKey: key});
-    }
-  }
-
-  componentDidUpdate(props, prevState) {
-    if(this.state.selectedApiKey && (!prevState.selectedApiKey || this.state.selectedApiKey._id !== prevState.selectedApiKey._id)) {
-      clearTimeout(this.timeout);
-      this.update();
-    }
-  }
-
   render() {
     const apiKeys = this.allowedApiKeys(this.props.apiKeys, this.props.contracts);
     return (
@@ -58,8 +30,7 @@ class Orders extends React.Component {
         <Row>
           <Col xs="12" sm="12" md="12" lg="12">
             <HeaderStatus
-              apiKey={this.state.selectedApiKey}
-              market={this.props.selectedMarket}
+              {...this.props.exchangeInfo}
             />
             <div className="orders-main">
               <div className="orders-main__top">
@@ -68,12 +39,14 @@ class Orders extends React.Component {
                 </div>
                 <Controls
                   apiKeys={apiKeys}
-                  selectedApiKey={this.state.selectedApiKey}
-                  onApiKeySelect={key => this.setState({selectedApiKey: key})}
+                  apiKey={this.props.apiKey}
+                  onApiKeySelect={this.props.selectApiKey}
+                  exchange={this.props.exchange}
+                  onExchangeSElect={this.props.selectExchange}
                 />
               </div>
               <OrdersTable
-                orders={this.props.orders}
+                orders={{open: [], completed: []}}
                 cancelOrder={this.props.cancelOrder}
               />
             </div>
@@ -84,28 +57,33 @@ class Orders extends React.Component {
   }
   componentDidMount() {
     window.customize();
-    this.update();
-    this.keysUpdatesTimeout = setInterval(() => this.props.fetchDashboardData(), 5000);
-    this.props.fetchDashboardData();
+    this.props.connectToSocket();
+    this.props.getExchangeMarkets(this.props.exchange);
   }
 
   componentWillUnmount() {
     window.uncustomize();
-    clearTimeout(this.timeout);
-    clearInterval(this.keysUpdatesTimeout);
   }
 }
 
 const OrdersContainer = connect(state => ({
   apiKeys: state.apiKeys,
   contracts: state.contracts.current,
-  selectedApiKey: state.terminal.selectedApiKey,
-  orders: state.terminal.orders,
-  selectedMarket: state.terminal.selectedMarket,
+  apiKey: state.terminal.apiKey,
+  orders: state.orders,
+  market: state.terminal.market,
+  exchange: state.terminal.exchange,
+  exchangeInfo: state.exchangesInfo[state.terminal.exchange],
 }), dispatch => ({
   cancelOrder: order => dispatch(cancelOrder(order)),
-  getMyOrders: key => dispatch(getMyOrders(key)),
-  fetchDashboardData: () => dispatch(fetchDashboardData()),
+  selectExchange: exchange => {
+    dispatch(selectExchange(exchange));
+    dispatch(getExchangeMarkets(exchange));
+  },
+  getExchangeMarkets: exchange => dispatch(getExchangeMarkets(exchange)),
+  connectToSocket: () => dispatch({
+    type: WEBSOCKET_CONNECT,
+  }),
 }))(Orders);
 
 export default OrdersContainer;

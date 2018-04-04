@@ -25,7 +25,7 @@ class Controls extends React.Component {
         />
         <DropdownSelect
           selected={this.props.exchange}
-          items={['bittrex', 'binance']}
+          items={['bittrex']}
           targetId="exchange_select"
           elementClassName="exchange__switch"
           dropdownClassName="exchange"
