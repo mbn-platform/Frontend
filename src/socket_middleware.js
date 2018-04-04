@@ -8,7 +8,7 @@ const socketMiddleware = store => next => action => {
   switch(action.type) {
     case WEBSOCKET_CONNECT: {
       if(!socket) {
-        socket = io('http://localhost:7001');
+        socket = io();
         socket.on('connect', () => {
           const state = store.getState();
           const {exchange, market: symbol, interval} = state.terminal;
