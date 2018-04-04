@@ -81,7 +81,7 @@ class Terminal extends React.Component {
                         onOrderSelect={this.onOrderSelect}
                         orderBook={this.props.orderBook}
                         market={this.props.market}
-                        ticker={this.props.ticker}
+                        ticker={this.props.ticker | {}}
                       />
                     </MediaQuery>
                   </Row>
