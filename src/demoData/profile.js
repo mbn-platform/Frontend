@@ -10,7 +10,7 @@ export const generateProfile = (profileName) => {
   const investmentAmount = Math.floor(Math.random() * 40);
   const fee = Math.floor(Math.random() * 10 + 10);
   const minAmount = Math.floor(Math.random() * 200 + 50);
-  const minAmountCurrency = 'USDT';
+  const crrency = 'USDT';
   const roi = Math.floor(Math.random() * 10 + 5);
   const duration = Math.floor(Math.random() * 15 + 15);;
   const maxLoss = Math.floor(Math.random() * 10 + 10);
@@ -24,7 +24,7 @@ export const generateProfile = (profileName) => {
   const tradesAsInvestor = generateTrades();
   return {
     _id, addr, feedbacks, availableForOffers,
-    investmentAmount, fee, minAmount, minAmountCurrency,
+    investmentAmount, fee, minAmount, currency,
     duration, maxLoss, name, currencies, roi, roiInBTC, roiInUSD,
     topTraders, topInvesters, trades, tradesAsInvestor,
   };

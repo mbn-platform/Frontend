@@ -13,7 +13,52 @@ const store = createStore(
 );
 export default store;
 
-
+export function getInitialState() {
+  return {
+    apiKeys: {
+      ownKeys: [],
+      receivedKeys: []
+    },
+    contracts: {
+      current: [],
+      finished: []
+    },
+    offers: {
+      outgoing: [],
+      incoming: []
+    },
+    auth: {
+      loggedIn: false,
+      profile: {
+        contractSettings: {}
+      }
+    },
+    exchanges: [],
+    time: null,
+    request: {},
+    terminal: {
+      selectedApiKey: null,
+      selectedMarket: null,
+      orders: {
+        open: [],
+        completed: []
+      },
+      ratings: [],
+      ticker: {},
+      orderBook: {
+        sell: [],
+        buy: []
+      },
+      history: []
+    },
+    rates: null,
+    profile: {
+      contractSettings: {}
+    },
+    exchangesInfo: {},
+    selectedNet: null
+  };
+}
 
 function getReduxState() {
   let state = localStorage.getItem('reduxState');
@@ -22,7 +67,7 @@ function getReduxState() {
     state = JSON.parse(state);
     state.selectedNet = selectedNet;
   } else {
-    state = {};
+    state = getInitialState();
   }
   return state;
 }

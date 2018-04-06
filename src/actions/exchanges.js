@@ -3,10 +3,10 @@ export const UPDATE_EXCHANGES = 'UPDATE_EXCHANGES';
 
 export const updateExchanges = () => {
   return dispatch => {
-    apiGet('/api/exchanges')
+    apiGet('/exchanges')
       .then(json => dispatch({
         type: UPDATE_EXCHANGES,
-        exchanges: json,
+        exchanges: json.exchanges,
       }));
   };
 };

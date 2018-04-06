@@ -13,7 +13,11 @@ class Profile extends React.Component {
     super(props);
     const name = this.props.match.params.id;
     if(name !== this.props.profile.name) {
-      this.state = {profile: {}};
+      this.state = {
+        profile: {
+          contractSettings: {}
+        }
+      };
     } else {
       this.state = {profile: this.props.profile};
     }
@@ -38,25 +42,19 @@ class Profile extends React.Component {
   }
 
   onToggleClick(availableForOffers) {
-    const { name, minAmount, minAmountCurrency, fee, maxLoss, duration, roi, currencies } = this.state.profile;
+    const { name, minAmount, currency, fee, maxLoss, duration, roi, currencies } = this.state.profile;
     const profile = {
       minAmount, fee, maxLoss, duration, currencies, roi,
-      availableForOffers, name, minAmountCurrency,
+      availableForOffers, name, currency,
     };
     this.props.updateProfile(profile);
   }
 
   onSaveChangesClick(update) {
-    const {
-      availableForOffers, currencies,
-      minAmount, minAmountCurrency,
-      fee, maxLoss, duration, name, roi,
-    } = this.state.profile;
     const profile = {
-      availableForOffers, currencies, minAmount,
-      minAmountCurrency, fee, maxLoss, name,
-      roi,
-      duration, ...update
+      ...this.state.profile.contractSettings,
+      ...update,
+      name: this.state.profile.name
     };
     this.props.updateProfile(profile);
   }
@@ -68,14 +66,13 @@ class Profile extends React.Component {
     this.props.updateExchanges();
   }
 
-  componentWillReceiveProps(nextProps) {
+  async componentWillReceiveProps(nextProps) {
     const name = nextProps.match.params.id;
     if(nextProps.profile !== this.props.profile) {
       this.setState({profile: nextProps.profile});
     }
     if(this.props.match.params.id !== name) {
-      this.setState({profile: {}});
-      this.props.getProfile(name);
+      await this.props.getProfile(name);
     }
   }
 

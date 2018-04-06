@@ -11,17 +11,18 @@ import profile from './reducers/profile';
 import exchangesInfo from './reducers/exchangesInfo';
 import { combineReducers } from 'redux';
 import { calculateKeyBalance } from './generic/util';
-
 import { LOGGED_OUT } from './actions/auth';
+import { getInitialState } from './store';
 
 const combined = combineReducers({apiKeys, contracts, offers, auth, exchanges, time, request, terminal, rates, profile, exchangesInfo, selectedNet: (state = 'mainnet') => state});
 
 const root = (state, action) => {
   switch(action.type) {
     case LOGGED_OUT: {
-      localStorage.setItem('reduxState', JSON.stringify({auth: {loggedIn: false}}));
-      const newState = combined(undefined, action);
+      saveReduxState({auth: {loggedIn: false}});
+      const newState = getInitialState();
       newState.selectedNet = state.selectedNet;
+      console.log('STATE', newState, combineReducers({apiKeys, contracts, offers, auth, exchanges, time, request, terminal, rates, profile, exchangesInfo, selectedNet: (state = 'mainnet') => state}))
       return newState;
     }
   };
@@ -89,6 +90,10 @@ function calculateBalances(array, apiKeys, rates) {
     const balance = getItemBalance(item, apiKeys, rates);
     return {...item, balance};
   });
+}
+
+export function saveReduxState(state) {
+  localStorage.setItem('reduxState', JSON.stringify(state));
 }
 
 Array.prototype.findById = function(id) {

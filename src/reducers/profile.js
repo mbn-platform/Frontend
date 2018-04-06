@@ -8,8 +8,8 @@ export default function(state = {}, action) {
       }
       return action.profile;
     case UPDATE_PROFILE:
-      const {availableForOffers, fee, minAmount, roi, minAmountCurrency, duration, maxLoss, currencies} = action.profile;
-      return {...state, availableForOffers, fee, minAmount, roi, minAmountCurrency, duration, maxLoss, currencies};
+      const {available, contractSettings, currencies} = action.profile;
+      return {...state, available, contractSettings, currencies};
     case TRADES_FOR_USER: {
       if(action.name === state.name) {
         const {asInvestor, asTrader} = action.trades;

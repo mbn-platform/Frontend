@@ -275,7 +275,7 @@ const TraderRatingRow = (props) => (
       <span>{0}</span>
     </td>
     <td>
-      {props.availableForOffers ?
+      {props.available ?
         <span className='accept'/> :
         <span className='empty'/> }
     </td>
@@ -283,7 +283,7 @@ const TraderRatingRow = (props) => (
       {formatDate(new Date(props.dt || Date.now()))}
     </td>
     <td>
-      {props.minAmount + ' ' + props.minAmountCurrency}
+      {props.minAmount + ' ' + props.currency}
     </td>
     <td>
       {props.duration}

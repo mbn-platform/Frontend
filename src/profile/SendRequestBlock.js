@@ -32,7 +32,7 @@ class SendRequestBlock extends React.Component {
       keyId,
       to: this.props.profile._id,
       amount: this.props.profile.minAmount,
-      currency: this.props.profile.minAmountCurrency,
+      currency: this.props.profile.currency,
       maxLoss: this.props.profile.maxLoss,
       fee: this.props.profile.fee,
       duration: this.props.profile.duration,
@@ -51,18 +51,20 @@ class SendRequestBlock extends React.Component {
   }
 
   render() {
+    const profile = this.props.profile;
+    const contractSettings = profile.contractSettings;
     switch(this.state.visibleBlock) {
       case SEND_REQUEST_BLOCK_DETAILS: {
         return (
           <ContractDetails
             onOfferSendClick={() => this.setState({visibleBlock: SEND_REQUEST_BLOCK_SELECT_API})}
-            availableForOffers={this.props.profile.availableForOffers}
-            duration={this.props.profile.duration}
-            amount={this.props.profile.minAmount}
-            currency={this.props.profile.minAmountCurrency}
-            maxLoss={this.props.profile.maxLoss}
-            fee={this.props.profile.fee}
-            roi={this.props.profile.roi}
+            availableForOffers={profile.available}
+            duration={contractSettings.duration}
+            amount={contractSettings.minAmount}
+            currency={contractSettings.currency}
+            maxLoss={contractSettings.maxLoss}
+            fee={contractSettings.fee}
+            roi={contractSettings.roi}
           />
         );
       }
@@ -73,7 +75,7 @@ class SendRequestBlock extends React.Component {
             exchanges={this.props.exchanges}
             apiKeys={this.props.apiKeys}
             rates={this.props.rates}
-            currency={this.props.profile.minAmountCurrency}
+            currency={contractSettings.currency}
             selectedApiKey={this.state.selectedApiKey}
             onCancelClick={() => this.setState({visibleBlock:SEND_REQUEST_BLOCK_DETAILS})}
             onSendOfferClick={this.onSendOfferClick}

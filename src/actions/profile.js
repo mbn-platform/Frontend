@@ -7,7 +7,7 @@ export function updateProfile(profile) {
   return dispatch => {
     const name = profile.name;
     delete profile.name;
-    apiPut('/api/profile/' + name, null, profile)
+    apiPut(`/profile/${name}/contractSettings`, null, profile)
       .then(json => dispatch({
         type: UPDATE_PROFILE,
         profile: json,
@@ -17,11 +17,11 @@ export function updateProfile(profile) {
 
 export function getProfile(name) {
   return dispatch => {
-    apiGet(`/api/profile/${name}`)
-      .then(profile => {
+    apiGet(`/profile/${name}`)
+      .then(json => {
         dispatch({
           type: GET_PROFILE,
-          profile,
+          profile: json.profile,
         });
         dispatch(getTradesForUser(name));
       })
@@ -43,7 +43,7 @@ export function getProfile(name) {
 
 export function getTradesForUser(name) {
   return dispatch => {
-    apiGet(`/api/tradesForUser/${name}`)
+    apiGet(`/tradesForUser/${name}`)
       .then(trades => {
         dispatch({
           type: TRADES_FOR_USER,

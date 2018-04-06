@@ -30,7 +30,7 @@ class ContractSettings extends React.Component {
       if(isNaN(minAmount)) {
         minAmount = this.props.amount;
       }
-      const minAmountCurrency = this.state.currency || this.props.currency;
+      const currency = this.state.currency || this.props.currency;
       const roi = parseInt(this.state.roi, 10) || this.props.roi;
       const maxLoss = parseInt(this.state.maxLoss, 10) || this.props.maxLoss;
       const duration = parseInt(this.state.duration, 10) || this.props.duration;
@@ -39,7 +39,7 @@ class ContractSettings extends React.Component {
         alert('Enter all contract settings');
         return;
       } else {
-        const update = { fee, minAmount, minAmountCurrency, roi, maxLoss, duration };
+        const update = { fee, minAmount, currency, roi, maxLoss, duration };
         this.props.onSaveChangesClick(update);
         this.setState(this.getInitialState());
       }
