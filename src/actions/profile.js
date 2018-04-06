@@ -15,6 +15,18 @@ export function updateProfile(profile) {
   };
 }
 
+export function toggleAvailable(changes) {
+  return dispatch => {
+    const name = changes.name;
+    delete changes.name;
+    apiPut(`/profile/${name}/available`, null, changes)
+      .then(json => dispatch({
+        type: UPDATE_PROFILE,
+        profile: json,
+      }));
+  };
+}
+
 export function getProfile(name) {
   return dispatch => {
     apiGet(`/profile/${name}`)

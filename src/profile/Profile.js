@@ -5,7 +5,7 @@ import { Row, Container } from 'reactstrap';
 import { connect } from 'react-redux';
 import { fetchDashboardData } from '../actions/dashboard';
 import { updateExchanges } from '../actions/exchanges';
-import { updateProfile, getProfile } from '../actions/profile';
+import { updateProfile, getProfile, toggleAvailable } from '../actions/profile';
 
 class Profile extends React.Component {
 
@@ -42,12 +42,10 @@ class Profile extends React.Component {
   }
 
   onToggleClick(availableForOffers) {
-    const { name, minAmount, currency, fee, maxLoss, duration, roi, currencies } = this.state.profile;
-    const profile = {
-      minAmount, fee, maxLoss, duration, currencies, roi,
-      availableForOffers, name, currency,
-    };
-    this.props.updateProfile(profile);
+    this.props.toggleAvailable({
+      name: this.state.profile.name,
+      available: availableForOffers
+    });
   }
 
   onSaveChangesClick(update) {
@@ -113,6 +111,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   updateProfile: profile => dispatch(updateProfile(profile)),
+  toggleAvailable: available => dispatch(toggleAvailable(available)),
   fetchDashboardData: () => dispatch(fetchDashboardData()),
   updateExchanges: () => dispatch(updateExchanges()),
   getProfile: name => dispatch(getProfile(name)),
