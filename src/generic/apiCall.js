@@ -1,3 +1,6 @@
+import store from '../store';
+import {LOGGED_OUT} from '../actions/auth';
+
 export class ApiError extends Error {
   constructor(code) {
     super();
@@ -48,10 +51,16 @@ function jsonRequest(url, params) {
   return window.fetch(API_PREFIX + url, params).then(res => res.json())
     .then(json => {
       const error = json.error;
-      if(error) {
-        throw new ApiError(error);
-      } else {
-        return json;
+      switch (error) {
+        case ApiError.FORBIDDEN:
+          store.dispatch({type: LOGGED_OUT});
+          return;
+        default:
+          if (error) {
+            throw new ApiError(error);
+          } else {
+            return json;
+          }
       }
     });
 }
