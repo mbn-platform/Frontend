@@ -15,11 +15,9 @@ export function updateProfile(profile) {
   };
 }
 
-export function toggleAvailable(changes) {
+export function toggleAvailable(name, available) {
   return dispatch => {
-    const name = changes.name;
-    delete changes.name;
-    apiPut(`/profile/${name}/available`, null, changes)
+    apiPut(`/profile/${name}/available`, null, available)
       .then(json => dispatch({
         type: UPDATE_PROFILE,
         profile: json,
@@ -35,7 +33,7 @@ export function getProfile(name) {
           type: GET_PROFILE,
           profile: json.profile,
         });
-        dispatch(getTradesForUser(name));
+        //dispatch(getTradesForUser(name));
       })
       .catch(e => {
         if(e.apiErrorCode) {
@@ -63,5 +61,5 @@ export function getTradesForUser(name) {
           trades,
         });
       });
-  }
+  };
 }

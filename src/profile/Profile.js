@@ -42,10 +42,7 @@ class Profile extends React.Component {
   }
 
   onToggleClick(availableForOffers) {
-    this.props.toggleAvailable({
-      name: this.state.profile.name,
-      available: availableForOffers
-    });
+    this.props.toggleAvailable(this.state.profile.name, {available: availableForOffers});
   }
 
   onSaveChangesClick(update) {
@@ -111,7 +108,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   updateProfile: profile => dispatch(updateProfile(profile)),
-  toggleAvailable: available => dispatch(toggleAvailable(available)),
+  toggleAvailable: (name, available) => dispatch(toggleAvailable(name, available)),
   fetchDashboardData: () => dispatch(fetchDashboardData()),
   updateExchanges: () => dispatch(updateExchanges()),
   getProfile: name => dispatch(getProfile(name)),
