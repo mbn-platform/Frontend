@@ -5,7 +5,7 @@ import { Row, Container } from 'reactstrap';
 import { connect } from 'react-redux';
 import { fetchDashboardData } from '../actions/dashboard';
 import { updateExchanges } from '../actions/exchanges';
-import { updateContractSettings, getProfile, toggleAvailable } from '../actions/profile';
+import { updateContractSettings, getProfile, toggleAvailable, getFeedbacks } from '../actions/profile';
 
 class Profile extends React.Component {
 
@@ -53,9 +53,15 @@ class Profile extends React.Component {
     this.props.updateContractSettings(this.state.profile.name, contractSettings);
   }
 
+  getProfilePageData(name) {
+    const p1 = this.props.getProfile(name);
+    const p2 = this.props.getFeedbacks(name);
+    return Promise.all([p1, p2]);
+  }
+
   componentDidMount() {
     const name = this.props.match.params.id;
-    this.props.getProfile(name);
+    this.getProfilePageData(name);
     this.props.fetchDashboardData();
     this.props.updateExchanges();
   }
@@ -67,7 +73,7 @@ class Profile extends React.Component {
     }
     if(this.props.match.params.id !== name) {
       this.setState({profile: {contractSettings: {}}});
-      await this.props.getProfile(name);
+      await this.getProfilePageData();
     }
   }
 
@@ -112,6 +118,7 @@ const mapDispatchToProps = dispatch => ({
   fetchDashboardData: () => dispatch(fetchDashboardData()),
   updateExchanges: () => dispatch(updateExchanges()),
   getProfile: name => dispatch(getProfile(name)),
+  getFeedbacks: name => dispatch(getFeedbacks(name))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

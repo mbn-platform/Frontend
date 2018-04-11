@@ -1,4 +1,4 @@
-import { GET_PROFILE, UPDATE_PROFILE, TRADES_FOR_USER } from '../actions/profile';
+import {GET_PROFILE, UPDATE_PROFILE, TRADES_FOR_USER, GET_FEEDBACKS} from '../actions/profile';
 
 export default function(state = {}, action) {
   switch(action.type) {
@@ -6,7 +6,9 @@ export default function(state = {}, action) {
       if(state.name === action.profile.name) {
         action.profile.trades = state.trades;
       }
-      return action.profile;
+      return {...state, ...action.profile};
+    case GET_FEEDBACKS:
+      return {...state, feedbacks: action.feedbacks}
     case UPDATE_PROFILE:
       const {available, contractSettings, currencies} = action.profile;
       return {...state, available, contractSettings, currencies};
