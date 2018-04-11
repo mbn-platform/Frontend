@@ -5,7 +5,7 @@ import { Row, Container } from 'reactstrap';
 import { connect } from 'react-redux';
 import { fetchDashboardData } from '../actions/dashboard';
 import { updateExchanges } from '../actions/exchanges';
-import { updateProfile, getProfile, toggleAvailable } from '../actions/profile';
+import { updateContractSettings, getProfile, toggleAvailable } from '../actions/profile';
 
 class Profile extends React.Component {
 
@@ -46,12 +46,11 @@ class Profile extends React.Component {
   }
 
   onSaveChangesClick(update) {
-    const profile = {
+    const contractSettings = {
       ...this.state.profile.contractSettings,
-      ...update,
-      name: this.state.profile.name
+      ...update
     };
-    this.props.updateProfile(profile);
+    this.props.updateContractSettings(this.state.profile.name, contractSettings);
   }
 
   componentDidMount() {
@@ -108,7 +107,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  updateProfile: profile => dispatch(updateProfile(profile)),
+  updateContractSettings: (name, contractSettings) => dispatch(updateContractSettings(name, contractSettings)),
   toggleAvailable: (name, available) => dispatch(toggleAvailable(name, available)),
   fetchDashboardData: () => dispatch(fetchDashboardData()),
   updateExchanges: () => dispatch(updateExchanges()),
