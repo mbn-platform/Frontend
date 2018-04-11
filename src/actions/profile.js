@@ -3,6 +3,7 @@ import defaultErrorHandler from '../generic/defaultErrorHandler';
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
 export const GET_PROFILE = 'GET_PROFILE';
 export const TRADES_FOR_USER = 'TRADES_FOR_USER';
+export const GET_FEEDBACKS = 'GET_FEEDBACKS';
 
 export function updateContractSettings(name, settings) {
   return dispatch => {
@@ -52,6 +53,18 @@ export function getProfile(name) {
         } else {
           console.log(e);
         }
+      });
+  };
+}
+
+export function getFeedbacks(name) {
+  return dispatch => {
+    apiGet(`/profile/${name}/feedbacks`)
+      .then(json => {
+        dispatch({
+          type: GET_FEEDBACKS,
+          feedbacks: json.feedbacks,
+        });
       });
   };
 }

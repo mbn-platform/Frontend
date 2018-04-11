@@ -53,7 +53,8 @@ export function getInitialState() {
     },
     rates: null,
     profile: {
-      contractSettings: {}
+      contractSettings: {},
+      feedbacks: []
     },
     exchangesInfo: {},
     selectedNet: null
