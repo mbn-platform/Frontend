@@ -17,7 +17,7 @@ const MainContent = ({ loggedIn, profile }) => (
       <ProtectedRoute exact path="/terminal" component={Terminal} loggedIn={loggedIn} />
       <ProtectedRoute exact path="/orders" component={Orders} loggedIn={loggedIn} />
       <ProtectedRoute exact path="/ratings" component={Ratings} loggedIn={loggedIn} />
-      <Redirect exact from="/profile" to={profile ? `/${profile.name}` : '/login'} />
+      <Redirect exact from="/profile" to={profile.name ? `/${profile.name}` : '/login'} />
       <Route exact path="/:id" component={Profile} />
       <Redirect from="/" to="/profile" />
     </Switch>
