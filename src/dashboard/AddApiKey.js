@@ -17,19 +17,18 @@ class AddApiKey extends React.Component {
       name: '',
       secret: '',
       value: '',
-      exchange: '',
-      currencies: []
+      exchange: ''
     };
   }
 
   onSubmit(event) {
     event.preventDefault();
-    const { name, value, exchange, secret, currencies } = this.state;
+    const { name, value, exchange, secret } = this.state;
     if(!name || !value || !exchange || !secret) {
       alert('enter keyname and key value, select exchange');
       return;
     }
-    this.props.onApiKeyCreated({name, key: value, exchange, currencies, owner: this.props.userId, secret});
+    this.props.onApiKeyCreated({name, key: value, exchange, secret});
     this.setState(this.initialState());
   }
 
@@ -40,7 +39,7 @@ class AddApiKey extends React.Component {
   }
 
   handleExchangeChange(exchange) {
-    this.setState({exchange: exchange.name, currencies: exchange.currencies});
+    this.setState({exchange: exchange});
   }
 
   render() {

@@ -21,7 +21,7 @@ export function logIn() {
       }
       window.web3.eth.sign(acc, message, (err, result) => {
         if(!err) {
-          apiPost('/api/auth', null, {sgn: result, addr: acc})
+          apiPost('/auth', null, {sgn: result, addr: acc})
             .then(json => {
               if(!json.name) {
                 dispatch(nameRequiredAction());
@@ -38,7 +38,7 @@ export function logIn() {
 
 export function addName(name) {
   return dispatch => {
-    apiPost('/api/addName', null, {name})
+    apiPost('/auth/addName', null, {name})
       .then(response => {
         dispatch(loggedInAction(response));
       })

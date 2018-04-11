@@ -34,7 +34,7 @@ class ExchangeSelect extends React.Component {
         key="All"
         className="add_keys_select_li"
         onClick={() => this.onClick()}
-      >All</li>)
+      >All</li>);
     } else {
       return null;
     }
@@ -42,12 +42,12 @@ class ExchangeSelect extends React.Component {
 
   renderExchanges() {
     return this.props.exchanges.map(exchange => (
-      <li value={exchange.name}
-        key={exchange.name}
+      <li value={exchange}
+        key={exchange}
         className="add_keys_select_li upper"
         onClick={() => this.onClick(exchange)}
-      >{exchange.name}</li>
-      ));
+      >{exchange}</li>
+    ));
   }
 
 }

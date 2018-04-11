@@ -21,10 +21,10 @@ class ProfileInfo extends React.Component {
   getHeaderSeparator() {
     return (
       <Row className="justify-content-center">
-        <Col md="12" lg="12" xl="12" style={{display: (this.props.profile.availableForOffers ? 'block' : 'none')}} className="accept-request-title-block">
+        <Col md="12" lg="12" xl="12" style={{display: (this.props.profile.available ? 'block' : 'none')}} className="accept-request-title-block">
           <div className="accept-request-title-text">accepting requests</div>
         </Col>
-        <Col md="12" lg="12" xl="12" style={{display: (!this.props.profile.availableForOffers ? 'block' : 'none')}}  className="no-accept-request-title-block">
+        <Col md="12" lg="12" xl="12" style={{display: (!this.props.profile.available ? 'block' : 'none')}}  className="no-accept-request-title-block">
           <div className="no-accept-request-title-text">not Accepting requests</div>
         </Col>
       </Row>
@@ -33,6 +33,8 @@ class ProfileInfo extends React.Component {
 
   render() {
     const profile = this.props.profile;
+    console.log('PROFILE', this.props.profile)
+    const contractSettings = profile.contractSettings;
     if(this.props.own) {
       return (
         <Col xs="12" md="auto" sm="12" className="item-screen info-screen contract-block">
@@ -53,15 +55,15 @@ class ProfileInfo extends React.Component {
                 <ContractSettings
                   onSaveChangesClick={this.props.onSaveChangesClick}
                   onToggleClick={this.props.onToggleClick}
-                  duration={profile.duration}
-                  amount={profile.minAmount}
-                  currency={profile.minAmountCurrency}
-                  maxLoss={profile.maxLoss}
+                  duration={contractSettings.duration}
+                  amount={contractSettings.minAmount}
+                  currency={contractSettings.currency}
+                  maxLoss={contractSettings.maxLoss}
                   roiInBTC={profile.roiInBTC}
                   roiInUSD={profile.roiInUSD}                  
-                  fee={profile.fee}
-                  availableForOffers={profile.availableForOffers}
-                  roi={profile.roi}
+                  fee={contractSettings.fee}
+                  availableForOffers={profile.available}
+                  roi={contractSettings.roi}
                 />
               </Col>
             </Row>

@@ -1,29 +1,44 @@
 import { apiPut, apiGet, ApiError } from '../generic/apiCall';
+import defaultErrorHandler from '../generic/defaultErrorHandler';
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
 export const GET_PROFILE = 'GET_PROFILE';
 export const TRADES_FOR_USER = 'TRADES_FOR_USER';
 
-export function updateProfile(profile) {
+export function updateContractSettings(name, settings) {
   return dispatch => {
-    const name = profile.name;
-    delete profile.name;
-    apiPut('/api/profile/' + name, null, profile)
+    apiPut(`/profile/${name}/contractSettings`, null, settings)
       .then(json => dispatch({
         type: UPDATE_PROFILE,
         profile: json,
-      }));
+      }))
+      .catch(err => {
+        defaultErrorHandler(err, dispatch);
+      });
+  };
+}
+
+export function toggleAvailable(name, available) {
+  return dispatch => {
+    apiPut(`/profile/${name}/available`, null, available)
+      .then(json => dispatch({
+        type: UPDATE_PROFILE,
+        profile: json,
+      }))
+      .catch(err => {
+        defaultErrorHandler(err, dispatch);
+      });
   };
 }
 
 export function getProfile(name) {
   return dispatch => {
-    apiGet(`/api/profile/${name}`)
-      .then(profile => {
+    apiGet(`/profile/${name}`)
+      .then(json => {
         dispatch({
           type: GET_PROFILE,
-          profile,
+          profile: json.profile,
         });
-        dispatch(getTradesForUser(name));
+        //dispatch(getTradesForUser(name));
       })
       .catch(e => {
         if(e.apiErrorCode) {
@@ -43,7 +58,7 @@ export function getProfile(name) {
 
 export function getTradesForUser(name) {
   return dispatch => {
-    apiGet(`/api/tradesForUser/${name}`)
+    apiGet(`/tradesForUser/${name}`)
       .then(trades => {
         dispatch({
           type: TRADES_FOR_USER,
@@ -51,5 +66,5 @@ export function getTradesForUser(name) {
           trades,
         });
       });
-  }
+  };
 }

@@ -7,7 +7,7 @@ export const UPDATE_API_KEY = 'UPDATE_API_KEY';
 
 export function deleteApiKey(key) {
   return dispatch => {
-    apiDelete('/api/key/' + key._id)
+    apiDelete('/key/' + key._id)
       .then(() => dispatch({
         type: DELETE_API_KEY,
         apiKey: key,
@@ -34,7 +34,7 @@ export function deleteApiKey(key) {
 
 export function addApiKey(key) {
   return dispatch => {
-    apiPost('/api/key', null, key)
+    apiPost('/key', null, key)
       .then(json => dispatch({
         type: ADD_API_KEY,
         apiKey: json,

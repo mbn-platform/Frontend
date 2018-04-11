@@ -41,9 +41,11 @@ function getSelectedNet() {
   return window.localStorage.getItem('selectedNet') || 'mainnet';
 }
 
+const API_PREFIX = '/api/v2';
+
 function jsonRequest(url, params) {
   params.headers['X-Network'] = getSelectedNet();
-  return window.fetch(url, params).then(res => res.json())
+  return window.fetch(API_PREFIX + url, params).then(res => res.json())
     .then(json => {
       const error = json.error;
       if(error) {

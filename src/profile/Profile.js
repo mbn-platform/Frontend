@@ -5,7 +5,7 @@ import { Row, Container } from 'reactstrap';
 import { connect } from 'react-redux';
 import { fetchDashboardData } from '../actions/dashboard';
 import { updateExchanges } from '../actions/exchanges';
-import { updateProfile, getProfile } from '../actions/profile';
+import { updateContractSettings, getProfile, toggleAvailable } from '../actions/profile';
 
 class Profile extends React.Component {
 
@@ -13,7 +13,11 @@ class Profile extends React.Component {
     super(props);
     const name = this.props.match.params.id;
     if(name !== this.props.profile.name) {
-      this.state = {profile: {}};
+      this.state = {
+        profile: {
+          contractSettings: {}
+        }
+      };
     } else {
       this.state = {profile: this.props.profile};
     }
@@ -38,27 +42,15 @@ class Profile extends React.Component {
   }
 
   onToggleClick(availableForOffers) {
-    const { name, minAmount, minAmountCurrency, fee, maxLoss, duration, roi, currencies } = this.state.profile;
-    const profile = {
-      minAmount, fee, maxLoss, duration, currencies, roi,
-      availableForOffers, name, minAmountCurrency,
-    };
-    this.props.updateProfile(profile);
+    this.props.toggleAvailable(this.state.profile.name, {available: availableForOffers});
   }
 
   onSaveChangesClick(update) {
-    const {
-      availableForOffers, currencies,
-      minAmount, minAmountCurrency,
-      fee, maxLoss, duration, name, roi,
-    } = this.state.profile;
-    const profile = {
-      availableForOffers, currencies, minAmount,
-      minAmountCurrency, fee, maxLoss, name,
-      roi,
-      duration, ...update
+    const contractSettings = {
+      ...this.state.profile.contractSettings,
+      ...update
     };
-    this.props.updateProfile(profile);
+    this.props.updateContractSettings(this.state.profile.name, contractSettings);
   }
 
   componentDidMount() {
@@ -68,14 +60,14 @@ class Profile extends React.Component {
     this.props.updateExchanges();
   }
 
-  componentWillReceiveProps(nextProps) {
+  async componentWillReceiveProps(nextProps) {
     const name = nextProps.match.params.id;
     if(nextProps.profile !== this.props.profile) {
       this.setState({profile: nextProps.profile});
     }
     if(this.props.match.params.id !== name) {
-      this.setState({profile: {}});
-      this.props.getProfile(name);
+      this.setState({profile: {contractSettings: {}}});
+      await this.props.getProfile(name);
     }
   }
 
@@ -115,7 +107,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  updateProfile: profile => dispatch(updateProfile(profile)),
+  updateContractSettings: (name, contractSettings) => dispatch(updateContractSettings(name, contractSettings)),
+  toggleAvailable: (name, available) => dispatch(toggleAvailable(name, available)),
   fetchDashboardData: () => dispatch(fetchDashboardData()),
   updateExchanges: () => dispatch(updateExchanges()),
   getProfile: name => dispatch(getProfile(name)),
