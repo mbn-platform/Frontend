@@ -73,7 +73,7 @@ class Profile extends React.Component {
     }
     if(this.props.match.params.id !== name) {
       this.setState({profile: {contractSettings: {}}});
-      await this.getProfilePageData();
+      await this.getProfilePageData(name);
     }
   }
 
