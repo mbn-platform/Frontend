@@ -23,7 +23,10 @@ export function toggleAvailable(name, available) {
       .then(json => dispatch({
         type: UPDATE_PROFILE,
         profile: json,
-      }));
+      }))
+      .catch(err => {
+        defaultErrorHandler(err, dispatch);
+      });
   };
 }
 
