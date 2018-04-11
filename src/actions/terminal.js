@@ -47,7 +47,7 @@ export function selectInterval(interval) {
 
 export function getExchangeMarkets(exchange) {
   return dispatch => {
-    apiGet('/api/v2/exchange/markets?exchange=' + exchange)
+    apiGet('/exchange/markets?exchange=' + exchange)
       .then(res => {
         dispatch({
           type: EXCHANGE_MARKETS,
