@@ -1,5 +1,5 @@
 import { apiPut, apiGet, ApiError } from '../generic/apiCall';
-import defaultErrorHandler from '../generic/defaultErrorHandler';
+import defaultErrorHandler, {profileErrorHandler} from '../generic/errorHandlers';
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
 export const GET_PROFILE = 'GET_PROFILE';
 export const TRADES_FOR_USER = 'TRADES_FOR_USER';
@@ -13,7 +13,7 @@ export function updateContractSettings(name, settings) {
         profile: json,
       }))
       .catch(err => {
-        defaultErrorHandler(err, dispatch);
+        profileErrorHandler(err, dispatch);
       });
   };
 }
@@ -26,7 +26,7 @@ export function toggleAvailable(name, available) {
         profile: json,
       }))
       .catch(err => {
-        defaultErrorHandler(err, dispatch);
+        profileErrorHandler(err, dispatch);
       });
   };
 }
@@ -41,18 +41,8 @@ export function getProfile(name) {
         });
         //dispatch(getTradesForUser(name));
       })
-      .catch(e => {
-        if(e.apiErrorCode) {
-          switch(e.apiErrorCode) {
-            case ApiError.NOT_FOUND:
-              alert('no such profile');
-              break;
-            default:
-              console.log('unhandled api error', e.apiErrorCode);
-          }
-        } else {
-          console.log(e);
-        }
+      .catch(err => {
+        profileErrorHandler(err, dispatch);
       });
   };
 }
@@ -65,6 +55,9 @@ export function getFeedbacks(name) {
           type: GET_FEEDBACKS,
           feedbacks: json.feedbacks,
         });
+      })
+      .catch(err => {
+        profileErrorHandler(err, dispatch);
       });
   };
 }

@@ -17,3 +17,17 @@ export default function defaultErrorHandler(error, dispatch) {
     console.log(error);
   }
 }
+
+export function profileErrorHandler(error, dispatch) {
+  if (error.apiErrorCode) {
+    switch (error.apiErrorCode) {
+      case ApiError.NOT_FOUND:
+        alert('no such profile');
+        break;
+      default:
+        defaultErrorHandler(error, dispatch);
+    }
+  } else {
+    console.log(error);
+  }
+}
