@@ -1,5 +1,5 @@
 import { apiPost, apiDelete, ApiError } from '../generic/apiCall';
-import defaultErrorHandler from '../generic/defaultErrorHandler';
+import defaultErrorHandler from '../generic/errorHandlers';
 import { ABI, ADDRESS, MAIN_NET_ADDRESS } from '../eth/MercatusFactory';
 
 export const ACCEPT_OFFER = 'ACCEPT_OFFER';

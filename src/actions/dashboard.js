@@ -1,5 +1,5 @@
 import { apiGet, ApiError } from '../generic/apiCall';
-import defaultErrorHandler from '../generic/defaultErrorHandler';
+import defaultErrorHandler from '../generic/errorHandlers';
 export const UPDATE_DASHBOARD = 'UPDATE_DASHBOARD';
 
 export function fetchDashboardData() {

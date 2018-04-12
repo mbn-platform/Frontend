@@ -5,12 +5,12 @@ import {saveReduxState} from '../rootReducer';
 export default function reducer(auth = {}, action) {
   switch(action.type) {
     case LOGGED_IN: {
-      const state = {loggedIn: true, profile: action.data};
+      const state = {...auth, loggedIn: true, profile: action.data};
       saveReduxState({auth: state});
       return state;
     }
     case NAME_REQUIRED: {
-      const state = {nameRequired: true, loggedIn: false};
+      const state = {...auth, nameRequired: true, loggedIn: false};
       saveReduxState({auth: state});
       return state;
     }
