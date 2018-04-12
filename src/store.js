@@ -37,19 +37,13 @@ export function getInitialState() {
     time: null,
     request: {},
     terminal: {
-      selectedApiKey: null,
-      selectedMarket: null,
-      orders: {
-        open: [],
-        completed: []
-      },
-      ratings: [],
-      ticker: {},
-      orderBook: {
-        sell: [],
-        buy: []
-      },
-      history: []
+      apiKey: null,
+      exchange: 'bittrex',
+      market: 'USDT-BTC',
+      interval: '5m',
+      orderBook: {sell: [], buy: [], smap: {}, bmap: {}},
+      history: [],
+      ticker: null,
     },
     rates: null,
     profile: {
