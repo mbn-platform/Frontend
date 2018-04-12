@@ -19,8 +19,8 @@ const combined = combineReducers({apiKeys, contracts, offers, auth, exchanges, t
 const root = (state, action) => {
   switch(action.type) {
     case LOGGED_OUT: {
-      saveReduxState({auth: {loggedIn: false}});
       const newState = getInitialState();
+      saveReduxState({auth: {...newState.auth, loggedIn: false}});
       newState.selectedNet = state.selectedNet;
       console.log('STATE', newState, combineReducers({apiKeys, contracts, offers, auth, exchanges, time, request, terminal, rates, profile, exchangesInfo, selectedNet: (state = 'mainnet') => state}))
       return newState;
