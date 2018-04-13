@@ -57,7 +57,7 @@ export default function(state = {
           bmap[value] = {Quantity: amount, Rate: value};
         }
       }
-      const buy = Object.values(bmap).sort((o1, o2) => o1.Rate - o2.Rate);
+      const buy = Object.values(bmap).sort((o1, o2) => o2.Rate - o1.Rate);
       const sell = Object.values(smap).sort((o1, o2) => o1.Rate - o2.Rate);
       const maxBuy = buy.reduce((accum, value) => Math.max(accum, value.Quantity * value.Rate), 0);
       const maxSell = sell.reduce((accum, value) => Math.max(accum, value.Quantity * value.Rate), 0);
