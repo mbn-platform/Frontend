@@ -32,6 +32,10 @@ class Terminal extends React.Component {
   }
 
   componentWillReceiveProps(props) {
+    if(props.apiKey && ((!this.props.apiKey || this.props.apiKey._id !== props.apiKey._id) ||
+      props.market !== this.props.market)) {
+      this.props.getOrders({keyId: props.apiKey._id, symbol: props.market});
+    }
   }
 
   render() {
@@ -66,13 +70,14 @@ class Terminal extends React.Component {
                       markets={(this.props.exchangeInfo || {}).markets || []}
                       ticker={this.props.ticker || {}}
                       placeOrder={this.props.placeOrder}
-                      selectedApiKey={this.props.apiKey}
+                      apiKey={this.props.apiKey}
+                      balance={this.props.apiKey ? this.props.apiKeys.balances[this.props.apiKey._id] : null}
                       market={this.props.market}
                     />
                     <MediaQuery query="(min-width: 576px)">
                       <MyOrders
                         market={this.props.market}
-                        orders={{open: [], completed: []}}
+                        orders={this.props.orders}
                         cancelOrder={this.props.cancelOrder}
                       />
                     </MediaQuery>
@@ -99,7 +104,7 @@ class Terminal extends React.Component {
                     <MediaQuery query="(max-width: 575px)">
                       <MyOrders
                         market={this.props.market}
-                        orders={{open: [], completed: []}}
+                        orders={this.props.orders}
                         cancelOrder={this.props.cancelOrder}
                       />
                     </MediaQuery>
@@ -121,6 +126,9 @@ class Terminal extends React.Component {
     window.customize();
     this.props.connectToSocket();
     this.props.getExchangeMarkets(this.props.exchange);
+    if(this.props.apiKey) {
+      this.props.getOrders({keyId: this.props.apiKey._id, symbol: this.props.market});
+    }
   }
 
 

@@ -17,7 +17,7 @@ class MyOrders extends React.Component {
     this.onColumnSort = onColumnSort.bind(this);
     this.sortData = sortData.bind(this);
     this.sortFunctions = {
-      estimated: (a, b) => (a.rate * a.quantity) - (b.rate * b.quantity),
+      estimated: (a, b) => (a.price * a.amount) - (b.price * b.amount),
     };
   }
 
@@ -29,8 +29,8 @@ class MyOrders extends React.Component {
   }
 
   render() {
-    let data = this.state.tab === TAB_OPEN_ORDERS ? this.props.orders.open : this.props.orders.completed;
-    data = data.filter(o => o.market === this.props.market);
+    let data = this.state.tab === TAB_OPEN_ORDERS ? this.props.orders.open : this.props.orders.closed;
+    data = data.filter(o => o.symbol === this.props.market);
     const sortedData = this.sortData(data);
     return (
       <div className="orders-table chart col-12 col-sm-6 col-md-12 col-lg-6">
@@ -61,9 +61,9 @@ class MyOrders extends React.Component {
                   <thead>
                     <tr>
                       <th onClick={() => this.onColumnSort('type')}>Type <span className={classNameForColumnHeader(this.state, 'type')}></span></th>
-                      <th onClick={() => this.onColumnSort('rate')}>Price <span className={classNameForColumnHeader(this.state, 'rate')}></span></th>
+                      <th onClick={() => this.onColumnSort('price')}>Price <span className={classNameForColumnHeader(this.state, 'price')}></span></th>
                       <th onClick={() => this.onColumnSort('filled')}>Units Filed <span className={classNameForColumnHeader(this.state, 'filled')}></span></th>
-                      <th onClick={() => this.onColumnSort('quantity')}>Units Total <span className={classNameForColumnHeader(this.state, 'quantity')}></span></th>
+                      <th onClick={() => this.onColumnSort('amount')}>Units Total <span className={classNameForColumnHeader(this.state, 'amount')}></span></th>
                       <th onClick={() => this.onColumnSort('estimated')}><span>Est.</span> Total <span className={classNameForColumnHeader(this.state, 'estimated')}></span></th>
                       <th></th>
                     </tr>
@@ -89,9 +89,9 @@ class MyOrders extends React.Component {
                   <thead>
                     <tr>
                       <th onClick={() => this.onColumnSort('type')}>Type <span className={classNameForColumnHeader(this.state, 'type')}></span></th>
-                      <th onClick={() => this.onColumnSort('rate')}>Price <span className={classNameForColumnHeader(this.state, 'rate')}></span></th>
+                      <th onClick={() => this.onColumnSort('price')}>Price <span className={classNameForColumnHeader(this.state, 'price')}></span></th>
                       <th onClick={() => this.onColumnSort('filled')}>Units Filed <span className={classNameForColumnHeader(this.state, 'filled')}></span></th>
-                      <th onClick={() => this.onColumnSort('quantity')}>Units Total <span className={classNameForColumnHeader(this.state, 'quantity')}></span></th>
+                      <th onClick={() => this.onColumnSort('amount')}>Units Total <span className={classNameForColumnHeader(this.state, 'amount')}></span></th>
                       <th onClick={() => this.onColumnSort('estimated')}><span>Est.</span> Total <span className={classNameForColumnHeader(this.state, 'estimated')}></span></th>
                     </tr>
                   </thead>
@@ -122,10 +122,10 @@ const OpenOrder = ({order, onOrderCancel}) => (
         <span className="round center"></span>
       </div>
     </td>
-    <td>{order.rate}</td>
+    <td>{order.price}</td>
     <td>{order.filled}</td>
-    <td>{order.quantity}</td>
-    <td className="ellipsis-cell">{formatFloat(order.rate * order.quantity)}</td>
+    <td>{order.amount}</td>
+    <td className="ellipsis-cell">{formatFloat(order.price * order.amount)}</td>
     <td onClick={() => onOrderCancel(order)}><span className="remove"></span></td>
   </tr>
 );
@@ -137,10 +137,10 @@ const CompletedOrder = ({order}) => (
         <span className="round center"></span>
       </div>
     </td>
-    <td>{order.rate}</td>
+    <td>{order.price}</td>
     <td>{order.filled}</td>
-    <td>{order.quantity}</td>
-    <td className="ellipsis-cell">{formatFloat(order.rate * order.quantity)}</td>
+    <td>{order.amount}</td>
+    <td className="ellipsis-cell">{formatFloat(order.price * order.amount)}</td>
   </tr>
 )
 

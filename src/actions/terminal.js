@@ -1,4 +1,4 @@
-import { apiGet, apiPost, ApiError } from '../generic/apiCall';
+import { apiGet, apiPost, apiDelete, ApiError } from '../generic/apiCall';
 import { fetchDashboardData } from '../actions/dashboard';
 export const SELECT_API_KEY = 'SELECT_API_KEY';
 export const SELECT_MARKET = 'SELECT_MARKET';
@@ -76,13 +76,28 @@ export function getMyOrders(key) {
   };
 }
 
+export function getOrders(params) {
+  return dispatch => {
+    const query = Object.entries(params).map(e => e.join('=')).join('&');
+    apiGet('/order?' + query)
+      .then(res => dispatch({
+        type: GET_MY_ORDERS,
+        orders: res,
+        keyId: params.keyId,
+      }))
+      .catch(err => {
+        console.log(err);
+      });
+  };
+}
+
 export function cancelOrder(order) {
   return dispatch => {
-    apiPost('/api/order/' + order._id + '/cancel')
-      .then(() => {
+    apiDelete('/order/' + order._id)
+      .then(res => {
         dispatch({
           type: CANCEL_ORDER,
-          order,
+          order: res,
         });
       })
       .catch(err => {
@@ -95,57 +110,61 @@ export function cancelOrder(order) {
               console.log('unhandled api error', err.apiErrorCode);
           }
         } else {
-          console.log('error performing request');
+          console.log('error performing request', err);
         }
       });
   };
 }
 
-export function placeOrder(order, type) {
+export function placeOrder(order) {
   return dispatch => {
-    let url;
-    switch(type) {
-      case 'buy':
-        url = '/api/order/buy';
-        break;
-      case 'sell':
-        url = '/api/order/sell';
-        break;
-      default:
-        alert('error');
-    }
-    apiPost(url, null, order)
-      .then(order => {
+    apiPost('/order', null, order)
+      .then(res => {
+        console.log(res);
         alert('Order has been placed');
         dispatch({
           type: PLACE_ORDER,
-          order,
+          order: res,
         });
-        dispatch(fetchDashboardData());
       })
-      .catch(err => {
-        if(err.apiErrorCode) {
-          switch(err.apiErrorCode) {
-            case ApiError.FORBIDDEN:
-              alert('The key does not allow to trade this pair');
-              break;
-            case ApiError.EXCHANGE_ERROR:
-              alert('Exchange error');
-              break;
-            case ApiError.INSUFFICIENT_FUNDS:
-              alert('Not enough funds');
-              break;
-            case ApiError.MIN_TRADE_REQUIREMENT_NOT_MET:
-              alert('Order size is less than minimal order size for this market');
-              break;
-            default:
-              console.log('unhandled api error', err.apiErrorCode);
-          }
-        } else {
-          console.log('error');
+      .catch(error => {
+        if(error.apiErrorCode) {
+          console.log('api error', error.apiErrorCode);
         }
       });
   };
+  //apiPost(url, null, order)
+  //.then(order => {
+  //alert('Order has been placed');
+  //dispatch({
+  //type: PLACE_ORDER,
+  //order,
+  //});
+  //dispatch(fetchDashboardData());
+  //})
+  //.catch(err => {
+  //if(err.apiErrorCode) {
+  //switch(err.apiErrorCode) {
+  //case ApiError.FORBIDDEN:
+  //alert('The key does not allow to trade this pair');
+  //break;
+  //case ApiError.EXCHANGE_ERROR:
+  //alert('Exchange error');
+  //break;
+  //case ApiError.INSUFFICIENT_FUNDS:
+  //alert('Not enough funds');
+  //break;
+  //case ApiError.MIN_TRADE_REQUIREMENT_NOT_MET:
+  //alert('Order size is less than minimal order size for this market');
+  //break;
+  //default:
+  //console.log('unhandled api error', err.apiErrorCode);
+  //}
+  //} else {
+  //console.log('error');
+  //}
+  //});
+  //};
 }
 
 

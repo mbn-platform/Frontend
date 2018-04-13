@@ -44,6 +44,7 @@ export function getInitialState() {
       orderBook: {sell: [], buy: [], smap: {}, bmap: {}},
       history: [],
       ticker: null,
+      orders: {open: [], closed: []},
     },
     rates: null,
     profile: {

@@ -1,5 +1,7 @@
-import {SELECT_API_KEY, SELECT_EXCHANGE, SELECT_MARKET, SELECT_INTERVAL} from '../actions/terminal';
+import {SELECT_API_KEY, SELECT_EXCHANGE, SELECT_MARKET,
+  SELECT_INTERVAL, GET_MY_ORDERS, CANCEL_ORDER, PLACE_ORDER} from '../actions/terminal';
 import {UPDATE_ORDER_BOOK, UPDATE_HISTORY, UPDATE_TICKER} from '../actions/terminal';
+import {GET_API_KEYS} from '../actions/apiKeys';
 
 export default function(state = {
   apiKey: null,
@@ -9,6 +11,7 @@ export default function(state = {
   orderBook: {sell: [], buy: [], smap: {}, bmap: {}},
   history: [],
   ticker: null,
+  orders: {open: [], closed: []},
 }, action) {
   switch(action.type) {
     case SELECT_API_KEY: {
@@ -87,6 +90,36 @@ export default function(state = {
         return {...state, ticker: action.ticker};
       }
       return state;
+    }
+    case GET_API_KEYS: {
+      if(!state.apiKey && action.apiKeys.own.length) {
+        return {...state, apiKey: action.apiKeys.own[0]};
+      }
+      break;
+    }
+    case GET_MY_ORDERS: {
+      if(state.apiKey && state.apiKey._id === action.keyId) {
+        return {...state, orders: action.orders};
+      }
+      break;
+    }
+    case PLACE_ORDER: {
+      const orders = {
+        open: state.orders.open.concat(action.order),
+        closed: state.orders.closed,
+      };
+      return {...state, orders};
+    }
+    case CANCEL_ORDER: {
+      const order = state.orders.open.find(o => o._id === action.order._id);
+      if(order) {
+        const orders = {
+          open: state.orders.open.filter(o => o._id !== action.order._id),
+          closed: state.orders.closed.concat(action.order),
+        };
+        return {...state, orders};
+      }
+      break;
     }
     default:
       return state;

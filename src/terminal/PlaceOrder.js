@@ -33,39 +33,29 @@ class PlaceOrder extends React.Component {
 
   onSubmit(e) {
     e.preventDefault();
-    if(!this.props.selectedApiKey) {
+    if(!this.props.apiKey) {
       alert('select api key');
       return;
     }
-    const cur = this.props.selectedApiKey.currencies.find(c => c.name === this.state.secondary);
-    if(!(cur && cur.enabled)) {
-      alert('The key does not allow to trade this pair');
-      return;
-    }
-    const keyId = this.props.selectedApiKey._id;
+    const keyId = this.props.apiKey._id;
     const params = {
-      market: this.props.market,
-      quantity: parseFloat(this.state.orderSize),
-      rate: parseFloat(this.state.price),
+      symbol: this.props.market,
+      amount: parseFloat(this.state.orderSize),
+      price: parseFloat(this.state.price),
       keyId,
     };
-    const marketInfo = this.props.exchangeInfo.markets[this.props.market];
-    if(marketInfo.minTradeSize > params.quantity) {
-      alert(`The minimal trade size for this pair is ${marketInfo.minTradeSize} ${this.props.market.split('-')[1]}`);
-      return;
-    }
     switch(this.state.selectedTab) {
       case TAB_BUY:
-        this.props.placeOrder(params, 'buy');
-        this.setState({amount: '', orderSize: ''});
+        params.type = 'buy';
         break;
       case TAB_SELL:
-        this.props.placeOrder(params, 'sell');
-        this.setState({amount: '', orderSize: ''});
+        params.type = 'sell';
         break;
       default:
         break;
     }
+    this.props.placeOrder(params);
+    this.setState({amount: '', orderSize: ''});
     return;
   }
 
@@ -235,7 +225,8 @@ class PlaceOrder extends React.Component {
             </form>
           </div>
           <Balances
-            apiKey={this.props.selectedApiKey}
+            apiKey={this.props.apiKey}
+            balance={this.props.balance}
             main={this.state.main}
             onMainClick={e => this.setAmount(e.target.innerHTML)}
             secondary={this.state.secondary}
@@ -254,13 +245,13 @@ PlaceOrder.propTypes = {
   placeOrder: PropTypes.func.isRequired,
 }
 
-const Balances = ({apiKey, main, secondary, onMainClick, onSecondaryClick}) => {
+const Balances = ({apiKey, balance, main, secondary, onMainClick, onSecondaryClick}) => {
   let value1, value2;
-  if(apiKey) {
-    value1 = apiKey.currencies.find(c => c.name === main);
-    value1 = value1 ? value1.availableBalance || 0 : undefined;
-    value2 = apiKey.currencies.find(c => c.name === secondary);
-    value2 = value2 ? value2.availableBalance || 0 : undefined;
+  if(balance) {
+    value1 = balance[main];
+    value1 = value1 && value1.available || 0;
+    value2 = balance[secondary];
+    value2 = value2 && value2.available || 0;
   }
   return (
     <div className="balance-wrap">
