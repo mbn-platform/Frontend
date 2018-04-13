@@ -26,7 +26,7 @@ export function logIn() {
               if(!json.name) {
                 dispatch(nameRequiredAction());
               } else {
-                dispatch(loggedInAction(json));
+                dispatch(loggedIn(json));
               }
             })
             .catch(err => alert(err.apiErrorCode));
@@ -40,7 +40,7 @@ export function addName(name) {
   return dispatch => {
     apiPost('/auth/addName', null, {name})
       .then(response => {
-        dispatch(loggedInAction(response));
+        dispatch(loggedIn(response));
       })
       .catch(e => {
         if(e.apiErrorCode) {
@@ -76,7 +76,13 @@ function nameRequiredAction() {
   };
 }
 
-function loggedInAction(data) {
+export function loggedOut() {
+  return {
+    type: LOGGED_OUT,
+  };
+}
+
+export function loggedIn(data) {
   return {
     type: LOGGED_IN,
     data

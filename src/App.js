@@ -1,6 +1,8 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import store from './store';
+import {apiGet, ApiError} from './generic/apiCall';
+import {loggedIn, loggedOut} from './actions/auth';
 import { Provider } from 'react-redux';
 import MainContent from './MainContentContainer';
 import Navigation from './Navigation';
@@ -284,7 +286,22 @@ class App extends React.Component {
       if(typeof window.web3 !== 'undefined') {
         window.web3 = new window.Web3(window.web3.currentProvider);
       }
-      this.setState({loading: false});
+      if(store.getState().auth.loggedIn) {
+        apiGet('/profile')
+          .then(({profile}) => {
+            store.dispatch(loggedIn(profile));
+          })
+          .catch(err => {
+            if(err.apiErrorCode && err.apiErrorCode === ApiError.FORBIDDEN) {
+              store.dispatch(loggedOut());
+            }
+          })
+          .then(() => {
+            this.setState({loading: false});
+          });
+      } else {
+        this.setState({loading: false});
+      }
     });
     store.dispatch(fetchTime());
     this.timeInterval = setInterval(() => {
