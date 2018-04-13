@@ -1,19 +1,16 @@
 import io from 'socket.io-client';
-import { WEBSOCKET_CONNECT, WEBSOCKET_DISCONNECT } from './actions/websocket';
+import { WEBSOCKET_CONNECT, WEBSOCKET_DISCONNECT, WEBSOCKET_TERMINAL } from './actions/websocket';
 import { SELECT_MARKET } from './actions/terminal';
 import { LOGGED_OUT, LOGGED_IN } from './actions/auth';
+import {updateKeyBalance} from './actions/apiKeys';
 import {updateOrderBook, updateHistory, updateRates, updateTicker} from './actions/terminal';
 let socket;
 const socketMiddleware = store => next => action => {
   switch(action.type) {
-    case WEBSOCKET_CONNECT: {
+    case LOGGED_IN: {
       if(!socket) {
         socket = io();
         socket.on('connect', () => {
-          const state = store.getState();
-          const {exchange, market: symbol, interval} = state.terminal;
-          socket.emit('market', {exchange, symbol});
-          socket.emit('candles', {exchange, symbol, interval});
           socket.emit('rates');
         });
         socket.on('orders', ({name, content}) => {
@@ -36,28 +33,28 @@ const socketMiddleware = store => next => action => {
 
         });
       }
+      break;;
+    }
+    case WEBSOCKET_TERMINAL: {
+      if(socket) {
+        const state = store.getState();
+        const {exchange, market: symbol, interval} = state.terminal;
+        socket.emit('market', {exchange, symbol});
+      }
       return;
     }
-    case WEBSOCKET_DISCONNECT:
+    case LOGGED_OUT:
       if(socket) {
         socket.disconnect();
         socket = null;
       }
-      return;
+      break;
     case SELECT_MARKET: {
       if(socket) {
         const state = store.getState();
         const {exchange} = state.terminal;
         const symbol = action.market;
         socket.emit('market', {exchange, symbol});
-      }
-      break;
-    }
-    case 'SELECT_INTERVAL': {
-      if(socket) {
-        const state = store.getState();
-        const {exchange, symbol} = state.terminal; 
-        socket.emit('candles', {exchange, symbol, interval: action.interval});
       }
       break;
     }

@@ -3,6 +3,7 @@ import { LOGGED_OUT } from '../actions/auth';
 export const DELETE_API_KEY = 'DELETE_API_KEY';
 export const ADD_API_KEY = 'ADD_API_KEY';
 export const UPDATE_API_KEY = 'UPDATE_API_KEY';
+export const UPDATE_API_KEY_BALANCE = 'UPDATE_API_KEY_BALANCE';
 
 
 export function deleteApiKey(key) {
@@ -69,5 +70,13 @@ export function updateApiKey(key) {
         console.log(err);
         console.log(err.apiErrorCode);
       });
+  };
+}
+
+export function updateKeyBalance(_id, balances) {
+  return {
+    type: UPDATE_API_KEY_BALANCE,
+    _id,
+    balances,
   };
 }

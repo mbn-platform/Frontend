@@ -7,7 +7,7 @@ import {
   selectApiKey,
   getExchangeMarkets,
 } from '../actions/terminal';
-import { WEBSOCKET_CONNECT } from '../actions/websocket';
+import { WEBSOCKET_TERMINAL } from '../actions/websocket';
 
 const mapStateToProps = state => ({
   ...state.terminal,
@@ -25,7 +25,7 @@ const mapDispatchToProps =  dispatch => ({
   selectInterval: interval => dispatch(selectInterval(interval)),
   selectApiKey: apiKey => dispatch(selectApiKey(apiKey)),
   connectToSocket: () => dispatch({
-    type: WEBSOCKET_CONNECT,
+    type: WEBSOCKET_TERMINAL,
   }),
   getExchangeMarkets: exchange => dispatch(getExchangeMarkets(exchange)),
 });
