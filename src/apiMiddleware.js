@@ -1,9 +1,9 @@
 import {LOGGED_IN} from './actions/auth';
-import {getApiKeys} from './actions/apiKeys';
+import {fetchKeys} from './actions/dashboard';
 const socketMiddleware = store => next => action => {
   switch(action.type) {
     case LOGGED_IN: {
-      store.dispatch(getApiKeys());
+      store.dispatch(fetchKeys());
       break;
     }
     default:

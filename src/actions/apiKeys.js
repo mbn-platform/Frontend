@@ -5,7 +5,6 @@ export const DELETE_API_KEY = 'DELETE_API_KEY';
 export const ADD_API_KEY = 'ADD_API_KEY';
 export const UPDATE_API_KEY = 'UPDATE_API_KEY';
 export const UPDATE_API_KEY_BALANCE = 'UPDATE_API_KEY_BALANCE';
-export const GET_API_KEYS = 'GET_API_KEYS';
 
 
 export function deleteApiKey(key) {
@@ -57,21 +56,6 @@ export function addApiKey(key) {
         }
       });
   };
-}
-
-export function getApiKeys() {
-  return dispatch => {
-    apiGet('/key')
-      .then(json => dispatch({
-        type: GET_API_KEYS,
-        apiKeys: json,
-      }))
-      .catch(error => {
-        if(error.apiErrorCode) {
-          defaultErrorHandler(error, dispatch);
-        };
-      });
-  }
 }
 
 export function updateApiKey(key) {

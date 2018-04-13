@@ -114,7 +114,7 @@ SendRequestBlock.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  apiKeys: state.apiKeys.ownKeys.filter(k => k.state === 'FREE'),
+  apiKeys: state.apiKeys.ownKeys,
   exchanges: state.exchanges,
   request: state.request,
   rates: state.rates,

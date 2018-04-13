@@ -1,7 +1,7 @@
 import {SELECT_API_KEY, SELECT_EXCHANGE, SELECT_MARKET,
   SELECT_INTERVAL, GET_MY_ORDERS, CANCEL_ORDER, PLACE_ORDER} from '../actions/terminal';
 import {UPDATE_ORDER_BOOK, UPDATE_HISTORY, UPDATE_TICKER} from '../actions/terminal';
-import {GET_API_KEYS} from '../actions/apiKeys';
+import {UPDATE_KEYS} from '../actions/dashboard';
 
 export default function(state = {
   apiKey: null,
@@ -91,9 +91,9 @@ export default function(state = {
       }
       return state;
     }
-    case GET_API_KEYS: {
-      if(!state.apiKey && action.apiKeys.own.length) {
-        return {...state, apiKey: action.apiKeys.own[0]};
+    case UPDATE_KEYS: {
+      if(!state.apiKey && action.data.length) {
+        return {...state, apiKey: action.data[0]};
       }
       break;
     }

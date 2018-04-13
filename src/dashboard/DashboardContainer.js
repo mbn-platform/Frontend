@@ -2,7 +2,6 @@ import Dashboard from './Dashboard';
 import { connect } from 'react-redux';
 import { deleteApiKey, updateApiKey } from '../actions/apiKeys';
 import { acceptOffer, cancelOffer, rejectOffer, payOffer } from '../actions/offers';
-import { fetchDashboardData } from '../actions/dashboard';
 import { updateExchanges } from '../actions/exchanges';
 import { rateContract } from '../actions/contracts';
 
@@ -31,7 +30,6 @@ const mapDispatchToProps = dispatch => {
       }
     },
     onKeyUpdateClick: (apiKey, original) => dispatch(updateApiKey(apiKey, original)),
-    fetchDashboardData: () => dispatch(fetchDashboardData()),
     updateExchanges: () => dispatch(updateExchanges()),
     onOfferPay: offer => dispatch(payOffer(offer)),
     onOfferAccepted: offer => dispatch(acceptOffer(offer)),

@@ -3,7 +3,6 @@ import ProfileInfo from './ProfileInfo';
 import TablesScreen from './TablesScreen';
 import { Row, Container } from 'reactstrap';
 import { connect } from 'react-redux';
-import { fetchDashboardData } from '../actions/dashboard';
 import { updateExchanges } from '../actions/exchanges';
 import { updateContractSettings, getProfile, toggleAvailable, getFeedbacks } from '../actions/profile';
 
@@ -62,7 +61,6 @@ class Profile extends React.Component {
   componentDidMount() {
     const name = this.props.match.params.id;
     this.getProfilePageData(name);
-    this.props.fetchDashboardData();
     this.props.updateExchanges();
   }
 
@@ -115,7 +113,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   updateContractSettings: (name, contractSettings) => dispatch(updateContractSettings(name, contractSettings)),
   toggleAvailable: (name, available) => dispatch(toggleAvailable(name, available)),
-  fetchDashboardData: () => dispatch(fetchDashboardData()),
   updateExchanges: () => dispatch(updateExchanges()),
   getProfile: name => dispatch(getProfile(name)),
   getFeedbacks: name => dispatch(getFeedbacks(name))

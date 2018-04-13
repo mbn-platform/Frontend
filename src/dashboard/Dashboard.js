@@ -16,16 +16,10 @@ class Dashboard extends React.Component {
     this.onOfferSelected = this.onOfferSelected.bind(this);
     this.onContractSelected = this.onContractSelected.bind(this);
     this.onContractRate = this.onContractRate.bind(this);
-    this.update = this.update.bind(this);
   }
 
-  update() {
-    this.props.fetchDashboardData();
-  }
   componentDidMount() {
-    this.update();
     this.props.updateExchanges();
-    this.interval = setInterval(this.update, 10000);
   }
 
   componentWillUnmount() {
@@ -83,7 +77,7 @@ class Dashboard extends React.Component {
           />
           <AddApiKey/>
           <ApiKeyInfo
-            apiKey={this.state.selectedApiKey}
+            apiKey={null}
             isOwnKey={isOwnKey}
             exchanges={this.props.exchanges}
             onKeyUpdateClick={this.props.onKeyUpdateClick}

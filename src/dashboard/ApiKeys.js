@@ -118,10 +118,12 @@ class ApiKeys extends React.Component {
         minWidth: 24,
         className: 'table_col_delete',
         Cell: row => {
-          const canDeleteKey = row.original.state === 'FREE';
+          const canDeleteKey = true
           const onClick = canDeleteKey ? e => {
             e.stopPropagation();
-            this.props.onKeyDeleteClick(row.original);
+            if (window.confirm('You want to delete this key?')) {
+              this.props.onKeyDeleteClick(row.original);
+            }
           } : null;
           const className = classNames('delete_key_button', {can_delete_key: canDeleteKey});
           return (<div className={className} onClick={onClick}></div>);

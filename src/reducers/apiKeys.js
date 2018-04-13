@@ -1,5 +1,5 @@
-import { DELETE_API_KEY, ADD_API_KEY, UPDATE_API_KEY, UPDATE_API_KEY_BALANCE, GET_API_KEYS } from '../actions/apiKeys';
-import { UPDATE_DASHBOARD } from '../actions/dashboard';
+import { DELETE_API_KEY, ADD_API_KEY, UPDATE_API_KEY, UPDATE_API_KEY_BALANCE } from '../actions/apiKeys';
+import {UPDATE_DASHBOARD, UPDATE_KEYS} from '../actions/dashboard';
 import { SEND_OFFER, CANCEL_OFFER, REJECT_OFFER } from '../actions/offers';
 import { combineReducers } from 'redux';
 
@@ -12,14 +12,12 @@ function ownKeys(keys = [], action) {
         action.apiKey : k);
     case ADD_API_KEY:
       return keys.concat(action.apiKey);
-    case UPDATE_DASHBOARD:
-      return action.data.keys.ownKeys;
+    case UPDATE_KEYS:
+      return action.data;
     case CANCEL_OFFER:
       return keys.map(k => k._id === action.offer.keyId ? {...k, state: 'FREE'} : k);
     case SEND_OFFER:
       return keys.map(k => k._id === action.offer.keyId ? {...k, state: 'USED'} : k);
-    case GET_API_KEYS:
-      return action.apiKeys.own;
     default:
       return keys;
   }
