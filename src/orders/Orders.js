@@ -4,27 +4,14 @@ import HeaderStatus from '../terminal/HeaderStatus';
 import Controls from './Controls';
 import OrdersTable from './OrdersTable';
 import { connect } from 'react-redux';
-import { cancelOrder, getMyOrders, selectExchange, selectApiKey, getExchangeMarkets } from '../actions/terminal';
+import { cancelOrder, getOrders, selectExchange, selectApiKey, getExchangeMarkets } from '../actions/terminal';
 import { fetchDashboardData } from '../actions/dashboard';
 import { WEBSOCKET_CONNECT } from '../actions/websocket';
 
 class Orders extends React.Component {
 
-  constructor(props) {
-    super(props);
-  }
-
-  allowedApiKeys(apiKeys, contracts) {
-    const allowedOwnKeys = apiKeys.ownKeys.filter(k => k.state !== 'INVALID');
-    const allowedReceivedKeys = apiKeys.receivedKeys.filter(k => {
-      const contract = contracts.find(c => c.keyId === k._id);
-      return !!contract;
-    });
-    return allowedOwnKeys.concat(allowedReceivedKeys);
-  }
-
   render() {
-    const apiKeys = this.allowedApiKeys(this.props.apiKeys, this.props.contracts);
+    const apiKeys = this.props.apiKeys.ownKeys;
     return (
       <Container fluid className="orders">
         <Row>
@@ -42,11 +29,11 @@ class Orders extends React.Component {
                   apiKey={this.props.apiKey}
                   onApiKeySelect={this.props.selectApiKey}
                   exchange={this.props.exchange}
-                  onExchangeSElect={this.props.selectExchange}
+                  onExchangeSelect={this.props.selectExchange}
                 />
               </div>
               <OrdersTable
-                orders={{open: [], completed: []}}
+                orders={this.props.orders}
                 cancelOrder={this.props.cancelOrder}
               />
             </div>
@@ -59,6 +46,15 @@ class Orders extends React.Component {
     window.customize();
     this.props.connectToSocket();
     this.props.getExchangeMarkets(this.props.exchange);
+    if(this.props.apiKey) {
+      this.props.getOrders({keyId: this.props.apiKey._id});
+    }
+  }
+
+  componentWillReceiveProps(props) {
+    if(props.apiKey && (!this.props.apiKey || this.props.apiKey._id !== props.apiKey._id)) {
+      this.props.getOrders({keyId: props.apiKey._id});
+    }
   }
 
   componentWillUnmount() {
@@ -70,16 +66,18 @@ const OrdersContainer = connect(state => ({
   apiKeys: state.apiKeys,
   contracts: state.contracts.current,
   apiKey: state.terminal.apiKey,
-  orders: state.orders,
+  orders: state.terminal.orders,
   market: state.terminal.market,
   exchange: state.terminal.exchange,
   exchangeInfo: state.exchangesInfo[state.terminal.exchange],
 }), dispatch => ({
+  getOrders: params => dispatch(getOrders(params)),
   cancelOrder: order => dispatch(cancelOrder(order)),
   selectExchange: exchange => {
     dispatch(selectExchange(exchange));
     dispatch(getExchangeMarkets(exchange));
   },
+  selectApiKey: apiKey => dispatch(selectApiKey(apiKey)),
   getExchangeMarkets: exchange => dispatch(getExchangeMarkets(exchange)),
   connectToSocket: () => dispatch({
     type: WEBSOCKET_CONNECT,

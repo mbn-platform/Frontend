@@ -16,7 +16,7 @@ class OrdersTable extends React.Component {
     this.sortData = sortData.bind(this);
     this.onColumnSort = onColumnSort.bind(this);
     this.sortFunctions = {
-      estimated: (a, b) => (a.rate * a.quantity) - (b.rate * b.quantity),
+      estimated: (a, b) => (a.price * a.amount) - (b.price * b.amount),
     };   
   }
 
@@ -28,7 +28,7 @@ class OrdersTable extends React.Component {
   };
 
   render() {
-    const data = this.state.tab === TAB_OPEN_ORDERS ? this.props.orders.open : this.props.orders.completed;
+    const data = this.state.tab === TAB_OPEN_ORDERS ? this.props.orders.open : this.props.orders.closed;
     const sortedData = this.sortData(data);
     return (
       <div className="orders-main__block">
@@ -56,9 +56,9 @@ class OrdersTable extends React.Component {
                       <th onClick={() => this.onColumnSort('type')}><br className="show-mobile"/><span className={classNameForColumnHeader(this.state, 'type')}></span></th>
                       <th onClick={() => this.onColumnSort('dt')}>Opened <span className="hide-mobile">Date</span> <span className={classNameForColumnHeader(this.state, 'dt')}></span></th>
                       <th onClick={() => this.onColumnSort('market')}>Market <span className={classNameForColumnHeader(this.state, 'market')}></span></th>
-                      <th onClick={() => this.onColumnSort('rate')}>Price <span className={classNameForColumnHeader(this.state, 'rate')}></span></th>
+                      <th onClick={() => this.onColumnSort('price')}>Price <span className={classNameForColumnHeader(this.state, 'price')}></span></th>
                       <th onClick={() => this.onColumnSort('filled')}>Units Filed <span className={classNameForColumnHeader(this.state, 'filled')}></span></th>
-                      <th onClick={() => this.onColumnSort('quantity')}>Units Total <span className={classNameForColumnHeader(this.state, 'quantity')}></span></th>
+                      <th onClick={() => this.onColumnSort('amount')}>Units Total <span className={classNameForColumnHeader(this.state, 'amount')}></span></th>
                       <th onClick={() => this.onColumnSort('estimated')}><span className="hide-mobile">Estimated</span><span className="show-mobile">Est.</span> Total <span className={classNameForColumnHeader(this.state, 'estimated')}></span></th>
                       <th></th>
                     </tr>
@@ -84,9 +84,9 @@ class OrdersTable extends React.Component {
                       <th onClick={() => this.onColumnSort('type')}><br className="show-mobile"/><span className={classNameForColumnHeader(this.state, 'type')}></span></th>
                       <th onClick={() => this.onColumnSort('dt')}>Opened <span className="hide-mobile">Date</span> <span className={classNameForColumnHeader(this.state, 'dt')}></span></th>
                       <th onClick={() => this.onColumnSort('market')}>Market <span className={classNameForColumnHeader(this.state, 'market')}></span></th>
-                      <th onClick={() => this.onColumnSort('rate')}>Price <span className={classNameForColumnHeader(this.state, 'rate')}></span></th>
+                      <th onClick={() => this.onColumnSort('price')}>Price <span className={classNameForColumnHeader(this.state, 'price')}></span></th>
                       <th onClick={() => this.onColumnSort('filled')}>Units Filed <span className={classNameForColumnHeader(this.state, 'filled')}></span></th>
-                      <th onClick={() => this.onColumnSort('quantity')}>Units Total <span className={classNameForColumnHeader(this.state, 'quantity')}></span></th>
+                      <th onClick={() => this.onColumnSort('amount')}>Units Total <span className={classNameForColumnHeader(this.state, 'amount')}></span></th>
                       <th onClick={() => this.onColumnSort('estimated')}><span className="hide-mobile">Estimated</span><span className="show-mobile">Est.</span> Total <span className={classNameForColumnHeader(this.state, 'estimated')}></span></th>
                     </tr>
                   </thead>
@@ -107,7 +107,7 @@ class OrdersTable extends React.Component {
 }
 
 const OpenOrder = ({order, onOrderCancel}) => {
-  const [main, secondary] = order.market.split('-');
+  const [main, secondary] = order.symbol.split('-');
   return (
     <tr className={order.type}>
       <td className="text-capitalize">
@@ -115,17 +115,17 @@ const OpenOrder = ({order, onOrderCancel}) => {
       </td>
       <td>{formatDate(new Date(order.dt))}</td>
       <td>{secondary + '/' + main}</td>
-      <td>{defaultFormatValue(order.rate, main)}</td>
+      <td>{defaultFormatValue(order.price, main)}</td>
       <td>{order.filled}</td>
-      <td>{order.quantity}</td>
-      <td className="ellipsis-cell">{defaultFormatValue(order.rate * order.quantity, main)}</td>
+      <td>{order.amount}</td>
+      <td className="ellipsis-cell">{defaultFormatValue(order.price * order.amount, main)}</td>
       <td onClick={() => onOrderCancel(order)}><span className="remove"></span></td>
     </tr>
   );
 };
 
 const CompletedOrder = ({order}) => {
-  const [main, secondary] = order.market.split('-');
+  const [main, secondary] = order.symbol.split('-');
   return (
     <tr className={order.type}>
       <td className="text-capitalize">
@@ -133,10 +133,10 @@ const CompletedOrder = ({order}) => {
       </td>
       <td>{formatDate(new Date(order.dt))}</td>
       <td>{secondary + '/' + main}</td>
-      <td>{defaultFormatValue(order.rate, order.market.split('-')[0])}</td>
+      <td>{defaultFormatValue(order.price, main)}</td>
       <td>{order.filled}</td>
-      <td>{order.quantity}</td>
-      <td className="ellipsis-cell">{defaultFormatValue(order.rate * order.quantity)}</td>
+      <td>{order.amount}</td>
+      <td className="ellipsis-cell">{defaultFormatValue(order.price * order.amount)}</td>
     </tr>
   )
 };

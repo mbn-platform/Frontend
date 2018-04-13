@@ -9,7 +9,7 @@ class Controls extends React.Component {
         <ApiKeySelect
           container=".orders.container-fluid"
           apiKeys={this.props.apiKeys}
-          apiKey={this.props.apiKey}
+          selectedKey={this.props.apiKey}
           onApiKeySelect={this.props.onApiKeySelect}
         />
         <DropdownSelect
