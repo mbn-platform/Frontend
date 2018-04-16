@@ -43,7 +43,7 @@ function canLeaveFeedback(contract, userId) {
   if(contract.feedbacks.length === 2) {
     return false;
   } else {
-    const author = contract.feedbacks[0].author;
+    const author = contract.feedbacks[0].from._id;
     return author !== userId;
   }
 }

@@ -40,7 +40,7 @@ class LeaveComment extends React.Component {
       return;
     }
     const feedback = {
-      offerId: this.props.id,
+      contract: this.props.id,
       rate: this.state.rate,
       text: this.state.comment
     };

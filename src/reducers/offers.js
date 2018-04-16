@@ -1,20 +1,16 @@
 import { ACCEPT_OFFER, REJECT_OFFER, CANCEL_OFFER, SEND_OFFER, PAY_OFFER } from '../actions/offers';
+import { FETCH_CONTRACTS } from '../actions/contracts';
 import { makeId } from '../generic/util';
-import { UPDATE_DASHBOARD } from '../actions/dashboard';
 import { combineReducers } from 'redux';
-import { CONTRACT_STATE_INIT, CONTRACT_STATE_ACCEPTED } from '../constants';
 
 function incoming(state = [], action) {
   switch(action.type) {
     case REJECT_OFFER:
       return state.filter(o => o._id !== action.offer._id);
     case ACCEPT_OFFER:
-      return state.map(o => o._id === action.offer._id ? {...o, state: CONTRACT_STATE_ACCEPTED} : o);
-    case UPDATE_DASHBOARD:
-      return action.data.offers.incoming.filter(o =>
-        o.state === CONTRACT_STATE_INIT ||
-        o.state === CONTRACT_STATE_ACCEPTED
-      );
+      return state.map(o => o._id === action.offer._id ? action.offer : o);
+    case FETCH_CONTRACTS:
+      return action.offers.incoming;
     default:
       return state;
   }
@@ -22,11 +18,8 @@ function incoming(state = [], action) {
 
 function outgoing(state = [], action) {
   switch(action.type) {
-    case UPDATE_DASHBOARD:
-      return action.data.offers.outgoing.filter(o =>
-        o.state === CONTRACT_STATE_INIT ||
-        o.state === CONTRACT_STATE_ACCEPTED
-      );
+    case FETCH_CONTRACTS:
+      return action.offers.outgoing;
     case CANCEL_OFFER:
       return state.filter(offer => offer._id !== action.offer._id);
     case SEND_OFFER:
