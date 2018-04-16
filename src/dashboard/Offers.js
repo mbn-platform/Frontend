@@ -116,7 +116,7 @@ class Offers extends React.Component {
     return [{
       Header: SortHeader(this.state.selectedTab === TAB_INBOX ? 'From' : 'To'),
       id: 'name',
-      accessor: o => this.state.selectedTab == TAB_INBOX ? o.fromUser[0].name : o.toUser[0].name,
+      accessor: o => this.state.selectedTab == TAB_INBOX ? o.from.name : o.to.name,
       Cell: row => (<div className="contractor_link">@<Link className="table_col_value_a" to={'/' + row.value}>{row.value}</Link></div>),
       className: 'table_col_value'
     }, {
@@ -124,7 +124,7 @@ class Offers extends React.Component {
       Header: SortHeader('Time'),
       className: 'table_col_value',
       accessor: offer => {
-        const date = new Date(offer.date);
+        const date = new Date(offer.dt);
         return this.props.time - date.getTime();
       },
       Cell: OfferCell(this.onOfferPayClick, this.state.selectedTab)
@@ -133,15 +133,7 @@ class Offers extends React.Component {
       className: 'table_col_value',
       id: 'amount',
       accessor: offer => {
-        if(offer.state === CONTRACT_STATE_INIT) {
-          if(offer.balance === null) {
-            return null;
-          } else {
-            return formatBalance(offer.balance, offer.currency) + ' ' + offer.currency;
-          }
-        } else {
-          return formatBalance(offer.startBalance / 100000000, offer.currency) + ' ' + offer.currency;
-        }
+        return `${offer.contractSettings.amount} ${offer.contractSettings.currency}`;
       },
     }];
 

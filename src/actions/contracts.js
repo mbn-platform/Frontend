@@ -1,4 +1,5 @@
-import { apiPost } from '../generic/apiCall';
+import { apiPost, apiGet } from '../generic/apiCall';
+export const FETCH_CONTRACTS = 'FETCH_CONTRACTS';
 export const UPDATE_CONTRACTS = 'UPDATE_CONTRACTS';
 export const RATE_CONTRACT = 'RATE_CONTRACT';
 
@@ -6,6 +7,18 @@ export function updateContracts(contracts) {
   return {
     type: UPDATE_CONTRACTS,
     contracts: contracts
+  };
+}
+
+export function fetchContracts() {
+  return dispatch => {
+    apiGet('/contract')
+      .then(res => {
+        dispatch({
+          type: FETCH_CONTRACTS,
+          contracts: res.contracts,
+        });
+      });
   };
 }
 

@@ -1,4 +1,4 @@
-import { apiPost, apiDelete, ApiError } from '../generic/apiCall';
+import { apiPost, ApiError } from '../generic/apiCall';
 import defaultErrorHandler from '../generic/errorHandlers';
 import { ABI, ADDRESS, MAIN_NET_ADDRESS } from '../eth/MercatusFactory';
 
@@ -11,8 +11,8 @@ export const PAY_OFFER = 'PAY_OFFER';
 
 export function acceptOffer(offer) {
   return dispatch => {
-    apiPost(`/api/offer/${offer._id}/accept`)
-      .then(json => {
+    apiPost(`/contract/${offer._id}/accept`)
+      .then(offer => {
         dispatch({
           type: ACCEPT_OFFER,
           offer
@@ -23,8 +23,8 @@ export function acceptOffer(offer) {
 
 export function cancelOffer(offer) {
   return dispatch => {
-    apiDelete(`/api/offer/${offer._id}`)
-      .then(json => {
+    apiPost(`/contract/${offer._id}/cancel`)
+      .then(offer => {
         dispatch({
           type: CANCEL_OFFER,
           offer
@@ -35,15 +35,11 @@ export function cancelOffer(offer) {
 
 export function rejectOffer(offer) {
   return dispatch => {
-    apiPost(`/api/offer/${offer._id}/reject`)
-      .then(json => {
-        if(json.offerId) {
-          dispatch({
-            type: REJECT_OFFER,
-            offer
-          });
-        }
-      });
+    apiPost(`/contract/${offer._id}/reject`)
+      .then(offer => dispatch({
+        type: REJECT_OFFER,
+        offer
+      }));
   };
 }
 
