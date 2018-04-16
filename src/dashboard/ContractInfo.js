@@ -5,8 +5,8 @@ import classNames from 'classnames';
 class ContractInfo extends React.Component {
 
   render() {
-    const startDate = new Date(this.props.contract.start * 1000);
-    const expireDate = new Date(startDate.getTime() + this.props.contract.duration * 86400000);
+    const startDate = new Date(this.props.contract.dt);
+    const expireDate = new Date(startDate.getTime() + this.props.contract.contractSettings.duration * 86400000);
     const progress = (expireDate - this.props.time) / (expireDate - startDate) * 100;
     const currentBalance = this.props.contract.balance;
     const startBalance = this.props.contract.startBalance / 100000000;

@@ -1,4 +1,4 @@
-import {RATE_CONTRACT } from '../actions/contracts';
+import {RATE_CONTRACT, FETCH_CONTRACTS } from '../actions/contracts';
 import { PAY_OFFER } from '../actions/offers';
 import { makeId } from '../generic/util';
 import { UPDATE_DASHBOARD } from '../actions/dashboard';
@@ -47,11 +47,8 @@ export default function(state = {current: [], finished: []}, action) {
       console.log(state);
       return {...state, current: state.current.concat(contract)};
     }
-    case UPDATE_DASHBOARD: {
-      const offers = [...action.data.offers.incoming, ...action.data.offers.outgoing];
-      const current = offers.filter(o => o.state === CONTRACT_STATE_VERIFIED);
-      const finished = offers.filter(o => o.state === CONTRACT_STATE_HALTED || o.state === CONTRACT_STATE_FINISHED);
-      return {current, finished};
+    case FETCH_CONTRACTS: {
+      return action.contracts;
     }
     default:
       return state;
