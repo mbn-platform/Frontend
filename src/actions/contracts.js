@@ -24,7 +24,7 @@ export function fetchContracts() {
 
 export function rateContract(feedback) {
   return dispatch => {
-    apiPost('/api/feedback', null, feedback)
+    apiPost('/feedback', null, feedback)
       .then(json => {
         dispatch({
           type: RATE_CONTRACT,
