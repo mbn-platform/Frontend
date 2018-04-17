@@ -54,7 +54,7 @@ class Navigation extends React.Component {
       <Col xs="12" md="auto" className="d-block menu-panel">
         <Navbar expand="md"  >
           <NavbarBrand className="d-inline-block d-md-none" tag="div">
-            <a href="https://membrana.io">
+            <a target="_blank" href="https://membrana.io">
               <img src={LogoMobile} alt=""/>
             </a>
           </NavbarBrand>
@@ -147,7 +147,7 @@ class Navigation extends React.Component {
 
   getLogo() {
     return (
-      <a href="https://membrana.io" className="nav-link d-none d-md-flex">
+      <a target="_blank" href="https://membrana.io" className="nav-link d-none d-md-flex">
         <Container fluid className="h-100">
           <Row className="h-100">
             <Col xs="12" className="align-self-center">
