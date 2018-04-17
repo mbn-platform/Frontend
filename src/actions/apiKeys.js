@@ -1,11 +1,24 @@
 import { apiPut, apiDelete, apiGet, apiPost, ApiError } from '../generic/apiCall';
 import defaultErrorHandler from '../generic/errorHandlers';
 import { LOGGED_OUT } from '../actions/auth';
+import {UPDATE_KEYS} from './dashboard';
 export const DELETE_API_KEY = 'DELETE_API_KEY';
 export const ADD_API_KEY = 'ADD_API_KEY';
 export const UPDATE_API_KEY = 'UPDATE_API_KEY';
 export const UPDATE_API_KEY_BALANCE = 'UPDATE_API_KEY_BALANCE';
 
+export function fetchKeys() {
+  return dispatch => {
+    apiGet('/key')
+      .then(json => dispatch({
+        type: UPDATE_KEYS,
+        data: json.own
+      }))
+      .catch(err => {
+        defaultErrorHandler(err, dispatch);
+      });
+  };
+}
 
 export function deleteApiKey(key) {
   return dispatch => {
