@@ -50,7 +50,10 @@ export function addName(name) {
                 type: 'LOGGED_OUT',
               });
               break;
-            case ApiError.NAME_ALREADY_SET:
+            case ApiError.INVALID_PARAMS_SET:
+              alert('Invalid name');
+              return;
+            case ApiError.UNIQUE_VIOLATION:
               alert('You cannot use that name, please enter another one');
               break;
             default:
