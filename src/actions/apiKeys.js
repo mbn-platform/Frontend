@@ -1,22 +1,51 @@
 import { apiPut, apiDelete, apiGet, apiPost, ApiError } from '../generic/apiCall';
 import defaultErrorHandler from '../generic/errorHandlers';
 import { LOGGED_OUT } from '../actions/auth';
+import {UPDATE_KEYS} from './dashboard';
+import {SELECT_API_KEY} from './terminal';
 export const DELETE_API_KEY = 'DELETE_API_KEY';
 export const ADD_API_KEY = 'ADD_API_KEY';
 export const UPDATE_API_KEY = 'UPDATE_API_KEY';
 export const UPDATE_API_KEY_BALANCE = 'UPDATE_API_KEY_BALANCE';
 
+export function fetchKeys() {
+  return dispatch => {
+    apiGet('/key')
+      .then(json => dispatch({
+        type: UPDATE_KEYS,
+        data: json.own
+      }))
+      .catch(err => {
+        defaultErrorHandler(err, dispatch);
+      });
+  };
+}
 
 export function deleteApiKey(key) {
-  return dispatch => {
+  return (dispatch, getState) => {
     apiDelete('/key/' + key._id)
-      .then(() => dispatch({
-        type: DELETE_API_KEY,
-        apiKey: key,
-      }))
+      .then(() => {
+        const selectedKey = getState().terminal.apiKey;
+        if (selectedKey._id === key._id) {
+          const ownKeys = getState().apiKeys.ownKeys
+          let currentKeyIndex = ownKeys.findIndex(k => k._id == selectedKey._id);
+          let newSelectedKey = null;
+          if (ownKeys.length > 1) {
+            newSelectedKey = (currentKeyIndex == (ownKeys.length - 1) ? ownKeys[currentKeyIndex - 1] : ownKeys[currentKeyIndex + 1]);
+          }
+          dispatch({
+            type: SELECT_API_KEY,
+            key: newSelectedKey
+          });
+        }
+        dispatch({
+          type: DELETE_API_KEY,
+          apiKey: key,
+        });
+      })
       .catch(error => {
-        if(error.apiErrorCode) {
-          switch(error.apiErrorCode) {
+        if (error.apiErrorCode) {
+          switch (error.apiErrorCode) {
             case ApiError.FORBIDDEN: {
               dispatch({
                 type: LOGGED_OUT,
@@ -35,12 +64,21 @@ export function deleteApiKey(key) {
 
 
 export function addApiKey(key) {
-  return dispatch => {
+  return (dispatch, getState) => {
     apiPost('/key', null, key)
-      .then(json => dispatch({
-        type: ADD_API_KEY,
-        apiKey: json,
-      }))
+      .then(json => {
+        dispatch({
+          type: ADD_API_KEY,
+          apiKey: json,
+        });
+        const ownKeys = getState().apiKeys.ownKeys
+        if (ownKeys.length === 1) {
+          dispatch({
+            type: SELECT_API_KEY,
+            key: ownKeys[0]
+          });
+        }
+      })
       .catch(error => {
         if(error.apiErrorCode) {
           switch(error.apiErrorCode) {

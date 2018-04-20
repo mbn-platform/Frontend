@@ -15,16 +15,3 @@ export function fetchDashboardData() {
       });
   };
 }
-
-export function fetchKeys() {
-  return dispatch => {
-    apiGet('/key')
-      .then(json => dispatch({
-        type: UPDATE_KEYS,
-        data: json.own
-      }))
-      .catch(err => {
-        defaultErrorHandler(err, dispatch);
-      });
-  };
-}

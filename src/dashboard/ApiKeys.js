@@ -34,7 +34,7 @@ class ApiKeys extends React.Component {
   }
 
   onExchangeChange(e) {
-    const value = e ? e.name : 'All';
+    const value = e ? e : 'All';
     this.setState((state) => {
       const filtered = state.filtered.map(i => i.id === 'exchange' ? {id: 'exchange', value} : i);
       return {filtered};
