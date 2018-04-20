@@ -44,11 +44,11 @@ export function addApiKey(key) {
       .catch(error => {
         if(error.apiErrorCode) {
           switch(error.apiErrorCode) {
-            case ApiError.WRONG_API_KEY:
-              alert('Invalid API key');
+            case ApiError.INVALID_PARAMS_SET:
+              alert('Invalid key/secret pair');
               return;
-            case ApiError.DUPLICATE_KEY:
-              alert('This key is already used');
+            case ApiError.UNIQUE_VIOLATION:
+              alert('This key already in system');
               return;
             default:
               console.log('unhandled api error', error.apiErrorCode);
