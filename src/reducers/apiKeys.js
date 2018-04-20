@@ -11,7 +11,12 @@ function ownKeys(keys = [], action) {
       return keys.map(k => k._id === action.apiKey._id ?
         action.apiKey : k);
     case ADD_API_KEY:
-      return keys.concat(action.apiKey);
+      const key = keys.find(key => key._id === action.apiKey._id);
+      if(!key) {
+        return keys.concat(action.apiKey);
+      } else {
+        return keys;
+      }
     case UPDATE_KEYS:
       return action.data;
     case CANCEL_OFFER:

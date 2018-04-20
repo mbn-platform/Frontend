@@ -104,11 +104,16 @@ export default function(state = {
       break;
     }
     case PLACE_ORDER: {
-      const orders = {
-        open: state.orders.open.concat(action.order),
-        closed: state.orders.closed,
-      };
-      return {...state, orders};
+      const order = state.orders.open.find(o => o._id === action.order._id);
+      if(!order) {
+        const orders = {
+          open: state.orders.open.concat(action.order),
+          closed: state.orders.closed,
+        };
+        return {...state, orders};
+      } else {
+        return state;
+      }
     }
     case CANCEL_ORDER: {
       const order = state.orders.open.find(o => o._id === action.order._id);

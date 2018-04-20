@@ -21,7 +21,7 @@ const socketMiddleware = store => next => action => {
         });
         socket.on('trades', ({name, content}) => {
           const [exchange, trades, market] = name.split('.');
-          store.dispatch(updateHistory(exchange, market, content.trades))
+          store.dispatch(updateHistory(exchange, market, content.trades));
         });
         socket.on('rates', ({name, content} ) => {
           const [exchange] = name.split('.');
@@ -34,8 +34,11 @@ const socketMiddleware = store => next => action => {
         socket.on('balances', ({_id, content}) => {
           store.dispatch(updateKeyBalance(_id, content.balances));
         });
+        socket.on('action', action => {
+          store.dispatch(action);
+        });
       }
-      break;;
+      break;
     }
     case WEBSOCKET_TERMINAL: {
       if(socket) {
