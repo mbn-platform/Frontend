@@ -5,9 +5,20 @@ import { combineReducers } from 'redux';
 
 function incoming(state = [], action) {
   switch(action.type) {
+    case CANCEL_OFFER:
+      if(action.userId !== action.offer.to._id) {
+        return state;
+      }
+      return state.filter(offer => offer._id !== action.offer._id);
     case REJECT_OFFER:
+      if(action.userId !== action.offer.to._id) {
+        return state;
+      }
       return state.filter(o => o._id !== action.offer._id);
     case ACCEPT_OFFER:
+      if(action.userId !== action.offer.to._id) {
+        return state;
+      }
       return state.map(o => o._id === action.offer._id ? action.offer : o);
     case FETCH_CONTRACTS:
       return action.offers.incoming;
@@ -20,8 +31,21 @@ function outgoing(state = [], action) {
   switch(action.type) {
     case FETCH_CONTRACTS:
       return action.offers.outgoing;
+    case REJECT_OFFER:
+      if(action.userId !== action.offer.from._id) {
+        return state;
+      }
+      return state.filter(o => o._id !== action.offer._id);
     case CANCEL_OFFER:
+      if(action.userId !== action.offer.from._id) {
+        return state;
+      }
       return state.filter(offer => offer._id !== action.offer._id);
+    case ACCEPT_OFFER:
+      if(action.userId !== action.offer.from._id) {
+        return state;
+      }
+      return state.map(o => o._id === action.offer._id ? action.offer : o);
     case SEND_OFFER:
       const offer = action.offer;
       offer._id = makeId();
