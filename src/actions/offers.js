@@ -45,7 +45,7 @@ export function rejectOffer(offer) {
 
 export function sendOffer(offer) {
   return dispatch => {
-    apiPost('/api/offer', null, offer)
+    apiPost('/contract', null, offer)
       .then(json => {
         dispatch({
           type: SEND_OFFER,

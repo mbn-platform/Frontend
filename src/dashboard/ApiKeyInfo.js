@@ -252,7 +252,7 @@ class ApiKeyInfo extends React.Component {
   }
 }
 
-const StatusCell = (onClick, changedCurrencies) => rowInfo => {
+export const StatusCell = (onClick, changedCurrencies) => rowInfo => {
   let selected;
   if(changedCurrencies[rowInfo.original.name]) {
     selected = !rowInfo.value;
@@ -263,7 +263,7 @@ const StatusCell = (onClick, changedCurrencies) => rowInfo => {
   return (<div data-currency={rowInfo.original.name} data-selected={rowInfo.value} onClick={onClick} className={className}/>);
 };
 
-const StatusHeader = (onSelectAllClicked, selectedAll) => {
+export const StatusHeader = (onSelectAllClicked, selectedAll) => {
   return (
     <div className="table_header_wrapper">
       <span className="table_header">Status</span>
