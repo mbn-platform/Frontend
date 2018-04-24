@@ -52,7 +52,12 @@ export function getInitialState() {
       contractSettings: {},
       feedbacks: []
     },
-    exchangesInfo: {},
+    exchangesInfo: {
+      bittrex: {
+        rates: {},
+        currencies: []
+      }
+    },
     selectedNet: null
   };
 }
