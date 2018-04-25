@@ -64,8 +64,7 @@ class ApiKeys extends React.Component {
     return (
       <div className="api_keys_table table">
         <div className="table_title_wrapper clearfix">
-          <div className="table_title">API keys</div>
-          <SegmentedControl selectedIndex={this.state.selectedTab} segments={['MINE', 'OTHER']} onChange={this.onTabChange}/>
+          <div className="table_title">Funds</div>
         </div>
         {this.renderContent()}
       </div>
@@ -134,7 +133,7 @@ class ApiKeys extends React.Component {
   }
   renderContent() {
     const { apiKeys } = this.props;
-    const data = this.state.selectedTab === TAB_OWN_KEYS ? apiKeys.ownKeys.filter(key => key.state !== 'INVALID') : apiKeys.receivedKeys;
+    const data = apiKeys.ownKeys
     return (
       <div>
         <Desktop>

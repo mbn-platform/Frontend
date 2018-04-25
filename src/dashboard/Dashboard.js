@@ -65,6 +65,19 @@ class Dashboard extends React.Component {
     }
     return (
       <div className="dashboard_wrapper clearfix" >
+        <div className="table_wrapper requests_table_wrapper" style={{display: (this.props.offers.outgoing.length == 0 && this.props.offers.incoming.length == 0) ? 'none':'block'}}>
+          <Offers
+            time={this.props.time}
+            onOfferCanceled={this.props.onOfferCanceled}
+            onOfferRejected={this.props.onOfferRejected}
+            onOfferAccepted={this.props.onOfferAccepted}
+            onOfferPay={this.props.onOfferPay}
+
+            offers={this.props.offers}
+            selectedOffer={this.state.selectedOffer}
+            onOfferSelected={this.onOfferSelected}
+          />
+        </div>
         <div className="keys_tables_wrapper table_wrapper">
           <ApiKeys
             userId={this.props.userId}
@@ -83,19 +96,6 @@ class Dashboard extends React.Component {
             onKeyUpdateClick={this.props.onKeyUpdateClick}
           />
 
-        </div>
-        <div className="table_wrapper requests_table_wrapper">
-          <Offers
-            time={this.props.time}
-            onOfferCanceled={this.props.onOfferCanceled}
-            onOfferRejected={this.props.onOfferRejected}
-            onOfferAccepted={this.props.onOfferAccepted}
-            onOfferPay={this.props.onOfferPay}
-
-            offers={this.props.offers}
-            selectedOffer={this.state.selectedOffer}
-            onOfferSelected={this.onOfferSelected}
-          />
         </div>
         <div className="table_wrapper contracts_table_wrapper">
           <Contracts

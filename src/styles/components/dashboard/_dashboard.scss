@@ -238,7 +238,7 @@
     }
     .keys_tables_wrapper
     {
-      width: 60%;
+      width: 100%;
     }
 
     .keys_tables_wrapper .ReactTable .key_name_text_td {
@@ -246,7 +246,8 @@
     }
     .requests_table_wrapper
     {
-      width: 40%;
+      width: 100%;
+      max-width: 600px;
     }
 
     .contracts_table_wrapper
