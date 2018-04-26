@@ -78,7 +78,7 @@ class Funds extends React.Component {
       {
         Header: SearchHeader('Key name', nameFilter, this.onFilter),
         className: 'table_col_value',
-        Cell: row => (<div className="key_name_text_td">{row.value || (row.original.from === this.props.userId ? `Trusted to ${row.original.to}` : `${row.original.from} trusted to me`)}</div>),
+        Cell: row => (<div className="key_name_text_td">{row.value || (row.original.from._id === this.props.userId ? `Trusted to ${row.original.to.name}` : `${row.original.from.name} trusted to me`)}</div>),
         minWidth: 100,
         accessor: 'name'
       }, {

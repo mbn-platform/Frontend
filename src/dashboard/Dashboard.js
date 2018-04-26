@@ -63,23 +63,7 @@ class Dashboard extends React.Component {
     } else {
       isOwnKey = false;
     }
-    const fakeContracts = [
-      {
-        _id: '11111',
-        from: this.props.userId,
-        to: 'John',
-        exchange: 'bittrex',
-        balances: JSON.parse('[ { "available" : 5.93108937, "total" : 12.93108937, "inContracts" : 0, "name" : "ADA" }, { "available" : null, "total" : 0, "inContracts" : 0, "name" : "BCC" }, { "available" : 0, "total" : 0, "inContracts" : 0, "name" : "BTC" }, { "available" : 0, "total" : 0, "inContracts" : 0, "name" : "ETH" }, { "available" : 0, "total" : 0, "inContracts" : 0, "name" : "NEO" }, { "available" : 0, "total" : 0, "inContracts" : 0, "name" : "RDD" }, { "available" : 19.51264486, "total" : 19.51264486, "inContracts" : 0, "name" : "USDT" }, { "available" : 0, "total" : 0, "inContracts" : 0, "name" : "XRP" } ]'),
-      },
-      {
-        _id: '22222',
-        from: 'Kate',
-        to: this.props.userId,
-        exchange: 'bittrex',
-        balances: JSON.parse('[ { "available" : 10.93108937, "total" : 14.93108937, "inContracts" : 0, "name" : "ADA" }, { "available" : null, "total" : 0, "inContracts" : 0, "name" : "BCC" }, { "available" : 0, "total" : 0, "inContracts" : 0, "name" : "BTC" }, { "available" : 0, "total" : 0, "inContracts" : 0, "name" : "ETH" }, { "available" : 0, "total" : 0, "inContracts" : 0, "name" : "NEO" }, { "available" : 0, "total" : 0, "inContracts" : 0, "name" : "RDD" }, { "available" : 19.51264486, "total" : 19.51264486, "inContracts" : 0, "name" : "USDT" }, { "available" : 0, "total" : 0, "inContracts" : 0, "name" : "XRP" } ]'),
-      },
-    ];
-    const funds = this.props.apiKeys.ownKeys.concat(this.props.contracts.current, fakeContracts)
+    const funds = this.props.apiKeys.ownKeys.concat(this.props.contracts.current)
     return (
       <div className="dashboard_wrapper clearfix" >
         <div className="table_wrapper requests_table_wrapper" style={{display: (this.props.offers.outgoing.length == 0 && this.props.offers.incoming.length == 0) ? 'none':'block'}}>

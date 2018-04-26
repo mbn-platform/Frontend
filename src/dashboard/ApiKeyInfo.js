@@ -225,9 +225,6 @@ class ApiKeyInfo extends React.Component {
     } else {
       data = [];
     }
-    if (this.props.apiKey && data.length === 0) {
-      data = JSON.parse('[ { "available" : 10.93108937, "total" : 18.93108937, "inContracts" : 0, "name" : "ADA" }, { "available" : null, "total" : 0, "inContracts" : 0, "name" : "BCC" }, { "available" : 0, "total" : 0, "inContracts" : 0, "name" : "BTC" }, { "available" : 0, "total" : 0, "inContracts" : 0, "name" : "ETH" }, { "available" : 0, "total" : 0, "inContracts" : 0, "name" : "NEO" }, { "available" : 0, "total" : 0, "inContracts" : 0, "name" : "RDD" }, { "available" : 19.51264486, "total" : 19.51264486, "inContracts" : 0, "name" : "USDT" }, { "available" : 0, "total" : 0, "inContracts" : 0, "name" : "XRP" } ]');
-    }
     return (
       <div className="api_key_currencies_table table">
         <div className="table_title_wrapper clearfix">
