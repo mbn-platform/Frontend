@@ -53,10 +53,7 @@ export function getInitialState() {
       feedbacks: []
     },
     exchangesInfo: {
-      bittrex: {
-        rates: {},
-        currencies: []
-      }
+
     },
     selectedNet: null
   };

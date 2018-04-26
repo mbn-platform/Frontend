@@ -292,6 +292,7 @@ class SendRequestBlock extends React.Component {
         );
       }
       case SEND_REQUEST_BLOCK_SELECT_CURRENCIES: {
+        const currencies = this.props.exchangesInfo[this.state.selectedApiKey.exchange] ? this.props.exchangesInfo[this.state.selectedApiKey.exchange].currencies : [];
         return (
           <div className="row-fluid choose-api-block">
             <div className="row justify-content-center choose-title">
@@ -301,7 +302,7 @@ class SendRequestBlock extends React.Component {
               <div className="col-md-12 col-lg-12 col-xl-12 separate-second-block">
                 <div className="separate-line d-none d-md-block"></div>
               </div>
-              {this.renderCurrencyTable(this.props.exchangesInfo[this.state.selectedApiKey.exchange].currencies)}
+              {this.renderCurrencyTable(currencies)}
               <div className="col-12 d-flex align-items-center justify-content-between choose-btn-group">
                 <button onClick={() => this.setState({visibleBlock:SEND_REQUEST_BLOCK_ENTER_AMOUNT})} type="button" className="cancel-btn btn btn-secondary">
                   BACK</button>
