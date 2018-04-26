@@ -16,7 +16,7 @@ class ApiKeyInfo extends React.Component {
       changed: false,
       changedCurrencies: {},
       filtered: [{id: 'currency', value: ''},],
-      allSelected: this.isAllSelected(props.apiKey, {}),
+      allSelected: false,
     };
     this.onCurrencyChange = this.onCurrencyChange.bind(this);
     this.onCurrencyStateClicked = this.onCurrencyStateClicked.bind(this);
@@ -38,14 +38,6 @@ class ApiKeyInfo extends React.Component {
   }
 
   isAllSelected(key, changed) {
-    if(!key) {
-      return false;
-    }
-    for(let c of key.currencies) {
-      if(!c.enabled && !changed[c.name]) {
-        return false;
-      }
-    }
     return true;
   }
 
@@ -157,31 +149,42 @@ class ApiKeyInfo extends React.Component {
         accessor: 'name',
         headerClassName: 'filter_align_center',
         className: 'table_col_value'
-      }, {
-        id: 'selected',
-        Header: StatusHeader(this.onSelectAllClicked, this.state.allSelected),
-        Cell: StatusCell(this.onCurrencyStateClicked, this.state.changedCurrencies),
-        accessor: 'enabled',
-        headerClassName: 'selected_header',
-        maxWidth: 50,
-        filterMethod: (filter, row) => {
-          if(filter.value === 'all') {
-            return true;
-          } else {
-            return filter.value === row.enabled;
-          }
-        }
-      }, {
-        Header: (<div className="table_header_wrapper last_header_column_currencies">
-          <span className="table_header">Balance</span>
+      },
+      {
+        Header: (<div className="table_header_wrapper">
+          <span className="table_header">Total</span>
           <div className="sort_icon_wrapper position_down_icon_wrapper">
             <div className="green_arrow green_arrow_bottom" ></div>
           </div>
         </div>),
-        Cell: rowInfo => rowInfo.original.enabled || this.props.isOwnKey ? rowInfo.value || 0 : '',
+        Cell: rowInfo => rowInfo.value !== null ? rowInfo.value : ' - ',
         className: 'table_col_value',
         minWidth: 110,
-        accessor: 'totalBalance'
+        accessor: 'total'
+      },
+      {
+        Header: (<div className="table_header_wrapper">
+          <span className="table_header">Available</span>
+          <div className="sort_icon_wrapper position_down_icon_wrapper">
+            <div className="green_arrow green_arrow_bottom" ></div>
+          </div>
+        </div>),
+        Cell: rowInfo => rowInfo.value !== null ? rowInfo.value : ' - ',
+        className: 'table_col_value',
+        minWidth: 110,
+        accessor: 'available'
+      },
+      {
+        Header: (<div className="table_header_wrapper">
+          <span className="table_header">Trusted</span>
+          <div className="sort_icon_wrapper position_down_icon_wrapper">
+            <div className="green_arrow green_arrow_bottom" ></div>
+          </div>
+        </div>),
+        Cell: rowInfo => rowInfo.original.available !== null ? (((rowInfo.value - rowInfo.original.available) > 0) && (rowInfo.value - rowInfo.original.available).toFixed(8)) || 0  : ' - ',
+        className: 'table_col_value',
+        minWidth: 110,
+        accessor: 'total'
       }
     ];
   }
@@ -218,9 +221,12 @@ class ApiKeyInfo extends React.Component {
   render() {
     let data;
     if(this.props.apiKey) {
-      data = this.props.apiKey.currencies;
+      data = this.props.apiKey.balances;
     } else {
       data = [];
+    }
+    if (this.props.apiKey && data.length === 0) {
+      data = JSON.parse('[ { "available" : 10.93108937, "total" : 18.93108937, "inContracts" : 0, "name" : "ADA" }, { "available" : null, "total" : 0, "inContracts" : 0, "name" : "BCC" }, { "available" : 0, "total" : 0, "inContracts" : 0, "name" : "BTC" }, { "available" : 0, "total" : 0, "inContracts" : 0, "name" : "ETH" }, { "available" : 0, "total" : 0, "inContracts" : 0, "name" : "NEO" }, { "available" : 0, "total" : 0, "inContracts" : 0, "name" : "RDD" }, { "available" : 19.51264486, "total" : 19.51264486, "inContracts" : 0, "name" : "USDT" }, { "available" : 0, "total" : 0, "inContracts" : 0, "name" : "XRP" } ]');
     }
     return (
       <div className="api_key_currencies_table table">

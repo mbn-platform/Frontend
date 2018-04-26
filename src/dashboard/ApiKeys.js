@@ -12,7 +12,7 @@ import Pagination from '../generic/Pagination';
 const TAB_OWN_KEYS = 0;
 const TAB_RECEIVED_KEYS = 1;
 
-class ApiKeys extends React.Component {
+class Funds extends React.Component {
 
   constructor(props) {
     super(props);
@@ -78,7 +78,7 @@ class ApiKeys extends React.Component {
       {
         Header: SearchHeader('Key name', nameFilter, this.onFilter),
         className: 'table_col_value',
-        Cell: row => (<div className="key_name_text_td">{row.value}</div>),
+        Cell: row => (<div className="key_name_text_td">{row.value || (row.original.from === this.props.userId ? `Trusted to ${row.original.to}` : `${row.original.from} trusted to me`)}</div>),
         minWidth: 100,
         accessor: 'name'
       }, {
@@ -132,8 +132,8 @@ class ApiKeys extends React.Component {
     ];
   }
   renderContent() {
-    const { apiKeys } = this.props;
-    const data = apiKeys.ownKeys
+    const { funds } = this.props;
+    const data = funds;
     return (
       <div>
         <Desktop>
@@ -184,12 +184,12 @@ const ExchangeHeader = (exchanges, value, onChange) => {
   );
 };
 
-ApiKeys.propTypes = {
+Funds.propTypes = {
   userId: PropTypes.string.isRequired,
   onKeySelected: PropTypes.func.isRequired,
   onKeyDeleteClick: PropTypes.func.isRequired,
-  apiKeys: PropTypes.object.isRequired,
+  funds: PropTypes.array.isRequired,
   selectedKey: PropTypes.object
 };
 
-export default ApiKeys;
+export default Funds;
