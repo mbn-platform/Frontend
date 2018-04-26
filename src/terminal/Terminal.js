@@ -71,7 +71,6 @@ class Terminal extends React.Component {
                       ticker={this.props.ticker || {}}
                       placeOrder={this.props.placeOrder}
                       apiKey={this.props.apiKey}
-                      balance={this.props.apiKey ? this.props.apiKeys.balances[this.props.apiKey._id] : null}
                       market={this.props.market}
                     />
                     <MediaQuery query="(min-width: 576px)">

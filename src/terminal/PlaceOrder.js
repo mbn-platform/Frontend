@@ -226,7 +226,6 @@ class PlaceOrder extends React.Component {
           </div>
           <Balances
             apiKey={this.props.apiKey}
-            balance={this.props.balance}
             main={this.state.main}
             onMainClick={e => this.setAmount(e.target.innerHTML)}
             secondary={this.state.secondary}
@@ -243,14 +242,15 @@ PlaceOrder.propTypes = {
   market: PropTypes.string.isRequired,
   markets: PropTypes.array.isRequired,
   placeOrder: PropTypes.func.isRequired,
-}
+};
 
-const Balances = ({apiKey, balance, main, secondary, onMainClick, onSecondaryClick}) => {
+const Balances = ({apiKey, main, secondary, onMainClick, onSecondaryClick}) => {
   let value1, value2;
-  if(balance) {
-    value1 = balance[main];
+  if(apiKey) {
+    const balances = apiKey.balances;
+    value1 = balances.find(b => b.name === main);
     value1 = value1 && value1.available || 0;
-    value2 = balance[secondary];
+    value2 = balances.find(b => b.name === secondary);
     value2 = value2 && value2.available || 0;
   }
   return (
