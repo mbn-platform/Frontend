@@ -63,7 +63,6 @@ class Dashboard extends React.Component {
     } else {
       isOwnKey = false;
     }
-    const funds = this.props.apiKeys.ownKeys.concat(this.props.contracts.current)
     return (
       <div className="dashboard_wrapper clearfix" >
         <div className="table_wrapper requests_table_wrapper" style={{display: (this.props.offers.outgoing.length == 0 && this.props.offers.incoming.length == 0) ? 'none':'block'}}>
@@ -82,7 +81,8 @@ class Dashboard extends React.Component {
         <div className="keys_tables_wrapper table_wrapper">
           <Funds
             userId={this.props.userId}
-            funds={funds}
+            apiKeys={this.props.apiKeys.ownKeys}
+            contracts={this.props.contracts.current}
             selectedApiKey={this.state.selectedApiKey}
             onKeySelected={this.onKeySelected}
             onKeyDeleteClick={this.props.onKeyDeleteClick}

@@ -132,8 +132,8 @@ class Funds extends React.Component {
     ];
   }
   renderContent() {
-    const { funds } = this.props;
-    const data = funds;
+    const { apiKeys, contracts } = this.props;
+    const data = apiKeys.concat(contracts);
     return (
       <div>
         <Desktop>
@@ -188,7 +188,8 @@ Funds.propTypes = {
   userId: PropTypes.string.isRequired,
   onKeySelected: PropTypes.func.isRequired,
   onKeyDeleteClick: PropTypes.func.isRequired,
-  funds: PropTypes.array.isRequired,
+  apiKeys: PropTypes.array.isRequired,
+  contracts: PropTypes.array.isRequired,
   selectedKey: PropTypes.object
 };
 
