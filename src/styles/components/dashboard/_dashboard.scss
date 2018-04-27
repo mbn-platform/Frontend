@@ -1283,8 +1283,11 @@
         background-color: #17191b;    
       }  
 
-      .requests_table_wrapper .ReactTable {
-        margin-bottom: 12px;
+      .requests_table_wrapper {
+        max-width: 100%;
+        .ReactTable {
+           margin-bottom: 12px;
+        }
       }
       .contracts_table .table_title_wrapper {
         padding-top: 23px;
