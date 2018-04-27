@@ -117,7 +117,7 @@ class Funds extends React.Component {
         minWidth: 24,
         className: 'table_col_delete',
         Cell: row => {
-          const canDeleteKey = true
+          const canDeleteKey = row.original.name !== undefined
           const onClick = canDeleteKey ? e => {
             e.stopPropagation();
             if (window.confirm('You want to delete this key?')) {
