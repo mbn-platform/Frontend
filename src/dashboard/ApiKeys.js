@@ -17,10 +17,8 @@ class Funds extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedTab: 0,
       filtered: [{id: 'name', value: ''}, {id: 'exchange', value: 'All'}]
     };
-    this.onTabChange = this.onTabChange.bind(this);
     this.onFilter = this.onFilter.bind(this);
     this.onExchangeChange = this.onExchangeChange.bind(this);
   }
@@ -48,16 +46,6 @@ class Funds extends React.Component {
     if(this.props.selectedApiKey && this.props.selectedApiKey._id === nextProps.selectedApiKey._id) {
       return;
     }
-    const isOwnKey = nextProps.selectedApiKey.owner === nextProps.userId;
-    if(isOwnKey) {
-      this.setState({selectedTab: TAB_OWN_KEYS});
-    } else {
-      this.setState({selectedTab: TAB_RECEIVED_KEYS});
-    }
-  }
-
-  onTabChange(index) {
-    this.setState({selectedTab: index});
   }
 
   render() {
