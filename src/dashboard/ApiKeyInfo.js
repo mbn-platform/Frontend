@@ -157,7 +157,7 @@ class ApiKeyInfo extends React.Component {
             <div className="green_arrow green_arrow_bottom" ></div>
           </div>
         </div>),
-        Cell: rowInfo => rowInfo.value !== null ? rowInfo.value : ' - ',
+        Cell: rowInfo => rowInfo.value >= 0 ? rowInfo.value : ' - ',
         className: 'table_col_value',
         minWidth: 110,
         accessor: 'total'
@@ -169,7 +169,7 @@ class ApiKeyInfo extends React.Component {
             <div className="green_arrow green_arrow_bottom" ></div>
           </div>
         </div>),
-        Cell: rowInfo => rowInfo.value !== null ? rowInfo.value : ' - ',
+        Cell: rowInfo => rowInfo.value >= 0 ? rowInfo.value : ' - ',
         className: 'table_col_value',
         minWidth: 110,
         accessor: 'available'
@@ -181,10 +181,10 @@ class ApiKeyInfo extends React.Component {
             <div className="green_arrow green_arrow_bottom" ></div>
           </div>
         </div>),
-        Cell: rowInfo => rowInfo.original.available !== null ? (((rowInfo.value - rowInfo.original.available) > 0) && (rowInfo.value - rowInfo.original.available).toFixed(8)) || 0  : ' - ',
+        Cell: rowInfo => rowInfo.value >= 0 ? rowInfo.value : ' ',
         className: 'table_col_value',
         minWidth: 110,
-        accessor: 'total'
+        accessor: 'inContracts'
       }
     ];
   }
