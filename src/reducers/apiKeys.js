@@ -18,6 +18,23 @@ function ownKeys(keys = [], action) {
       }
     case UPDATE_KEYS:
       return action.data;
+    case UPDATE_API_KEY_BALANCE: {
+      const key = keys.find(k => k._id === action._id);
+      if(!key) {
+        return keys;
+      }
+      const balances = action.balances;
+      const updatedBalances = key.balances.map(b => {
+        const updatedBalance = balances[b.name];
+        if(updatedBalance) {
+          return {...b, ...updatedBalance};
+        } else {
+          return b;
+        }
+      });
+      key.balances = updatedBalances;
+      return [...keys];
+    }
     default:
       return keys;
   }
