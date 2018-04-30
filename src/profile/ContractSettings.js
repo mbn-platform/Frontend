@@ -263,8 +263,8 @@ const SettingAmount = ({isEditing, value, dimension, editValue, onChange, tabInd
   </div>
 );
 
-const EditAmountEntry = ({placeholder, value, onChange, tabIndex, dimension}) => (
-  <div className="amount-input-block input-block">
+export const EditAmountEntry = ({placeholder, value, onChange, tabIndex, dimension}) => (
+  <div className="amount-input-block input-block membrana-input-block">
     <div className="input-group">
       <input
         tabIndex={tabIndex}

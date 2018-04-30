@@ -46,8 +46,8 @@ class SelectApiKey extends React.Component {
           {this.renderTable()}
           <div className="col-12 d-flex align-items-center justify-content-between choose-btn-group">
             <button onClick={this.props.onCancelClick} type="button" className="cancel-btn btn btn-secondary">CANCEL</button>
-            <button onClick={this.props.onSendOfferClick} type="button" className="send-request-btn btn btn-secondary active">
-              SEND REQUEST</button>
+            <button onClick={this.props.onNextClick} type="button" disabled={!this.props.selectedApiKey} className="send-request-btn btn btn-secondary active">
+              NEXT</button>
           </div>
         </div>
       </div>
@@ -154,7 +154,7 @@ const ExchangeHeader = (exchanges, value, onChange) => {
 SelectApiKey.propTypes = {
   onApiKeySelected: PropTypes.func.isRequired,
   onCancelClick: PropTypes.func.isRequired,
-  onSendOfferClick: PropTypes.func.isRequired,
+  onNextClick: PropTypes.func.isRequired,
   exchanges: PropTypes.array.isRequired,
   apiKeys: PropTypes.array.isRequired,
   selectedApiKey: PropTypes.object

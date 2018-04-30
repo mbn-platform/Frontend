@@ -48,9 +48,6 @@ function outgoing(state = [], action) {
       return state.map(o => o._id === action.offer._id ? action.offer : o);
     case SEND_OFFER:
       const offer = action.offer;
-      offer._id = makeId();
-      offer.date = (new Date()).toISOString();
-      offer.fromUser = [{name: 'me'}];
       return state.concat(offer);
     case PAY_OFFER:
       return state.filter(offer => offer._id !== action.offer._id);

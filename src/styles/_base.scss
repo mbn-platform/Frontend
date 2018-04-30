@@ -446,6 +446,57 @@ input[type=number]::-webkit-outer-spin-button {
 	}
 }
 
+.membrana-input-block {
+	.input-group {
+		letter-spacing: 1px;
+		height: 27px;
+		margin-top: 10px;
+		.form-control {
+			border-radius: 5px;
+		}
+		input {
+			background-color: #1f2225;
+			border-color: #494d4d;
+			width: 109px;
+			color: #727274;
+			line-height: 1;
+			padding: 1px 13px;
+			font-size: 1.6em;
+			&::-webkit-input-placeholder {
+				color: #505153;
+			}
+			&::placeholder {
+				color: #505153;
+			}
+		}
+
+
+		.input-group-btn {
+			font-size: 10px;
+			.btn {
+				text-transform: uppercase;
+				height: 27px;
+				letter-spacing: 1px;
+				background-color: transparent;
+				border-color: #494d4d;
+				color: #505153;
+				width: 60px;
+				border-radius: 5px;
+				font-size: 1.2em;
+				padding-top: 5px;
+			}
+		}
+	}
+	.input-group .form-control:not(:last-child), .input-group-addon:not(:last-child), .input-group-btn:not(:last-child) > .btn, .input-group-btn:not(:last-child) > .btn-group > .btn, .input-group-btn:not(:last-child) > .dropdown-toggle, .input-group-btn.only-button > .btn:not(:last-child), .input-group-btn:not(:first-child) > .btn:not(:last-child):not(.dropdown-toggle), .input-group-btn:not(:first-child) > .btn-group:not(:last-child) > .btn {
+		border-top-right-radius: 0 !important;
+		border-bottom-right-radius: 0 !important;
+	}
+	.input-group .form-control:not(:first-child), .input-group-addon:not(:first-child), .input-group-btn:not(:first-child) > .btn, .input-group-btn:not(:first-child) > .btn-group > .btn, .input-group-btn:not(:first-child) > .dropdown-toggle, .input-group-btn.only-button > .btn:not(:first-child), .input-group-btn:not(:last-child) > .btn:not(:first-child), .input-group-btn:not(:last-child) > .btn-group:not(:first-child) > .btn {
+		border-top-left-radius: 0 !important;
+		border-bottom-left-radius: 0 !important;
+	}
+}
+
 /*
 	ohO_oho: Tablet and up (>576px)
  */

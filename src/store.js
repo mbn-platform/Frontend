@@ -52,7 +52,9 @@ export function getInitialState() {
       contractSettings: {},
       feedbacks: []
     },
-    exchangesInfo: {},
+    exchangesInfo: {
+
+    },
     selectedNet: null
   };
 }

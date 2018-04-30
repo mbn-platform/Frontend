@@ -1,7 +1,12 @@
 import { EXCHANGE_MARKETS, EXCHANGE_RATES, GET_EXCHANGE_MARKETS, UPDATE_MARKET_SUMMARIES } from '../actions/terminal';
 export const EXCHANGE_BITTREX = 'bittrex';
+export const EXCHANGE_CURRENCIES = 'EXCHANGE_CURRENCIES';
 export default function(exchangesInfo = {}, action) {
   switch(action.type) {
+    case EXCHANGE_CURRENCIES: {
+      const currencies = action.currencies;
+      return {...exchangesInfo, [action.exchange]: {...exchangesInfo[action.exchange], currencies}};
+    }
     case EXCHANGE_MARKETS: {
       const exchange = {...exchangesInfo[action.exchange]};
       action.markets.forEach(m => {

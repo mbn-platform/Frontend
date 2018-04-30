@@ -7,19 +7,47 @@ import { connect } from 'react-redux';
 import { sendOffer } from '../actions/offers';
 import { clearRequest } from '../actions/request';
 import { Redirect } from 'react-router-dom';
+import {EditAmountEntry} from './ContractSettings';
+import SearchHeader from '../generic/SearchHeader';
+import { StatusHeader, StatusCell } from '../dashboard/ApiKeyInfo';
+import Pagination from '../generic/Pagination';
+import ReactTable from '../generic/SelectableReactTable';
+import { Desktop, Mobile } from '../generic/MediaQuery';
+import {getExchangeCurrencies} from '../actions/exchanges';
 
 const SEND_REQUEST_BLOCK_DETAILS = 0;
 const SEND_REQUEST_BLOCK_SELECT_API = 1;
-const SEND_REQUEST_BLOCK_SENT = 2;
-const REDIRECT_TO_DASHBOARD = 3;
+const SEND_REQUEST_BLOCK_ENTER_AMOUNT = 2;
+const SEND_REQUEST_BLOCK_SELECT_CURRENCIES = 3;
+const SEND_REQUEST_BLOCK_SENT = 4;
+const REDIRECT_TO_DASHBOARD = 5;
 
 class SendRequestBlock extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {visibleBlock: SEND_REQUEST_BLOCK_DETAILS, selectedApiKey: null};
-    this.onApiKeySelected = apiKey => this.setState({selectedApiKey: apiKey});
+    this.state = {
+      visibleBlock: SEND_REQUEST_BLOCK_DETAILS,
+      selectedApiKey: null,
+      contractAmount: '',
+      filtered: [{id: 'currency', value: ''},],
+      changed: false,
+      changedCurrencies: {},
+      allSelected: false,
+      currencies: []
+    };
+    this.onApiKeySelected = async (apiKey) => {
+      let currenciesList = this.props.exchangesInfo[apiKey.exchange].currencies;
+      if (!currenciesList || currenciesList.length === 0) {
+        await this.props.getExchangeCurrencies(apiKey.exchange);
+      }
+      this.setState({selectedApiKey: apiKey});
+    };
     this.onSendOfferClick = this.onSendOfferClick.bind(this);
+    this.onCurrencyChange = this.onCurrencyChange.bind(this);
+    this.onCurrencyStateClicked = this.onCurrencyStateClicked.bind(this);
+    this.onSelectAllClicked = this.onSelectAllClicked.bind(this);
+
   }
 
   onSendOfferClick() {
@@ -27,17 +55,25 @@ class SendRequestBlock extends React.Component {
       alert('select api key first');
       return;
     }
+    console.log('offer', this.props.profile)
     const keyId = this.state.selectedApiKey._id;
+    let allowedCurrencies = ['USDT','ETH','BTC']
+    let selectedCurrencies = this.state.changedCurrencies
+    for (let currency in selectedCurrencies) {
+      allowedCurrencies.push(currency);
+    }
     const offer = {
       keyId,
       to: this.props.profile._id,
-      amount: this.props.profile.minAmount,
-      currency: this.props.profile.currency,
-      maxLoss: this.props.profile.maxLoss,
-      fee: this.props.profile.fee,
-      duration: this.props.profile.duration,
-      roi: this.props.profile.roi,
-      toUser: [{name: this.props.profile.name, _id: this.props.profile._id}],
+      contractSettings: {
+        amount: this.state.contractAmount,
+        currency: this.props.profile.contractSettings.currency,
+        maxLoss: this.props.profile.contractSettings.maxLoss,
+        fee: this.props.profile.contractSettings.fee,
+        duration: this.props.profile.contractSettings.duration,
+        roi: this.props.profile.contractSettings.roi,
+      },
+      allowedCurrencies: allowedCurrencies
     };
     this.props.sendOffer(offer);
   }
@@ -48,6 +84,145 @@ class SendRequestBlock extends React.Component {
     } else if(this.state.visibleBlock === SEND_REQUEST_BLOCK_SENT) {
       this.setState({visibleBlock: REDIRECT_TO_DASHBOARD});
     }
+  }
+
+  onCurrencyChange(e) {
+    this.setState({filtered: [{id: 'currency', value: e.target.value}]});
+  }
+
+  canChangeCurrency(currency) {
+    if(currency === 'USDT' || currency === 'BTC' || currency === 'ETH') {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  onCurrencyStateClicked(e) {
+    e.stopPropagation();
+    const currency = e.target.dataset.currency;
+    if(currency === 'USDT' || currency === 'BTC' || currency === 'ETH') {
+      alert('BTC/ETH/USDT should be always available for trading');
+      return;
+    }
+    if(!this.canChangeCurrency(currency)) {
+      return;
+    } else {
+      const changedCurrencies = this.state.changedCurrencies;
+      if(changedCurrencies[currency]) {
+        delete changedCurrencies[currency];
+      } else {
+        changedCurrencies[currency] = true;
+      }
+      if(Object.keys(changedCurrencies).length) {
+        this.setState({
+          changed: true,
+          changedCurrencies,
+          allSelected: false
+        });
+      } else {
+        this.setState({
+          changed: false,
+          changedCurrencies,
+          allSelected: false
+        });
+      }
+    }
+  }
+
+  onSelectAllClicked(e) {
+    e.stopPropagation();
+
+    const change = {};
+    if (!this.state.allSelected) {
+      this.state.currencies.reduce((changed, c) => {
+        if (!c.enabled) {
+          changed[c.name] = true;
+        }
+        return changed;
+      }, change);
+    } else {
+      this.state.currencies.reduce((changed, c) => {
+        if (c.enabled && c.name !== 'USDT' && c.name !== 'ETH' && c.name !== 'BTC') {
+          changed[c.name] = true;
+        }
+        return changed;
+      }, change);
+    }
+    this.setState({
+      changed: Object.keys(change).length > 0,
+      changedCurrencies: change,
+      allSelected: !this.state.allSelected
+    });
+
+  }
+
+  getCurrencyTableColumns() {
+    const currencyFilter = this.state.filtered.find(f => f.id === 'currency').value;
+    return [
+      {
+        Header: SearchHeader('Currency', currencyFilter, this.onCurrencyChange),
+        id: 'currency',
+        accessor: 'name',
+        headerClassName: 'filter_align_center',
+        className: 'table_col_value'
+      }, {
+        id: 'selected',
+        Header: StatusHeader(this.onSelectAllClicked, this.state.allSelected),
+        Cell: StatusCell(this.onCurrencyStateClicked, this.state.changedCurrencies),
+        accessor: 'enabled',
+        headerClassName: 'selected_header',
+        filterMethod: (filter, row) => {
+          if(filter.value === 'all') {
+            return true;
+          } else {
+            return filter.value === row.enabled;
+          }
+        }
+      }
+    ];
+  }
+  renderCurrencyTable(currencies) {
+    let data = [];
+    currencies.forEach(currency => {
+      data.push({
+        name: currency,
+        enabled: ['USDT', 'BTC', 'ETH'].includes(currency)
+      });
+    });
+    const scrollBarHeight = 217;
+    return (
+      <div style={{width: '100%'}}>
+        <Desktop>
+          <div style={{width: '90%', margin: '0 auto'}}>
+            <ReactTable
+              style={{height: 312, marginRight: -1}}
+              data={data}
+              columns={this.getCurrencyTableColumns()}
+              filtered={this.state.filtered}
+              onItemSelected={() => {
+              }}
+              scrollBarHeight={scrollBarHeight}
+            />
+          </div>
+        </Desktop>
+        <Mobile>
+          <div style={{width: '100%'}}>
+            <ReactTable
+              data={data}
+              columns={this.getCurrencyTableColumns()}
+              filtered={this.state.filtered}
+              onItemSelected={() => {
+              }}
+              minRows={5}
+              showPagination={true}
+              defaultPageSize={15}
+              PaginationComponent={Pagination}
+            />
+          </div>
+        </Mobile>
+      </div>
+    );
   }
 
   render() {
@@ -78,9 +253,64 @@ class SendRequestBlock extends React.Component {
             currency={contractSettings.currency}
             selectedApiKey={this.state.selectedApiKey}
             onCancelClick={() => this.setState({visibleBlock:SEND_REQUEST_BLOCK_DETAILS})}
-            onSendOfferClick={this.onSendOfferClick}
+            onNextClick={() => this.setState({visibleBlock:SEND_REQUEST_BLOCK_ENTER_AMOUNT})}
             onApiKeySelected={this.onApiKeySelected}
           />
+        );
+      }
+      case SEND_REQUEST_BLOCK_ENTER_AMOUNT: {
+        // <button onSendOfferClick={this.onSendOfferClick}>Next</button>
+        return (
+          <div className="row-fluid choose-api-block">
+            <div className="row justify-content-center choose-title">
+              <div className="col-auto text-center align-middle choose-setting-title title-text">
+                ENTER CONTRACT AMOUNT
+              </div>
+              <div className="col-md-12 col-lg-12 col-xl-12 separate-second-block">
+                <div className="separate-line d-none d-md-block"></div>
+              </div>
+              <EditAmountEntry
+                dimension={this.props.profile.contractSettings.currency}
+                tabIndex={0}
+                onChange={e => this.setState({contractAmount: e.target.value})}
+                value={this.state.contractAmount}
+                placeholder={this.props.profile.contractSettings.minAmount}
+              />
+              <div className="col-12 d-flex align-items-center justify-content-between choose-btn-group">
+                <button onClick={() => this.setState({visibleBlock:SEND_REQUEST_BLOCK_SELECT_API})} type="button" className="cancel-btn btn btn-secondary">
+                  BACK</button>
+                <button disabled={this.state.contractAmount !== '' && parseInt(this.state.contractAmount) < parseInt(this.props.profile.contractSettings.minAmount)} onClick={() => {
+                  if (this.state.contractAmount === '') {
+                    this.setState({contractAmount: this.props.profile.contractSettings.minAmount});
+                  }
+                  this.setState({visibleBlock:SEND_REQUEST_BLOCK_SELECT_CURRENCIES});
+                }} type="button" className="send-request-btn btn btn-secondary active">
+                  NEXT</button>
+              </div>
+            </div>
+          </div>
+        );
+      }
+      case SEND_REQUEST_BLOCK_SELECT_CURRENCIES: {
+        const currencies = this.props.exchangesInfo[this.state.selectedApiKey.exchange] ? this.props.exchangesInfo[this.state.selectedApiKey.exchange].currencies : [];
+        return (
+          <div className="row-fluid choose-api-block">
+            <div className="row justify-content-center choose-title">
+              <div className="col-auto text-center align-middle choose-setting-title title-text">
+                SELECT TRADING CURRENCIES
+              </div>
+              <div className="col-md-12 col-lg-12 col-xl-12 separate-second-block">
+                <div className="separate-line d-none d-md-block"></div>
+              </div>
+              {this.renderCurrencyTable(currencies)}
+              <div className="col-12 d-flex align-items-center justify-content-between choose-btn-group">
+                <button onClick={() => this.setState({visibleBlock:SEND_REQUEST_BLOCK_ENTER_AMOUNT})} type="button" className="cancel-btn btn btn-secondary">
+                  BACK</button>
+                <button onClick={() => this.onSendOfferClick()} type="button" className="send-request-btn btn btn-secondary active">
+                  SEND</button>
+              </div>
+            </div>
+          </div>
         );
       }
       case SEND_REQUEST_BLOCK_SENT: {
@@ -118,11 +348,13 @@ const mapStateToProps = state => ({
   exchanges: state.exchanges,
   request: state.request,
   rates: state.rates,
+  exchangesInfo: state.exchangesInfo
 });
 
 const mapDispatchToProps = dispatch => ({
   sendOffer: offer => dispatch(sendOffer(offer)),
   onGotItClick: () => dispatch(clearRequest('sendOffer')),
+  getExchangeCurrencies: exchange => dispatch(getExchangeCurrencies(exchange)),
 });
 
 
