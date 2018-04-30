@@ -12,15 +12,13 @@ import Pagination from '../generic/Pagination';
 const TAB_OWN_KEYS = 0;
 const TAB_RECEIVED_KEYS = 1;
 
-class ApiKeys extends React.Component {
+class Funds extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      selectedTab: 0,
       filtered: [{id: 'name', value: ''}, {id: 'exchange', value: 'All'}]
     };
-    this.onTabChange = this.onTabChange.bind(this);
     this.onFilter = this.onFilter.bind(this);
     this.onExchangeChange = this.onExchangeChange.bind(this);
   }
@@ -48,24 +46,13 @@ class ApiKeys extends React.Component {
     if(this.props.selectedApiKey && this.props.selectedApiKey._id === nextProps.selectedApiKey._id) {
       return;
     }
-    const isOwnKey = nextProps.selectedApiKey.owner === nextProps.userId;
-    if(isOwnKey) {
-      this.setState({selectedTab: TAB_OWN_KEYS});
-    } else {
-      this.setState({selectedTab: TAB_RECEIVED_KEYS});
-    }
-  }
-
-  onTabChange(index) {
-    this.setState({selectedTab: index});
   }
 
   render() {
     return (
       <div className="api_keys_table table">
         <div className="table_title_wrapper clearfix">
-          <div className="table_title">API keys</div>
-          <SegmentedControl selectedIndex={this.state.selectedTab} segments={['MINE', 'OTHER']} onChange={this.onTabChange}/>
+          <div className="table_title">Funds</div>
         </div>
         {this.renderContent()}
       </div>
@@ -79,7 +66,7 @@ class ApiKeys extends React.Component {
       {
         Header: SearchHeader('Key name', nameFilter, this.onFilter),
         className: 'table_col_value',
-        Cell: row => (<div className="key_name_text_td">{row.value}</div>),
+        Cell: row => (<div className="key_name_text_td">{row.value || (row.original.from._id === this.props.userId ? `Trusted to ${row.original.to.name}` : `${row.original.from.name} trusted to me`)}</div>),
         minWidth: 100,
         accessor: 'name'
       }, {
@@ -118,7 +105,7 @@ class ApiKeys extends React.Component {
         minWidth: 24,
         className: 'table_col_delete',
         Cell: row => {
-          const canDeleteKey = true
+          const canDeleteKey = row.original.name !== undefined
           const onClick = canDeleteKey ? e => {
             e.stopPropagation();
             if (window.confirm('You want to delete this key?')) {
@@ -133,8 +120,8 @@ class ApiKeys extends React.Component {
     ];
   }
   renderContent() {
-    const { apiKeys } = this.props;
-    const data = this.state.selectedTab === TAB_OWN_KEYS ? apiKeys.ownKeys.filter(key => key.state !== 'INVALID') : apiKeys.receivedKeys;
+    const { apiKeys, contracts } = this.props;
+    const data = apiKeys.concat(contracts);
     return (
       <div>
         <Desktop>
@@ -185,12 +172,13 @@ const ExchangeHeader = (exchanges, value, onChange) => {
   );
 };
 
-ApiKeys.propTypes = {
+Funds.propTypes = {
   userId: PropTypes.string.isRequired,
   onKeySelected: PropTypes.func.isRequired,
   onKeyDeleteClick: PropTypes.func.isRequired,
-  apiKeys: PropTypes.object.isRequired,
+  apiKeys: PropTypes.array.isRequired,
+  contracts: PropTypes.array.isRequired,
   selectedKey: PropTypes.object
 };
 
-export default ApiKeys;
+export default Funds;

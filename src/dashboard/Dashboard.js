@@ -1,5 +1,5 @@
 import React from 'react';
-import ApiKeys from './ApiKeys';
+import Funds from './ApiKeys';
 import AddApiKey from './AddApiKey';
 import ApiKeyInfo from './ApiKeyInfo';
 import Contracts from './Contracts';
@@ -65,26 +65,7 @@ class Dashboard extends React.Component {
     }
     return (
       <div className="dashboard_wrapper clearfix" >
-        <div className="keys_tables_wrapper table_wrapper">
-          <ApiKeys
-            userId={this.props.userId}
-            apiKeys={this.props.apiKeys}
-            selectedApiKey={this.state.selectedApiKey}
-            onKeySelected={this.onKeySelected}
-            onKeyDeleteClick={this.props.onKeyDeleteClick}
-            exchanges={this.props.exchanges}
-            rates={this.props.rates}
-          />
-          <AddApiKey/>
-          <ApiKeyInfo
-            apiKey={null}
-            isOwnKey={isOwnKey}
-            exchanges={this.props.exchanges}
-            onKeyUpdateClick={this.props.onKeyUpdateClick}
-          />
-
-        </div>
-        <div className="table_wrapper requests_table_wrapper">
+        <div className="table_wrapper requests_table_wrapper" style={{display: (this.props.offers.outgoing.length == 0 && this.props.offers.incoming.length == 0) ? 'none':'block'}}>
           <Offers
             time={this.props.time}
             onOfferCanceled={this.props.onOfferCanceled}
@@ -96,6 +77,26 @@ class Dashboard extends React.Component {
             selectedOffer={this.state.selectedOffer}
             onOfferSelected={this.onOfferSelected}
           />
+        </div>
+        <div className="keys_tables_wrapper table_wrapper">
+          <Funds
+            userId={this.props.userId}
+            apiKeys={this.props.apiKeys.ownKeys}
+            contracts={this.props.contracts.current}
+            selectedApiKey={this.state.selectedApiKey}
+            onKeySelected={this.onKeySelected}
+            onKeyDeleteClick={this.props.onKeyDeleteClick}
+            exchanges={this.props.exchanges}
+            rates={this.props.rates}
+          />
+          <AddApiKey/>
+          <ApiKeyInfo
+            apiKey={this.state.selectedApiKey}
+            isOwnKey={isOwnKey}
+            exchanges={this.props.exchanges}
+            onKeyUpdateClick={this.props.onKeyUpdateClick}
+          />
+
         </div>
         <div className="table_wrapper contracts_table_wrapper">
           <Contracts
@@ -124,33 +125,15 @@ class Dashboard extends React.Component {
 
   onKeySelected(apiKey) {
     if(!this.state.selectedApiKey || this.state.selectedApiKey._id !== apiKey._id) {
-      const newState = {selectedApiKey: apiKey, selectedOffer: null, selectedContract: null};
-      if(apiKey.state === 'USED') {
-        const {incoming, outgoing} = this.props.offers;
-        const findFunction = elem => elem.keyId === apiKey._id;
-        const offer = incoming.find(findFunction) || outgoing.find(findFunction);
-        if(offer) {
-          newState.selectedOffer = offer;
-        } else {
-          const contract = this.props.contracts.current.find(findFunction);
-          if(contract) {
-            newState.selectedContract = contract;
-          }
-        }
-      }
+      const newState = {selectedApiKey: apiKey};
       this.setState(newState);
     }
   }
 
   onOfferSelected(offer) {
     if(this.state.selectedOffer !== offer) {
-      const findFunction = elem => elem._id === offer.keyId;
-      const key = this.props.apiKeys.ownKeys.find(findFunction) ||
-        this.props.apiKeys.receivedKeys.find(findFunction);
       this.setState({
-        selectedOffer: offer,
-        selectedApiKey: key,
-        selectedContract: null
+        selectedOffer: offer
       });
     }
   }
@@ -158,17 +141,8 @@ class Dashboard extends React.Component {
   onContractSelected(contract) {
     if(this.state.selectedContract !== contract) {
       const newState = {
-        selectedContract: contract,
-        selectedOffer: null,
-        selectedApiKey: null,
+        selectedContract: contract
       };
-      if(contract.state === 'VERIFIED') {
-        const key = this.props.apiKeys.ownKeys.find(k => k._id === contract.keyId) ||
-          this.props.apiKeys.receivedKeys.find(k => k._id === contract.keyId);
-        if(key) {
-          newState.selectedApiKey = key;
-        }
-      }
       this.setState(newState);
     }
   }

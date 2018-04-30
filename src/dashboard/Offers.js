@@ -142,7 +142,7 @@ class Offers extends React.Component {
 
   renderContent() {
     const data = this.state.selectedTab ? this.props.offers.outgoing : this.props.offers.incoming;
-    const style={height: 364};
+    const style={height: 182};
     return (
       <div>
         <Desktop>
