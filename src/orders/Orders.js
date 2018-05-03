@@ -7,12 +7,13 @@ import { connect } from 'react-redux';
 import { cancelOrder, getOrders, selectExchange, selectFund, getExchangeMarkets } from '../actions/terminal';
 import { fetchDashboardData } from '../actions/dashboard';
 import { WEBSOCKET_CONNECT } from '../actions/websocket';
-import {isContract, setFundId} from "../generic/util";
+import { setFundId } from '../generic/util';
 
 class Orders extends React.Component {
 
   render() {
     const apiKeys = this.props.apiKeys.ownKeys;
+    const contracts = this.props.contracts;
     return (
       <Container fluid className="orders">
         <Row>
@@ -27,6 +28,8 @@ class Orders extends React.Component {
                 </div>
                 <Controls
                   apiKeys={apiKeys}
+                  userId={this.props.userId}
+                  contracts={contracts}
                   fund={this.props.fund}
                   onApiKeySelect={this.props.selectFund}
                   exchange={this.props.exchange}
@@ -67,6 +70,7 @@ class Orders extends React.Component {
 
 const OrdersContainer = connect(state => ({
   apiKeys: state.apiKeys,
+  userId: state.auth.profile._id,
   contracts: state.contracts.current,
   fund: state.terminal.fund,
   orders: state.terminal.orders,

@@ -8,7 +8,7 @@ import ExchangeSelect from '../dashboard/ExchangeSelect';
 import { calculateKeyBalance } from '../generic/util';
 
 
-class SelectApiKey extends React.Component {
+class SelectFund extends React.Component {
 
   constructor(props) {
     super(props);
@@ -46,7 +46,7 @@ class SelectApiKey extends React.Component {
           {this.renderTable()}
           <div className="col-12 d-flex align-items-center justify-content-between choose-btn-group">
             <button onClick={this.props.onCancelClick} type="button" className="cancel-btn btn btn-secondary">CANCEL</button>
-            <button onClick={this.props.onNextClick} type="button" disabled={!this.props.selectedApiKey} className="send-request-btn btn btn-secondary active">
+            <button onClick={this.props.onNextClick} type="button" disabled={!this.props.selectedFund} className="send-request-btn btn btn-secondary active">
               NEXT</button>
           </div>
         </div>
@@ -104,8 +104,8 @@ class SelectApiKey extends React.Component {
             columns={this.getColumns()}
             data={data}
             filtered={this.state.filtered}
-            selectedItem={this.props.selectedApiKey}
-            onItemSelected={key => this.props.onApiKeySelected(key)}
+            selectedItem={this.props.selectedFund}
+            onItemSelected={fund => this.props.onFundSelected(fund)}
             scrollBarHeight={150}
           />
         </Desktop>
@@ -114,8 +114,8 @@ class SelectApiKey extends React.Component {
             columns={this.getColumns()}
             data={data}
             filtered={this.state.filtered}
-            selectedItem={this.props.selectedApiKey}
-            onItemSelected={key => this.props.onApiKeySelected(key)}
+            selectedItem={this.props.selectedFund}
+            onItemSelected={fund => this.props.onFundSelected(fund)}
             minRows={5}
             showPagination={true}
             defaultPageSize={5}
@@ -151,13 +151,13 @@ const ExchangeHeader = (exchanges, value, onChange) => {
     </div>
   );
 };
-SelectApiKey.propTypes = {
-  onApiKeySelected: PropTypes.func.isRequired,
+SelectFund.propTypes = {
+  onFundSelected: PropTypes.func.isRequired,
   onCancelClick: PropTypes.func.isRequired,
   onNextClick: PropTypes.func.isRequired,
   exchanges: PropTypes.array.isRequired,
   apiKeys: PropTypes.array.isRequired,
-  selectedApiKey: PropTypes.object
+  selectedFund: PropTypes.object
 };
 
-export default SelectApiKey;
+export default SelectFund;

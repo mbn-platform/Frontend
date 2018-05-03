@@ -16,6 +16,8 @@ const mapStateToProps = state => ({
   ...state.terminal,
   exchangeInfo: state.exchangesInfo[state.terminal.exchange],
   apiKeys: state.apiKeys,
+  contracts: state.contracts,
+  userId: state.auth.profile._id,
 });
 
 const mapDispatchToProps =  dispatch => ({

@@ -55,8 +55,10 @@ class Terminal extends React.Component {
               <Controls
                 market={this.props.market}
                 fund={this.props.fund}
+                userId={this.props.userId}
                 exchange={this.props.exchange}
-                apiKeys={this.props.apiKeys.ownKeys.concat(this.props.apiKeys.receivedKeys)}
+                apiKeys={this.props.apiKeys.ownKeys}
+                contracts={this.props.contracts.current}
                 onExchangeSelect={this.props.selectExchange}
                 onApiKeySelect={this.props.selectFund}
               />

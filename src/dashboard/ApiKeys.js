@@ -40,10 +40,10 @@ class Funds extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(!nextProps.selectedApiKey) {
+    if(!nextProps.selectedFund) {
       return;
     }
-    if(this.props.selectedApiKey && this.props.selectedApiKey._id === nextProps.selectedApiKey._id) {
+    if(this.props.selectedFund && this.props.selectedFund._id === nextProps.selectedFund._id) {
       return;
     }
   }
@@ -130,7 +130,7 @@ class Funds extends React.Component {
             columns={this.getColumns()}
             data={data}
             filtered={this.state.filtered}
-            selectedItem={this.props.selectedApiKey}
+            selectedItem={this.props.selectedFund}
             onItemSelected={key => this.props.onKeySelected(key)}
             scrollBarHeight={217}
           />
@@ -140,7 +140,7 @@ class Funds extends React.Component {
             columns={this.getColumns()}
             data={data}
             filtered={this.state.filtered}
-            selectedItem={this.props.selectedApiKey}
+            selectedItem={this.props.selectedFund}
             onItemSelected={key => this.props.onKeySelected(key)}
             minRows={5}
             showPagination={true}

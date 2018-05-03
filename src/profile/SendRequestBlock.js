@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ContractDetails from './ContractDetails';
-import SelectApiKey from './SelectApiKey';
+import SelectFund from './SelectFund';
 import ContractSent from './ContractSent';
 import { connect } from 'react-redux';
 import { sendOffer } from '../actions/offers';
@@ -28,7 +28,7 @@ class SendRequestBlock extends React.Component {
     super(props);
     this.state = {
       visibleBlock: SEND_REQUEST_BLOCK_DETAILS,
-      selectedApiKey: null,
+      selectedFund: null,
       contractAmount: '',
       filtered: [{id: 'currency', value: ''},],
       changed: false,
@@ -36,12 +36,12 @@ class SendRequestBlock extends React.Component {
       allSelected: false,
       currencies: []
     };
-    this.onApiKeySelected = async (apiKey) => {
-      let currenciesList = this.props.exchangesInfo[apiKey.exchange].currencies;
+    this.onFundSelected = async (fund) => {
+      let currenciesList = this.props.exchangesInfo[fund.exchange].currencies;
       if (!currenciesList || currenciesList.length === 0) {
-        await this.props.getExchangeCurrencies(apiKey.exchange);
+        await this.props.getExchangeCurrencies(fund.exchange);
       }
-      this.setState({selectedApiKey: apiKey});
+      this.setState({selectedFund: fund});
     };
     this.onSendOfferClick = this.onSendOfferClick.bind(this);
     this.onCurrencyChange = this.onCurrencyChange.bind(this);
@@ -51,12 +51,12 @@ class SendRequestBlock extends React.Component {
   }
 
   onSendOfferClick() {
-    if(!this.state.selectedApiKey) {
+    if(!this.state.selectedFund) {
       alert('select api key first');
       return;
     }
     console.log('offer', this.props.profile)
-    const keyId = this.state.selectedApiKey._id;
+    const keyId = this.state.selectedFund._id;
     let allowedCurrencies = ['USDT','ETH','BTC']
     let selectedCurrencies = this.state.changedCurrencies
     for (let currency in selectedCurrencies) {
@@ -245,16 +245,16 @@ class SendRequestBlock extends React.Component {
       }
       case SEND_REQUEST_BLOCK_SELECT_API: {
         return (
-          <SelectApiKey
+          <SelectFund
             onOfferSendClick={this.onOfferSendClick}
             exchanges={this.props.exchanges}
             apiKeys={this.props.apiKeys}
             rates={this.props.rates}
             currency={contractSettings.currency}
-            selectedApiKey={this.state.selectedApiKey}
+            selectedFund={this.state.selectedFund}
             onCancelClick={() => this.setState({visibleBlock:SEND_REQUEST_BLOCK_DETAILS})}
             onNextClick={() => this.setState({visibleBlock:SEND_REQUEST_BLOCK_ENTER_AMOUNT})}
-            onApiKeySelected={this.onApiKeySelected}
+            onFundSelected={this.onFundSelected}
           />
         );
       }
@@ -292,7 +292,7 @@ class SendRequestBlock extends React.Component {
         );
       }
       case SEND_REQUEST_BLOCK_SELECT_CURRENCIES: {
-        const currencies = this.props.exchangesInfo[this.state.selectedApiKey.exchange] ? this.props.exchangesInfo[this.state.selectedApiKey.exchange].currencies : [];
+        const currencies = this.props.exchangesInfo[this.state.selectedFund.exchange] ? this.props.exchangesInfo[this.state.selectedFund.exchange].currencies : [];
         return (
           <div className="row-fluid choose-api-block">
             <div className="row justify-content-center choose-title">
