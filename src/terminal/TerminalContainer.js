@@ -4,7 +4,7 @@ import {
   selectMarket,
   selectExchange,
   selectInterval,
-  selectApiKey,
+  selectFund,
   placeOrder,
   getOrders,
   cancelOrder,
@@ -25,7 +25,7 @@ const mapDispatchToProps =  dispatch => ({
     dispatch(getExchangeMarkets(exchange));
   },
   selectInterval: interval => dispatch(selectInterval(interval)),
-  selectApiKey: apiKey => dispatch(selectApiKey(apiKey)),
+  selectFund: fund => dispatch(selectFund(fund)),
   placeOrder: order => dispatch(placeOrder(order)),
   cancelOrder: order => dispatch(cancelOrder(order)),
   getOrders: apiKey => dispatch(getOrders(apiKey)),

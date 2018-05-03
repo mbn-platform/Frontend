@@ -23,7 +23,7 @@ class ApiKeyInfo extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.apiKey !== this.props.apiKey ||
+    return nextProps.fund !== this.props.fund ||
       nextState !== this.state;
   }
 
@@ -107,8 +107,8 @@ class ApiKeyInfo extends React.Component {
 
   render() {
     let data;
-    if(this.props.apiKey) {
-      data = this.props.apiKey.balances;
+    if(this.props.fund) {
+      data = this.props.fund.balances;
     } else {
       data = [];
     }

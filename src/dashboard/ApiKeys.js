@@ -64,7 +64,7 @@ class Funds extends React.Component {
     const exchangeFilter = this.state.filtered.find(f => f.id === 'exchange').value;
     return [
       {
-        Header: SearchHeader('Key name', nameFilter, this.onFilter),
+        Header: SearchHeader('Fund name', nameFilter, this.onFilter),
         className: 'table_col_value',
         Cell: row => (<div className="key_name_text_td">{row.value || (row.original.from._id === this.props.userId ? `Trusted to ${row.original.to.name}` : `${row.original.from.name} trusted to me`)}</div>),
         minWidth: 100,

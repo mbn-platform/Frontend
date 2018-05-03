@@ -9,6 +9,7 @@ import MyOrders from './MyOrders';
 import RecentTrades from './RecentTrades';
 import OrderBook from './OrderBook';
 import MediaQuery from 'react-responsive';
+import {setFundId} from '../generic/util';
 
 class Terminal extends React.Component {
 
@@ -32,9 +33,13 @@ class Terminal extends React.Component {
   }
 
   componentWillReceiveProps(props) {
-    if(props.apiKey && ((!this.props.apiKey || this.props.apiKey._id !== props.apiKey._id) ||
+    if(props.fund && ((!this.props.fund || this.props.fund._id !== props.fund._id) ||
       props.market !== this.props.market)) {
-      this.props.getOrders({keyId: props.apiKey._id, symbol: props.market});
+      let payload = {
+        symbol: props.market
+      }
+      payload = setFundId(payload, props.fund);
+      this.props.getOrders(payload);
     }
   }
 
@@ -49,11 +54,11 @@ class Terminal extends React.Component {
             <div className="terminal-main">
               <Controls
                 market={this.props.market}
-                apiKey={this.props.apiKey}
+                fund={this.props.fund}
                 exchange={this.props.exchange}
                 apiKeys={this.props.apiKeys.ownKeys.concat(this.props.apiKeys.receivedKeys)}
                 onExchangeSelect={this.props.selectExchange}
-                onApiKeySelect={this.props.selectApiKey}
+                onApiKeySelect={this.props.selectFund}
               />
               <Row className="charts">
                 <Col xs="12" sm="12" md="6" lg="8" className="charts__left">
@@ -70,7 +75,7 @@ class Terminal extends React.Component {
                       markets={(this.props.exchangeInfo || {}).markets || []}
                       ticker={this.props.ticker || {}}
                       placeOrder={this.props.placeOrder}
-                      apiKey={this.props.apiKey}
+                      fund={this.props.fund}
                       market={this.props.market}
                     />
                     <MediaQuery query="(min-width: 576px)">
@@ -125,8 +130,12 @@ class Terminal extends React.Component {
     window.customize();
     this.props.connectToSocket();
     this.props.getExchangeMarkets(this.props.exchange);
-    if(this.props.apiKey) {
-      this.props.getOrders({keyId: this.props.apiKey._id, symbol: this.props.market});
+    if(this.props.fund) {
+      let payload = {
+        symbol: this.props.market
+      }
+      payload = setFundId(payload, this.props.fund)
+      this.props.getOrders(payload);
     }
   }
 

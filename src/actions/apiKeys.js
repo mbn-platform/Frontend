@@ -2,7 +2,7 @@ import { apiPut, apiDelete, apiGet, apiPost, ApiError } from '../generic/apiCall
 import defaultErrorHandler from '../generic/errorHandlers';
 import { LOGGED_OUT } from '../actions/auth';
 import {UPDATE_KEYS} from './dashboard';
-import {SELECT_API_KEY} from './terminal';
+import {SELECT_FUND} from './terminal';
 export const DELETE_API_KEY = 'DELETE_API_KEY';
 export const ADD_API_KEY = 'ADD_API_KEY';
 export const UPDATE_API_KEY = 'UPDATE_API_KEY';
@@ -34,8 +34,8 @@ export function deleteApiKey(key) {
             newSelectedKey = (currentKeyIndex == (ownKeys.length - 1) ? ownKeys[currentKeyIndex - 1] : ownKeys[currentKeyIndex + 1]);
           }
           dispatch({
-            type: SELECT_API_KEY,
-            key: newSelectedKey
+            type: SELECT_FUND,
+            fund: newSelectedKey
           });
         }
         dispatch({
@@ -74,8 +74,8 @@ export function addApiKey(key) {
         const ownKeys = getState().apiKeys.ownKeys
         if (ownKeys.length === 1) {
           dispatch({
-            type: SELECT_API_KEY,
-            key: ownKeys[0]
+            type: SELECT_FUND,
+            fund: ownKeys[0]
           });
         }
       })

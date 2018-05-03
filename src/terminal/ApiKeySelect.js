@@ -55,7 +55,7 @@ class ApiKeySelect extends React.Component {
             }}
             className="dropdown keys">
             <div className="dropdown__name" onClick={this.onOutsideClick}>
-              <span>API KEY</span><span className="arrow_down"></span>
+              <span>FUND</span><span className="arrow_down"></span>
             </div>
             {this.props.apiKeys.slice(0, 5).map(key => (
               <div
@@ -74,7 +74,7 @@ class ApiKeySelect extends React.Component {
   renderSelectedApiKey() {
     return (
       <span className="dropdown-link">
-        API KEY{this.props.selectedKey ? ': ' + this.props.selectedKey.name + ' ' : ' '}<span className="arrow_down"/>
+        FUND{this.props.selectedKey ? ': ' + this.props.selectedKey.name + ' ' : ' '}<span className="arrow_down"/>
       </span>
     );
   }

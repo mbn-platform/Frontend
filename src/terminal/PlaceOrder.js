@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { defaultFormatValue } from '../generic/util';
+import {defaultFormatValue, setFundId} from '../generic/util';
 import { Desktop } from '../generic/MediaQuery';
 
 export const TAB_BUY = 'buy';
@@ -33,17 +33,16 @@ class PlaceOrder extends React.Component {
 
   onSubmit(e) {
     e.preventDefault();
-    if(!this.props.apiKey) {
-      alert('select api key');
+    if(!this.props.fund) {
+      alert('select fund');
       return;
     }
-    const keyId = this.props.apiKey._id;
-    const params = {
+    let params = {
       symbol: this.props.market,
       amount: parseFloat(this.state.orderSize),
       price: parseFloat(this.state.price),
-      keyId,
     };
+    params = setFundId(params, this.props.fund);
     switch(this.state.selectedTab) {
       case TAB_BUY:
         params.type = 'buy';
@@ -225,7 +224,7 @@ class PlaceOrder extends React.Component {
             </form>
           </div>
           <Balances
-            apiKey={this.props.apiKey}
+            fund={this.props.fund}
             main={this.state.main}
             onMainClick={e => this.setAmount(e.target.innerHTML)}
             secondary={this.state.secondary}
@@ -244,10 +243,10 @@ PlaceOrder.propTypes = {
   placeOrder: PropTypes.func.isRequired,
 };
 
-const Balances = ({apiKey, main, secondary, onMainClick, onSecondaryClick}) => {
+const Balances = ({fund, main, secondary, onMainClick, onSecondaryClick}) => {
   let value1, value2;
-  if(apiKey) {
-    const balances = apiKey.balances;
+  if(fund) {
+    const balances = fund.balances;
     value1 = balances.find(b => b.name === main);
     value1 = value1 && value1.available || 0;
     value2 = balances.find(b => b.name === secondary);

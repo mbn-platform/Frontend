@@ -38,7 +38,7 @@ class SelectApiKey extends React.Component {
       <div className="row-fluid choose-api-block">
         <div className="row justify-content-center choose-title">
           <div className="col-auto text-center align-middle choose-setting-title title-text">
-            choose api keys
+            choose funds
           </div>
           <div className="col-md-12 col-lg-12 col-xl-12 separate-second-block">
             <div className="separate-line d-none d-md-block"></div>
@@ -59,7 +59,7 @@ class SelectApiKey extends React.Component {
     const exchangeFilter = this.state.filtered.find(f => f.id === 'exchange').value;
     return [
       {
-        Header: SearchHeader('Key name', nameFilter, this.onFilter),
+        Header: SearchHeader('Fund name', nameFilter, this.onFilter),
         className: 'table_col_value',
         accessor: 'name'
       }, {

@@ -1,6 +1,6 @@
 import { apiGet, apiPost, apiDelete, ApiError } from '../generic/apiCall';
 import { fetchDashboardData } from '../actions/dashboard';
-export const SELECT_API_KEY = 'SELECT_API_KEY';
+export const SELECT_FUND = 'SELECT_FUND';
 export const SELECT_MARKET = 'SELECT_MARKET';
 export const SELECT_EXCHANGE = 'SELECT_EXCHANGE';
 export const SELECT_INTERVAL = 'SELECT_INTERVAL';
@@ -17,10 +17,10 @@ export const UPDATE_HISTORY = 'UPDATE_HISTORY';
 export const GET_EXCHANGE_MARKETS = 'GET_EXCHANGE_MARKETS';
 export const UPDATE_MARKET_SUMMARIES = 'UPDATE_MARKET_SUMMARIES';
 
-export function selectApiKey(key) {
+export function selectFund(fund) {
   return {
-    type: SELECT_API_KEY,
-    key
+    type: SELECT_FUND,
+    fund
   };
 }
 

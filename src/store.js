@@ -38,7 +38,7 @@ export function getInitialState() {
     time: null,
     request: {},
     terminal: {
-      apiKey: null,
+      fund: null,
       exchange: 'bittrex',
       market: 'USDT-BTC',
       interval: '5m',

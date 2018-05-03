@@ -91,7 +91,7 @@ class Dashboard extends React.Component {
           />
           <AddApiKey/>
           <ApiKeyInfo
-            apiKey={this.state.selectedApiKey}
+            fund={this.state.selectedApiKey}
             isOwnKey={isOwnKey}
             exchanges={this.props.exchanges}
             onKeyUpdateClick={this.props.onKeyUpdateClick}

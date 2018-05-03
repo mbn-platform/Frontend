@@ -111,3 +111,16 @@ export function defaultFormatValue(value, currency) {
 export function calculateKeyBalance(key, currency, rates) {
   return rates ? convert(key.currencies, currency, rates) : null;
 }
+
+export function isContract(fund) {
+  return typeof fund.from !== undefined;
+}
+
+export function setFundId(payload, fund) {
+  if (isContract(fund)) {
+    payload.contractId = fund._id;
+  } else {
+    payload.keyId = fund._id;
+  }
+  return payload;
+}
