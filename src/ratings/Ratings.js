@@ -272,7 +272,7 @@ const TraderRatingRow = (props) => (
       <span className="success">{props.successContracts || 0}</span>
     </td>
     <td>
-      <span>{0}</span>
+      <span>{props.contractSettings.roi}</span>
     </td>
     <td>
       {props.available ?
@@ -283,19 +283,19 @@ const TraderRatingRow = (props) => (
       {formatDate(new Date(props.dt || Date.now()))}
     </td>
     <td>
-      {props.minAmount + ' ' + props.currency}
+      {props.contractSettings.minAmount + ' ' + props.contractSettings.currency}
     </td>
     <td>
-      {props.duration}
+      {props.contractSettings.duration}
     </td>
     <td>
-      {props.fee}
+      {props.contractSettings.fee}
     </td>
     <td>
       {(props.inManagement || 0).toFixed(2) + ' USDT'}
     </td>
     <td>
-      {props.maxLoss}
+      {props.contractSettings.maxLoss}
     </td>
   </tr>
 );
@@ -344,6 +344,6 @@ function formatDate(date) {
 }
 
 export default connect(
-  state => ({ratings: []}),
+  state => ({ratings: state.ratings}),
   dispatch => ({updateRatings: () => dispatch(updateRatings())}),
 )(Ratings);

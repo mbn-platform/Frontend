@@ -34,6 +34,7 @@ export function getInitialState() {
         contractSettings: {}
       }
     },
+    ratings: [],
     exchanges: [],
     time: null,
     request: {},

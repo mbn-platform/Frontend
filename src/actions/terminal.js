@@ -170,11 +170,11 @@ export function placeOrder(order) {
 
 export function updateRatings() {
   return dispatch => {
-    apiGet('/api/rating')
-      .then(ratings => {
+    apiGet('/rating')
+      .then(data => {
         dispatch({
           type: UPDATE_RATINGS,
-          ratings,
+          rating: data.rating,
         });
       })
       .catch(e => console.log('error'));
