@@ -110,26 +110,28 @@ export function payOffer(offer) {
 
 function sendTransaction(address, offer, selectedNet) {
   const contract = window.web3.eth.contract(ABI).at(address);
-  const { duration, maxLoss, startBalance, targetBalance, amount, _id } = offer;
-  const investor = offer.fromUser[0].name;
-  const investorAddress = offer.fromUser[0].addr;
-  const trader = offer.toUser[0].name;
-  const traderAddress = offer.toUser[0].addr;
-  let currency;
-  switch(offer.currency) {
+  const {contractSettings: {duration, currency, maxLoss, amount, startBalance, targetBalance}, _id} = offer;
+  const investor = offer.from.name;
+  const investorAddress = offer.from.address;
+  const trader = offer.to.name;
+  const traderAddress = offer.to.address;
+  let contractCurrency;
+  switch(currency) {
     case 'ETH':
-      currency = 2;
+      contractCurrency = 2;
       break;
     case 'BTC':
-      currency = 1;
+      contractCurrency = 1;
       break;
     case 'USDT':
-      currency = 0;
+      contractCurrency = 0;
       break;
     default:
       alert(offer.currency + ' not supported for contract yet');
       return;
   }
+  console.log(duration, maxLoss, startBalance, targetBalance, amount, investor, investorAddress, trader, traderAddress, '0x' + _id, contractCurrency);
+  console.log({value: amount});
   contract.makeDeal(
     duration,
     maxLoss,
@@ -141,7 +143,7 @@ function sendTransaction(address, offer, selectedNet) {
     trader,
     traderAddress,
     '0x' + _id,
-    currency,{value: amount},  (err, tx) => {
+    contractCurrency,{value: amount},  (err, tx) => {
       if(err) {
         return;
       } else {

@@ -66,7 +66,7 @@ class SendRequestBlock extends React.Component {
       keyId,
       to: this.props.profile._id,
       contractSettings: {
-        amount: this.state.contractAmount,
+        sum: this.state.contractAmount,
         currency: this.props.profile.contractSettings.currency,
         maxLoss: this.props.profile.contractSettings.maxLoss,
         fee: this.props.profile.contractSettings.fee,

@@ -133,7 +133,7 @@ class Offers extends React.Component {
       className: 'table_col_value',
       id: 'amount',
       accessor: offer => {
-        return `${offer.contractSettings.amount} ${offer.contractSettings.currency}`;
+        return `${offer.contractSettings.sum} ${offer.contractSettings.currency}`;
       },
     }];
 
