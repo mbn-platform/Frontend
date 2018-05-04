@@ -117,11 +117,6 @@ class ApiKeyInfo extends React.Component {
         <div className="table_title_wrapper clearfix">
           <div className="table_title">Currencies</div>
         </div>
-        <Mobile>
-          <div className="tooltip-mobile-box">
-            {STATUS_HELP}
-          </div>
-        </Mobile>
         {this.renderContent(data)}
       </div>
     );
