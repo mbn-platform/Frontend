@@ -4,7 +4,7 @@ import DropdownSelect from '../terminal/DropdownSelect';
 
 class Controls extends React.Component {
   render() {
-    const funds = this.props.apiKeys.concat(this.props.contracts)
+    const funds = this.props.apiKeys.concat(this.props.contracts.filter(contract => contract.to._id === this.props.userId))
     return (
       <div className="row dropdowns pt-2">
         <FundSelect
