@@ -2,7 +2,7 @@ import React from 'react';
 import { Popover } from 'reactstrap';
 import classNames from 'classnames';
 
-class ApiKeySelect extends React.Component {
+class FundSelect extends React.Component {
 
 
   constructor(props) {
@@ -38,7 +38,7 @@ class ApiKeySelect extends React.Component {
   render() {
     return (
       <div onClick={() => this.setState({isOpen: !this.state.isOpen})} id="popover1" className="dropdown-link-wrap">
-        {this.renderSelectedApiKey()}
+        {this.renderSelectedFund()}
         <Popover
           onClick={() => this.setState({isOpen: false})}
           className="dropdown-popover"
@@ -55,14 +55,14 @@ class ApiKeySelect extends React.Component {
             }}
             className="dropdown keys">
             <div className="dropdown__name" onClick={this.onOutsideClick}>
-              <span>API KEY</span><span className="arrow_down"></span>
+              <span>FUND</span><span className="arrow_down"></span>
             </div>
-            {this.props.apiKeys.slice(0, 5).map(key => (
+            {this.props.funds.slice(0, 5).map(fund => (
               <div
-                key={key._id}
-                onClick={e => this.onKeySelect(e, key)}
-                className={classNames('key', {active: this.props.selectedKey && this.props.selectedKey._id === key._id})}>
-                {key.name}
+                key={fund._id}
+                onClick={e => this.onKeySelect(e, fund)}
+                className={classNames('key', {active: this.props.selectedFund && this.props.selectedFund._id === fund._id})}>
+                {fund.name || `${fund.from.name} trusted to me`}
               </div>
             ))}
           </div>
@@ -71,13 +71,13 @@ class ApiKeySelect extends React.Component {
     );
   }
 
-  renderSelectedApiKey() {
+  renderSelectedFund() {
     return (
       <span className="dropdown-link">
-        API KEY{this.props.selectedKey ? ': ' + this.props.selectedKey.name + ' ' : ' '}<span className="arrow_down"/>
+        FUND{this.props.selectedFund ? ': ' + (this.props.selectedFund.name || `${this.props.selectedFund.from.name} trusted to me`) + ' ' : ' '}<span className="arrow_down"/>
       </span>
     );
   }
 }
 
-export default ApiKeySelect;
+export default FundSelect;

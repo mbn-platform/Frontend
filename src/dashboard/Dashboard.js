@@ -11,7 +11,7 @@ import ContractsChart from './ContractsChart';
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {selectedContract: null, selectedApiKey: null, selectedOffer: null};
+    this.state = {selectedContract: null, selectedFund: null, selectedOffer: null};
     this.onKeySelected = this.onKeySelected.bind(this);
     this.onOfferSelected = this.onOfferSelected.bind(this);
     this.onContractSelected = this.onContractSelected.bind(this);
@@ -32,10 +32,10 @@ class Dashboard extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if(this.props.apiKeys !== nextProps.apiKeys) {
-      if(this.state.selectedApiKey) {
-        const key = nextProps.apiKeys.ownKeys.find(k => k._id === this.state.selectedApiKey._id) ||
-          nextProps.apiKeys.receivedKeys.find(k => k._id === this.state.selectedApiKey._id);
-        this.setState({selectedApiKey: key});
+      if(this.state.selectedFund) {
+        const key = nextProps.apiKeys.ownKeys.find(k => k._id === this.state.selectedFund._id) ||
+          nextProps.apiKeys.receivedKeys.find(k => k._id === this.state.selectedFund._id);
+        this.setState({selectedFund: key});
       }
     }
     if(this.props.offers !== nextProps.offers) {
@@ -58,7 +58,7 @@ class Dashboard extends React.Component {
 
   render() {
     let isOwnKey;
-    if(this.state.selectedApiKey && this.props.apiKeys.ownKeys.find(key => key._id === this.state.selectedApiKey._id)) {
+    if(this.state.selectedFund && this.props.apiKeys.ownKeys.find(key => key._id === this.state.selectedFund._id)) {
       isOwnKey = true;
     } else {
       isOwnKey = false;
@@ -83,7 +83,7 @@ class Dashboard extends React.Component {
             userId={this.props.userId}
             apiKeys={this.props.apiKeys.ownKeys}
             contracts={this.props.contracts.current}
-            selectedApiKey={this.state.selectedApiKey}
+            selectedFund={this.state.selectedFund}
             onKeySelected={this.onKeySelected}
             onKeyDeleteClick={this.props.onKeyDeleteClick}
             exchanges={this.props.exchanges}
@@ -91,7 +91,7 @@ class Dashboard extends React.Component {
           />
           <AddApiKey/>
           <ApiKeyInfo
-            apiKey={this.state.selectedApiKey}
+            fund={this.state.selectedFund}
             isOwnKey={isOwnKey}
             exchanges={this.props.exchanges}
             onKeyUpdateClick={this.props.onKeyUpdateClick}
@@ -124,8 +124,8 @@ class Dashboard extends React.Component {
   }
 
   onKeySelected(apiKey) {
-    if(!this.state.selectedApiKey || this.state.selectedApiKey._id !== apiKey._id) {
-      const newState = {selectedApiKey: apiKey};
+    if(!this.state.selectedFund || this.state.selectedFund._id !== apiKey._id) {
+      const newState = {selectedFund: apiKey};
       this.setState(newState);
     }
   }

@@ -1,5 +1,5 @@
 import React from 'react';
-import ApiKeySelect from './ApiKeySelect';
+import FundSelect from './FundSelect';
 import DropdownSelect from './DropdownSelect';
 import MarketSelect from './MarketSelect';
 
@@ -11,16 +11,18 @@ class Controls extends React.Component {
     super(props);
     this.state = {
       selectedTime: '1 H',
-    }
+    };
   }
 
   render() {
+    const funds = this.props.apiKeys.concat(this.props.contracts.filter(contract => contract.to._id === this.props.userId))
     return (
       <div className="row dropdowns">
-        <ApiKeySelect
+        <FundSelect
           container=".terminal.container-fluid"
-          apiKeys={this.props.apiKeys}
-          selectedKey={this.props.apiKey}
+          funds={funds}
+          selectedFund={this.props.fund}
+          userId={this.props.userId}
           onApiKeySelect={this.props.onApiKeySelect}
         />
         <DropdownSelect

@@ -1,15 +1,17 @@
 import React from 'react';
-import ApiKeySelect from '../terminal/ApiKeySelect';
+import FundSelect from '../terminal/FundSelect';
 import DropdownSelect from '../terminal/DropdownSelect';
 
 class Controls extends React.Component {
   render() {
+    const funds = this.props.apiKeys.concat(this.props.contracts.filter(contract => contract.to._id === this.props.userId))
     return (
       <div className="row dropdowns pt-2">
-        <ApiKeySelect
+        <FundSelect
           container=".orders.container-fluid"
-          apiKeys={this.props.apiKeys}
-          selectedKey={this.props.apiKey}
+          funds={funds}
+          selectedFund={this.props.fund}
+          userId={this.props.userId}
           onApiKeySelect={this.props.onApiKeySelect}
         />
         <DropdownSelect

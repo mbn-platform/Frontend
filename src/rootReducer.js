@@ -46,13 +46,13 @@ const root = (state, action) => {
         c.balance = getItemBalance(c, newState.apiKeys, newState.rates);
       });
       const allowed = allowedApiKeys(newState.apiKeys, newState.contracts.current);
-      let selectedApiKey;
-      if(newState.terminal.selectedApiKey) {
-        selectedApiKey = allowed.find(k => k._id === newState.terminal.selectedApiKey._id);
+      let selectedFund;
+      if(newState.terminal.selectedFund) {
+        selectedFund = allowed.find(k => k._id === newState.terminal.selectedFund._id);
       } else {
-        selectedApiKey = allowed[0] || null;
+        selectedFund = allowed[0] || null;
       }
-      return {...newState, terminal: {...newState.terminal, selectedApiKey}};
+      return {...newState, terminal: {...newState.terminal, selectedFund}};
     }
     case 'ON_NET_SELECT':
       let net = newState.selectedNet;

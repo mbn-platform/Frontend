@@ -1,10 +1,10 @@
-import {SELECT_API_KEY, SELECT_EXCHANGE, SELECT_MARKET,
+import {SELECT_FUND, SELECT_EXCHANGE, SELECT_MARKET,
   SELECT_INTERVAL, GET_MY_ORDERS, CANCEL_ORDER, PLACE_ORDER} from '../actions/terminal';
 import {UPDATE_ORDER_BOOK, UPDATE_HISTORY, UPDATE_TICKER} from '../actions/terminal';
 import {UPDATE_KEYS} from '../actions/dashboard';
 
 export default function(state = {
-  apiKey: null,
+  fund: null,
   exchange: 'bittrex',
   market: 'USDT-BTC',
   interval: '5m',
@@ -14,8 +14,8 @@ export default function(state = {
   orders: {open: [], closed: []},
 }, action) {
   switch(action.type) {
-    case SELECT_API_KEY: {
-      return {...state, apiKey: action.key};
+    case SELECT_FUND: {
+      return {...state, fund: action.fund};
     }
     case SELECT_MARKET: {
       if(action.market === state.market) {
@@ -92,13 +92,13 @@ export default function(state = {
       return state;
     }
     case UPDATE_KEYS: {
-      if(!state.apiKey && action.data.length) {
-        return {...state, apiKey: action.data[0]};
+      if(!state.fund && action.data.length) {
+        return {...state, fund: action.data[0]};
       }
       break;
     }
     case GET_MY_ORDERS: {
-      if(state.apiKey && state.apiKey._id === action.keyId) {
+      if(state.fund && (state.fund._id === action.keyId || state.fund._id === action.contractId)) {
         return {...state, orders: action.orders};
       }
       break;

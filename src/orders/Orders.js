@@ -4,14 +4,16 @@ import HeaderStatus from '../terminal/HeaderStatus';
 import Controls from './Controls';
 import OrdersTable from './OrdersTable';
 import { connect } from 'react-redux';
-import { cancelOrder, getOrders, selectExchange, selectApiKey, getExchangeMarkets } from '../actions/terminal';
+import { cancelOrder, getOrders, selectExchange, selectFund, getExchangeMarkets } from '../actions/terminal';
 import { fetchDashboardData } from '../actions/dashboard';
 import { WEBSOCKET_CONNECT } from '../actions/websocket';
+import { setFundId } from '../generic/util';
 
 class Orders extends React.Component {
 
   render() {
     const apiKeys = this.props.apiKeys.ownKeys;
+    const contracts = this.props.contracts;
     return (
       <Container fluid className="orders">
         <Row>
@@ -26,8 +28,10 @@ class Orders extends React.Component {
                 </div>
                 <Controls
                   apiKeys={apiKeys}
-                  apiKey={this.props.apiKey}
-                  onApiKeySelect={this.props.selectApiKey}
+                  userId={this.props.userId}
+                  contracts={contracts}
+                  fund={this.props.fund}
+                  onApiKeySelect={this.props.selectFund}
                   exchange={this.props.exchange}
                   onExchangeSelect={this.props.selectExchange}
                 />
@@ -46,14 +50,16 @@ class Orders extends React.Component {
     window.customize();
     this.props.connectToSocket();
     this.props.getExchangeMarkets(this.props.exchange);
-    if(this.props.apiKey) {
-      this.props.getOrders({keyId: this.props.apiKey._id});
+    if(this.props.fund) {
+      let payload = setFundId({}, this.props.fund)
+      this.props.getOrders(payload);
     }
   }
 
   componentWillReceiveProps(props) {
-    if(props.apiKey && (!this.props.apiKey || this.props.apiKey._id !== props.apiKey._id)) {
-      this.props.getOrders({keyId: props.apiKey._id});
+    if(props.fund && (!this.props.fund || this.props.fund._id !== props.fund._id)) {
+      let payload = setFundId({}, props.fund)
+      this.props.getOrders(payload);
     }
   }
 
@@ -64,8 +70,9 @@ class Orders extends React.Component {
 
 const OrdersContainer = connect(state => ({
   apiKeys: state.apiKeys,
+  userId: state.auth.profile._id,
   contracts: state.contracts.current,
-  apiKey: state.terminal.apiKey,
+  fund: state.terminal.fund,
   orders: state.terminal.orders,
   market: state.terminal.market,
   exchange: state.terminal.exchange,
@@ -77,7 +84,7 @@ const OrdersContainer = connect(state => ({
     dispatch(selectExchange(exchange));
     dispatch(getExchangeMarkets(exchange));
   },
-  selectApiKey: apiKey => dispatch(selectApiKey(apiKey)),
+  selectFund: fund => dispatch(selectFund(fund)),
   getExchangeMarkets: exchange => dispatch(getExchangeMarkets(exchange)),
   connectToSocket: () => dispatch({
     type: WEBSOCKET_CONNECT,
