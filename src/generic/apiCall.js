@@ -38,6 +38,7 @@ ApiError.MIN_TRADE_REQUIREMENT_NOT_MET = -502;
 ApiError.INSUFFICIENT_FUNDS = -503;
 ApiError.UNIQUE_VIOLATION = -40;
 ApiError.INVALID_PARAMS_SET = -5;
+ApiError.KEY_IN_USE = -78;
 
 function getSelectedNet() {
   return window.localStorage.getItem('selectedNet') || 'mainnet';
