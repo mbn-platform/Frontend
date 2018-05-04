@@ -21,6 +21,7 @@ const SEND_REQUEST_BLOCK_ENTER_AMOUNT = 2;
 const SEND_REQUEST_BLOCK_SELECT_CURRENCIES = 3;
 const SEND_REQUEST_BLOCK_SENT = 4;
 const REDIRECT_TO_DASHBOARD = 5;
+export const REQUIRED_CURRENCIES = ['USDT', 'ETH', 'BTC'];
 
 class SendRequestBlock extends React.Component {
 
@@ -132,23 +133,14 @@ class SendRequestBlock extends React.Component {
 
   onSelectAllClicked(e) {
     e.stopPropagation();
-
+    const currencies = this.props.exchangesInfo[this.state.selectedFund.exchange] ? this.props.exchangesInfo[this.state.selectedFund.exchange].currencies : [];
     const change = {};
-    if (!this.state.allSelected) {
-      this.state.currencies.reduce((changed, c) => {
-        if (!c.enabled) {
-          changed[c.name] = true;
-        }
-        return changed;
-      }, change);
-    } else {
-      this.state.currencies.reduce((changed, c) => {
-        if (c.enabled && c.name !== 'USDT' && c.name !== 'ETH' && c.name !== 'BTC') {
-          changed[c.name] = true;
-        }
-        return changed;
-      }, change);
-    }
+    const flag = !this.state.allSelected
+    currencies.forEach((currency)=>{
+      if (!REQUIRED_CURRENCIES.includes(currency)) {
+        change[currency] = flag;
+      }
+    });
     this.setState({
       changed: Object.keys(change).length > 0,
       changedCurrencies: change,
@@ -187,7 +179,7 @@ class SendRequestBlock extends React.Component {
     currencies.forEach(currency => {
       data.push({
         name: currency,
-        enabled: ['USDT', 'BTC', 'ETH'].includes(currency)
+        enabled: REQUIRED_CURRENCIES.includes(currency)
       });
     });
     const scrollBarHeight = 217;
@@ -292,7 +284,7 @@ class SendRequestBlock extends React.Component {
         );
       }
       case SEND_REQUEST_BLOCK_SELECT_CURRENCIES: {
-        const currencies = this.props.exchangesInfo[this.state.selectedFund.exchange] ? this.props.exchangesInfo[this.state.selectedFund.exchange].currencies : [];
+        const currencies = this.props.exchangesInfo[this.state.selectedFund.exchange] && this.props.exchangesInfo[this.state.selectedFund.exchange].currencies ? this.props.exchangesInfo[this.state.selectedFund.exchange].currencies : [];
         return (
           <div className="row-fluid choose-api-block">
             <div className="row justify-content-center choose-title">
