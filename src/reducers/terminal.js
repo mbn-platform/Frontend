@@ -98,7 +98,7 @@ export default function(state = {
       break;
     }
     case GET_MY_ORDERS: {
-      if(state.fund && (state.fund._id === action.keyId || state.fund._id === action.contractId)) {
+      if(state.fund && state.fund._id === action.fundId) {
         return {...state, orders: action.orders};
       }
       break;
