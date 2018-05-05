@@ -113,7 +113,7 @@ export function calculateKeyBalance(key, currency, rates) {
 }
 
 export function isContract(fund) {
-  return typeof fund.from !== undefined;
+  return typeof fund.from !== 'undefined';
 }
 
 export function setFundId(payload, fund) {
