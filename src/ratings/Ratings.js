@@ -5,7 +5,7 @@ import BestInvestors from './BestInvestors';
 import classNames from 'classnames';
 import DropdownSelect from '../terminal/DropdownSelect';
 import $ from 'jquery';
-import {sortData, onColumnSort, classNameForColumnHeader}  from '../generic/terminalSortFunctions';
+import {sortData, onColumnSort, classNameForColumnHeader, defaultSortFunction} from '../generic/terminalSortFunctions';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { updateRatings } from '../actions/terminal';
@@ -23,7 +23,12 @@ class Ratings extends React.Component {
     this.sortData = sortData.bind(this);
     this.onColumnSort = onColumnSort.bind(this);
     this.sortFunctions = {
+      name: (a, b) => defaultSortFunction(a.name.toLowerCase(), b.name.toLowerCase(),),
       dateCreated: (a, b) => a.dt - b.dt,
+      duration: (a, b) => defaultSortFunction(a.contractSettings.duration, b.contractSettings.duration),
+      minAmount: (a, b) => defaultSortFunction(a.contractSettings.minAmount, b.contractSettings.minAmount),
+      fee: (a, b) => defaultSortFunction(a.contractSettings.fee, b.contractSettings.fee),
+      maxLoss: (a, b) => defaultSortFunction(a.contractSettings.maxLoss, b.contractSettings.maxLoss),
     };
     this.state = {
       roiIntervalOpen: false,
@@ -102,8 +107,8 @@ class Ratings extends React.Component {
                               <th onClick={() => this.onColumnSort('roi')}>
                                 <span>ROI,&nbsp;%</span><span className={classNameForColumnHeader(this.state, 'roi')}></span>
                               </th>
-                              <th onClick={() => this.onColumnSort('availableForOffers')}>
-                                <span>Accepting request</span><span className={classNameForColumnHeader(this.state, 'availableForOffers')}></span>
+                              <th onClick={() => this.onColumnSort('available')}>
+                                <span>Accepting request</span><span className={classNameForColumnHeader(this.state, 'available')}></span>
                               </th>
                               <th onClick={() => this.onColumnSort('dateCreated')}>
                                 <span>Started since</span><span className={classNameForColumnHeader(this.state, 'dateCreated')}></span>
@@ -272,7 +277,7 @@ const TraderRatingRow = (props) => (
       <span className="success">{props.successContracts || 0}</span>
     </td>
     <td>
-      <span>{props.contractSettings.roi}</span>
+      <span> – </span>
     </td>
     <td>
       {props.available ?

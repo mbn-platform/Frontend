@@ -47,6 +47,7 @@ export function sendOffer(offer) {
   return dispatch => {
     apiPost('/contract', null, offer)
       .then(json => {
+        // TODO: убрать
         dispatch({
           type: SEND_OFFER,
           offer: json
