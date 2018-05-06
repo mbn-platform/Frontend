@@ -91,9 +91,6 @@ export function addApiKey(key) {
             case ApiError.UNIQUE_VIOLATION:
               alert('This key already in system');
               return;
-            case ApiError.KEY_IN_USE:
-              alert('The key is in use');
-              return;
             default:
               console.log('unhandled api error', error.apiErrorCode);
           }
