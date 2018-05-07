@@ -157,7 +157,7 @@ class Contracts extends React.Component {
       headerClassName: 'start_balance',
       Header: ContractTableHeader('Start\nbalance'),
       minWidth: 110,
-      accessor: c => `${c.contractSettings.amount} ${c.contractSettings.currency}`,
+      accessor: c => `${c.contractSettings.sum} ${c.contractSettings.currency}`,
       sortMethod: (a,b, desc) => {
         return parseFloat(a) - parseFloat(b);
       }
@@ -194,7 +194,7 @@ class Contracts extends React.Component {
       headerClassName: 'left_column',
       className: 'table_col_value',
       minWidth: 110,
-      accessor: c => `${c.contractSettings.amount * c.contractSettings.roi} ${c.contractSettings.currency}`,
+      accessor: c => `${formatBalance(c.contractSettings.sum * (c.contractSettings.roi / 100 + 1), c.contractSettings.currency)} ${c.contractSettings.currency}`,
       sortMethod: (a,b, desc) => {
         return parseFloat(a) - parseFloat(b);
       }

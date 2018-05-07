@@ -71,7 +71,7 @@ class ApiKeyInfo extends React.Component {
         Cell: rowInfo => rowInfo.value >= 0 ? rowInfo.value : ' ',
         className: 'table_col_value',
         minWidth: 110,
-        accessor: 'inContracts'
+        accessor: 'trusted'
       }
     ];
   }
