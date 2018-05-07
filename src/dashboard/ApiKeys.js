@@ -93,13 +93,26 @@ class Funds extends React.Component {
           </div>
         </div>),
         accessor: key => {
-          const balance = calculateKeyBalance(key, 'BTC', this.props.rates);
-          if(balance === null) {
+          const exchangeInfo = this.props.exchangesInfo[key.exchange];
+          if(!exchangeInfo) {
             return null;
-          } else {
-            return balance.toFixed(8);
           }
-        }
+          const {rates} = exchangeInfo;
+          if(!rates) {
+            return null;
+          };
+          const sum = key.balances.reduce((accum, b) => {
+            if(b.name === 'USDT') {
+              const rate = rates['USDT-BTC'] || 0;
+              accum += b.total / rate;
+            } else {
+              const rate = rates['BTC-' + b.name] || 0;
+              accum += rate * b.total;
+            }
+            return accum;
+          }, 0);
+          return sum.toFixed(8);
+        },
       }, {
         Header: '',
         minWidth: 24,

@@ -80,6 +80,7 @@ class Dashboard extends React.Component {
         </div>
         <div className="keys_tables_wrapper table_wrapper">
           <Funds
+            exchangesInfo={this.props.exchangesInfo}
             userId={this.props.userId}
             apiKeys={this.props.apiKeys.ownKeys}
             contracts={this.props.contracts.current}

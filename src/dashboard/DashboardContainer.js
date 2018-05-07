@@ -14,6 +14,7 @@ const mapStateToProps = state => {
     userId: state.auth.profile._id,
     userName: state.auth.profile.name,
     exchanges: state.exchanges,
+    exchangesInfo: state.exchangesInfo,
     rates: state.rates,
     selectedNet: state.selectedNet,
   };
