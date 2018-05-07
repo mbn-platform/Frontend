@@ -51,7 +51,7 @@ class SendRequestBlock extends React.Component {
 
   }
 
-  onSendOfferClick() {
+  async onSendOfferClick() {
     if(!this.state.selectedFund) {
       alert('select api key first');
       return;
@@ -251,7 +251,7 @@ class SendRequestBlock extends React.Component {
         );
       }
       case SEND_REQUEST_BLOCK_ENTER_AMOUNT: {
-        // <button onSendOfferClick={this.onSendOfferClick}>Next</button>
+        const currentKeyBalance = this.state.selectedFund.balances.find(balance => balance.name === this.props.profile.contractSettings.currency);
         return (
           <div className="row-fluid choose-api-block">
             <div className="row justify-content-center choose-title">
@@ -271,7 +271,11 @@ class SendRequestBlock extends React.Component {
               <div className="col-12 d-flex align-items-center justify-content-between choose-btn-group">
                 <button onClick={() => this.setState({visibleBlock:SEND_REQUEST_BLOCK_SELECT_API})} type="button" className="cancel-btn btn btn-secondary">
                   BACK</button>
-                <button disabled={this.state.contractAmount !== '' && parseInt(this.state.contractAmount) < parseInt(this.props.profile.contractSettings.minAmount)} onClick={() => {
+                <button disabled={
+                  this.state.contractAmount !== ''
+                  && (parseFloat(this.state.contractAmount) < parseFloat(this.props.profile.contractSettings.minAmount)
+                  || parseFloat(this.state.contractAmount) > parseFloat(currentKeyBalance ? currentKeyBalance.available : '0'))
+                } onClick={() => {
                   if (this.state.contractAmount === '') {
                     this.setState({contractAmount: this.props.profile.contractSettings.minAmount});
                   }
