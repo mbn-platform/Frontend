@@ -83,12 +83,8 @@ class SelectFund extends React.Component {
           </div>
         </div>),
         accessor: key => {
-          const balance = calculateKeyBalance(key, this.props.currency, this.props.rates);
-          if(balance === null) {
-            return null;
-          }
-          const format = formatBalance(balance, this.props.currency);
-          return format + ' ' + this.props.currency;
+          const balance = key.balances.find(balance => balance.name === this.props.currency);
+          return balance ? balance.available + ' ' + this.props.currency : '–';
         }
       }
     ];    
