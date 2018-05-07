@@ -1,5 +1,7 @@
-import {SELECT_FUND, SELECT_EXCHANGE, SELECT_MARKET,
-  SELECT_INTERVAL, GET_MY_ORDERS, CANCEL_ORDER, PLACE_ORDER} from '../actions/terminal';
+import {
+  SELECT_FUND, SELECT_EXCHANGE, SELECT_MARKET,
+  SELECT_INTERVAL, GET_MY_ORDERS, CANCEL_ORDER, PLACE_ORDER, UPDATE_ORDER
+} from '../actions/terminal';
 import {UPDATE_ORDER_BOOK, UPDATE_HISTORY, UPDATE_TICKER} from '../actions/terminal';
 import {UPDATE_KEYS} from '../actions/dashboard';
 
@@ -121,6 +123,25 @@ export default function(state = {
       } else {
         return state;
       }
+    }
+    case UPDATE_ORDER: {
+      const orderIndex = state.orders.open.findIndex(o => o._id === action.order._id);
+      let closed = state.orders.closed;
+      let opened = state.orders.open;
+      if (orderIndex > -1) {
+        if (action.order.state === 'CLOSED') {
+          opened.splice(orderIndex, 1);
+          closed = closed.concat(action.order);
+        } else {
+          opened[orderIndex] = action.order;
+        }
+        const orders = {
+          open: opened,
+          closed: closed,
+        };
+        return {...state, orders};
+      }
+      return state;
     }
     case CANCEL_ORDER: {
       const order = state.orders.open.find(o => o._id === action.order._id);
