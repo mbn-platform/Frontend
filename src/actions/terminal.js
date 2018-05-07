@@ -139,6 +139,9 @@ export function placeOrder(order) {
             case ApiError.TRY_AGAIN_LATER:
               alert('Server is busy. Try again later');
               break;
+            case ApiError.MIN_TRADE_REQUIREMENT_NOT_MET:
+              alert('Min trade requirement not met');
+              break;
             default:
               console.log('unhandled api error', error.apiErrorCode);
           }
