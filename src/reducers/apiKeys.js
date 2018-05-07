@@ -49,16 +49,5 @@ function receivedKeys(keys = [], action) {
   }
 }
 
-function balances(state = {}, action) {
-  switch(action.type) {
-    case UPDATE_API_KEY_BALANCE: {
-      const {balances, _id} = action;
-      const newBalance = {...state[_id], ...balances};
-      return {...state, [_id]: newBalance};
-    }
-    default:
-      return state;
-  }
-}
 
-export default combineReducers({ownKeys, receivedKeys, balances});
+export default combineReducers({ownKeys, receivedKeys});
