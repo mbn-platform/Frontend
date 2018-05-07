@@ -106,6 +106,9 @@ export function cancelOrder(order) {
             case ApiError.ORDER_NOT_OPEN:
               alert('this order is already closed');
               break;
+            case ApiError.TRY_AGAIN_LATER:
+              alert('Server is busy. Try again later');
+              break;
             default:
               console.log('unhandled api error', err.apiErrorCode);
           }
@@ -129,7 +132,16 @@ export function placeOrder(order) {
       })
       .catch(error => {
         if(error.apiErrorCode) {
-          console.log('api error', error.apiErrorCode);
+          switch(error.apiErrorCode) {
+            case ApiError.INSUFFICIENT_FUNDS:
+              alert('Error. Insufficient funds');
+              break;
+            case ApiError.TRY_AGAIN_LATER:
+              alert('Server is busy. Try again later');
+              break;
+            default:
+              console.log('unhandled api error', error.apiErrorCode);
+          }
         }
       });
   };
