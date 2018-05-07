@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import $ from 'jquery';
-import { formatFloat } from '../generic/util';
+import { formatFloat, defaultFormatValue } from '../generic/util';
 import { Desktop } from '../generic/MediaQuery';
 import {sortData, onColumnSort, classNameForColumnHeader}  from '../generic/terminalSortFunctions';
 
@@ -16,9 +16,7 @@ class MyOrders extends React.Component {
     this.onTabClick = this.onTabClick.bind(this);
     this.onColumnSort = onColumnSort.bind(this);
     this.sortData = sortData.bind(this);
-    this.sortFunctions = {
-      estimated: (a, b) => (a.price * a.amount) - (b.price * b.amount),
-    };
+    this.sortFunctions = {};
   }
 
   onTabClick(tab) {
@@ -61,10 +59,10 @@ class MyOrders extends React.Component {
                   <thead>
                     <tr>
                       <th onClick={() => this.onColumnSort('type')}>Type <span className={classNameForColumnHeader(this.state, 'type')}></span></th>
-                      <th onClick={() => this.onColumnSort('price')}>Price <span className={classNameForColumnHeader(this.state, 'price')}></span></th>
+                      <th onClick={() => this.onColumnSort('limit')}>Price <span className={classNameForColumnHeader(this.state, 'limit')}></span></th>
                       <th onClick={() => this.onColumnSort('filled')}>Units Filed <span className={classNameForColumnHeader(this.state, 'filled')}></span></th>
                       <th onClick={() => this.onColumnSort('amount')}>Units Total <span className={classNameForColumnHeader(this.state, 'amount')}></span></th>
-                      <th onClick={() => this.onColumnSort('estimated')}><span>Est.</span> Total <span className={classNameForColumnHeader(this.state, 'estimated')}></span></th>
+                      <th onClick={() => this.onColumnSort('price')}><span>Est.</span> Total <span className={classNameForColumnHeader(this.state, 'price')}></span></th>
                       <th></th>
                     </tr>
                   </thead>
@@ -89,10 +87,10 @@ class MyOrders extends React.Component {
                   <thead>
                     <tr>
                       <th onClick={() => this.onColumnSort('type')}>Type <span className={classNameForColumnHeader(this.state, 'type')}></span></th>
-                      <th onClick={() => this.onColumnSort('price')}>Price <span className={classNameForColumnHeader(this.state, 'price')}></span></th>
+                      <th onClick={() => this.onColumnSort('limit')}>Price <span className={classNameForColumnHeader(this.state, 'limit')}></span></th>
                       <th onClick={() => this.onColumnSort('filled')}>Units Filed <span className={classNameForColumnHeader(this.state, 'filled')}></span></th>
                       <th onClick={() => this.onColumnSort('amount')}>Units Total <span className={classNameForColumnHeader(this.state, 'amount')}></span></th>
-                      <th onClick={() => this.onColumnSort('estimated')}><span>Est.</span> Total <span className={classNameForColumnHeader(this.state, 'estimated')}></span></th>
+                      <th onClick={() => this.onColumnSort('price')}><span>Est.</span> Total <span className={classNameForColumnHeader(this.state, 'price')}></span></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -122,10 +120,10 @@ const OpenOrder = ({order, onOrderCancel}) => (
         <span className="round center"></span>
       </div>
     </td>
-    <td>{order.price}</td>
+    <td>{order.limit}</td>
     <td>{order.filled}</td>
     <td>{order.amount}</td>
-    <td className="ellipsis-cell">{formatFloat(order.price * order.amount)}</td>
+    <td className="ellipsis-cell">{order.price}</td>
     <td onClick={() => onOrderCancel(order)}><span className="remove"></span></td>
   </tr>
 );
@@ -137,10 +135,10 @@ const CompletedOrder = ({order}) => (
         <span className="round center"></span>
       </div>
     </td>
-    <td>{order.price}</td>
+    <td>{order.limit}</td>
     <td>{order.filled}</td>
     <td>{order.amount}</td>
-    <td className="ellipsis-cell">{formatFloat(order.price * order.amount)}</td>
+    <td className="ellipsis-cell">{order.price}</td>
   </tr>
 )
 

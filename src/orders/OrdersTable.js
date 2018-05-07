@@ -15,9 +15,7 @@ class OrdersTable extends React.Component {
     this.onTabClick = this.onTabClick.bind(this);
     this.sortData = sortData.bind(this);
     this.onColumnSort = onColumnSort.bind(this);
-    this.sortFunctions = {
-      estimated: (a, b) => (a.price * a.amount) - (b.price * b.amount),
-    };   
+    this.sortFunctions = {};
   }
 
   onTabClick(tab) {
@@ -56,10 +54,10 @@ class OrdersTable extends React.Component {
                       <th onClick={() => this.onColumnSort('type')}><br className="show-mobile"/><span className={classNameForColumnHeader(this.state, 'type')}></span></th>
                       <th onClick={() => this.onColumnSort('dt')}>Opened <span className="hide-mobile">Date</span> <span className={classNameForColumnHeader(this.state, 'dt')}></span></th>
                       <th onClick={() => this.onColumnSort('market')}>Market <span className={classNameForColumnHeader(this.state, 'market')}></span></th>
-                      <th onClick={() => this.onColumnSort('price')}>Price <span className={classNameForColumnHeader(this.state, 'price')}></span></th>
+                      <th onClick={() => this.onColumnSort('limit')}>Price <span className={classNameForColumnHeader(this.state, 'limit')}></span></th>
                       <th onClick={() => this.onColumnSort('filled')}>Units Filed <span className={classNameForColumnHeader(this.state, 'filled')}></span></th>
                       <th onClick={() => this.onColumnSort('amount')}>Units Total <span className={classNameForColumnHeader(this.state, 'amount')}></span></th>
-                      <th onClick={() => this.onColumnSort('estimated')}><span className="hide-mobile">Estimated</span><span className="show-mobile">Est.</span> Total <span className={classNameForColumnHeader(this.state, 'estimated')}></span></th>
+                      <th onClick={() => this.onColumnSort('price')}><span className="hide-mobile">Estimated</span><span className="show-mobile">Est.</span> Total <span className={classNameForColumnHeader(this.state, 'price')}></span></th>
                       <th></th>
                     </tr>
                   </thead>
@@ -84,10 +82,10 @@ class OrdersTable extends React.Component {
                       <th onClick={() => this.onColumnSort('type')}><br className="show-mobile"/><span className={classNameForColumnHeader(this.state, 'type')}></span></th>
                       <th onClick={() => this.onColumnSort('dt')}>Opened <span className="hide-mobile">Date</span> <span className={classNameForColumnHeader(this.state, 'dt')}></span></th>
                       <th onClick={() => this.onColumnSort('market')}>Market <span className={classNameForColumnHeader(this.state, 'market')}></span></th>
-                      <th onClick={() => this.onColumnSort('price')}>Price <span className={classNameForColumnHeader(this.state, 'price')}></span></th>
+                      <th onClick={() => this.onColumnSort('limit')}>Price <span className={classNameForColumnHeader(this.state, 'limit')}></span></th>
                       <th onClick={() => this.onColumnSort('filled')}>Units Filed <span className={classNameForColumnHeader(this.state, 'filled')}></span></th>
                       <th onClick={() => this.onColumnSort('amount')}>Units Total <span className={classNameForColumnHeader(this.state, 'amount')}></span></th>
-                      <th onClick={() => this.onColumnSort('estimated')}><span className="hide-mobile">Estimated</span><span className="show-mobile">Est.</span> Total <span className={classNameForColumnHeader(this.state, 'estimated')}></span></th>
+                      <th onClick={() => this.onColumnSort('price')}><span className="hide-mobile">Estimated</span><span className="show-mobile">Est.</span> Total <span className={classNameForColumnHeader(this.state, 'price')}></span></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -115,10 +113,10 @@ const OpenOrder = ({order, onOrderCancel}) => {
       </td>
       <td>{formatDate(new Date(order.dt))}</td>
       <td>{secondary + '/' + main}</td>
-      <td>{defaultFormatValue(order.price, main)}</td>
+      <td>{order.limit}</td>
       <td>{order.filled}</td>
       <td>{order.amount}</td>
-      <td className="ellipsis-cell">{defaultFormatValue(order.price * order.amount, main)}</td>
+      <td className="ellipsis-cell">{order.price}</td>
       <td onClick={() => onOrderCancel(order)}><span className="remove"></span></td>
     </tr>
   );
@@ -133,10 +131,10 @@ const CompletedOrder = ({order}) => {
       </td>
       <td>{formatDate(new Date(order.dt))}</td>
       <td>{secondary + '/' + main}</td>
-      <td>{defaultFormatValue(order.price, main)}</td>
+      <td>{order.limit}</td>
       <td>{order.filled}</td>
       <td>{order.amount}</td>
-      <td className="ellipsis-cell">{defaultFormatValue(order.price * order.amount)}</td>
+      <td className="ellipsis-cell">{order.price}</td>
     </tr>
   )
 };

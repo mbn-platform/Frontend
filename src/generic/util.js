@@ -101,6 +101,9 @@ function convert(currencies, currency, rates) {
 }
 
 export function defaultFormatValue(value, currency) {
+  if(!Number.isFinite(value)) {
+    return NaN;
+  }
   if(currency === 'USDT') {
     return value.toFixed(2);
   } else {
