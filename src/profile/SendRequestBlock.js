@@ -51,7 +51,7 @@ class SendRequestBlock extends React.Component {
 
   }
 
-  onSendOfferClick() {
+  async onSendOfferClick() {
     if(!this.state.selectedFund) {
       alert('select api key first');
       return;

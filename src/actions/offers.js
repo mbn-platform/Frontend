@@ -7,6 +7,7 @@ export const REJECT_OFFER = 'REJECT_OFFER';
 export const CANCEL_OFFER = 'CANCEL_OFFER';
 export const SEND_OFFER = 'SEND_OFFER';
 export const PAY_OFFER = 'PAY_OFFER';
+export const NEW_OFFER = 'NEW_OFFER';
 
 
 export function acceptOffer(offer) {
@@ -45,14 +46,7 @@ export function rejectOffer(offer) {
 
 export function sendOffer(offer) {
   return dispatch => {
-    apiPost('/contract', null, offer)
-      .then(json => {
-        // TODO: убрать
-        dispatch({
-          type: SEND_OFFER,
-          offer: json
-        });
-      })
+    return apiPost('/contract', null, offer)
       .catch(err => {
         if(err.apiErrorCode) {
           switch(err.apiErrorCode) {
@@ -62,6 +56,12 @@ export function sendOffer(offer) {
             }
             case ApiError.WRONG_DEAL_TERMS:
               alert('Trader has changed contract settings, please reload page');
+              break;
+            case ApiError.INSUFFICIENT_FUNDS:
+              alert('Error. Insufficient funds');
+              break;
+            case ApiError.TRADER_NOT_AVAILABLE:
+              alert('Error. Trader not available');
               break;
             default:
               defaultErrorHandler(err, dispatch);
