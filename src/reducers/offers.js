@@ -1,4 +1,4 @@
-import { ACCEPT_OFFER, REJECT_OFFER, CANCEL_OFFER, SEND_OFFER, PAY_OFFER } from '../actions/offers';
+import {ACCEPT_OFFER, REJECT_OFFER, CANCEL_OFFER, SEND_OFFER, PAY_OFFER, NEW_OFFER} from '../actions/offers';
 import { FETCH_CONTRACTS } from '../actions/contracts';
 import { makeId } from '../generic/util';
 import { combineReducers } from 'redux';
@@ -22,6 +22,9 @@ function incoming(state = [], action) {
       return state.map(o => o._id === action.offer._id ? action.offer : o);
     case FETCH_CONTRACTS:
       return action.offers.incoming;
+    case NEW_OFFER:
+      const offer = action.offer;
+      return state.concat(offer);
     default:
       return state;
   }
