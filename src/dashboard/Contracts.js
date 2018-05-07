@@ -168,6 +168,7 @@ class Contracts extends React.Component {
       Header: ContractTableHeader('Current\nbalance'),
       minWidth: 110,
       accessor: c => {
+        return '';
         let balance;
         switch(c.state) {
           case CONTRACT_STATE_VERIFIED:
@@ -237,6 +238,7 @@ class Contracts extends React.Component {
       minWidth: 110,
       Header: ContractTableHeader('Current\nbalance'),
       accessor: c => {
+        return '';
         const currentBalance = c.balance;
         return formatBalance(currentBalance, c.currency) + ' ' + c.currency;
       },
