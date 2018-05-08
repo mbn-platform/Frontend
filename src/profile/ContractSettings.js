@@ -33,7 +33,7 @@ class ContractSettings extends React.Component {
       const currency = this.state.currency || this.props.currency;
       const roi = parseInt(this.state.roi, 10) || this.props.roi;
       const maxLoss = parseInt(this.state.maxLoss, 10) || this.props.maxLoss;
-      const duration = parseInt(this.state.duration, 10) || this.props.duration;
+      const duration = parseFloat(this.state.duration) || this.props.duration;
       if(fee >= 100 || fee <= 0 || minAmount < 0 || roi <= 0 ||
         duration <= 0 || maxLoss <= 0) {
         alert('Enter all contract settings');
