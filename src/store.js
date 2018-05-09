@@ -56,7 +56,7 @@ export function getInitialState() {
     exchangesInfo: {
 
     },
-    selectedNet: null
+    selectedNet: 'testnet'
   };
 }
 

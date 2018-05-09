@@ -53,8 +53,8 @@ class Login extends React.Component {
         this.state.hasActiveAccount ? (
           <LoginForm 
             onClick={this.props.onLoginClick}
-            onNetSelect={this.props.onNetSelect}
-            isMainNet={this.props.isMainNet}
+            onNetSelect={() => {}}
+            isMainNet={false}
           />
         ) : (
           <MetamaskClosed />
@@ -69,7 +69,7 @@ class Login extends React.Component {
         <div className="login_content row justify-content-center align-items-center">
           <div className="login_steps">
             <div className="login_title_wrapper">
-              <div className="login_title_text">Alpha</div>
+              <div className="login_title_text">Beta</div>
             </div>
             {this.renderStep()}
           </div>

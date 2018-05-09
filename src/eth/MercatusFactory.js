@@ -231,5 +231,5 @@ export const ABI = [
     'type': 'event'
   }];
 
-export const ADDRESS = '0xCC3e44384f4e54d7bD0fFe958B0e759e44563450';
+export const ADDRESS = '0x74cd6a9b279fe80b3855881cc3452c37eaebe4c1';
 export const MAIN_NET_ADDRESS = '0xcabdff9789c92ac0f8a02b820c3148f15b61ea9b';

@@ -74,7 +74,7 @@ export function sendOffer(offer) {
 }
 
 function getSelectedNet() {
-  return window.localStorage.getItem('selectedNet') || 'mainnet';
+  return 'testnet';
 }
 
 export function payOffer(offer) {
