@@ -15,7 +15,7 @@ import { LOGGED_OUT } from './actions/auth';
 import { getInitialState } from './store';
 import ratings from './reducers/ratings';
 
-const combined = combineReducers({apiKeys, contracts, ratings, offers, auth, exchanges, time, request, terminal, rates, profile, exchangesInfo, selectedNet: (state = 'mainnet') => state});
+const combined = combineReducers({apiKeys, contracts, ratings, offers, auth, exchanges, time, request, terminal, rates, profile, exchangesInfo, selectedNet: (state = 'testnet') => state});
 
 const root = (state, action) => {
   switch(action.type) {

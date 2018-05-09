@@ -43,7 +43,7 @@ ApiError.KEY_IN_USE = -78;
 ApiError.TRY_AGAIN_LATER = -513;
 
 function getSelectedNet() {
-  return window.localStorage.getItem('selectedNet') || 'mainnet';
+  return 'testnet';
 }
 
 const API_PREFIX = '/api/v2';
