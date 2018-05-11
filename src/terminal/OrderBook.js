@@ -181,7 +181,7 @@ class OrderBook extends React.Component {
   renderLastPrice(price) {
     const main = this.props.market.split('-')[0];
     let isUp;
-    const last = this.props.ticker.last;
+    const last = this.props.ticker.l;
     const prelast = this.state.prelast;
     if(prelast && last && prelast > last) {
       isUp = false;
