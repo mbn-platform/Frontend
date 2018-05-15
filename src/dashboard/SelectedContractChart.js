@@ -18,12 +18,10 @@ class SelectedContractChart extends React.Component {
         category: a.name,
         'column-1': a.available
       }));
-    console.log('data', data)
     return data;
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('PROPS', nextProps)
     this.setState({data: this.formatData(nextProps.contract ? nextProps.contract.balances : [])});
   }
 
