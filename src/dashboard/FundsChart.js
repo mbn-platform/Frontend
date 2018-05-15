@@ -3,13 +3,29 @@ import AmCharts from 'amcharts3/amcharts/amcharts';
 import PieChart from 'amcharts3/amcharts/pie';
 import SerialChar from 'amcharts3/amcharts/serial';
 import AmChartsReact from "@amcharts/amcharts3-react";
+import {getValueInBTC} from './SelectedContractChart';
 
 class FundsChart extends React.Component {
 
 
   constructor(props) {
     super(props);
+    this.getValueInBTC = getValueInBTC.bind(this);
     this.state = {data: this.formatData(this.props.contracts, this.props.apiKeys)};
+  }
+
+  getValueInBTC(currencyName, currencyValue) {
+    if (currencyName === 'BTC') {
+      return currencyValue;
+    }
+    const rates = this.props.exchangesInfo['bittrex'] ? this.props.exchangesInfo['bittrex'].rates : [];
+    let marketName;
+    if (currencyName === 'USDT') {
+      return (currencyValue / rates['USDT-BTC']).toFixed(8);
+    } else {
+      marketName = `BTC-${currencyName}`;
+    }
+    return (currencyValue * (rates[marketName] || 0)).toFixed(8);
   }
 
   formatData(contracts, apiKeys) {
@@ -40,7 +56,8 @@ class FundsChart extends React.Component {
     }
     return Object.keys(data).map(key=>({
       category: key,
-      'column-1': data[key]
+      'column-1': data[key],
+      'column-2': this.getValueInBTC(key, data[key])
     })).sort((a1, a2) => a1['column-1'] < a2['column-1']);
   }
 
@@ -71,14 +88,15 @@ class FundsChart extends React.Component {
                                        '#c5c5c5',
                                        '#465666'
                                      ],
-                                     'balloonText': '[[title]]<br><span style=\'font-size:14px\'><b>[[value]]</b> ([[percents]]%)</span>',
+                                     'balloonText': '[[title]]<br><span style=\'font-size:14px\'><b>[[description]]</b> ([[percents]]%)</span>',
                                      'innerRadius': '70%',
                                      'labelsEnabled': false,
                                      'startDuration': 0,
                                      'titleField': 'category',
-                                     'valueField': 'column-1',
+                                     'valueField': 'column-2',
                                      'allLabels': [],
                                      'balloon': {},
+                                     'descriptionField': 'column-1',
                                      'legend': {
                                        'enabled': true,
                                        'marginLeft': 0,
@@ -93,7 +111,7 @@ class FundsChart extends React.Component {
                                        'labelText': '',
                                        'valueAlign': 'left',
                                        'align': 'left',
-                                       'valueText': '[[value]] [[title]]',
+                                       'valueText': '[[description]] [[title]]',
                                        'useMarkerColorForLabels': true,
                                        'useMarkerColorForValues': true
                                      },

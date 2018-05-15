@@ -8,6 +8,7 @@ class SelectedContractChart extends React.Component {
 
   constructor(props) {
     super(props);
+    this.getValueInBTC = getValueInBTC.bind(this);
     this.state = {data: this.formatData(props.contract ? props.contract.balances : [])};
   }
 
@@ -16,7 +17,8 @@ class SelectedContractChart extends React.Component {
       .sort((a1, a2) => a1.available < a2.available)
       .map(a => ({
         category: a.name,
-        'column-1': a.available
+        'column-1': a.available,
+        'column-2': this.getValueInBTC(a.name, a.available)
       }));
     return data;
   }
@@ -47,12 +49,13 @@ class SelectedContractChart extends React.Component {
                             '#c5c5c5',
                             '#465666'
                           ],
-                          'balloonText': '[[title]]<br><span style=\'font-size:14px\'><b>[[value]]</b> ([[percents]]%)</span>',
+                          'balloonText': '[[title]]<br><span style=\'font-size:14px\'><b>[[description]]</b> ([[percents]]%)</span>',
                           'innerRadius': '70%',
                           'labelsEnabled': false,
                           'startDuration': 0,
                           'titleField': 'category',
-                          'valueField': 'column-1',
+                          'valueField': 'column-2',
+                           'descriptionField': 'column-1',
                           'allLabels': [],
                           'balloon': {},
                           'legend': {
@@ -69,7 +72,7 @@ class SelectedContractChart extends React.Component {
                             'labelText': '',
                             'valueAlign': 'left',
                             'align': 'left',
-                            'valueText': '[[value]] [[title]]',
+                            'valueText': '[[description]] [[title]]',
                             'useMarkerColorForLabels': true,
                             'useMarkerColorForValues': true
                           },
@@ -88,3 +91,17 @@ class SelectedContractChart extends React.Component {
 }
 
 export default SelectedContractChart;
+
+export function getValueInBTC(currencyName, currencyValue) {
+  if (currencyName === 'BTC') {
+    return currencyValue;
+  }
+  const rates = this.props.exchangesInfo['bittrex'] ? this.props.exchangesInfo['bittrex'].rates : [];
+  let marketName;
+  if (currencyName === 'USDT') {
+    return (currencyValue / rates['USDT-BTC']).toFixed(8);
+  } else {
+    marketName = `BTC-${currencyName}`;
+  }
+  return (currencyValue * (rates[marketName] || 0)).toFixed(8);
+}

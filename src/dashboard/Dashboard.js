@@ -115,10 +115,10 @@ class Dashboard extends React.Component {
             contract={this.state.selectedContract} />
         </div>
         <div className="table_wrapper traders_chart">
-          <FundsChart contracts={this.props.contracts.current || []} apiKeys={this.props.apiKeys.ownKeys || []}/>
+          <FundsChart contracts={this.props.contracts.current || []} apiKeys={this.props.apiKeys.ownKeys || []} exchangesInfo={this.props.exchangesInfo}/>
         </div>
         <div className="table_wrapper contracts_chart">
-          <SelectedContractChart contract={this.state.selectedContract} />
+          <SelectedContractChart contract={this.state.selectedContract} exchangesInfo={this.props.exchangesInfo}/>
         </div>
       </div>
     );
