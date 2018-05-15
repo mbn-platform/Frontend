@@ -4,7 +4,7 @@ import TablesScreen from './TablesScreen';
 import { Row, Container } from 'reactstrap';
 import { connect } from 'react-redux';
 import { updateExchanges } from '../actions/exchanges';
-import { updateContractSettings, getProfile, toggleAvailable, getFeedbacks } from '../actions/profile';
+import {updateContractSettings, getProfile, toggleAvailable, getFeedbacks, getTradesForUser} from '../actions/profile';
 
 class Profile extends React.Component {
 
@@ -55,7 +55,8 @@ class Profile extends React.Component {
   getProfilePageData(name) {
     const p1 = this.props.getProfile(name);
     const p2 = this.props.getFeedbacks(name);
-    return Promise.all([p1, p2]);
+    const p3 = this.props.getTradesForUser(name)
+    return Promise.all([p1, p2, p3]);
   }
 
   componentDidMount() {
@@ -115,7 +116,8 @@ const mapDispatchToProps = dispatch => ({
   toggleAvailable: (name, available) => dispatch(toggleAvailable(name, available)),
   updateExchanges: () => dispatch(updateExchanges()),
   getProfile: name => dispatch(getProfile(name)),
-  getFeedbacks: name => dispatch(getFeedbacks(name))
+  getFeedbacks: name => dispatch(getFeedbacks(name)),
+  getTradesForUser: name => dispatch(getTradesForUser(name))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

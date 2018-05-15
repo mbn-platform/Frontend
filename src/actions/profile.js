@@ -64,12 +64,12 @@ export function getFeedbacks(name) {
 
 export function getTradesForUser(name) {
   return dispatch => {
-    apiGet(`/tradesForUser/${name}`)
+    apiGet(`/profile/${name}/history`)
       .then(trades => {
         dispatch({
           type: TRADES_FOR_USER,
           name,
-          trades,
+          trades: trades.orders,
         });
       });
   };

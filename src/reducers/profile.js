@@ -14,10 +14,8 @@ export default function(state = {}, action) {
       return {...state, available, contractSettings, currencies};
     case TRADES_FOR_USER: {
       if(action.name === state.name) {
-        const {asInvestor, asTrader} = action.trades;
-        const trades = {};
-        trades.asInvestor = asInvestor.filter(ff).map(mf).sort(sf);
-        trades.asTrader = asTrader.filter(ff).map(mf).sort(sf);
+        let trades = action.trades;
+        trades = trades.filter(ff).map(mf).sort(sf);
         return {...state, trades};
       } else {
         return state;
@@ -29,17 +27,17 @@ export default function(state = {}, action) {
 }
 
 const mf = t => {
-  const [main, secondary] = t.market.split('-');
+  const [main, secondary] = t.symbol.split('-');
   return {
     date: t.dt,
     amountCurrency: secondary,
     mainCurrency: main,
-    price: t.rate,
+    price: t.limit,
     amount: t.filled,
-    total: t.filled * t.rate,
+    total: t.price,
     type: t.type,
   };
 };
 
 const ff = t => t.filled > 0;
-const sf = (t1, t2) => t2.date - t1.date;
+const sf = (t1, t2) => t2.dt - t1.dt;
