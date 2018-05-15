@@ -135,7 +135,7 @@ const CompletedOrder = ({order}) => (
         <span className="round center"></span>
       </div>
     </td>
-    <td>{order.limit}</td>
+    <td>{order.price ? (order.price / order.filled).toFixed(8) : order.limit}</td>
     <td>{order.filled}</td>
     <td>{order.amount}</td>
     <td className="ellipsis-cell">{order.price}</td>

@@ -131,7 +131,7 @@ const CompletedOrder = ({order}) => {
       </td>
       <td>{formatDate(new Date(order.dt))}</td>
       <td>{secondary + '/' + main}</td>
-      <td>{order.limit}</td>
+      <td>{order.price ? (order.price / order.filled).toFixed(8) : order.limit}</td>
       <td>{order.filled}</td>
       <td>{order.amount}</td>
       <td className="ellipsis-cell">{order.price}</td>
