@@ -32,7 +32,7 @@ function ownKeys(keys = [], action) {
           return b;
         }
       });
-      key.balances = updatedBalances;
+      key.balances = key.balances.length > 0 ? updatedBalances : action.balances;
       return [...keys];
     }
     default:
