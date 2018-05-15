@@ -6,7 +6,7 @@ import Contracts from './Contracts';
 import Offers from './Offers';
 import SelectedContractInfo from './SelectedContractInfo';
 import TradersChart from './TradersChart';
-import ContractsChart from './ContractsChart';
+import SelectedContractChart from './SelectedContractChart';
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -118,7 +118,7 @@ class Dashboard extends React.Component {
           <TradersChart contracts={this.props.contracts}/>
         </div>
         <div className="table_wrapper contracts_chart">
-          <ContractsChart contract={this.state.selectedContract} />
+          <SelectedContractChart contract={this.state.selectedContract} />
         </div>
       </div>
     );

@@ -4,7 +4,7 @@ import PieChart from 'amcharts3/amcharts/pie';
 import SerialChar from 'amcharts3/amcharts/serial';
 import AmChartsReact from "@amcharts/amcharts3-react";
 
-class ContractsChart extends React.Component {
+class SelectedContractChart extends React.Component {
 
   constructor(props) {
     super(props);
@@ -89,4 +89,4 @@ class ContractsChart extends React.Component {
   }
 }
 
-export default ContractsChart;
+export default SelectedContractChart;
