@@ -25,7 +25,11 @@ export function deleteApiKey(key) {
   return (dispatch, getState) => {
     apiDelete('/key/' + key._id)
       .then(() => {
-        const selectedKey = getState().terminal.apiKey;
+        const selectedKey = getState().terminal.fund;
+        const storageKey = JSON.parse(localStorage.getItem('terminal.selectedFund'))
+        if (storageKey && storageKey._id === key._id) {
+          localStorage.removeItem('terminal.selectedFund');
+        }
         if (selectedKey._id === key._id) {
           const ownKeys = getState().apiKeys.ownKeys
           let currentKeyIndex = ownKeys.findIndex(k => k._id == selectedKey._id);
