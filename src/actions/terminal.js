@@ -19,6 +19,7 @@ export const GET_EXCHANGE_MARKETS = 'GET_EXCHANGE_MARKETS';
 export const UPDATE_MARKET_SUMMARIES = 'UPDATE_MARKET_SUMMARIES';
 
 export function selectFund(fund) {
+  localStorage.setItem('terminal.selectedFund', JSON.stringify(fund));
   return {
     type: SELECT_FUND,
     fund
@@ -26,6 +27,7 @@ export function selectFund(fund) {
 }
 
 export function selectMarket(market) {
+  localStorage.setItem('terminal.selectedMarket', market);
   return {
     type: SELECT_MARKET,
     market,
@@ -33,6 +35,7 @@ export function selectMarket(market) {
 }
 
 export function selectExchange(exchange) {
+  localStorage.setItem('terminal.selectedExchange', JSON.stringify(exchange));
   return {
     type: SELECT_EXCHANGE,
     exchange,
@@ -40,6 +43,7 @@ export function selectExchange(exchange) {
 }
 
 export function selectInterval(interval) {
+  localStorage.setItem('terminal.selectedInterval', JSON.stringify(interval));
   return {
     type: SELECT_INTERVAL,
     interval,

@@ -22,6 +22,7 @@ const root = (state, action) => {
     case LOGGED_OUT: {
       const newState = getInitialState();
       saveReduxState({auth: {...newState.auth, loggedIn: false}});
+      clearAppState();
       newState.selectedNet = state.selectedNet;
       return newState;
     }
@@ -94,6 +95,14 @@ function calculateBalances(array, apiKeys, rates) {
 
 export function saveReduxState(state) {
   localStorage.setItem('reduxState', JSON.stringify(state));
+}
+
+function clearAppState() {
+  localStorage.removeItem('terminal.selectedMarket');
+  localStorage.removeItem('terminal.selectedFund');
+  localStorage.removeItem('terminal.selectedTime');
+  localStorage.removeItem('terminal.selectedExchange');
+  localStorage.removeItem('terminal.selectedInterval');
 }
 
 Array.prototype.findById = function(id) {

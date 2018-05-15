@@ -10,7 +10,7 @@ class Controls extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedTime: '1 H',
+      selectedTime: localStorage.getItem('terminal.selectedTime') || '1 H',
     };
   }
 
@@ -43,7 +43,10 @@ class Controls extends React.Component {
           targetId="time_select"
           elementClassName="time__switch"
           dropdownClassName="time"
-          onItemSelect={item => this.setState({selectedTime: item})}
+          onItemSelect={item => {
+            this.setState({selectedTime: item});
+            localStorage.setItem('terminal.selectedTime', item);
+          }}
         />
       </div>
     );
