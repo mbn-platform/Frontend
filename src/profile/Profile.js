@@ -85,14 +85,14 @@ class Profile extends React.Component {
       <Container fluid className='profile-item'>
         <Row>
           <ProfileInfo
-            rates={this.props.rates}
+            rates={this.props.exchangesInfo['bittrex'] ? this.props.exchangesInfo['bittrex'].rates : []}
             own={own}
             profile={this.state.profile}
             onSaveChangesClick={this.onSaveChangesClick}
             onToggleClick={this.onToggleClick}
           />
           <TablesScreen
-            rates={this.props.rates}
+            rates={this.props.exchangesInfo['bittrex'] ? this.props.exchangesInfo['bittrex'].rates : []}
             own={own}
             profile={this.state.profile}
             onCurrencyToggle={this.onCurrencyToggle}
@@ -106,7 +106,7 @@ class Profile extends React.Component {
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  rates: state.rates,
+  exchangesInfo: state.exchangesInfo,
   profile: state.profile,
 });
 

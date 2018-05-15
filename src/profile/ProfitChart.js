@@ -120,7 +120,6 @@ class ProfitChart extends React.Component {
 
               <div className="row order-3 order-md-1 justify-content-center">
                 <div className="col-auto profit"><div className="circle"></div><div className="text">PROFIT AS TRADER</div></div>
-                <div className="col-auto profit"><div className="circle green"></div><div className="text">PROFIT AS INVESTOR</div></div>
               </div>
               <div className="row order-2 justify-content-center amcharts-block">
                 <div className="col-12">
@@ -215,16 +214,7 @@ class ProfitChart extends React.Component {
           'visibleInLegend': false,
           'type': 'smoothedLine',
           'valueField': 'column-1'
-        },
-        {
-          'balloonText': '[[title]] of [[category]]:[[value]]',
-          'id': 'investor_profit',
-          'lineAlpha': 1,
-          'lineThickness': 2,
-          'visibleInLegend': false,
-          'type': 'smoothedLine',
-          'valueField': 'investor_profit'
-        },
+        }
       ],
       'guides': [],
       'valueAxes': [
