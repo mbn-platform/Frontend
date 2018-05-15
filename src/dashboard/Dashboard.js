@@ -118,7 +118,7 @@ class Dashboard extends React.Component {
           <TradersChart contracts={this.props.contracts}/>
         </div>
         <div className="table_wrapper contracts_chart">
-          <ContractsChart contracts={this.props.contracts} />
+          <ContractsChart contract={this.state.selectedContract} />
         </div>
       </div>
     );

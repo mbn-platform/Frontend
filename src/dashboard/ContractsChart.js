@@ -8,31 +8,30 @@ class ContractsChart extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {data: this.formatData(props.contracts.finished)};
+    this.state = {data: this.formatData(props.contract ? props.contract.balances : [])};
   }
 
-  formatData(contracts) {
-    const data = contracts.reduce((acc, c) => {
-      acc[c.contractor] = acc[c.contractor] || 0;
-      acc[c.contractor] += c.currentBalance - c.startBalance
-      return acc;
-    }, {});
-    return Object.entries(data).filter(a => a[1] > 0)
-      .sort((a1, a2) => a1[1] < a2[1])
+  formatData(balances) {
+    const data = balances.filter(balance => balance.available > 0)
+      .sort((a1, a2) => a1.available < a2.available)
       .map(a => ({
-        category: a[0],
-        'column-1': a[1]
+        category: a.name,
+        'column-1': a.available
       }));
+    console.log('data', data)
+    return data;
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log('PROPS', nextProps)
+    this.setState({data: this.formatData(nextProps.contract ? nextProps.contract.balances : [])});
   }
 
   render() {
     return (
       <div className="table">
         <div className="table_title_wrapper clearfix">
-          <div className="table_title center">CONTRACTS PROFIT</div>
-        </div>
-        <div className="chart_title_total">
-          <span className="chart_title_total_span">Total:</span> 0 BTC
+          <div className="table_title center">SELECTED CONTRACT BALANCE</div>
         </div>
         <div className="charts">
           <div className="chart_pie">
@@ -72,7 +71,7 @@ class ContractsChart extends React.Component {
                             'labelText': '',
                             'valueAlign': 'left',
                             'align': 'left',
-                            'valueText': '[[percents]] - [[title]]',
+                            'valueText': '[[value]] [[title]]',
                             'useMarkerColorForLabels': true,
                             'useMarkerColorForValues': true
                           },
