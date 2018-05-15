@@ -10,6 +10,7 @@ class OrderBook extends React.Component {
   constructor(props) {
     super(props);
     this.sortData = sortData.bind(this);
+    this.reset = this.reset.bind(this);
     this.onColumnSort = onColumnSort.bind(this);
     this.fireOnScroll = this.fireOnScroll.bind(this);
     this.sortFunctions = {
@@ -23,6 +24,10 @@ class OrderBook extends React.Component {
     e.stopPropagation();
     const target = e.currentTarget;
     this.props.onOrderSelect(parseFloat(target.dataset.price), target.dataset.size, type);
+  }
+
+  reset() {
+    this.setState({scroll: false, sort: {}});
   }
 
   fireOnScroll() {
@@ -120,7 +125,8 @@ class OrderBook extends React.Component {
     return (
       <div className="orderbook-table chart col-12 col-sm-6 col-md-12">
         <div className="chart__top justify-content-between row">
-          <div className="chart-name">Order Book</div>
+          <div className="chart-name">Order Book  </div>
+          <a role="button" className="reset-button text-muted" onClick={this.reset}>Reset sort</a>
           <Desktop>
             <div className="chart-controls align-items-center justify-content-between row">
             </div>
