@@ -100,6 +100,27 @@ function convert(currencies, currency, rates) {
   }
 }
 
+export function calculateTotalBalance(balances, rates, targetCurrency) {
+  return balances.reduce((accum, b) => {
+    switch(b.name) {
+      case 'USDT': {
+        const rate = rates['USDT-BTC'] || 0;
+        accum += b.total / rate;
+      }
+        break;
+      case 'BTC': {
+        accum += b.total;
+        break;
+      }
+      default: {
+        const rate = rates['BTC-' + b.name] || 0;
+        accum += rate * b.total;
+      }
+    }
+    return accum;
+  }, 0);
+}
+
 export function defaultFormatValue(value, currency) {
   if(!Number.isFinite(value)) {
     return NaN;

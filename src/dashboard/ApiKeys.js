@@ -6,7 +6,7 @@ import ExchangeSelect from './ExchangeSelect';
 import SearchHeader from '../generic/SearchHeader';
 import classNames from 'classnames';
 import { Desktop, Mobile } from '../generic/MediaQuery';
-import { calculateKeyBalance } from '../generic/util';
+import { calculateTotalBalance } from '../generic/util';
 import Pagination from '../generic/Pagination';
 
 const TAB_OWN_KEYS = 0;
@@ -101,16 +101,7 @@ class Funds extends React.Component {
           if(!rates) {
             return null;
           };
-          const sum = key.balances.reduce((accum, b) => {
-            if(b.name === 'USDT') {
-              const rate = rates['USDT-BTC'] || 0;
-              accum += b.total / rate;
-            } else {
-              const rate = rates['BTC-' + b.name] || 0;
-              accum += rate * b.total;
-            }
-            return accum;
-          }, 0);
+          const sum = calculateTotalBalance(key.balances, rates, 'BTC');
           return sum.toFixed(8);
         },
       }, {
