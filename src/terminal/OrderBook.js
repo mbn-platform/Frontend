@@ -12,12 +12,11 @@ class OrderBook extends React.Component {
     this.sortData = sortData.bind(this);
     this.reset = this.reset.bind(this);
     this.onColumnSort = onColumnSort.bind(this);
-    this.fireOnScroll = this.fireOnScroll.bind(this);
     this.sortFunctions = {
       price: (a, b) => a.Rate - b.Rate,
       relativeSize: (a, b) => a.Rate * a.Quantity - b.Rate * b.Quantity,
     };
-    this.state = {last: null, sort: {}, prelast: null, scroll: false};
+    this.state = {last: null, sort: {}, prelast: null, scroll: true};
   }
 
   onOrderClick(type, e) {
@@ -27,14 +26,7 @@ class OrderBook extends React.Component {
   }
 
   reset() {
-    this.setState({scroll: false, sort: {}});
-  }
-
-  fireOnScroll() {
-    if (this.props.orderBook.sell.length > 0) {
-      this.setState({scroll: true});
-      this.tableSell.removeEventListener('scroll', this.fireOnScroll);
-    }
+    this.setState({scroll: true, sort: {}});
   }
 
   componentDidMount() {
@@ -65,32 +57,22 @@ class OrderBook extends React.Component {
       processScrollableTable($table);
     });
     $('.js-table-wrapper table').floatThead('reflow');
-    this.tableSell.addEventListener('scroll', this.fireOnScroll);
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.market !== this.props.market) {
-      if (this.state.scroll) {
-        this.tableSell.addEventListener('scroll', this.fireOnScroll);
-      }
-      this.setState({scroll: false, sort: {}});
-    }
-    if(this.tableSell && this.tableSell.scrollTop === 0 && !this.state.scroll && (!this.state.sort.column)) {
+    if(this.props.orderBook.sell.length > 0 && !this.state.sort.column && this.state.scroll) {
       this.tableSell.scrollTop = this.tableSell.scrollHeight - 26.6;
-    } else if(prevState.sort !== this.state.sort && this.tableSell) {
-      this.tableSell.scrollTop = 0;
       this.tableBuy.scrollTop = 0;
+      this.setState({scroll: false});
+    } else if(this.state.sort !== prevState.sort) {
+      this.tableBuy.scrollTop = 0;
+      this.tableSell.scrollTop = 0;
     }
-  }
-
-  componentWillUnmount() {
-    this.tableSell.removeEventListener('scroll', this.fireOnScroll);
-    clearInterval(this.interval);
   }
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.market !== this.props.market) {
-      this.setState({prelast: null});
+      this.setState({prelast: null, sort: {}, scroll: true});
     }
     if(nextProps.ticker !== this.props.ticker) {
       this.setState({prelast: this.props.ticker.last});
