@@ -272,7 +272,7 @@ export const EditAmountEntry = ({placeholder, value, onChange, tabIndex, dimensi
         onChange={onChange}
         name="amount"
         value={value}
-        type="text"
+        type="number"
         placeholder={placeholder}
         aria-label={placeholder}
       />
