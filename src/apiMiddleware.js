@@ -4,7 +4,7 @@ import {fetchContracts, FETCH_CONTRACTS} from './actions/contracts';
 import { CONTRACT_STATE_INIT, CONTRACT_STATE_ACCEPTED,
   CONTRACT_STATE_VERIFIED, CONTRACT_STATE_FINISHED,
   CONTRACT_STATE_HALTED } from './constants';
-import {ACCEPT_OFFER, REJECT_OFFER, CANCEL_OFFER} from './actions/offers';
+import {ACCEPT_OFFER, REJECT_OFFER, CANCEL_OFFER, SEND_OFFER} from './actions/offers';
 const socketMiddleware = store => next => action => {
   switch(action.type) {
     case LOGGED_IN: {
@@ -50,6 +50,15 @@ const socketMiddleware = store => next => action => {
       action.userId = userId;
       break;
     }
+    default:
+      break;
+  }
+  switch(action.type) {
+    case SEND_OFFER:
+    case REJECT_OFFER:
+    case CANCEL_OFFER:
+      store.dispatch(fetchKeys());
+      break;
     default:
       break;
   }
