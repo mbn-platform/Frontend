@@ -231,5 +231,5 @@ export const ABI = [
     'type': 'event'
   }];
 
-export const ADDRESS = '0xCC3e44384f4e54d7bD0fFe958B0e759e44563450';
-export const MAIN_NET_ADDRESS = '0xcabdff9789c92ac0f8a02b820c3148f15b61ea9b';
+export const ADDRESS = process.env.REACT_APP_TESTNET_CONTRACT_ADDRESS;
+export const MAIN_NET_ADDRESS = process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS;
