@@ -15,6 +15,13 @@ class ProfitChart extends React.Component {
     this.state = {selectedCurrency: 0, selectedInterval: 2, profit, profitAsInvestor};
   }
 
+  shouldComponentUpdate(nextProps) {
+    return (
+      nextProps.trades !== this.props.trades
+      || nextProps.dt !== this.props.dt
+    );
+  }
+
   componentWillReceiveProps(nextProps) {
     const trades = [].concat.apply([], nextProps.trades);
     const profit = calculateAllProfit(trades);
