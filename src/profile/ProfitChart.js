@@ -316,7 +316,7 @@ function closure(array, isUsd, rates) {
     return value => {
       for(let i = startIndex; i < array.length; i++) {
         const point = array[i];
-        if(point[0] <= value) {
+        if(new Date(point[0]).getTime() <= value) {
           startIndex = i;
           continue;
         } else if(i === 0) {
@@ -327,12 +327,12 @@ function closure(array, isUsd, rates) {
           let total = 0;
           if(isUsd) {
             total += profit.USDT;
-            total += (profit.BTC * rates.USDT.BTC) || 0;
-            total += (profit.ETH * rates.USDT.ETH) || 0;
+            total += (profit.BTC * rates['USDT-BTC']) || 0;
+            total += (profit.ETH * rates['USDT-ETH']) || 0;
           } else {
             total += profit.BTC;
-            total += (profit.ETH * rates.BTC.ETH) || 0;
-            total += (profit.USDT / rates.USDT.BTC) || 0;
+            total += (profit.ETH * rates['BTC-ETH']) || 0;
+            total += (profit.USDT / rates['USDT-BTC']) || 0;
           }
           return total;
         }
@@ -341,12 +341,12 @@ function closure(array, isUsd, rates) {
       let total = 0;
       if(isUsd) {
         total += profit.USDT;
-        total += (profit.BTC * rates.USDT.BTC) || 0;
-        total += (profit.ETH * rates.USDT.ETH) || 0;
+        total += (profit.BTC * rates['USDT-BTC']) || 0;
+        total += (profit.ETH * rates['USDT-ETH']) || 0;
       } else {
         total += profit.BTC;
-        total += (profit.ETH * rates.BTC.ETH) || 0;
-        total += (profit.USDT / rates.USDT.BTC) || 0;
+        total += (profit.ETH * rates['BTC-ETH']) || 0;
+        total += (profit.USDT / rates['USDT-BTC']) || 0;
       }
       return total;
     };
