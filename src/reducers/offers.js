@@ -33,6 +33,8 @@ function incoming(state = [], action) {
     case NEW_OFFER:
       const offer = action.offer;
       return state.concat(offer);
+    case VERIFY_OFFER:
+      return state.filter(offer => offer._id !== action.offer._id)
     default:
       return state;
   }
