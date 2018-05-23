@@ -32,7 +32,7 @@ const mf = t => {
     date: t.dt,
     amountCurrency: secondary,
     mainCurrency: main,
-    price: t.limit,
+    price: t.price / t.filled,
     amount: t.filled,
     total: t.price,
     type: t.type,
