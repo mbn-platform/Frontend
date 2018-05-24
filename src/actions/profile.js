@@ -33,7 +33,7 @@ export function toggleAvailable(name, available) {
 
 export function getProfile(name) {
   return dispatch => {
-    apiGet(`/profile/${name}`)
+    return apiGet(`/profile/${name}`)
       .then(json => {
         dispatch({
           type: GET_PROFILE,
