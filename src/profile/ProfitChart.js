@@ -160,22 +160,6 @@ class ProfitChart extends React.Component {
                   />
                 </Mobile>
               </div>
-              <div className="row order-4 d-flex d-md-none justify-content-center ">
-                <div className="container-fuild alltime-block">
-                  <div className="row justify-content-center">
-                    <div className="col-auto">
-                      <div className="graphic-fake"></div>
-                    </div>
-                    <div className="col-auto">
-                      <div className="d-flex flex-column">
-                        <div className="alltime">alltime</div>
-                        <div className="percent">0%</div>
-                        <div className="date">Since {formatDate(new Date(this.props.dt || Date.now()))}</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
 
