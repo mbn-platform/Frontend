@@ -1,4 +1,4 @@
-import {RATE_CONTRACT, FETCH_CONTRACTS } from '../actions/contracts';
+import {RATE_CONTRACT, FETCH_CONTRACTS, UPDATE_CONTRACT_BALANCE} from '../actions/contracts';
 import {PAY_OFFER, VERIFY_OFFER} from '../actions/offers';
 import { makeId } from '../generic/util';
 import { UPDATE_DASHBOARD } from '../actions/dashboard';
@@ -51,6 +51,15 @@ export default function(state = {current: [], finished: []}, action) {
     }
     case FETCH_CONTRACTS: {
       return action.contracts;
+    }
+    case UPDATE_CONTRACT_BALANCE: {
+      const current = [...state.current];
+      const contractIndex = current.findIndex(c => c._id === action._id);
+      if(contractIndex < 0) {
+        return state;
+      }
+      current[contractIndex].balances = action.balances;
+      return {...state, current};
     }
     default:
       return state;
