@@ -28,7 +28,7 @@ export function rateContract(feedback) {
       .then(json => {
         dispatch({
           type: RATE_CONTRACT,
-          contract: json
+          feedback: json
         });
       })
       .catch(error => {

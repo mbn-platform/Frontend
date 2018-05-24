@@ -8,17 +8,13 @@ export default function(state = {current: [], finished: []}, action) {
   switch(action.type) {
     case RATE_CONTRACT:
       const feedback = action.feedback;
-      const name = action.userId;
-      const date = (new Date(action.time)).toISOString();
-      const f = {
-        name,
-        date,
-        raiting: feedback.rate,
-        text: feedback.text,
-      };
-      const contract = state.finished.find(c => c._id === feedback.offerId);
-      const updated = {...contract, feedbacks: contract.feedbacks.concat(f)};
-      return {...state, finished: state.finished.map(c => c._id === updated._id ? updated : c)};
+      const contract = state.finished.find(c => c._id === feedback.contract);
+      if(contract) {
+        const updated = {...contract, feedbacks: contract.feedbacks.concat(feedback)};
+        return {...state, finished: state.finished.map(c => c._id === updated._id ? updated : c)};
+      } else {
+        return state;
+      }
     case VERIFY_OFFER:
       return {...state, current: state.current.concat(action.offer)}
     case PAY_OFFER: {

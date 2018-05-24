@@ -37,15 +37,8 @@ const SelectedContractInfo = ({ contract, onContractRate, time, userId }) => {
 };
 
 function canLeaveFeedback(contract, userId) {
-  if(!contract.feedbacks || contract.feedbacks.length === 0) {
-    return true;
-  }
-  if(contract.feedbacks.length === 2) {
-    return false;
-  } else {
-    const author = contract.feedbacks[0].from._id;
-    return author !== userId;
-  }
+  const feedback = contract.feedbacks.find(f => f.from._id === userId);
+  return !feedback;
 }
 
 export default SelectedContractInfo;
