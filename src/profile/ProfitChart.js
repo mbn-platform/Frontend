@@ -15,10 +15,12 @@ class ProfitChart extends React.Component {
     this.state = {selectedCurrency: 0, selectedInterval: 2, profit, profitAsInvestor};
   }
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps, nextState) {
     return (
       nextProps.trades !== this.props.trades
       || nextProps.dt !== this.props.dt
+      || nextState.selectedInterval !== this.state.selectedInterval
+      || nextState.selectedCurrency !== this.state.selectedCurrency
     );
   }
 
@@ -65,11 +67,11 @@ class ProfitChart extends React.Component {
           let traderFirst = data[0];
           let investorFirst = dataAsInvestor[0];
           if(traderFirst && investorFirst) {
-            startDate = Math.min(traderFirst[0], investorFirst[0]);
+            startDate = Math.min(new Date(traderFirst[0]).getTime(), new Date(investorFirst[0]).getTime());
           } else if(!traderFirst) {
-            startDate = investorFirst[0] - 864000000;
+            startDate = new Date(investorFirst[0]).getTime() - 864000000;
           } else {
-            startDate = traderFirst[0] - 864000000;
+            startDate = new Date(traderFirst[0]).getTime() - 864000000;
           }
           numberOfPoints = 18;
         }
