@@ -88,7 +88,6 @@ class Dashboard extends React.Component {
             onKeySelected={this.onKeySelected}
             onKeyDeleteClick={this.props.onKeyDeleteClick}
             exchanges={this.props.exchanges}
-            rates={this.props.rates}
           />
           <AddApiKey/>
           <ApiKeyInfo
@@ -105,6 +104,7 @@ class Dashboard extends React.Component {
             selectedContract={this.state.selectedContract}
             onContractSelected={this.onContractSelected}
             selectedNet={this.props.selectedNet}
+            exchangesInfo={this.props.exchangesInfo}
           />
         </div>
         <div className="table_wrapper selected_contract_table">

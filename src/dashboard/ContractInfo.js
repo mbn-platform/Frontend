@@ -5,16 +5,18 @@ import classNames from 'classnames';
 class ContractInfo extends React.Component {
 
   render() {
-    const startDate = new Date(this.props.contract.dt);
-    const expireDate = new Date(startDate.getTime() + this.props.contract.contractSettings.duration * 86400000);
+    const {contract} = this.props;
+    const startDate = new Date(contract.dt);
+    const expireDate = new Date(startDate.getTime() + contract.contractSettings.duration * 86400000);
     const progress = (expireDate - this.props.time) / (expireDate - startDate) * 100;
-    const currentBalance = this.props.contract.balance;
-    const startBalance = this.props.contract.startBalance / 100000000;
+    const currentBalance = contract.currentBalance;
+    const startBalance = contract.contractSettings.sum;
+    const minBalance = startBalance * (1 - contract.contractSettings.maxLoss / 100);
+    const maxBalance = contract.contractSettings.targetBalance / 100000000;
     let left = null, profitProgress = null;
-    if(currentBalance !== null) {
-      left = this.props.contract.targetBalance / 100000000 - currentBalance;
-      profitProgress = currentBalance > startBalance ?
-        (currentBalance - startBalance) / (this.props.contract.targetBalance / 100000000 - startBalance) * 100 : 0;
+    if(currentBalance) {
+      left = maxBalance - currentBalance;
+      profitProgress = (currentBalance - minBalance) / (maxBalance - minBalance) * 100;
     }
     return (
       <div>
@@ -27,7 +29,7 @@ class ContractInfo extends React.Component {
               </div>
             </div>
             <div className="profit_left">
-              <ProfitLeft left={left} currency={this.props.contract.currency} progress={profitProgress}/>
+              <ProfitLeft left={left} currency={contract.contractSettings.currency} progress={profitProgress}/>
               <ProgressBar progress={profitProgress} />
             </div>
           </div>

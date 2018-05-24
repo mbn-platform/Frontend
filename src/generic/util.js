@@ -100,7 +100,7 @@ function convert(currencies, currency, rates) {
   }
 }
 
-export function calculateTotalBalance(balances, rates, targetCurrency) {
+export function calculateTotalBalance(balances, rates) {
   return balances.reduce((accum, b) => {
     switch(b.name) {
       case 'USDT': {

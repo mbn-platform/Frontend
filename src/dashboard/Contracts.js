@@ -8,6 +8,7 @@ import { Desktop, Mobile } from '../generic/MediaQuery';
 import Pagination from '../generic/Pagination';
 import { UncontrolledTooltip } from 'reactstrap';
 import { CONTRACT_STATE_FINISHED, CONTRACT_STATE_VERIFIED, CONTRACT_STATE_HALTED } from '../constants';
+import { calculateTotalBalance } from '../generic/util';
 
 
 
@@ -38,6 +39,32 @@ class Contracts extends React.Component {
         this.setState({completedTabIndex: requiredTab});
       }
     }
+  }
+
+  componentDidUpdate(prevProps) {
+    if(prevProps.contracts !== this.props.contracts || prevProps.exchangesInfo !== this.props.exchangesInfo) {
+      this.updateContractsCurrentBalance();
+    }
+  }
+
+  componentDidMount() {
+    this.updateContractsCurrentBalance();
+  }
+
+  updateContractsCurrentBalance() {
+    for(const contract of this.props.contracts.current) {
+      const exchangeInfo = this.props.exchangesInfo[contract.exchange];
+      if(exchangeInfo) {
+        const rates = exchangeInfo.rates;
+        if(rates) {
+          contract.currentBalance = calculateTotalBalance(contract.balances, rates);
+        }
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   onOwnershipTabChange(index) {
@@ -95,11 +122,18 @@ class Contracts extends React.Component {
     return {
       Header: ContractTableHeader(header),
       id: 'date',
-      accessor: 'dt',
+      accessor: c => {
+        if(c.state === CONTRACT_STATE_FINISHED) {
+          const date = c.finishDt ? new Date(c.finishDt) : new Date();
+          return date;
+        } else {
+          const date = new Date(c.dt);
+          date.setDate(date.getDate() + c.contractSettings.duration);
+          return date;
+        }
+      },
       Cell: row => {
-        const date = new Date(row.value);
-        date.setDate(date.getDate() + row.original.contractSettings.duration);
-        return formatDate(date);
+        return formatDate(row.value);
       },
       minWidth: 80,
       className: 'table_col_value',
@@ -125,11 +159,11 @@ class Contracts extends React.Component {
         let balance;
         switch(c.state) {
           case CONTRACT_STATE_VERIFIED:
-            balance = c.balance;
-            if(balance === null) {
-              return null;
+            if(c.currentBalance) {
+              return ((c.currentBalance / c.contractSettings.sum - 1) * 100).toFixed(2);
+            } else {
+              return '';
             }
-            break;
           case CONTRACT_STATE_HALTED:
           case CONTRACT_STATE_FINISHED:
             balance = c.finishBalance / 100000000;
@@ -137,7 +171,7 @@ class Contracts extends React.Component {
           default:
             console.log('invalid contract state');
         }
-        const percent = ((balance / (c.startBalance / 100000000) || 0) * 100 - 100).toFixed(2);
+        const percent = ((balance / c.contractSettings.sum - 1) * 100).toFixed(2);
         return percent;
       },
       minWidth: 55,
@@ -168,15 +202,15 @@ class Contracts extends React.Component {
       Header: ContractTableHeader('Current\nbalance'),
       minWidth: 110,
       accessor: c => {
-        return '';
         let balance;
         switch(c.state) {
           case CONTRACT_STATE_VERIFIED:
-            balance = c.balance;
-            if(balance === null) {
-              return null;
+            if(c.currentBalance) {
+              balance = c.currentBalance;
+              break;
+            } else {
+              return '';
             }
-            break;
           case CONTRACT_STATE_HALTED:
           case CONTRACT_STATE_FINISHED:
             balance = c.finishBalance / 100000000;
@@ -184,7 +218,7 @@ class Contracts extends React.Component {
           default:
             console.log('invalid contract state');
         }
-        return formatBalance(balance, c.currency) + ' ' + c.currency;
+        return formatBalance(balance, c.contractSettings.currency) + ' ' + c.contractSettings.currency;
       },
       sortMethod: (a,b, desc) => {
         return parseFloat(a) - parseFloat(b);
@@ -238,9 +272,23 @@ class Contracts extends React.Component {
       minWidth: 110,
       Header: ContractTableHeader('Current\nbalance'),
       accessor: c => {
-        return '';
-        const currentBalance = c.balance;
-        return formatBalance(currentBalance, c.currency) + ' ' + c.currency;
+        let balance;
+        switch(c.state) {
+          case CONTRACT_STATE_VERIFIED:
+            if(c.currentBalance) {
+              balance = c.currentBalance;
+              break;
+            } else {
+              return '';
+            }
+          case CONTRACT_STATE_HALTED:
+          case CONTRACT_STATE_FINISHED:
+            balance = c.finishBalance / 100000000;
+            break;
+          default:
+            console.log('invalid contract state');
+        }
+        return formatBalance(balance, c.contractSettings.currency) + ' ' + c.contractSettings.currency;
       },
       sortMethod: (a,b, desc) => {
         return parseFloat(a) - parseFloat(b);
@@ -344,8 +392,8 @@ const StatusCell = ({value, original}) => {
   let colorClassName;
   switch(value) {
     case CONTRACT_STATE_FINISHED:
-      switch(original.reason) {
-        case 'targetBalance':
+      switch(original.finishReason) {
+        case 'TARGET_PROFIT':
           colorClassName = 'green';
           break;
         default:
