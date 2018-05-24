@@ -93,7 +93,7 @@ class TradeHistory extends React.Component {
     ];
   }
   renderTable() {
-    const data = this.props.trades.asTrader.concat(this.props.trades.asInvestor)
+    const data = this.props.trades
       .sort((t1, t2) => t2.date - t1.date)
       .reduce((accum, value) => {
       if(value.length) {

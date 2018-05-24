@@ -15,6 +15,15 @@ class ProfitChart extends React.Component {
     this.state = {selectedCurrency: 0, selectedInterval: 2, profit, profitAsInvestor};
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return (
+      nextProps.trades !== this.props.trades
+      || nextProps.dt !== this.props.dt
+      || nextState.selectedInterval !== this.state.selectedInterval
+      || nextState.selectedCurrency !== this.state.selectedCurrency
+    );
+  }
+
   componentWillReceiveProps(nextProps) {
     const trades = [].concat.apply([], nextProps.trades);
     const profit = calculateAllProfit(trades);
@@ -58,11 +67,11 @@ class ProfitChart extends React.Component {
           let traderFirst = data[0];
           let investorFirst = dataAsInvestor[0];
           if(traderFirst && investorFirst) {
-            startDate = Math.min(traderFirst[0], investorFirst[0]);
+            startDate = Math.min(new Date(traderFirst[0]).getTime(), new Date(investorFirst[0]).getTime());
           } else if(!traderFirst) {
-            startDate = investorFirst[0] - 864000000;
+            startDate = new Date(investorFirst[0]).getTime() - 864000000;
           } else {
-            startDate = traderFirst[0] - 864000000;
+            startDate = new Date(traderFirst[0]).getTime() - 864000000;
           }
           numberOfPoints = 18;
         }
@@ -120,7 +129,6 @@ class ProfitChart extends React.Component {
 
               <div className="row order-3 order-md-1 justify-content-center">
                 <div className="col-auto profit"><div className="circle"></div><div className="text">PROFIT AS TRADER</div></div>
-                <div className="col-auto profit"><div className="circle green"></div><div className="text">PROFIT AS INVESTOR</div></div>
               </div>
               <div className="row order-2 justify-content-center amcharts-block">
                 <div className="col-12">
@@ -151,22 +159,6 @@ class ProfitChart extends React.Component {
                     }}
                   />
                 </Mobile>
-              </div>
-              <div className="row order-4 d-flex d-md-none justify-content-center ">
-                <div className="container-fuild alltime-block">
-                  <div className="row justify-content-center">
-                    <div className="col-auto">
-                      <div className="graphic-fake"></div>
-                    </div>
-                    <div className="col-auto">
-                      <div className="d-flex flex-column">
-                        <div className="alltime">alltime</div>
-                        <div className="percent">0%</div>
-                        <div className="date">Since {formatDate(new Date(this.props.dt || Date.now()))}</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -215,16 +207,7 @@ class ProfitChart extends React.Component {
           'visibleInLegend': false,
           'type': 'smoothedLine',
           'valueField': 'column-1'
-        },
-        {
-          'balloonText': '[[title]] of [[category]]:[[value]]',
-          'id': 'investor_profit',
-          'lineAlpha': 1,
-          'lineThickness': 2,
-          'visibleInLegend': false,
-          'type': 'smoothedLine',
-          'valueField': 'investor_profit'
-        },
+        }
       ],
       'guides': [],
       'valueAxes': [
@@ -326,7 +309,7 @@ function closure(array, isUsd, rates) {
     return value => {
       for(let i = startIndex; i < array.length; i++) {
         const point = array[i];
-        if(point[0] <= value) {
+        if(new Date(point[0]).getTime() <= value) {
           startIndex = i;
           continue;
         } else if(i === 0) {
@@ -337,12 +320,12 @@ function closure(array, isUsd, rates) {
           let total = 0;
           if(isUsd) {
             total += profit.USDT;
-            total += (profit.BTC * rates.USDT.BTC) || 0;
-            total += (profit.ETH * rates.USDT.ETH) || 0;
+            total += (profit.BTC * rates['USDT-BTC']) || 0;
+            total += (profit.ETH * rates['USDT-ETH']) || 0;
           } else {
             total += profit.BTC;
-            total += (profit.ETH * rates.BTC.ETH) || 0;
-            total += (profit.USDT / rates.USDT.BTC) || 0;
+            total += (profit.ETH * rates['BTC-ETH']) || 0;
+            total += (profit.USDT / rates['USDT-BTC']) || 0;
           }
           return total;
         }
@@ -351,12 +334,12 @@ function closure(array, isUsd, rates) {
       let total = 0;
       if(isUsd) {
         total += profit.USDT;
-        total += (profit.BTC * rates.USDT.BTC) || 0;
-        total += (profit.ETH * rates.USDT.ETH) || 0;
+        total += (profit.BTC * rates['USDT-BTC']) || 0;
+        total += (profit.ETH * rates['USDT-ETH']) || 0;
       } else {
         total += profit.BTC;
-        total += (profit.ETH * rates.BTC.ETH) || 0;
-        total += (profit.USDT / rates.USDT.BTC) || 0;
+        total += (profit.ETH * rates['BTC-ETH']) || 0;
+        total += (profit.USDT / rates['USDT-BTC']) || 0;
       }
       return total;
     };

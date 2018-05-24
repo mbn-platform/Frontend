@@ -4,35 +4,34 @@ import PieChart from 'amcharts3/amcharts/pie';
 import SerialChar from 'amcharts3/amcharts/serial';
 import AmChartsReact from "@amcharts/amcharts3-react";
 
-class ContractsChart extends React.Component {
+class SelectedContractChart extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {data: this.formatData(props.contracts.finished)};
+    this.getValueInBTC = getValueInBTC.bind(this);
+    this.state = {data: this.formatData(props.contract ? props.contract.balances : [])};
   }
 
-  formatData(contracts) {
-    const data = contracts.reduce((acc, c) => {
-      acc[c.contractor] = acc[c.contractor] || 0;
-      acc[c.contractor] += c.currentBalance - c.startBalance
-      return acc;
-    }, {});
-    return Object.entries(data).filter(a => a[1] > 0)
-      .sort((a1, a2) => a1[1] < a2[1])
+  formatData(balances) {
+    const data = balances.filter(balance => balance.available > 0)
+      .sort((a1, a2) => a1.available < a2.available)
       .map(a => ({
-        category: a[0],
-        'column-1': a[1]
+        category: a.name,
+        'column-1': a.available,
+        'column-2': this.getValueInBTC(a.name, a.available)
       }));
+    return data;
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({data: this.formatData(nextProps.contract ? nextProps.contract.balances : [])});
   }
 
   render() {
     return (
       <div className="table">
         <div className="table_title_wrapper clearfix">
-          <div className="table_title center">CONTRACTS PROFIT</div>
-        </div>
-        <div className="chart_title_total">
-          <span className="chart_title_total_span">Total:</span> 0 BTC
+          <div className="table_title center">SELECTED CONTRACT BALANCE</div>
         </div>
         <div className="charts">
           <div className="chart_pie">
@@ -50,12 +49,13 @@ class ContractsChart extends React.Component {
                             '#c5c5c5',
                             '#465666'
                           ],
-                          'balloonText': '[[title]]<br><span style=\'font-size:14px\'><b>[[value]]</b> ([[percents]]%)</span>',
+                          'balloonText': '[[title]]<br><span style=\'font-size:14px\'><b>[[description]]</b> ([[percents]]%)</span>',
                           'innerRadius': '70%',
                           'labelsEnabled': false,
                           'startDuration': 0,
                           'titleField': 'category',
-                          'valueField': 'column-1',
+                          'valueField': 'column-2',
+                           'descriptionField': 'column-1',
                           'allLabels': [],
                           'balloon': {},
                           'legend': {
@@ -72,7 +72,7 @@ class ContractsChart extends React.Component {
                             'labelText': '',
                             'valueAlign': 'left',
                             'align': 'left',
-                            'valueText': '[[percents]] - [[title]]',
+                            'valueText': '[[description]] [[title]]',
                             'useMarkerColorForLabels': true,
                             'useMarkerColorForValues': true
                           },
@@ -90,4 +90,18 @@ class ContractsChart extends React.Component {
   }
 }
 
-export default ContractsChart;
+export default SelectedContractChart;
+
+export function getValueInBTC(currencyName, currencyValue) {
+  if (currencyName === 'BTC') {
+    return currencyValue;
+  }
+  const rates = this.props.exchangesInfo['bittrex'] ? this.props.exchangesInfo['bittrex'].rates : [];
+  let marketName;
+  if (currencyName === 'USDT') {
+    return (currencyValue / rates['USDT-BTC']).toFixed(8);
+  } else {
+    marketName = `BTC-${currencyName}`;
+  }
+  return (currencyValue * (rates[marketName] || 0)).toFixed(8);
+}

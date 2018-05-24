@@ -51,7 +51,8 @@ export function getInitialState() {
     rates: null,
     profile: {
       contractSettings: {},
-      feedbacks: []
+      feedbacks: [],
+      trades: []
     },
     exchangesInfo: {
 

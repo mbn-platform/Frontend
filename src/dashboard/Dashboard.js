@@ -5,8 +5,8 @@ import ApiKeyInfo from './ApiKeyInfo';
 import Contracts from './Contracts';
 import Offers from './Offers';
 import SelectedContractInfo from './SelectedContractInfo';
-import TradersChart from './TradersChart';
-import ContractsChart from './ContractsChart';
+import FundsChart from './FundsChart';
+import SelectedContractChart from './SelectedContractChart';
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -115,10 +115,10 @@ class Dashboard extends React.Component {
             contract={this.state.selectedContract} />
         </div>
         <div className="table_wrapper traders_chart">
-          <TradersChart contracts={this.props.contracts}/>
+          <FundsChart contracts={this.props.contracts.current || []} apiKeys={this.props.apiKeys.ownKeys || []} exchangesInfo={this.props.exchangesInfo}/>
         </div>
         <div className="table_wrapper contracts_chart">
-          <ContractsChart contracts={this.props.contracts} />
+          <SelectedContractChart contract={this.state.selectedContract} exchangesInfo={this.props.exchangesInfo}/>
         </div>
       </div>
     );
