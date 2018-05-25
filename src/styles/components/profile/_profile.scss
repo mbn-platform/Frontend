@@ -281,6 +281,8 @@
                 padding-left: 30px;
                 .feedback-card {
                     .card-body {
+                        display: flex;
+                        align-items: center;
                         min-height: 350px;
                         .feedback-body {
                             height: calc(100% - 84px);
@@ -289,8 +291,6 @@
                             min-height: 250px;
                         }
                         .feedback-message {
-                            position: absolute;
-                            top: 50%;
                             text-align: center;
                             width: 100%;
                             font-size: 1.8em;
