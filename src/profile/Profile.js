@@ -52,11 +52,11 @@ class Profile extends React.Component {
     this.props.updateContractSettings(this.state.profile.name, contractSettings);
   }
 
-  getProfilePageData(name) {
-    const p1 = this.props.getProfile(name);
-    const p2 = this.props.getFeedbacks(name);
-    const p3 = this.props.getTradesForUser(name)
-    return Promise.all([p1, p2, p3]);
+  async getProfilePageData(name) {
+    await this.props.getProfile(name);
+    const p1 = this.props.getFeedbacks(name);
+    const p2 = this.props.getTradesForUser(name)
+    return Promise.all([p1, p2]);
   }
 
   componentDidMount() {
