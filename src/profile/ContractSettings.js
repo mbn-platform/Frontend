@@ -318,7 +318,7 @@ const EditSettingsEntry = ({className, placeholder,value, dimension, name, onCha
         onChange={onChange}
         name={name}
         value={value}
-        type="text"
+        type="number"
         placeholder={placeholder}
         aria-label={placeholder}
       />
