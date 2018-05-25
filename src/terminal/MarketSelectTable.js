@@ -140,9 +140,9 @@ class MarketSelectTable extends React.Component {
     if(this.state.markets.length) {
       sortedData = this.sortData(this.state.markets);
     }
-    if(this.props.balance && this.state.hideZeros) {
+    if(this.props.balances && this.state.hideZeros) {
       sortedData = sortedData.filter(m => {
-        const c = this.props.balance[m.second];
+        const c = this.props.balances.find(b => b.name === m.second);
         return c && c.total > 0;
       });
     }
