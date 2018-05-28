@@ -17,6 +17,13 @@ class Dashboard extends React.Component {
     this.onOfferSelected = this.onOfferSelected.bind(this);
     this.onContractSelected = this.onContractSelected.bind(this);
     this.onContractRate = this.onContractRate.bind(this);
+    this.reset = this.reset.bind(this);
+  }
+
+  reset() {
+    this.setState({
+      selectedContract: null, selectedApiKey: null,
+    });
   }
 
   componentDidMount() {
@@ -95,6 +102,7 @@ class Dashboard extends React.Component {
             selectedContract={this.state.selectedContract}
             selectedApiKey={this.state.selectedApiKey}
             onContractSelected={this.onContractSelected}
+            onShowAllClicked={this.reset}
             selectedNet={this.props.selectedNet}
             exchangesInfo={this.props.exchangesInfo}
           />
