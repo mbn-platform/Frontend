@@ -558,6 +558,11 @@
       border-top-left-radius: 0 !important;
       border-bottom-right-radius: 0 !important;
       border-bottom-left-radius: 0 !important;
+      .ReactTable {
+        .rt-tr {
+          cursor: auto;
+        }
+      }
     }
 
     .api_key_currencies_table .table_title_wrapper
