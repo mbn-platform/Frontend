@@ -27,9 +27,9 @@ class MarketSelectTable extends React.Component {
     this.sortFunctions = {
       volume: (a, b) => (a.volume * a.last) - (b.volume * b.last),
       Balance: (a, b) => {
-        const first = this.props.balance[a.base];
+        const first = this.props.balances[a.base];
         const bFirst = first ? (first.total || 0) : 0;
-        const second = this.props.balance[a.second];
+        const second = this.props.balances[a.second];
         const bSecond = second ? (second.total || 0) : 0;
         return bFirst * a.last - bSecond * b.last;
       },
@@ -140,9 +140,9 @@ class MarketSelectTable extends React.Component {
     if(this.state.markets.length) {
       sortedData = this.sortData(this.state.markets);
     }
-    if(this.props.balance && this.state.hideZeros) {
+    if(this.props.balances && this.state.hideZeros) {
       sortedData = sortedData.filter(m => {
-        const c = this.props.balance[m.second];
+        const c = this.props.balances.find(b => b.name === m.second);
         return c && c.total > 0;
       });
     }
@@ -181,7 +181,7 @@ class MarketSelectTable extends React.Component {
                 <th onClick={() => this.onColumnSort('last')}>Price <span className={classNameForColumnHeader(this.state, 'last')}></span></th>
                 <th onClick={() => this.onColumnSort('volume')}>Volume({baseCurrency}) <span className={classNameForColumnHeader(this.state, 'volume')}></span></th>
                 <th onClick={() => this.onColumnSort('change')}>Change <span className={classNameForColumnHeader(this.state, 'change')}></span></th>
-                {this.props.balance ? (
+                {this.props.balances ? (
                   <th onClick={() => this.onColumnSort('Balance')}>Balance ({baseCurrency}) <span className={classNameForColumnHeader(this.state, 'Balance')}></span><br/>
                     <div onClick={this.onHideZeroClick}>Hide zeros <div className={classNames('currency_status_checkbox', {selected: this.state.hideZeros})}/>
                     </div>
@@ -196,7 +196,7 @@ class MarketSelectTable extends React.Component {
                   .map(m => (
                     <MarketRow
                       rates={this.props.rates}
-                      balance={this.props.balance}
+                      balances={this.props.balances}
                       isBTC={isBTC}
                       key={m.symbol}
                       onClick={this.onSecondaryCurrencySelected}
@@ -220,11 +220,12 @@ MarketSelectTable.propTypes = {
   selectMarket: PropTypes.func.isRequired,
 };
 
-const MarketRow = ({balance, market, onClick, isBTC, rates}) => {
+const MarketRow = ({balances, market, onClick, isBTC, rates}) => {
   let balanceValue;
-  if(balance) {
-    const c = balance[market.second];
-    balanceValue = (c && c.total) || 0;
+  if(balances) {
+    let c;
+    c = balances.find(m => m.name === market.second);
+    balanceValue = (c && c.available) || 0;
     balanceValue = balanceValue * rates[market.symbol];
   }
   return (
@@ -233,7 +234,7 @@ const MarketRow = ({balance, market, onClick, isBTC, rates}) => {
       <td>{defaultFormatValue(market.last, market.base)}</td>
       <td>{Math.round(market.volume * market.last)}</td>
       <td>{market.change.toFixed(2) + '%'}</td>
-      {balance ?  (<td>{defaultFormatValue(balanceValue, market.base)}</td>) : null}
+      {balances ?  (<td>{defaultFormatValue(balanceValue, market.base)}</td>) : null}
     </tr>
   );
 };
@@ -241,9 +242,8 @@ const MarketRow = ({balance, market, onClick, isBTC, rates}) => {
 const mapStateToProps = state => {
   const exchange = state.terminal.exchange;
   const info = state.exchangesInfo[exchange];
-  const balances = state.apiKeys.balances;
   return {
-    balance: state.terminal.apiKey ? balances[state.terminal.apiKey._id] : null,
+    balances: state.terminal.fund ? state.terminal.fund.balances : null,
     market: state.terminal.market,
     rates: (info && info.rates) || {},
     markets: (info && info.markets) || [],
