@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import SegmentedControl from '../generic/SegmentedControl';
 import ReactTable from '../generic/SelectableReactTable';
 import ExchangeSelect from './ExchangeSelect';
 import SearchHeader from '../generic/SearchHeader';
@@ -8,9 +7,6 @@ import classNames from 'classnames';
 import { Desktop, Mobile } from '../generic/MediaQuery';
 import { calculateTotalBalance } from '../generic/util';
 import Pagination from '../generic/Pagination';
-
-const TAB_OWN_KEYS = 0;
-const TAB_RECEIVED_KEYS = 1;
 
 class Funds extends React.Component {
 
@@ -40,10 +36,10 @@ class Funds extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(!nextProps.selectedFund) {
+    if(!nextProps.selectedApiKey) {
       return;
     }
-    if(this.props.selectedFund && this.props.selectedFund._id === nextProps.selectedFund._id) {
+    if(this.props.selectedApiKey && this.props.selectedApiKey._id === nextProps.selectedApiKey._id) {
       return;
     }
   }
@@ -52,7 +48,7 @@ class Funds extends React.Component {
     return (
       <div className="api_keys_table table">
         <div className="table_title_wrapper clearfix">
-          <div className="table_title">Funds</div>
+          <div className="table_title">Exchange accounts</div>
         </div>
         {this.renderContent()}
       </div>
@@ -64,7 +60,7 @@ class Funds extends React.Component {
     const exchangeFilter = this.state.filtered.find(f => f.id === 'exchange').value;
     return [
       {
-        Header: SearchHeader('Fund name', nameFilter, this.onFilter),
+        Header: SearchHeader('Name', nameFilter, this.onFilter),
         className: 'table_col_value',
         Cell: row => (<div className="key_name_text_td">{row.value || (row.original.from._id === this.props.userId ? `Trusted to ${row.original.to.name}` : `${row.original.from.name} trusted to me`)}</div>),
         minWidth: 100,
@@ -109,13 +105,13 @@ class Funds extends React.Component {
         minWidth: 24,
         className: 'table_col_delete',
         Cell: row => {
-          const canDeleteKey = row.original.name !== undefined
-          const onClick = canDeleteKey ? e => {
+          const canDeleteKey = true;
+          const onClick =  e => {
             e.stopPropagation();
-            if (window.confirm('You want to delete this key?')) {
+            if (window.confirm('Do you want to delete this key?')) {
               this.props.onKeyDeleteClick(row.original);
             }
-          } : null;
+          };
           const className = classNames('delete_key_button', {can_delete_key: canDeleteKey});
           return (<div className={className} onClick={onClick}></div>);
         },
@@ -124,8 +120,7 @@ class Funds extends React.Component {
     ];
   }
   renderContent() {
-    const { apiKeys, contracts } = this.props;
-    const data = apiKeys.concat(contracts);
+    const data = this.props.apiKeys;
     return (
       <div>
         <Desktop>
@@ -134,7 +129,7 @@ class Funds extends React.Component {
             columns={this.getColumns()}
             data={data}
             filtered={this.state.filtered}
-            selectedItem={this.props.selectedFund}
+            selectedItem={this.props.selectedApiKey}
             onItemSelected={key => this.props.onKeySelected(key)}
             scrollBarHeight={217}
           />
@@ -144,7 +139,7 @@ class Funds extends React.Component {
             columns={this.getColumns()}
             data={data}
             filtered={this.state.filtered}
-            selectedItem={this.props.selectedFund}
+            selectedItem={this.props.selectedApiKey}
             onItemSelected={key => this.props.onKeySelected(key)}
             minRows={5}
             showPagination={true}
@@ -181,8 +176,7 @@ Funds.propTypes = {
   onKeySelected: PropTypes.func.isRequired,
   onKeyDeleteClick: PropTypes.func.isRequired,
   apiKeys: PropTypes.array.isRequired,
-  contracts: PropTypes.array.isRequired,
-  selectedKey: PropTypes.object
+  selectedApiKey: PropTypes.object
 };
 
 export default Funds;

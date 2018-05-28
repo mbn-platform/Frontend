@@ -83,15 +83,14 @@ class Dashboard extends React.Component {
             exchangesInfo={this.props.exchangesInfo}
             userId={this.props.userId}
             apiKeys={this.props.apiKeys.ownKeys}
-            contracts={this.props.contracts.current}
-            selectedFund={this.state.selectedFund}
+            selectedApiKey={this.state.selectedApiKey}
             onKeySelected={this.onKeySelected}
             onKeyDeleteClick={this.props.onKeyDeleteClick}
             exchanges={this.props.exchanges}
           />
           <AddApiKey/>
           <ApiKeyInfo
-            fund={this.state.selectedFund}
+            fund={this.state.selectedApiKey}
             isOwnKey={isOwnKey}
             exchanges={this.props.exchanges}
             onKeyUpdateClick={this.props.onKeyUpdateClick}
@@ -125,8 +124,8 @@ class Dashboard extends React.Component {
   }
 
   onKeySelected(apiKey) {
-    if(!this.state.selectedFund || this.state.selectedFund._id !== apiKey._id) {
-      const newState = {selectedFund: apiKey};
+    if(!this.state.selectedApiKey || this.state.selectedApiKey._id !== apiKey._id) {
+      const newState = {selectedApiKey: apiKey};
       this.setState(newState);
     }
   }
