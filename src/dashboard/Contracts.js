@@ -14,30 +14,21 @@ import { calculateTotalBalance } from '../generic/util';
 
 class Contracts extends React.Component {
 
+  static TAB_CURRENT = 0
+  static TAB_FINISHED = 1
+
   constructor(props) {
     super(props);
-    this.state = {ownedTabIndex: 0, completedTabIndex: 0};
-    this.onOwnershipTabChange = this.onOwnershipTabChange.bind(this);
-    this.onStatusTabChange = this.onStatusTabChange.bind(this);
+    this.state = {selectedTab: Contracts.TAB_CURRENT, selectedApiKeyId: null};
+    this.onTabClick = this.onTabClick.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if(!nextProps.selectedContract) {
-      return;
-    }
-    if(this.props.selectedContract && this.props.selectedContract._id === nextProps.selectedContract._id) {
-      return;
-    }
-    if(nextProps.selectedContract !== this.props.selectedContract) {
-      let requiredTab;
-      if(nextProps.selectedContract.state === CONTRACT_STATE_FINISHED || nextProps.selectedContract.state === CONTRACT_STATE_HALTED) {
-        requiredTab = 1;
-      } else {
-        requiredTab = 0;
-      }
-      if(this.state.completedTabIndex !== requiredTab) {
-        this.setState({completedTabIndex: requiredTab});
-      }
+
+  static getDerivedStateFromProps(props, state) {
+    if(props.selectedApiKey && props.selectedApiKey._id !== state.selectedApiKeyId) {
+      return {selectedApiKeyId: props.selectedApiKey._id, selectedTab: Contracts.TAB_CURRENT};
+    } else if(!props.selectedApiKey) {
+      return {selectedApiKeyId: null};
     }
   }
 
@@ -63,21 +54,25 @@ class Contracts extends React.Component {
     }
   }
 
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
-
-  onOwnershipTabChange(index) {
-    this.setState({ownedTabIndex: index});
-  }
-  onStatusTabChange(index) {
-    this.setState({completedTabIndex: index});
+  onTabClick(index) {
+    this.setState({selectedTab: index});
   }
 
   renderContent() {
-    const data = this.state.completedTabIndex ?
-      this.props.contracts.finished :
-      this.props.contracts.current;
+    let data;
+    switch(this.state.selectedTab) {
+      case Contracts.TAB_CURRENT:
+        data = this.props.contracts.current;
+        if(this.props.selectedApiKey) {
+          data = data.filter(c => c.keyId === this.props.selectedApiKey._id);
+        }
+        break;
+      case Contracts.TAB_FINISHED:
+        data = this.props.contracts.finished;
+        break;
+      default:
+        break;
+    }
     return (
       <div>
         <Desktop>
@@ -110,7 +105,7 @@ class Contracts extends React.Component {
       <div className="table contracts_table">
         <div className="table_title_wrapper clearfix">
           <div className="table_title">Contracts</div>
-          <SegmentedControl selectedIndex={this.state.completedTabIndex} segments={['CURRENT', 'FINISHED']} onChange={this.onStatusTabChange}/>
+          <SegmentedControl selectedIndex={this.state.selectedTab} segments={['CURRENT', 'FINISHED']} onChange={this.onTabClick}/>
         </div>
         {this.renderContent()}
       </div>
