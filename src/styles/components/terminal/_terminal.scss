@@ -4,6 +4,14 @@
 	font-weight: 400;
     -webkit-font-smoothing: auto;
     -moz-osx-font-smoothing: auto;
+	.fullscreen-chart {
+		position: fixed !important;
+		width: 100vw;
+		height: 100vh !important;
+		top: 0;
+		left: 0;
+		z-index: 9999;
+	}
 	.amcharts-axis-label.amcharts-guide {
 		
 	}
@@ -84,6 +92,7 @@
 			    right: 15px;
 			    top: 15px;
 					.control-resize{
+						cursor: pointer;
 						width: 12px;
 						height: 12px;
 						background-image: url('../assets/svg/resize.svg');
