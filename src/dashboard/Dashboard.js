@@ -140,7 +140,7 @@ class Dashboard extends React.Component {
 
   onContractSelected(contract) {
     if(contract.state === CONTRACT_STATE_VERIFIED) {
-      this.setState({selectedContract: contract});
+      this.setState({selectedContract: contract, selectedOffer: null});
     } else {
       this.setState({selectedApiKey: null, selectedContract: contract, selectedOffer: null});
     }

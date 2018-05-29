@@ -36,6 +36,10 @@ class ApiKeyInfo extends React.Component {
     return !this.isFundInInitOrAcceptedState() || this.props.fund.contractSettings.currency === currency;
   }
 
+  isContractOrOffer() {
+    return this.props.fund && this.props.fund.from;
+  }
+
   getColumns() {
     const currencyFilter = this.state.filtered.find(f => f.id === 'currency').value;
 
@@ -66,7 +70,7 @@ class ApiKeyInfo extends React.Component {
             <div className="green_arrow green_arrow_bottom" ></div>
           </div>
         </div>),
-        Cell: rowInfo => rowInfo.value >= 0 && !this.isFundInInitOrAcceptedState()  ? rowInfo.value : '  ',
+        Cell: rowInfo => rowInfo.value >= 0 && !this.isContractOrOffer()  ? rowInfo.value : '  ',
         className: 'table_col_value',
         minWidth: 110,
         accessor: 'available'
@@ -78,7 +82,7 @@ class ApiKeyInfo extends React.Component {
             <div className="green_arrow green_arrow_bottom" ></div>
           </div>
         </div>),
-        Cell: rowInfo => rowInfo.value >= 0 && !this.isFundInInitOrAcceptedState() ? rowInfo.value : ' ',
+        Cell: rowInfo => rowInfo.value >= 0 && !this.isContractOrOffer() ? rowInfo.value : ' ',
         className: 'table_col_value',
         minWidth: 110,
         accessor: 'trusted'
