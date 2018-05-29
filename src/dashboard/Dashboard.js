@@ -12,7 +12,7 @@ import { CONTRACT_STATE_VERIFIED } from '../constants';
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {selectedContract: null, selectedFund: null, selectedOffer: null};
+    this.state = {selectedContract: null, selectedApiKey: null, selectedOffer: null};
     this.onKeySelected = this.onKeySelected.bind(this);
     this.onOfferSelected = this.onOfferSelected.bind(this);
     this.onContractSelected = this.onContractSelected.bind(this);
@@ -40,10 +40,9 @@ class Dashboard extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if(this.props.apiKeys !== nextProps.apiKeys) {
-      if(this.state.selectedFund) {
-        const key = nextProps.apiKeys.ownKeys.find(k => k._id === this.state.selectedFund._id) ||
-          nextProps.apiKeys.receivedKeys.find(k => k._id === this.state.selectedFund._id);
-        this.setState({selectedFund: key});
+      if(this.state.selectedApiKey) {
+        const key = nextProps.apiKeys.ownKeys.find(k => k._id === this.state.selectedApiKey._id) || null;
+        this.setState({selectedApiKey: key});
       }
     }
     if(this.props.offers !== nextProps.offers) {
@@ -53,7 +52,6 @@ class Dashboard extends React.Component {
         this.setState({selectedOffer: offer});
       }
     }
-    
     if(this.props.contracts !== nextProps.contracts) {
       if(this.state.selectedContract) {
         const findFunction = c => c._id === this.state.selectedContract._id;
