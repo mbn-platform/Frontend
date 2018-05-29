@@ -55,7 +55,7 @@ class FundSelect extends React.Component {
             }}
             className="dropdown keys">
             <div className="dropdown__name" onClick={this.onOutsideClick}>
-              <span>FUND</span><span className="arrow_down"></span>
+              <span>API KEY</span><span className="arrow_down"></span>
             </div>
             {this.props.funds.slice(0, 5).map(fund => (
               <div
@@ -74,7 +74,7 @@ class FundSelect extends React.Component {
   renderSelectedFund() {
     return (
       <span className="dropdown-link">
-        FUND{this.props.selectedFund ? ': ' + (this.props.selectedFund.name || `${this.props.selectedFund.from.name} trusted to me`) + ' ' : ' '}<span className="arrow_down"/>
+        API KEY{this.props.selectedFund ? ': ' + (this.props.selectedFund.name || `${this.props.selectedFund.from.name} trusted to me`) + ' ' : ' '}<span className="arrow_down"/>
       </span>
     );
   }
