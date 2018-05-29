@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import { UncontrolledTooltip } from 'reactstrap';
 import { Desktop, Mobile } from '../generic/MediaQuery';
 import Pagination from '../generic/Pagination';
+import {CONTRACT_STATE_ACCEPTED, CONTRACT_STATE_INIT} from '../constants';
 
 const STATUS_HELP = 'Selected key pairs allowed for trading';
 
@@ -27,8 +28,17 @@ class ApiKeyInfo extends React.Component {
       nextState !== this.state;
   }
 
+  isFundInInitOrAcceptedState() {
+    return this.props.fund && (this.props.fund.state === CONTRACT_STATE_INIT || this.props.fund.state === CONTRACT_STATE_ACCEPTED);
+  }
+
+  showCell(currency) {
+    return !this.isFundInInitOrAcceptedState() || this.props.fund.contractSettings.currency === currency;
+  }
+
   getColumns() {
     const currencyFilter = this.state.filtered.find(f => f.id === 'currency').value;
+
     return [
       {
         Header: SearchHeader('Currency', currencyFilter, this.onCurrencyChange),
@@ -44,7 +54,7 @@ class ApiKeyInfo extends React.Component {
             <div className="green_arrow green_arrow_bottom" ></div>
           </div>
         </div>),
-        Cell: rowInfo => rowInfo.value >= 0 ? rowInfo.value : ' - ',
+        Cell: rowInfo => rowInfo.value >= 0 && this.showCell(rowInfo.original.name) ? rowInfo.value : '  ',
         className: 'table_col_value',
         minWidth: 110,
         accessor: 'total'
@@ -56,7 +66,7 @@ class ApiKeyInfo extends React.Component {
             <div className="green_arrow green_arrow_bottom" ></div>
           </div>
         </div>),
-        Cell: rowInfo => rowInfo.value >= 0 ? rowInfo.value : ' - ',
+        Cell: rowInfo => rowInfo.value >= 0 && !this.isFundInInitOrAcceptedState()  ? rowInfo.value : '  ',
         className: 'table_col_value',
         minWidth: 110,
         accessor: 'available'
@@ -68,7 +78,7 @@ class ApiKeyInfo extends React.Component {
             <div className="green_arrow green_arrow_bottom" ></div>
           </div>
         </div>),
-        Cell: rowInfo => rowInfo.value >= 0 ? rowInfo.value : ' ',
+        Cell: rowInfo => rowInfo.value >= 0 && !this.isFundInInitOrAcceptedState() ? rowInfo.value : ' ',
         className: 'table_col_value',
         minWidth: 110,
         accessor: 'trusted'
@@ -115,7 +125,7 @@ class ApiKeyInfo extends React.Component {
     return (
       <div className="api_key_currencies_table table">
         <div className="table_title_wrapper clearfix">
-          <div className="table_title">Currencies</div>
+          <div className="table_title">{(this.isFundInInitOrAcceptedState() ? 'Available ' : '') + 'Currencies'}</div>
         </div>
         {this.renderContent(data)}
       </div>

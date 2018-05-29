@@ -92,7 +92,7 @@ class Dashboard extends React.Component {
           />
           <AddApiKey/>
           <ApiKeyInfo
-            fund={this.state.selectedContract || this.state.selectedApiKey}
+            fund={this.state.selectedOffer || this.state.selectedContract || this.state.selectedApiKey}
           />
 
         </div>
@@ -125,13 +125,15 @@ class Dashboard extends React.Component {
   }
 
   onKeySelected(apiKey) {
-    this.setState({selectedApiKey: apiKey, selectedContract: null});
+    this.setState({selectedApiKey: apiKey, selectedContract: null, selectedOffer: null});
   }
 
   onOfferSelected(offer) {
     if(this.state.selectedOffer !== offer) {
       this.setState({
-        selectedOffer: offer
+        selectedOffer: offer,
+        selectedApiKey: null,
+        selectedContract: null
       });
     }
   }
@@ -140,7 +142,7 @@ class Dashboard extends React.Component {
     if(contract.state === CONTRACT_STATE_VERIFIED) {
       this.setState({selectedContract: contract});
     } else {
-      this.setState({selectedApiKey: null, selectedContract: contract});
+      this.setState({selectedApiKey: null, selectedContract: contract, selectedOffer: null});
     }
   }
 }
