@@ -105,10 +105,10 @@ class Contracts extends React.Component {
       <div className="table contracts_table">
         <div className="table_title_wrapper clearfix">
           <div className="table_title">Contracts
-            <span onClick={() => {
+            <span className="contracts-showall-button text-muted" onClick={() => {
               this.setState({selectedTab: Contracts.TAB_CURRENT});
               this.props.onShowAllClicked();
-            }}>    Show all</span>
+            }}>Show all</span>
           </div>
           <SegmentedControl selectedIndex={this.state.selectedTab} segments={['CURRENT', 'FINISHED']} onChange={this.onTabClick}/>
         </div>
