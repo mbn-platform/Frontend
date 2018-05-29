@@ -31,7 +31,7 @@ class SelectedContractChart extends React.Component {
     return (
       <div className="table">
         <div className="table_title_wrapper clearfix">
-          <div className="table_title center">SELECTED CONTRACT BALANCE</div>
+          <div className="table_title center">SELECTED CONTRACT CURRENCIES</div>
         </div>
         <div className="charts">
           <div className="chart_pie">

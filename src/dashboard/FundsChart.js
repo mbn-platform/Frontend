@@ -1,8 +1,8 @@
 import React from 'react';
-import AmCharts from 'amcharts3/amcharts/amcharts';
-import PieChart from 'amcharts3/amcharts/pie';
-import SerialChar from 'amcharts3/amcharts/serial';
-import AmChartsReact from "@amcharts/amcharts3-react";
+import 'amcharts3/amcharts/amcharts';
+import 'amcharts3/amcharts/pie';
+import 'amcharts3/amcharts/serial';
+import AmChartsReact from '@amcharts/amcharts3-react';
 import {getValueInBTC} from './SelectedContractChart';
 
 class FundsChart extends React.Component {
@@ -11,7 +11,7 @@ class FundsChart extends React.Component {
   constructor(props) {
     super(props);
     this.getValueInBTC = getValueInBTC.bind(this);
-    this.state = {data: this.formatData(this.props.contracts, this.props.apiKeys)};
+    this.state = {data: this.formatData(this.props.apiKeys)};
   }
 
   getValueInBTC(currencyName, currencyValue) {
@@ -28,20 +28,8 @@ class FundsChart extends React.Component {
     return (currencyValue * (rates[marketName] || 0)).toFixed(8);
   }
 
-  formatData(contracts, apiKeys) {
-    let data = {}
-    for (let contract of contracts) {
-      contract.balances.forEach(currency => {
-        if (currency.available === 0){
-          return;
-        }
-        if (!data[currency.name]) {
-          data[currency.name] = currency.available;
-        } else {
-          data[currency.name] += currency.available;
-        }
-      });
-    }
+  formatData(apiKeys) {
+    let data = {};
     for (let apiKey of apiKeys) {
       apiKey.balances.forEach(currency => {
         if (currency.available === 0){
@@ -62,7 +50,7 @@ class FundsChart extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({data: this.formatData(nextProps.contracts, nextProps.apiKeys)});
+    this.setState({data: this.formatData(nextProps.apiKeys)});
   }
 
 
@@ -70,54 +58,54 @@ class FundsChart extends React.Component {
     return (
       <div className="table">
         <div className="table_title_wrapper clearfix">
-          <div className="table_title center">AVAILABLE FUNDS BALANCES</div>
+          <div className="table_title center">AVAILABLE ASSETS</div>
         </div>
         <div className="charts">
           <div className="chart_pie">
             <AmChartsReact.React   style={{height: '100%', width: '100%', backgroundColor: 'transparent',position: 'absolute'}}
-                                   options={{
-                                     'type': 'pie',
-                                     'fontFamily': 'maven_probold',
-                                     'letterSpacing': '1px',
-                                     "hideCredits": true,
-                                     'colors': [
-                                       '#6c6c6e',
-                                       '#dcb049',
-                                       '#c94546',
-                                       '#ce802c',
-                                       '#c5c5c5',
-                                       '#465666'
-                                     ],
-                                     'balloonText': '[[title]]<br><span style=\'font-size:14px\'><b>[[description]]</b> ([[percents]]%)</span>',
-                                     'innerRadius': '70%',
-                                     'labelsEnabled': false,
-                                     'startDuration': 0,
-                                     'titleField': 'category',
-                                     'valueField': 'column-2',
-                                     'allLabels': [],
-                                     'balloon': {},
-                                     'descriptionField': 'column-1',
-                                     'legend': {
-                                       'enabled': true,
-                                       'marginLeft': 0,
-                                       'fontSize': 12,
-                                       'markerSize': 0,
-                                       'switchable': false,
-                                       "equalWidths": false,
-                                       'maxColumns': 1,
-                                       'textClickEnabled': true,
-                                       'divId': 'funds_legend',
-                                       'rollOverColor': '#FFFFFF',
-                                       'labelText': '',
-                                       'valueAlign': 'left',
-                                       'align': 'left',
-                                       'valueText': '[[description]] [[title]]',
-                                       'useMarkerColorForLabels': true,
-                                       'useMarkerColorForValues': true
-                                     },
-                                     'titles': [],
-                                     'dataProvider': this.state.data
-                                   }} />
+              options={{
+                'type': 'pie',
+                'fontFamily': 'maven_probold',
+                'letterSpacing': '1px',
+                'hideCredits': true,
+                'colors': [
+                  '#6c6c6e',
+                  '#dcb049',
+                  '#c94546',
+                  '#ce802c',
+                  '#c5c5c5',
+                  '#465666'
+                ],
+                'balloonText': '[[title]]<br><span style=\'font-size:14px\'><b>[[description]]</b> ([[percents]]%)</span>',
+                'innerRadius': '70%',
+                'labelsEnabled': false,
+                'startDuration': 0,
+                'titleField': 'category',
+                'valueField': 'column-2',
+                'allLabels': [],
+                'balloon': {},
+                'descriptionField': 'column-1',
+                'legend': {
+                  'enabled': true,
+                  'marginLeft': 0,
+                  'fontSize': 12,
+                  'markerSize': 0,
+                  'switchable': false,
+                  'equalWidths': false,
+                  'maxColumns': 1,
+                  'textClickEnabled': true,
+                  'divId': 'funds_legend',
+                  'rollOverColor': '#FFFFFF',
+                  'labelText': '',
+                  'valueAlign': 'left',
+                  'align': 'left',
+                  'valueText': '[[description]] [[title]]',
+                  'useMarkerColorForLabels': true,
+                  'useMarkerColorForValues': true
+                },
+                'titles': [],
+                'dataProvider': this.state.data
+              }} />
           </div>
           <div className="legend_pie_wrapper">
             <div id="funds_legend" className="legend_pie">
