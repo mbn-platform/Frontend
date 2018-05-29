@@ -7,6 +7,7 @@ import Offers from './Offers';
 import SelectedContractInfo from './SelectedContractInfo';
 import FundsChart from './FundsChart';
 import SelectedContractChart from './SelectedContractChart';
+import { CONTRACT_STATE_VERIFIED } from '../constants';
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -16,6 +17,13 @@ class Dashboard extends React.Component {
     this.onOfferSelected = this.onOfferSelected.bind(this);
     this.onContractSelected = this.onContractSelected.bind(this);
     this.onContractRate = this.onContractRate.bind(this);
+    this.reset = this.reset.bind(this);
+  }
+
+  reset() {
+    this.setState({
+      selectedContract: null, selectedApiKey: null,
+    });
   }
 
   componentDidMount() {
@@ -57,15 +65,9 @@ class Dashboard extends React.Component {
   }
 
   render() {
-    let isOwnKey;
-    if(this.state.selectedFund && this.props.apiKeys.ownKeys.find(key => key._id === this.state.selectedFund._id)) {
-      isOwnKey = true;
-    } else {
-      isOwnKey = false;
-    }
     return (
       <div className="dashboard_wrapper clearfix" >
-        <div className="table_wrapper requests_table_wrapper" style={{display: (this.props.offers.outgoing.length == 0 && this.props.offers.incoming.length == 0) ? 'none':'block'}}>
+        <div className="table_wrapper requests_table_wrapper" style={{display: (this.props.offers.outgoing.length === 0 && this.props.offers.incoming.length === 0) ? 'none':'block'}}>
           <Offers
             time={this.props.time}
             onOfferCanceled={this.props.onOfferCanceled}
@@ -83,18 +85,14 @@ class Dashboard extends React.Component {
             exchangesInfo={this.props.exchangesInfo}
             userId={this.props.userId}
             apiKeys={this.props.apiKeys.ownKeys}
-            contracts={this.props.contracts.current}
-            selectedFund={this.state.selectedFund}
+            selectedApiKey={this.state.selectedApiKey}
             onKeySelected={this.onKeySelected}
             onKeyDeleteClick={this.props.onKeyDeleteClick}
             exchanges={this.props.exchanges}
           />
           <AddApiKey/>
           <ApiKeyInfo
-            fund={this.state.selectedFund}
-            isOwnKey={isOwnKey}
-            exchanges={this.props.exchanges}
-            onKeyUpdateClick={this.props.onKeyUpdateClick}
+            fund={this.state.selectedContract || this.state.selectedApiKey}
           />
 
         </div>
@@ -102,7 +100,9 @@ class Dashboard extends React.Component {
           <Contracts
             contracts={this.props.contracts}
             selectedContract={this.state.selectedContract}
+            selectedApiKey={this.state.selectedApiKey}
             onContractSelected={this.onContractSelected}
+            onShowAllClicked={this.reset}
             selectedNet={this.props.selectedNet}
             exchangesInfo={this.props.exchangesInfo}
           />
@@ -125,10 +125,7 @@ class Dashboard extends React.Component {
   }
 
   onKeySelected(apiKey) {
-    if(!this.state.selectedFund || this.state.selectedFund._id !== apiKey._id) {
-      const newState = {selectedFund: apiKey};
-      this.setState(newState);
-    }
+    this.setState({selectedApiKey: apiKey, selectedContract: null});
   }
 
   onOfferSelected(offer) {
@@ -140,11 +137,10 @@ class Dashboard extends React.Component {
   }
 
   onContractSelected(contract) {
-    if(this.state.selectedContract !== contract) {
-      const newState = {
-        selectedContract: contract
-      };
-      this.setState(newState);
+    if(contract.state === CONTRACT_STATE_VERIFIED) {
+      this.setState({selectedContract: contract});
+    } else {
+      this.setState({selectedApiKey: null, selectedContract: contract});
     }
   }
 }

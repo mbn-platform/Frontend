@@ -558,6 +558,11 @@
       border-top-left-radius: 0 !important;
       border-bottom-right-radius: 0 !important;
       border-bottom-left-radius: 0 !important;
+      .ReactTable {
+        .rt-tr {
+          cursor: auto;
+        }
+      }
     }
 
     .api_key_currencies_table .table_title_wrapper
@@ -1050,6 +1055,16 @@
 
     .contracts_table
     {
+      .contracts-showall-button {
+        margin-left: 5px;
+        font-size: 12px;
+        padding: 3px;
+        border-radius: 4px;
+        cursor: pointer;
+        &:hover {
+          background: rgba(255,255,255,0.05);
+        }
+      }
     }
 
     .status_circle
