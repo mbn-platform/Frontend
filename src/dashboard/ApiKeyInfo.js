@@ -107,15 +107,17 @@ class ApiKeyInfo extends React.Component {
 
   render() {
     let data;
+    let isContract = false;
     if(this.props.fund) {
       data = this.props.fund.balances;
+      isContract = !!this.props.fund.contractSettings;
     } else {
       data = [];
     }
     return (
       <div className="api_key_currencies_table table">
         <div className="table_title_wrapper clearfix">
-          <div className="table_title">Currencies</div>
+          <div className="table_title">{isContract ? 'Contract' : 'Api Key' } Currencies</div>
         </div>
         {this.renderContent(data)}
       </div>
