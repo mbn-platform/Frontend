@@ -148,7 +148,10 @@ export function updateRates() {
       if(json.success) {
         const rates = json.result.reduce((accum, rate) => {
           const [main, second] = rate.MarketName.split('-');
-          accum[main][second] = rate.Last;
+          const markets = accum[main];
+          if(markets) {
+            markets[second] = rate.Last;
+          }
           return accum;
         }, {USDT: {}, BTC: {}, ETH: {}});
         dispatch({
