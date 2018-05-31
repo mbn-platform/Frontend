@@ -30,6 +30,7 @@ class Contracts extends React.Component {
     } else if(!props.selectedApiKey) {
       return {selectedApiKeyId: null};
     }
+    return null;
   }
 
   componentDidUpdate(prevProps) {
