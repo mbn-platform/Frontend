@@ -1,6 +1,6 @@
 import io from 'socket.io-client';
-import { WEBSOCKET_CONNECT, WEBSOCKET_DISCONNECT, WEBSOCKET_TERMINAL } from './actions/websocket';
-import { SELECT_MARKET } from './actions/terminal';
+//import { WEBSOCKET_CONNECT, WEBSOCKET_DISCONNECT, WEBSOCKET_TERMINAL } from './actions/websocket';
+import { SELECT_MARKET, SELECT_EXCHANGE, } from './actions/terminal';
 import { LOGGED_OUT, LOGGED_IN } from './actions/auth';
 import {updateKeyBalance} from './actions/apiKeys';
 import {updateOrderBook, updateHistory, updateRates, updateTicker} from './actions/terminal';
@@ -10,9 +10,6 @@ const socketMiddleware = store => next => action => {
     case LOGGED_IN: {
       if(!socket) {
         socket = io();
-        socket.on('connect', () => {
-          socket.emit('rates');
-        });
         socket.on('orders', ({name, content}) => {
           const [exchange, orders, market] = name.split('.');
           const buy = content.bids;
@@ -40,14 +37,6 @@ const socketMiddleware = store => next => action => {
       }
       break;
     }
-    case WEBSOCKET_TERMINAL: {
-      if(socket) {
-        const state = store.getState();
-        const {exchange, market: symbol, interval} = state.terminal;
-        socket.emit('market', {exchange, symbol});
-      }
-      return;
-    }
     case LOGGED_OUT:
       if(socket) {
         socket.disconnect();
@@ -60,6 +49,25 @@ const socketMiddleware = store => next => action => {
         const {exchange} = state.terminal;
         const symbol = action.market;
         socket.emit('market', {exchange, symbol});
+      }
+      break;
+    }
+    case SELECT_EXCHANGE: {
+      if(socket) {
+        socket.emit('rates', {exchange: action.exchange});
+        const state = store.getState();
+        const exchangeInfo = state.exchangesInfo[action.exchange];
+        const symbol = state.terminal.market;
+        if(exchangeInfo && exchangeInfo.markets) {
+          const hasMarket = !!exchangeInfo.markets.find(m => m.symbol === symbol);
+          if(hasMarket) {
+            socket.emit('market', {exchange: action.exchange, symbol});
+          } else {
+            socket.emit('market', {exchange: action.exchange, symbol: 'USDT-BTC'});
+          }
+        } else {
+          socket.emit('market', {exchange: action.exchange, symbol: 'USDT-BTC'});
+        }
       }
       break;
     }

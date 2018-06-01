@@ -15,6 +15,7 @@ import { WEBSOCKET_TERMINAL } from '../actions/websocket';
 const mapStateToProps = state => ({
   ...state.terminal,
   exchangeInfo: state.exchangesInfo[state.terminal.exchange],
+  exchanges: state.exchangesInfo.exchanges || [],
   apiKeys: state.apiKeys,
   contracts: state.contracts,
   userId: state.auth.profile._id,
@@ -22,10 +23,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps =  dispatch => ({
   selectMarket: market => dispatch(selectMarket(market)),
-  selectExchange: exchange => {
-    dispatch(selectExchange(exchange));
-    dispatch(getExchangeMarkets(exchange));
-  },
+  selectExchange: exchange => dispatch(selectExchange(exchange)),
   selectInterval: interval => dispatch(selectInterval(interval)),
   selectFund: fund => dispatch(selectFund(fund)),
   placeOrder: order => dispatch(placeOrder(order)),
