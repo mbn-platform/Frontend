@@ -343,7 +343,6 @@ class MarketDepth extends React.Component {
           </Desktop>
         </Row>
         <div className="marketdepth-chart__graph row col-12" id='chartdiv' >
-          {this.renderChart()}
 
         </div>
         <div className="marketdepth-chart__item" id='chartitem' >
