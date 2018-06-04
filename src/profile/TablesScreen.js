@@ -19,12 +19,9 @@ class TablesScreen extends React.Component {
                     dt={this.props.profile.dt}
                     tradesAsInvestor={ [] }
                   />
-                  { this.props.profile.name ?
-                    (<Feedback
-                      comments={this.props.profile.feedbacks || []}
-                    />)
-                    : null
-                  }
+                  <Feedback
+                    comments={this.props.profile.feedbacks || []}
+                  />
                 </Row>
                 <Row className="d-none d-md-block">
                   <Col xs="12" className="gap-card"></Col>
