@@ -94,7 +94,7 @@ export default function(state = {
       return state;
     }
     case UPDATE_KEYS: {
-      if(!state.fund && action.data.length) {
+      if(!state.fund && action.data.length && action.data[0].exchange === state.exchange) {
         return {...state, fund: action.data[0]};
       }
       break;
