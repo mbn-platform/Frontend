@@ -20,7 +20,7 @@ class Controls extends React.Component {
       <div className="row dropdowns">
         <FundSelect
           container=".terminal.container-fluid"
-          funds={funds}
+          funds={funds.filter(fund => fund.exchange === this.props.exchange)}
           selectedFund={this.props.fund}
           userId={this.props.userId}
           onApiKeySelect={this.props.onApiKeySelect}
