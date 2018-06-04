@@ -44,19 +44,20 @@ class Feedback extends React.Component {
                     </div>
                   </div>
                 </div>
-                <div className="card-body">
-                  {this.props.comments.length
-                    ? (
+
+                {this.props.comments.length
+                  ? (
+                    <div className="card-body">
                       <div>
                         <Desktop>
                           <div className="feedback-body">
-                            <Scrollbars style={{ height: '100%', width: 'calc(100% - 25px)' }}
+                            <Scrollbars style={{height: '100%', width: 'calc(100% - 25px)'}}
                               autoHeight
                               autoHeightMin={207}
                               autoHeightMax={'100%'}
                             >
-                              <ul className="list-group" style={{ width: 'calc(100% - 50px)' }}>
-                                {this.props.comments.map((c, i) => <Comment key={i} comment={c} />)}
+                              <ul className="list-group" style={{width: 'calc(100% - 50px)'}}>
+                                {this.props.comments.map((c, i) => <Comment key={i} comment={c}/>)}
                               </ul>
                             </Scrollbars>
                           </div>
@@ -73,14 +74,16 @@ class Feedback extends React.Component {
                           />
                         </Mobile>
                       </div>
-                    )
-                    : (
+                    </div>
+                  )
+                  : (
+                    <div className="card-body empty-feedback">
                       <div className="feedback-message">
                         {this.props.name ? 'This user did not get any feedbacks yet.' : null}
                       </div>
-                    )
-                  }
-                </div>
+                    </div>
+                  )
+                }
               </div>
             </Col>
           </Row>

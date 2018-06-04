@@ -289,12 +289,14 @@
                             min-height: 250px;
                         }
                         .feedback-message {
-                            position: absolute;
-                            top: 50%;
                             text-align: center;
                             width: 100%;
                             font-size: 1.8em;
                         }
+                    }
+                    .card-body.empty-feedback {
+                        display: flex;
+                        align-items: center;
                     }
                     .list-group {
                         .list-group-item {
