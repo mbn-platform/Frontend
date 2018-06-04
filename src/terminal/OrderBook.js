@@ -71,7 +71,7 @@ class OrderBook extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.market !== this.props.market) {
+    if(nextProps.market !== this.props.market || nextProps.exchange !== this.props.exchange) {
       this.setState({prelast: null, sort: {}, scroll: true});
     }
     if(nextProps.ticker !== this.props.ticker) {
