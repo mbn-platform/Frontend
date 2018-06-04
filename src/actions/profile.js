@@ -71,6 +71,9 @@ export function getTradesForUser(name) {
           name,
           trades: trades.orders,
         });
+      })
+      .catch(err => {
+        profileErrorHandler(err, dispatch);
       });
   };
 }
