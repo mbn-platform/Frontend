@@ -31,7 +31,8 @@ export function deleteApiKey(key) {
           localStorage.removeItem('terminal.selectedFund');
         }
         if (selectedKey._id === key._id) {
-          const ownKeys = getState().apiKeys.ownKeys
+          const exchange = getState().terminal.exchange
+          const ownKeys = getState().apiKeys.ownKeys.filter(key => key.exchange === exchange)
           let currentKeyIndex = ownKeys.findIndex(k => k._id == selectedKey._id);
           let newSelectedKey = null;
           if (ownKeys.length > 1) {

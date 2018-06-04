@@ -33,6 +33,7 @@ class Orders extends React.Component {
                   fund={this.props.fund}
                   onApiKeySelect={this.props.selectFund}
                   exchange={this.props.exchange}
+                  exchanges={this.props.exchanges}
                   onExchangeSelect={this.props.selectExchange}
                 />
               </div>
@@ -76,6 +77,7 @@ const OrdersContainer = connect(state => ({
   orders: state.terminal.orders,
   market: state.terminal.market,
   exchange: state.terminal.exchange,
+  exchanges: state.exchangesInfo.exchanges || [],
   exchangeInfo: state.exchangesInfo[state.terminal.exchange],
 }), dispatch => ({
   getOrders: params => dispatch(getOrders(params)),

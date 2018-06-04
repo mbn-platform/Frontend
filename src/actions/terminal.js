@@ -36,9 +36,17 @@ export function selectMarket(market) {
 
 export function selectExchange(exchange) {
   localStorage.setItem('terminal.selectedExchange', JSON.stringify(exchange));
-  return {
-    type: SELECT_EXCHANGE,
-    exchange,
+  return (dispatch, getState) => {
+    let newSelectedKey = null;
+    const ownKeys = getState().apiKeys.ownKeys.filter(key => key.exchange === exchange);
+    if (ownKeys.length > 0) {
+      newSelectedKey = ownKeys[0];
+    }
+    dispatch(selectFund(newSelectedKey));
+    dispatch({
+      type: SELECT_EXCHANGE,
+      exchange,
+    });
   };
 }
 

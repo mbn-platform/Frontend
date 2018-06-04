@@ -9,14 +9,15 @@ class Controls extends React.Component {
       <div className="row dropdowns pt-2">
         <FundSelect
           container=".orders.container-fluid"
-          funds={funds.filter(fund => fund.exchange === this.props.exchange)}
+          exchange={this.props.exchange}
+          funds={funds}
           selectedFund={this.props.fund}
           userId={this.props.userId}
           onApiKeySelect={this.props.onApiKeySelect}
         />
         <DropdownSelect
           selected={this.props.exchange}
-          items={['bittrex']}
+          items={this.props.exchanges}
           targetId="exchange_select"
           elementClassName="exchange__switch"
           dropdownClassName="exchange"
