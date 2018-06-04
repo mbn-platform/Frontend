@@ -76,7 +76,7 @@ class Feedback extends React.Component {
                     )
                     : (
                       <div className="feedback-message">
-                        This user did not get any feedbacks yet.
+                        {this.props.name ? 'This user did not get any feedbacks yet.' : null}
                       </div>
                     )
                   }

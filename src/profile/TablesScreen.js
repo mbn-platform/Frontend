@@ -20,6 +20,7 @@ class TablesScreen extends React.Component {
                     tradesAsInvestor={ [] }
                   />
                   <Feedback
+                    name={this.props.profile.name || null}
                     comments={this.props.profile.feedbacks || []}
                   />
                 </Row>
