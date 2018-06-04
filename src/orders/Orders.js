@@ -50,7 +50,7 @@ class Orders extends React.Component {
   componentDidMount() {
     window.customize();
     this.props.connectToSocket();
-    this.props.getExchangeMarkets(this.props.exchange);
+    this.props.selectExchange(this.props.exchange);
     if(this.props.fund) {
       let payload = setFundId({}, this.props.fund)
       this.props.getOrders(payload);
