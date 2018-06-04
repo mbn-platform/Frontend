@@ -9,7 +9,11 @@ const socketMiddleware = store => next => action => {
   switch(action.type) {
     case LOGGED_IN: {
       if(!socket) {
-        socket = io();
+        const selectedNet = store.getState().selectedNet;
+        const path = selectedNet === 'mainnet' ? '/mainnet' : undefined;
+        socket = io('', {
+          path,
+        });
         socket.on('connect', () => {
           socket.emit('rates');
         });
