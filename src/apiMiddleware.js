@@ -1,7 +1,7 @@
 import {LOGGED_IN} from './actions/auth';
 import {fetchKeys} from './actions/apiKeys';
 import {fetchContracts, FETCH_CONTRACTS} from './actions/contracts';
-import {SELECT_EXCHANGE, getExchangeMarkets} from './actions/terminal';
+import {SELECT_EXCHANGE, getExchangeMarkets, selectMarket} from './actions/terminal';
 import { CONTRACT_STATE_INIT, CONTRACT_STATE_ACCEPTED,
   CONTRACT_STATE_VERIFIED, CONTRACT_STATE_FINISHED,
   CONTRACT_STATE_HALTED } from './constants';
@@ -16,7 +16,14 @@ const socketMiddleware = store => next => action => {
       break;
     }
     case SELECT_EXCHANGE: {
-      store.dispatch(getExchangeMarkets(action.exchange));
+      store.dispatch(getExchangeMarkets(action.exchange)).then(()=>{
+        let currentMarket = store.getState().terminal.market;
+        let newMarkets = store.getState().exchangesInfo[action.exchange].markets;
+        let isMarketExist = newMarkets.find(market => market.symbol === currentMarket);
+        if (!isMarketExist) {
+          store.dispatch(selectMarket('USDT-BTC'));
+        }
+      });
       break;
     }
     case FETCH_CONTRACTS: {
