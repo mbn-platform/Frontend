@@ -44,37 +44,46 @@ class Feedback extends React.Component {
                     </div>
                   </div>
                 </div>
-                
-                  <div className="card-body">
-                    <Desktop>
-                    
-                      <div className="feedback-body">        
-                      
-                        <Scrollbars style={{height: '100%',width: 'calc(100% - 25px)'}}
-                          autoHeight
-                          autoHeightMin={207}
-                          autoHeightMax={'100%'}>
-                            <ul className="list-group" style={{width: 'calc(100% - 50px)'}}>
-                              {this.props.comments.map((c, i) => <Comment key={i} comment={c}/>)}
-                            </ul>
-                        </Scrollbars>
-                      
-                      </div>
-                    </Desktop>
-                    <Mobile>
-                      <ul className="list-group">
-                        {this.renderMobile()}
-                      </ul>
-                      <Pagination
-                        page={this.state.page}
-                        canNext={this.state.canNext}
-                        canPrevious={this.state.canPrevious}
-                        onPageChange={this.onPageChange}
-                      />
-                    </Mobile>                  
-                  </div>
 
-                
+                {this.props.comments.length
+                  ? (
+                    <div className="card-body">
+                      <div>
+                        <Desktop>
+                          <div className="feedback-body">
+                            <Scrollbars style={{height: '100%', width: 'calc(100% - 25px)'}}
+                              autoHeight
+                              autoHeightMin={207}
+                              autoHeightMax={'100%'}
+                            >
+                              <ul className="list-group" style={{width: 'calc(100% - 50px)'}}>
+                                {this.props.comments.map((c, i) => <Comment key={i} comment={c}/>)}
+                              </ul>
+                            </Scrollbars>
+                          </div>
+                        </Desktop>
+                        <Mobile>
+                          <ul className="list-group">
+                            {this.renderMobile()}
+                          </ul>
+                          <Pagination
+                            page={this.state.page}
+                            canNext={this.state.canNext}
+                            canPrevious={this.state.canPrevious}
+                            onPageChange={this.onPageChange}
+                          />
+                        </Mobile>
+                      </div>
+                    </div>
+                  )
+                  : (
+                    <div className="card-body empty-feedback">
+                      <div className="feedback-message">
+                        {this.props.name ? 'This user did not get any feedbacks yet.' : null}
+                      </div>
+                    </div>
+                  )
+                }
               </div>
             </Col>
           </Row>

@@ -288,6 +288,15 @@
                             width: calc(100%);
                             min-height: 250px;
                         }
+                        .feedback-message {
+                            text-align: center;
+                            width: 100%;
+                            font-size: 1.8em;
+                        }
+                    }
+                    .card-body.empty-feedback {
+                        display: flex;
+                        align-items: center;
                     }
                     .list-group {
                         .list-group-item {
@@ -1113,6 +1122,11 @@
                                                 line-height: 1.3;
                                             }
                                         }
+                                    }
+                                    .feedback-message {
+                                        position: relative;
+                                        top: 0;
+                                        padding-bottom: 15px;
                                     }
                                 }
                             }
