@@ -26,6 +26,22 @@
 		}
 	}
 	&-main{
+		.controls-fullscreen-mode {
+			position: fixed;
+			height: 35px;
+			top: 0;
+			background-color: #1f2225;
+			margin: 0 !important;
+			display: flex;
+			align-items: center;
+			left: 0;
+			width: 100vw;
+			z-index: 9892;
+			padding-left: 25px !important;
+			> .dropdown-link-wrap {
+				margin-bottom: 0px !important;
+			}
+		}
 		> div{
 			margin: 10px 10px 0 10px !important;
 		}
@@ -559,6 +575,7 @@
 	}
 
 }
+
 @include media-breakpoint-up(lg) {
 	.terminal {
 		height: 100%;
@@ -571,22 +588,6 @@
 			.terminal-main {
 				flex: 1;
 				width: 100%;
-				.controls-fullscreen-mode {
-					position: fixed;
-					height: 35px;
-					top: 0;
-					background-color: #1f2225;
-					margin: 0 !important;
-					display: flex;
-					align-items: center;
-					left: 0;
-					width: 100vw;
-					z-index: 9892;
-					padding-left: 25px;
-					>.dropdown-link-wrap {
-						margin-bottom: 0px !important;
-					}
-				}
 				.charts {
 					height: calc(100% - 50px);
 					.price-chart {

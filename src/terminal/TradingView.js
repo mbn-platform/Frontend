@@ -30,7 +30,7 @@ class TradingView extends React.Component {
 
   handleKeyDown(event) {
     if (this.state.fullScreen && event.keyCode === ESCAPE_KEYCODE) {
-      this.setState({fullScreen: false});
+      this.handleFullScreenChange(false);
     }
   }
 
