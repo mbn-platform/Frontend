@@ -18,19 +18,14 @@ class Controls extends React.Component {
     const funds = this.props.apiKeys.concat(this.props.contracts.filter(contract => contract.to._id === this.props.userId))
     return (
       <div className={classNames('row', 'dropdowns', {'controls-fullscreen-mode': this.props.isFullScreenEnabled})}>
-        {
-          this.props.isFullScreenEnabled ?
-            null
-            :
-            <FundSelect
-              container=".terminal.container-fluid"
-              exchange={this.props.exchange}
-              funds={funds}
-              selectedFund={this.props.fund}
-              userId={this.props.userId}
-              onApiKeySelect={this.props.onApiKeySelect}
-            />
-        }
+        <FundSelect
+          container=".terminal.container-fluid"
+          exchange={this.props.exchange}
+          funds={funds}
+          selectedFund={this.props.fund}
+          userId={this.props.userId}
+          onApiKeySelect={this.props.onApiKeySelect}
+        />
         <DropdownSelect
           selected={this.props.exchange}
           items={this.props.exchanges}
