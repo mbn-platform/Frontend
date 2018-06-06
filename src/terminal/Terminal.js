@@ -140,19 +140,19 @@ class Terminal extends React.Component {
 
   componentDidMount() {
     window.customize();
-    const savedMarket = localStorage.getItem('terminal.selectedMarket');
-    if (savedMarket) {
-      this.props.selectMarket(savedMarket);
-    }
-    const savedFund = localStorage.getItem('terminal.selectedFund');
-    if (savedFund) {
-      this.props.selectFund(JSON.parse(savedFund));
-    }
     const savedExchange = localStorage.getItem('terminal.selectedExchange');
     if (savedExchange) {
       this.props.selectExchange(JSON.parse(savedExchange));
     } else if(this.props.exchange) {
       this.props.selectExchange(this.props.exchange);
+    }
+    const savedFund = localStorage.getItem('terminal.selectedFund');
+    if (savedFund) {
+      this.props.selectFund(JSON.parse(savedFund));
+    }
+    const savedMarket = localStorage.getItem('terminal.selectedMarket');
+    if (savedMarket) {
+      this.props.selectMarket(savedMarket);
     }
     const savedInterval = localStorage.getItem('terminal.selectedInterval');
     if (savedInterval) {
