@@ -15,12 +15,17 @@ class Terminal extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {fullScreenEnabled: false};
     this.onOrderSelect = this.onOrderSelect.bind(this);
+    this.onFullScreenChange = this.onFullScreenChange.bind(this);
   }
 
   onOrderSelect(price, size, type) {
     this.setState({price, size, type: type || this.state.type});
+  }
+
+  onFullScreenChange(value) {
+    this.setState({fullScreenEnabled: value});
   }
 
   allowedApiKeys(apiKeys, contracts) {
@@ -62,10 +67,13 @@ class Terminal extends React.Component {
                 contracts={this.props.contracts.current}
                 onExchangeSelect={this.props.selectExchange}
                 onApiKeySelect={this.props.selectFund}
+                isFullScreenEnabled={this.state.fullScreenEnabled}
               />
               <Row className="charts">
                 <Col xs="12" sm="12" md="6" lg="8" className="charts__left">
-                  <TradingView />
+                  <TradingView
+                    onFullScreenChange={this.onFullScreenChange}
+                  />
                   <MarketDepth
                     market={this.props.market}
                   />

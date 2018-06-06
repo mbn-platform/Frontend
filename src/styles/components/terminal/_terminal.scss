@@ -7,10 +7,10 @@
 	.fullscreen-chart {
 		position: fixed !important;
 		width: 100vw;
-		height: 100vh !important;
-		top: 0;
+		height: calc(100vh - 35px) !important;
+		top: 35px;
 		left: 0;
-		z-index: 9999;
+		z-index: 9892;
 	}
 	.amcharts-axis-label.amcharts-guide {
 		
@@ -571,6 +571,22 @@
 			.terminal-main {
 				flex: 1;
 				width: 100%;
+				.controls-fullscreen-mode {
+					position: fixed;
+					height: 35px;
+					top: 0;
+					background-color: #1f2225;
+					margin: 0 !important;
+					display: flex;
+					align-items: center;
+					left: 0;
+					width: 100vw;
+					z-index: 9892;
+					padding-left: 25px;
+					>.dropdown-link-wrap {
+						margin-bottom: 0px !important;
+					}
+				}
 				.charts {
 					height: calc(100% - 50px);
 					.price-chart {
