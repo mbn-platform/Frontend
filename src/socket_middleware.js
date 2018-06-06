@@ -10,7 +10,7 @@ const socketMiddleware = store => next => action => {
     case LOGGED_IN: {
       if(!socket) {
         const selectedNet = store.getState().selectedNet;
-        const path = selectedNet === 'mainnet' ? '/mainnet' : undefined;
+        const path = selectedNet === 'mainnet' ? '/socket.io/mainnet' : undefined;
         socket = io('', {
           path,
         });
