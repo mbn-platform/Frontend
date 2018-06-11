@@ -79,8 +79,18 @@ class PlaceOrder extends React.Component {
       orderSize = parseFloat(orderSize);
       const newState = {price, orderSize, selectedTab: nextProps.type};
       if(price >= 0 && orderSize >= 0) {
-        const amount = orderSize * price * (nextProps.type === TAB_BUY ? 1.0025 : 0.9975);
-        newState.amount = defaultFormatValue(amount);
+        switch(this.props.exchange) {
+          case 'bittrex': {
+            const amount = orderSize * price * (nextProps.type === TAB_BUY ? 1.0025 : 0.9975);
+            newState.amount = defaultFormatValue(amount);
+            break;
+          }
+          case 'binance': {
+            const amount = orderSize * price;
+            newState.amount = defaultFormatValue(amount);
+            break;
+          }
+        }
       }
       this.setState(newState);
     }
@@ -97,7 +107,7 @@ class PlaceOrder extends React.Component {
       const newState = {price};
       const orderSize = parseFloat(this.state.orderSize);
       if(orderSize >= 0) {
-        const amount = price * orderSize * this.commissionPercent;
+        const amount = price * orderSize * this.commissionPercent(this.props.type);
         newState.amount = defaultFormatValue(amount);
       }
       this.setState(newState);
@@ -113,7 +123,7 @@ class PlaceOrder extends React.Component {
       const newState = {amount};
       const price = parseFloat(this.state.price);
       if(price >= 0) {
-        const orderSize = value / this.commissionPercent / price;
+        const orderSize = value / this.commissionPercent(this.props.type) / price;
         newState.orderSize = defaultFormatValue(orderSize);
       }
       this.setState(newState);
@@ -129,15 +139,24 @@ class PlaceOrder extends React.Component {
       const newState = {orderSize: value};
       const price = parseFloat(this.state.price);
       if(price >= 0) {
-        const amount = value * price * this.commissionPercent;
+        const amount = value * price * this.commissionPercent(this.props.type);
         newState.amount = defaultFormatValue(amount);
       }
       this.setState(newState);
     }
   }
 
-  get commissionPercent() {
-    return this.state.selectedTab === TAB_BUY ? 1.0025 : 0.9975;
+  commissionPercent(orderSide) {
+    switch(this.props.exchange) {
+      case 'bittrex': {
+        return orderSide === TAB_BUY ? 1.0025 : 0.9975;
+      }
+      case 'binance': {
+        return 1;
+      }
+      default:
+        return 1;
+    }
   }
 
 
@@ -167,7 +186,7 @@ class PlaceOrder extends React.Component {
     const orderSize = parseFloat(this.state.orderSize);
     const price = parseFloat(this.state.price);
     if(orderSize >= 0 && price >= 0) {
-      const amount = orderSize * price * (tab === TAB_BUY ? 1.0025 : 0.9975);
+      const amount = orderSize * price * this.commissionPercent(tab);
       newState.amount = defaultFormatValue(amount);
     }
     this.setState(newState);

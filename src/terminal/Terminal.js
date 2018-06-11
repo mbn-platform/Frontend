@@ -79,6 +79,7 @@ class Terminal extends React.Component {
                   />
                   <Row className="justify-content-between">
                     <PlaceOrder
+                      exchange={this.props.exchange}
                       price={this.state.price}
                       type={this.state.type}
                       size={this.state.size}
