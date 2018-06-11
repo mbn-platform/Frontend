@@ -75,7 +75,7 @@ class Funds extends React.Component {
           if(filter.value === 'All') {
             return true;
           } else {
-            return filter.value = row.exchange;
+            return filter.value === row.exchange;
           }
         }
       }, {
