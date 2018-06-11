@@ -26,7 +26,7 @@ const socketMiddleware = store => next => action => {
         });
         socket.on('ticker', ({name, content}) => {
           const [exchange, ticker, market] = name.split('.');
-          store.dispatch(updateTicker(exchange, market, content));
+          store.dispatch(updateTicker(exchange, market, content.ticker));
         });
         socket.on('balances', ({_id, content}) => {
           store.dispatch(updateKeyBalance(_id, content.balances));
