@@ -1,9 +1,9 @@
 import io from 'socket.io-client';
 //import { WEBSOCKET_CONNECT, WEBSOCKET_DISCONNECT, WEBSOCKET_TERMINAL } from './actions/websocket';
-import { SELECT_MARKET, SELECT_EXCHANGE, } from './actions/terminal';
+import { SELECT_MARKET, SELECT_EXCHANGE, EXCHANGE_MARKETS } from './actions/terminal';
 import { LOGGED_OUT, LOGGED_IN } from './actions/auth';
 import {updateKeyBalance} from './actions/apiKeys';
-import {updateOrderBook, updateHistory, updateRates, updateTicker} from './actions/terminal';
+import {updateOrderBook, updateHistory, updateRates, updateTicker, selectMarket} from './actions/terminal';
 let socket;
 const socketMiddleware = store => next => action => {
   switch(action.type) {
@@ -63,13 +63,26 @@ const socketMiddleware = store => next => action => {
           if(hasMarket) {
             socket.emit('market', {exchange: action.exchange, symbol});
           } else {
-            socket.emit('market', {exchange: action.exchange, symbol: 'USDT-BTC'});
+            store.dispatch(selectMarket('USDT-BTC'));
           }
         } else if(action.restore) {
           socket.emit('market', {exchange: action.exchange, symbol});
         } else {
-          socket.emit('market', {exchange: action.exchange, symbol: 'USDT-BTC'});
+          socket.emit('market', {exchange: action.exchange, symbol});
         }
+      }
+      break;
+    }
+    case EXCHANGE_MARKETS: {
+      const terminal = store.getState().terminal;
+      if(terminal.exchange !== action.exchange) {
+        break;
+      }
+      const currentMarket = terminal.market;
+      const newMarkets = action.markets;
+      const marketExists = newMarkets.find(m => m.symbol === currentMarket);
+      if(!marketExists) {
+        store.dispatch(selectMarket('USDT-BTC'));
       }
       break;
     }

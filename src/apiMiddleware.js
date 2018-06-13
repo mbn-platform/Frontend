@@ -16,14 +16,7 @@ const socketMiddleware = store => next => action => {
       break;
     }
     case SELECT_EXCHANGE: {
-      store.dispatch(getExchangeMarkets(action.exchange)).then(()=>{
-        let currentMarket = store.getState().terminal.market;
-        let newMarkets = store.getState().exchangesInfo[action.exchange].markets;
-        let isMarketExist = newMarkets.find(market => market.symbol === currentMarket);
-        if (!isMarketExist) {
-          store.dispatch(selectMarket('USDT-BTC'));
-        }
-      });
+      store.dispatch(getExchangeMarkets(action.exchange));
       break;
     }
     case FETCH_CONTRACTS: {
