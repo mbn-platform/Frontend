@@ -76,6 +76,7 @@ class Terminal extends React.Component {
                   />
                   <MarketDepth
                     market={this.props.market}
+                    {...this.props.orderBook}
                   />
                   <Row className="justify-content-between">
                     <PlaceOrder
