@@ -23,7 +23,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps =  dispatch => ({
   selectMarket: market => dispatch(selectMarket(market)),
-  selectExchange: exchange => dispatch(selectExchange(exchange)),
+  selectExchange: (exchange, restore) => dispatch(selectExchange(exchange, restore)),
   selectInterval: interval => dispatch(selectInterval(interval)),
   selectFund: fund => dispatch(selectFund(fund)),
   placeOrder: order => dispatch(placeOrder(order)),

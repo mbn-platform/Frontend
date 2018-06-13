@@ -65,6 +65,8 @@ const socketMiddleware = store => next => action => {
           } else {
             socket.emit('market', {exchange: action.exchange, symbol: 'USDT-BTC'});
           }
+        } else if(action.restore) {
+          socket.emit('market', {exchange: action.exchange, symbol});
         } else {
           socket.emit('market', {exchange: action.exchange, symbol: 'USDT-BTC'});
         }

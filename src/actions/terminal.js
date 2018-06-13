@@ -34,8 +34,8 @@ export function selectMarket(market) {
   };
 }
 
-export function selectExchange(exchange) {
-  localStorage.setItem('terminal.selectedExchange', JSON.stringify(exchange));
+export function selectExchange(exchange, restore) {
+  localStorage.setItem('terminal.selectedExchange', exchange);
   return (dispatch, getState) => {
     let newSelectedKey = null;
     const ownKeys = getState().apiKeys.ownKeys.filter(key => key.exchange === exchange);
@@ -46,12 +46,13 @@ export function selectExchange(exchange) {
     dispatch({
       type: SELECT_EXCHANGE,
       exchange,
+      restore,
     });
   };
 }
 
 export function selectInterval(interval) {
-  localStorage.setItem('terminal.selectedInterval', JSON.stringify(interval));
+  localStorage.setItem('terminal.selectedInterval', interval);
   return {
     type: SELECT_INTERVAL,
     interval,
