@@ -38,8 +38,8 @@ class SendRequestBlock extends React.Component {
       currencies: []
     };
     this.onFundSelected = async (fund) => {
-      let currenciesList = this.props.exchangesInfo[fund.exchange].currencies;
-      if (!currenciesList || currenciesList.length === 0) {
+      const exchangeInfo = this.props.exchangesInfo[fund.exchange];
+      if(!exchangeInfo || !exchangeInfo.currencies) {
         await this.props.getExchangeCurrencies(fund.exchange);
       }
       this.setState({selectedFund: fund});
