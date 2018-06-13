@@ -58,7 +58,7 @@ class ApiKeyInfo extends React.Component {
             <div className="green_arrow green_arrow_bottom" ></div>
           </div>
         </div>),
-        Cell: rowInfo => rowInfo.value >= 0 && this.showCell(rowInfo.original.name) ? rowInfo.value : '  ',
+        Cell: rowInfo => rowInfo.value >= 0 && this.showCell(rowInfo.original.name) ? rowInfo.value.toFixed(8).replace(/\.0+$/, '') : '  ',
         className: 'table_col_value',
         minWidth: 110,
         accessor: 'total'
@@ -70,7 +70,7 @@ class ApiKeyInfo extends React.Component {
             <div className="green_arrow green_arrow_bottom" ></div>
           </div>
         </div>),
-        Cell: rowInfo => rowInfo.value >= 0 && !this.isContractOrOffer()  ? rowInfo.value : '  ',
+        Cell: rowInfo => rowInfo.value >= 0 && !this.isContractOrOffer()  ? rowInfo.value.toFixed(8).replace(/\.0+$/, '') : '  ',
         className: 'table_col_value',
         minWidth: 110,
         accessor: 'available'
@@ -82,7 +82,7 @@ class ApiKeyInfo extends React.Component {
             <div className="green_arrow green_arrow_bottom" ></div>
           </div>
         </div>),
-        Cell: rowInfo => rowInfo.value >= 0 && !this.isContractOrOffer() ? rowInfo.value : ' ',
+        Cell: rowInfo => rowInfo.value >= 0 && !this.isContractOrOffer() ? rowInfo.value.toFixed(8).replace(/\.0+$/, '') : ' ',
         className: 'table_col_value',
         minWidth: 110,
         accessor: 'trusted'
