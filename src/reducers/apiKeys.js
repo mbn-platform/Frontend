@@ -32,8 +32,11 @@ function ownKeys(keys = [], action) {
           return b;
         }
       });
-      key.balances = key.balances.length > 0 ? updatedBalances : action.balances;
-      return [...keys];
+      const newKey = {...key};
+      newKey.balances = key.balances.length > 0 ? updatedBalances : action.balances;
+      newKey.totalInBTC = action.totalInBTC;
+      newKey.totalInUSDT = action.totalInUSDT;
+      return keys.map(k => k._id === newKey._id ? newKey : k);
     }
     default:
       return keys;

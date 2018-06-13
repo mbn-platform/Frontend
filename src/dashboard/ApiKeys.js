@@ -88,18 +88,7 @@ class Funds extends React.Component {
             <div className="green_arrow green_arrow_bottom" ></div>
           </div>
         </div>),
-        accessor: key => {
-          const exchangeInfo = this.props.exchangesInfo[key.exchange];
-          if(!exchangeInfo) {
-            return null;
-          }
-          const {rates} = exchangeInfo;
-          if(!rates) {
-            return null;
-          };
-          const sum = calculateTotalBalance(key.balances, rates, 'BTC');
-          return sum.toFixed(8);
-        },
+        accessor: 'totalInBTC',
       }, {
         Header: '',
         minWidth: 24,

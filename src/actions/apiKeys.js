@@ -120,10 +120,12 @@ export function updateApiKey(key) {
   };
 }
 
-export function updateKeyBalance(_id, balances) {
+export function updateKeyBalance(_id, balances, totalInBTC, totalInUSDT) {
   return {
     type: UPDATE_API_KEY_BALANCE,
     _id,
     balances,
+    totalInBTC,
+    totalInUSDT,
   };
 }
