@@ -33,28 +33,6 @@ class Contracts extends React.Component {
     return null;
   }
 
-  componentDidUpdate(prevProps) {
-    if(prevProps.contracts !== this.props.contracts || prevProps.exchangesInfo !== this.props.exchangesInfo) {
-      this.updateContractsCurrentBalance();
-    }
-  }
-
-  componentDidMount() {
-    this.updateContractsCurrentBalance();
-  }
-
-  updateContractsCurrentBalance() {
-    for(const contract of this.props.contracts.current) {
-      const exchangeInfo = this.props.exchangesInfo[contract.exchange];
-      if(exchangeInfo) {
-        const rates = exchangeInfo.rates;
-        if(rates) {
-          contract.currentBalance = calculateTotalBalance(contract.balances, rates);
-        }
-      }
-    }
-  }
-
   onTabClick(index) {
     this.setState({selectedTab: index});
   }
@@ -160,11 +138,8 @@ class Contracts extends React.Component {
         let balance;
         switch(c.state) {
           case CONTRACT_STATE_VERIFIED:
-            if(c.currentBalance) {
-              return ((c.currentBalance / c.contractSettings.sum - 1) * 100).toFixed(2);
-            } else {
-              return '';
-            }
+            balance = (c.totalInBTC || 0) / 100000000;
+            break;
           case CONTRACT_STATE_HALTED:
           case CONTRACT_STATE_FINISHED:
             balance = c.finishBalance / 100000000;
@@ -206,12 +181,8 @@ class Contracts extends React.Component {
         let balance;
         switch(c.state) {
           case CONTRACT_STATE_VERIFIED:
-            if(c.currentBalance) {
-              balance = c.currentBalance;
-              break;
-            } else {
-              return '';
-            }
+            balance = (c.totalInBTC || 0) / 100000000;
+            break;
           case CONTRACT_STATE_HALTED:
           case CONTRACT_STATE_FINISHED:
             balance = c.finishBalance / 100000000;
@@ -276,12 +247,8 @@ class Contracts extends React.Component {
         let balance;
         switch(c.state) {
           case CONTRACT_STATE_VERIFIED:
-            if(c.currentBalance) {
-              balance = c.currentBalance;
-              break;
-            } else {
-              return '';
-            }
+            balance = (c.totalInBTC || 0) / 100000000;
+            break;
           case CONTRACT_STATE_HALTED:
           case CONTRACT_STATE_FINISHED:
             balance = c.finishBalance / 100000000;
