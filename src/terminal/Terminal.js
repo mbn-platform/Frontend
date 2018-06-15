@@ -15,7 +15,7 @@ class Terminal extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {fullScreenEnabled: false};
+    this.state = {fullScreenEnabled: false, selectedInterval: '30 M', type: 'buy'};
     this.onOrderSelect = this.onOrderSelect.bind(this);
     this.onFullScreenChange = this.onFullScreenChange.bind(this);
   }
