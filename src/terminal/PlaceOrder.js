@@ -90,6 +90,8 @@ class PlaceOrder extends React.Component {
             newState.amount = defaultFormatValue(amount);
             break;
           }
+          default:
+            break;
         }
       }
       this.setState(newState);
@@ -118,15 +120,32 @@ class PlaceOrder extends React.Component {
     if(!amount) {
       this.setState({amount: '', orderSize: ''});
     }
-    const value = parseFloat(amount);
-    if(value >= 0) {
-      const newState = {amount};
-      const price = parseFloat(this.state.price);
-      if(price >= 0) {
-        const orderSize = value / this.commissionPercent(this.props.type) / price;
-        newState.orderSize = defaultFormatValue(orderSize);
+    switch(this.props.exchange) {
+      case 'binance': {
+        const price = parseFloat(this.state.price);
+        const value = parseFloat(amount);
+        if(price >= 0) {
+          const minTradeSize = this.state.marketInfo ? this.state.marketInfo.minTradeSize.toString() : '';
+          const maxOrderSize = value / price;
+          const rounded = this.floorBinance(maxOrderSize.toString(), minTradeSize);
+          this.setState({orderSize: rounded, amount});
+        } else {
+          this.setState({amount});
+        }
       }
-      this.setState(newState);
+        break;
+      default: {
+        const value = parseFloat(amount);
+        if(value >= 0) {
+          const newState = {amount};
+          const price = parseFloat(this.state.price);
+          if(price >= 0) {
+            const orderSize = value / this.commissionPercent(this.props.type) / price;
+            newState.orderSize = defaultFormatValue(orderSize);
+          }
+          this.setState(newState);
+        }
+      }
     }
   }
 
@@ -134,15 +153,44 @@ class PlaceOrder extends React.Component {
     if(!orderSize) {
       this.setState({amount: '', orderSize: ''});
     }
-    const value = parseFloat(orderSize);
-    if(value >= 0) {
-      const newState = {orderSize: value};
-      const price = parseFloat(this.state.price);
-      if(price >= 0) {
-        const amount = value * price * this.commissionPercent(this.props.type);
-        newState.amount = defaultFormatValue(amount);
+    switch(this.props.exchange) {
+      case 'binance': {
+        const minTradeSize = this.state.marketInfo ? this.state.marketInfo.minTradeSize.toString() : '';
+        const rounded = this.floorBinance(orderSize, minTradeSize);
+        const newState = {orderSize: rounded};
+        const price = parseFloat(this.state.price);
+        const value = parseFloat(rounded);
+        if(price >= 0) {
+          const amount = value * price;
+          newState.amount = defaultFormatValue(amount);
+        }
+        this.setState(newState);
       }
-      this.setState(newState);
+        break;
+      default: {
+        const value = parseFloat(orderSize);
+        if(value >= 0) {
+          const newState = {orderSize: value};
+          const price = parseFloat(this.state.price);
+          if(price >= 0) {
+            const amount = value * price * this.commissionPercent(this.props.type);
+            newState.amount = defaultFormatValue(amount);
+          }
+          this.setState(newState);
+        }
+      }
+    }
+  }
+
+  floorBinance(string, step) {
+    const afterComma = (step.toString().split('.')[1] || '').length;
+    const numberAfterComma = (string.split('.')[1] || '').length;
+    if(afterComma === 0) {
+      return Math.floor(parseFloat(string)).toString();
+    } else if(numberAfterComma > afterComma) {
+      return parseFloat(string.slice(0, afterComma - numberAfterComma));
+    } else {
+      return string;
     }
   }
 
@@ -267,9 +315,9 @@ const Balances = ({fund, main, secondary, onMainClick, onSecondaryClick}) => {
   if(fund) {
     const balances = fund.balances;
     value1 = balances.find(b => b.name === main);
-    value1 = value1 && value1.available || 0;
+    value1 = (value1 && value1.available) || 0;
     value2 = balances.find(b => b.name === secondary);
-    value2 = value2 && value2.available || 0;
+    value2 = (value2 && value2.available) || 0;
   }
   return (
     <div className="balance-wrap">
