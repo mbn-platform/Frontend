@@ -9,7 +9,7 @@ class ContractInfo extends React.Component {
     const startDate = new Date(contract.dt);
     const expireDate = new Date(startDate.getTime() + contract.contractSettings.duration * 86400000);
     const progress = (expireDate - this.props.time) / (expireDate - startDate) * 100;
-    const currentBalance = contract.currentBalance;
+    const currentBalance = contract.totalInBTC / 100000000;
     const startBalance = contract.contractSettings.sum;
     const minBalance = startBalance * (1 - contract.contractSettings.maxLoss / 100);
     const maxBalance = contract.contractSettings.targetBalance / 100000000;
