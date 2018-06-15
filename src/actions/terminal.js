@@ -156,6 +156,12 @@ export function placeOrder(order) {
             case ApiError.MIN_TRADE_REQUIREMENT_NOT_MET:
               alert('Min trade requirement not met');
               break;
+            case ApiError.MARKET_NOT_ALLOWED:
+              alert('You are not allowed to trade on that market');
+              break;
+            case ApiError.THROTTLE_LIMIT:
+              alert('You have made too many orders, please try later');
+              break;
             default:
               console.log('unhandled api error', error.apiErrorCode);
           }

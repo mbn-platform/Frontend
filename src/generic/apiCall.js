@@ -41,6 +41,8 @@ ApiError.UNIQUE_VIOLATION = -40;
 ApiError.INVALID_PARAMS_SET = -5;
 ApiError.KEY_IN_USE = -78;
 ApiError.TRY_AGAIN_LATER = -513;
+ApiError.MARKET_NOT_ALLOWED = -1000;
+ApiError.THROTTLE_LIMIT = -1001;
 
 function getSelectedNet() {
   return window.localStorage.getItem('selectedNet') || 'mainnet';
