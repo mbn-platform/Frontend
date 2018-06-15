@@ -18,6 +18,9 @@ class Offers extends React.Component {
       selectedTab: TAB_INBOX,
       selectedOfferTab: TAB_INBOX,
     };
+    if(props.offers.incoming.length === 0 && props.offers.outgoing.length > 0) {
+      this.state.selectedTab = TAB_OUTBOX;
+    }
     this.onTabChange = this.onTabChange.bind(this);
     this.onOfferPayClick = this.onOfferPayClick.bind(this);
   }
