@@ -40,7 +40,7 @@ export function getInitialState() {
     request: {},
     terminal: {
       fund: null,
-      exchange: localStorage.getItem('terminal.selectedExchange') || 'bittrex',
+      exchange: localStorage.getItem('terminal.selectedExchange') || 'binance',
       market: localStorage.getItem('terminal.selectedMarket') || 'USDT-BTC',
       interval: localStorage.getItem('terminal.selectedInterval') || '30 MIN',
       orderBook: {sell: [], buy: [], smap: {}, bmap: {}},
