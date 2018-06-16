@@ -76,17 +76,17 @@ class PlaceOrder extends React.Component {
       let price = nextProps.price || this.state.price;
       let orderSize = nextProps.size || this.state.orderSize;
       price = parseFloat(price);
-      orderSize = parseFloat(orderSize);
+      const os = parseFloat(orderSize);
       const newState = {price, orderSize, selectedTab: nextProps.type};
-      if(price >= 0 && orderSize >= 0) {
+      if(price >= 0 && os >= 0) {
         switch(this.props.exchange) {
           case 'bittrex': {
-            const amount = orderSize * price * (nextProps.type === TAB_BUY ? 1.0025 : 0.9975);
+            const amount = os * price * (nextProps.type === TAB_BUY ? 1.0025 : 0.9975);
             newState.amount = defaultFormatValue(amount);
             break;
           }
           case 'binance': {
-            const amount = orderSize * price;
+            const amount = os * price;
             newState.amount = defaultFormatValue(amount);
             break;
           }
@@ -104,15 +104,31 @@ class PlaceOrder extends React.Component {
       this.setState({price: '', amount: ''});
       return;
     }
-    const value = parseFloat(price);
-    if(value >= 0) {
-      const newState = {price};
-      const orderSize = parseFloat(this.state.orderSize);
-      if(orderSize >= 0) {
-        const amount = price * orderSize * this.commissionPercent(this.props.type);
-        newState.amount = defaultFormatValue(amount);
+    switch(this.props.exchange) {
+      case 'binance': {
+        const minPriceSize = this.state.marketInfo ? this.state.marketInfo.minPriceSize.toString() : '';
+        const rounded = this.floorBinance(price, minPriceSize.toString());
+        const newState = {price: rounded};
+        const orderSize = parseFloat(this.state.orderSize);
+        if(orderSize) {
+          const amount = parseFloat(rounded) * orderSize;
+          newState.amount = defaultFormatValue(amount);
+        }
+        this.setState(newState);
+        break;
       }
-      this.setState(newState);
+      default: {
+        const value = parseFloat(price);
+        if(value >= 0) {
+          const newState = {price};
+          const orderSize = parseFloat(this.state.orderSize);
+          if(orderSize >= 0) {
+            const amount = price * orderSize * this.commissionPercent(this.props.type);
+            newState.amount = defaultFormatValue(amount);
+          }
+          this.setState(newState);
+        }
+      }
     }
   }
 
@@ -183,7 +199,12 @@ class PlaceOrder extends React.Component {
   }
 
   floorBinance(string, step) {
-    const afterComma = (step.toString().split('.')[1] || '').length;
+    let afterComma;
+    if(step.startsWith('1e')) {
+      afterComma = parseInt(step.split('-')[1], 10);
+    } else {
+      afterComma = (step.toString().split('.')[1] || '').length;
+    }
     const numberAfterComma = (string.split('.')[1] || '').length;
     if(afterComma === 0) {
       return Math.floor(parseFloat(string)).toString();

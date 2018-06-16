@@ -21,7 +21,7 @@ class Terminal extends React.Component {
   }
 
   onOrderSelect(price, size, type) {
-    this.setState({price, size, type: type || this.state.type});
+    this.setState({price: price || '', size: size || '', type: type || this.state.type});
   }
 
   onFullScreenChange(value) {
