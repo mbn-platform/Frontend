@@ -4,6 +4,7 @@ export const UPDATE_CONTRACTS = 'UPDATE_CONTRACTS';
 export const RATE_CONTRACT = 'RATE_CONTRACT';
 export const UPDATE_CONTRACT_BALANCE = 'UPDATE_CONTRACT_BALANCE';
 export const FINISH_CONTRACT = 'FINISH_CONTRACT';
+export const UPDATE_CONTRACT_TOTAL_BALANCE = 'UPDATE_CONTRACT_TOTAL_BALANCE';
 
 export function updateContracts(contracts) {
   return {
