@@ -27,9 +27,9 @@ class MarketSelectTable extends React.Component {
     this.sortFunctions = {
       volume: (a, b) => (a.volume * a.last) - (b.volume * b.last),
       Balance: (a, b) => {
-        const first = this.props.balances[a.base];
+        const first = this.props.balances.find(balance => balance.name === a.second);
         const bFirst = first ? (first.total || 0) : 0;
-        const second = this.props.balances[a.second];
+        const second = this.props.balances.find(balance => balance.name === b.second);
         const bSecond = second ? (second.total || 0) : 0;
         return bFirst * a.last - bSecond * b.last;
       },
@@ -137,14 +137,14 @@ class MarketSelectTable extends React.Component {
     const baseCurrency = this.state.baseCurrency;
     const isBTC = baseCurrency === 'BTC';
     let sortedData = [];
-    if(this.state.markets.length) {
-      sortedData = this.sortData(this.state.markets);
-    }
     if(this.props.balances && this.state.hideZeros) {
-      sortedData = sortedData.filter(m => {
+      sortedData = this.state.markets.filter(m => {
         const c = this.props.balances.find(b => b.name === m.second);
         return c && c.total > 0;
       });
+      sortedData = this.sortData(sortedData);
+    } else {
+      sortedData = this.sortData(this.state.markets);
     }
     return (
       <div onClick={e => {
