@@ -88,7 +88,7 @@ class OrderBook extends React.Component {
   }
 
   render() {
-    const currency = this.props.market.split('-')[0];
+    const [main, secondary] = this.props.market.split('-');
     let sortedDataSell = [];
     let sortedDataBuy = [];
     const { sell, buy } = this.props.orderBook;
@@ -122,10 +122,10 @@ class OrderBook extends React.Component {
                   <div>Price <span className={classNameForColumnHeader(this.state, 'price')}></span></div>
                 </th>
                 <th onClick={() => this.onColumnSort('Quantity')}>
-                  <div>Size <span className={classNameForColumnHeader(this.state, 'Quantity')}></span></div>
+                  <div>Size ({secondary})<span className={classNameForColumnHeader(this.state, 'Quantity')}></span></div>
                 </th>
                 <th onClick={() => this.onColumnSort('relativeSize')}>
-                  <div>Total ({currency}) <span className={classNameForColumnHeader(this.state, 'relativeSize')}></span></div>
+                  <div>Total ({main}) <span className={classNameForColumnHeader(this.state, 'relativeSize')}></span></div>
                 </th>
                 <th></th>
               </tr>
@@ -134,7 +134,7 @@ class OrderBook extends React.Component {
               {sortedDataSell.map((order, i) => (
                 <BuyOrderCell
                   onClickCapture={this.onOrderClick.bind(this, 'sell')}
-                  currency={currency}
+                  currency={main}
                   key={i}
                   price={order.Rate}
                   size={order.Quantity}
@@ -151,7 +151,7 @@ class OrderBook extends React.Component {
               {sortedDataBuy.map((order, i) => (
                 <BuyOrderCell
                   onClickCapture={this.onOrderClick.bind(this, 'buy')}
-                  currency={currency}
+                  currency={main}
                   key={i}
                   price={order.Rate}
                   size={order.Quantity}
