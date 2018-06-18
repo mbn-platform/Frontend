@@ -37,12 +37,12 @@ export function selectMarket(market) {
 export function selectExchange(exchange, restore) {
   localStorage.setItem('terminal.selectedExchange', exchange);
   return (dispatch, getState) => {
-    let newSelectedKey = null;
-    const ownKeys = getState().apiKeys.ownKeys.filter(key => key.exchange === exchange);
-    if (ownKeys.length > 0) {
-      newSelectedKey = ownKeys[0];
-    }
-    dispatch(selectFund(newSelectedKey));
+    const state = getState();
+    const apiKeys = state.apiKeys.ownKeys.filter(k => k.exchange === exchange);
+    const contracts = state.contracts.current
+      .filter(c => c.exchange === exchange && c.to._id === state.auth.profile._id);
+    const selectedFund = apiKeys[0] || contracts[0] || null;
+    dispatch(selectFund(selectedFund));
     dispatch({
       type: SELECT_EXCHANGE,
       exchange,

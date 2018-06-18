@@ -48,6 +48,7 @@ const socketMiddleware = store => next => action => {
       }
       action.contracts = contracts;
       action.offers = offers;
+      action.userId = userId;
       break;
     }
     case ACCEPT_OFFER:

@@ -4,6 +4,7 @@ import {
 } from '../actions/terminal';
 import {UPDATE_ORDER_BOOK, UPDATE_HISTORY, UPDATE_TICKER} from '../actions/terminal';
 import {UPDATE_KEYS} from '../actions/dashboard';
+import {FETCH_CONTRACTS} from '../actions/contracts';
 
 export default function(state = {
   fund: null,
@@ -96,6 +97,15 @@ export default function(state = {
     case UPDATE_KEYS: {
       if(!state.fund && action.data.length && action.data[0].exchange === state.exchange) {
         return {...state, fund: action.data[0]};
+      }
+      break;
+    }
+    case FETCH_CONTRACTS: {
+      if(!state.fund) {
+        const contract = action.contracts.current.find(c => c.to._id === action.userId && c.exchange === state.exchange);
+        if(contract) {
+          return {...state, fund: contract};
+        }
       }
       break;
     }
