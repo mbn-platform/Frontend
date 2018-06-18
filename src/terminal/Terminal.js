@@ -144,6 +144,7 @@ class Terminal extends React.Component {
 
   componentDidMount() {
     window.customize();
+    this.props.startTradingDataUpdates();
     const savedFund = localStorage.getItem('terminal.selectedFund');
     if (savedFund) {
       this.props.selectFund(JSON.parse(savedFund));
@@ -154,6 +155,7 @@ class Terminal extends React.Component {
 
   componentWillUnmount() {
     window.uncustomize();
+    this.props.stopTradingDataUpdates();
   }
 }
 

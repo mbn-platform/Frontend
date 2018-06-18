@@ -1,6 +1,7 @@
 import io from 'socket.io-client';
 //import { WEBSOCKET_CONNECT, WEBSOCKET_DISCONNECT, WEBSOCKET_TERMINAL } from './actions/websocket';
-import { SELECT_MARKET, SELECT_EXCHANGE, EXCHANGE_MARKETS } from './actions/terminal';
+import { SELECT_MARKET, SELECT_EXCHANGE, EXCHANGE_MARKETS,
+  TRADING_DATA_START, TRADING_DATA_STOP } from './actions/terminal';
 import { LOGGED_OUT, LOGGED_IN } from './actions/auth';
 import {updateKeyBalance} from './actions/apiKeys';
 import {updateOrderBook, updateHistory, updateRates, updateTicker, selectMarket} from './actions/terminal';
@@ -10,6 +11,9 @@ const socketMiddleware = store => next => action => {
     case LOGGED_IN: {
       if(!socket) {
         socket = io();
+        socket.on('action', action => {
+          store.dispatch(action);
+        });
         socket.on('orders', ({name, content}) => {
           const [exchange, orders, market] = name.split('.');
           const buy = content.bids;
@@ -31,11 +35,24 @@ const socketMiddleware = store => next => action => {
         socket.on('balances', ({_id, content, totalInBTC, totalInUSDT}) => {
           store.dispatch(updateKeyBalance(_id, content.balances, totalInBTC, totalInUSDT));
         });
-        socket.on('action', action => {
-          store.dispatch(action);
-        });
       }
       break;
+    }
+    case TRADING_DATA_START: {
+      if(socket) {
+        const state = store.getState();
+        const {exchange} = state.terminal;
+        const symbol = action.market;
+        socket.emit('market', {exchange, symbol});
+        socket.emit('rates', {exchange});
+      }
+      return;
+    }
+    case TRADING_DATA_STOP: {
+      if(socket) {
+        socket.emit('off_data');
+      }
+      return;
     }
     case LOGGED_OUT:
       if(socket) {

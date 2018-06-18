@@ -17,6 +17,8 @@ export const UPDATE_ORDER_BOOK = 'UPDATE_ORDER_BOOK';
 export const UPDATE_HISTORY = 'UPDATE_HISTORY';
 export const GET_EXCHANGE_MARKETS = 'GET_EXCHANGE_MARKETS';
 export const UPDATE_MARKET_SUMMARIES = 'UPDATE_MARKET_SUMMARIES';
+export const TRADING_DATA_START = 'TRADING_DATA_START';
+export const TRADING_DATA_STOP = 'TRADING_DATA_STOP';
 
 export function selectFund(fund) {
   localStorage.setItem('terminal.selectedFund', JSON.stringify(fund));
@@ -24,6 +26,14 @@ export function selectFund(fund) {
     type: SELECT_FUND,
     fund
   };
+}
+
+export function startTradingDataUpdates() {
+  return {type: TRADING_DATA_START};
+}
+
+export function stopTradingDataUpdates() {
+  return {type: TRADING_DATA_STOP};
 }
 
 export function selectMarket(market) {

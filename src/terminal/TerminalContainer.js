@@ -9,6 +9,8 @@ import {
   getOrders,
   cancelOrder,
   getExchangeMarkets,
+  startTradingDataUpdates,
+  stopTradingDataUpdates,
 } from '../actions/terminal';
 import { WEBSOCKET_TERMINAL } from '../actions/websocket';
 
@@ -22,6 +24,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps =  dispatch => ({
+  startTradingDataUpdates: () => dispatch(startTradingDataUpdates()),
+  stopTradingDataUpdates: () => dispatch(stopTradingDataUpdates()),
   selectMarket: market => dispatch(selectMarket(market)),
   selectExchange: (exchange, restore) => dispatch(selectExchange(exchange, restore)),
   selectInterval: interval => dispatch(selectInterval(interval)),

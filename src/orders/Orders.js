@@ -4,9 +4,7 @@ import HeaderStatus from '../terminal/HeaderStatus';
 import Controls from './Controls';
 import OrdersTable from './OrdersTable';
 import { connect } from 'react-redux';
-import { cancelOrder, getOrders, selectExchange, selectFund, getExchangeMarkets } from '../actions/terminal';
-import { fetchDashboardData } from '../actions/dashboard';
-import { WEBSOCKET_CONNECT } from '../actions/websocket';
+import { cancelOrder, getOrders, selectExchange, selectFund, getExchangeMarkets, startTradingDataUpdates, stopTradingDataUpdates } from '../actions/terminal';
 import { setFundId } from '../generic/util';
 
 class Orders extends React.Component {
@@ -49,7 +47,7 @@ class Orders extends React.Component {
   }
   componentDidMount() {
     window.customize();
-    this.props.connectToSocket();
+    this.props.startTradingDataUpdates();
     this.props.selectExchange(this.props.exchange);
     if(this.props.fund) {
       let payload = setFundId({}, this.props.fund)
@@ -66,6 +64,7 @@ class Orders extends React.Component {
 
   componentWillUnmount() {
     window.uncustomize();
+    this.props.stopTradingDataUpdates();
   }
 }
 
@@ -80,6 +79,8 @@ const OrdersContainer = connect(state => ({
   exchanges: state.exchangesInfo.exchanges || [],
   exchangeInfo: state.exchangesInfo[state.terminal.exchange],
 }), dispatch => ({
+  startTradingDataUpdates: () => dispatch(startTradingDataUpdates()),
+  stopTradingDataUpdates: () => dispatch(stopTradingDataUpdates()),
   getOrders: params => dispatch(getOrders(params)),
   cancelOrder: order => dispatch(cancelOrder(order)),
   selectExchange: exchange => {
@@ -88,9 +89,6 @@ const OrdersContainer = connect(state => ({
   },
   selectFund: fund => dispatch(selectFund(fund)),
   getExchangeMarkets: exchange => dispatch(getExchangeMarkets(exchange)),
-  connectToSocket: () => dispatch({
-    type: WEBSOCKET_CONNECT,
-  }),
 }))(Orders);
 
 export default OrdersContainer;
