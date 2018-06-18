@@ -3,14 +3,14 @@ import 'amcharts3/amcharts/amcharts';
 import 'amcharts3/amcharts/pie';
 import 'amcharts3/amcharts/serial';
 import AmChartsReact from '@amcharts/amcharts3-react';
-import {getValueInBTC} from './SelectedContractChart';
 
 class FundsChart extends React.Component {
 
 
   constructor(props) {
     super(props);
-    this.state = {data: this.formatData(this.props.apiKeys)};
+    const funds = props.apiKeys.concat(props.contracts.filter(c => c.to._id === props.userId));
+    this.state = {data: this.formatData(funds)};
   }
 
   getValueInBTC(currencyName, currencyValue) {
@@ -50,7 +50,8 @@ class FundsChart extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({data: this.formatData(nextProps.apiKeys)});
+    const funds = nextProps.apiKeys.concat(nextProps.contracts.filter(c => c.to._id === nextProps.userId));
+    this.setState({data: this.formatData(funds)});
   }
 
 
