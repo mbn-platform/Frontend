@@ -17,7 +17,7 @@ class FundsChart extends React.Component {
     if (currencyName === 'BTC') {
       return currencyValue;
     }
-    const rates = this.props.exchangesInfo['binance'] ? this.props.exchangesInfo['binance'].rates : [];
+    const rates = this.props.exchangesInfo['binance'] ? this.props.exchangesInfo['binance'].rates || [] : [];
     let marketName;
     if (currencyName === 'USDT') {
       return parseFloat((currencyValue / rates['USDT-BTC']).toFixed(8));
