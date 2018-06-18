@@ -9,6 +9,7 @@ import Pagination from '../generic/Pagination';
 import { UncontrolledTooltip } from 'reactstrap';
 import { CONTRACT_STATE_FINISHED, CONTRACT_STATE_VERIFIED, CONTRACT_STATE_HALTED } from '../constants';
 import { calculateTotalBalance } from '../generic/util';
+import { Row, Container, Col } from 'reactstrap';
 
 
 
@@ -82,17 +83,21 @@ class Contracts extends React.Component {
   render() {
     return (
       <div className="table contracts_table">
-        <div className="table_title_wrapper clearfix">
-          <div className="table_title">Contracts
-            <span className="contracts-showall-button text-muted" onClick={() => {
-              this.setState({selectedTab: Contracts.TAB_CURRENT});
-              this.props.onShowAllClicked();
-            }}>Show all</span>
-          </div>
-          <SegmentedControl selectedIndex={this.state.selectedTab} segments={['CURRENT', 'FINISHED']} onChange={this.onTabClick}/>
-        </div>
-        {this.renderContent()}
-      </div>
+        <Container fluid>
+          <Row className="table_title_wrapper">
+            <Col xs="12" sm="6" className="table_title">Contracts
+              <span className="contracts-showall-button text-muted" onClick={() => {
+                this.setState({selectedTab: Contracts.TAB_CURRENT});
+                this.props.onShowAllClicked();
+              }}>Show all</span>
+          </Col>
+          <Col sm="6">
+            <SegmentedControl selectedIndex={this.state.selectedTab} segments={['CURRENT', 'FINISHED']} onChange={this.onTabClick}/>
+          </Col>
+        </Row>
+      </Container>
+      {this.renderContent()}
+    </div>
     );
   }
 
