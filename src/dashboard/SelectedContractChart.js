@@ -96,7 +96,7 @@ export function getValueInBTC(currencyName, currencyValue) {
   if (currencyName === 'BTC') {
     return currencyValue;
   }
-  const rates = this.props.exchangesInfo['bittrex'] ? this.props.exchangesInfo['bittrex'].rates : [];
+  const rates = this.props.exchangesInfo['binance'] ? this.props.exchangesInfo['binance'].rates : [];
   let marketName;
   if (currencyName === 'USDT') {
     return (currencyValue / rates['USDT-BTC']).toFixed(8);

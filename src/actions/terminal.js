@@ -76,6 +76,15 @@ export function getExchangeMarkets(exchange) {
   };
 }
 
+export function getExchangeRates(exchange) {
+  return dispatch => {
+    return apiGet('/exchange/rates?exchange=' + exchange)
+      .then(res => {
+        dispatch(updateRates(exchange, res));
+      });
+  };
+}
+
 
 export function getMyOrders(key) {
   return dispatch => {
