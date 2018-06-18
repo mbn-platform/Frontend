@@ -153,7 +153,10 @@ class MarketSelectTable extends React.Component {
       }} className="dropdown search">
         <div onClick={this.props.close} className="dropdown__name">
           <span>{this.props.market}</span>
-          <span className="arrow_down"></span>
+          <span>
+            <span className="hide_zeros" onClick={this.onHideZeroClick}>Hide zeros <div className={classNames('currency_status_checkbox', {selected: this.state.hideZeros})}/></span>
+            <span className="arrow_down"></span>
+          </span>
         </div>
         <form action="" className="dropdown__form">
           <input autoComplete="off" value={this.state.filter} type="text" name="filter" onChange={this.onChange} className="input-search" placeholder="Search..."/>
@@ -182,10 +185,7 @@ class MarketSelectTable extends React.Component {
                 <th onClick={() => this.onColumnSort('volume')}>Volume({baseCurrency}) <span className={classNameForColumnHeader(this.state, 'volume')}></span></th>
                 <th onClick={() => this.onColumnSort('change')}>Change <span className={classNameForColumnHeader(this.state, 'change')}></span></th>
                 {this.props.balances ? (
-                  <th onClick={() => this.onColumnSort('Balance')}>Balance ({baseCurrency}) <span className={classNameForColumnHeader(this.state, 'Balance')}></span><br/>
-                    <div onClick={this.onHideZeroClick}>Hide zeros <div className={classNames('currency_status_checkbox', {selected: this.state.hideZeros})}/>
-                    </div>
-                  </th>
+                  <th onClick={() => this.onColumnSort('Balance')}>Balance ({baseCurrency}) <span className={classNameForColumnHeader(this.state, 'Balance')}></span><br/></th>
                 ) : null}
               </tr>
             </thead>
