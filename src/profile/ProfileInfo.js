@@ -33,7 +33,6 @@ class ProfileInfo extends React.Component {
 
   render() {
     const profile = this.props.profile;
-    console.log('PROFILE', this.props.profile)
     const contractSettings = profile.contractSettings;
     if(this.props.own) {
       return (
