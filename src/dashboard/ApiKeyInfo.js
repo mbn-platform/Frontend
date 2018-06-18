@@ -49,7 +49,8 @@ class ApiKeyInfo extends React.Component {
         id: 'currency',
         accessor: 'name',
         headerClassName: 'filter_align_center',
-        className: 'table_col_value'
+        className: 'table_col_value',
+        minWidth: 60,
       },
       {
         Header: (<div className="table_header_wrapper">
@@ -60,7 +61,7 @@ class ApiKeyInfo extends React.Component {
         </div>),
         Cell: rowInfo => rowInfo.value >= 0 && this.showCell(rowInfo.original.name) ? rowInfo.value.toFixed(8).replace(/\.0+$/, '') : '  ',
         className: 'table_col_value',
-        minWidth: 110,
+        minWidth: 100,
         accessor: 'total'
       },
       {
@@ -72,7 +73,7 @@ class ApiKeyInfo extends React.Component {
         </div>),
         Cell: rowInfo => rowInfo.value >= 0 && !this.isContractOrOffer()  ? rowInfo.value.toFixed(8).replace(/\.0+$/, '') : '  ',
         className: 'table_col_value',
-        minWidth: 110,
+        minWidth: 100,
         accessor: 'available'
       },
       {
@@ -84,7 +85,7 @@ class ApiKeyInfo extends React.Component {
         </div>),
         Cell: rowInfo => rowInfo.value >= 0 && !this.isContractOrOffer() ? rowInfo.value.toFixed(8).replace(/\.0+$/, '') : ' ',
         className: 'table_col_value',
-        minWidth: 110,
+        minWidth: 100,
         accessor: 'trusted'
       }
     ];
