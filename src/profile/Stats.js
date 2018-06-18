@@ -4,7 +4,7 @@ import { Row, Col } from 'reactstrap';
 import { UncontrolledTooltip } from 'reactstrap';
 
 
-const Stats = ({ traderRating, investorRating, roiInUSD, roiInBTC, moneyInManagement, rates })  => (
+const Stats = ({ traderRating, investorRating, roiInUSD, roiInBTC, totalInBTC, totalInUSDT })  => (
   <Row className="justify-content-between raiting-block">
     <Col xs="auto" className="raiting-left-item">
       <div className="content-fuild">
@@ -57,10 +57,10 @@ const Stats = ({ traderRating, investorRating, roiInUSD, roiInBTC, moneyInManage
               money in <br/> management:
             </div>
             <div className="value-text green">
-              {(moneyInManagement || 0).toFixed(2)}<span className="currency-value-usd-text"> usd</span>
+              {totalInUSDT || 0}<span className="currency-value-usd-text"> usd</span>
             </div>
             <div className="description-text btc-text">
-              ~{moneyInManagementBTC(moneyInManagement, rates)} <span className="currency-value-btc-text">btc</span>
+              ~{totalInBTC || 0} <span className="currency-value-btc-text">btc</span>
             </div>
           </div>
 
@@ -70,23 +70,12 @@ const Stats = ({ traderRating, investorRating, roiInUSD, roiInBTC, moneyInManage
   </Row>
 );
 
-function moneyInManagementBTC(mim, rates) {
-  if(!rates || !Number.isFinite(mim)) {
-    return null;
-  } else if(mim === 0) {
-    return '0';
-  } else {
-    return (mim / rates.USDT.BTC).toFixed(8);
-  }
-}
-
 Stats.propTypes = {
   traderRating: PropTypes.number,
   investorRating: PropTypes.number,
   roi: PropTypes.number,
   roiInBTC: PropTypes.number,
   roiInUSD: PropTypes.number,
-  moneyInManagement: PropTypes.number,
 };
 
 export default Stats;
