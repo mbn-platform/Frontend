@@ -37,7 +37,7 @@ export function defaultSortFunction(a, b) {
   }
 }
 
-export function classNameForColumnHeader(state, column) {
+export function classNameForColumnHeader(state, column, ...additionalClasses) {
   const names = ['icon-dir'];
 
   if(state.sort.column === column &&
@@ -52,5 +52,5 @@ export function classNameForColumnHeader(state, column) {
     }
 
   }
-  return classNames(names);
+  return classNames(names, additionalClasses);
 }
