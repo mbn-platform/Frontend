@@ -17,12 +17,35 @@ class Leaderbord extends React.Component {
       name: (a, b) => defaultSortFunction(a.name.toLowerCase(), b.name.toLowerCase(),),
     };
     this.state = {
-      rounds: [],
+      selectedRound: 0,
+      round: null,
       nameFilter: '',
-      sort: {}
+      sort: {},
     };
     this.onRowClick = this.onRowClick.bind(this);
     this.onInputBlur = this.onInputBlur.bind(this);
+    this.selectRound = this.selectRound.bind(this);
+  }
+
+  selectRound(number) {
+    clearInterval(this.interval);
+    this.setState({selectedRound: number, round: null});
+    apiGet('/challenge/' + number)
+      .then(json => {
+        this.setState({round: json});
+      })
+      .catch(e => {
+        this.setState({round: null});
+      });
+    this.interval = setInterval(() => {
+      apiGet('/challenge/' + number)
+        .then(json => {
+          this.setState({round: json});
+        })
+        .catch(e => {
+          this.setState({round: null});
+        });
+    }, 30000);
   }
 
   onInputBlur(e) {
@@ -45,8 +68,8 @@ class Leaderbord extends React.Component {
 
   render() {
     let data = [];
-    if(this.state.rounds[0]) {
-      data = this.state.rounds[0].results;
+    if(this.state.round) {
+      data = this.state.round.results;
     }
     data = data.filter(profile => {
       return profile.name.toLowerCase().indexOf(this.state.nameFilter.toLowerCase()) >= 0;
@@ -62,7 +85,13 @@ class Leaderbord extends React.Component {
                 <div className="block__top">
                   <div className="block__top-switch-wrap">
                     <span
-                      className={classNames('block__top-switch', 'ratings-traders', {active: true})}>
+                      onClick={() => this.selectRound(0)}
+                      className={classNames('block__top-switch', 'ratings-traders', {active: this.state.selectedRound === 0})}>
+                      GLOBAL
+                    </span>
+                    <span
+                      onClick={() => this.selectRound(1)}
+                      className={classNames('block__top-switch', 'ratings-traders', {active: this.state.selectedRound === 1})}>
                       ROUND 1
                     </span>
                   </div>
@@ -80,9 +109,16 @@ class Leaderbord extends React.Component {
                             <th onClick={() => this.onColumnSort('name')} className="name">
                               <span>Name</span><span className={classNameForColumnHeader(this.state, 'name')}></span>
                             </th>
-                            <th onClick={() => this.onColumnSort('balance')}>
-                              <span>Balance (USDT)</span><span className={classNameForColumnHeader(this.state, 'balance')}></span>
+                            <th onClick={() => this.onColumnSort('profit')}>
+                              <span>Profit (USDT)</span><span className={classNameForColumnHeader(this.state, 'profit')}></span>
                             </th>
+                            {(this.state.round && !this.state.round.global) ? (
+                              <th onClick={() => this.onColumnSort('percent')}>
+                                <span>Profit, %</span><span className={classNameForColumnHeader(this.state, 'percent')}></span>
+                              </th>
+                            ) : null
+                            }
+
                           </tr>
 
                           <tr>
@@ -92,11 +128,11 @@ class Leaderbord extends React.Component {
                                 <input onBlur={this.onInputBlur} value={this.state.nameFilter} onChange={this.onNameFilterChange} type="text" className="input_search" placeholder="Search" />
                               </div>
                             </th>
-                            <th></th>
+                            {(this.state.round && !this.state.round.global) ? (<th></th>) : null}
                           </tr>
                         </thead>
                         <tbody>
-                          {sortedData.map(rating => <RatingRow key={rating.name} {...rating} onClick={this.onRowClick} />)}
+                          {sortedData.map(rating => <RatingRow key={rating.name} {...rating} onClick={this.onRowClick} round={this.state.round} />)}
                         </tbody>
                       </table>
                     </div>
@@ -118,24 +154,19 @@ class Leaderbord extends React.Component {
         this.shouldFocus = false;
       }
     });
-    apiGet('/challenge/1')
-      .then(json => {
-        this.setState({rounds: [json]});
-      })
-      .catch(e => {
-        this.setState({rounds: []});
-      });
+    this.selectRound(this.state.selectedRound);
   }
 
   componentWillUnmount() {
     const $table = $('js-table-wrapper table');
     $table.off();
     window.uncustomize();
+    clearInterval(this.interval);
   }
 
   renderRound() {
-    if(this.state.rounds[0]) {
-      const round = this.state.rounds[0];
+    if(this.state.round && !this.state.round.global) {
+      const round = this.state.round;
       return (
         <div className="round_info">
           <div>{formatDate(new Date(round.dtStart))} - {formatDate(new Date(round.dtEnd))}</div>
@@ -170,8 +201,13 @@ const RatingRow = (props) => (
       <div className="name nickname">@{props.name}</div>
     </td>
     <td>
-      <div className="balance">{(props.balance || 0).toFixed(2)}</div>
+      <div className="profit">{(props.profit || 0).toFixed(2)}</div>
     </td>
+    {props.round.global ? null : (
+      <td>
+        <div className="percent">{(props.percent || 0).toFixed(2)}</div>
+      </td>
+    )}
   </tr>
 );
 
