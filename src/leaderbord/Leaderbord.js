@@ -81,7 +81,7 @@ class Leaderbord extends React.Component {
                               <span>Name</span><span className={classNameForColumnHeader(this.state, 'name')}></span>
                             </th>
                             <th onClick={() => this.onColumnSort('balance')}>
-                              <span>Current Balance</span><span className={classNameForColumnHeader(this.state, 'balance')}></span>
+                              <span>Balance (USDT)</span><span className={classNameForColumnHeader(this.state, 'balance')}></span>
                             </th>
                           </tr>
 
@@ -170,7 +170,7 @@ const RatingRow = (props) => (
       <div className="name nickname">@{props.name}</div>
     </td>
     <td>
-      <div className="balance">{props.balance}</div>
+      <div className="balance">{(props.balance || 0).toFixed(2)}</div>
     </td>
   </tr>
 );
