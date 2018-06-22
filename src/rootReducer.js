@@ -36,6 +36,13 @@ const root = (state, action) => {
       }
       return newState;
     }
+    case 'UPDATE_CONTRACT_BALANCE': {
+      if(state.terminal.fund && state.terminal.fund._id === action._id) {
+        const fund = newState.contracts.current.find(c => c._id === action._id);
+        newState.terminal.fund = fund;
+      }
+      return newState;
+    }
     case 'ON_NET_SELECT':
       let net = newState.selectedNet;
       if(net === 'mainnet') {

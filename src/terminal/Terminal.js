@@ -37,13 +37,15 @@ class Terminal extends React.Component {
     return allowedOwnKeys.concat(allowedReceivedKeys);
   }
 
-  componentWillReceiveProps(props) {
-    if(props.fund && ((!this.props.fund || this.props.fund._id !== props.fund._id) ||
-      props.market !== this.props.market)) {
+  componentDidUpdate(prevProps, prevState) {
+    if(this.props.fund && (prevProps.market !== this.props.market ||
+      (!prevProps.fund || prevProps.fund._id !== this.props.fund._id))) {
       let payload = {
-        symbol: props.market
+        symbol: this.props.market
       }
-      payload = setFundId(payload, props.fund);
+      payload = setFundId(payload, this.props.fund);
+      console.log(payload);
+      console.log('getting orders');
       this.props.getOrders(payload);
     }
   }
