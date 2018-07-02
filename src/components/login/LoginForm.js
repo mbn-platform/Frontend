@@ -1,6 +1,5 @@
 import React from 'react';
 import NetSelector from './NetSelector';
-import DemoButton from './DemoButton';
 
 const LoginForm = ({ onClick, onNetSelect, isMainNet }) => (
   <div className="login_step_login">
@@ -12,7 +11,6 @@ const LoginForm = ({ onClick, onNetSelect, isMainNet }) => (
     <div className="login_step_login_field_wrapper clearfix">
       <input className="login_step_login_submit" type="submit" onClick={onClick} value="Login" />
     </div>
-    <DemoButton />
   </div>
 );
 export default LoginForm;

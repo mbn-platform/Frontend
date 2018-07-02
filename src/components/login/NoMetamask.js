@@ -1,7 +1,6 @@
 import React from 'react';
 import Metamask from '../../img/Metamask.png';
 import Cipher from '../../img/Cipher.png';
-import DemoButton from './DemoButton';
 import './NoMetamask.css';
 
 export default () => {
@@ -24,7 +23,6 @@ export default () => {
             <div className="metamask_text">Cipher Browser is the world's first full-featured mobile dapp browser and wallet for the Ethereum blockchain. Cipher allows you to interact with dapps powered by Ethereum on your mobile device and makes it easy for you to securely store, send and receive Ether and ERC20 tokens.</div>
           </div>
         </div>
-        <DemoButton />
       </div>
     );
   }
@@ -46,7 +44,6 @@ export default () => {
             <div className="metamask_text">MetaMask is a bridge that allows you to visit the distributed web of tomorrow in your browser today. It allows you to run Ethereum dApps right in your  browser without running a full Ethereum node. MetaMask includes a secure identity vault, providing a user interface to manage your identities on different sites and sign blockchain transactions.</div>
           </div>
         </div>
-        <DemoButton />
       </div>
     );
   }
