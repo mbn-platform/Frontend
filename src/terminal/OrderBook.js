@@ -75,7 +75,7 @@ class OrderBook extends React.Component {
       this.setState({prelast: null, sort: {}, scroll: true});
     }
     if(nextProps.ticker !== this.props.ticker) {
-      this.setState({prelast: this.props.ticker.last});
+      this.setState({prelast: this.props.ticker.l});
     }
     if(nextProps.orderBook !== this.props.orderBook) {
       const { sell, buy } = nextProps.orderBook;
@@ -119,7 +119,7 @@ class OrderBook extends React.Component {
             <thead>
               <tr>
                 <th onClick={() => this.onColumnSort('price')}>
-                  <div>Price <span className={classNameForColumnHeader(this.state, 'price')}></span></div>
+                  <div>Ask <span className={classNameForColumnHeader(this.state, 'price')}></span></div>
                 </th>
                 <th onClick={() => this.onColumnSort('Quantity')}>
                   <div>Size ({secondary})<span className={classNameForColumnHeader(this.state, 'Quantity')}></span></div>
@@ -147,6 +147,11 @@ class OrderBook extends React.Component {
         {this.renderLastPrice()}
         <div className="orderbook-table-wrapper js-table-wrapper" ref={elem => this.tableBuy = elem}>
           <table className="table green">
+            <thead>
+              <th>
+                  <div>Bid</div>
+              </th>
+            </thead>
             <tbody>
               {sortedDataBuy.map((order, i) => (
                 <BuyOrderCell
@@ -176,6 +181,7 @@ class OrderBook extends React.Component {
     } else {
       isUp = true;
     }
+
     return (
       <div className={classNames('value', 'last-price', 'row', isUp ? 'up' : 'down')}>
         <span onClick={() => this.props.onOrderSelect(last)}>
