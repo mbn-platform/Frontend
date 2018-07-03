@@ -430,6 +430,12 @@
 						color: #D74C4C;
 					}
 				}
+				.last-price{
+					z-index: 10000;
+					position: absolute;
+					top: 50%;
+					left: 32%;
+				}
 				.table{
 					color: #4F525D;
 					margin-bottom: 0;
@@ -616,9 +622,12 @@
 					.orderbook-table {
 						.floatThead-wrapper {
 							height: calc(50% - 24px);
+							&:last-child {
+								margin-top: 20px;
+							}
 							.orderbook-table-wrapper {
 								position: absolute;
-								height: calc(100% - 28px);
+								height: calc(100% - 23px);
 							}
 						}
 						> .orderbook-table-wrapper {
