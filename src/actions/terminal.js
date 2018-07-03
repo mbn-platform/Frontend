@@ -143,6 +143,7 @@ export function cancelOrder(order) {
               alert('Server is busy. Try again later');
               break;
             default:
+              alert('failed to cancel order:', err.apiErrorCode);
               console.log('unhandled api error', err.apiErrorCode);
           }
         } else {
@@ -182,6 +183,7 @@ export function placeOrder(order) {
               alert('You have made too many orders, please try later');
               break;
             default:
+              alert('failed to place order:', error.apiErrorCode);
               console.log('unhandled api error', error.apiErrorCode);
           }
         }

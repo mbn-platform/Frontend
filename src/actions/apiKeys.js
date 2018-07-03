@@ -97,6 +97,7 @@ export function addApiKey(key) {
               alert('This key already in system');
               return;
             default:
+              alert('failed to add api key:', error.apiErrorCode);
               console.log('unhandled api error', error.apiErrorCode);
           }
         }
