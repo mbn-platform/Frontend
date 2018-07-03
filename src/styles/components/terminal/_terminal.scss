@@ -15,6 +15,15 @@
 	.amcharts-axis-label.amcharts-guide {
 		
 	}
+
+    .orderbook-table {
+        .floatThead-wrapper {
+            &:last-child {
+                margin-top: 20px;
+            }
+        }
+    }
+
 	.-sort-asc {
 		.icon-dir:before {
 			content: '\e808'; 
