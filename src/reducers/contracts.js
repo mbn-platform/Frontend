@@ -16,7 +16,7 @@ export default function(state = {current: [], finished: []}, action) {
         return state;
       }
     case VERIFY_OFFER:
-      return {...state, current: state.current.concat(action.offer)};
+      return {...state, current: [action.offer, ...state.current]};
     case PAY_OFFER: {
       const offer = action.offer;
       const _id = makeId();

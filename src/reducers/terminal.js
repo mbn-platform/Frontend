@@ -121,9 +121,9 @@ export default function(state = {
         let closed = state.orders.closed;
         let opened = state.orders.open;
         if (action.order.state === 'CLOSED') {
-          closed = closed.concat(action.order);
+          closed = [action.order, ...closed];
         } else {
-          opened = opened.concat(action.order);
+          opened = [action.order, ...opened];
         }
         const orders = {
           open: opened,
@@ -140,10 +140,10 @@ export default function(state = {
       let opened = state.orders.open;
       if (orderIndex > -1) {
         if (action.order.state === 'CLOSED') {
-          opened.splice(orderIndex, 1);
-          closed = closed.concat(action.order);
+          opened = opened.filter(o => o._id !== action.order._id);
+          closed = [action.order, ...closed];
         } else {
-          opened[orderIndex] = action.order;
+          opened = opened.map(o => o._id === action.order._id ? action.order : o);
         }
         const orders = {
           open: opened,
@@ -158,7 +158,7 @@ export default function(state = {
       if(order) {
         const orders = {
           open: state.orders.open.filter(o => o._id !== action.order._id),
-          closed: state.orders.closed.concat(action.order),
+          closed: [action.order, ...state.orders.closed],
         };
         return {...state, orders};
       }
