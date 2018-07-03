@@ -37,6 +37,7 @@ class Controls extends React.Component {
         <MarketSelect
           market={this.props.market}
           targetId="market_select"
+          isKeyChoosen={this.props.isSomeKeyChoosen}
         />
         <DropdownSelect
           selected={this.state.selectedTime}

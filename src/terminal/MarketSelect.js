@@ -54,6 +54,7 @@ class MarketSelect extends React.Component {
           className="dropdown-popover market-select"
         >
           <MarketTable
+            isKeyChoosen={this.props.isKeyChoosen}
             close={e => this.setState({isOpen: false})}
           />
         </Popover>
