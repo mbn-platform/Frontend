@@ -30,7 +30,7 @@ class FundsChart extends React.Component {
   formatData(apiKeys) {
     let data = {};
     for (let apiKey of apiKeys) {
-      apiKey.balances.forEach(currency => {
+      Array.isArray(apiKey.balances) && apiKey.balances.forEach(currency => {
         if (currency.available === 0){
           return;
         }
