@@ -3,11 +3,10 @@
 }
 .login_no_metamask_title {
   font-size: 2.6em;
-  color: #e84c4c;
-  text-transform: uppercase;
+  color: #36c399;
   padding-left: 50px !important;
   text-align: center;
-  background: url(../../img/Warning.png) no-repeat left center;
+  /*background: url(../../img/Warning.png) no-repeat left center;*/
   line-height: 1;
   margin-bottom: 45px;
 }
@@ -25,12 +24,47 @@
   margin-bottom: 40px;
 }
 .metamask_link_wrapper {
-  padding-top: 15px;
+  padding: 20px !important;
+  border-radius: 10px;
 }
+
+.metamask_link_wrapper__blue {
+  background-color: rgba(58,117,183, .2);
+}
+
+.metamask_link_wrapper__dark-blue {
+  background-color: rgba(39, 43, 68, .2);
+}
+
+.metamask_link_wrapper__black {
+  background-color: rgba(255, 255, 255, .05);
+}
+
 .metamask_link {
   transition-property: opacity, background-color;
   transition-duration: 400ms;
 }
+
+.metamask_link_mobile {
+  display: flex;
+  position: relative;
+  justify-content: flex-start;
+  flex-flow: row nowrap;
+}
+
+.metamask_link_text {
+  color: #36c399;
+  font-size: 1.3em;
+  display: flex;
+  padding-left: 20px !important;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background: url("../../img/play_button.svg") no-repeat;
+  background-size: 15px 15px;
+  background-position: 0 50%;
+}
+
 .metamask_link:hover {
   opacity: .8;
 }
@@ -85,17 +119,47 @@
 
 }
 .cipher_link_img {
-  width: 100px;
+  width: 70px;
+  display: block;
+  height: 45px;
+  margin-right: 20px;
 }
+
+.metamask_separator {
+  content: '';
+  display: none;
+  position: absolute;
+  height: 100%;
+  width: 1px;
+  left: 60%;
+  background-color: rgba(255, 255, 255, .1);
+}
+
+
 @media only screen and (max-width: 992px) {
+  .cipher_link_img {
+    width: 140px;
+    display: block;
+    height: 50px;
+  }
+
   .metamask_link_wrapper, .metamask_text_title, .metamask_text {
     text-align: center;
   }
   .metamask_link_wrapper {
     margin-bottom: 25px;
   }
+
+  .metamask_separator{
+    display: block;
+  }
+
   .metamask_link_wrapper, .metamask_text_wrapper {
     width: 100%;
+  }
+
+  .cipher_link_img {
+    margin-right: 150px;
   }
 }
 @media only screen and (max-width: 670px) {
@@ -107,8 +171,16 @@
     background: none;
     width: 330px;
   }
+
+  .cipher_link_img {
+    margin-right: 80px;
+  }
 }
 @media only screen and (max-width: 470px) {
+    .login_no_metamask {
+        padding: 20px !important;
+    }
+
   .login_no_metamask_title {
       width: 310px;
   }
@@ -116,10 +188,23 @@
     padding: 0 20px;
     margin-bottom: 20px;
   }
+
+  .cipher_link_img {
+    margin-right: 25%;
+  }
 }
 @media only screen and (max-width: 370px) {
   .login_no_metamask_title {
     font-size: 2em;
     width: 250px;    
+  }
+
+  .metamask_separator {
+    left: 63%;
+    display: block;
+  }
+
+  .cipher_link_img {
+    margin-right: 17%;
   }
 }
