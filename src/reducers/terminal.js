@@ -158,8 +158,10 @@ export default function(state = {
       if(order) {
         const orders = {
           open: state.orders.open.filter(o => o._id !== action.order._id),
-          closed: [action.order, ...state.orders.closed],
         };
+        if(order.filled > 0) {
+          orders.closed = [action.order, ...state.orders.closed];
+        }
         return {...state, orders};
       }
       break;
