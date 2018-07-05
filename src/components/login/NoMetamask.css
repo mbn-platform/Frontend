@@ -140,7 +140,7 @@
   .cipher_link_img {
     width: 140px;
     display: block;
-    height: 90px;
+    height: 50px;
   }
 
   .metamask_link_wrapper, .metamask_text_title, .metamask_text {
@@ -177,6 +177,10 @@
   }
 }
 @media only screen and (max-width: 470px) {
+    .login_no_metamask {
+        padding: 20px !important;
+    }
+
   .login_no_metamask_title {
       width: 310px;
   }
@@ -186,7 +190,7 @@
   }
 
   .cipher_link_img {
-    margin-right: 30%;
+    margin-right: 25%;
   }
 }
 @media only screen and (max-width: 370px) {
@@ -196,10 +200,11 @@
   }
 
   .metamask_separator {
+    left: 63%;
     display: block;
   }
 
   .cipher_link_img {
-    margin-right: 20%;
+    margin-right: 17%;
   }
 }

@@ -35,15 +35,6 @@
   font-family: 'maven_proregular';
 }
 
-.main-panel.container-fluid div .login_title_text:before {
-  content: '>';
-  display: inline-block;
-  margin-right: 10px;
-  color: #fff;
-  font-family: 'maven_proregular';
-  font-size: 1.2em;
-}
-
 
 .main-panel.container-fluid div .login_bg {
   position: absolute;
