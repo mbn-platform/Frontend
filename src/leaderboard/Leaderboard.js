@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import {sortData, onColumnSort, classNameForColumnHeader, defaultSortFunction} from '../generic/terminalSortFunctions';
 import {apiGet} from '../generic/apiCall';
 
-class Leaderbord extends React.Component {
+class Leaderboard extends React.Component {
 
   constructor(props) {
     super(props);
@@ -80,7 +80,7 @@ class Leaderbord extends React.Component {
         <Row>
           <Col xs="12" sm="12" md="12" lg="12">
             <div className="ratings-main">
-              <div className="ratings-main__title"> LEADERBORD</div>
+              <div className="ratings-main__title"> LEADERBOARD</div>
               <div className="ratings-main__block">
                 <div className="block__top">
                   <div className="block__top-switch-wrap">
@@ -100,41 +100,7 @@ class Leaderbord extends React.Component {
                 <div className="ratings-tabs">
                   <div className="ratings-tab ratings-traders active">
                     <div className="ratings-table-wrap js-table-wrapper">
-                      <table className="table">
-                        <thead>
-                          <tr>
-                            <th onClick={() => this.onColumnSort('place')} className="place">
-                              <span>Place</span><span className={classNameForColumnHeader(this.state, 'place')}></span>
-                            </th>
-                            <th onClick={() => this.onColumnSort('name')} className="name">
-                              <span>Name</span><span className={classNameForColumnHeader(this.state, 'name')}></span>
-                            </th>
-                            <th onClick={() => this.onColumnSort('profit')}>
-                              <span>Profit (USDT)</span><span className={classNameForColumnHeader(this.state, 'profit')}></span>
-                            </th>
-                            {(this.state.round && !this.state.round.global) ? (
-                              <th onClick={() => this.onColumnSort('percent')}>
-                                <span>Profit, %</span><span className={classNameForColumnHeader(this.state, 'percent')}></span>
-                              </th>
-                            ) : null
-                            }
-
-                          </tr>
-
-                          <tr>
-                            <th></th>
-                            <th>
-                              <div>
-                                <input onBlur={this.onInputBlur} value={this.state.nameFilter} onChange={this.onNameFilterChange} type="text" className="input_search" placeholder="Search" />
-                              </div>
-                            </th>
-                            {(this.state.round && !this.state.round.global) ? (<th></th>) : null}
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {sortedData.map(rating => <RatingRow key={rating.name} {...rating} onClick={this.onRowClick} round={this.state.round} />)}
-                        </tbody>
-                      </table>
+                      {this.state.selectedRound === 0 ? this.renderGlobalBoard(sortedData) : this.renderRoundBoard(sortedData)}
                     </div>
                   </div>
                 </div>
@@ -177,6 +143,78 @@ class Leaderbord extends React.Component {
       return null;
     }
   }
+
+  renderGlobalBoard(data) {
+    return (
+      <table className="table">
+        <thead>
+          <tr>
+            <th onClick={() => this.onColumnSort('place')} className="place">
+              <span>Place</span><span className={classNameForColumnHeader(this.state, 'place')}></span>
+            </th>
+            <th onClick={() => this.onColumnSort('name')} className="name">
+              <span>Name</span><span className={classNameForColumnHeader(this.state, 'name')}></span>
+            </th>
+            <th onClick={() => this.onColumnSort('profit')}>
+              <span>Points</span><span className={classNameForColumnHeader(this.state, 'profit')}></span>
+            </th>
+          </tr>
+
+          <tr>
+            <th></th>
+            <th>
+              <div>
+                <input onBlur={this.onInputBlur} value={this.state.nameFilter} onChange={this.onNameFilterChange} type="text" className="input_search" placeholder="Search" />
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map(rating => <RatingRow key={rating.place} {...rating} onClick={this.onRowClick} round={this.state.round} />)}
+        </tbody>
+      </table>
+    );
+  }
+
+  renderRoundBoard(data) {
+    return (
+      <table className="table">
+        <thead>
+          <tr>
+            <th onClick={() => this.onColumnSort('place')} className="place">
+              <span>Place</span><span className={classNameForColumnHeader(this.state, 'place')}></span>
+            </th>
+            <th onClick={() => this.onColumnSort('name')} className="name">
+              <span>Name</span><span className={classNameForColumnHeader(this.state, 'name')}></span>
+            </th>
+            <th onClick={() => this.onColumnSort('profit')}>
+              <span>Profit (USDT)</span><span className={classNameForColumnHeader(this.state, 'profit')}></span>
+            </th>
+            {(this.state.round && !this.state.round.global) ? (
+              <th onClick={() => this.onColumnSort('percent')}>
+                <span>Profit, %</span><span className={classNameForColumnHeader(this.state, 'percent')}></span>
+              </th>
+            ) : null
+            }
+
+          </tr>
+
+          <tr>
+            <th></th>
+            <th>
+              <div>
+                <input onBlur={this.onInputBlur} value={this.state.nameFilter} onChange={this.onNameFilterChange} type="text" className="input_search" placeholder="Search" />
+              </div>
+            </th>
+            {(this.state.round && !this.state.round.global) ? (<th></th>) : null}
+          </tr>
+        </thead>
+        <tbody>
+          {data.map(rating => <RatingRow key={rating.place} {...rating} onClick={this.onRowClick} round={this.state.round} />)}
+        </tbody>
+      </table>
+    );
+  }
 }
 
 function formatDate(date) {
@@ -211,4 +249,4 @@ const RatingRow = (props) => (
   </tr>
 );
 
-export default Leaderbord;
+export default Leaderboard;
