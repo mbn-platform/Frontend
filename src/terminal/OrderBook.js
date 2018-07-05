@@ -150,12 +150,7 @@ class OrderBook extends React.Component {
         <div className="orderbook-table-wrapper js-table-wrapper" ref={elem => this.tableBuy = elem}>
           <table className="table green">
             <thead>
-              <tr>
-
-                <th>
-                  <div>Bid</div>
-                </th>
-              </tr>
+              <div className={'bid-label'}>Bid</div>
             </thead>
             <tbody>
               {sortedDataBuy.map((order, i) => (

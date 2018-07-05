@@ -574,7 +574,16 @@
 			}
 		}
 	}
+	.bid-label {
+		text-transform: none;
+		font-size: 12px;
+		white-space: nowrap;
+		cursor: pointer;
+		color: #5B5F67;
+		padding-left: 10px !important;
+	}
 }
+
 
 /*
 	Hide columns on <768px
