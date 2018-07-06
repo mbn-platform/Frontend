@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 114 114">
+    <defs>
+        <style>
+            .cls-1{opacity:.6}.cls-1,.cls-2{fill:url(#linear-gradient)}
+        </style>
+        <linearGradient id="linear-gradient" x1="-.464" x2="1.507" y1=".686" y2=".202" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#4bfacd"/>
+            <stop offset="1" stop-color="#5da8fb"/>
+        </linearGradient>
+    </defs>
+    <g id="play-button" transform="translate(1 1)">
+        <g id="_x33_56._Play">
+            <g id="Group_1" data-name="Group 1">
+                <path id="Path_1" d="M104.1 27.9a55.783 55.783 0 1 0-20.419 76.2A55.78 55.78 0 0 0 104.1 27.9zm-26 66.539a44.626 44.626 0 1 1 16.334-60.96 44.622 44.622 0 0 1-16.327 60.963zm-2.224-40.91L46.665 36.492c-2.662-1.554-4.809-.312-4.794 2.767l.15 33.816c.014 3.078 2.187 4.332 4.857 2.79l28.986-16.736c2.667-1.539 2.673-4.046.012-5.6z" class="cls-1" data-name="Path 1" transform="translate(0 -.002)"/>
+                <path id="Path_368" d="M104.1 27.9a55.783 55.783 0 1 0-20.419 76.2A55.78 55.78 0 0 0 104.1 27.9zm-26 66.539a44.626 44.626 0 1 1 16.334-60.96 44.622 44.622 0 0 1-16.327 60.963zm-2.224-40.91L46.665 36.492c-2.662-1.554-4.809-.312-4.794 2.767l.15 33.816c.014 3.078 2.187 4.332 4.857 2.79l28.986-16.736c2.667-1.539 2.673-4.046.012-5.6z" class="cls-2" data-name="Path 368" transform="translate(0 -.002)"/>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,6 +1,8 @@
 import React from 'react';
 import Metamask from '../../img/Metamask.png';
-import Cipher from '../../img/Cipher.png';
+import Trust from '../../img/trust.svg';
+import Toshi from '../../img/toshi.svg';
+import Cipher from '../../img/CIPHER2.svg';
 import './NoMetamask.css';
 
 export default () => {
@@ -8,19 +10,38 @@ export default () => {
   if(isIOSorAndroid) {
     return (
       <div className="login_no_metamask">
-        <div className="login_no_metamask_title">Please, install Cipher Browser</div>
-        <div className="login_no_metamask_text">To use Membrana Platform on mobile devices you need to install Cipher Browser:</div>
+        <div className="login_no_metamask_title">Please, install one of these browsers to use Membrana Platform</div>
         <div className='row justify-content-around'>
-          <div className="metamask_link_wrapper col-12 d-flex  justify-content-center  col-md-auto">
+          <div className="metamask_link_wrapper metamask_link_wrapper__black col-12 col-md-auto">
             <a
-              href="https://www.cipherbrowser.com/"
-              className="metamask_link" rel="nofollow">
-              <img className="cipher_link_img" src={Cipher} alt="" title=""/>
+              href="https://trustwalletapp.com/"
+              className="metamask_link metamask_link_mobile" rel="nofollow">
+              <img className="cipher_link_img" src={Trust} alt="" title=""/>
+              <div className="metamask_separator"/>
+              <div className="metamask_link_text">Install Trust</div>
             </a>
           </div>
-          <div className="metamask_text_wrapper col-12 col-md">
-            <div className="metamask_text_title cipher">What is Cipher Browser?</div>
-            <div className="metamask_text">Cipher Browser is the world's first full-featured mobile dapp browser and wallet for the Ethereum blockchain. Cipher allows you to interact with dapps powered by Ethereum on your mobile device and makes it easy for you to securely store, send and receive Ether and ERC20 tokens.</div>
+        </div>
+        <div className='row justify-content-around'>
+          <div className="metamask_link_wrapper metamask_link_wrapper__dark-blue col-12 col-md-auto">
+            <a
+              href="https://www.toshi.org/"
+              className="metamask_link metamask_link_mobile" rel="nofollow">
+              <img className="cipher_link_img" src={Toshi} alt="" title=""/>
+              <div className="metamask_separator"/>
+              <div className="metamask_link_text">Install Toshi</div>
+            </a>
+          </div>
+        </div>
+        <div className='row justify-content-around'>
+          <div className="metamask_link_wrapper metamask_link_wrapper__blue col-12 col-md-auto">
+            <a
+              href="https://www.cipherbrowser.com/"
+              className="metamask_link metamask_link_mobile" rel="nofollow">
+              <img className="cipher_link_img" src={Cipher} alt="" title=""/>
+              <div className="metamask_separator"/>
+              <div className="metamask_link_text">Install Chiper</div>
+            </a>
           </div>
         </div>
       </div>
@@ -47,4 +68,4 @@ export default () => {
       </div>
     );
   }
-}
+};

@@ -31,9 +31,10 @@
   font-size: 4.6em;
   display: inline-block;
   vertical-align: middle;
-  color: #00b891;
+  color: #fff;
   font-family: 'maven_proregular';
 }
+
 
 .main-panel.container-fluid div .login_bg {
   position: absolute;
