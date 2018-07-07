@@ -228,25 +228,36 @@ class PlaceOrder extends React.Component {
     }
   }
 
+  setNewValue = (name, value) => {
+    switch(name) {
+      case 'price':
+        this.setPrice(value);
+        break;
+      case 'ordersize':
+        this.setOrderSize(value);
+        break;
+      case 'amount':
+        this.setAmount(value);
+        break;
+      default:
+        break;
+    }
+  };
 
-  onChange(e) {
+  onChange(e, interval) {
     const {name, value} = e.target;
     const components = value.split('.');
     if(components[1] && components[1].length > 8) {
       return;
     }
-    switch(name) {
-      case 'price':
-        this.setPrice(e.target.value);
-        break;
-      case 'ordersize':
-        this.setOrderSize(e.target.value);
-        break;
-      case 'amount':
-        this.setAmount(e.target.value);
-        break;
-      default:
-        break;
+
+    if (interval) {
+      if (((value >= interval[0]) && (interval.length === 2 ?
+        value <= interval[1] : true)) || value === '') {
+        setTimeout(this.setNewValue(name, value), 100);
+      }
+    } else {
+      this.setNewValue(name, value);
     }
   }
 
@@ -287,7 +298,7 @@ class PlaceOrder extends React.Component {
                   <label className="buysell__form-label">
                     Order size ({this.state.secondary})
                   </label>
-                  <input onChange={this.onChange}
+                  <input onChange={e => this.onChange(e,[0])}
                     placeholder={'min ' + minTradeSize}
                     value={this.state.orderSize} type="number" name='ordersize' className="buysell__form-input"/>
                 </div>
@@ -295,7 +306,7 @@ class PlaceOrder extends React.Component {
                   <label className="buysell__form-label">
                     Price
                   </label>
-                  <input onChange={this.onChange} value={this.state.price} type="number" name="price" className="buysell__form-input"/>
+                  <input onChange={e => this.onChange(e,[0])} value={this.state.price} type="number" name="price" className="buysell__form-input"/>
                 </div>
               </div>
               <div className="buysell__form-row">
@@ -303,7 +314,7 @@ class PlaceOrder extends React.Component {
                   <label className="buysell__form-label">
                     Amount ({this.state.main})
                   </label>
-                  <input onChange={this.onChange} type="number" value={this.state.amount} name="amount" className="buysell__form-input"/>
+                  <input onChange={e => this.onChange(e,[0])} type="number" value={this.state.amount} name="amount" className="buysell__form-input"/>
                 </div>
                 <button type="submit" onClick={this.onSubmit} className="buysell__form-submit">
                   {this.state.selectedTab === TAB_SELL ? 'SELL' : 'BUY'}
