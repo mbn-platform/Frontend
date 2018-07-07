@@ -149,9 +149,6 @@ class OrderBook extends React.Component {
         {this.renderLastPrice()}
         <div className="orderbook-table-wrapper js-table-wrapper" ref={elem => this.tableBuy = elem}>
           <table className="table green">
-            <thead>
-              <div className={'bid-label'}>Bid</div>
-            </thead>
             <tbody>
               {sortedDataBuy.map((order, i) => (
                 <BuyOrderCell
@@ -184,6 +181,7 @@ class OrderBook extends React.Component {
 
     return (
       <div className={classNames('value', 'last-price', 'row', isUp ? 'up' : 'down')}>
+        <div className={'bid-label'}>Bid</div>
         <span onClick={() => this.props.onOrderSelect(last)}>
           {last ? defaultFormatValue(last, main) : null}</span>
         <span className={classNames('icon', 'icon-dir', isUp ? 'icon-up-dir' : 'icon-down-dir')}> </span>

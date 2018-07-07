@@ -440,10 +440,8 @@
 					}
 				}
 				.last-price{
-					z-index: 10000;
-					position: absolute;
-					top: 50%;
-					left: 32%;
+					z-index: 10;
+					position: relative;
 				}
 				.table{
 					color: #4F525D;
@@ -577,7 +575,10 @@
 	.bid-label {
 		text-transform: none;
 		font-size: 12px;
+		top: 5px;
 		white-space: nowrap;
+		position: absolute;
+		left: 0;
 		cursor: pointer;
 		color: #5B5F67;
 		padding-left: 10px !important;
