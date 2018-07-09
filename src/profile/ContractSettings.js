@@ -20,11 +20,12 @@ class ContractSettings extends React.Component {
 
   onFieldEdit(e, interval) {
     const newValue = e.target.value,
-      fieldName = e.target.name;
+      fieldName = e.target.name,
+      isNewValueInInterval = (newValue >= interval[0]) &&
+          (interval.length === 2 ? newValue <= interval[1] : true);
     if (interval) {
-      if (((newValue >= interval[0]) && (interval.length === 2 ?
-        newValue <= interval[1] : true)) || newValue === '') {
-        setTimeout(this.setState({[fieldName]: newValue}), 100);
+      if (isNewValueInInterval || newValue === '') {
+        this.setState({[fieldName]: newValue});
       }
     } else {
       this.setState({[fieldName]: newValue});
