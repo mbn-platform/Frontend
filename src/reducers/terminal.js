@@ -24,7 +24,7 @@ export default function(state = {
       if(action.market === state.market) {
         return state;
       } else {
-        return {...state, market: action.market, orderBook: {sell: [], buy: [], smap: {}, bmap: {}}, history: []};
+        return {...state, market: action.market, orderBook: {sell: [], buy: [], smap: {}, bmap: {}}, history: [], ticker: null};
       }
     }
     case SELECT_EXCHANGE: {
