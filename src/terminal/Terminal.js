@@ -61,7 +61,6 @@ class Terminal extends React.Component {
                 market={this.props.market}
                 fund={this.props.fund}
                 userId={this.props.userId}
-                isSomeKeyChoosen={this.props.apiKeys.ownKeys.length > 0}
                 exchange={this.props.exchange}
                 exchanges={this.props.exchanges}
                 apiKeys={this.props.apiKeys.ownKeys}
