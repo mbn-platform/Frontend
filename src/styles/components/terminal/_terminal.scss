@@ -15,6 +15,15 @@
 	.amcharts-axis-label.amcharts-guide {
 		
 	}
+
+    .orderbook-table {
+        .floatThead-wrapper {
+            &:last-child {
+                margin-top: 20px;
+            }
+        }
+    }
+
 	.-sort-asc {
 		.icon-dir:before {
 			content: '\e808'; 
@@ -430,6 +439,10 @@
 						color: #D74C4C;
 					}
 				}
+				.last-price{
+					z-index: 10;
+					position: relative;
+				}
 				.table{
 					color: #4F525D;
 					margin-bottom: 0;
@@ -559,7 +572,19 @@
 			}
 		}
 	}
+	.bid-label {
+		text-transform: none;
+		font-size: 12px;
+		top: 5px;
+		white-space: nowrap;
+		position: absolute;
+		left: 0;
+		cursor: pointer;
+		color: #5B5F67;
+		padding-left: 10px !important;
+	}
 }
+
 
 /*
 	Hide columns on <768px
@@ -616,9 +641,12 @@
 					.orderbook-table {
 						.floatThead-wrapper {
 							height: calc(50% - 24px);
+							&:last-child {
+								margin-top: 20px;
+							}
 							.orderbook-table-wrapper {
 								position: absolute;
-								height: calc(100% - 28px);
+								height: calc(100% - 23px);
 							}
 						}
 						> .orderbook-table-wrapper {

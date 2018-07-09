@@ -154,7 +154,7 @@ class MarketSelectTable extends React.Component {
         <div onClick={this.props.close} className="dropdown__name">
           <span>{this.props.market}</span>
           <span>
-            <span className="hide_zeros" onClick={this.onHideZeroClick}>Hide zeros <div className={classNames('currency_status_checkbox', {selected: this.state.hideZeros})}/></span>
+            {this.props.balances !== null && <span className="hide_zeros" onClick={this.onHideZeroClick}>Hide zeros <div className={classNames('currency_status_checkbox', {selected: this.state.hideZeros})}/></span> }
             <span className="arrow_down"></span>
           </span>
         </div>
