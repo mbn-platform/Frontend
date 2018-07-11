@@ -143,7 +143,7 @@ export function cancelOrder(order) {
               alert('Server is busy. Try again later');
               break;
             default:
-              alert('failed to cancel order:', err.apiErrorCode);
+              alert('failed to cancel order: ' + err.apiErrorCode);
               console.log('unhandled api error', err.apiErrorCode);
           }
         } else {
