@@ -18,8 +18,18 @@ class ContractSettings extends React.Component {
     this.setState({currency: e.target.name});
   }
 
-  onFieldEdit(e) {
-    this.setState({[e.target.name]: e.target.value});
+  onFieldEdit(e, interval) {
+    const newValue = e.target.value,
+      fieldName = e.target.name,
+      isNewValueInInterval = (newValue >= interval[0]) &&
+          (interval.length === 2 ? newValue <= interval[1] : true);
+    if (interval) {
+      if (isNewValueInInterval || newValue === '') {
+        this.setState({[fieldName]: newValue});
+      }
+    } else {
+      this.setState({[fieldName]: newValue});
+    }
   }
 
   onEditButtonClick() {
@@ -139,7 +149,7 @@ class ContractSettings extends React.Component {
             isEditing={this.state.isEditing}
             editValue={this.state.duration}
             name="duration"
-            onChange={this.onFieldEdit}
+            onChange={(e) => this.onFieldEdit(e,[1])}
           />
           <CurrencyOfContractButton
             value={this.props.currency}
@@ -154,7 +164,7 @@ class ContractSettings extends React.Component {
             isEditing={this.state.isEditing}
             editValue={this.state.amount}
             editCurrency={this.state.currency}
-            onChange={this.onFieldEdit}
+            onChange={(e) => this.onFieldEdit(e,[0])}
             onCurrencySelected={this.onCurrencySelected}
           />       
 
@@ -168,7 +178,7 @@ class ContractSettings extends React.Component {
                 isEditing={this.state.isEditing}
                 editValue={this.state.roi}
                 name="roi"
-                onChange={this.onFieldEdit}
+                onChange={(e) => this.onFieldEdit(e,[1])}
               />  
             </Desktop>  
           </div>          
@@ -184,7 +194,7 @@ class ContractSettings extends React.Component {
                 isEditing={this.state.isEditing}
                 editValue={this.state.roi}
                 name="roi"
-                onChange={this.onFieldEdit}
+                onChange={(e) => this.onFieldEdit(e,[1])}
               />  
             </Mobile>  
           </div>              
@@ -196,7 +206,7 @@ class ContractSettings extends React.Component {
             isEditing={this.state.isEditing}
             editValue={this.state.maxLoss}
             name="maxLoss"
-            onChange={this.onFieldEdit}
+            onChange={(e) => this.onFieldEdit(e,[0,99])}
           />
           <Setting
             tabIndex={5}
@@ -206,7 +216,7 @@ class ContractSettings extends React.Component {
             isEditing={this.state.isEditing}
             editValue={this.state.fee}
             name="fee"
-            onChange={this.onFieldEdit}
+            onChange={(e) => this.onFieldEdit(e,[0,99])}
           />
         </Col>
 
@@ -285,29 +295,29 @@ export const EditAmountEntry = ({placeholder, value, onChange, tabIndex, dimensi
 
 const CurrencyOfContractButton = ({isEditing, onCurrencySelected, currency, value}) => (
   <div className='currency-button-block setting-block'>
-      <div className="input-block">
-        <div className="description-text">CURRENCY OF CONTRACT:</div>  
-          {isEditing ? (
+    <div className="input-block">
+      <div className="description-text">CURRENCY OF CONTRACT:</div>  
+      {isEditing ? (
 
-                <div className='input-group'>
-                    <span className="input-group-btn only-button">
-                      <button
-                        onClick={onCurrencySelected}
-                        name="BTC"
-                        className={classNames('btn', 'btn-secondary', {active: currency === 'BTC'})}
-                        type="button"
-                      >BTC</button>
-                    </span>
-                  </div>
+        <div className='input-group'>
+          <span className="input-group-btn only-button">
+            <button
+              onClick={onCurrencySelected}
+              name="BTC"
+              className={classNames('btn', 'btn-secondary', {active: currency === 'BTC'})}
+              type="button"
+            >BTC</button>
+          </span>
+        </div>
 
-            ) : (      
-            <SettingEntry
-              value={value}
-            />)
-          }
+      ) : (      
+        <SettingEntry
+          value={value}
+        />)
+      }
     </div>
   </div>
-)
+);
 
 const EditSettingsEntry = ({className, placeholder,value, dimension, name, onChange, tabIndex}) => (
   <div className={className || 'loss-input-block  input-block'}>

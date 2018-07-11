@@ -201,6 +201,15 @@
 							margin-top: 10px;
 							.form-control {
 								border-radius: 5px;
+								&[type=number]::-webkit-outer-spin-button,
+								&[type=number]::-webkit-inner-spin-button {
+									-webkit-appearance: none;
+									margin: 0;
+								}
+
+								&[type=number] {
+									-moz-appearance:textfield;
+								}
 							}
 							input {
 								background-color: #1f2225;
