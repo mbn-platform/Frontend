@@ -79,7 +79,9 @@ export default function(state = {
       if(!(action.market === state.market && action.exchange === state.exchange)) {
         return state;
       }
-      const history = action.history.map(t => ({
+      const history = action.history
+        .sort((t1, t2) => t2[2] - t1[2])
+        .map(t => ({
         id: Math.random().toFixed(8),
         price: t[0],
         amount: t[1],
