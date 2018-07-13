@@ -59,16 +59,13 @@ class PlaceOrder extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(this.props.market !== nextProps.market) {
-      const [main, secondary] = nextProps.market.split('-');
-      this.setState({tickerSet: false, price: '', main, secondary, marketInfo: nextProps.markets.find(m => m.symbol === nextProps.market)});
-    }
     if(this.props.markets !== nextProps.markets) {
       this.setState({marketInfo: nextProps.markets.find(m => m.symbol === nextProps.market)});
     }
     if(this.props.ticker !== nextProps.ticker &&
       !this.state.price && !this.state.tickerSet && nextProps.ticker.l) {
       this.setState({price: nextProps.ticker.l, tickerSet: true});
+      this.setOrderSize(this.state.orderSize);
     }
     if((nextProps.price && nextProps.price !== this.props.price) ||
       (nextProps.size && nextProps.size !== this.props.size) ||
@@ -135,6 +132,7 @@ class PlaceOrder extends React.Component {
   setAmount(amount) {
     if(!amount) {
       this.setState({amount: '', orderSize: ''});
+      return;
     }
     switch(this.props.exchange) {
       case 'binance': {
@@ -168,12 +166,13 @@ class PlaceOrder extends React.Component {
   setOrderSize(orderSize) {
     if(!orderSize) {
       this.setState({amount: '', orderSize: ''});
+      return;
     }
     switch(this.props.exchange) {
       case 'binance': {
         const minTradeSize = this.state.marketInfo ? this.state.marketInfo.minTradeSize.toString() : '';
         const rounded = this.floorBinance(orderSize, minTradeSize);
-        const newState = {orderSize: rounded};
+        const newState = {orderSize: rounded.toString()};
         const price = parseFloat(this.state.price);
         const value = parseFloat(rounded);
         if(price >= 0) {
@@ -292,7 +291,7 @@ class PlaceOrder extends React.Component {
                   <label className="buysell__form-label">
                     Order size ({this.state.secondary})
                   </label>
-                  <input onChange={e => this.onChange}
+                  <input onChange={this.onChange}
                     placeholder={'min ' + minTradeSize}
                     value={this.state.orderSize} type="number" name='ordersize' className="buysell__form-input"/>
                 </div>
@@ -300,7 +299,7 @@ class PlaceOrder extends React.Component {
                   <label className="buysell__form-label">
                     Price
                   </label>
-                  <input onChange={e => this.onChange} value={this.state.price} type="number" name="price" className="buysell__form-input"/>
+                  <input onChange={this.onChange} value={this.state.price} type="number" name="price" className="buysell__form-input"/>
                 </div>
               </div>
               <div className="buysell__form-row">
