@@ -65,7 +65,7 @@ class Login extends React.Component {
 
   render() {
     return (
-      <div className="login_wrapper container-fluid">
+      <div className={'login_wrapper container-fluid ' + (!window.web3 ? 'login_wrapper_no_metamask' : '')}>
         <div className="login_content row justify-content-center align-items-center">
           <div className="login_steps">
             <div className="login_title_wrapper">
