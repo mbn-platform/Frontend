@@ -22,8 +22,8 @@ class Leaderboard extends React.Component {
       nameFilter: '',
       sort: {},
     };
+    this.inputRef = React.createRef();
     this.onRowClick = this.onRowClick.bind(this);
-    this.onInputBlur = this.onInputBlur.bind(this);
     this.selectRound = this.selectRound.bind(this);
   }
 
@@ -48,10 +48,6 @@ class Leaderboard extends React.Component {
     }, 30000);
   }
 
-  onInputBlur(e) {
-    this.shouldFocus = true;
-  }
-
   onRowClick(e) {
     const name = e.currentTarget.dataset.name;
     this.props.history.push(`/${name}`);
@@ -67,6 +63,11 @@ class Leaderboard extends React.Component {
   }
 
   render() {
+    if(this.inputRef.current && document.activeElement === this.inputRef.current) {
+      this.shouldFocus = true;
+    } else {
+      this.shouldFocus = false;
+    }
     let data = [];
     if(this.state.round) {
       data = this.state.round.results;
@@ -117,7 +118,6 @@ class Leaderboard extends React.Component {
     $table.on('reflowed', (e, $container) => {
       if(this.shouldFocus) {
         $($container).find('input').focus();
-        this.shouldFocus = false;
       }
     });
     this.selectRound(this.state.selectedRound);
@@ -164,7 +164,7 @@ class Leaderboard extends React.Component {
             <th></th>
             <th>
               <div>
-                <input onBlur={this.onInputBlur} value={this.state.nameFilter} onChange={this.onNameFilterChange} type="text" className="input_search" placeholder="Search" />
+                <input ref={this.inputRef} value={this.state.nameFilter} onChange={this.onNameFilterChange} type="text" className="input_search" placeholder="Search" />
               </div>
             </th>
           </tr>
@@ -203,7 +203,7 @@ class Leaderboard extends React.Component {
             <th></th>
             <th>
               <div>
-                <input onBlur={this.onInputBlur} value={this.state.nameFilter} onChange={this.onNameFilterChange} type="text" className="input_search" placeholder="Search" />
+                <input ref={this.inputRef} value={this.state.nameFilter} onChange={this.onNameFilterChange} type="text" className="input_search" placeholder="Search" />
               </div>
             </th>
             {(this.state.round && !this.state.round.global) ? (<th></th>) : null}
