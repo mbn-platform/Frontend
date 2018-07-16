@@ -13,12 +13,12 @@ class SelectedContractChart extends React.Component {
   }
 
   formatData(balances) {
-    const data = balances.filter(balance => balance.available > 0)
-      .sort((a1, a2) => a1.available < a2.available)
+    const data = balances.filter(balance => balance.total > 0)
+      .sort((a1, a2) => a1.total < a2.total)
       .map(a => ({
         category: a.name,
-        'column-1': a.available,
-        'column-2': this.getValueInBTC(a.name, a.available)
+        'column-1': a.total,
+        'column-2': this.getValueInBTC(a.name, a.total)
       }));
     return data;
   }
