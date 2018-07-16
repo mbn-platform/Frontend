@@ -167,7 +167,7 @@ class Navigation extends React.Component {
     return [
       {
         name: 'Profile',
-        to: this.props.auth.profile.name ? '/' + this.props.auth.profile.name : '/profile',
+        to: this.props.auth.loggedIn ? '/' + this.props.auth.profile.name : '/profile',
         imgClass: 'profile',
         icon: ProfileIcon,
         iconHover: ProfileIconHover
