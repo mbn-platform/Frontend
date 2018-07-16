@@ -6,6 +6,7 @@ import Terminal from './terminal/TerminalContainer';
 import Ratings from './ratings/Ratings';
 import Orders from './orders/Orders';
 import Profile from './profile/Profile';
+import Leaderboard from './leaderboard/Leaderboard';
 import './MainContent.css';
 import { Col } from 'reactstrap';
 
@@ -16,8 +17,8 @@ const MainContent = ({ loggedIn, profile }) => (
       <ProtectedRoute exact path="/dashboard" component={Dashboard} loggedIn={loggedIn} />
       <ProtectedRoute exact path="/terminal" component={Terminal} loggedIn={loggedIn} />
       <ProtectedRoute exact path="/orders" component={Orders} loggedIn={loggedIn} />
-      <ProtectedRoute exact path="/ratings" component={Ratings} loggedIn={loggedIn} />
-      <Redirect exact from="/profile" to={profile.name ? `/${profile.name}` : '/login'} />
+      <Route exact path="/ratings" component={Leaderboard} />
+      <Redirect exact from="/profile" to={loggedIn ? `/${profile.name}` : '/login'} />
       <Route exact path="/:id" component={Profile} />
       <Redirect from="/" to="/profile" />
     </Switch>

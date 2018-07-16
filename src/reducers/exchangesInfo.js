@@ -1,4 +1,5 @@
 import { EXCHANGE_MARKETS, EXCHANGE_RATES, GET_EXCHANGE_MARKETS, UPDATE_MARKET_SUMMARIES } from '../actions/terminal';
+import { UPDATE_EXCHANGES } from '../actions/exchanges';
 export const EXCHANGE_BITTREX = 'bittrex';
 export const EXCHANGE_CURRENCIES = 'EXCHANGE_CURRENCIES';
 export default function(exchangesInfo = {}, action) {
@@ -19,12 +20,15 @@ export default function(exchangesInfo = {}, action) {
       return {...exchangesInfo, [action.exchange]: exchange};
     }
     case EXCHANGE_RATES: {
-      const exchange = exchangesInfo[action.exchange] || {}; 
+      const exchange = exchangesInfo[action.exchange] || {};
       const rates = {...exchange.rates};
       action.rates.forEach(r => {
         rates[r[0]] = r[1];
       });
       return {...exchangesInfo, [action.exchange]: {...exchangesInfo[action.exchange], rates}};
+    }
+    case UPDATE_EXCHANGES: {
+      return {...exchangesInfo, exchanges: action.exchanges};
     }
     case UPDATE_MARKET_SUMMARIES: {
       const summaries = action.summaries.map(market => {

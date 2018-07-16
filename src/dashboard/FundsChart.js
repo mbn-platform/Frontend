@@ -3,35 +3,34 @@ import 'amcharts3/amcharts/amcharts';
 import 'amcharts3/amcharts/pie';
 import 'amcharts3/amcharts/serial';
 import AmChartsReact from '@amcharts/amcharts3-react';
-import {getValueInBTC} from './SelectedContractChart';
 
 class FundsChart extends React.Component {
 
 
   constructor(props) {
     super(props);
-    this.getValueInBTC = getValueInBTC.bind(this);
-    this.state = {data: this.formatData(this.props.apiKeys)};
+    const funds = props.apiKeys.concat(props.contracts.filter(c => c.to._id === props.userId));
+    this.state = {data: this.formatData(funds)};
   }
 
   getValueInBTC(currencyName, currencyValue) {
     if (currencyName === 'BTC') {
       return currencyValue;
     }
-    const rates = this.props.exchangesInfo['bittrex'] ? this.props.exchangesInfo['bittrex'].rates : [];
+    const rates = this.props.exchangesInfo['binance'] ? this.props.exchangesInfo['binance'].rates || [] : [];
     let marketName;
     if (currencyName === 'USDT') {
-      return (currencyValue / rates['USDT-BTC']).toFixed(8);
+      return parseFloat((currencyValue / rates['USDT-BTC']).toFixed(8));
     } else {
       marketName = `BTC-${currencyName}`;
     }
-    return (currencyValue * (rates[marketName] || 0)).toFixed(8);
+    return parseFloat((currencyValue * (rates[marketName] || 0)).toFixed(8));
   }
 
   formatData(apiKeys) {
     let data = {};
     for (let apiKey of apiKeys) {
-      apiKey.balances.forEach(currency => {
+      Array.isArray(apiKey.balances) && apiKey.balances.forEach(currency => {
         if (currency.available === 0){
           return;
         }
@@ -42,15 +41,17 @@ class FundsChart extends React.Component {
         }
       });
     }
-    return Object.keys(data).map(key=>({
+    const formated = Object.keys(data).map(key=>({
       category: key,
       'column-1': data[key],
       'column-2': this.getValueInBTC(key, data[key])
     })).sort((a1, a2) => a1['column-1'] < a2['column-1']);
+    return formated;
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({data: this.formatData(nextProps.apiKeys)});
+    const funds = nextProps.apiKeys.concat(nextProps.contracts.filter(c => c.to._id === nextProps.userId));
+    this.setState({data: this.formatData(funds)});
   }
 
 

@@ -35,12 +35,14 @@ ApiError.ORDER_NOT_OPEN = -501;
 ApiError.WRONG_API_KEY = -504;
 ApiError.EXCHANGE_ERROR = -599;
 ApiError.MIN_TRADE_REQUIREMENT_NOT_MET = -514;
-ApiError.INSUFFICIENT_FUNDS = -503;
+ApiError.INSUFFICIENT_FUNDS = -506;
 ApiError.TRADER_NOT_AVAILABLE = -77;
 ApiError.UNIQUE_VIOLATION = -40;
 ApiError.INVALID_PARAMS_SET = -5;
 ApiError.KEY_IN_USE = -78;
 ApiError.TRY_AGAIN_LATER = -513;
+ApiError.MARKET_NOT_ALLOWED = -1000;
+ApiError.THROTTLE_LIMIT = -1001;
 
 function getSelectedNet() {
   return window.localStorage.getItem('selectedNet') || 'mainnet';

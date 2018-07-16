@@ -17,6 +17,8 @@ export const UPDATE_ORDER_BOOK = 'UPDATE_ORDER_BOOK';
 export const UPDATE_HISTORY = 'UPDATE_HISTORY';
 export const GET_EXCHANGE_MARKETS = 'GET_EXCHANGE_MARKETS';
 export const UPDATE_MARKET_SUMMARIES = 'UPDATE_MARKET_SUMMARIES';
+export const TRADING_DATA_START = 'TRADING_DATA_START';
+export const TRADING_DATA_STOP = 'TRADING_DATA_STOP';
 
 export function selectFund(fund) {
   localStorage.setItem('terminal.selectedFund', JSON.stringify(fund));
@@ -24,6 +26,14 @@ export function selectFund(fund) {
     type: SELECT_FUND,
     fund
   };
+}
+
+export function startTradingDataUpdates() {
+  return {type: TRADING_DATA_START};
+}
+
+export function stopTradingDataUpdates() {
+  return {type: TRADING_DATA_STOP};
 }
 
 export function selectMarket(market) {
@@ -34,16 +44,25 @@ export function selectMarket(market) {
   };
 }
 
-export function selectExchange(exchange) {
-  localStorage.setItem('terminal.selectedExchange', JSON.stringify(exchange));
-  return {
-    type: SELECT_EXCHANGE,
-    exchange,
+export function selectExchange(exchange, restore) {
+  localStorage.setItem('terminal.selectedExchange', exchange);
+  return (dispatch, getState) => {
+    const state = getState();
+    const apiKeys = state.apiKeys.ownKeys.filter(k => k.exchange === exchange);
+    const contracts = state.contracts.current
+      .filter(c => c.exchange === exchange && c.to._id === state.auth.profile._id);
+    const selectedFund = apiKeys[0] || contracts[0] || null;
+    dispatch(selectFund(selectedFund));
+    dispatch({
+      type: SELECT_EXCHANGE,
+      exchange,
+      restore,
+    });
   };
 }
 
 export function selectInterval(interval) {
-  localStorage.setItem('terminal.selectedInterval', JSON.stringify(interval));
+  localStorage.setItem('terminal.selectedInterval', interval);
   return {
     type: SELECT_INTERVAL,
     interval,
@@ -52,7 +71,7 @@ export function selectInterval(interval) {
 
 export function getExchangeMarkets(exchange) {
   return dispatch => {
-    apiGet('/exchange/markets?exchange=' + exchange)
+    return apiGet('/exchange/markets?exchange=' + exchange)
       .then(res => {
         dispatch({
           type: EXCHANGE_MARKETS,
@@ -63,6 +82,15 @@ export function getExchangeMarkets(exchange) {
       .catch(e => {
         console.log('failed to get exchange info', e);
         console.log(e.apiErrorCode);
+      });
+  };
+}
+
+export function getExchangeRates(exchange) {
+  return dispatch => {
+    return apiGet('/exchange/rates?exchange=' + exchange)
+      .then(res => {
+        dispatch(updateRates(exchange, res));
       });
   };
 }
@@ -115,6 +143,7 @@ export function cancelOrder(order) {
               alert('Server is busy. Try again later');
               break;
             default:
+              alert('failed to cancel order: ' + err.apiErrorCode);
               console.log('unhandled api error', err.apiErrorCode);
           }
         } else {
@@ -147,7 +176,14 @@ export function placeOrder(order) {
             case ApiError.MIN_TRADE_REQUIREMENT_NOT_MET:
               alert('Min trade requirement not met');
               break;
+            case ApiError.MARKET_NOT_ALLOWED:
+              alert('You are not allowed to trade on that market');
+              break;
+            case ApiError.THROTTLE_LIMIT:
+              alert('You have made too many orders, please try later');
+              break;
             default:
+              alert('failed to place order:', error.apiErrorCode);
               console.log('unhandled api error', error.apiErrorCode);
           }
         }

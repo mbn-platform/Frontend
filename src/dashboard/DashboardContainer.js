@@ -4,6 +4,7 @@ import { deleteApiKey, updateApiKey } from '../actions/apiKeys';
 import { acceptOffer, cancelOffer, rejectOffer, payOffer } from '../actions/offers';
 import { updateExchanges } from '../actions/exchanges';
 import { rateContract } from '../actions/contracts';
+import { getExchangeRates } from '../actions/terminal';
 
 const mapStateToProps = state => {
   return {
@@ -37,6 +38,7 @@ const mapDispatchToProps = dispatch => {
     onOfferRejected: offer => dispatch(rejectOffer(offer)),
     onOfferCanceled: offer => dispatch(cancelOffer(offer)),
     onContractRate: (feedback, userName, time) => dispatch(rateContract(feedback, userName, time)),
+    getExchangeRates: exchange => dispatch(getExchangeRates(exchange)),
   };
 };
 

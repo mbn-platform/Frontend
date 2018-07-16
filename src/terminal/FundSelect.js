@@ -36,6 +36,7 @@ class FundSelect extends React.Component {
   }
 
   render() {
+    const funds = this.props.funds.filter(fund => fund.exchange === this.props.exchange)
     return (
       <div onClick={() => this.setState({isOpen: !this.state.isOpen})} id="popover1" className="dropdown-link-wrap">
         {this.renderSelectedFund()}
@@ -57,7 +58,7 @@ class FundSelect extends React.Component {
             <div className="dropdown__name" onClick={this.onOutsideClick}>
               <span>API KEY</span><span className="arrow_down"></span>
             </div>
-            {this.props.funds.slice(0, 5).map(fund => (
+            {funds.slice(0, 5).map(fund => (
               <div
                 key={fund._id}
                 onClick={e => this.onKeySelect(e, fund)}

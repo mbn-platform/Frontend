@@ -51,7 +51,7 @@ class Login extends React.Component {
     } else {
       return (
         this.state.hasActiveAccount ? (
-          <LoginForm 
+          <LoginForm
             onClick={this.props.onLoginClick}
             onNetSelect={this.props.onNetSelect}
             isMainNet={this.props.isMainNet}

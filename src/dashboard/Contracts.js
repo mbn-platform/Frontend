@@ -9,6 +9,7 @@ import Pagination from '../generic/Pagination';
 import { UncontrolledTooltip } from 'reactstrap';
 import { CONTRACT_STATE_FINISHED, CONTRACT_STATE_VERIFIED, CONTRACT_STATE_HALTED } from '../constants';
 import { calculateTotalBalance } from '../generic/util';
+import { Row, Container, Col } from 'reactstrap';
 
 
 
@@ -30,28 +31,7 @@ class Contracts extends React.Component {
     } else if(!props.selectedApiKey) {
       return {selectedApiKeyId: null};
     }
-  }
-
-  componentDidUpdate(prevProps) {
-    if(prevProps.contracts !== this.props.contracts || prevProps.exchangesInfo !== this.props.exchangesInfo) {
-      this.updateContractsCurrentBalance();
-    }
-  }
-
-  componentDidMount() {
-    this.updateContractsCurrentBalance();
-  }
-
-  updateContractsCurrentBalance() {
-    for(const contract of this.props.contracts.current) {
-      const exchangeInfo = this.props.exchangesInfo[contract.exchange];
-      if(exchangeInfo) {
-        const rates = exchangeInfo.rates;
-        if(rates) {
-          contract.currentBalance = calculateTotalBalance(contract.balances, rates);
-        }
-      }
-    }
+    return null;
   }
 
   onTabClick(index) {
@@ -103,17 +83,21 @@ class Contracts extends React.Component {
   render() {
     return (
       <div className="table contracts_table">
-        <div className="table_title_wrapper clearfix">
-          <div className="table_title">Contracts
-            <span className="contracts-showall-button text-muted" onClick={() => {
-              this.setState({selectedTab: Contracts.TAB_CURRENT});
-              this.props.onShowAllClicked();
-            }}>Show all</span>
-          </div>
-          <SegmentedControl selectedIndex={this.state.selectedTab} segments={['CURRENT', 'FINISHED']} onChange={this.onTabClick}/>
-        </div>
-        {this.renderContent()}
-      </div>
+        <Container fluid>
+          <Row className="table_title_wrapper">
+            <Col xs="12" sm="6" className="table_title">Contracts
+              <span className="contracts-showall-button text-muted" onClick={() => {
+                this.setState({selectedTab: Contracts.TAB_CURRENT});
+                this.props.onShowAllClicked();
+              }}>Show all</span>
+          </Col>
+          <Col sm="6">
+            <SegmentedControl selectedIndex={this.state.selectedTab} segments={['CURRENT', 'FINISHED']} onChange={this.onTabClick}/>
+          </Col>
+        </Row>
+      </Container>
+      {this.renderContent()}
+    </div>
     );
   }
 
@@ -159,11 +143,8 @@ class Contracts extends React.Component {
         let balance;
         switch(c.state) {
           case CONTRACT_STATE_VERIFIED:
-            if(c.currentBalance) {
-              return ((c.currentBalance / c.contractSettings.sum - 1) * 100).toFixed(2);
-            } else {
-              return '';
-            }
+            balance = (c.totalInBTC || 0) / 100000000;
+            break;
           case CONTRACT_STATE_HALTED:
           case CONTRACT_STATE_FINISHED:
             balance = c.finishBalance / 100000000;
@@ -205,12 +186,8 @@ class Contracts extends React.Component {
         let balance;
         switch(c.state) {
           case CONTRACT_STATE_VERIFIED:
-            if(c.currentBalance) {
-              balance = c.currentBalance;
-              break;
-            } else {
-              return '';
-            }
+            balance = (c.totalInBTC || 0) / 100000000;
+            break;
           case CONTRACT_STATE_HALTED:
           case CONTRACT_STATE_FINISHED:
             balance = c.finishBalance / 100000000;
@@ -275,12 +252,8 @@ class Contracts extends React.Component {
         let balance;
         switch(c.state) {
           case CONTRACT_STATE_VERIFIED:
-            if(c.currentBalance) {
-              balance = c.currentBalance;
-              break;
-            } else {
-              return '';
-            }
+            balance = (c.totalInBTC || 0) / 100000000;
+            break;
           case CONTRACT_STATE_HALTED:
           case CONTRACT_STATE_FINISHED:
             balance = c.finishBalance / 100000000;

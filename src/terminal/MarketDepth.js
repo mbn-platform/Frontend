@@ -6,6 +6,7 @@ import DataLoader from 'amcharts3/amcharts/plugins/dataloader/dataloader';
 import AmChartsReact from '@amcharts/amcharts3-react';
 import { formatFloat, defaultFormatValue } from '../generic/util';
 import { Desktop } from '../generic/MediaQuery';
+import debounceRender from 'react-debounce-render';
 
 class MarketDepth extends React.Component {
 
@@ -344,7 +345,6 @@ class MarketDepth extends React.Component {
         </Row>
         <div className="marketdepth-chart__graph row col-12" id='chartdiv' >
           {this.renderChart()}
-
         </div>
         <div className="marketdepth-chart__item" id='chartitem' >
         </div>
@@ -357,4 +357,4 @@ function relativeSize(minSize, maxSize, size) {
   return (size - minSize) / (maxSize - minSize);
 }
 
-export default MarketDepth;
+export default debounceRender(MarketDepth, 2000, {maxWait: 2000}) ;

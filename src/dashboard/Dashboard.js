@@ -28,6 +28,7 @@ class Dashboard extends React.Component {
 
   componentDidMount() {
     this.props.updateExchanges();
+    this.props.getExchangeRates('binance');
   }
 
   componentWillUnmount() {
@@ -113,7 +114,7 @@ class Dashboard extends React.Component {
             contract={this.state.selectedContract} />
         </div>
         <div className="table_wrapper traders_chart">
-          <FundsChart apiKeys={this.props.apiKeys.ownKeys || []} exchangesInfo={this.props.exchangesInfo}/>
+          <FundsChart userId={this.props.userId} apiKeys={this.props.apiKeys.ownKeys || []} exchangesInfo={this.props.exchangesInfo} contracts={this.props.contracts.current}/>
         </div>
         <div className="table_wrapper contracts_chart">
           <SelectedContractChart contract={this.state.selectedContract} exchangesInfo={this.props.exchangesInfo}/>

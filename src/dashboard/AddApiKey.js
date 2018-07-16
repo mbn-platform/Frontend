@@ -28,7 +28,7 @@ class AddApiKey extends React.Component {
       alert('enter keyname and key value, select exchange');
       return;
     }
-    this.props.onApiKeyCreated({name, key: value, exchange, secret});
+    this.props.onApiKeyCreated({name, key: value.trim(), exchange, secret: secret.trim()});
     this.setState(this.initialState());
   }
 

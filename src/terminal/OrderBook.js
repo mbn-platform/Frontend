@@ -1,7 +1,7 @@
 import React from 'react';
-import { formatFloat, defaultFormatValue } from '../generic/util';
-import { Desktop } from '../generic/MediaQuery';
-import {sortData, onColumnSort, classNameForColumnHeader}  from '../generic/terminalSortFunctions';
+import {formatFloat, defaultFormatValue} from '../generic/util';
+import {Desktop} from '../generic/MediaQuery';
+import {sortData, onColumnSort, classNameForColumnHeader} from '../generic/terminalSortFunctions';
 import classNames from 'classnames';
 import $ from 'jquery';
 
@@ -30,15 +30,15 @@ class OrderBook extends React.Component {
   }
 
   componentDidMount() {
-    let processScrollableTable = function($table) {
-      $table.on('reflowed', function(e, $floatContainer) {
+    let processScrollableTable = function ($table) {
+      $table.on('reflowed', function (e, $floatContainer) {
         let headHeight = $('tr', this).first().height();
 
         $floatContainer.parent('.floatThead-wrapper').css({'padding-top': headHeight});
         $(this).css('margin-top', -headHeight);
       });
       $table.floatThead({
-        scrollContainer: function($table){
+        scrollContainer: function ($table) {
           let $container = $table.parents('.js-table-wrapper');
           if (!$container.length) {
             $container = $table.parents('.js-dropdown-table-wrapper');
@@ -52,7 +52,7 @@ class OrderBook extends React.Component {
         debug: true
       });
     };
-    $('.orderbook-table .js-table-wrapper table').each(function(index, el) {
+    $('.orderbook-table .js-table-wrapper table').each(function (index, el) {
       let $table = $(el);
       processScrollableTable($table);
     });
@@ -60,25 +60,25 @@ class OrderBook extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(this.props.orderBook.sell.length > 0 && !this.state.sort.column && this.state.scroll) {
+    if (this.props.orderBook.sell.length > 0 && !this.state.sort.column && this.state.scroll) {
       this.tableSell.scrollTop = this.tableSell.scrollHeight - 26.6;
       this.tableBuy.scrollTop = 0;
       this.setState({scroll: false});
-    } else if(this.state.sort !== prevState.sort) {
+    } else if (this.state.sort !== prevState.sort) {
       this.tableBuy.scrollTop = 0;
       this.tableSell.scrollTop = 0;
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.market !== this.props.market) {
+    if (nextProps.market !== this.props.market || nextProps.exchange !== this.props.exchange) {
       this.setState({prelast: null, sort: {}, scroll: true});
     }
-    if(nextProps.ticker !== this.props.ticker) {
-      this.setState({prelast: this.props.ticker.last});
+    if (nextProps.ticker !== this.props.ticker) {
+      this.setState({prelast: this.props.ticker.l});
     }
-    if(nextProps.orderBook !== this.props.orderBook) {
-      const { sell, buy } = nextProps.orderBook;
+    if (nextProps.orderBook !== this.props.orderBook) {
+      const {sell, buy} = nextProps.orderBook;
       const maxBuy = buy.reduce((accum, value) => Math.max(accum, value.Quantity * value.Rate), 0);
       const maxSell = sell.reduce((accum, value) => Math.max(accum, value.Quantity * value.Rate), 0);
       const minBuy = buy.reduce((accum, value) => Math.min(accum, value.Quantity * value.Rate), maxBuy);
@@ -88,26 +88,26 @@ class OrderBook extends React.Component {
   }
 
   render() {
-    const currency = this.props.market.split('-')[0];
+    const [main, secondary] = this.props.market.split('-');
     let sortedDataSell = [];
     let sortedDataBuy = [];
-    const { sell, buy } = this.props.orderBook;
-    if(sell.length) {
+    const {sell, buy} = this.props.orderBook;
+    if (sell.length) {
       sortedDataSell = this.sortData(sell);
-      if(sortedDataSell === sell) {
+      if (sortedDataSell === sell) {
         sortedDataSell = sell.slice(0, 50).reverse();
       } else {
         sortedDataSell = sortedDataSell.slice(0, 50);
       }
     }
 
-    if(buy.length) {
+    if (buy.length) {
       sortedDataBuy = this.sortData(buy).slice(0, 50);
     }
     return (
       <div className="orderbook-table chart col-12 col-sm-6 col-md-12">
         <div className="chart__top justify-content-between row">
-          <div className="chart-name">Order Book  </div>
+          <div className="chart-name">Order Book</div>
           <a role="button" className="reset-button text-muted" onClick={this.reset}>Reset sort</a>
           <Desktop>
             <div className="chart-controls align-items-center justify-content-between row">
@@ -119,13 +119,15 @@ class OrderBook extends React.Component {
             <thead>
               <tr>
                 <th onClick={() => this.onColumnSort('price')}>
-                  <div>Price <span className={classNameForColumnHeader(this.state, 'price')}></span></div>
+                  <div>Ask <span className={classNameForColumnHeader(this.state, 'price')}></span></div>
                 </th>
                 <th onClick={() => this.onColumnSort('Quantity')}>
-                  <div>Size <span className={classNameForColumnHeader(this.state, 'Quantity')}></span></div>
+                  <div>Size ({secondary})<span
+                    className={classNameForColumnHeader(this.state, 'Quantity')}></span></div>
                 </th>
                 <th onClick={() => this.onColumnSort('relativeSize')}>
-                  <div>Total ({currency}) <span className={classNameForColumnHeader(this.state, 'relativeSize')}></span></div>
+                  <div>Total ({main}) <span
+                    className={classNameForColumnHeader(this.state, 'relativeSize')}></span></div>
                 </th>
                 <th></th>
               </tr>
@@ -134,7 +136,7 @@ class OrderBook extends React.Component {
               {sortedDataSell.map((order, i) => (
                 <BuyOrderCell
                   onClickCapture={this.onOrderClick.bind(this, 'sell')}
-                  currency={currency}
+                  currency={main}
                   key={i}
                   price={order.Rate}
                   size={order.Quantity}
@@ -151,7 +153,7 @@ class OrderBook extends React.Component {
               {sortedDataBuy.map((order, i) => (
                 <BuyOrderCell
                   onClickCapture={this.onOrderClick.bind(this, 'buy')}
-                  currency={currency}
+                  currency={main}
                   key={i}
                   price={order.Rate}
                   size={order.Quantity}
@@ -171,13 +173,15 @@ class OrderBook extends React.Component {
     let isUp;
     const last = this.props.ticker.l;
     const prelast = this.state.prelast;
-    if(prelast && last && prelast > last) {
+    if (prelast && last && prelast > last) {
       isUp = false;
     } else {
       isUp = true;
     }
+
     return (
       <div className={classNames('value', 'last-price', 'row', isUp ? 'up' : 'down')}>
+        <div className={'bid-label'}>Bid</div>
         <span onClick={() => this.props.onOrderSelect(last)}>
           {last ? defaultFormatValue(last, main) : null}</span>
         <span className={classNames('icon', 'icon-dir', isUp ? 'icon-up-dir' : 'icon-down-dir')}> </span>
@@ -190,10 +194,10 @@ function relativeSize(minSize, maxSize, size) {
   return Math.max((size - minSize) / (maxSize - minSize), 0.02);
 }
 
-const BuyOrderCell = ({price, size, relativeSize, currency, onClickCapture} ) => {
+const BuyOrderCell = ({price, size, relativeSize, currency, onClickCapture}) => {
   const sizeParts = formatFloat(size).split('.');
   return (
-    <tr onClickCapture={onClickCapture} data-price={price} data-size={size} >
+    <tr onClickCapture={onClickCapture} data-price={price} data-size={size}>
       <td>{defaultFormatValue(price, currency)}</td>
       <td>
         <span className="white">{sizeParts[0]}.</span>

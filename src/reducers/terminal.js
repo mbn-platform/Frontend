@@ -4,6 +4,7 @@ import {
 } from '../actions/terminal';
 import {UPDATE_ORDER_BOOK, UPDATE_HISTORY, UPDATE_TICKER} from '../actions/terminal';
 import {UPDATE_KEYS} from '../actions/dashboard';
+import {FETCH_CONTRACTS} from '../actions/contracts';
 
 export default function(state = {
   fund: null,
@@ -23,7 +24,7 @@ export default function(state = {
       if(action.market === state.market) {
         return state;
       } else {
-        return {...state, market: action.market, orderBook: {sell: [], buy: [], smap: {}, bmap: {}}, history: []};
+        return {...state, market: action.market, orderBook: {sell: [], buy: [], smap: {}, bmap: {}}, history: [], ticker: null};
       }
     }
     case SELECT_EXCHANGE: {
@@ -78,7 +79,9 @@ export default function(state = {
       if(!(action.market === state.market && action.exchange === state.exchange)) {
         return state;
       }
-      const history = action.history.map(t => ({
+      const history = action.history
+        .sort((t1, t2) => t2[2] - t1[2])
+        .map(t => ({
         id: Math.random().toFixed(8),
         price: t[0],
         amount: t[1],
@@ -94,8 +97,17 @@ export default function(state = {
       return state;
     }
     case UPDATE_KEYS: {
-      if(!state.fund && action.data.length) {
+      if(!state.fund && action.data.length && action.data[0].exchange === state.exchange) {
         return {...state, fund: action.data[0]};
+      }
+      break;
+    }
+    case FETCH_CONTRACTS: {
+      if(!state.fund) {
+        const contract = action.contracts.current.find(c => c.to._id === action.userId && c.exchange === state.exchange);
+        if(contract) {
+          return {...state, fund: contract};
+        }
       }
       break;
     }
@@ -111,9 +123,9 @@ export default function(state = {
         let closed = state.orders.closed;
         let opened = state.orders.open;
         if (action.order.state === 'CLOSED') {
-          closed = closed.concat(action.order);
+          closed = [action.order, ...closed];
         } else {
-          opened = opened.concat(action.order);
+          opened = [action.order, ...opened];
         }
         const orders = {
           open: opened,
@@ -130,10 +142,10 @@ export default function(state = {
       let opened = state.orders.open;
       if (orderIndex > -1) {
         if (action.order.state === 'CLOSED') {
-          opened.splice(orderIndex, 1);
-          closed = closed.concat(action.order);
+          opened = opened.filter(o => o._id !== action.order._id);
+          closed = [action.order, ...closed];
         } else {
-          opened[orderIndex] = action.order;
+          opened = opened.map(o => o._id === action.order._id ? action.order : o);
         }
         const orders = {
           open: opened,
@@ -148,8 +160,10 @@ export default function(state = {
       if(order) {
         const orders = {
           open: state.orders.open.filter(o => o._id !== action.order._id),
-          closed: state.orders.closed.concat(action.order),
         };
+        if(order.filled > 0) {
+          orders.closed = [action.order, ...state.orders.closed];
+        }
         return {...state, orders};
       }
       break;

@@ -29,31 +29,12 @@ const root = (state, action) => {
   };
   let newState = combined(state, action);
   switch(action.type) {
-    case 'UPDATE_EXCHANGE_RATES': {
-      const rates = action.rates;
-      const current = calculateBalances(newState.contracts.current, newState.apiKeys, rates);
-      const incoming = calculateBalances(newState.offers.incoming, newState.apiKeys, rates);
-      const outgoing = calculateBalances(newState.offers.outgoing, newState.apiKeys, rates);
-      return {...newState, contracts: { ...newState.contracts, current}, offers: {incoming, outgoing}};
-    }
-    case 'UPDATE_DASHBOARD': {
-      newState.contracts.current.forEach(c => {
-        c.balance = getItemBalance(c, newState.apiKeys, newState.rates);
-      });
-      newState.offers.incoming.forEach(c => {
-        c.balance = getItemBalance(c, newState.apiKeys, newState.rates);
-      });
-      newState.offers.outgoing.forEach(c => {
-        c.balance = getItemBalance(c, newState.apiKeys, newState.rates);
-      });
-      const allowed = allowedApiKeys(newState.apiKeys, newState.contracts.current);
-      let selectedFund;
-      if(newState.terminal.selectedFund) {
-        selectedFund = allowed.find(k => k._id === newState.terminal.selectedFund._id);
-      } else {
-        selectedFund = allowed[0] || null;
+    case 'UPDATE_API_KEY_BALANCE': {
+      if(state.terminal.fund && state.terminal.fund._id === action._id) {
+        const fund = newState.apiKeys.ownKeys.find(k => k._id === action._id);
+        newState = {...newState, terminal: {...newState.terminal, fund}};
       }
-      return {...newState, terminal: {...newState.terminal, selectedFund}};
+      return newState;
     }
     case 'ON_NET_SELECT':
       let net = newState.selectedNet;
@@ -68,30 +49,6 @@ const root = (state, action) => {
       return newState;
   }
 };
-function allowedApiKeys(apiKeys, contracts) {
-  const allowedOwnKeys = apiKeys.ownKeys.filter(k => k.state === 'FREE');
-  const allowedReceivedKeys = apiKeys.receivedKeys.filter(k => {
-    const contract = contracts.find(c => c.keyId === k._id);
-    return !!contract;
-  });
-  return allowedOwnKeys.concat(allowedReceivedKeys);
-}
-
-function getItemBalance(item, apiKeys, rates) {
-  const key = apiKeys.ownKeys.findById(item.keyId) ||
-    apiKeys.receivedKeys.findById(item.keyId);
-  if(key) {
-    return calculateKeyBalance(key, item.currency, rates);
-  } else {
-    return null;
-  }
-}
-function calculateBalances(array, apiKeys, rates) {
-  return array.map(item => {
-    const balance = getItemBalance(item, apiKeys, rates);
-    return {...item, balance};
-  });
-}
 
 export function saveReduxState(state) {
   localStorage.setItem('reduxState', JSON.stringify(state));

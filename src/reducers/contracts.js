@@ -1,4 +1,4 @@
-import {RATE_CONTRACT, FETCH_CONTRACTS, UPDATE_CONTRACT_BALANCE} from '../actions/contracts';
+import {RATE_CONTRACT, FETCH_CONTRACTS, UPDATE_CONTRACT_BALANCE, FINISH_CONTRACT, UPDATE_CONTRACT_TOTAL_BALANCE} from '../actions/contracts';
 import {PAY_OFFER, VERIFY_OFFER} from '../actions/offers';
 import { makeId } from '../generic/util';
 import { UPDATE_DASHBOARD } from '../actions/dashboard';
@@ -16,7 +16,7 @@ export default function(state = {current: [], finished: []}, action) {
         return state;
       }
     case VERIFY_OFFER:
-      return {...state, current: state.current.concat(action.offer)}
+      return {...state, current: [action.offer, ...state.current]};
     case PAY_OFFER: {
       const offer = action.offer;
       const _id = makeId();
@@ -48,6 +48,19 @@ export default function(state = {current: [], finished: []}, action) {
     case FETCH_CONTRACTS: {
       return action.contracts;
     }
+    case FINISH_CONTRACT: {
+      const newState = {};
+      const contract = action.contract;
+      const current = state.current.filter(c => c._id !== contract._id);
+      newState.current = current;
+      const hasInFinished = state.finished.find(c => c._id === contract._id);
+      if(!hasInFinished) {
+        newState.finished = state.finished.concat(contract);
+      } else {
+        newState.finished = state.finished;
+      }
+      return newState;
+    }
     case UPDATE_CONTRACT_BALANCE: {
       const current = [...state.current];
       const contractIndex = current.findIndex(c => c._id === action._id);
@@ -56,6 +69,20 @@ export default function(state = {current: [], finished: []}, action) {
       }
       current[contractIndex].balances = action.balances;
       return {...state, current};
+    }
+    case UPDATE_CONTRACT_TOTAL_BALANCE: {
+      const contract = state.current.find(c => c._id === action._id);
+      if(contract && contract.totalInBTC !== action.total) {
+        const current = state.current.map(c => {
+          if(c._id === action._id) {
+            return {...c, totalInBTC: action.total};
+          } else {
+            return c;
+          }
+        });
+        return {...state, current};
+      }
+      return state;
     }
     default:
       return state;

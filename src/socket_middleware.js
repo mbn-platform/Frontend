@@ -1,21 +1,24 @@
 import io from 'socket.io-client';
-import { WEBSOCKET_CONNECT, WEBSOCKET_DISCONNECT, WEBSOCKET_TERMINAL } from './actions/websocket';
-import { SELECT_MARKET } from './actions/terminal';
+//import { WEBSOCKET_CONNECT, WEBSOCKET_DISCONNECT, WEBSOCKET_TERMINAL } from './actions/websocket';
+import { SELECT_MARKET, SELECT_EXCHANGE, EXCHANGE_MARKETS,
+  TRADING_DATA_START, TRADING_DATA_STOP } from './actions/terminal';
 import { LOGGED_OUT, LOGGED_IN } from './actions/auth';
 import {updateKeyBalance} from './actions/apiKeys';
-import {updateOrderBook, updateHistory, updateRates, updateTicker} from './actions/terminal';
+import {updateOrderBook, updateHistory, updateRates, updateTicker, selectMarket} from './actions/terminal';
 let socket;
 const socketMiddleware = store => next => action => {
   switch(action.type) {
     case LOGGED_IN: {
       if(!socket) {
         const selectedNet = store.getState().selectedNet;
-        const path = selectedNet === 'mainnet' ? '/socket.io/mainnet' : undefined;
+        const path = selectedNet === 'mainnet' ?
+          process.env.REACT_APP_MAINNET_WEBSOCKET_ADDRESS :
+          undefined;
         socket = io('', {
           path,
         });
-        socket.on('connect', () => {
-          socket.emit('rates');
+        socket.on('action', action => {
+          store.dispatch(action);
         });
         socket.on('orders', ({name, content}) => {
           const [exchange, orders, market] = name.split('.');
@@ -33,22 +36,27 @@ const socketMiddleware = store => next => action => {
         });
         socket.on('ticker', ({name, content}) => {
           const [exchange, ticker, market] = name.split('.');
-          store.dispatch(updateTicker(exchange, market, content));
+          store.dispatch(updateTicker(exchange, market, content.ticker));
         });
-        socket.on('balances', ({_id, content}) => {
-          store.dispatch(updateKeyBalance(_id, content.balances));
-        });
-        socket.on('action', action => {
-          store.dispatch(action);
+        socket.on('balances', ({_id, content, totalInBTC, totalInUSDT}) => {
+          store.dispatch(updateKeyBalance(_id, content.balances, totalInBTC, totalInUSDT));
         });
       }
       break;
     }
-    case WEBSOCKET_TERMINAL: {
+    case TRADING_DATA_START: {
       if(socket) {
         const state = store.getState();
-        const {exchange, market: symbol, interval} = state.terminal;
+        const {exchange} = state.terminal;
+        const symbol = action.market;
         socket.emit('market', {exchange, symbol});
+        socket.emit('rates', {exchange});
+      }
+      return;
+    }
+    case TRADING_DATA_STOP: {
+      if(socket) {
+        socket.emit('off_data');
       }
       return;
     }
@@ -64,6 +72,40 @@ const socketMiddleware = store => next => action => {
         const {exchange} = state.terminal;
         const symbol = action.market;
         socket.emit('market', {exchange, symbol});
+      }
+      break;
+    }
+    case SELECT_EXCHANGE: {
+      if(socket) {
+        socket.emit('rates', {exchange: action.exchange});
+        const state = store.getState();
+        const exchangeInfo = state.exchangesInfo[action.exchange];
+        const symbol = state.terminal.market;
+        if(exchangeInfo && exchangeInfo.markets) {
+          const hasMarket = !!exchangeInfo.markets.find(m => m.symbol === symbol);
+          if(hasMarket) {
+            socket.emit('market', {exchange: action.exchange, symbol});
+          } else {
+            store.dispatch(selectMarket('USDT-BTC'));
+          }
+        } else if(action.restore) {
+          socket.emit('market', {exchange: action.exchange, symbol});
+        } else {
+          socket.emit('market', {exchange: action.exchange, symbol});
+        }
+      }
+      break;
+    }
+    case EXCHANGE_MARKETS: {
+      const terminal = store.getState().terminal;
+      if(terminal.exchange !== action.exchange) {
+        break;
+      }
+      const currentMarket = terminal.market;
+      const newMarkets = action.markets;
+      const marketExists = newMarkets.find(m => m.symbol === currentMarket);
+      if(!marketExists) {
+        store.dispatch(selectMarket('USDT-BTC'));
       }
       break;
     }

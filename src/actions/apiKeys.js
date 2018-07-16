@@ -31,7 +31,8 @@ export function deleteApiKey(key) {
           localStorage.removeItem('terminal.selectedFund');
         }
         if (selectedKey._id === key._id) {
-          const ownKeys = getState().apiKeys.ownKeys
+          const exchange = getState().terminal.exchange
+          const ownKeys = getState().apiKeys.ownKeys.filter(key => key.exchange === exchange)
           let currentKeyIndex = ownKeys.findIndex(k => k._id == selectedKey._id);
           let newSelectedKey = null;
           if (ownKeys.length > 1) {
@@ -96,6 +97,7 @@ export function addApiKey(key) {
               alert('This key already in system');
               return;
             default:
+              alert('failed to add api key:', error.apiErrorCode);
               console.log('unhandled api error', error.apiErrorCode);
           }
         }
@@ -119,10 +121,12 @@ export function updateApiKey(key) {
   };
 }
 
-export function updateKeyBalance(_id, balances) {
+export function updateKeyBalance(_id, balances, totalInBTC, totalInUSDT) {
   return {
     type: UPDATE_API_KEY_BALANCE,
     _id,
     balances,
+    totalInBTC,
+    totalInUSDT,
   };
 }

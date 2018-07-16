@@ -15,12 +15,17 @@ class Terminal extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {fullScreenEnabled: false, selectedInterval: '30 M', type: 'buy'};
     this.onOrderSelect = this.onOrderSelect.bind(this);
+    this.onFullScreenChange = this.onFullScreenChange.bind(this);
   }
 
   onOrderSelect(price, size, type) {
-    this.setState({price, size, type: type || this.state.type});
+    this.setState({price: price || '', size: size || '', type: type || this.state.type});
+  }
+
+  onFullScreenChange(value) {
+    this.setState({fullScreenEnabled: value});
   }
 
   allowedApiKeys(apiKeys, contracts) {
@@ -57,20 +62,27 @@ class Terminal extends React.Component {
                 fund={this.props.fund}
                 userId={this.props.userId}
                 exchange={this.props.exchange}
+                exchanges={this.props.exchanges}
                 apiKeys={this.props.apiKeys.ownKeys}
                 contracts={this.props.contracts.current}
                 onExchangeSelect={this.props.selectExchange}
                 onApiKeySelect={this.props.selectFund}
+                isFullScreenEnabled={this.state.fullScreenEnabled}
               />
               <Row className="charts">
                 <Col xs="12" sm="12" md="6" lg="8" className="charts__left">
-                  <TradingView />
+                  <TradingView
+                    onFullScreenChange={this.onFullScreenChange}
+                  />
                   <MarketDepth
+                    key={this.props.market + this.props.exchange}
                     market={this.props.market}
                     {...this.props.orderBook}
                   />
                   <Row className="justify-content-between">
                     <PlaceOrder
+                      key={this.props.market + this.props.exchange}
+                      exchange={this.props.exchange}
                       price={this.state.price}
                       type={this.state.type}
                       size={this.state.size}
@@ -92,6 +104,7 @@ class Terminal extends React.Component {
                         onOrderSelect={this.onOrderSelect}
                         orderBook={this.props.orderBook}
                         market={this.props.market}
+                        exchange={this.props.exchange}
                         ticker={this.props.ticker || {}}
                       />
                     </MediaQuery>
@@ -103,6 +116,7 @@ class Terminal extends React.Component {
                       <OrderBook
                         onOrderSelect={this.onOrderSelect}
                         orderBook={this.props.orderBook}
+                        exchange={this.props.exchange}
                         ticker={this.props.ticker || {}}
                         market={this.props.market}
                       />
@@ -130,36 +144,18 @@ class Terminal extends React.Component {
 
   componentDidMount() {
     window.customize();
-    this.props.connectToSocket();
-    this.props.getExchangeMarkets(this.props.exchange);
-    if(this.props.fund) {
-      let payload = {
-        symbol: this.props.market
-      }
-      payload = setFundId(payload, this.props.fund)
-      this.props.getOrders(payload);
-    }
-    const savedMarket = localStorage.getItem('terminal.selectedMarket');
-    if (savedMarket) {
-      this.props.selectMarket(savedMarket);
-    }
+    this.props.startTradingDataUpdates();
     const savedFund = localStorage.getItem('terminal.selectedFund');
     if (savedFund) {
       this.props.selectFund(JSON.parse(savedFund));
     }
-    const savedExchange = localStorage.getItem('terminal.selectedExchange');
-    if (savedExchange) {
-      this.props.selectExchange(JSON.parse(savedExchange));
-    }
-    const savedInterval = localStorage.getItem('terminal.selectedInterval');
-    if (savedInterval) {
-      this.props.selectInterval(JSON.parse(savedInterval));
-    }
+    this.props.selectExchange(this.props.exchange, true);
   }
 
 
   componentWillUnmount() {
     window.uncustomize();
+    this.props.stopTradingDataUpdates();
   }
 }
 

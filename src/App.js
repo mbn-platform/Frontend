@@ -15,7 +15,6 @@ window.Tether = require('tether');
 window.Popper = require('popper.js');
 require('floatthead');
 require('bootstrap');
-require('readmore-js');
 require('malihu-custom-scrollbar-plugin');
 
 window.uncustomize = function() {
@@ -147,7 +146,6 @@ window.customize = function() {
         heightList += heightEle || $(this).height();
       }
     });
-    $group.readmore('destroy');
     if($item.length > countItem) {
 
       //$(".feedback-card .card-body .list-group").height(heightList)
@@ -159,17 +157,6 @@ window.customize = function() {
           }
         })
       }*/
-      $group.readmore({
-        collapsedHeight:heightList,
-        speed: 500,
-        moreLink: '<div class="d-flex justify-content-center show-feedbacks-block"><button type="button" class="show-feedbacks-btn btn btn-secondary">' + textMore + '</button></div>',
-        lessLink: '<div class="d-flex justify-content-center show-feedbacks-block"><button type="button" class="show-feedbacks-btn btn btn-secondary">' + textLess + '</button></div>',
-        afterToggle: function(trigger, element, expanded) {
-          if(! expanded) {
-            //$(".feedback-card .card-body .list-group").readmore('toggle');
-          }
-        }
-      });
     } else {
       $group.height(heightList);
     }
@@ -178,12 +165,6 @@ window.customize = function() {
   $(window).resize((e) => {
     if($(window).width() > 1020){
 
-      $('article').readmore({
-        collapsedHeight:68,
-        speed: 500,
-        moreLink: '<a href="#">Read more >></a>',
-        lessLink: '<a href="#">Read less <<</a>'
-      });
       $('.currency-settings tbody').height($('.currency-settings .card-body').outerHeight() - $('.currency-settings thead th').outerHeight());
 
       $('.currency-settings tbody').mCustomScrollbar({
@@ -220,7 +201,6 @@ window.customize = function() {
       console.log($('.currency-settings .card-body').outerHeight(), $('.currency-settings thead th').outerHeight()); //apply scrollbar with your options
     }else{
       //$(selector).mCustomScrollbar("destroy"); //destroy scrollbar
-      $('article').readmore('destroy');
       $('.currency-settings tbody').mCustomScrollbar('destroy');
 
       $('.feedback-card .card-body .list-group').mCustomScrollbar('destroy');
@@ -262,7 +242,6 @@ window.customize = function() {
 
 
   $(document).on('click', function(e) {
-    console.log('document on click');
     if (!$(e.target).closest('.all-time').length && !$(e.target).closest('.all-time_dropdown').length) {
       $('.all-time').popover('hide');
     }

@@ -9,23 +9,25 @@ import {
   getOrders,
   cancelOrder,
   getExchangeMarkets,
+  startTradingDataUpdates,
+  stopTradingDataUpdates,
 } from '../actions/terminal';
 import { WEBSOCKET_TERMINAL } from '../actions/websocket';
 
 const mapStateToProps = state => ({
   ...state.terminal,
   exchangeInfo: state.exchangesInfo[state.terminal.exchange],
+  exchanges: state.exchangesInfo.exchanges || [],
   apiKeys: state.apiKeys,
   contracts: state.contracts,
   userId: state.auth.profile._id,
 });
 
 const mapDispatchToProps =  dispatch => ({
+  startTradingDataUpdates: () => dispatch(startTradingDataUpdates()),
+  stopTradingDataUpdates: () => dispatch(stopTradingDataUpdates()),
   selectMarket: market => dispatch(selectMarket(market)),
-  selectExchange: exchange => {
-    dispatch(selectExchange(exchange));
-    dispatch(getExchangeMarkets(exchange));
-  },
+  selectExchange: (exchange, restore) => dispatch(selectExchange(exchange, restore)),
   selectInterval: interval => dispatch(selectInterval(interval)),
   selectFund: fund => dispatch(selectFund(fund)),
   placeOrder: order => dispatch(placeOrder(order)),

@@ -14,12 +14,12 @@ class HeaderStatus extends React.Component {
           <Row className="h-100 justify-content-between">
             <Col xs="12" sm="12" md="8" lg="7" xl="4" className="curses-wrap row">
               <Rate
-                pair="BTC/USD"
+                pair="BTC/USDT"
                 val={rates['USDT-BTC'] ? Math.floor(rates['USDT-BTC']) : ''}
                 marketInfo={markets.find(m => m.symbol === 'USDT-BTC')}
               />
               <Rate
-                pair="ETH/USD"
+                pair="ETH/USDT"
                 val={rates['USDT-ETH'] ? rates['USDT-ETH'].toFixed(2) : ''}
                 marketInfo={markets.find(m => m.symbol === 'USDT-ETH')}
               />
