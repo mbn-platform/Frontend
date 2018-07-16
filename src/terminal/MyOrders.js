@@ -60,7 +60,7 @@ class MyOrders extends React.Component {
                     <tr>
                       <th onClick={() => this.onColumnSort('type')}>Type <span className={classNameForColumnHeader(this.state, 'type')}></span></th>
                       <th onClick={() => this.onColumnSort('limit')}>Price <span className={classNameForColumnHeader(this.state, 'limit')}></span></th>
-                      <th onClick={() => this.onColumnSort('filled')}>Units Filed <span className={classNameForColumnHeader(this.state, 'filled')}></span></th>
+                      <th onClick={() => this.onColumnSort('filled')}>Units Filled <span className={classNameForColumnHeader(this.state, 'filled')}></span></th>
                       <th onClick={() => this.onColumnSort('amount')}>Units Total <span className={classNameForColumnHeader(this.state, 'amount')}></span></th>
                       <th onClick={() => this.onColumnSort('price')}><span>Est.</span> Total <span className={classNameForColumnHeader(this.state, 'price')}></span></th>
                       <th></th>
@@ -88,7 +88,7 @@ class MyOrders extends React.Component {
                     <tr>
                       <th onClick={() => this.onColumnSort('type')}>Type <span className={classNameForColumnHeader(this.state, 'type')}></span></th>
                       <th onClick={() => this.onColumnSort('limit')}>Price <span className={classNameForColumnHeader(this.state, 'limit')}></span></th>
-                      <th onClick={() => this.onColumnSort('filled')}>Units Filed <span className={classNameForColumnHeader(this.state, 'filled')}></span></th>
+                      <th onClick={() => this.onColumnSort('filled')}>Units Filled <span className={classNameForColumnHeader(this.state, 'filled')}></span></th>
                       <th onClick={() => this.onColumnSort('amount')}>Units Total <span className={classNameForColumnHeader(this.state, 'amount')}></span></th>
                       <th onClick={() => this.onColumnSort('price')}><span>Est.</span> Total <span className={classNameForColumnHeader(this.state, 'price')}></span></th>
                     </tr>
