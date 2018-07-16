@@ -242,7 +242,6 @@ window.customize = function() {
 
 
   $(document).on('click', function(e) {
-    console.log('document on click');
     if (!$(e.target).closest('.all-time').length && !$(e.target).closest('.all-time_dropdown').length) {
       $('.all-time').popover('hide');
     }
