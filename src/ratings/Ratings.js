@@ -37,12 +37,8 @@ class Ratings extends React.Component {
       selectedPeriod: 'All time',
       sort: {}
     };
+    this.inputRef = React.createRef();
     this.onRowClick = this.onRowClick.bind(this);
-    this.onInputBlur = this.onInputBlur.bind(this);
-  }
-
-  onInputBlur(e) {
-    this.shouldFocus = true;
   }
 
   onRowClick(e) {
@@ -61,6 +57,11 @@ class Ratings extends React.Component {
   }
 
   render() {
+    if(this.inputRef.current && document.activeElement === this.inputRef.current) {
+      this.shouldFocus = true;
+    } else {
+      this.shouldFocus = false;
+    }
     let data = this.props.ratings;
     let period = this.state.selectedPeriod;
     data = data.filter(profile => {
@@ -137,7 +138,7 @@ class Ratings extends React.Component {
                               <th></th>
                               <th>
                                 <div>
-                                  <input onBlur={this.onInputBlur} value={this.state.nameFilter} onChange={this.onNameFilterChange} type="text" className="input_search" placeholder="Search" />
+                                  <input ref={this.inputRef} value={this.state.nameFilter} onChange={this.onNameFilterChange} type="text" className="input_search" placeholder="Search" />
                                 </div>
                               </th>
                               <th>
@@ -202,7 +203,7 @@ class Ratings extends React.Component {
                               <th></th>
                               <th>
                                 <div>
-                                  <input value={this.state.nameFilter} onChange={this.onNameFilterChange} type="text" className="input_search" placeholder="Search" />
+                                  <input ref={this.inputRef} value={this.state.nameFilter} onChange={this.onNameFilterChange} type="text" className="input_search" placeholder="Search" />
                                 </div>
                               </th>
                               <th>
@@ -248,7 +249,6 @@ class Ratings extends React.Component {
     $table.on('reflowed', (e, $container) => {
       if(this.shouldFocus) {
         $($container).find('input').focus();
-        this.shouldFocus = false;
       }
     });
 
