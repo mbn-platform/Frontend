@@ -182,6 +182,9 @@ export function placeOrder(order) {
             case ApiError.THROTTLE_LIMIT:
               alert('You have made too many orders, please try later');
               break;
+            case ApiError.ORDER_ALREADY_CLOSED:
+              alert('This order is already closed');
+              break;
             default:
               alert('failed to place order:', error.apiErrorCode);
               console.log('unhandled api error', error.apiErrorCode);
