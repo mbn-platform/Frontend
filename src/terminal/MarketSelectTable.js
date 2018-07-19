@@ -42,10 +42,12 @@ class MarketSelectTable extends React.Component {
     if(nextProps.balance && !this.props.balance) {
       $('.popover-body .js-dropdown-table-wrapper table').floatThead('reflow');
     }
-    const { baseCurrency } = prevState;
-    return {
-      markets: nextProps.markets.filter(m => m.base === baseCurrency)
-    };
+    if(nextProps.market !== prevState.market) {
+      const {baseCurrency} = prevState;
+      return {
+        markets: nextProps.markets.filter(m => m.base === baseCurrency)
+      };
+    }
   }
 
   onResize() {
@@ -71,7 +73,7 @@ class MarketSelectTable extends React.Component {
     e.nativeEvent.stopImmediatePropagation();
     this.setState({
       baseCurrency: base, secondaryCurrency: null,
-      markets: this.state.markets.filter(m => m.base === base),
+      markets: this.state.markets,
     });
     $('.popover-body .js-dropdown-table-wrapper table').floatThead('reflow');
   }
