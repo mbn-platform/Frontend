@@ -24,7 +24,7 @@ class HeaderStatus extends React.Component {
                 marketInfo={markets.find(m => m.symbol === 'USDT-ETH')}
               />
               <Rate
-                pair="BTC/ETH"
+                pair="ETH/BTC"
                 val={rates['BTC-ETH'] ? rates['BTC-ETH'].toFixed(4) : ''}
                 marketInfo={markets.find(m => m.symbol === 'BTC-ETH')}
               />
