@@ -12,6 +12,8 @@ import OrdersIcon from './assets/svg/orders.svg';
 import OrdersIconHover from './assets/svg/orders_hover.svg';
 import RaitingIcon from './img/MenuIconRatings.svg';
 import RaitingIconHover from './img/MenuIconRatingsHover.svg';
+import LeaderboardIcon from './img/MenuIconLeaderboard.svg';
+import LeaderboardIconHover from './img/MenuIconLeaderboardHover.svg';
 import SignOut from './img/SignOut.svg';
 import SignOutHover from './img/SignOutHover.svg';
 import { connect } from 'react-redux';
@@ -181,7 +183,7 @@ class Navigation extends React.Component {
       },
       {
         name: 'Ratings',
-        to: '/ratings',
+        to: '/rating',
         imgClass: 'ratings',
         icon: RaitingIcon,
         iconHover: RaitingIconHover
@@ -199,7 +201,14 @@ class Navigation extends React.Component {
         imgClass: 'orders',
         icon: OrdersIcon,
         iconHover: OrdersIconHover
-      }
+      },
+      {
+        name: 'Leaderboard',
+        to: '/leaderboard',
+        imgClass: 'leaderboard',
+        icon: LeaderboardIcon,
+        iconHover: LeaderboardIconHover
+      },
     ];
   }
 
