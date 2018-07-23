@@ -6,7 +6,7 @@
     width: 100%;
     background-color: rgba(41, 43, 60, 0.7);
     padding: 10px !important;
-    display: flex;
+    display: none;
     justify-content: center;
     flex-flow: row nowrap;
 }
@@ -34,4 +34,10 @@
 .competition__binance_logo {
     width: 25px;
     height: 25px;
+}
+
+@media only screen and (max-width: 992px) {
+    .competition__container {
+        display: flex;
+    }
 }

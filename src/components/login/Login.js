@@ -74,7 +74,7 @@ class Login extends React.Component {
             </div>
             {this.renderStep()}
           </div>
-          <Competition/>
+          {!window.web3 && <Competition/>}
         </div>
       </div>
     );
