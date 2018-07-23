@@ -21,7 +21,7 @@ class RecentTrades extends React.Component {
     if(history && history.length) {
       sortedData = this.sortData(history);
     }
-    const [base] = this.props.market.split('-');
+    const [base, secondary] = this.props.market.split('-');
     return (
       <div className="trades-table chart col-12 col-sm-6 col-md-12">
         <div className="chart__top justify-content-between row">
@@ -40,7 +40,7 @@ class RecentTrades extends React.Component {
                   <div>Price ({base}) <span className={classNameForColumnHeader(this.state, 'Price')}></span></div>
                 </th>
                 <th onClick={() => this.onColumnSort('Quantity')}>
-                  <div>Trade Size <span className={classNameForColumnHeader(this.state, 'Quantity')}></span></div>
+                  <div>Trade Size ({secondary}) <span className={classNameForColumnHeader(this.state, 'Quantity')}></span></div>
 
                 </th>
                 <th  onClick={() => this.onColumnSort('TimeStamp')}>
@@ -56,7 +56,7 @@ class RecentTrades extends React.Component {
                 <OrderHistoryRow
 
                   key={order.id}
-                  price={defaultFormatValue(order.price, base)}
+                  price={order.price}
                   size={order.amount}
                   type={order.type}
                   date={new Date(order.dt)}

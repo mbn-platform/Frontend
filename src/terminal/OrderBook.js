@@ -183,7 +183,7 @@ class OrderBook extends React.Component {
       <div className={classNames('value', 'last-price', 'row', isUp ? 'up' : 'down')}>
         <div className={'bid-label'}>Bid</div>
         <span onClick={() => this.props.onOrderSelect(last)}>
-          {last ? defaultFormatValue(last, main) : null}</span>
+          {last ? last : null}</span>
         <span className={classNames('icon', 'icon-dir', isUp ? 'icon-up-dir' : 'icon-down-dir')}> </span>
       </div>
     );
@@ -198,7 +198,7 @@ const BuyOrderCell = ({price, size, relativeSize, currency, onClickCapture}) => 
   const sizeParts = formatFloat(size).split('.');
   return (
     <tr onClickCapture={onClickCapture} data-price={price} data-size={size}>
-      <td>{defaultFormatValue(price, currency)}</td>
+      <td>{price}</td>
       <td>
         <span className="white">{sizeParts[0]}.</span>
         <span>{sizeParts[1]}</span>
