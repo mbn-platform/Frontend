@@ -15,10 +15,11 @@ export const updateExchanges = () => {
 export const getExchangeCurrencies = (exchange) => {
   return dispatch => {
     apiGet('/exchange/currencies?exchange=' + exchange)
-      .then(currencies => dispatch({
-        type: EXCHANGE_CURRENCIES,
-        exchange: exchange,
-        currencies: currencies
-      }));
+      .then(currencies => {
+        dispatch({
+          type: EXCHANGE_CURRENCIES,
+          exchange: exchange,
+          currencies: currencies
+        });});
   };
 };

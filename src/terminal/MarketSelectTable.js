@@ -38,6 +38,17 @@ class MarketSelectTable extends React.Component {
     this.onResize = this.onResize.bind(this);
   }
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if(nextProps.markets && prevState.markets.length === 0) {
+      const {baseCurrency} = prevState;
+      return {
+        markets: nextProps.markets.filter(m => m.base === baseCurrency)
+      };
+    } else {
+      return null;
+    }
+  }
+
   onResize() {
     const total = this.getTableHeight();
     if(this.tableHeigth !== total) {
@@ -64,20 +75,6 @@ class MarketSelectTable extends React.Component {
       markets: this.props.markets.filter(m => m.base === base),
     });
     $('.popover-body .js-dropdown-table-wrapper table').floatThead('reflow');
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if(nextProps.balance && !this.props.balance) {
-      $('.popover-body .js-dropdown-table-wrapper table').floatThead('reflow');
-    }
-    if(nextProps.markets !== this.props.markets || nextProps.market !== this.props.market) {
-      const [base, secondary] = nextProps.market.split('-');
-      this.setState({
-        baseCurrency: base,
-        secondaryCurrency: secondary,
-        markets: nextProps.markets.filter(m => m.base === base)
-      });
-    }
   }
 
   onSecondaryCurrencySelected(e) {
@@ -228,12 +225,15 @@ const MarketRow = ({balances, market, onClick, isBTC, rates}) => {
     balanceValue = (c && c.available) || 0;
     balanceValue = balanceValue * rates[market.symbol];
   }
+  const val=rates[market.symbol] ? rates[market.symbol] : '';
+  const prevDay = market.prevDay;
+  const change = prevDay ? (val / prevDay * 100 - 100) : null;
   return (
     <tr onClick={onClick} data-currency={market.second} className={market.change >= 0 ? 'up' : 'down'}>
       <td>{market.second}</td>
       <td>{defaultFormatValue(market.last, market.base)}</td>
       <td>{Math.round(market.volume * market.last)}</td>
-      <td>{market.change.toFixed(2) + '%'}</td>
+      <td>{change.toFixed(2) + '%'}</td>
       {balances ?  (<td>{defaultFormatValue(balanceValue, market.base)}</td>) : null}
     </tr>
   );
