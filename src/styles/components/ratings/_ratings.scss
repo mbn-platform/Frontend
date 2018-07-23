@@ -95,8 +95,11 @@
 						margin-bottom: 20px;
 					}
 					&:first-child{
-						margin-right: 10px;
+						margin-right: 0px;
 					}
+          & {
+            margin-left: 10px;
+          }
 					&:hover{
 						opacity: .7;
 					}
@@ -715,8 +718,11 @@
 					font-weight: 500;
 
 					&:first-child {
-						margin-right: 20px;
+						margin-right: 0px;
 					}
+          & {
+            margin-left: 20px;
+          }
 				}
 			}
 

@@ -95,6 +95,11 @@ class Leaderboard extends React.Component {
                       className={classNames('block__top-switch', 'ratings-traders', {active: this.state.selectedRound === 1})}>
                       ROUND 1
                     </span>
+                    <span
+                      onClick={() => this.selectRound(2)}
+                      className={classNames('block__top-switch', 'ratings-traders', {active: this.state.selectedRound === 2})}>
+                        ROUND 2
+                    </span>
                   </div>
                 </div>
                 {this.renderRound()}
