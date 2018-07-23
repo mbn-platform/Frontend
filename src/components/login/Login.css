@@ -47,17 +47,20 @@
   margin-left: 5px;
 }
 
-.main-panel.container-fluid div .login_title_text:before {
-  display: inline-block;
-  content: '';
-  left: -22px;
-  top: 16px;
-  width: 9px;
-  height: 9px;
-  border-top: 2px solid #fff;
-  border-right: 2px solid #fff;
-  transform: rotate(45deg);
-  position: absolute;
+
+@media only screen and (max-width : 470px) {
+  .main-panel.container-fluid div .login_title_text:before {
+    display: inline-block;
+    content: '';
+    left: -22px;
+    top: 16px;
+    width: 9px;
+    height: 9px;
+    border-top: 2px solid #fff;
+    border-right: 2px solid #fff;
+    transform: rotate(45deg);
+    position: absolute;
+  }
 }
 
 
