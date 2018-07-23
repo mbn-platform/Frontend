@@ -1,7 +1,7 @@
 import React from 'react';
 import './Competition.css';
 import binanceLogo from '../../img/binanceLogo.svg';
-import CompetitionIcon from '../../img/Competition.svg';
+import CompetitionIcon from '../../img/Competition.png';
 
 const Competition = () => (
   <a href="https://membrana.io/competition/?utm_source=beta_membrana_mobile&utm_medium=banner&utm_campaign=banner_mobile" className="competition__container">
