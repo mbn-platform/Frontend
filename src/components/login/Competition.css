@@ -27,6 +27,10 @@
     color: #fff;
 }
 
+.competition__subtitle_underline {
+    text-decoration: underline;
+}
+
 .competition__subtitle_yellow {
     color: #f3ba2f;
 }
