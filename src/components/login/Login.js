@@ -3,6 +3,7 @@ import EnterNickname from './EnterNickname';
 import './Login.css';
 import './LoginStep.css';
 import NoMetamask from './NoMetamask';
+import Competition from './Competition';
 import MetamaskClosed from './MetamaskClosed';
 import LoginForm from './LoginForm';
 
@@ -64,6 +65,7 @@ class Login extends React.Component {
   }
 
   render() {
+    const isIOSorAndroid = (/android|iphone|ipad/i).test(window.navigator.userAgent);
     return (
       <div className={'login_wrapper container-fluid ' + (!window.web3 ? 'login_wrapper_no_metamask' : '')}>
         <div className="login_content row justify-content-center align-items-center">
@@ -73,6 +75,7 @@ class Login extends React.Component {
             </div>
             {this.renderStep()}
           </div>
+          {!window.web3 && isIOSorAndroid && <Competition/>}
         </div>
       </div>
     );

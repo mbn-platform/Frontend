@@ -1,0 +1,47 @@
+.competition__container {
+    position: fixed;
+    bottom: 0;
+    height: 70px;
+    left: 0;
+    width: 100%;
+    background-color: rgba(41, 43, 60, 0.7);
+    padding: 10px !important;
+    display: none;
+    justify-content: center;
+    flex-flow: row nowrap;
+}
+
+.competition__icon {
+    height: 60px;
+    width: auto;
+}
+
+.competition__title {
+    text-align: center;
+    font-family: 'maven_proregular',sans-serif;
+    font-size: 18px;
+    margin-left: 20px;
+}
+
+.competition__subtitle {
+    color: #fff;
+}
+
+.competition__subtitle_underline {
+    text-decoration: underline;
+}
+
+.competition__subtitle_yellow {
+    color: #f3ba2f;
+}
+
+.competition__binance_logo {
+    width: 25px;
+    height: 25px;
+}
+
+@media only screen and (max-width: 992px) {
+    .competition__container {
+        display: flex;
+    }
+}
