@@ -142,6 +142,9 @@ export function cancelOrder(order) {
             case ApiError.TRY_AGAIN_LATER:
               alert('Server is busy. Try again later');
               break;
+            case ApiError.ORDER_ALREADY_CLOSED:
+              alert('This order is already closed');
+              break;
             default:
               alert('failed to cancel order: ' + err.apiErrorCode);
               console.log('unhandled api error', err.apiErrorCode);
@@ -181,9 +184,6 @@ export function placeOrder(order) {
               break;
             case ApiError.THROTTLE_LIMIT:
               alert('You have made too many orders, please try later');
-              break;
-            case ApiError.ORDER_ALREADY_CLOSED:
-              alert('This order is already closed');
               break;
             default:
               alert('failed to place order:', error.apiErrorCode);
