@@ -3,6 +3,7 @@ import EnterNickname from './EnterNickname';
 import './Login.css';
 import './LoginStep.css';
 import NoMetamask from './NoMetamask';
+import Competition from './Competition';
 import MetamaskClosed from './MetamaskClosed';
 import LoginForm from './LoginForm';
 
@@ -73,6 +74,7 @@ class Login extends React.Component {
             </div>
             {this.renderStep()}
           </div>
+          <Competition/>
         </div>
       </div>
     );
