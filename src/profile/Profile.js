@@ -5,6 +5,7 @@ import { Row, Container } from 'reactstrap';
 import { connect } from 'react-redux';
 import { updateExchanges } from '../actions/exchanges';
 import {updateContractSettings, getProfile, toggleAvailable, getFeedbacks, getTradesForUser} from '../actions/profile';
+import {getExchangeRates} from '../actions/terminal';
 
 class Profile extends React.Component {
 
@@ -55,14 +56,18 @@ class Profile extends React.Component {
   async getProfilePageData(name) {
     await this.props.getProfile(name);
     const p1 = this.props.getFeedbacks(name);
-    const p2 = this.props.getTradesForUser(name)
+    const p2 = this.props.getTradesForUser(name);
     return Promise.all([p1, p2]);
   }
 
   componentDidMount() {
     const name = this.props.match.params.id;
     this.getProfilePageData(name);
+    this.props.getExchangeRates('binance');
     this.props.updateExchanges();
+    this.setState({
+      rates: this.props.exchangesInfo['binance'] ? this.props.exchangesInfo['binance'].rates : [],
+    });
   }
 
   async componentWillReceiveProps(nextProps) {
@@ -74,10 +79,17 @@ class Profile extends React.Component {
       this.setState({profile: {contractSettings: {}}});
       await this.getProfilePageData(name);
     }
+    if(Object.prototype.hasOwnProperty.call(nextProps.exchangesInfo, 'binance') && (this.state.rates.length === 0)) {
+      await this.props.getExchangeRates('binance');
+      this.setState({
+        rates: this.props.exchangesInfo['binance'].rates,
+      });
+    }
   }
 
   render() {
     const {loggedIn, profile} = this.props.auth;
+    const {rates} = this.state;
     let own = false;
     if(loggedIn && profile && profile.name === this.props.match.params.id) {
       own = true;
@@ -86,14 +98,14 @@ class Profile extends React.Component {
       <Container fluid className='profile-item'>
         <Row>
           <ProfileInfo
-            rates={this.props.exchangesInfo['bittrex'] ? this.props.exchangesInfo['bittrex'].rates : []}
+            rates={rates}
             own={own}
             profile={this.state.profile}
             onSaveChangesClick={this.onSaveChangesClick}
             onToggleClick={this.onToggleClick}
           />
           <TablesScreen
-            rates={this.props.exchangesInfo['bittrex'] ? this.props.exchangesInfo['bittrex'].rates : []}
+            rates={rates}
             own={own}
             profile={this.state.profile}
             onCurrencyToggle={this.onCurrencyToggle}
@@ -117,7 +129,8 @@ const mapDispatchToProps = dispatch => ({
   updateExchanges: () => dispatch(updateExchanges()),
   getProfile: name => dispatch(getProfile(name)),
   getFeedbacks: name => dispatch(getFeedbacks(name)),
-  getTradesForUser: name => dispatch(getTradesForUser(name))
+  getTradesForUser: name => dispatch(getTradesForUser(name)),
+  getExchangeRates: exchange => dispatch(getExchangeRates(exchange)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);
