@@ -20,7 +20,11 @@ class Contracts extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {selectedTab: Contracts.TAB_CURRENT, selectedApiKeyId: null};
+    this.state = {
+      selectedTab: Contracts.TAB_CURRENT,
+      selectedApiKeyId: null,
+      filtered: [{id: 'contractor', value: ''}],
+    };
     this.onTabClick = this.onTabClick.bind(this);
   }
 
@@ -60,6 +64,7 @@ class Contracts extends React.Component {
             style={{'height': 345}}
             columns={this.getTableColumns()}
             data={data}
+            filtered={this.state.filtered}
             selectedItem={this.props.selectedContract}
             onItemSelected={this.props.onContractSelected}
             scrollBarHeight={257}
@@ -70,6 +75,7 @@ class Contracts extends React.Component {
             columns={this.getTableMobileColumns()}
             data={data}
             selectedItem={this.props.selectedContract}
+            filtered={this.state.filtered}
             onItemSelected={this.props.onContractSelected}
             minRows={5}
             showPagination={true}
@@ -90,14 +96,14 @@ class Contracts extends React.Component {
                 this.setState({selectedTab: Contracts.TAB_CURRENT});
                 this.props.onShowAllClicked();
               }}>Show all</span>
-          </Col>
-          <Col sm="6">
-            <SegmentedControl selectedIndex={this.state.selectedTab} segments={['CURRENT', 'FINISHED']} onChange={this.onTabClick}/>
-          </Col>
-        </Row>
-      </Container>
-      {this.renderContent()}
-    </div>
+            </Col>
+            <Col sm="6">
+              <SegmentedControl selectedIndex={this.state.selectedTab} segments={['CURRENT', 'FINISHED']} onChange={this.onTabClick}/>
+            </Col>
+          </Row>
+        </Container>
+        {this.renderContent()}
+      </div>
     );
   }
 
@@ -125,10 +131,19 @@ class Contracts extends React.Component {
     };
   }
 
+  onFilter = e => {
+    const value = e.target.value;
+    this.setState(state => {
+      const filtered = state.filtered.map(i => i.id === 'contractor' ? {id: 'contractor', value} : i);
+      return {filtered};
+    });
+  }
+
   getTableColumns() {
+    const nameFilter = this.state.filtered.find(f => f.id === 'contractor').value;
     return [{
       id: 'contractor',
-      Header: SearchHeaderWithoutSort('Contractor', '', () => {}),
+      Header: SearchHeaderWithoutSort('Contractor', nameFilter, this.onFilter),
       headerClassName: 'contractor',
       className: 'table_col_value',
       accessor: c => c.to.name,
