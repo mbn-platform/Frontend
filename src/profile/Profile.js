@@ -98,7 +98,6 @@ class Profile extends React.Component {
       <Container fluid className='profile-item'>
         <Row>
           <ProfileInfo
-            rates={rates}
             own={own}
             profile={this.state.profile}
             onSaveChangesClick={this.onSaveChangesClick}
