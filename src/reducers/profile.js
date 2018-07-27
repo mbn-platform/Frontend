@@ -3,19 +3,19 @@ import {GET_PROFILE, UPDATE_PROFILE, TRADES_FOR_USER, GET_FEEDBACKS} from '../ac
 export default function(state = {}, action) {
   switch(action.type) {
     case GET_PROFILE:
-      if(state.name === action.profile.name) {
-        action.profile.trades = state.trades;
-      }
-      return {...state, ...action.profile};
+      return {...action.profile, trades: [], feedbacks: []};
     case GET_FEEDBACKS:
-      return {...state, feedbacks: action.feedbacks}
+      if(action.name === state.name) {
+        return {...state, feedbacks: action.feedbacks};
+      } else {
+        return state;
+      }
     case UPDATE_PROFILE:
       const {available, contractSettings, currencies} = action.profile;
       return {...state, available, contractSettings, currencies};
     case TRADES_FOR_USER: {
       if(action.name === state.name) {
-        let trades = action.trades;
-        trades = trades.filter(ff).map(mf).sort(sf);
+        const trades = action.trades.filter(ff).map(mf).sort(sf);
         return {...state, trades};
       } else {
         return state;

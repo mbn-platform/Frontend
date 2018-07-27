@@ -2,27 +2,26 @@ import React from 'react';
 import ProfileInfo from './ProfileInfo';
 import TablesScreen from './TablesScreen';
 import { Row, Container } from 'reactstrap';
-import { connect } from 'react-redux';
-import { updateExchanges } from '../actions/exchanges';
-import {updateContractSettings, getProfile, toggleAvailable, getFeedbacks, getTradesForUser} from '../actions/profile';
 
 class Profile extends React.Component {
 
+  state = {
+    profile: {
+      contractSettings: {},
+    },
+  };
+
   constructor(props) {
     super(props);
-    const name = this.props.match.params.id;
-    if(name !== this.props.profile.name) {
-      this.state = {
-        profile: {
-          contractSettings: {}
-        }
-      };
-    } else {
-      this.state = {profile: this.props.profile};
-    }
     this.onSaveChangesClick = this.onSaveChangesClick.bind(this);
     this.onCurrencyToggle = this.onCurrencyToggle.bind(this);
     this.onToggleClick = this.onToggleClick.bind(this);
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    if(props.profile !== state.profile && props.name === props.profile.name) {
+      return {profile: props.profile};
+    }
   }
 
   onCurrencyToggle(update) {
@@ -52,48 +51,31 @@ class Profile extends React.Component {
     this.props.updateContractSettings(this.state.profile.name, contractSettings);
   }
 
-  async getProfilePageData(name) {
-    await this.props.getProfile(name);
-    const p1 = this.props.getFeedbacks(name);
-    const p2 = this.props.getTradesForUser(name)
-    return Promise.all([p1, p2]);
-  }
-
   componentDidMount() {
-    const name = this.props.match.params.id;
-    this.getProfilePageData(name);
+    const name = this.props.name;
+    this.props.getProfilePageInfo(name);
+    this.props.getExchangeRates('binance');
     this.props.updateExchanges();
-  }
-
-  async componentWillReceiveProps(nextProps) {
-    const name = nextProps.match.params.id;
-    if(nextProps.profile !== this.props.profile) {
-      this.setState({profile: nextProps.profile});
-    }
-    if(this.props.match.params.id !== name) {
-      this.setState({profile: {contractSettings: {}}});
-      await this.getProfilePageData(name);
-    }
   }
 
   render() {
     const {loggedIn, profile} = this.props.auth;
+    const rates = this.props.exchangesInfo.binance ? this.props.exchangesInfo.binance.rates : [];
     let own = false;
-    if(loggedIn && profile && profile.name === this.props.match.params.id) {
+    if(loggedIn && profile && profile.name === this.props.name) {
       own = true;
     }
     return (
       <Container fluid className='profile-item'>
         <Row>
           <ProfileInfo
-            rates={this.props.exchangesInfo['bittrex'] ? this.props.exchangesInfo['bittrex'].rates : []}
             own={own}
             profile={this.state.profile}
             onSaveChangesClick={this.onSaveChangesClick}
             onToggleClick={this.onToggleClick}
           />
           <TablesScreen
-            rates={this.props.exchangesInfo['bittrex'] ? this.props.exchangesInfo['bittrex'].rates : []}
+            rates={rates}
             own={own}
             profile={this.state.profile}
             onCurrencyToggle={this.onCurrencyToggle}
@@ -105,19 +87,6 @@ class Profile extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  auth: state.auth,
-  exchangesInfo: state.exchangesInfo,
-  profile: state.profile,
-});
+export default Profile;
 
-const mapDispatchToProps = dispatch => ({
-  updateContractSettings: (name, contractSettings) => dispatch(updateContractSettings(name, contractSettings)),
-  toggleAvailable: (name, available) => dispatch(toggleAvailable(name, available)),
-  updateExchanges: () => dispatch(updateExchanges()),
-  getProfile: name => dispatch(getProfile(name)),
-  getFeedbacks: name => dispatch(getFeedbacks(name)),
-  getTradesForUser: name => dispatch(getTradesForUser(name))
-});
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);

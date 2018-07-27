@@ -178,7 +178,7 @@ class ProfitChart extends React.Component {
     }
     const maximum = dataProvider.reduce((max, d) => Math.max(max, d['column-1']), 0);
     const minimum = dataProvider.reduce((min, d) => Math.min(min, d['column-1']), maximum);
-    const offset = (maximum - minimum) * 0.1;
+    const offset = maximum !== minimum ? (maximum - minimum) * 0.1: Math.abs(maximum) * 2;
     return {
       'type': 'serial',
       'categoryField': 'category',
