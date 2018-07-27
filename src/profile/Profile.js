@@ -21,6 +21,8 @@ class Profile extends React.Component {
   static getDerivedStateFromProps(props, state) {
     if(props.profile !== state.profile && props.name === props.profile.name) {
       return {profile: props.profile};
+    } else {
+      return null;
     }
   }
 
