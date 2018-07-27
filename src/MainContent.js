@@ -5,7 +5,7 @@ import Dashboard from './dashboard/DashboardContainer';
 import Terminal from './terminal/TerminalContainer';
 import Ratings from './ratings/Ratings';
 import Orders from './orders/Orders';
-import Profile from './profile/Profile';
+import Profile from './profile/ProfileContainer';
 import Leaderboard from './leaderboard/Leaderboard';
 import './MainContent.css';
 import { Col } from 'reactstrap';

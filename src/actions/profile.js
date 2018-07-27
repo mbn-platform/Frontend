@@ -47,6 +47,22 @@ export function getProfile(name) {
   };
 }
 
+export function getProfilePageInfo(name) {
+  return async dispatch => {
+    try {
+      const json = await apiGet(`/profile/${name}`);
+      dispatch({
+        type: GET_PROFILE,
+        profile: json.profile,
+      });
+      dispatch(getFeedbacks(name));
+      dispatch(getTradesForUser(name));
+    } catch(err) {
+      profileErrorHandler(err, dispatch);
+    }
+  };
+}
+
 export function getFeedbacks(name) {
   return dispatch => {
     apiGet(`/profile/${name}/feedbacks`)
