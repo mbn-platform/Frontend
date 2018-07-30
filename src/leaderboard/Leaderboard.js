@@ -49,6 +49,9 @@ class Leaderboard extends React.Component {
   }
 
   onRowClick(e) {
+    if(e.target.tagName === 'A') {
+      return;
+    }
     const name = e.currentTarget.dataset.name;
     this.props.history.push(`/${name}`);
   }
@@ -244,7 +247,7 @@ const RatingRow = (props) => (
       <div className="name nickname">@{props.name}</div>
     </td>
     <td>
-      <div className="profit">{(props.profit || 0).toFixed(2)}</div>
+      <ProfitCell {...props} />
     </td>
     {props.round.global ? null : (
       <td>
@@ -253,5 +256,19 @@ const RatingRow = (props) => (
     )}
   </tr>
 );
+
+const ProfitCell = ({profit, tx}) => {
+  profit = (profit || 0).toFixed(2);
+  if(tx) {
+    return (
+      <div className="profit">{profit} <a className="tx_link" target="_blank" href={'https://etherscan.io/tx/' + tx} />
+      </div>
+    );
+  } else {
+    return (
+      <div className="profit">{profit}</div>
+    );
+  }
+};
 
 export default Leaderboard;
