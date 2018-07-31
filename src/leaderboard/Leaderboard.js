@@ -163,8 +163,8 @@ class Leaderboard extends React.Component {
             <th onClick={() => this.onColumnSort('name')} className="name">
               <span>Name</span><span className={classNameForColumnHeader(this.state, 'name')}></span>
             </th>
-            <th onClick={() => this.onColumnSort('profit')}>
-              <span>Points</span><span className={classNameForColumnHeader(this.state, 'profit')}></span>
+            <th onClick={() => this.onColumnSort('points')}>
+              <span>Points</span><span className={classNameForColumnHeader(this.state, 'points')}></span>
             </th>
           </tr>
 
@@ -247,7 +247,11 @@ const RatingRow = (props) => (
       <div className="name nickname">@{props.name}</div>
     </td>
     <td>
-      <ProfitCell {...props} />
+      {props.round.global ? (
+        <ProfitCell profit={props.points} />
+      ) : (
+        <ProfitCell {...props} />
+      )}
     </td>
     {props.round.global ? null : (
       <td>
