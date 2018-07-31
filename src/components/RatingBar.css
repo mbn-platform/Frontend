@@ -1,0 +1,27 @@
+.rating_bar
+{
+  height: 15px;
+  line-height: 15px;
+  display: block;
+  width: 125px;
+  margin-right: auto;
+  margin-left: auto;
+
+}
+
+.rating_bar_item
+{
+  vertical-align: middle;
+  width: 15px;
+  height: 15px;
+  display: inline-block;
+  margin: 0 5px;
+  background: url(../assets/svg/Rating.svg) no-repeat center center;
+  transition-property: opacity, background;
+  transition-duration: 400ms;
+}
+
+.rating_bar_item.hover
+{
+  background: url(../assets/svg/RatingActive.svg) no-repeat center center;
+}

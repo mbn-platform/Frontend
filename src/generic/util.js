@@ -7,6 +7,24 @@ export const makeId = length => {
   return text;
 };
 
+export function getColor(progress) {
+  if(progress > 66 || isNaN(progress)) {
+    return 'green';
+  } else if(progress > 33) {
+    return 'yellow';
+  } else {
+    return 'red';
+  }
+}
+
+export function formatBalance(value, name) {
+  if(name === 'USDT') {
+    return (value || 0).toFixed(2);
+  } else {
+    return (value || 0).toFixed(8);
+  }
+}
+
 export function formatDate(date) {
   let year = date.getFullYear() % 100;
   let month = date.getMonth() + 1;

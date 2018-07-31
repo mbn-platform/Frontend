@@ -1,0 +1,247 @@
+.login_no_metamask {
+  width: 1110px;
+}
+.login_no_metamask_title {
+  font-size: 2.6em;
+  color: #fff;
+  padding-left: 50px !important;
+  text-align: center;
+  /*background: url(../../assets/img/Warning.png) no-repeat left center;*/
+  line-height: 1.2;
+  margin-bottom: 40px;
+}
+
+.login_no_metamask_title__font-light-green {
+  color: #36c399;
+}
+
+.login_no_metamask_title {
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.login_no_metamask_text {
+  font-size: 2.3em;
+  text-align: center;
+  color: #e1e1e1;
+  margin-bottom: 40px;
+}
+.metamask_link_wrapper {
+  padding: 20px !important;
+  border-radius: 10px;
+}
+
+.metamask_link_wrapper__blue {
+  background-color: rgba(58,117,183, .2);
+}
+
+.metamask_link_wrapper__dark-blue {
+  background-color: rgba(39, 43, 68, .2);
+}
+
+.metamask_link_wrapper__black {
+  background-color: rgba(255, 255, 255, .05);
+}
+
+.metamask_link {
+  transition-property: opacity, background-color;
+  transition-duration: 400ms;
+}
+
+.metamask_link_mobile {
+  display: flex;
+  position: relative;
+  justify-content: space-between;
+  flex-flow: row nowrap;
+}
+
+.metamask_link_text-wrapper {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.metamask_link_text {
+  color: #36c399;
+  font-size: 1.3em;
+  display: flex;
+  padding-left: 10px !important;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.metamask_link_text-icon {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+.metamask_link:hover {
+  opacity: .8;
+}
+.metamask_text_title {
+  font-size: 2.5em;
+  text-align: left;
+  color: #e8821e;
+}
+.metamask_text_title.cipher {
+  color: #3646a7;
+}
+.metamask_text_wrapper {
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+}
+.metamask_text {
+  font-size: 2em;
+  text-align: left;
+  color: #e1e1e1;
+}
+
+.metamask_link_img {
+  max-width: 100%;
+}
+@media only screen and (max-width: 1400px) {
+  .login_no_metamask_title {
+    background-size: contain;
+  }
+}
+@media only screen and (max-width: 1400px) {
+  .login_no_metamask {
+    width: 1010px;
+  }
+}
+@media only screen and (max-width: 1200px) {
+  .login_no_metamask {
+    max-width: 1010px;
+    width: auto;
+  }
+}
+@media only screen and (max-width: 1030px) {
+  .login_no_metamask {
+    max-width: 1010px;
+    width: auto;
+  }
+  .metamask_text_title, .metamask_text {
+    text-align: center;
+  }
+  .metamask_link_img {
+    margin-bottom: 30px;
+  }
+
+}
+.link_img {
+  width: 70px;
+  display: block;
+  height: 45px;
+  margin-right: 20px;
+}
+
+.metamask_separator {
+  content: '';
+  display: none;
+  position: absolute;
+  height: 100%;
+  width: 1px;
+  left: 60%;
+  background-color: rgba(255, 255, 255, .1);
+}
+
+
+@media only screen and (max-width: 992px) {
+  .link_img {
+    display: block;
+  }
+
+  .trust_link_img {
+    width: 140px;
+    height: 50px;
+  }
+
+  .toshi_link_img {
+    height: 65px;
+    width: 140px;
+  }
+
+  .cipher_link_img {
+    width: 100px;
+    height: 50px;
+    margin-left: 20px;
+  }
+
+  .metamask_link_wrapper, .metamask_text_title, .metamask_text {
+    text-align: center;
+  }
+  .metamask_link_wrapper {
+    margin-bottom: 10px;
+  }
+
+  .metamask_separator{
+    display: block;
+  }
+
+  .metamask_link_text {
+    width: 90px;
+  }
+
+  .metamask_link_wrapper, .metamask_text_wrapper {
+    width: 100%;
+  }
+}
+@media only screen and (max-width: 670px) {
+  .login_no_metamask_text {
+    padding: 0 20px;
+  }
+
+  .metamask_separator {
+    left: 50%;
+    display: block;
+  }
+
+  .login_no_metamask_title {
+    padding-left: 0 !important;
+    background: none;
+    width: 330px;
+  }
+
+  .metamask_link_text-wrapper {
+    margin-left: 10px;
+  }
+}
+@media only screen and (max-width: 470px) {
+    .login_no_metamask {
+        padding: 0 20px 20px 20px !important;
+    }
+
+  .login_no_metamask_title {
+      width: 325px;
+  }
+  .login_title_wrapper {
+    padding: 0 20px;
+    margin-bottom: 20px;
+  }
+
+  .metamask_link_text {
+    max-width: 100%;
+  }
+
+  .metamask_link_text-wrapper {
+    margin-left: 0;
+  }
+}
+@media only screen and (max-width: 370px) {
+  .login_no_metamask_title {
+    font-size: 2em;
+    width: 250px;    
+  }
+
+  .metamask_separator {
+    left: 63%;
+    display: block;
+  }
+  .metamask_link_text {
+    max-width: 60px;
+  }
+}

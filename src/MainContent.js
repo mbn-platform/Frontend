@@ -1,12 +1,12 @@
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import Login from './components/login/LoginContainer';
-import Dashboard from './dashboard/DashboardContainer';
-import Terminal from './terminal/TerminalContainer';
-import Ratings from './ratings/Ratings';
-import Orders from './orders/Orders';
-import Profile from './profile/ProfileContainer';
-import Leaderboard from './leaderboard/Leaderboard';
+import Login from './containers/login/LoginContainer';
+import Dashboard from './containers/dashboard/DashboardContainer';
+import Terminal from './containers/terminal/TerminalContainer';
+import Ratings from './containers/ratings/Ratings';
+import Orders from './containers/orders/Orders';
+import Profile from './containers/profile/ProfileContainer';
+import Leaderboard from './containers/leaderboard/Leaderboard';
 import './MainContent.css';
 import { Col } from 'reactstrap';
 
