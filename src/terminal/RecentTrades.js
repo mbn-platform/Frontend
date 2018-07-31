@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { formatFloat, defaultFormatValue } from '../generic/util';
 import { Desktop } from '../generic/MediaQuery';
 import {sortData, onColumnSort, classNameForColumnHeader}  from '../generic/terminalSortFunctions';
+import {BigNumber} from 'bignumber.js';
 
 class RecentTrades extends React.Component {
 
@@ -75,7 +76,7 @@ const OrderHistoryRow = ({type, date, price, size, isBTC}) => {
   return (
     <tr className={isSellOrder ? 'up' : 'down'}>
       <td>
-        {price} <span className={classNames('icon', 'icon-dir',
+        {BigNumber(price).toString(10)} <span className={classNames('icon', 'icon-dir',
           isSellOrder ? 'icon-down-dir' : 'icon-up-dir')}></span>
       </td>
       <td>

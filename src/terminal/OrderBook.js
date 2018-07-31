@@ -3,6 +3,7 @@ import {formatFloat, defaultFormatValue} from '../generic/util';
 import {Desktop} from '../generic/MediaQuery';
 import {sortData, onColumnSort, classNameForColumnHeader} from '../generic/terminalSortFunctions';
 import classNames from 'classnames';
+import {BigNumber} from 'bignumber.js';
 import $ from 'jquery';
 
 class OrderBook extends React.Component {
@@ -183,7 +184,7 @@ class OrderBook extends React.Component {
       <div className={classNames('value', 'last-price', 'row', isUp ? 'up' : 'down')}>
         <div className={'bid-label'}>Bid</div>
         <span onClick={() => this.props.onOrderSelect(last)}>
-          {last ? last : null}</span>
+          {last ? BigNumber(last).toString(10) : null}</span>
         <span className={classNames('icon', 'icon-dir', isUp ? 'icon-up-dir' : 'icon-down-dir')}> </span>
       </div>
     );
@@ -198,7 +199,7 @@ const BuyOrderCell = ({price, size, relativeSize, currency, onClickCapture}) => 
   const sizeParts = formatFloat(size).split('.');
   return (
     <tr onClickCapture={onClickCapture} data-price={price} data-size={size}>
-      <td>{price}</td>
+      <td>{BigNumber(price).toString(10)}</td>
       <td>
         <span className="white">{sizeParts[0]}.</span>
         <span>{sizeParts[1]}</span>
