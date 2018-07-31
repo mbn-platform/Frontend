@@ -54,8 +54,6 @@ class Login extends React.Component {
         this.state.hasActiveAccount ? (
           <LoginForm
             onClick={this.props.onLoginClick}
-            onNetSelect={this.props.onNetSelect}
-            isMainNet={this.props.isMainNet}
           />
         ) : (
           <MetamaskClosed />

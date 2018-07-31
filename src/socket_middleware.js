@@ -10,10 +10,7 @@ const socketMiddleware = store => next => action => {
   switch(action.type) {
     case LOGGED_IN: {
       if(!socket) {
-        const selectedNet = store.getState().selectedNet;
-        const path = selectedNet === 'mainnet' ?
-          process.env.REACT_APP_MAINNET_WEBSOCKET_ADDRESS :
-          undefined;
+        const path = process.env.REACT_APP_WEBSOCKET_ADDRESS;
         socket = io('', {
           path,
         });

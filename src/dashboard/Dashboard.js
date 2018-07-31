@@ -8,6 +8,7 @@ import SelectedContractInfo from './SelectedContractInfo';
 import FundsChart from './FundsChart';
 import SelectedContractChart from './SelectedContractChart';
 import { CONTRACT_STATE_VERIFIED } from '../constants';
+import { ETHEREUM_NET } from '../eth/MercatusFactory';
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -102,7 +103,7 @@ class Dashboard extends React.Component {
             selectedApiKey={this.state.selectedApiKey}
             onContractSelected={this.onContractSelected}
             onShowAllClicked={this.reset}
-            selectedNet={this.props.selectedNet}
+            net={ETHEREUM_NET}
             exchangesInfo={this.props.exchangesInfo}
           />
         </div>
