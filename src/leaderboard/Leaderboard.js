@@ -5,6 +5,8 @@ import classNames from 'classnames';
 import {sortData, onColumnSort, classNameForColumnHeader, defaultSortFunction} from '../generic/terminalSortFunctions';
 import {apiGet} from '../generic/apiCall';
 
+const NUMBER_OF_ROUNDS = 3;
+
 class Leaderboard extends React.Component {
 
   constructor(props) {
@@ -93,16 +95,7 @@ class Leaderboard extends React.Component {
                       className={classNames('block__top-switch', 'ratings-traders', {active: this.state.selectedRound === 0})}>
                       GLOBAL
                     </span>
-                    <span
-                      onClick={() => this.selectRound(1)}
-                      className={classNames('block__top-switch', 'ratings-traders', {active: this.state.selectedRound === 1})}>
-                      ROUND 1
-                    </span>
-                    <span
-                      onClick={() => this.selectRound(2)}
-                      className={classNames('block__top-switch', 'ratings-traders', {active: this.state.selectedRound === 2})}>
-                        ROUND 2
-                    </span>
+                    {this.renderRoundsBlocks()}
                   </div>
                 </div>
                 {this.renderRound()}
@@ -119,6 +112,21 @@ class Leaderboard extends React.Component {
         </Row>
       </Container>
     );
+  }
+
+  renderRoundsBlocks() {
+    const rounds = [];
+    for(let i = 1; i <= NUMBER_OF_ROUNDS; i++) {
+      rounds.push(
+        <span
+          key={i}
+          onClick={() => this.selectRound(i)}
+          className={classNames('block__top-switch', 'ratings-traders', {active: this.state.selectedRound === i})}>
+          ROUND {i}
+        </span>
+      );
+    }
+    return rounds;
   }
   componentDidMount() {
     window.customize();
