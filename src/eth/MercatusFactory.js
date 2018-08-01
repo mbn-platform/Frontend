@@ -231,5 +231,5 @@ export const ABI = [
     'type': 'event'
   }];
 
-export const ADDRESS = process.env.REACT_APP_TESTNET_CONTRACT_ADDRESS;
-export const MAIN_NET_ADDRESS = process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS;
+export const CONTRACT_ADDRESS = process.env.REACT_APP_CONTRACT_ADDRESS;
+export const ETHEREUM_NET = process.env.REACT_APP_ETHEREUM_NET;

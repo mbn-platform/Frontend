@@ -45,14 +45,10 @@ ApiError.TRY_AGAIN_LATER = -513;
 ApiError.MARKET_NOT_ALLOWED = -1000;
 ApiError.THROTTLE_LIMIT = -1001;
 
-function getSelectedNet() {
-  return window.localStorage.getItem('selectedNet') || 'mainnet';
-}
-
 const API_PREFIX = '/api/v2';
 
 function jsonRequest(url, params) {
-  params.headers['X-Network'] = getSelectedNet();
+  params.headers['X-Network'] = 'mainnet';
   return window.fetch(API_PREFIX + url, params).then(res => res.json())
     .then(json => {
       const error = json.error;

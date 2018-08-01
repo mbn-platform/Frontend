@@ -17,7 +17,6 @@ const mapStateToProps = state => {
     exchanges: state.exchanges,
     exchangesInfo: state.exchangesInfo,
     rates: state.rates,
-    selectedNet: state.selectedNet,
   };
 };
 

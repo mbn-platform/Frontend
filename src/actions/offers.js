@@ -1,6 +1,6 @@
 import { apiPost, ApiError } from '../generic/apiCall';
 import defaultErrorHandler from '../generic/errorHandlers';
-import { ABI, ADDRESS, MAIN_NET_ADDRESS } from '../eth/MercatusFactory';
+import { ABI, CONTRACT_ADDRESS, ETHEREUM_NET } from '../eth/MercatusFactory';
 
 export const ACCEPT_OFFER = 'ACCEPT_OFFER';
 export const REJECT_OFFER = 'REJECT_OFFER';
@@ -74,20 +74,15 @@ export function sendOffer(offer) {
   };
 }
 
-function getSelectedNet() {
-  return window.localStorage.getItem('selectedNet') || 'mainnet';
-}
-
 export function payOffer(offer) {
   return dispatch => {
     window.web3.version.getNetwork((err, code) => {
       if(err) {
         alert('web3 error: no network');
       } else {
-        const selectedNet = getSelectedNet();
-        if(selectedNet === 'mainnet' && code !== '1') {
+        if(ETHEREUM_NET === 'mainnet' && code !== '1') {
           alert('Please select main net in Metamask');
-        } else if(selectedNet === 'testnet' && code !== '3') {
+        } else if(ETHEREUM_NET === 'testnet' && code !== '3') {
           alert('Please select Ropsten network in Metamask');
         } else {
           window.web3.eth.getAccounts((err, accs) => {
@@ -99,8 +94,8 @@ export function payOffer(offer) {
                 alert('Unlock metamask');
                 return;
               }
-              const address = selectedNet === 'mainnet' ? MAIN_NET_ADDRESS : ADDRESS;
-              sendTransaction(address, offer, selectedNet);
+              const address = CONTRACT_ADDRESS;
+              sendTransaction(address, offer, ETHEREUM_NET);
             }
           });
         }
@@ -110,7 +105,7 @@ export function payOffer(offer) {
 }
 
 
-function sendTransaction(address, offer, selectedNet) {
+function sendTransaction(address, offer, net) {
   const contract = window.web3.eth.contract(ABI).at(address);
   const {contractSettings: {duration, currency, maxLoss, amount, startBalance, targetBalance}, _id} = offer;
   const investor = offer.from.name;
@@ -150,7 +145,7 @@ function sendTransaction(address, offer, selectedNet) {
         return;
       } else {
         let txUrl;
-        switch(selectedNet) {
+        switch(net) {
           case 'mainnet':
             txUrl = 'https://etherscan.io/tx/' + tx;
             break;
@@ -158,7 +153,7 @@ function sendTransaction(address, offer, selectedNet) {
             txUrl = 'https://ropsten.etherscan.io/tx/' + tx;
             break;
           default:
-            throw new Error(`unkown selected net: ${selectedNet}`);
+            throw new Error(`unkown selected net: ${net}`);
         }
         alert('You have sent transaction to pay this request.' +
           ' If transaction completes succesfully you will receive the contract.' +

@@ -15,7 +15,7 @@ import { LOGGED_OUT } from './actions/auth';
 import { getInitialState } from './store';
 import ratings from './reducers/ratings';
 
-const combined = combineReducers({apiKeys, contracts, ratings, offers, auth, exchanges, time, request, terminal, rates, profile, exchangesInfo, selectedNet: (state = 'mainnet') => state});
+const combined = combineReducers({apiKeys, contracts, ratings, offers, auth, exchanges, time, request, terminal, rates, profile, exchangesInfo});
 
 const root = (state, action) => {
   switch(action.type) {
@@ -23,7 +23,6 @@ const root = (state, action) => {
       const newState = getInitialState();
       saveReduxState({auth: {...newState.auth, loggedIn: false}});
       clearAppState();
-      newState.selectedNet = state.selectedNet;
       return newState;
     }
   };
@@ -43,15 +42,6 @@ const root = (state, action) => {
       }
       return newState;
     }
-    case 'ON_NET_SELECT':
-      let net = newState.selectedNet;
-      if(net === 'mainnet') {
-        net = 'testnet';
-      } else {
-        net = 'mainnet';
-      }
-      localStorage.setItem('selectedNet', net);
-      return {...newState, selectedNet: net};
     default:
       return newState;
   }

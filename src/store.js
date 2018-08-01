@@ -57,16 +57,13 @@ export function getInitialState() {
     exchangesInfo: {
 
     },
-    selectedNet: null
   };
 }
 
 function getReduxState() {
   let state = localStorage.getItem('reduxState');
-  let selectedNet = localStorage.getItem('selectedNet') || 'mainnet';
   if(state) {
     state = {...getInitialState(), ...JSON.parse(state)};
-    state.selectedNet = selectedNet;
   } else {
     state = getInitialState();
   }
