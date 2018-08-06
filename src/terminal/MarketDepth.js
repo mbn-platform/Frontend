@@ -62,13 +62,15 @@ class MarketDepth extends React.Component {
   }
 
   getData(props) {
-    function processData(list, minSize, maxSize, type, desc) {
-      list = list.map(e => ({
-        value: Number(e.Rate),
-        volume: Number(e.Quantity),
-        amount: 0,
-        relativeSize: relativeSize(minSize, maxSize, e.Rate * e.Quantity),
-      }));
+    function processData(list, minSize, maxSize, type, desc, last) {
+      list = list
+        .filter(e => e.Rate < last * 10 && e.Rate > last / 10)
+        .map(e => ({
+          value: Number(e.Rate),
+          volume: Number(e.Quantity),
+          amount: 0,
+          relativeSize: relativeSize(minSize, maxSize, e.Rate * e.Quantity),
+        }));
 
       // Sort list just in case
       list.sort((a, b) => a.value - b.value);
@@ -115,8 +117,8 @@ class MarketDepth extends React.Component {
 
     }
     let res = [];
-    processData(props.buy, props.minBuy, props.maxBuy, 'buy', true);
-    processData(props.sell, props.minSell, props.maxSell ,'sell', false);
+    processData(props.buy, props.minBuy, props.maxBuy, 'buy', true, props.ticker.l);
+    processData(props.sell, props.minSell, props.maxSell ,'sell', false, props.ticker.l);
 
     return res;
   }

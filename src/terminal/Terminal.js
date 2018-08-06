@@ -77,6 +77,7 @@ class Terminal extends React.Component {
                     onFullScreenChange={this.onFullScreenChange}
                   />
                   <MarketDepth
+                    ticker={this.props.ticker || {}}
                     key={this.props.market + this.props.exchange}
                     market={this.props.market}
                     {...this.props.orderBook}
