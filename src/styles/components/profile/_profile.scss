@@ -339,12 +339,12 @@
                                 .star {
                                     width: 12px;
                                     height: 12px;
-                                    background-image: url(../img/Rating.svg);
+                                    background-image: url('../assets/svg/Rating.svg');
                                     margin-right: 4px;
                                     margin-left: 4px;
                                     display: inline-block;
                                     &.active {
-                                        background-image: url(../img/RatingActive.svg);
+                                        background-image: url('../assets/svg/RatingActive.svg');
                                     }
                                 }
                             }
@@ -731,12 +731,12 @@
                 .star {
                     width: 18px;
                     height: 18px;
-                    background-image: url(../img/Rating.svg);
+                    background-image: url('../assets/svg/Rating.svg');
                     margin-right: 7px;
                     margin-left: 7px;
                     margin-top: 25px;
                     &.active {
-                        background-image: url(../img/RatingActive.svg);
+                        background-image: url('../assets/svg/RatingActive.svg');
                     }
                 }
                 .raiting-block {
@@ -1105,12 +1105,12 @@
                                                 .star {
                                                     width: 10px;
                                                     height: 10px;
-                                                    background-image: url(../img/Rating.svg);
+                                                    background-image: url('../assets/svg/Rating.svg');
                                                     margin-right: 2px;
                                                     margin-left: 2px;
                                                     display: inline-block;
                                                     &.active {
-                                                        background-image: url(../img/RatingActive.svg);
+                                                        background-image: url('../assets/svg/RatingActive.svg');
                                                     }
                                                 }
                                             }
@@ -1157,7 +1157,7 @@
                                 .graphic-fake {
                                     width: 65px;
                                     height: 65px;
-                                    background-image: url(../img/chart_icon-01.svg);
+                                    background-image: url('../assets/svg/chart_icon-01.svg');
                                     background-repeat: no-repeat;
                                     background-position: 0 0;
                                     background-size: 100% 100%;

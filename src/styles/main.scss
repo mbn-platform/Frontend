@@ -295,16 +295,16 @@ body {
       display: inline-block;
       vertical-align: middle;
       cursor: pointer;
-      background: url(../img/GreenTriangleTopGray.svg) no-repeat center center
+      background: url(../assets/svg/GreenTriangleTopGray.svg) no-repeat center center
     }
 
     .-sort-asc .green_arrow
     {
-      background: url(../img/GreenTriangleBottom.svg) no-repeat center center
+      background: url(../assets/svg/GreenTriangleBottom.svg) no-repeat center center
     }
     .-sort-desc .green_arrow
     {
-      background: url(../img/GreenTriangleTop.svg) no-repeat center center
+      background: url(../assets/svg/GreenTriangleTop.svg) no-repeat center center
     }
     .table_col_value
     {
@@ -336,7 +336,7 @@ body {
 
     .tx_link
     {
-      background: url(../img/TxLink.png) no-repeat center center;
+      background: url(../assets/img/TxLink.png) no-repeat center center;
       display: inline-block;
       width: 10px;
       height: 10px;
@@ -490,7 +490,7 @@ body {
 	  position: absolute;
 	  width: 11px;
 	  height: 11px;
-	  background: url(../img/HelpIcon.svg) no-repeat center center;
+	  background: url(../assets/svg/HelpIcon.svg) no-repeat center center;
 	  display: inline-block;
 	  vertical-align: middle;
 	  cursor: pointer;
@@ -524,7 +524,7 @@ body {
 	  height: 17px;
 	  right: -12px;
 	  top: 5px;
-	  background: url(../img/HelpLeftTriangle.png) no-repeat center center;
+	  background: url(../assets/img/HelpLeftTriangle.png) no-repeat center center;
 	}
 	.ReactTable .rt-td.table_col_delete {
 	  text-align: left !important;
@@ -613,7 +613,7 @@ body {
     }
     .add_keys_select_value_bg
     {
-      background: url(../img/SelectArrow.png) no-repeat center right;
+      background: url(../assets/img/SelectArrow.png) no-repeat center right;
       display: inline-block;
       width: 20px;
       height: 20px;
@@ -699,7 +699,7 @@ body {
       transition-duration: 400ms;
       transition: color 400ms, background-color 400ms;
       font-family: 'maven_pro_light300';
-      background-image: url(../img/AddKeyIcon.png);
+      background-image: url(../assets/img/AddKeyIcon.png);
       background-repeat: no-repeat;
       background-position: center;
     }
@@ -741,7 +741,7 @@ body {
       }
 
       .table_rewind_page .table_next_page .table_next_page--button, .table_rewind_page .table_prev_page .table_prev_page--button {
-        background: url(../img/right-arrow.svg);
+        background: url(../assets/svg/right-arrow.svg);
         background-repeat: no-repeat;
         background-size: 10px 13px;
         background-position: center;
@@ -766,7 +766,7 @@ body {
 	  top: 4px;
 	  width: 11px;
 	  height: 11px;
-	  background: url(../img/HelpIcon.svg) no-repeat center center;
+	  background: url(../assets/svg/HelpIcon.svg) no-repeat center center;
 	  transition-property: opacity, background;
 	  transition-duration: 400ms;
 	  display: inline-block;
@@ -855,21 +855,6 @@ body {
 // 	.nav-link:hover,.nav-link.active {
 // 		background-color: rgba(58, 62, 66,.7) !important;
 // 		color: #e1e1e1 !important;
-// 		.dashboard {
-// 			background-image: url(../assets/svg/dashboard-hover.svg);
-// 		}
-// 		.terminal {
-// 			background-image: url(../assets/svg/terminal_hover.svg);
-// 		}
-// 		.orders {
-// 			background-image: url(../assets/svg/orders_hover.svg);
-// 		}
-// 		.history {
-// 			background-image: url(../assets/svg/history_hover.svg);
-// 		}
-
-
-
 // 	}
 // 	.show > .nav-pills .nav-link {
 // 		background-color: #2d3034;
@@ -891,29 +876,6 @@ body {
 // 			background-image: url(../assets/svg/dashboard-hover.svg);
 // 		}
 // 	}
-// 	.terminal {
-// 		background-image: url(../assets/svg/terminal.svg);
-// 	    background-repeat: no-repeat;
-// 		:hover {
-// 			background-image: url(../assets/svg/terminal_hover.svg);
-// 		}
-// 	}
-// 	.history {
-// 		background-image: url(../assets/svg/history.svg);
-// 	    background-repeat: no-repeat;
-// 		:hover {
-// 			background-image: url(../assets/svg/history_hover.svg);
-// 		}
-// 	}
-// 	.orders {
-// 		background-image: url(../assets/svg/orders.svg);
-// 	    background-repeat: no-repeat;
-// 		:hover {
-// 			background-image: url(../assets/svg/orders_hover.svg);
-// 		}
-// 	}
-
-// }
 
 // .no-gutters {
 //   margin-right: 0;
@@ -974,7 +936,7 @@ body {
 		background-color: rgba(58, 62, 66,.7) !important;
 		color: #e1e1e1 !important;
 		// .dashboard {
-		// 	background-image: url(../img/MenuIconDashboard.svg);
+		// 	background-image: url(../assets/svg/MenuIconDashboard.svg);
 		// }
 		.terminal{
 			background-image: url(../assets/svg/terminal_hover.svg);
