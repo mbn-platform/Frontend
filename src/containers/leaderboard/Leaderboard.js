@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import {sortData, onColumnSort, classNameForColumnHeader, defaultSortFunction} from '../../generic/terminalSortFunctions';
 import {apiGet} from '../../generic/apiCall';
 
-const NUMBER_OF_ROUNDS = 3;
+const NUMBER_OF_ROUNDS = 4;
 
 class Leaderboard extends React.Component {
 
