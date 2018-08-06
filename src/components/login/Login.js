@@ -39,11 +39,6 @@ class Login extends React.Component {
     }
   }
 
-  onDemoClick() {
-    console.log(' on demo click');
-    window.location = 'https://demo.membrana.io';
-  }
-
   renderStep() {
     if(!window.web3) {
       return (<NoMetamask />);

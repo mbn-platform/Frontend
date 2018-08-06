@@ -11,8 +11,9 @@ export default () => {
   if(isIOSorAndroid) {
     return (
       <div className="login_no_metamask">
-        <div className="login_no_metamask_title">Please, install one of these browsers to use
-          <span className="login_no_metamask_title__font-light-green"> Membrana Platform</span>
+        <div className="login_no_metamask_title">Please, install one of these browsers to use<br/>
+          <span className="login_no_metamask_title__font-light-green"> Membrana Platform</span><br/>
+          or import ETH account if you already installed
         </div>
         <div className='row justify-content-around'>
           <div className="metamask_link_wrapper metamask_link_wrapper__black col-12 col-md-auto">
