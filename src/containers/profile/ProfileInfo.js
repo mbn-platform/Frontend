@@ -2,9 +2,9 @@ import React from 'react';
 import { Col, Container, Row } from 'reactstrap';
 import RatingBar from './RatingBar';
 import Stats from '../../components/Stats';
-import PropTypes from 'prop-types';
 import ContractSettings from './ContractSettings';
 import SendRequestBlock from './SendRequestBlock';
+import { FormattedMessage } from 'react-intl';
 
 class ProfileInfo extends React.Component {
 
@@ -22,10 +22,20 @@ class ProfileInfo extends React.Component {
     return (
       <Row className="justify-content-center">
         <Col md="12" lg="12" xl="12" style={{display: (this.props.profile.available ? 'block' : 'none')}} className="accept-request-title-block">
-          <div className="accept-request-title-text">accepting requests</div>
+          <div className="accept-request-title-text">
+            <FormattedMessage
+              id="profile.acceptingRequests"
+              defaultMessage="accepting requests"
+            />
+          </div>
         </Col>
         <Col md="12" lg="12" xl="12" style={{display: (!this.props.profile.available ? 'block' : 'none')}}  className="no-accept-request-title-block">
-          <div className="no-accept-request-title-text">not Accepting requests</div>
+          <div className="no-accept-request-title-text">
+            <FormattedMessage
+              id="profile.notAcceptingRequests"
+              defaultMessage="not Accepting requests"
+            />
+          </div>
         </Col>
       </Row>
     );
@@ -59,7 +69,7 @@ class ProfileInfo extends React.Component {
                   currency={contractSettings.currency}
                   maxLoss={contractSettings.maxLoss}
                   roiInBTC={profile.roiInBTC}
-                  roiInUSD={profile.roiInUSD}                  
+                  roiInUSD={profile.roiInUSD}
                   fee={contractSettings.fee}
                   availableForOffers={profile.available}
                   roi={contractSettings.roi}

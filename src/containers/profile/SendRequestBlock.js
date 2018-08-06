@@ -14,6 +14,7 @@ import Pagination from '../../components/Pagination';
 import ReactTable from '../../components/SelectableReactTable';
 import { Desktop, Mobile } from '../../generic/MediaQuery';
 import {getExchangeCurrencies} from '../../actions/exchanges';
+import {FormattedMessage, injectIntl} from 'react-intl';
 
 const SEND_REQUEST_BLOCK_DETAILS = 0;
 const SEND_REQUEST_BLOCK_SELECT_API = 1;
@@ -53,13 +54,13 @@ class SendRequestBlock extends React.Component {
 
   async onSendOfferClick() {
     if(!this.state.selectedFund) {
-      alert('select api key first');
+      alert(this.props.intl.messages['profile.selectKeyFirst']);
       return;
     }
-    console.log('offer', this.props.profile)
+    console.log('offer', this.props.profile);
     const keyId = this.state.selectedFund._id;
-    let allowedCurrencies = ['USDT','ETH','BTC']
-    let selectedCurrencies = this.state.changedCurrencies
+    let allowedCurrencies = ['USDT','ETH','BTC'];
+    let selectedCurrencies = this.state.changedCurrencies;
     for (let currency in selectedCurrencies) {
       allowedCurrencies.push(currency);
     }
@@ -103,7 +104,7 @@ class SendRequestBlock extends React.Component {
     e.stopPropagation();
     const currency = e.target.dataset.currency;
     if(currency === 'USDT' || currency === 'BTC' || currency === 'ETH') {
-      alert('BTC/ETH/USDT should be always available for trading');
+      alert(this.props.intl.messages['profile.shouldByAlwaysAvailable']);
       return;
     }
     if(!this.canChangeCurrency(currency)) {
@@ -135,7 +136,7 @@ class SendRequestBlock extends React.Component {
     e.stopPropagation();
     const currencies = this.props.exchangesInfo[this.state.selectedFund.exchange] ? this.props.exchangesInfo[this.state.selectedFund.exchange].currencies : [];
     const change = {};
-    const flag = !this.state.allSelected
+    const flag = !this.state.allSelected;
     currencies.forEach((currency)=>{
       if (!REQUIRED_CURRENCIES.includes(currency)) {
         change[currency] = flag;
@@ -153,7 +154,7 @@ class SendRequestBlock extends React.Component {
     const currencyFilter = this.state.filtered.find(f => f.id === 'currency').value;
     return [
       {
-        Header: SearchHeader('Currency', currencyFilter, this.onCurrencyChange),
+        Header: SearchHeader(this.props.intl.messages['profile.currency'], currencyFilter, this.onCurrencyChange),
         id: 'currency',
         accessor: 'name',
         headerClassName: 'filter_align_center',
@@ -256,10 +257,13 @@ class SendRequestBlock extends React.Component {
           <div className="row-fluid choose-api-block">
             <div className="row justify-content-center choose-title">
               <div className="col-auto text-center align-middle choose-setting-title title-text">
-                ENTER CONTRACT AMOUNT
+                <FormattedMessage
+                  id="profile.enterContractAmount"
+                  defaultMessage="ENTER CONTRACT AMOUNT"
+                />
               </div>
               <div className="col-md-12 col-lg-12 col-xl-12 separate-second-block">
-                <div className="separate-line d-none d-md-block"></div>
+                <div className="separate-line d-none d-md-block"/>
               </div>
               <EditAmountEntry
                 dimension={this.props.profile.contractSettings.currency}
@@ -270,7 +274,11 @@ class SendRequestBlock extends React.Component {
               />
               <div className="col-12 d-flex align-items-center justify-content-between choose-btn-group">
                 <button onClick={() => this.setState({visibleBlock:SEND_REQUEST_BLOCK_SELECT_API})} type="button" className="cancel-btn btn btn-secondary">
-                  BACK</button>
+                  <FormattedMessage
+                    id="profile.back"
+                    defaultMessage="BACK"
+                  />
+                </button>
                 <button disabled={
                   this.state.contractAmount !== ''
                   && (parseFloat(this.state.contractAmount) < parseFloat(this.props.profile.contractSettings.minAmount)
@@ -281,7 +289,11 @@ class SendRequestBlock extends React.Component {
                   }
                   this.setState({visibleBlock:SEND_REQUEST_BLOCK_SELECT_CURRENCIES});
                 }} type="button" className="send-request-btn btn btn-secondary active">
-                  NEXT</button>
+                  <FormattedMessage
+                    id="profile.next"
+                    defaultMessage="NEXT"
+                  />
+                </button>
               </div>
             </div>
           </div>
@@ -293,17 +305,28 @@ class SendRequestBlock extends React.Component {
           <div className="row-fluid choose-api-block">
             <div className="row justify-content-center choose-title">
               <div className="col-auto text-center align-middle choose-setting-title title-text">
-                SELECT TRADING CURRENCIES
+                <FormattedMessage
+                  id="profile.selectTradingCurrencies"
+                  defaultMessage="SELECT TRADING CURRENCIES"
+                />
               </div>
               <div className="col-md-12 col-lg-12 col-xl-12 separate-second-block">
-                <div className="separate-line d-none d-md-block"></div>
+                <div className="separate-line d-none d-md-block"/>
               </div>
               {this.renderCurrencyTable(currencies)}
               <div className="col-12 d-flex align-items-center justify-content-between choose-btn-group">
                 <button onClick={() => this.setState({visibleBlock:SEND_REQUEST_BLOCK_ENTER_AMOUNT})} type="button" className="cancel-btn btn btn-secondary">
-                  BACK</button>
+                  <FormattedMessage
+                    id="profile.back"
+                    defaultMessage="BACK"
+                  />
+                </button>
                 <button onClick={() => this.onSendOfferClick()} type="button" className="send-request-btn btn btn-secondary active">
-                  SEND</button>
+                  <FormattedMessage
+                    id="profile.send"
+                    defaultMessage="SEND"
+                  />
+                </button>
               </div>
             </div>
           </div>
@@ -353,5 +376,4 @@ const mapDispatchToProps = dispatch => ({
   getExchangeCurrencies: exchange => dispatch(getExchangeCurrencies(exchange)),
 });
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(SendRequestBlock);
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(SendRequestBlock));

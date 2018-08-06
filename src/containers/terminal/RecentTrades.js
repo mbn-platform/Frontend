@@ -1,9 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
-import { formatFloat, defaultFormatValue } from '../../generic/util';
+import { formatFloat } from '../../generic/util';
 import { Desktop } from '../../generic/MediaQuery';
 import {sortData, onColumnSort, classNameForColumnHeader}  from '../../generic/terminalSortFunctions';
 import {BigNumber} from 'bignumber.js';
+import { FormattedMessage } from 'react-intl';
 
 class RecentTrades extends React.Component {
 
@@ -26,7 +27,10 @@ class RecentTrades extends React.Component {
     return (
       <div className="trades-table chart col-12 col-sm-6 col-md-12">
         <div className="chart__top justify-content-between row">
-          <div className="chart-name">Recent Trades</div>
+          <div className="chart-name">
+            <FormattedMessage id="terminal.recentTrades"
+              defaultMessage="Recent Trades"/>
+          </div>
           <Desktop>
             <div className="chart-controls align-items-center justify-content-between row">
             </div>
@@ -38,14 +42,21 @@ class RecentTrades extends React.Component {
             <thead>
               <tr>
                 <th onClick={() => this.onColumnSort('Price')}>
-                  <div>Price ({base}) <span className={classNameForColumnHeader(this.state, 'Price')}></span></div>
+                  <div><FormattedMessage id="terminal.priceRecent"
+                    defaultMessage="Price ({base})" values={{base}}/>
+                  <span className={classNameForColumnHeader(this.state, 'Price')}/></div>
                 </th>
                 <th onClick={() => this.onColumnSort('Quantity')}>
-                  <div>Trade Size ({secondary}) <span className={classNameForColumnHeader(this.state, 'Quantity')}></span></div>
-
+                  <div>
+                    <FormattedMessage id="terminal.tradeSize"
+                      defaultMessage="Trade Size ({secondary})" values={{secondary}}/>
+                    <span className={classNameForColumnHeader(this.state, 'Quantity')}/></div>
                 </th>
                 <th  onClick={() => this.onColumnSort('TimeStamp')}>
-                  <div>Time <span className={classNameForColumnHeader(this.state, 'TimeStamp')}></span></div>
+                  <div>
+                    <FormattedMessage id="terminal.time"
+                      defaultMessage="Time" />
+                    <span className={classNameForColumnHeader(this.state, 'TimeStamp')}/></div>
                 </th>
                 <th>
 
@@ -53,9 +64,8 @@ class RecentTrades extends React.Component {
               </tr>
             </thead>
             <tbody className="tbody">
-              {sortedData.map((order, index) => (
+              {sortedData.map(order => (
                 <OrderHistoryRow
-
                   key={order.id}
                   price={order.price}
                   size={order.amount}
@@ -77,7 +87,7 @@ const OrderHistoryRow = ({type, date, price, size, isBTC}) => {
     <tr className={isSellOrder ? 'up' : 'down'}>
       <td>
         {BigNumber(price).toString(10)} <span className={classNames('icon', 'icon-dir',
-          isSellOrder ? 'icon-down-dir' : 'icon-up-dir')}></span>
+          isSellOrder ? 'icon-down-dir' : 'icon-up-dir')}/>
       </td>
       <td>
         {formatFloat(size)}

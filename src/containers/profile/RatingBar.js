@@ -15,7 +15,7 @@ class RatingBar extends React.Component {
       const className = classNames('star', {active: i < this.props.rating});
       const star = (
         <Col key={i} xs="auto">
-          <div className={className}></div>
+          <div className={className}/>
         </Col>
       );
       stars.push(star);

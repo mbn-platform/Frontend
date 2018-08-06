@@ -5,6 +5,7 @@ import { acceptOffer, cancelOffer, rejectOffer, payOffer } from '../../actions/o
 import { updateExchanges } from '../../actions/exchanges';
 import { rateContract } from '../../actions/contracts';
 import { getExchangeRates } from '../../actions/terminal';
+import { injectIntl } from 'react-intl';
 
 const mapStateToProps = state => {
   return {
@@ -25,7 +26,7 @@ const mapDispatchToProps = dispatch => {
   return {
     onKeyDeleteClick: apiKey => {
       if(apiKey.inUse) {
-        alert('cannot delete key - key is in use');
+        alert(this.props.intl.messages['dashboard.cannotDeleteKey']);
       } else {
         dispatch(deleteApiKey(apiKey));
       }
@@ -40,4 +41,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(Dashboard));

@@ -3,6 +3,7 @@ import FundSelect from '../../components/FundSelect';
 import DropdownSelect from '../../components/DropdownSelect';
 import MarketSelect from './MarketSelect';
 import classNames from 'classnames';
+import { FormattedMessage } from 'react-intl';
 const TIME_RANGE_OPTIONS = ['1 MIN', '5 MIN', '30 MIN', '1 H', '4 H', '12 H', '1 D', '1 W'];
 
 class Controls extends React.Component {

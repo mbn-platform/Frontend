@@ -6,6 +6,7 @@ import { defaultFormatValue } from '../../generic/util';
 import {sortData, onColumnSort, classNameForColumnHeader}  from '../../generic/terminalSortFunctions';
 import {selectMarket} from '../../actions/terminal';
 import { connect } from 'react-redux';
+import {FormattedMessage, injectIntl} from 'react-intl';
 
 class MarketSelectTable extends React.Component {
   constructor(props) {
@@ -151,12 +152,18 @@ class MarketSelectTable extends React.Component {
         <div onClick={this.props.close} className="dropdown__name">
           <span>{this.props.market}</span>
           <span>
-            {this.props.balances !== null && <span className="hide_zeros" onClick={this.onHideZeroClick}>Hide zeros <div className={classNames('currency_status_checkbox', {selected: this.state.hideZeros})}/></span> }
-            <span className="arrow_down"></span>
+            {
+              this.props.balances !== null && <span className="hide_zeros" onClick={this.onHideZeroClick}>
+                <FormattedMessage id="terminal.hideZeros" defaultMessage="Hide zeros "/>
+                <div className={classNames('currency_status_checkbox', {selected: this.state.hideZeros})}/>
+              </span>
+            }
+            <span className="arrow_down"/>
           </span>
         </div>
         <form action="" className="dropdown__form">
-          <input autoComplete="off" value={this.state.filter} type="text" name="filter" onChange={this.onChange} className="input-search" placeholder="Search..."/>
+          <input autoComplete="off" value={this.state.filter} type="text" name="filter" onChange={this.onChange} 
+            className="input-search" placeholder={this.props.intl.messages['terminal.search']}/>
         </form>
         <div className="dropdown__btn-wrap">
           <button
@@ -177,12 +184,23 @@ class MarketSelectTable extends React.Component {
           <table className="table">
             <thead>
               <tr>
-                <th onClick={() => this.onColumnSort('second')}>Currency <span className={classNameForColumnHeader(this.state, 'second')}></span></th>
-                <th onClick={() => this.onColumnSort('last')}>Price <span className={classNameForColumnHeader(this.state, 'last')}></span></th>
-                <th onClick={() => this.onColumnSort('volume')}>Volume({baseCurrency}) <span className={classNameForColumnHeader(this.state, 'volume')}></span></th>
-                <th onClick={() => this.onColumnSort('change')}>Change <span className={classNameForColumnHeader(this.state, 'change')}></span></th>
+                <th onClick={() => this.onColumnSort('second')}>
+                  <FormattedMessage id="terminal.currency" defaultMessage="Currency"/>
+                  <span className={classNameForColumnHeader(this.state, 'second')}/></th>
+                <th onClick={() => this.onColumnSort('last')}>
+                  <FormattedMessage id="terminal.price" defaultMessage="Price"/>
+                  <span className={classNameForColumnHeader(this.state, 'last')}/></th>
+                <th onClick={() => this.onColumnSort('volume')}>
+                  <FormattedMessage id="terminal.volumeCurrency" defaultMessage="Volume({baseCurrency})" values={{baseCurrency}}/>
+                  <span className={classNameForColumnHeader(this.state, 'volume')}/></th>
+                <th onClick={() => this.onColumnSort('change')}>
+                  <FormattedMessage id="terminal.change" defaultMessage="Change" values={{baseCurrency}}/>
+                  <span className={classNameForColumnHeader(this.state, 'change')}/>
+                </th>
                 {this.props.balances ? (
-                  <th onClick={() => this.onColumnSort('Balance')}>Balance ({baseCurrency}) <span className={classNameForColumnHeader(this.state, 'Balance')}></span><br/></th>
+                  <th onClick={() => this.onColumnSort('Balance')}>
+                    <FormattedMessage id="terminal.balance" defaultMessage="Balance ({baseCurrency}) " values={{baseCurrency}}/>
+                    <span className={classNameForColumnHeader(this.state, 'Balance')}/><br/></th>
                 ) : null}
               </tr>
             </thead>
@@ -253,4 +271,5 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
   selectMarket: market => dispatch(selectMarket(market)),
 });
-export default connect(mapStateToProps, mapDispatchToProps)(MarketSelectTable);
+
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(MarketSelectTable));

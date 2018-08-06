@@ -1,8 +1,7 @@
 import React from 'react';
-import AmCharts from 'amcharts3/amcharts/amcharts';
-import PieChart from 'amcharts3/amcharts/pie';
-import SerialChar from 'amcharts3/amcharts/serial';
 import AmChartsReact from '@amcharts/amcharts3-react';
+import { FormattedMessage } from 'react-intl';
+
 
 class SelectedContractChart extends React.Component {
 
@@ -31,7 +30,12 @@ class SelectedContractChart extends React.Component {
     return (
       <div className="table">
         <div className="table_title_wrapper clearfix">
-          <div className="table_title center">CONTRACT CURRENCIES</div>
+          <div className="table_title center">
+            <FormattedMessage
+              id="dashboard.contractCurrenciesUpper"
+              defaultMessage="CONTRACT CURRENCIES"
+            />
+          </div>
         </div>
         <div className="charts">
           <div className="chart_pie">

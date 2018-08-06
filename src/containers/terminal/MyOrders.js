@@ -4,6 +4,7 @@ import $ from 'jquery';
 import { Desktop } from '../../generic/MediaQuery';
 import { OpenOrder, CompletedOrder } from '../../components/OrdersStatements';
 import {sortData, onColumnSort, classNameForColumnHeader}  from '../../generic/terminalSortFunctions';
+import { FormattedMessage } from 'react-intl';
 
 const TAB_OPEN_ORDERS = 0;
 const TAB_COMPLETED_ORDERS = 1;
@@ -37,12 +38,12 @@ class MyOrders extends React.Component {
             <span
               onClick={() => this.onTabClick(TAB_OPEN_ORDERS)}
               className={classNames('orders-table__switch', 'orders-open', {active: this.state.tab === TAB_OPEN_ORDERS})}>
-              Open Orders
+              <FormattedMessage id="terminal.openOrders" defaultMessage="Open Orders"/>
             </span>
             <span
               onClick={() => this.onTabClick(TAB_COMPLETED_ORDERS)}
               className={classNames('orders-table__switch', 'orders-completed', {active: this.state.tab === TAB_COMPLETED_ORDERS})}>
-              Completed orders
+              <FormattedMessage id="terminal.completedOrders" defaultMessage="Completed orders"/>
             </span>
           </div>
           <Desktop>
@@ -53,17 +54,27 @@ class MyOrders extends React.Component {
         <div className="orders-table-tabs">
           {this.state.tab === TAB_OPEN_ORDERS ? (
             <div className={classNames('orders-table-tab', 'orders-open', 'active')}>
-
               <div className="orders-table-wrapper js-table-wrapper">
                 <table className="table">
                   <thead>
                     <tr>
-                      <th onClick={() => this.onColumnSort('type')}>Type <span className={classNameForColumnHeader(this.state, 'type')}></span></th>
-                      <th onClick={() => this.onColumnSort('limit')}>Price <span className={classNameForColumnHeader(this.state, 'limit')}></span></th>
-                      <th onClick={() => this.onColumnSort('filled')}>Units Filled <span className={classNameForColumnHeader(this.state, 'filled')}></span></th>
-                      <th onClick={() => this.onColumnSort('amount')}>Units Total <span className={classNameForColumnHeader(this.state, 'amount')}></span></th>
-                      <th onClick={() => this.onColumnSort('price')}><span>Est.</span> Total <span className={classNameForColumnHeader(this.state, 'price')}></span></th>
-                      <th></th>
+                      <th onClick={() => this.onColumnSort('type')}>
+                        <FormattedMessage id="terminal.type" defaultMessage="Type"/>
+                        <span className={classNameForColumnHeader(this.state, 'type')}/></th>
+                      <th onClick={() => this.onColumnSort('limit')}>
+                        <FormattedMessage id="terminal.price" defaultMessage="Price"/>
+                        <span className={classNameForColumnHeader(this.state, 'limit')}/></th>
+                      <th onClick={() => this.onColumnSort('filled')}>
+                        <FormattedMessage id="terminal.unitsFilled" defaultMessage="Units Filled"/>
+                        <span className={classNameForColumnHeader(this.state, 'filled')}/></th>
+                      <th onClick={() => this.onColumnSort('amount')}>
+                        <FormattedMessage id="terminal.unitsTotal" defaultMessage="Units Total"/>
+                        <span className={classNameForColumnHeader(this.state, 'amount')}/></th>
+                      <th onClick={() => this.onColumnSort('price')}>
+                        <span><FormattedMessage id="terminal.est" defaultMessage="Est."/></span>
+                        <FormattedMessage id="terminal.total" defaultMessage="Total"/>
+                        <span className={classNameForColumnHeader(this.state, 'price')}/></th>
+                      <th/>
                     </tr>
                   </thead>
                   <tbody>
@@ -87,11 +98,21 @@ class MyOrders extends React.Component {
                 <table className="table">
                   <thead>
                     <tr>
-                      <th onClick={() => this.onColumnSort('type')}>Type <span className={classNameForColumnHeader(this.state, 'type')}></span></th>
-                      <th onClick={() => this.onColumnSort('limit')}>Price <span className={classNameForColumnHeader(this.state, 'limit')}></span></th>
-                      <th onClick={() => this.onColumnSort('filled')}>Units Filled <span className={classNameForColumnHeader(this.state, 'filled')}></span></th>
-                      <th onClick={() => this.onColumnSort('amount')}>Units Total <span className={classNameForColumnHeader(this.state, 'amount')}></span></th>
-                      <th onClick={() => this.onColumnSort('price')}><span>Est.</span> Total <span className={classNameForColumnHeader(this.state, 'price')}></span></th>
+                      <th onClick={() => this.onColumnSort('type')}>
+                        <FormattedMessage id="terminal.type" defaultMessage="Type"/>
+                        <span className={classNameForColumnHeader(this.state, 'type')}/></th>
+                      <th onClick={() => this.onColumnSort('limit')}>
+                        <FormattedMessage id="terminal.price" defaultMessage="Price"/>
+                        <span className={classNameForColumnHeader(this.state, 'limit')}/></th>
+                      <th onClick={() => this.onColumnSort('filled')}>
+                        <FormattedMessage id="terminal.unitsFilled" defaultMessage="Units Filled"/>
+                        <span className={classNameForColumnHeader(this.state, 'filled')}/></th>
+                      <th onClick={() => this.onColumnSort('amount')}><FormattedMessage id="terminal.unitsTotal" defaultMessage="Units Total"/>
+                        <span className={classNameForColumnHeader(this.state, 'amount')}/></th>
+                      <th onClick={() => this.onColumnSort('price')}>
+                        <span><FormattedMessage id="terminal.est" defaultMessage="Est."/></span>
+                        <FormattedMessage id="terminal.total" defaultMessage="Total"/>
+                        <span className={classNameForColumnHeader(this.state, 'price')}/></th>
                     </tr>
                   </thead>
                   <tbody>

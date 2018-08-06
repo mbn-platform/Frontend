@@ -6,9 +6,9 @@ import classNames from 'classnames';
 import DropdownSelect from '../../components/DropdownSelect';
 import $ from 'jquery';
 import {sortData, onColumnSort, classNameForColumnHeader, defaultSortFunction} from '../../generic/terminalSortFunctions';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { updateRatings } from '../../actions/terminal';
+import {FormattedMessage, injectIntl} from 'react-intl';
 
 const TAB_TRADERS = 0;
 const TAB_INVESTORS = 1;
@@ -73,19 +73,30 @@ class Ratings extends React.Component {
         <Row>
           <Col xs="12" sm="12" md="12" lg="12">
             <div className="ratings-main">
-              <div className="ratings-main__title"> RATINGS</div>
+              <div className="ratings-main__title">
+                <FormattedMessage
+                  id="ratings.ratings"
+                  defaultMessage="RATINGS"
+                />
+              </div>
               <div className="ratings-main__block">
                 <div className="block__top">
                   <div className="block__top-switch-wrap">
                     <span
                       onClick={() => this.onTabClick(TAB_TRADERS)}
                       className={classNames('block__top-switch', 'ratings-traders', {active: this.state.tab === TAB_TRADERS})}>
-                      Traders
+                      <FormattedMessage
+                        id="ratings.traders"
+                        defaultMessage="Traders"
+                      />
                     </span>
                     <span
                       onClick={() => this.onTabClick(TAB_INVESTORS)}
                       className={classNames('block__top-switch', 'ratings-investors', {active: this.state.tab === TAB_INVESTORS})}>
-                      Investors
+                      <FormattedMessage
+                        id="ratings.investors"
+                        defaultMessage="Investors"
+                      />
                     </span>
                   </div>
                 </div>
@@ -97,52 +108,120 @@ class Ratings extends React.Component {
                           <thead>
                             <tr>
                               <th className="fav">
-                                <span className="star"></span>
+                                <span className="star"/>
                               </th>
                               <th onClick={() => this.onColumnSort('name')} className="name">
-                                <span>Name</span><span className={classNameForColumnHeader(this.state, 'name')}></span>
+                                <span>
+                                  <FormattedMessage
+                                    id="ratings.name"
+                                    defaultMessage="Name"
+                                  />
+                                </span><span className={classNameForColumnHeader(this.state, 'name')}/>
                               </th>
                               <th onClick={() => this.onColumnSort('rank')} className="rank">
-                                <span>Rank</span><span className={classNameForColumnHeader(this.state, 'rank')}></span>
+                                <span>
+                                  <FormattedMessage
+                                    id="ratings.rank"
+                                    defaultMessage="Rank"
+                                  />
+                                </span><span className={classNameForColumnHeader(this.state, 'rank')}/>
                               </th>
                               <th onClick={() => this.onColumnSort('roi')}>
-                                <span>ROI,&nbsp;%</span><span className={classNameForColumnHeader(this.state, 'roi')}></span>
+                                <span>
+                                  <FormattedMessage
+                                    id="ratings.roi"
+                                    defaultMessage="ROI, %"
+                                  /></span><span className={classNameForColumnHeader(this.state, 'roi')}/>
                               </th>
                               <th onClick={() => this.onColumnSort('available')}>
-                                <span>Accepting request</span><span className={classNameForColumnHeader(this.state, 'available')}></span>
+                                <span>
+                                  <FormattedMessage
+                                    id="ratings.acceptingRequest"
+                                    defaultMessage="Accepting request"
+                                  />
+                                </span><span className={classNameForColumnHeader(this.state, 'available')}/>
                               </th>
                               <th onClick={() => this.onColumnSort('dateCreated')}>
-                                <span>Started since</span><span className={classNameForColumnHeader(this.state, 'dateCreated')}></span>
+                                <span>
+                                  <FormattedMessage
+                                    id="ratings.startedSince"
+                                    defaultMessage="Started since"
+                                  />
+                                </span>
+                                <span className={classNameForColumnHeader(this.state, 'dateCreated')}/>
                               </th>
                               <th onClick={() => this.onColumnSort('minAmount')}>
-                                <span>Min contract<br/>amount</span><span className={classNameForColumnHeader(this.state, 'minAmount')}></span>
+                                <span>
+                                  <FormattedMessage
+                                    id="ratings.startedSince"
+                                    defaultMessage="Started {br}since"
+                                    values={{br: <br/>}}
+                                  />
+                                </span>
+                                <span className={classNameForColumnHeader(this.state, 'minAmount')}/>
                               </th>
                               <th onClick={() => this.onColumnSort('duration')}>
-                                <span className="show-mobile">Dur.,</span>
-                                <span className='hide-mobile'>Duration of the contract,<br/></span>
-                                <span>days</span>
-                                <span className={classNameForColumnHeader(this.state, 'duration')}></span>
+                                <span className="show-mobile">
+                                  <FormattedMessage
+                                    id="ratings.dur"
+                                    defaultMessage="Dur.,"
+                                  />
+                                </span>
+                                <span className='hide-mobile'>
+                                  <FormattedMessage
+                                    id="ratings.durationOfContract"
+                                    defaultMessage="Duration of the contract,"
+                                  />
+                                  <br/>
+                                </span>
+                                <span>
+                                  <FormattedMessage
+                                    id="ratings.days"
+                                    defaultMessage="days"
+                                  />
+                                </span>
+                                <span className={classNameForColumnHeader(this.state, 'duration')}/>
                               </th>
                               <th onClick={() => this.onColumnSort('fee')}>
-                                <span>Fee, %</span><span className={classNameForColumnHeader(this.state, 'fee')}></span>
+                                <span>
+                                  <FormattedMessage
+                                    id="ratings.fee"
+                                    defaultMessage="Fee, %"
+                                  />
+                                </span>
+                                <span className={classNameForColumnHeader(this.state, 'fee')}/>
                               </th>
                               <th onClick={() => this.onColumnSort('inManagement')}>
-                                <span>Money in management</span><span className={classNameForColumnHeader(this.state, 'inManagement')}></span>
+                                <span>
+                                  <FormattedMessage
+                                    id="ratings.moneyInManagement"
+                                    defaultMessage="Money in management"
+                                  />
+                                </span>
+                                <span className={classNameForColumnHeader(this.state, 'inManagement')}/>
                               </th>
                               <th onClick={() => this.onColumnSort('maxLoss')}>
-                                <span>Max loss,&nbsp;%</span><span className={classNameForColumnHeader(this.state, 'maxLoss')}></span>
+                                <span>
+                                  <FormattedMessage
+                                    id="ratings.maxLoss"
+                                    defaultMessage="Max loss,%"
+                                  />
+                                </span>
+                                <span className={classNameForColumnHeader(this.state, 'maxLoss')}/>
                               </th>
                             </tr>
 
                             <tr>
-                              <th></th>
+                              <th/>
                               <th>
                                 <div>
-                                  <input ref={this.inputRef} value={this.state.nameFilter} onChange={this.onNameFilterChange} type="text" className="input_search" placeholder="Search" />
+                                  <input ref={this.inputRef} value={this.state.nameFilter} onChange={this.onNameFilterChange} type="text" className="input_search" placeholder={this.props.intl.messages['ratings.search']} />
                                 </div>
                               </th>
                               <th>
-                                <div className="help" data-toggle="ratings-help-popover" data-placement="bottom" data-total="The total amount of contracts" data-success="The amount of successfully finished contracts">?</div>
+                                <div className="help" data-toggle="ratings-help-popover" data-placement="bottom"
+                                  data-total={this.props.intl.messages['ratings.amountOfContracts']}
+                                  data-success={this.props.intl.messages['ratings.amountOfFinishedContracts']}>?</div>
                               </th>
                               <th>
                                 <DropdownSelect
@@ -154,14 +233,14 @@ class Ratings extends React.Component {
                                   onItemSelect={item => this.setState({selectedPeriod: item})}
                                 />
                               </th>
-                              <th></th>
+                              <th/>
                               <th>
                               </th>
-                              <th></th>
-                              <th></th>
+                              <th/>
+                              <th/>
                               <th>
                               </th>
-                              <th></th>
+                              <th/>
                             </tr>
                           </thead>
                           <tbody>
@@ -177,37 +256,71 @@ class Ratings extends React.Component {
                           <thead>
                             <tr>
                               <th className='fav'>
-                                <span className="star"></span>
+                                <span className="star"/>
                               </th>
                               <th onClick={() => this.onColumnSort('name')} className="name">
-                                <span>Name</span><span className={classNameForColumnHeader(this.state, 'name')}></span>
+                                <span><FormattedMessage
+                                  id="ratings.name"
+                                  defaultMessage="Name"
+                                />
+                                </span>
+                                <span className={classNameForColumnHeader(this.state, 'name')}/>
                               </th>
                               <th onClick={() => this.onColumnSort('rank')} className='rank'>
-                                <span>Rank</span><span className={classNameForColumnHeader(this.state, 'rank')}></span>
+                                <span>
+                                  <FormattedMessage
+                                    id="ratings.rank"
+                                    defaultMessage="Rank"
+                                  />
+                                </span><span className={classNameForColumnHeader(this.state, 'rank')}/>
                               </th>
                               <th onClick={() => this.onColumnSort('roi')}>
-                                <span>ROI,&nbsp;%</span><span className={classNameForColumnHeader(this.state, 'roi')}></span>
+                                <span>
+                                  <FormattedMessage
+                                    id="ratings.roi"
+                                    defaultMessage="ROI, %"
+                                  />
+                                </span><span className={classNameForColumnHeader(this.state, 'roi')}/>
                               </th>
                               <th onClick={() => this.onColumnSort('dateCreated')}>
-                                <span>Started since</span><span className={classNameForColumnHeader(this.state, 'dateCreated')}></span>
+                                <span>
+                                  <FormattedMessage
+                                    id="ratings.startedSince"
+                                    defaultMessage="Started since"
+                                  />
+                                </span>
+                                <span className={classNameForColumnHeader(this.state, 'dateCreated')}/>
                               </th>
                               <th onClick={() => this.onColumnSort('paidExcessProfit')}>
-                                <span>Paid excess<br/>profit</span><span className={classNameForColumnHeader(this.state, 'paidExcessProfit')}></span>
+                                <span>
+                                  <FormattedMessage
+                                    id="ratings.paidExcess"
+                                    defaultMessage="Paid excess{br}profit"
+                                    values={{br: <br/>}}
+                                  />
+                                </span><span className={classNameForColumnHeader(this.state, 'paidExcessProfit')}/>
                               </th>
                               <th onClick={() => this.onColumnSort('paidInvoices')}>
-                                <span>Amount of paid invoices</span><span className={classNameForColumnHeader(this.state, 'paidInvoices')}></span>
+                                <span>
+                                  <FormattedMessage
+                                    id="ratings.amountOfPaid"
+                                    defaultMessage="Amount of paid invoices"
+                                  />
+                                </span><span className={classNameForColumnHeader(this.state, 'paidInvoices')}/>
                               </th>
                             </tr>
 
                             <tr>
-                              <th></th>
+                              <th/>
                               <th>
                                 <div>
-                                  <input ref={this.inputRef} value={this.state.nameFilter} onChange={this.onNameFilterChange} type="text" className="input_search" placeholder="Search" />
+                                  <input ref={this.inputRef} value={this.state.nameFilter} onChange={this.onNameFilterChange} type="text" className="input_search" placeholder={this.props.intl.messages['ratings.search']} />
                                 </div>
                               </th>
                               <th>
-                                <div className="help" data-toggle="ratings-help-popover" data-placement="bottom" data-total="The total amount of contracts" data-success="The amount of successfully finished contracts">?</div>
+                                <div className="help" data-toggle="ratings-help-popover" data-placement="bottom"
+                                  data-total={this.props.intl.messages['ratings.amountOfContracts']}
+                                  data-success={this.props.intl.messages['ratings.amountOfFinishedContracts']}>>?</div>
                               </th>
                               <th>
                                 <DropdownSelect
@@ -219,10 +332,10 @@ class Ratings extends React.Component {
                                   onItemSelect={item => this.setState({selectedPeriod: item})}
                                 />
                               </th>
-                              <th></th>
+                              <th/>
                               <th>
                               </th>
-                              <th></th>
+                              <th/>
                             </tr>
                           </thead>
                           <tbody>
@@ -265,7 +378,7 @@ class Ratings extends React.Component {
 const TraderRatingRow = (props) => (
   <tr data-name={props.name} onClick={props.onClick}>
     <td>
-      <span className="star"></span>
+      <span className="star"/>
     </td>
     <td>
       <div className="nickname">@{props.name}</div>
@@ -308,7 +421,7 @@ const TraderRatingRow = (props) => (
 const InvestorRatingRow = (props) => (
   <tr data-name={props.name} onClick={props.onClick}>
     <td>
-      <span className="star"></span>
+      <span className="star"/>
     </td>
     <td>
       <div className="nickname">@{props.name}</div>
@@ -348,7 +461,8 @@ function formatDate(date) {
   return day + '.' + month + '.' + year;
 }
 
-export default connect(
+
+export default injectIntl(connect(
   state => ({ratings: state.ratings}),
   dispatch => ({updateRatings: () => dispatch(updateRatings())}),
-)(Ratings);
+)(Ratings));

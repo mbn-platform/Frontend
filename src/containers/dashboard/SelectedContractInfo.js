@@ -3,13 +3,11 @@ import ContractInfo from './ContractInfo';
 import ContractInfoEmpty from './ContractInfoEmpty';
 import ContractFeedback from './ContractFeedback';
 import ProfileFeedbacks from './ProfileFeedbacks';
-import { Desktop, Mobile } from '../../generic/MediaQuery';
+import { Desktop } from '../../generic/MediaQuery';
 import { CONTRACT_STATE_FINISHED, CONTRACT_STATE_HALTED } from '../../constants';
 
 const SelectedContractInfo = ({ contract, onContractRate, time, userId }) => {
   if(!contract) {
-    let dateNow = Date.now();
-    let contractDefault = {};
     return (
       <Desktop>
         <ContractInfoEmpty/>

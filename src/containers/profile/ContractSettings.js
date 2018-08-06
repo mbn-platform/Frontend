@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Row, Col } from 'reactstrap';
 import { Desktop, Mobile } from '../../generic/MediaQuery';
+import {FormattedMessage, injectIntl} from 'react-intl';
 
 class ContractSettings extends React.Component {
 
@@ -46,7 +47,7 @@ class ContractSettings extends React.Component {
       const duration = parseFloat(this.state.duration) || this.props.duration;
       if(fee >= 100 || fee <= 0 || minAmount < 0 || roi <= 0 ||
         duration <= 0 || maxLoss <= 0) {
-        alert('Enter all contract settings');
+        alert(this.props.intl.messages['profile.enterSetting.']);
         return;
       } else {
         const update = { fee, minAmount, currency, roi, maxLoss, duration };
@@ -75,7 +76,7 @@ class ContractSettings extends React.Component {
     const { minAmount, fee, maxLoss, duration, roi } = this.props;
     if(fee >= 100 || fee <= 0 || minAmount <= 0 || roi <= 0 ||
       duration <= 0 || maxLoss <= 0) {
-      alert('You need to edit your contract settings first');
+      alert(this.props.intl.messages['profile.needEditFirst']);
       return;
     }
     this.props.onToggleClick(!this.props.availableForOffers);
@@ -86,12 +87,27 @@ class ContractSettings extends React.Component {
       <Row className="row accept-requests">
         <Col xs="12" className="align-middle">
           <Row className="justify-content-between accept-block">
-            <Col xs="auto" className="text">ACCEPT REQUESTS?</Col>
+            <Col xs="auto" className="text">
+              <FormattedMessage
+                id="profile.acceptRequestQuestion"
+                defaultMessage="ACCEPT REQUESTS?"
+              />
+            </Col>
             <Col xs="auto" className="switch" onClick={this.onToggleClick}>
               <input className="cmn-toggle cmn-toggle-round-flat" type="checkbox" onChange={this.onToggleClick} checked={this.props.availableForOffers || false}/>
               <label className="cmn-toggle-background"/>
-              <label className="cmn-text cmn-yes-text">YES</label>
-              <label className="cmn-text cmn-no-text">NO</label>
+              <label className="cmn-text cmn-yes-text">
+                <FormattedMessage
+                  id="yes"
+                  defaultMessage="yes"
+                />
+              </label>
+              <label className="cmn-text cmn-no-text">
+                <FormattedMessage
+                  id="no"
+                  defaultMessage="no"
+                />
+              </label>
             </Col>
           </Row>
         </Col>
@@ -104,21 +120,38 @@ class ContractSettings extends React.Component {
       <div className="row-fluid contract-setting-block">
         <div className="row title-setting">
           <div className="col-auto text-center align-middle contract-setting-title title-text">
-            <span className="icon icon-settings icon-006-wrench"></span>Contract settings
+            <span className="icon icon-settings icon-006-wrench"/>
+            <FormattedMessage
+              id="profile.contractSettings"
+              defaultMessage="Contract settings"
+            />
           </div>
         </div>
         {this.renderAcceptsRequests()}
         {this.renderEntries()}
         <div className="row justify-content-center d-flex d-md-none tooltip-text-block">
           <div className="tooltip-mobile-box">
-            <span className="pointer">*</span>To change your profile please accept or decline all offers in your dashboard
+            <span className="pointer">*</span>
+            <FormattedMessage
+              id="profile.toChangeYouProfileMessage"
+              defaultMessage="To change your profile please accept or decline all offers in your dashboard"
+            />
           </div>
         </div>
         {this.state.isEditing ? (
           <div className="col-12 d-flex align-items-center justify-content-between choose-btn-group">
-            <button tabIndex={9} onClick={() => this.setState({isEditing: false})} type="button" className="edit-btn cancel-btn btn btn-secondary">CANCEL</button>
+            <button tabIndex={9} onClick={() => this.setState({isEditing: false})} type="button" className="edit-btn cancel-btn btn btn-secondary">
+              <FormattedMessage
+                id="profile.cancel"
+                defaultMessage="CANCEL"
+              />
+            </button>
             <button tabIndex={10} onClick={this.onEditButtonClick} type="button" className="edit-btn send-request-btn btn btn-secondary active">
-              SAVE CHANGES</button>
+              <FormattedMessage
+                id="profile.saveChanges"
+                defaultMessage="SAVE CHANGES"
+              />
+            </button>
           </div>
         ) : (
           <div className="row justify-content-center">
@@ -127,8 +160,11 @@ class ContractSettings extends React.Component {
               onClick={this.onEditButtonClick} type="button"
               className={classNames('edit-btn', 'btn', 'btn-secondary', {active: this.state.isEditing})}
               data-toggle="popover" data-trigger="hover"
-              data-content="To change your profile please accept or decline all offers in your dashboard">
-              EDIT
+              data-content={this.props.intl.messages['profile.toChangeYouProfileMessage']}>
+              <FormattedMessage
+                id="profile.edit"
+                defaultMessage="EDIT"
+              />
             </button>
           </div>
         )}
@@ -172,7 +208,7 @@ class ContractSettings extends React.Component {
             <Desktop>
               <Setting
                 tabIndex={3}
-                header="TARGET PROFIT"
+                header={this.props.intl.messages['profile.targetProfit']}
                 value={this.props.roi}
                 dimension="%"
                 isEditing={this.state.isEditing}
@@ -188,7 +224,7 @@ class ContractSettings extends React.Component {
             <Mobile>
               <Setting
                 tabIndex={3}
-                header="TARGET PROFIT"
+                header={this.props.intl.messages['profile.targetProfit']}
                 value={this.props.roi}
                 dimension="%"
                 isEditing={this.state.isEditing}
@@ -200,7 +236,7 @@ class ContractSettings extends React.Component {
           </div>              
           <Setting
             tabIndex={4}
-            header="MAX LOSS"
+            header={this.props.intl.messages['profile.maxLoss']}
             value={this.props.maxLoss}
             dimension="%"
             isEditing={this.state.isEditing}
@@ -210,7 +246,7 @@ class ContractSettings extends React.Component {
           />
           <Setting
             tabIndex={5}
-            header="FEE"
+            header={this.props.intl.messages['profile.fee']}
             value={this.props.fee}
             dimension="%"
             isEditing={this.state.isEditing}
@@ -296,7 +332,12 @@ export const EditAmountEntry = ({placeholder, value, onChange, tabIndex, dimensi
 const CurrencyOfContractButton = ({isEditing, onCurrencySelected, currency, value}) => (
   <div className='currency-button-block setting-block'>
     <div className="input-block">
-      <div className="description-text">CURRENCY OF CONTRACT:</div>  
+      <div className="description-text">
+        <FormattedMessage
+          id="profile.currencyOfContract"
+          defaultMessage="CURRENCY OF CONTRACT:"
+        />
+      </div>
       {isEditing ? (
 
         <div className='input-group'>
@@ -340,5 +381,4 @@ const EditSettingsEntry = ({className, placeholder,value, dimension, name, onCha
 );
 
 
-
-export default ContractSettings;
+export default injectIntl(ContractSettings);

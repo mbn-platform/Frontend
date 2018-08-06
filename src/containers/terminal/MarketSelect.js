@@ -1,6 +1,5 @@
 import React from 'react';
 import { Popover } from 'reactstrap';
-import { selectMarket, updateRates } from '../../actions/terminal';
 import MarketTable from './MarketSelectTable';
 
 class MarketSelect extends React.Component {

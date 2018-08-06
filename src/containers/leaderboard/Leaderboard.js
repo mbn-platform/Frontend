@@ -4,6 +4,9 @@ import $ from 'jquery';
 import classNames from 'classnames';
 import {sortData, onColumnSort, classNameForColumnHeader, defaultSortFunction} from '../../generic/terminalSortFunctions';
 import {apiGet} from '../../generic/apiCall';
+import { injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
+
 
 const NUMBER_OF_ROUNDS = 3;
 
@@ -86,14 +89,22 @@ class Leaderboard extends React.Component {
         <Row>
           <Col xs="12" sm="12" md="12" lg="12">
             <div className="ratings-main">
-              <div className="ratings-main__title"> LEADERBOARD</div>
+              <div className="ratings-main__title">
+                <FormattedMessage
+                  id="leaderboard.title"
+                  defaultMessage="LEADERBOARD"
+                />
+              </div>
               <div className="ratings-main__block">
                 <div className="block__top">
                   <div className="block__top-switch-wrap">
                     <span
                       onClick={() => this.selectRound(0)}
                       className={classNames('block__top-switch', 'ratings-traders', {active: this.state.selectedRound === 0})}>
-                      GLOBAL
+                      <FormattedMessage
+                        id="leaderboard.global"
+                        defaultMessage="GLOBAL"
+                      />
                     </span>
                     {this.renderRoundsBlocks()}
                   </div>
@@ -122,7 +133,11 @@ class Leaderboard extends React.Component {
           key={i}
           onClick={() => this.selectRound(i)}
           className={classNames('block__top-switch', 'ratings-traders', {active: this.state.selectedRound === i})}>
-          ROUND {i}
+          <FormattedMessage
+            id="leaderboard.round"
+            defaultMessage="ROUND {count}"
+            values={{count: i}}
+          />
         </span>
       );
     }
@@ -166,21 +181,35 @@ class Leaderboard extends React.Component {
         <thead>
           <tr>
             <th onClick={() => this.onColumnSort('place')} className="place">
-              <span>Place</span><span className={classNameForColumnHeader(this.state, 'place')}/>
+              <span>
+                <FormattedMessage
+                  id="leaderboard.place"
+                  defaultMessage="Place"
+                />
+              </span><span className={classNameForColumnHeader(this.state, 'place')}/>
             </th>
             <th onClick={() => this.onColumnSort('name')} className="name">
-              <span>Name</span><span className={classNameForColumnHeader(this.state, 'name')}/>
+              <span>
+                <FormattedMessage
+                  id="leaderboard.name"
+                  defaultMessage="Name"
+                />
+              </span><span className={classNameForColumnHeader(this.state, 'name')}/>
             </th>
             <th onClick={() => this.onColumnSort('points')}>
-              <span>Points</span><span className={classNameForColumnHeader(this.state, 'points')}/>
+              <span>
+                <FormattedMessage
+                  id="leaderboard.points"
+                  defaultMessage="Points"
+                /></span><span className={classNameForColumnHeader(this.state, 'points')}/>
             </th>
           </tr>
 
           <tr>
-            <th></th>
+            <th/>
             <th>
               <div>
-                <input ref={this.inputRef} value={this.state.nameFilter} onChange={this.onNameFilterChange} type="text" className="input_search" placeholder="Search" />
+                <input ref={this.inputRef} value={this.state.nameFilter} onChange={this.onNameFilterChange} type="text" className="input_search" placeholder={this.props.intl.messages['leaderboard.searchPlaceholder']} />
               </div>
             </th>
           </tr>
@@ -198,17 +227,37 @@ class Leaderboard extends React.Component {
         <thead>
           <tr>
             <th onClick={() => this.onColumnSort('place')} className="place">
-              <span>Place</span><span className={classNameForColumnHeader(this.state, 'place')}></span>
+              <span>
+                <FormattedMessage
+                  id="leaderboard.place"
+                  defaultMessage="Place"
+                />
+              </span><span className={classNameForColumnHeader(this.state, 'place')}/>
             </th>
             <th onClick={() => this.onColumnSort('name')} className="name">
-              <span>Name</span><span className={classNameForColumnHeader(this.state, 'name')}></span>
+              <span>
+                <FormattedMessage
+                  id="leaderboard.name"
+                  defaultMessage="Name"
+                />
+              </span><span className={classNameForColumnHeader(this.state, 'name')}/>
             </th>
             <th onClick={() => this.onColumnSort('profit')}>
-              <span>Profit (USDT)</span><span className={classNameForColumnHeader(this.state, 'profit')}></span>
+              <span>
+                <FormattedMessage
+                  id="leaderboard.profitUsd"
+                  defaultMessage="Profit (USDT)"
+                />
+              </span><span className={classNameForColumnHeader(this.state, 'profit')}/>
             </th>
             {(this.state.round && !this.state.round.global) ? (
               <th onClick={() => this.onColumnSort('percent')}>
-                <span>Profit, %</span><span className={classNameForColumnHeader(this.state, 'percent')}></span>
+                <span>
+                  <FormattedMessage
+                    id="leaderboard.profitPercent"
+                    defaultMessage="Profit, %"
+                  />
+                </span><span className={classNameForColumnHeader(this.state, 'percent')}/>
               </th>
             ) : null
             }
@@ -216,13 +265,13 @@ class Leaderboard extends React.Component {
           </tr>
 
           <tr>
-            <th></th>
+            <th/>
             <th>
               <div>
-                <input ref={this.inputRef} value={this.state.nameFilter} onChange={this.onNameFilterChange} type="text" className="input_search" placeholder="Search" />
+                <input ref={this.inputRef} value={this.state.nameFilter} onChange={this.onNameFilterChange} type="text" className="input_search" placeholder={this.props.intl.messages['leaderboard.searchPlaceholder']} />
               </div>
             </th>
-            {(this.state.round && !this.state.round.global) ? (<th></th>) : null}
+            {(this.state.round && !this.state.round.global) ? (<th/>) : null}
           </tr>
         </thead>
         <tbody>
@@ -283,4 +332,4 @@ const ProfitCell = ({profit, tx}) => {
   }
 };
 
-export default Leaderboard;
+export default injectIntl(Leaderboard);

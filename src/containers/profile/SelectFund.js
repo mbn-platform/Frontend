@@ -5,6 +5,7 @@ import SearchHeader from '../../components/SearchHeader';
 import { Desktop, Mobile } from '../../generic/MediaQuery';
 import Pagination from '../../components/Pagination';
 import ExchangeSelect from '../../components/ExchangeSelect';
+import {FormattedMessage, injectIntl} from 'react-intl';
 
 class SelectFund extends React.Component {
 
@@ -36,16 +37,28 @@ class SelectFund extends React.Component {
       <div className="row-fluid choose-api-block">
         <div className="row justify-content-center choose-title">
           <div className="col-auto text-center align-middle choose-setting-title title-text">
-            choose funds
+            <FormattedMessage
+              id="profile.chooseFunds"
+              defaultMessage="choose funds"
+            />
           </div>
           <div className="col-md-12 col-lg-12 col-xl-12 separate-second-block">
             <div className="separate-line d-none d-md-block"/>
           </div>
           {this.renderTable()}
           <div className="col-12 d-flex align-items-center justify-content-between choose-btn-group">
-            <button onClick={this.props.onCancelClick} type="button" className="cancel-btn btn btn-secondary">CANCEL</button>
+            <button onClick={this.props.onCancelClick} type="button" className="cancel-btn btn btn-secondary">
+              <FormattedMessage
+                id="profile.cancel"
+                defaultMessage="CANCEL"
+              />
+            </button>
             <button onClick={this.props.onNextClick} type="button" disabled={!this.props.selectedFund} className="send-request-btn btn btn-secondary active">
-              NEXT</button>
+              <FormattedMessage
+                id="profile.next"
+                defaultMessage="NEXT"
+              />
+            </button>
           </div>
         </div>
       </div>
@@ -57,7 +70,7 @@ class SelectFund extends React.Component {
     const exchangeFilter = this.state.filtered.find(f => f.id === 'exchange').value;
     return [
       {
-        Header: SearchHeader('Fund name', nameFilter, this.onFilter),
+        Header: SearchHeader(this.props.intl.messages['profile.fundName'], nameFilter, this.onFilter),
         className: 'table_col_value',
         accessor: 'name'
       }, {
@@ -75,7 +88,12 @@ class SelectFund extends React.Component {
         id: '_id',
         className: 'table_col_value',
         Header: (<div className="table_header_wrapper">
-          <span className="table_header">Balance</span>
+          <span className="table_header">
+            <FormattedMessage
+              id="profile.balance"
+              defaultMessage="Balance"
+            />
+          </span>
           <div className="sort_icon_wrapper">
             <div className="green_arrow green_arrow_bottom"/>
           </div>
@@ -124,7 +142,12 @@ class SelectFund extends React.Component {
 const ExchangeHeader = (exchanges, value, onChange) => {
   return (
     <div className="table_header_wrapper">
-      <span className="table_header">Exchange</span>
+      <span className="table_header">
+        <FormattedMessage
+          id="profile.exchange"
+          defaultMessage="Exchange"
+        />
+      </span>
       <div className="sort_icon_wrapper">
         <div className="green_arrow green_arrow_bottom" />
       </div>
@@ -147,4 +170,4 @@ SelectFund.propTypes = {
   selectedFund: PropTypes.object
 };
 
-export default SelectFund;
+export default injectIntl(SelectFund);

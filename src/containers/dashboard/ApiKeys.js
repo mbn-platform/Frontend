@@ -6,6 +6,8 @@ import SearchHeader from '../../components/SearchHeader';
 import classNames from 'classnames';
 import { Desktop, Mobile } from '../../generic/MediaQuery';
 import Pagination from '../../components/Pagination';
+import {FormattedMessage, injectIntl} from 'react-intl';
+
 
 class Funds extends React.Component {
 
@@ -47,7 +49,12 @@ class Funds extends React.Component {
     return (
       <div className="api_keys_table table">
         <div className="table_title_wrapper clearfix">
-          <div className="table_title">Exchange accounts</div>
+          <div className="table_title">
+            <FormattedMessage
+              id="dashboard.exchangeAccounts"
+              defaultMessage="Exchange accounts"
+            />
+          </div>
         </div>
         {this.renderContent()}
       </div>
@@ -61,7 +68,19 @@ class Funds extends React.Component {
       {
         Header: SearchHeader('Name', nameFilter, this.onFilter),
         className: 'table_col_value',
-        Cell: row => (<div className="key_name_text_td">{row.value || (row.original.from._id === this.props.userId ? `Trusted to ${row.original.to.name}` : `${row.original.from.name} trusted to me`)}</div>),
+        Cell: row => (<div className="key_name_text_td">{row.value || (row.original.from._id === this.props.userId ?
+          <FormattedMessage
+            id="dashboard.trustedTo"
+            defaultMessage="Trusted to {name}"
+            values={{name: row.original.to.name}}
+          /> :
+          <FormattedMessage
+            id="dashboard.trustedToMe"
+            defaultMessage="{name} trusted to me"
+            values={{name: row.original.from.name}}
+          />)
+        }
+        </div>),
         minWidth: 100,
         accessor: 'name'
       }, {
@@ -82,9 +101,13 @@ class Funds extends React.Component {
         className: 'table_col_value',
         minWidth: 80,
         Header: (<div className="table_header_wrapper">
-          <span className="table_header">Balance,<br/>BTC</span>
+          <span className="table_header">
+            <FormattedMessage
+              id="dashboard.balance"
+              defaultMessage="Balance"
+            />,<br/>BTC</span>
           <div className="sort_icon_wrapper position_down_icon_wrapper">
-            <div className="green_arrow green_arrow_bottom" ></div>
+            <div className="green_arrow green_arrow_bottom" />
           </div>
         </div>),
         accessor: 'totalInBTC',
@@ -96,12 +119,12 @@ class Funds extends React.Component {
           const canDeleteKey = true;
           const onClick =  e => {
             e.stopPropagation();
-            if (window.confirm('Do you want to delete this key?')) {
+            if (window.confirm(this.props.intl.messages['leaderboard.deleteConfirm'])) {
               this.props.onKeyDeleteClick(row.original);
             }
           };
           const className = classNames('delete_key_button', {can_delete_key: canDeleteKey});
-          return (<div className={className} onClick={onClick}></div>);
+          return (<div className={className} onClick={onClick}/>);
         },
 
       }
@@ -144,9 +167,14 @@ class Funds extends React.Component {
 const ExchangeHeader = (exchanges, value, onChange) => {
   return (
     <div className="table_header_wrapper">
-      <span className="table_header">Exchange</span>
+      <span className="table_header">
+        <FormattedMessage
+          id="dashboard.exchange"
+          defaultMessage="Exchange"
+        />
+      </span>
       <div className="sort_icon_wrapper">
-        <div className="green_arrow green_arrow_bottom" ></div>
+        <div className="green_arrow green_arrow_bottom"/>
       </div>
       <div className="table_filter_wrapper" onClick={e => e.stopPropagation()}>
         <ExchangeSelect exchanges={exchanges}
@@ -167,4 +195,4 @@ Funds.propTypes = {
   selectedApiKey: PropTypes.object
 };
 
-export default Funds;
+export default injectIntl(Funds);

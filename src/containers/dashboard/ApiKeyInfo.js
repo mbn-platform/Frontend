@@ -4,6 +4,8 @@ import SearchHeader from '../../components/SearchHeader';
 import { Desktop, Mobile } from '../../generic/MediaQuery';
 import Pagination from '../../components/Pagination';
 import {CONTRACT_STATE_ACCEPTED, CONTRACT_STATE_INIT} from '../../constants';
+import {FormattedMessage, injectIntl} from 'react-intl';
+
 
 class ApiKeyInfo extends React.Component {
 
@@ -41,7 +43,7 @@ class ApiKeyInfo extends React.Component {
 
     return [
       {
-        Header: SearchHeader('Currency', currencyFilter, this.onCurrencyChange),
+        Header: SearchHeader(this.props.intl.messages['dashboard.currency'], currencyFilter, this.onCurrencyChange),
         id: 'currency',
         accessor: 'name',
         headerClassName: 'filter_align_center',
@@ -50,9 +52,14 @@ class ApiKeyInfo extends React.Component {
       },
       {
         Header: (<div className="table_header_wrapper">
-          <span className="table_header">Total</span>
+          <span className="table_header">
+            <FormattedMessage
+              id="dashboard.total"
+              defaultMessage="Total"
+            />
+          </span>
           <div className="sort_icon_wrapper position_down_icon_wrapper">
-            <div className="green_arrow green_arrow_bottom" ></div>
+            <div className="green_arrow green_arrow_bottom"/>
           </div>
         </div>),
         Cell: rowInfo => rowInfo.value >= 0 && this.showCell(rowInfo.original.name) ? rowInfo.value.toFixed(8).replace(/\.0+$/, '') : '  ',
@@ -62,9 +69,14 @@ class ApiKeyInfo extends React.Component {
       },
       {
         Header: (<div className="table_header_wrapper">
-          <span className="table_header">Available</span>
+          <span className="table_header">
+            <FormattedMessage
+              id="dashboard.available"
+              defaultMessage="Available"
+            />
+          </span>
           <div className="sort_icon_wrapper position_down_icon_wrapper">
-            <div className="green_arrow green_arrow_bottom" ></div>
+            <div className="green_arrow green_arrow_bottom"/>
           </div>
         </div>),
         Cell: rowInfo => rowInfo.value >= 0 && !this.isContractOrOffer()  ? rowInfo.value.toFixed(8).replace(/\.0+$/, '') : '  ',
@@ -74,9 +86,14 @@ class ApiKeyInfo extends React.Component {
       },
       {
         Header: (<div className="table_header_wrapper">
-          <span className="table_header">Trusted</span>
+          <span className="table_header">
+            <FormattedMessage
+              id="dashboard.trusted"
+              defaultMessage="Trusted"
+            />
+          </span>
           <div className="sort_icon_wrapper position_down_icon_wrapper">
-            <div className="green_arrow green_arrow_bottom" ></div>
+            <div className="green_arrow green_arrow_bottom"/>
           </div>
         </div>),
         Cell: rowInfo => rowInfo.value >= 0 && !this.isContractOrOffer() ? rowInfo.value.toFixed(8).replace(/\.0+$/, '') : ' ',
@@ -137,16 +154,16 @@ class ApiKeyInfo extends React.Component {
 
   getTitle(fund) {
     if(!fund || !fund.contractSettings) {
-      return 'Api Key currencies';
+      return this.props.intl.messages['dashboard.apiKeyCurrencies'];
     } else {
       if(fund.state === CONTRACT_STATE_ACCEPTED || fund.state === CONTRACT_STATE_INIT) {
-        return 'Available currencies';
+        return this.props.intl.messages['dashboard.availableCurrencies'];
       } else {
-        return 'Contract currencies';
+        return this.props.intl.messages['dashboard.contractCurrencies'];
       }
     }
   
   }
 }
 
-export default ApiKeyInfo;
+export default injectIntl(ApiKeyInfo);

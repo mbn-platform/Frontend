@@ -22,7 +22,7 @@ const ProgressBar = ({ progress }) => {
   }
   return (
     <div className="progress_bar_wrapper clearfix">
-      <div className={className} style={{width: progress + '%'}}></div>
+      <div className={className} style={{width: progress + '%'}}/>
     </div>
   );
 };

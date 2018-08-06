@@ -5,6 +5,7 @@ import {sortData, onColumnSort, classNameForColumnHeader} from '../../generic/te
 import classNames from 'classnames';
 import {BigNumber} from 'bignumber.js';
 import $ from 'jquery';
+import { FormattedMessage } from 'react-intl';
 
 class OrderBook extends React.Component {
 
@@ -108,8 +109,12 @@ class OrderBook extends React.Component {
     return (
       <div className="orderbook-table chart col-12 col-sm-6 col-md-12">
         <div className="chart__top justify-content-between row">
-          <div className="chart-name">Order Book</div>
-          <a role="button" className="reset-button text-muted" onClick={this.reset}>Reset sort</a>
+          <div className="chart-name">
+            <FormattedMessage id="terminal.orderBook" defaultMessage="Order Book"/>
+          </div>
+          <a role="button" className="reset-button text-muted" onClick={this.reset}>
+            <FormattedMessage id="terminal.resetSort" defaultMessage="Reset sort"/>
+          </a>
           <Desktop>
             <div className="chart-controls align-items-center justify-content-between row">
             </div>
@@ -120,17 +125,21 @@ class OrderBook extends React.Component {
             <thead>
               <tr>
                 <th onClick={() => this.onColumnSort('price')}>
-                  <div>Ask <span className={classNameForColumnHeader(this.state, 'price')}></span></div>
+                  <div>
+                    <FormattedMessage id="terminal.ask" defaultMessage="Ask"/>
+                    <span className={classNameForColumnHeader(this.state, 'price')}/></div>
                 </th>
                 <th onClick={() => this.onColumnSort('Quantity')}>
-                  <div>Size ({secondary})<span
-                    className={classNameForColumnHeader(this.state, 'Quantity')}></span></div>
+                  <div>
+                    <FormattedMessage id="terminal.size" defaultMessage="Size"/> ({secondary})<span
+                      className={classNameForColumnHeader(this.state, 'Quantity')}/></div>
                 </th>
                 <th onClick={() => this.onColumnSort('relativeSize')}>
-                  <div>Total ({main}) <span
-                    className={classNameForColumnHeader(this.state, 'relativeSize')}></span></div>
+                  <div>
+                    <FormattedMessage id="terminal.total" defaultMessage="Total "/>({main}) <span
+                      className={classNameForColumnHeader(this.state, 'relativeSize')}/></div>
                 </th>
-                <th></th>
+                <th/>
               </tr>
             </thead>
             <tbody className="tbody">
@@ -182,7 +191,9 @@ class OrderBook extends React.Component {
 
     return (
       <div className={classNames('value', 'last-price', 'row', isUp ? 'up' : 'down')}>
-        <div className={'bid-label'}>Bid</div>
+        <div className={'bid-label'}>
+          <FormattedMessage id="terminal.bid" defaultMessage="Bid"/>
+        </div>
         <span onClick={() => this.props.onOrderSelect(last)}>
           {last ? BigNumber(last).toString(10) : null}</span>
         <span className={classNames('icon', 'icon-dir', isUp ? 'icon-up-dir' : 'icon-down-dir')}> </span>

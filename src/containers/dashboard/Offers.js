@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import { Desktop, Mobile } from '../../generic/MediaQuery';
 import Pagination from '../../components/Pagination';
 import { CONTRACT_STATE_INIT, CONTRACT_STATE_ACCEPTED } from '../../constants';
-
+import {FormattedMessage, injectIntl} from 'react-intl';
 
 const TAB_INBOX = 0;
 const TAB_OUTBOX = 1;
@@ -53,7 +53,12 @@ class Offers extends React.Component {
     return (
       <div className="requests_table table">
         <div className="table_title_wrapper clearfix">
-          <div className="table_title">Request list</div>
+          <div className="table_title">
+            <FormattedMessage
+              id="dashboard.requestList"
+              defaultMessage="Request list"
+            />
+          </div>
           <SegmentedControl selectedIndex={this.state.selectedTab}
             onChange={this.onTabChange}
             segments={segments}
@@ -73,41 +78,60 @@ class Offers extends React.Component {
     } else {
       switch(this.state.selectedTab) {
         case TAB_INBOX: {
-        const onAcceptClick = e => {
-          e.preventDefault();
-          this.props.onOfferAccepted(this.props.selectedOffer);
-        };
-        const onRejectClick = e => {
-          e.preventDefault();
-          this.props.onOfferRejected(this.props.selectedOffer);
-        };
-        return (
-          <div className="table_requests_control_wr clearfix">
-            <div className="table_requests_control_text">accept this request?</div>
-            <div className="table_requests_control_btns offer_controls">
-              <a onClick={onAcceptClick}
-                className="table_requests_yes table_requests_btn" href=""><u>Yes</u></a>
-              <a onClick={onRejectClick}
-                className="table_requests_no table_requests_btn" href=""><u>No</u></a>
+          const onAcceptClick = e => {
+            e.preventDefault();
+            this.props.onOfferAccepted(this.props.selectedOffer);
+          };
+          const onRejectClick = e => {
+            e.preventDefault();
+            this.props.onOfferRejected(this.props.selectedOffer);
+          };
+          return (
+            <div className="table_requests_control_wr clearfix">
+              <div className="table_requests_control_text">
+                <FormattedMessage
+                  id="dashboard.acceptRequestQuestion"
+                  defaultMessage="accept this request?"
+                />
+              </div>
+              <div className="table_requests_control_btns offer_controls">
+                <a onClick={onAcceptClick}
+                  className="table_requests_yes table_requests_btn" href=""><u><FormattedMessage
+                    id="yes"
+                    defaultMessage="yes"
+                  /></u></a>
+                <a onClick={onRejectClick}
+                  className="table_requests_no table_requests_btn" href=""><u><FormattedMessage
+                    id="no"
+                    defaultMessage="no"
+                  /></u></a>
+              </div>
             </div>
-          </div>
-        );
+          );
         }
         case TAB_OUTBOX: {
-        const onClick = e => {
-          e.preventDefault();
-          this.props.onOfferCanceled(this.props.selectedOffer);
-        };
-        return (
-          <div className="table_requests_control_wr clearfix">
-            <div className="table_requests_control_text">Cancel this request?</div>
-            <div className="table_requests_control_btns offer_controls">
-              <a
-                onClick={onClick}
-                className="table_requests_yes table_requests_btn" href=""><u>Yes</u></a>
+          const onClick = e => {
+            e.preventDefault();
+            this.props.onOfferCanceled(this.props.selectedOffer);
+          };
+          return (
+            <div className="table_requests_control_wr clearfix">
+              <div className="table_requests_control_text">
+                <FormattedMessage
+                  id="dashboard.cancelRequestQuestion"
+                  defaultMessage="Cancel this request?"
+                />
+              </div>
+              <div className="table_requests_control_btns offer_controls">
+                <a
+                  onClick={onClick}
+                  className="table_requests_yes table_requests_btn" href=""><u><FormattedMessage
+                    id="yes"
+                    defaultMessage="yes"
+                  /></u></a>
+              </div>
             </div>
-          </div>
-        );
+          );
         }
         default:
           throw new Error('invalid state');
@@ -117,14 +141,14 @@ class Offers extends React.Component {
 
   getColumns() {
     return [{
-      Header: SortHeader(this.state.selectedTab === TAB_INBOX ? 'From' : 'To'),
+      Header: SortHeader(this.state.selectedTab === TAB_INBOX ? this.props.intl.messages['dashboard.from']: this.props.intl.messages['dashboard.to']),
       id: 'name',
       accessor: o => this.state.selectedTab == TAB_INBOX ? o.from.name : o.to.name,
       Cell: row => (<div className="contractor_link">@<Link className="table_col_value_a" to={'/' + row.value}>{row.value}</Link></div>),
       className: 'table_col_value'
     }, {
       id: '_id',
-      Header: SortHeader('Time'),
+      Header: SortHeader(this.props.intl.messages['time']),
       className: 'table_col_value',
       accessor: offer => {
         const date = new Date(offer.dt);
@@ -132,7 +156,7 @@ class Offers extends React.Component {
       },
       Cell: OfferCell(this.onOfferPayClick, this.state.selectedTab)
     }, {
-      Header: SortHeader('Sum'),
+      Header: SortHeader(this.props.intl.messages['sum']),
       className: 'table_col_value',
       id: 'amount',
       accessor: offer => {
@@ -180,7 +204,7 @@ const SortHeader = header => (
   <div className="table_header_wrapper" style={{height: 30}}>
     <span className="table_header">{header}</span>
     <div className="sort_icon_wrapper">
-      <div className="green_arrow"></div>
+      <div className="green_arrow"/>
     </div>
   </div>
 );
@@ -194,10 +218,15 @@ const OfferCell = (onPayClick, selectedTab) => {
     if(rowInfo.original.state === CONTRACT_STATE_ACCEPTED) {
       if(selectedTab === TAB_INBOX) {
         return (
-          <div className="request_progress_txt"><div>awaiting payment</div>
-            <div className="request_progress_wr">
-              <div className={classNames('request_progress', progressColor)} style={style}></div>
-            </div>
+          <div className="request_progress_txt"><div>
+            <FormattedMessage
+              id="dashboard.awaitingPayment"
+              defaultMessage="awaiting payment"
+            />
+          </div>
+          <div className="request_progress_wr">
+            <div className={classNames('request_progress', progressColor)} style={style}/>
+          </div>
           </div>
         );
       } else {
@@ -208,9 +237,14 @@ const OfferCell = (onPayClick, selectedTab) => {
         return (
           <div onClick={onClick}
             className="pay_request_wrapper">
-            <span className="pay_request_btn_txt">pay</span>
+            <span className="pay_request_btn_txt">
+              <FormattedMessage
+                id="dashboard.pay"
+                defaultMessage="pay"
+              />
+            </span>
             <div className="request_progress_wr">
-              <div className={classNames('request_progress', progressColor)} style={style}></div>
+              <div className={classNames('request_progress', progressColor)} style={style}/>
             </div>
           </div>
         );
@@ -219,7 +253,7 @@ const OfferCell = (onPayClick, selectedTab) => {
       return (
         <div className="request_progress_txt"><div>{formatTime(rowInfo.value)}</div>
           <div className="request_progress_wr">
-            <div className={classNames('request_progress', progressColor)} style={style}></div>
+            <div className={classNames('request_progress', progressColor)} style={style}/>
           </div>
         </div>
       );
@@ -239,8 +273,7 @@ function getColorClass(progress) {
 
 
 
-export default Offers;
-
+export default injectIntl(Offers);
 
 function formatTime(difference){
   const left = 86400000 - difference;
@@ -248,10 +281,4 @@ function formatTime(difference){
   const minutes = Math.floor(left / 1000 % 3600 / 60);
   return `${hours} h ${minutes} m`;
 }
-function formatBalance(value, name) {
-  if(name === 'USDT') {
-    return (value || 0).toFixed(2);
-  } else {
-    return (value || 0).toFixed(8);
-  }
-}
+
