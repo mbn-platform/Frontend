@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import $ from 'jquery';
 import { OpenOrder, CompletedOrder } from '../../components/OrdersStatements';
 import {sortData, onColumnSort, classNameForColumnHeader}  from '../../generic/terminalSortFunctions';
+import { FormattedMessage } from 'react-intl';
 
 const TAB_OPEN_ORDERS = 0;
 const TAB_COMPLETED_ORDERS = 1;
@@ -35,12 +36,18 @@ class OrdersTable extends React.Component {
             <span
               onClick={() => this.onTabClick(TAB_OPEN_ORDERS)}
               className={classNames('block__top-switch', 'orders-open', {active: this.state.tab === TAB_OPEN_ORDERS})}>
-              Open Orders
+              <FormattedMessage
+                id="orders.openOrders"
+                defaultMessage="Open Orders"
+              />
             </span>
             <span
               onClick={() => this.onTabClick(TAB_COMPLETED_ORDERS)}
               className={classNames('block__top-switch', 'orders-completed', {active: this.state.tab === TAB_COMPLETED_ORDERS})}>
-              Completed orders
+              <FormattedMessage
+                id="orders.completedOrders"
+                defaultMessage="Completed orders"
+              />
             </span>
           </div>
         </div>
@@ -52,13 +59,56 @@ class OrdersTable extends React.Component {
                   <thead>
                     <tr>
                       <th onClick={() => this.onColumnSort('type')}><br className="show-mobile"/><span className={classNameForColumnHeader(this.state, 'type')}></span></th>
-                      <th onClick={() => this.onColumnSort('dt')}>Opened <span className="hide-mobile">Date</span> <span className={classNameForColumnHeader(this.state, 'dt')}></span></th>
-                      <th onClick={() => this.onColumnSort('market')}>Market <span className={classNameForColumnHeader(this.state, 'market')}></span></th>
-                      <th onClick={() => this.onColumnSort('limit')}>Price <span className={classNameForColumnHeader(this.state, 'limit')}></span></th>
-                      <th onClick={() => this.onColumnSort('filled')}>Units Filled <span className={classNameForColumnHeader(this.state, 'filled')}></span></th>
-                      <th onClick={() => this.onColumnSort('amount')}>Units Total <span className={classNameForColumnHeader(this.state, 'amount')}></span></th>
-                      <th onClick={() => this.onColumnSort('price')}><span className="hide-mobile">Estimated</span><span className="show-mobile">Est.</span> Total <span className={classNameForColumnHeader(this.state, 'price')}></span></th>
-                      <th></th>
+                      <th onClick={() => this.onColumnSort('dt')}>
+                        <FormattedMessage
+                          id="orders.opened"
+                          defaultMessage="Opened"
+                        />
+                        <span className="hide-mobile">
+                          <FormattedMessage
+                            id="orders.date"
+                            defaultMessage="Date"
+                          />
+                        </span> <span className={classNameForColumnHeader(this.state, 'dt')}/></th>
+                      <th onClick={() => this.onColumnSort('market')}>
+                        <FormattedMessage
+                          id="orders.market"
+                          defaultMessage="Market"
+                        />
+                        <span className={classNameForColumnHeader(this.state, 'market')}/></th>
+                      <th onClick={() => this.onColumnSort('limit')}>
+                        <FormattedMessage
+                          id="orders.price"
+                          defaultMessage="Price"
+                        />
+                        <span className={classNameForColumnHeader(this.state, 'limit')}/></th>
+                      <th onClick={() => this.onColumnSort('filled')}>
+                        <FormattedMessage
+                          id="orders.unitsFilled"
+                          defaultMessage="Units Filled"
+                        /> <span className={classNameForColumnHeader(this.state, 'filled')}/></th>
+                      <th onClick={() => this.onColumnSort('amount')}>
+                        <FormattedMessage
+                          id="orders.unitsTotal"
+                          defaultMessage="Units Total"
+                        /> <span className={classNameForColumnHeader(this.state, 'amount')}/></th>
+                      <th onClick={() => this.onColumnSort('price')}><span className="hide-mobile">
+                        <FormattedMessage
+                          id="orders.estimated"
+                          defaultMessage="Estimated"
+                        />
+                      </span><span className="show-mobile">
+                        <FormattedMessage
+                          id="orders.est"
+                          defaultMessage="Est."
+                        />
+                      </span>
+                      <FormattedMessage
+                        id="orders.total"
+                        defaultMessage="Total"
+                      />
+                      <span className={classNameForColumnHeader(this.state, 'price')}/></th>
+                      <th/>
                     </tr>
                   </thead>
                   <tbody>
@@ -80,13 +130,52 @@ class OrdersTable extends React.Component {
                 <table className="table">
                   <thead>
                     <tr>
-                      <th onClick={() => this.onColumnSort('type')}><br className="show-mobile"/><span className={classNameForColumnHeader(this.state, 'type')}></span></th>
-                      <th onClick={() => this.onColumnSort('dt')}>Opened <span className="hide-mobile">Date</span> <span className={classNameForColumnHeader(this.state, 'dt')}></span></th>
-                      <th onClick={() => this.onColumnSort('market')}>Market <span className={classNameForColumnHeader(this.state, 'market')}></span></th>
-                      <th onClick={() => this.onColumnSort('limit')}>Price <span className={classNameForColumnHeader(this.state, 'limit')}></span></th>
-                      <th onClick={() => this.onColumnSort('filled')}>Units Filled <span className={classNameForColumnHeader(this.state, 'filled')}></span></th>
-                      <th onClick={() => this.onColumnSort('amount')}>Units Total <span className={classNameForColumnHeader(this.state, 'amount')}></span></th>
-                      <th onClick={() => this.onColumnSort('price')}><span className="hide-mobile">Estimated</span><span className="show-mobile">Est.</span> Total <span className={classNameForColumnHeader(this.state, 'price')}></span></th>
+                      <th onClick={() => this.onColumnSort('type')}><br className="show-mobile"/><span className={classNameForColumnHeader(this.state, 'type')}/></th>
+                      <th onClick={() => this.onColumnSort('dt')}>
+                        <FormattedMessage
+                          id="orders.opened"
+                          defaultMessage="Opened"
+                        />
+                        <span className="hide-mobile">
+                          <FormattedMessage
+                            id="orders.date"
+                            defaultMessage="Date"
+                          /></span> <span className={classNameForColumnHeader(this.state, 'dt')}/></th>
+                      <th onClick={() => this.onColumnSort('market')}>
+                        <FormattedMessage
+                          id="orders.market"
+                          defaultMessage="Market"
+                        />
+                        <span className={classNameForColumnHeader(this.state, 'market')}/></th>
+                      <th onClick={() => this.onColumnSort('limit')}>
+                        <FormattedMessage
+                          id="orders.price"
+                          defaultMessage="Price"
+                        />
+                        <span className={classNameForColumnHeader(this.state, 'limit')}/></th>
+                      <th onClick={() => this.onColumnSort('filled')}>
+                        <FormattedMessage
+                          id="orders.unitsFilled"
+                          defaultMessage="Units Filled"
+                        />
+                        <span className={classNameForColumnHeader(this.state, 'filled')}/></th>
+                      <th onClick={() => this.onColumnSort('amount')}>
+                        <FormattedMessage
+                          id="orders.unitsTotal"
+                          defaultMessage="Units Total"
+                        /><span className={classNameForColumnHeader(this.state, 'amount')}/></th>
+                      <th onClick={() => this.onColumnSort('price')}><span className="hide-mobile"><FormattedMessage
+                        id="orders.estimated"
+                        defaultMessage="Estimated"
+                      /></span><span className="show-mobile">
+                        <FormattedMessage
+                          id="orders.est"
+                          defaultMessage="Est."
+                        /></span> 
+                      <FormattedMessage
+                        id="orders.total"
+                        defaultMessage="Total"
+                      /> <span className={classNameForColumnHeader(this.state, 'price')}/></th>
                     </tr>
                   </thead>
                   <tbody>

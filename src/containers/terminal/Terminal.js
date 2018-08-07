@@ -44,8 +44,6 @@ class Terminal extends React.Component {
         symbol: this.props.market
       }
       payload = setFundId(payload, this.props.fund);
-      console.log(payload);
-      console.log('getting orders');
       this.props.getOrders(payload);
     }
   }

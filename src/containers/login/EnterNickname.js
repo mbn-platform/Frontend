@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './EnterNickname.css';
+import { FormattedMessage } from 'react-intl';
 
 class EnterNickname extends React.Component {
 
@@ -25,7 +26,12 @@ class EnterNickname extends React.Component {
   render() {
     return (
       <div className="login_step_nickname">
-        <div className="login_step_nickname_text">Please choose nickname:</div>
+        <div className="login_step_nickname_text">
+          <FormattedMessage
+            id="chooseNickname.chooseNickname"
+            defaultMessage="Please choose nickname:"
+          />
+        </div>
         <div className="login_step_nickname_field_wrapper clearfix">
           <form onSubmit={this.onSubmit}>
             <input className="login_step_nickname_field"

@@ -54,7 +54,7 @@ class DropdownSelect extends React.Component {
             }}
             className={classNames('dropdown', this.props.dropdownClassName)}>
             <div className="dropdown__name" onClick={this.onOutsideClick}>
-              <span>{this.props.selected ? this.props.selected : this.props.header}</span><span className="arrow_down"></span>
+              <span>{this.props.selected ? this.props.selected : this.props.header}</span><span className="arrow_down"/>
             </div>
             {this.props.items.map(item => (
               <div

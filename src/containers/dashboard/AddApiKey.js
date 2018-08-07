@@ -2,6 +2,7 @@ import React from 'react';
 import ExchangeSelect from '../../components/ExchangeSelect';
 import { connect } from 'react-redux';
 import { addApiKey } from '../../actions/apiKeys';
+import { injectIntl } from 'react-intl';
 
 class AddApiKey extends React.Component {
   constructor(props) {
@@ -25,7 +26,7 @@ class AddApiKey extends React.Component {
     event.preventDefault();
     const { name, value, exchange, secret } = this.state;
     if(!name || !value || !exchange || !secret) {
-      alert('enter keyname and key value, select exchange');
+      alert(this.props.intl.messages['dashboard.addAlert']);
       return;
     }
     this.props.onApiKeyCreated({name, key: value.trim(), exchange, secret: secret.trim()});
@@ -55,7 +56,7 @@ class AddApiKey extends React.Component {
                 value={this.state.name}
                 maxLength='20'
                 name="name"
-                placeholder="Name"
+                placeholder={this.props.intl.messages['dashboard.namePlaceholder']}
                 autoCorrect="off"
                 spellCheck="false"
               />
@@ -74,7 +75,7 @@ class AddApiKey extends React.Component {
                 autoComplete="off"
                 value={this.state.value}
                 onChange={this.handleChange}
-                placeholder="Key"
+                placeholder={this.props.intl.messages['dashboard.keyPlaceholder']}
                 autoCorrect="off"
                 spellCheck="false"
               />
@@ -85,7 +86,7 @@ class AddApiKey extends React.Component {
                 name="secret"
                 autoComplete="off"
                 onChange={this.handleChange}
-                placeholder="Secret"
+                placeholder={this.props.intl.messages['dashboard.secretPlaceholder']}
                 autoCorrect="off"
                 spellCheck="false"
               />
@@ -108,7 +109,8 @@ const mapDispatchToProps = dispatch => {
 };
 
 
-export default connect(state => ({
-  userId: state.auth.profile._id,
-  exchanges: state.exchanges
-}), mapDispatchToProps)(AddApiKey);
+export default injectIntl(
+  connect(state => ({
+    userId: state.auth.profile._id,
+    exchanges: state.exchanges
+  }), mapDispatchToProps)(AddApiKey));

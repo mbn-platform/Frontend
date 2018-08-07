@@ -1,11 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Col, Container, Row } from 'reactstrap';
-import ReactTable from '../../components/SelectableReactTable';
 import SearchHeader from '../../components/SearchHeader';
-import { Desktop, Mobile } from '../../generic/MediaQuery';
-import Pagination from '../../components/Pagination';
 import { UncontrolledTooltip } from 'reactstrap';
+import { FormattedMessage, injectIntl } from 'react-intl';
+
 
 class CurrencySettings extends React.Component {
 
@@ -29,11 +28,11 @@ class CurrencySettings extends React.Component {
   componentDidMount() {
     setTimeout(() => {
       this.calcHeight();
-    }, 1)
+    }, 1);
   }  
 
   calcHeight() {
-    this.setState({containerHeight: this.divRef.clientHeight})
+    this.setState({containerHeight: this.divRef.clientHeight});
   }  
 
   render() {
@@ -47,7 +46,11 @@ class CurrencySettings extends React.Component {
                   <div className="container-fuild h-100">
                     <div className="row align-items-center">
                       <div className="col-auto title-text">
-                        <span className="icon icon-profit icon-002-circle"/>CURRENCY PREFERENCES
+                        <span className="icon icon-profit icon-002-circle"/>
+                        <FormattedMessage
+                          id="profile.currencyPreferences"
+                          defaultMessage="CURRENCY PREFERENCES"
+                        />
                       </div>
                     </div>
                     <div className="row align-items-center d-flex d-md-none choose-header-block justify-content-center">
@@ -55,11 +58,20 @@ class CurrencySettings extends React.Component {
                         {
                           this.props.own ? (
                             <div className="change-currency-block">
-                              Choose your prefered currencies by clicking on <span className="icon icon-star"/>
+                              <FormattedMessage
+                                id="profile.chooseYourCurrenciesByClick"
+                                defaultMessage="Choose your prefered currencies by clicking on"
+                              />
+                              <span className="icon icon-star"/>
                             </div>
                           ) : (
                             <div className="change-currency-block">
-                              Currencies preferred<br/> by trader <span className="icon icon-star"/>
+                              <FormattedMessage
+                                id="profile.chooseYourCurrenciesWithBr"
+                                defaultMessage="Currencies preferred {br} by trader"
+                                values={{br: <br/>}}
+                              />
+                              <span className="icon icon-star"/>
 
                             </div>
                           )
@@ -69,7 +81,12 @@ class CurrencySettings extends React.Component {
                   </div>
                 </div>
                 <div className="card-body"  ref={element => this.divRef = element}>
-                  <div className="under_construction">Under construction</div>
+                  <div className="under_construction">
+                    <FormattedMessage
+                      id="profile.underConstruction"
+                      defaultMessage="Under construction"
+                    />
+                  </div>
                 </div>
               </div>
             </Col>
@@ -83,13 +100,13 @@ class CurrencySettings extends React.Component {
     const currencyFilter = this.state.filtered.find(f => f.id === 'currency').value;
     return [
       {
-        Header: SearchHeader('Currency', currencyFilter, this.onCurrencyChange),
+        Header: SearchHeader(this.props.intl.messages['profile.currency'], currencyFilter, this.onCurrencyChange),
         id: 'currency',
         accessor: 'name',
         minWidth: 80,
         className: 'table_col_value'
       }, {
-        Header: SortableTableHeader('Trade volume'),
+        Header: SortableTableHeader(this.props.intl.messages['profile.tradeVolume']),
         className: 'table_col_value',
         minWidth: 80,
         accessor: 'tradeVolume'
@@ -118,42 +135,6 @@ class CurrencySettings extends React.Component {
     ];
 
   }
-
-  renderTable() {
-
-    const scrollBarHeight = this.state.changed ? 217 - 44 : 217;
-
-    return (
-      <div>
-        <Desktop>
-          <div className="profile_table_wrapper">
-            <ReactTable
-              className="profile_table"
-              data={this.props.currencies}
-              columns={this.getColumns()}
-              filtered={this.state.filtered}
-              onItemSelected={() => {}}
-              scrollBarHeight={scrollBarHeight}
-              scrollBarHeightAuto='true'
-            />
-          </div>
-        </Desktop>
-        <Mobile>
-          <ReactTable
-            data={this.props.currencies}
-            columns={this.getColumns()}
-            filtered={this.state.filtered}
-            onItemSelected={() => {}}
-            minRows={5}
-            showPagination={true}
-            defaultPageSize={5}
-            PaginationComponent={Pagination}
-          />
-        </Mobile>
-      </div>
-    );
-
-  }
 }
 const SortableTableHeader = header => (
   <div className="table_header_wrapper contract_header_wrapper">
@@ -172,7 +153,10 @@ const StatusHeader = (onSelectAllClicked, own) => {
       </div>
       <div id="help-icon-preferred-currencies" className="table_header_help_wrapper" style={{paddingTop: 32, marginLeft: 0}}/>
       <UncontrolledTooltip target="help-icon-preferred-currencies" placement="right">
-        {own ? 'Choose your preferred currencies' : 'Currencies preferred by trader'}
+        {own ?
+          this.props.intl.messages['chooseYourCurrencies'] :
+          this.props.intl.messages['currenciesPreferredByTrader']
+        }
       </UncontrolledTooltip>
       <div className="sort_icon_wrapper">
         <div className="green_arrow"/>
@@ -182,5 +166,4 @@ const StatusHeader = (onSelectAllClicked, own) => {
 };
 
 
-export default CurrencySettings;
-
+export default injectIntl(CurrencySettings);

@@ -2,9 +2,6 @@ import React from 'react';
 import ProfileInfo from './ProfileInfo';
 import TablesScreen from './TablesScreen';
 import { Row, Container } from 'reactstrap';
-import { connect } from 'react-redux';
-import { updateExchanges } from '../../actions/exchanges';
-import {updateContractSettings, getProfile, toggleAvailable, getFeedbacks, getTradesForUser} from '../../actions/profile';
 
 class Profile extends React.Component {
 

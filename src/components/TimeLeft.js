@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { getColor } from '../generic/util';
+import { FormattedMessage } from 'react-intl';
 
 class TimeLeft extends React.Component {
   render() {
@@ -18,23 +19,35 @@ class TimeLeft extends React.Component {
       <div className="time_profit_left_border">
         <div className="time_left_wrapper clearfix">
           <div className="time_left_title_wr">
-            <div className="time_left_title">time left to complete:</div>
+            <div className="time_left_title">
+              <FormattedMessage id="timeLeftToComplete"
+                defaultMessage="time left to complete:"/>
+            </div>
           </div>
           {
             progress && (<div className={classNames('time_left_counts_wrapper', color)}>
               <div className="time_left_count_wrapper days">
                 <div className="time_left_count_big">{isNaN(days) ? 0 : days}</div>
-                <div className="time_left_count_small">days</div>
+                <div className="time_left_count_small">
+                  <FormattedMessage id="days"
+                    defaultMessage="days"/>
+                </div>
               </div>
               <div className="time_left_count_wrapper dots"><span className="dots_couple">:</span></div>
               <div className="time_left_count_wrapper hours">
                 <div className="time_left_count_big">{isNaN(hours) ? 0 : hours}</div>
-                <div className="time_left_count_small">hours</div>
+                <div className="time_left_count_small">
+                  <FormattedMessage id="hours"
+                    defaultMessage="hours"/>
+                </div>
               </div>
               <div className="time_left_count_wrapper dots-second"><span className="dots_couple">:</span></div>
               <div className="time_left_count_wrapper min">
                 <div className="time_left_count_big">{isNaN(minutes) ? 0 : minutes}</div>
-                <div className="time_left_count_small">min</div>
+                <div className="time_left_count_small">
+                  <FormattedMessage id="min"
+                    defaultMessage="min"/>
+                </div>
               </div>
             </div>)
           }

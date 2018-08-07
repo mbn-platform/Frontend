@@ -6,6 +6,7 @@ import OrdersTable from './OrdersTable';
 import { connect } from 'react-redux';
 import { cancelOrder, getOrders, selectExchange, selectFund, getExchangeMarkets, startTradingDataUpdates, stopTradingDataUpdates } from '../../actions/terminal';
 import { setFundId } from '../../generic/util';
+import { FormattedMessage } from 'react-intl';
 
 class Orders extends React.Component {
 
@@ -22,7 +23,12 @@ class Orders extends React.Component {
             <div className="orders-main">
               <div className="orders-main__top">
                 <div className="row  align-items-center">
-                  <div className="orders-main__title"> Orders</div>
+                  <div className="orders-main__title">
+                    <FormattedMessage
+                      id="orders.orders"
+                      defaultMessage="Orders"
+                    />
+                  </div>
                 </div>
                 <Controls
                   apiKeys={apiKeys}
@@ -50,14 +56,14 @@ class Orders extends React.Component {
     this.props.startTradingDataUpdates();
     this.props.selectExchange(this.props.exchange);
     if(this.props.fund) {
-      let payload = setFundId({}, this.props.fund)
+      let payload = setFundId({}, this.props.fund);
       this.props.getOrders(payload);
     }
   }
 
   componentWillReceiveProps(props) {
     if(props.fund && (!this.props.fund || this.props.fund._id !== props.fund._id)) {
-      let payload = setFundId({}, props.fund)
+      let payload = setFundId({}, props.fund);
       this.props.getOrders(payload);
     }
   }

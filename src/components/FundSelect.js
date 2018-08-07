@@ -1,6 +1,8 @@
 import React from 'react';
 import { Popover } from 'reactstrap';
 import classNames from 'classnames';
+import { FormattedMessage } from 'react-intl';
+
 
 class FundSelect extends React.Component {
 
@@ -36,7 +38,7 @@ class FundSelect extends React.Component {
   }
 
   render() {
-    const funds = this.props.funds.filter(fund => fund.exchange === this.props.exchange)
+    const funds = this.props.funds.filter(fund => fund.exchange === this.props.exchange);
     return (
       <div onClick={() => this.setState({isOpen: !this.state.isOpen})} id="popover1" className="dropdown-link-wrap">
         {this.renderSelectedFund()}
@@ -56,14 +58,21 @@ class FundSelect extends React.Component {
             }}
             className="dropdown keys">
             <div className="dropdown__name" onClick={this.onOutsideClick}>
-              <span>API KEY</span><span className="arrow_down"></span>
+              <span>
+                <FormattedMessage id="apiKey"
+                  defaultMessage="API KEY"/>
+              </span><span className="arrow_down"/>
             </div>
             {funds.slice(0, 5).map(fund => (
               <div
                 key={fund._id}
                 onClick={e => this.onKeySelect(e, fund)}
                 className={classNames('key', {active: this.props.selectedFund && this.props.selectedFund._id === fund._id})}>
-                {fund.name || `${fund.from.name} trusted to me`}
+                {fund.name ||
+                <FormattedMessage id="userTrustToMe"
+                  defaultMessage="{name} trusted to me"
+                  values={{name: fund.from.name}}/>
+                }
               </div>
             ))}
           </div>
@@ -75,7 +84,13 @@ class FundSelect extends React.Component {
   renderSelectedFund() {
     return (
       <span className="dropdown-link">
-        API KEY{this.props.selectedFund ? ': ' + (this.props.selectedFund.name || `${this.props.selectedFund.from.name} trusted to me`) + ' ' : ' '}<span className="arrow_down"/>
+        <FormattedMessage id="apiKey"
+          defaultMessage="API KEY"/>{this.props.selectedFund ? ': '
+        + (this.props.selectedFund.name ||
+        <FormattedMessage id="userTrustToMe"
+          defaultMessage="{name} trusted to me"
+          values={{name: this.props.selectedFund.from.name}}/>) + ' ' : ' '}
+        <span className="arrow_down"/>
       </span>
     );
   }

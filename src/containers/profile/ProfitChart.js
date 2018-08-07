@@ -3,6 +3,7 @@ import SegmentedControl from '../../components/SegmentedControl';
 import { Col } from 'reactstrap';
 import { Desktop, Mobile } from '../../generic/MediaQuery';
 import AmChartsReact from '@amcharts/amcharts3-react';
+import { FormattedMessage } from 'react-intl';
 
 class ProfitChart extends React.Component {
 
@@ -98,7 +99,11 @@ class ProfitChart extends React.Component {
             <div className="container-fuild h-100">
               <div className="row h-100 align-items-center">
                 <div className="col-auto title-text">
-                  <span className="icon icon-profit icon-005-growth"></span>PROFIT CHART
+                  <span className="icon icon-profit icon-005-growth"/>
+                  <FormattedMessage
+                    id="profile.profitChart"
+                    defaultMessage="PROFIT CHART"
+                  />
                 </div>
                 <Col className="d-flex justify-content-end">
                   <Desktop>
@@ -128,7 +133,14 @@ class ProfitChart extends React.Component {
             <div className="container d-flex flex-column profit-card-body">
 
               <div className="row order-3 order-md-1 justify-content-center">
-                <div className="col-auto profit"><div className="circle"></div><div className="text">PROFIT AS TRADER</div></div>
+                <div className="col-auto profit"><div className="circle"/><div className="text">
+                  <FormattedMessage
+                    id="profile.profitAsTrader"
+                    defaultMessage="PROFIT AS TRADER"
+                  />
+
+                </div>
+                </div>
               </div>
               <div className="row order-2 justify-content-center amcharts-block">
                 <div className="col-12">
@@ -184,7 +196,7 @@ class ProfitChart extends React.Component {
       'categoryField': 'category',
       'startDuration': 0,
       'fontSize': 10,
-      "hideCredits": true,
+      'hideCredits': true,
       'color': '#6f6f71',
       'fontFamily': 'maven_proregular',
       'trendLines': [],
@@ -286,19 +298,6 @@ function calculatePoints(startDate, endDate, n, profitPoints, isUsd, rates) {
     points.push([date, searchPoint(date)]);
   }
   return points;
-}
-
-function formatDate(date) {
-  const year = date.getFullYear();
-  let month = date.getMonth() + 1;
-  if(month < 10) {
-    month = '0' + month;
-  }
-  let day = date.getDate();
-  if(day < 10) {
-    day = '0' + day;
-  }
-  return day + '.' + month + '.' + year;
 }
 
 function closure(array, isUsd, rates) {

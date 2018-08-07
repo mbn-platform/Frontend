@@ -3,6 +3,7 @@ import 'amcharts3/amcharts/amcharts';
 import 'amcharts3/amcharts/pie';
 import 'amcharts3/amcharts/serial';
 import AmChartsReact from '@amcharts/amcharts3-react';
+import { FormattedMessage } from 'react-intl';
 
 class FundsChart extends React.Component {
 
@@ -59,7 +60,12 @@ class FundsChart extends React.Component {
     return (
       <div className="table">
         <div className="table_title_wrapper clearfix">
-          <div className="table_title center">AVAILABLE ASSETS</div>
+          <div className="table_title center">
+            <FormattedMessage
+              id="dashboard.availableAssets"
+              defaultMessage="AVAILABLE ASSETS"
+            />
+          </div>
         </div>
         <div className="charts">
           <div className="chart_pie">

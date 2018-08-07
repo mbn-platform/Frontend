@@ -25,7 +25,7 @@ class TablesScreen extends React.Component {
                   />
                 </Row>
                 <Row className="d-none d-md-block">
-                  <Col xs="12" className="gap-card"></Col>
+                  <Col xs="12" className="gap-card"/>
                 </Row>
                 <Row className="table-row">
                   <CurrencySettings

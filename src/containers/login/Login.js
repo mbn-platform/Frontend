@@ -6,6 +6,7 @@ import NoMetamask from '../../components/NoMetamask';
 import Competition from './Competition';
 import MetamaskClosed from './MetamaskClosed';
 import LoginForm from './LoginForm';
+import { FormattedMessage } from 'react-intl';
 
 
 
@@ -64,7 +65,12 @@ class Login extends React.Component {
         <div className="login_content row justify-content-center align-items-center">
           <div className="login_steps">
             <div className="login_title_wrapper">
-              <div className="login_title_text">Beta</div>
+              <div className="login_title_text">
+                <FormattedMessage
+                  id="login.title"
+                  defaultMessage="Beta"
+                />
+              </div>
             </div>
             {this.renderStep()}
           </div>

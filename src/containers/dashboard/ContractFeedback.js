@@ -1,11 +1,17 @@
 import React from 'react';
 import RatingBar from '../../components/RatingBar';
+import { FormattedMessage } from 'react-intl';
 
 const ContractFeedback = ({contract, onContractRate}) => {
   return (
     <div className="table">
       <div className="table_title_wrapper clearfix">
-        <div className="table_title center">Rate the contract</div>
+        <div className="table_title center">
+          <FormattedMessage
+            id="dashboard.rateTheContract"
+            defaultMessage="Rate the contract"
+          />
+        </div>
       </div>
       <LeaveComment
         onContractRate={onContractRate}

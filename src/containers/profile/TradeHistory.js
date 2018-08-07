@@ -4,11 +4,9 @@ import { Desktop, Mobile } from '../../generic/MediaQuery';
 import Pagination from '../../components/Pagination';
 import ReactTable from '../../components/SelectableReactTable';
 import { formatDate } from '../../generic/util';
+import {FormattedMessage, injectIntl} from 'react-intl';
 
 class TradeHistory extends React.Component {
-  constructor(props) {
-    super(props);
-  }
   render() {
     return (
       <Col xs="12" sm="12" md="12" lg="12" xl="7" className="trade-block">
@@ -20,7 +18,11 @@ class TradeHistory extends React.Component {
                   <div className="container-fuild h-100">
                     <div className="row h-100 align-items-center">
                       <div className="col-auto title-text">
-                        <span className="icon icon-profit icon-history-clock-button"></span>TRADE HISTORY
+                        <span className="icon icon-profit icon-history-clock-button"/>
+                        <FormattedMessage
+                          id="profile.tradeHistory"
+                          defaultMessage="TRADE HISTORY"
+                        />
                       </div>
                       <div className="col">
                       </div>
@@ -43,14 +45,14 @@ class TradeHistory extends React.Component {
     return [
       {
         id: 'date',
-        Header: SortableHeader('Date'),
+        Header: SortableHeader(this.props.intl.messages['profile.date']),
         accessor: trade => formatDate(new Date(trade.date)),
         minWidth: 50,
         className: 'table_col_value',
         sortable: false,
       },
       {
-        Header: SortableHeader('Type'),
+        Header: SortableHeader(this.props.intl.messages['profile.type']),
         Cell: TradeTypeCell,
         accessor: 'type',
         minWidth: 50,
@@ -58,7 +60,7 @@ class TradeHistory extends React.Component {
         sortable: false,
       },
       {
-        Header: SortableHeader('Price'),
+        Header: SortableHeader(this.props.intl.messages['profile.price']),
         Cell: row =>  formatFloat(row.value, row.original.mainCurrency) + ' ' + row.original.mainCurrency,
         accessor: 'price',
         minWidth: 50,
@@ -66,7 +68,7 @@ class TradeHistory extends React.Component {
         sortable: false,
       },
       {
-        Header: SortableHeader('Amount'),
+        Header: SortableHeader(this.props.intl.messages['profile.amount']),
         id: 'amount',
         accessor: 'amount',
         Cell: row =>  formatFloat(row.value, row.original.amountCurrency) + ' ' + row.original.amountCurrency,
@@ -75,7 +77,7 @@ class TradeHistory extends React.Component {
         sortable: false,
       },
       {
-        Header: SortableHeader('Total'),
+        Header: SortableHeader(this.props.intl.messages['profile.total']),
         Cell: row =>  formatFloat(row.value, row.original.mainCurrency) + ' ' + row.original.mainCurrency,
         accessor: 'total',
         minWidth: 50,
@@ -83,12 +85,14 @@ class TradeHistory extends React.Component {
         sortable: false,
       },
       {
-        Header: SortableHeader('TX', false),
+        Header: SortableHeader(this.props.intl.messages['profile.tx'], false),
         accessor: 'tx',
         sortable: false,
         minWidth: 30,
         className: 'table_col_value',
-        Cell: rowInfo => rowInfo.original.first ? (<a className="tx_link" target="_blank" href={rowInfo.value || '/'} />) : null,
+        Cell: rowInfo => rowInfo.original.first ? 
+          (<a className="tx_link" target="_blank" href={rowInfo.value || '/'} />)
+          : null,
       },
     ];
   }
@@ -96,20 +100,20 @@ class TradeHistory extends React.Component {
     const data = this.props.trades
       .sort((t1, t2) => t2.date - t1.date)
       .reduce((accum, value) => {
-      if(value.length) {
-        const first = value[0];
-        const updatedFirst = {...first, first: true};
-        value = value.slice(1);
-        value.unshift(updatedFirst);
-      }
-      return accum.concat(value);
-    }, []);
+        if(value.length) {
+          const first = value[0];
+          const updatedFirst = {...first, first: true};
+          value = value.slice(1);
+          value.unshift(updatedFirst);
+        }
+        return accum.concat(value);
+      }, []);
     return (
       <div>
         <Desktop>
           <div  className="profile_table_wrapper">
             <ReactTable
-              getTrProps={(state, rowInfo, column, instance) => {
+              getTrProps={(state, rowInfo) => {
                 if(rowInfo.original.first) {
                   return {
                     className: 'first-row'
@@ -178,4 +182,4 @@ const TradeTypeCell = row => {
   return (<div className={className}>{row.original.type}</div>);
 };
 
-export default TradeHistory;
+export default injectIntl(TradeHistory);

@@ -5,6 +5,7 @@ import { Desktop, Mobile } from '../generic/MediaQuery';
 import Pagination from './Pagination';
 import Scrollbars from 'react-custom-scrollbars';
 import { Link } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
 
 class Feedback extends React.Component {
 
@@ -36,7 +37,9 @@ class Feedback extends React.Component {
                   <div className="container-fuild h-100">
                     <div className="row h-100 align-items-center">
                       <div className="col-auto title-text">
-                        <span className="icon icon-profit icon-004-megaphone"></span>FEEDBACKS
+                        <span className="icon icon-profit icon-004-megaphone"/>
+                        <FormattedMessage id="feedbacks"
+                          defaultMessage="FEEDBACKS"/>
                       </div>
                       <div className="col">
 
@@ -79,7 +82,11 @@ class Feedback extends React.Component {
                   : (
                     <div className="card-body empty-feedback">
                       <div className="feedback-message">
-                        {this.props.name ? 'This user did not get any feedbacks yet.' : null}
+                        {this.props.name ?
+                          <FormattedMessage id="userDontGetFeedbacks"
+                            defaultMessage="This user did not get any feedbacks yet."/>
+                          :
+                          null}
                       </div>
                     </div>
                   )
@@ -143,7 +150,7 @@ class Comment extends React.Component {
 
 Feedback.defaultProps = {
   pageSize: 5
-}
+};
 
 function formatDate(date) {
   const year = date.getFullYear();

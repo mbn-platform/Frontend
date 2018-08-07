@@ -40,7 +40,7 @@ class TradingView extends React.Component {
         <div className="price-chart__top justify-content-between row col-12">
           <Desktop>
             <Row className="chart-controls align-items-center justify-content-between">
-              <div className="control-resize" onClick={()=>this.handleFullScreenChange(!this.state.fullScreen)}></div>
+              <div className="control-resize" onClick={()=>this.handleFullScreenChange(!this.state.fullScreen)}/>
             </Row>
           </Desktop>
         </div>

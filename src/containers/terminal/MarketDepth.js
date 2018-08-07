@@ -1,8 +1,7 @@
 import React from 'react';
 import { Col, Row } from 'reactstrap';
-import AmCharts from 'amcharts3/amcharts/amcharts';
-import SerialChar from 'amcharts3/amcharts/serial';
-import DataLoader from 'amcharts3/amcharts/plugins/dataloader/dataloader';
+import { FormattedMessage } from 'react-intl';
+
 import AmChartsReact from '@amcharts/amcharts3-react';
 import { formatFloat, defaultFormatValue } from '../../generic/util';
 import { Desktop } from '../../generic/MediaQuery';
@@ -247,14 +246,14 @@ class MarketDepth extends React.Component {
     const [main, second] = this.props.market.split('-');
     let txt = '';
     if (graph.id === 'sell' && item.dataContext.sellamount) {
-      txt = 'Price: <strong>' + defaultFormatValue(item.dataContext.value, main) + '</strong><br />'
-        + 'Total volume ('+ second +'): <strong>' + defaultFormatValue(item.dataContext.selltotalvolume, second) + '</strong><br />'
-        + 'Amount ('+ main +'): <strong>' + defaultFormatValue(item.dataContext.sellamount, main) + '</strong>';
+      txt = '<FormattedMessage id="terminal.price" defaultMessage="Price:"/> <strong>' + defaultFormatValue(item.dataContext.value, main) + '</strong><br />'
+        + '<FormattedMessage id="terminal.totalVolume" defaultMessage="Total volume:"/> ('+ second +'): <strong>' + defaultFormatValue(item.dataContext.selltotalvolume, second) + '</strong><br />'
+        + '<FormattedMessage id="terminal.amount" defaultMessage="Amount"/> ('+ main +'): <strong>' + defaultFormatValue(item.dataContext.sellamount, main) + '</strong>';
     }
     else if(graph.id === 'buy' && item.dataContext.buyamount) {
-      txt = 'Price: <strong>' + defaultFormatValue(item.dataContext.value, main) + '</strong><br />'
-        + 'Total volume ('+ second +'): <strong>' + defaultFormatValue(item.dataContext.buytotalvolume, second) + '</strong><br />'
-        + 'Amount ('+ main +'): <strong>' + defaultFormatValue(item.dataContext.buyamount, main) + '</strong>';
+      txt = '<FormattedMessage id="terminal.price" defaultMessage="Price:"/> <strong>' + defaultFormatValue(item.dataContext.value, main) + '</strong><br />'
+        + '<FormattedMessage id="terminal.totalVolume" defaultMessage="Total volume:"/> ('+ second +'): <strong>' + defaultFormatValue(item.dataContext.buytotalvolume, second) + '</strong><br />'
+        + '<FormattedMessage id="terminal.amount" defaultMessage="Amount"/> ('+ main +'): <strong>' + defaultFormatValue(item.dataContext.buyamount, main) + '</strong>';
     }
     return txt;
   }
@@ -338,7 +337,9 @@ class MarketDepth extends React.Component {
       <Col className="marketdepth-chart chart">
         <Row className="chart__top justify-content-between">
           <div className="justify-content-start row">
-            <div className="chart-name">MARKET DEPTH</div>
+            <div className="chart-name">
+              <FormattedMessage id="terminal.marketDepth" defaultMessage="MARKET DEPTH"/>
+            </div>
           </div>
           <Desktop>
             <div className="chart-controls align-items-center justify-content-between row">

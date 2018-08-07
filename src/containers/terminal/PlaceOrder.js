@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {defaultFormatValue, setFundId} from '../../generic/util';
 import { Desktop } from '../../generic/MediaQuery';
+import {FormattedMessage, injectIntl} from 'react-intl';
 
 export const TAB_BUY = 'buy';
 export const TAB_SELL = 'sell';
@@ -272,11 +273,14 @@ class PlaceOrder extends React.Component {
         <div className="buysell__top justify-content-between row col-12">
           <div className="buysell__switch-wrap ">
             <span onClick={() => this.onTabClick(TAB_BUY)}
-              className={classNames('buysell__switch', 'switch-buy', {active: this.state.selectedTab === TAB_BUY})}
-            >BUY</span>
+              className={classNames('buysell__switch', 'switch-buy', {active: this.state.selectedTab === TAB_BUY})}>
+              <FormattedMessage id="terminal.buy" defaultMessage="BUY"/>
+            </span>
             <span onClick={() => this.onTabClick(TAB_SELL)}
               className={classNames('buysell__switch', 'switch-sell', {active: this.state.selectedTab === TAB_SELL})}
-            >SELL</span>
+            >
+              <FormattedMessage id="terminal.sell" defaultMessage="SELL"/>
+            </span>
           </div>
           <Desktop>
             <div className="chart-controls align-items-center justify-content-between row">
@@ -289,7 +293,9 @@ class PlaceOrder extends React.Component {
               <div className="buysell__form-row">
                 <div className="buysell__form-input-wrap">
                   <label className="buysell__form-label">
-                    Order size ({this.state.secondary})
+                    <FormattedMessage id="terminal.orderSize"
+                      defaultMessage="Order size ({secondary})"
+                      values={{secondary: this.state.secondary}}/>
                   </label>
                   <input onChange={this.onChange}
                     placeholder={'min ' + minTradeSize}
@@ -297,7 +303,8 @@ class PlaceOrder extends React.Component {
                 </div>
                 <div className="buysell__form-input-wrap">
                   <label className="buysell__form-label">
-                    Price
+                    <FormattedMessage id="terminal.price"
+                      defaultMessage="Price"/>
                   </label>
                   <input onChange={this.onChange} value={this.state.price} type="number" name="price" className="buysell__form-input"/>
                 </div>
@@ -305,12 +312,13 @@ class PlaceOrder extends React.Component {
               <div className="buysell__form-row">
                 <div className="buysell__form-input-wrap">
                   <label className="buysell__form-label">
-                    Amount ({this.state.main})
+                    <FormattedMessage id="terminal.amountLabel"
+                      defaultMessage="Amount ({amount})" values={{amount: this.state.main}}/>
                   </label>
                   <input onChange={this.onChange} type="number" value={this.state.amount} name="amount" className="buysell__form-input"/>
                 </div>
                 <button type="submit" onClick={this.onSubmit} className="buysell__form-submit">
-                  {this.state.selectedTab === TAB_SELL ? 'SELL' : 'BUY'}
+                  {this.state.selectedTab === TAB_SELL ? this.props.intl.messages['terminal.sell'] : this.props.intl.messages['terminal.buy']}
                 </button>
               </div>
             </form>
@@ -351,7 +359,7 @@ const Balances = ({fund, main, secondary, onMainClick, onSecondaryClick}) => {
     </div>
   );
 };
-function formatBalance(value, name) {
+function formatBalance(value) {
   if(value === undefined) {
     return null;
   }
@@ -365,4 +373,4 @@ const Balance = ({name, value, onClick}) => (
   </div>
 );
 
-export default PlaceOrder;
+export default injectIntl(PlaceOrder);
