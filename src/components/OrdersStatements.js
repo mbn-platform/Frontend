@@ -15,7 +15,7 @@ function formatDate(date) {
 }
 
 export const OpenOrder = ({order, onOrderCancel, isFullScreen}) => {
-  const [main, secondary] = isFullScreen ? order.symbol.split('-') : null;
+  const [main, secondary] = isFullScreen ? order.symbol.split('-') : [];
   return (
     <tr className={order.type}>
       {isFullScreen ?
@@ -40,7 +40,7 @@ export const OpenOrder = ({order, onOrderCancel, isFullScreen}) => {
 };
 
 export const CompletedOrder = ({order, isFullScreen}) => {
-  const [main, secondary] = isFullScreen ? order.symbol.split('-') : null;
+  const [main, secondary] = isFullScreen ? order.symbol.split('-') : [];
   return (
     <tr className={order.type}>
       { isFullScreen ?
