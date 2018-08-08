@@ -185,6 +185,9 @@ export function placeOrder(order) {
             case ApiError.THROTTLE_LIMIT:
               alert('You have made too many orders, please try later');
               break;
+            case ApiError.LOCK:
+              alert('You can place only one order at once');
+              break;
             default:
               alert('failed to place order:', error.apiErrorCode);
               console.log('unhandled api error', error.apiErrorCode);
