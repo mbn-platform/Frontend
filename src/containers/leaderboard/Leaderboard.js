@@ -58,7 +58,7 @@ class Leaderboard extends React.Component {
     const { updateChallenge, challenge } = this.props;
     clearInterval(this.interval);
     updateChallenge(number);
-    this.setState({selectedRound: number, round: challenge})
+    this.setState({selectedRound: number, round: challenge});
     this.interval = setInterval(() => updateChallenge(number), 30000);
   }
 
@@ -185,7 +185,17 @@ class Leaderboard extends React.Component {
       <div className="leaderboard__annotation">
         <FormattedMessage
           id="leaderboard.annotationInfo"
-          defaultMessage="After each round of the competition, every participant is receiving Tournament Points according the their weekly ratings. The exact amount of points is shown in the table below. After all rounds of competition those Points will be converted into MBN tokens."
+          defaultMessage="After each round of the competition, every participant receives Tournament Points according the their weekly ratings. The exact amount of points is shown in the table below. After all rounds of competition those Points will be converted into MBN tokens in rate 1/1000.{br}For example, Alice took 1st position at weekly round. She will earn 100*1000 = 100 000 tokens. {dashedTokens}"
+          values={{br: <br/>,
+            dashedTokens: <span
+              title={this.props.intl.messages['leaderboard.ifHardcapWillReached']}
+              style={{borderBottom: '1px dashed'}}>
+              <FormattedMessage
+                id="leaderboard.dashedTokens"
+                defaultMessage="1000 tokens = $15"
+              />
+            </span>,
+          }}
         />
       </div>
       <table className="table">
