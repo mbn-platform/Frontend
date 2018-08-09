@@ -47,7 +47,6 @@ class Leaderboard extends React.Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    console.warn(nextProps.challenge !== prevState.challenge);
     if(nextProps.challenge !== prevState.challenge) {
       return {round: nextProps.challenge};
     } else {
@@ -59,10 +58,8 @@ class Leaderboard extends React.Component {
     const { updateChallenge, challenge } = this.props;
     clearInterval(this.interval);
     updateChallenge(number);
-    this.setState({selectedRound: number, round: null}, () => {
-      this.setState({round: challenge});
-      this.interval = setInterval(() => updateChallenge(number), 30000);
-    });
+    this.setState({selectedRound: number, round: challenge})
+    this.interval = setInterval(() => updateChallenge(number), 30000);
   }
 
   onRowClick(e) {
