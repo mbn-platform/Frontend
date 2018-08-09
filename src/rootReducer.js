@@ -3,6 +3,7 @@ import contracts from './reducers/contracts';
 import offers from './reducers/offers';
 import auth from './reducers/auth';
 import exchanges from './reducers/exchanges';
+import challenge from './reducers/challenge';
 import time from './reducers/time';
 import terminal from './reducers/terminal';
 import request from './reducers/request';
@@ -10,12 +11,26 @@ import rates from './reducers/rates';
 import profile from './reducers/profile';
 import exchangesInfo from './reducers/exchangesInfo';
 import { combineReducers } from 'redux';
-import { calculateKeyBalance } from './generic/util';
 import { LOGGED_OUT } from './actions/auth';
 import { getInitialState } from './store';
 import ratings from './reducers/ratings';
 
-const combined = combineReducers({apiKeys, contracts, ratings, offers, auth, exchanges, time, request, terminal, rates, profile, exchangesInfo});
+const combined = combineReducers(
+  {
+    apiKeys,
+    contracts,
+    ratings,
+    offers,
+    auth,
+    exchanges,
+    time,
+    request,
+    challenge,
+    terminal,
+    rates,
+    profile,
+    exchangesInfo
+  });
 
 const root = (state, action) => {
   switch(action.type) {

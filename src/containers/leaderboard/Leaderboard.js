@@ -3,9 +3,10 @@ import { Container, Row, Col } from 'reactstrap';
 import $ from 'jquery';
 import classNames from 'classnames';
 import {sortData, onColumnSort, classNameForColumnHeader, defaultSortFunction} from '../../generic/terminalSortFunctions';
-import {apiGet} from '../../generic/apiCall';
 import { injectIntl } from 'react-intl';
 import { FormattedMessage } from 'react-intl';
+import {updateChallenge} from '../../actions/challenge';
+import {connect} from 'react-redux';
 
 
 const NUMBER_OF_ROUNDS = 4,
@@ -34,25 +35,31 @@ class Leaderboard extends React.Component {
     this.selectRound = this.selectRound.bind(this);
   }
 
+  componentDidMount() {
+    window.customize();
+    const $table = $('.js-table-wrapper .table');
+    $table.on('reflowed', (e, $container) => {
+      if(this.shouldFocus) {
+        $($container).find('input').focus();
+      }
+    });
+    this.selectRound(0);
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if(nextProps.challenge !== prevState.challenge) {
+      return {round: nextProps.challenge};
+    } else {
+      return null;
+    }
+  }
+
   selectRound(number) {
+    const { updateChallenge, challenge } = this.props;
     clearInterval(this.interval);
-    this.setState({selectedRound: number, round: null});
-    apiGet('/challenge/' + number)
-      .then(json => {
-        this.setState({round: json});
-      })
-      .catch(e => {
-        this.setState({round: null});
-      });
-    this.interval = setInterval(() => {
-      apiGet('/challenge/' + number)
-        .then(json => {
-          this.setState({round: json});
-        })
-        .catch(e => {
-          this.setState({round: null});
-        });
-    }, 30000);
+    updateChallenge(number);
+    this.setState({selectedRound: number, round: challenge})
+    this.interval = setInterval(() => updateChallenge(number), 30000);
   }
 
   onRowClick(e) {
@@ -147,16 +154,6 @@ class Leaderboard extends React.Component {
       );
     }
     return rounds;
-  }
-  componentDidMount() {
-    window.customize();
-    const $table = $('.js-table-wrapper .table');
-    $table.on('reflowed', (e, $container) => {
-      if(this.shouldFocus) {
-        $($container).find('input').focus();
-      }
-    });
-    this.selectRound(this.state.selectedRound);
   }
 
   componentWillUnmount() {
@@ -380,4 +377,8 @@ const ProfitCell = ({profit, tx}) => {
   }
 };
 
-export default injectIntl(Leaderboard);
+export default injectIntl(connect(
+  state => ({challenge: state.challenge}),
+  dispatch => ({updateChallenge: number => dispatch(updateChallenge(number))}),
+)(Leaderboard));
+
