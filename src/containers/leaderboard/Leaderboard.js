@@ -8,7 +8,9 @@ import { injectIntl } from 'react-intl';
 import { FormattedMessage } from 'react-intl';
 
 
-const NUMBER_OF_ROUNDS = 4;
+const NUMBER_OF_ROUNDS = 4,
+  infoPlaces= ['1', '2', '3', '4', '5', '6-10', '10-20', '20-50', '50-100', '100+'],
+  infoPoints= ['100', '75', '50', '35', '25', '15', '10', '5', '3', '1'];
 
 class Leaderboard extends React.Component {
 
@@ -118,6 +120,9 @@ class Leaderboard extends React.Component {
                   </div>
                 </div>
               </div>
+              <div className="leaderboard__info">
+                {this.renderInfoBoard()}
+              </div>
             </div>
           </Col>
         </Row>
@@ -175,6 +180,48 @@ class Leaderboard extends React.Component {
     }
   }
 
+  renderInfoBoard = () => (
+    <table className="table">
+      <thead>
+        <tr>
+          <th className="place">
+            <span>
+              <FormattedMessage
+                id="leaderboard.placeInRating"
+                defaultMessage="Place In Rating"
+              />
+            </span>
+          </th>
+          <th onClick={() => this.onColumnSort('points')}>
+            <span>
+              <FormattedMessage
+                id="leaderboard.pointCount"
+                defaultMessage="Point Count"
+              />
+            </span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {infoPlaces.map((infoItem, index) => (
+          <tr>
+            <th className="place">
+              <span>
+                {infoPlaces[index]}
+              </span>
+            </th>
+            <th onClick={() => this.onColumnSort('points')}>
+              <span>
+                {infoPoints[index]}
+              </span>
+            </th>
+          </tr>
+        ))
+        }
+      </tbody>
+    </table>
+  )
+
   renderGlobalBoard(data) {
     return (
       <table className="table">
@@ -209,7 +256,8 @@ class Leaderboard extends React.Component {
             <th/>
             <th>
               <div>
-                <input ref={this.inputRef} value={this.state.nameFilter} onChange={this.onNameFilterChange} type="text" className="input_search" placeholder={this.props.intl.messages['leaderboard.searchPlaceholder']} />
+                <input ref={this.inputRef} value={this.state.nameFilter} onChange={this.onNameFilterChange} type="text" className="input_search" placeholder={this.props.intl.messages['leaderboard.searchPlaceholder']}
+                />
               </div>
             </th>
           </tr>

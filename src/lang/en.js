@@ -36,6 +36,8 @@ const en = {
   'leaderboard.points': 'Points',
   'leaderboard.searchPlaceholder': 'search',
   'leaderboard.profitUsd': 'Profit (USDT)',
+  'leaderboard.pointCount': 'Point Count',
+  'leaderboard.placeInRating': 'Place In Rating',
   'leaderboard.profitPercent': 'Profit, %',
   'dashboard.namePlaceholder': 'Name',
   'dashboard.secretPlaceholder': 'Secret',
