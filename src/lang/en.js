@@ -37,6 +37,8 @@ const en = {
   'leaderboard.searchPlaceholder': 'search',
   'leaderboard.profitUsd': 'Profit (USDT)',
   'leaderboard.pointCount': 'Point Count',
+  'leaderboard.infoTitle': 'Point Info',
+  'leaderboard.annotationInfo': 'After each round of the competition, every participant is receiving Tournament Points according the their weekly ratings. The exact amount of points is shown in the table below. After all rounds of competition those Points will be converted into MBN tokens.',
   'leaderboard.placeInRating': 'Place In Rating',
   'leaderboard.profitPercent': 'Profit, %',
   'dashboard.namePlaceholder': 'Name',

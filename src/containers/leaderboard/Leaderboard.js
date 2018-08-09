@@ -10,7 +10,7 @@ import {connect} from 'react-redux';
 
 
 const NUMBER_OF_ROUNDS = 4,
-  infoPlaces= ['1', '2', '3', '4', '5', '6-10', '10-20', '20-50', '50-100', '100+'],
+  infoPlaces= ['1', '2', '3', '4', '5', '6-10', '11-20', '21-50', '51-100', '101+'],
   infoPoints= ['100', '75', '50', '35', '25', '15', '10', '5', '3', '1'];
 
 class Leaderboard extends React.Component {
@@ -178,45 +178,56 @@ class Leaderboard extends React.Component {
   }
 
   renderInfoBoard = () => (
-    <table className="table">
-      <thead>
-        <tr>
-          <th className="place">
-            <span>
-              <FormattedMessage
-                id="leaderboard.placeInRating"
-                defaultMessage="Place In Rating"
-              />
-            </span>
-          </th>
-          <th onClick={() => this.onColumnSort('points')}>
-            <span>
-              <FormattedMessage
-                id="leaderboard.pointCount"
-                defaultMessage="Point Count"
-              />
-            </span>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        {infoPlaces.map((infoItem, index) => (
+    <div>
+      <div className="leaderboard__title">
+        <FormattedMessage id="leaderboard.infoTitle" defaultMessage="Point Info"/>
+      </div>
+      <div className="leaderboard__annotation">
+        <FormattedMessage
+          id="leaderboard.annotationInfo"
+          defaultMessage="After each round of the competition, every participant is receiving Tournament Points according the their weekly ratings. The exact amount of points is shown in the table below. After all rounds of competition those Points will be converted into MBN tokens."
+        />
+      </div>
+      <table className="table">
+        <thead>
           <tr>
             <th className="place">
               <span>
-                {infoPlaces[index]}
+                <FormattedMessage
+                  id="leaderboard.placeInRating"
+                  defaultMessage="Place In Rating"
+                />
               </span>
             </th>
             <th onClick={() => this.onColumnSort('points')}>
               <span>
-                {infoPoints[index]}
+                <FormattedMessage
+                  id="leaderboard.pointCount"
+                  defaultMessage="Point Count"
+                />
               </span>
             </th>
           </tr>
-        ))
-        }
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {infoPlaces.map((infoItem, index) => (
+            <tr>
+              <th className="place">
+                <span>
+                  {infoPlaces[index]}
+                </span>
+              </th>
+              <th onClick={() => this.onColumnSort('points')}>
+                <span>
+                  {infoPoints[index]}
+                </span>
+              </th>
+            </tr>
+          ))
+          }
+        </tbody>
+      </table>
+    </div>
   )
 
   renderGlobalBoard(data) {
