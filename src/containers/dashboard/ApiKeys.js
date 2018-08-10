@@ -6,6 +6,7 @@ import SearchHeader from '../../components/SearchHeader';
 import classNames from 'classnames';
 import { Desktop, Mobile } from '../../generic/MediaQuery';
 import Pagination from '../../components/Pagination';
+import ModalWindow from '../../components/Modal';
 import {FormattedMessage, injectIntl} from 'react-intl';
 
 
@@ -14,7 +15,9 @@ class Funds extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      filtered: [{id: 'name', value: ''}, {id: 'exchange', value: 'All'}]
+      filtered: [{id: 'name', value: ''}, {id: 'exchange', value: 'All'}],
+      removeConfirmModalIsOpen: false,
+      currentSelectedRow: {},
     };
     this.onFilter = this.onFilter.bind(this);
     this.onExchangeChange = this.onExchangeChange.bind(this);
@@ -119,9 +122,7 @@ class Funds extends React.Component {
           const canDeleteKey = true;
           const onClick =  e => {
             e.stopPropagation();
-            if (window.confirm(this.props.intl.messages['leaderboard.deleteConfirm'])) {
-              this.props.onKeyDeleteClick(row.original);
-            }
+            this.setState({currentSelectedRow: row, removeConfirmModalIsOpen: true});
           };
           const className = classNames('delete_key_button', {can_delete_key: canDeleteKey});
           return (<div className={className} onClick={onClick}/>);
@@ -130,6 +131,30 @@ class Funds extends React.Component {
       }
     ];
   }
+
+  renderConfirmModel = () => {
+    const { removeConfirmModalIsOpen, currentSelectedRow } = this.state;
+    return (
+      <ModalWindow
+        modalIsOpen={removeConfirmModalIsOpen}
+        title={this.props.intl.messages['dashboard.deleteConfirm']}
+        content={
+          <div>
+            <button className="modal__button" onClick={() => {
+              this.props.onKeyDeleteClick(currentSelectedRow.original);
+              this.setState({removeConfirmModalIsOpen: false});
+            }}>
+              {this.props.intl.messages['yes']}
+            </button>
+            <button className="modal__button" onClick={() => this.setState({removeConfirmModalIsOpen: false})}>
+              {this.props.intl.messages['no']}
+            </button>
+          </div>
+        }
+      />
+    );
+  }
+
   renderContent() {
     const data = this.props.apiKeys;
     return (
@@ -158,11 +183,11 @@ class Funds extends React.Component {
             PaginationComponent={Pagination}
           />
         </Mobile>
+        {this.renderConfirmModel()}
       </div>
     );
   }
 }
-
 
 const ExchangeHeader = (exchanges, value, onChange) => {
   return (
