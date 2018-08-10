@@ -1,0 +1,93 @@
+.asd {
+    background-color: #fff;
+}
+
+.modal__container {
+    height: 100%;
+    overflow-x: hidden;
+    color: #727274;
+    background-color: #1f2225;
+    border-color: #494d4d;
+}
+
+.modal__header {
+    background-color: #2d3034;
+    border-bottom-color: #494d4d;
+    height: 54px;
+    padding: 25px;
+    position: relative;
+    .currency-button {
+        margin-right: 19px;
+    }
+    .icon-fullscreen {
+        font-size: 1.5em;
+        margin: 0 25px;
+    }
+}
+
+.modal__title {
+    font-size: 1.8em;
+    .icon {
+        font-size: .8em;
+    }
+    .icon-profit {
+        margin-left: 25px;
+    }
+}
+
+.modal__body {
+    padding: 25px;
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+
+.modal__button {
+    background-color: transparent;
+    color: #44464a;
+    border-color: #44464a;
+    border-radius: 5px;
+    font-size: 1.2em;
+    padding: 7px 20px;
+    margin-right: 10px;
+
+    &.active {
+        background-color: #346255;
+        color: white;
+    }
+    &:hover {
+        color: white;
+    }
+}
+
+.modal__button-wrapper {
+    display: flex;
+}
+
+.modal__close {
+    height: 40px;
+    width: 40px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+
+    &:before, &:after {
+         content: '';
+         display: block;
+         position: absolute;
+         top: 10px;
+         right: 20px;
+         width: 2px;
+         height: 20px;
+         background-color: #fff;
+    }
+
+    &:before {
+        transform: rotate(45deg);
+
+    }
+
+    &:after {
+        transform: rotate(-45deg);
+    }
+}

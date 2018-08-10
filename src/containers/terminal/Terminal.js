@@ -10,7 +10,6 @@ import RecentTrades from './RecentTrades';
 import OrderBook from './OrderBook';
 import MediaQuery from 'react-responsive';
 import {setFundId} from '../../generic/util';
-import ModalWindow from '../../components/Modal';
 
 class Terminal extends React.Component {
 
@@ -52,7 +51,6 @@ class Terminal extends React.Component {
   render() {
     return (
       <Container fluid className="terminal">
-        <ModalWindow/>
         <Row>
           <Col xs="12" sm="12" md="12" lg="12" className="terminal-container">
             <HeaderStatus
