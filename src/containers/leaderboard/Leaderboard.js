@@ -180,7 +180,7 @@ class Leaderboard extends React.Component {
   renderInfoBoard = () => (
     <div>
       <div className="leaderboard__title">
-        <FormattedMessage id="leaderboard.infoTitle" defaultMessage="Point Info"/>
+        <FormattedMessage id="leaderboard.infoTitle" defaultMessage="How many tokens I will earn from postions at the Leaderboard"/>
       </div>
       <div className="leaderboard__annotation">
         <FormattedMessage
