@@ -10,7 +10,7 @@ import {connect} from 'react-redux';
 
 
 const NUMBER_OF_ROUNDS = 4,
-  infoPlaces= ['1', '2', '3', '4', '5', '6-10', '10-20', '20-50', '50-100', '100+'],
+  infoPlaces= ['1', '2', '3', '4', '5', '6-10', '11-20', '21-50', '51-100', '101+'],
   infoPoints= ['100', '75', '50', '35', '25', '15', '10', '5', '3', '1'];
 
 class Leaderboard extends React.Component {
@@ -58,7 +58,7 @@ class Leaderboard extends React.Component {
     const { updateChallenge, challenge } = this.props;
     clearInterval(this.interval);
     updateChallenge(number);
-    this.setState({selectedRound: number, round: challenge})
+    this.setState({selectedRound: number, round: challenge});
     this.interval = setInterval(() => updateChallenge(number), 30000);
   }
 
@@ -178,45 +178,66 @@ class Leaderboard extends React.Component {
   }
 
   renderInfoBoard = () => (
-    <table className="table">
-      <thead>
-        <tr>
-          <th className="place">
-            <span>
+    <div>
+      <div className="leaderboard__title">
+        <FormattedMessage id="leaderboard.infoTitle" defaultMessage="How many tokens I will earn from postions at the Leaderboard"/>
+      </div>
+      <div className="leaderboard__annotation">
+        <FormattedMessage
+          id="leaderboard.annotationInfo"
+          defaultMessage="After each round of the competition, every participant receives Tournament Points according the their weekly ratings. The exact amount of points is shown in the table below. After all rounds of competition those Points will be converted into MBN tokens in rate 1/1000.{br}For example, Alice took 1st position at weekly round. She will earn 100*1000 = 100 000 tokens. {dashedTokens}"
+          values={{br: <br/>,
+            dashedTokens: <span
+              title={this.props.intl.messages['leaderboard.ifHardcapWillReached']}
+              style={{borderBottom: '1px dashed'}}>
               <FormattedMessage
-                id="leaderboard.placeInRating"
-                defaultMessage="Place In Rating"
+                id="leaderboard.dashedTokens"
+                defaultMessage="1000 tokens = $15"
               />
-            </span>
-          </th>
-          <th onClick={() => this.onColumnSort('points')}>
-            <span>
-              <FormattedMessage
-                id="leaderboard.pointCount"
-                defaultMessage="Point Count"
-              />
-            </span>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        {infoPlaces.map((infoItem, index) => (
+            </span>,
+          }}
+        />
+      </div>
+      <table className="table">
+        <thead>
           <tr>
             <th className="place">
               <span>
-                {infoPlaces[index]}
+                <FormattedMessage
+                  id="leaderboard.placeInRating"
+                  defaultMessage="Place In Rating"
+                />
               </span>
             </th>
             <th onClick={() => this.onColumnSort('points')}>
               <span>
-                {infoPoints[index]}
+                <FormattedMessage
+                  id="leaderboard.pointCount"
+                  defaultMessage="Point Count"
+                />
               </span>
             </th>
           </tr>
-        ))
-        }
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {infoPlaces.map((infoItem, index) => (
+            <tr>
+              <th className="place">
+                <span>
+                  {infoPlaces[index]}
+                </span>
+              </th>
+              <th onClick={() => this.onColumnSort('points')}>
+                <span>
+                  {infoPoints[index]}
+                </span>
+              </th>
+            </tr>
+          ))
+          }
+        </tbody>
+      </table>
+    </div>
   )
 
   renderGlobalBoard(data) {
