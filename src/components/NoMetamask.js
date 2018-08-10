@@ -16,10 +16,14 @@ export default () => {
         <div className="login_no_metamask_title">
           <FormattedMessage id="pleaseInstallBrowser"
             defaultMessage="Please, install one of these browsers to use"/>
+          <br/>
           <span className="login_no_metamask_title__font-light-green">
             <FormattedMessage id="membranaPlatform"
               defaultMessage="Membrana Platform"/>
           </span>
+          <br/>
+          <FormattedMessage id="orImportAccount"
+            defaultMessage="or import ETH account if you already installed"/>
         </div>
         <div className='row justify-content-around'>
           <div className="metamask_link_wrapper metamask_link_wrapper__black col-12 col-md-auto">

@@ -70,7 +70,7 @@ const Stats = ({ traderRating, investorRating, roiInUSD, roiInBTC, totalInBTC, t
             </div>
             <div className="value-text green">
               {(totalInUSDT || 0).toFixed(2)}<span className="currency-value-usd-text">
-              usd
+                &nbsp;usd
               </span>
             </div>
             <div className="description-text btc-text">

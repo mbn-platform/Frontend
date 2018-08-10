@@ -24,6 +24,7 @@ const en = {
   'status': 'Status',
   'all': 'All',
   'days': 'days',
+  'orImportAccount': 'or import ETH account if you already installed',
   'min': 'min',
   'hours': 'hours',
   'timeLeftToComplete': 'time left to complete:',

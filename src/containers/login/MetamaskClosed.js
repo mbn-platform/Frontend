@@ -6,7 +6,7 @@ const MetamaskClosed = () => (
     <div className="login_step_login_text">
       <FormattedMessage
         id="nometamask.loginToMetamask"
-        defaultMessage="Please login into your Metamask account or check demo version."
+        defaultMessage="Please login into your Metamask account."
       />
     </div>
   </div>
