@@ -7,7 +7,6 @@ import { FormattedMessage } from 'react-intl';
 
 const TAB_OPEN_ORDERS = 0;
 const TAB_COMPLETED_ORDERS = 1;
-
 class OrdersTable extends React.Component {
 
   constructor(props) {
@@ -60,14 +59,10 @@ class OrdersTable extends React.Component {
                     <tr>
                       <th onClick={() => this.onColumnSort('type')}><br className="show-mobile"/><span className={classNameForColumnHeader(this.state, 'type')}></span></th>
                       <th onClick={() => this.onColumnSort('dt')}>
-                        <FormattedMessage
-                          id="orders.opened"
-                          defaultMessage="Opened"
-                        />
                         <span className="hide-mobile">
                           <FormattedMessage
-                            id="orders.date"
-                            defaultMessage="Date"
+                            id="orders.openDate"
+                            defaultMessage="Opened Date"
                           />
                         </span> <span className={classNameForColumnHeader(this.state, 'dt')}/></th>
                       <th onClick={() => this.onColumnSort('market')}>
@@ -95,7 +90,7 @@ class OrdersTable extends React.Component {
                       <th onClick={() => this.onColumnSort('price')}><span className="hide-mobile">
                         <FormattedMessage
                           id="orders.estimated"
-                          defaultMessage="Estimated"
+                          defaultMessage="Estimated "
                         />
                       </span><span className="show-mobile">
                         <FormattedMessage
@@ -132,14 +127,10 @@ class OrdersTable extends React.Component {
                     <tr>
                       <th onClick={() => this.onColumnSort('type')}><br className="show-mobile"/><span className={classNameForColumnHeader(this.state, 'type')}/></th>
                       <th onClick={() => this.onColumnSort('dt')}>
-                        <FormattedMessage
-                          id="orders.opened"
-                          defaultMessage="Opened"
-                        />
                         <span className="hide-mobile">
                           <FormattedMessage
-                            id="orders.date"
-                            defaultMessage="Date"
+                            id="orders.openDate"
+                            defaultMessage="Open Date"
                           /></span> <span className={classNameForColumnHeader(this.state, 'dt')}/></th>
                       <th onClick={() => this.onColumnSort('market')}>
                         <FormattedMessage
@@ -166,7 +157,7 @@ class OrdersTable extends React.Component {
                         /><span className={classNameForColumnHeader(this.state, 'amount')}/></th>
                       <th onClick={() => this.onColumnSort('price')}><span className="hide-mobile"><FormattedMessage
                         id="orders.estimated"
-                        defaultMessage="Estimated"
+                        defaultMessage="Estimated "
                       /></span><span className="show-mobile">
                         <FormattedMessage
                           id="orders.est"

@@ -68,7 +68,7 @@ class ContractDetails extends React.Component {
                   <span className='green'>
                     <FormattedMessage
                       id="profile.accepted"
-                      defaultMessage="ACCEPTED"
+                      defaultMessage=" ACCEPTED "
                     />
                   </span>
                   <FormattedMessage

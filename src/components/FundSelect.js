@@ -88,8 +88,8 @@ class FundSelect extends React.Component {
           defaultMessage="API KEY"/>{this.props.selectedFund ? ': '
         + (this.props.selectedFund.name ||
         <FormattedMessage id="userTrustToMe"
-          defaultMessage="{name} trusted to me"
-          values={{name: this.props.selectedFund.from.name}}/>) + ' ' : ' '}
+          defaultMessage="{name} trusted to me "
+          values={{name: this.props.selectedFund.from.name}}/>) : ' '}
         <span className="arrow_down"/>
       </span>
     );
