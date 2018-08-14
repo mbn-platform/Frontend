@@ -202,20 +202,16 @@ class Leaderboard extends React.Component {
         <thead>
           <tr>
             <th className="place">
-              <span>
-                <FormattedMessage
-                  id="leaderboard.placeInRating"
-                  defaultMessage="Place In Rating"
-                />
-              </span>
+              <FormattedMessage
+                id="leaderboard.placeInRating"
+                defaultMessage="Place In Rating"
+              />
             </th>
             <th onClick={() => this.onColumnSort('points')}>
-              <span>
-                <FormattedMessage
-                  id="leaderboard.pointCount"
-                  defaultMessage="Point Count"
-                />
-              </span>
+              <FormattedMessage
+                id="leaderboard.pointCount"
+                defaultMessage="Point Count"
+              />
             </th>
           </tr>
         </thead>
