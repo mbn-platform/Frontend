@@ -59,12 +59,11 @@ class OrdersTable extends React.Component {
                     <tr>
                       <th onClick={() => this.onColumnSort('type')}><br className="show-mobile"/><span className={classNameForColumnHeader(this.state, 'type')}></span></th>
                       <th onClick={() => this.onColumnSort('dt')}>
-                        <span className="hide-mobile">
-                          <FormattedMessage
-                            id="orders.openDate"
-                            defaultMessage="Opened Date"
-                          />
-                        </span> <span className={classNameForColumnHeader(this.state, 'dt')}/></th>
+                        <FormattedMessage
+                          id="orders.openDate"
+                          defaultMessage="Opened Date"
+                        />
+                        <span className={classNameForColumnHeader(this.state, 'dt')}/></th>
                       <th onClick={() => this.onColumnSort('market')}>
                         <FormattedMessage
                           id="orders.market"
@@ -127,11 +126,10 @@ class OrdersTable extends React.Component {
                     <tr>
                       <th onClick={() => this.onColumnSort('type')}><br className="show-mobile"/><span className={classNameForColumnHeader(this.state, 'type')}/></th>
                       <th onClick={() => this.onColumnSort('dt')}>
-                        <span className="hide-mobile">
-                          <FormattedMessage
-                            id="orders.openDate"
-                            defaultMessage="Open Date"
-                          /></span> <span className={classNameForColumnHeader(this.state, 'dt')}/></th>
+                        <FormattedMessage
+                          id="orders.openDate"
+                          defaultMessage="Open Date"
+                        /> <span className={classNameForColumnHeader(this.state, 'dt')}/></th>
                       <th onClick={() => this.onColumnSort('market')}>
                         <FormattedMessage
                           id="orders.market"

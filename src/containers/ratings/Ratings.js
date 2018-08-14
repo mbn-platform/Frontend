@@ -204,7 +204,7 @@ class Ratings extends React.Component {
                                 <span>
                                   <FormattedMessage
                                     id="ratings.maxLoss"
-                                    defaultMessage="Max loss,%"
+                                    defaultMessage="Max loss, %"
                                   />
                                 </span>
                                 <span className={classNameForColumnHeader(this.state, 'maxLoss')}/>

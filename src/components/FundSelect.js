@@ -82,15 +82,22 @@ class FundSelect extends React.Component {
   }
 
   renderSelectedFund() {
+
     return (
       <span className="dropdown-link">
         <FormattedMessage id="apiKey"
-          defaultMessage="API KEY"/>{this.props.selectedFund ? ': '
-        + (this.props.selectedFund.name ||
-        <FormattedMessage id="userTrustToMe"
-          defaultMessage="{name} trusted to me "
-          values={{name: this.props.selectedFund.from.name}}/>) : ' '}
-        <span className="arrow_down"/>
+          defaultMessage="API KEY"/>
+        &nbsp;
+        {
+          this.props.selectedFund &&
+          this.props.selectedFund.name ||
+          <FormattedMessage id="userTrustToMe"
+            defaultMessage="{name} trusted to me"
+            values={{name:
+              Object.prototype.hasOwnProperty.call(this.props.selectedFund, 'from') ?
+                this.props.selectedFund.from.name :
+                ''}}/>
+        }
       </span>
     );
   }

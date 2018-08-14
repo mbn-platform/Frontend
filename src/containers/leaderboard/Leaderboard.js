@@ -292,7 +292,7 @@ class Leaderboard extends React.Component {
       <table className="table">
         <thead>
           <tr>
-            <th onClick={() => this.onColumnSort('place')} className="place">
+            <th onClick={() => this.onColumnSort('place')} className="table-header place">
               <span>
                 <FormattedMessage
                   id="leaderboard.place"
@@ -300,7 +300,7 @@ class Leaderboard extends React.Component {
                 />
               </span><span className={classNameForColumnHeader(this.state, 'place')}/>
             </th>
-            <th onClick={() => this.onColumnSort('name')} className="name">
+            <th onClick={() => this.onColumnSort('name')} className="table-header name">
               <span>
                 <FormattedMessage
                   id="leaderboard.name"

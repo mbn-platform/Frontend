@@ -25,7 +25,7 @@ class ContractDetails extends React.Component {
                 dim="days"
               />
               <ContractDetailRow
-                name={this.props.intl.messages['profile.currencyOfContract']}
+                name={this.props.intl.messages['profile.currencyOfContractInDetails']}
                 value={this.props.currency}
               />              
               <ContractDetailRow
@@ -34,17 +34,17 @@ class ContractDetails extends React.Component {
                 dim={this.props.currency}
               />
               <ContractDetailRow
-                name={this.props.intl.messages['profile.targetProfit']}
+                name={this.props.intl.messages['profile.targetProfitInDetails']}
                 value={this.props.roi}
                 dim="%"
               />
               <ContractDetailRow
-                name={this.props.intl.messages['profile.maxLoss']}
+                name={this.props.intl.messages['profile.maxLossInDetails']}
                 value={this.props.maxLoss}
                 dim="%"
               />
               <ContractDetailRow
-                name={this.props.intl.messages['profile.fee']}
+                name={this.props.intl.messages['profile.feeInDetails']}
                 value={this.props.fee}
                 dim="%"
               />
