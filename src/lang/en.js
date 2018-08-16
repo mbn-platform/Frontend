@@ -189,7 +189,7 @@ const en = {
   'ratings.amountOfFinishedContracts' : 'The amount of successfully finished contracts',
   'ratings.paidExcess' : 'Paid excess{br}profit',
   'ratings.amountOfPaid' : 'Amount of paid invoices',
-  'terminal.price': 'Price: ',
+  'terminal.price': 'Price ',
   'terminal.priceForTable': 'Price ',
   'terminal.totalVolume' : 'Total volume: ',
   'terminal.amount' : 'Amount ',
