@@ -114,7 +114,7 @@ const en = {
   'profile.maxLoss' : 'Max loss',
   'profile.maxLossInDetails' : 'Max loss:',
   'profile.fee' : 'Fee',
-  'profile.feeInDetails' : 'Fee',
+  'profile.feeInDetails' : 'Fee:',
   'profile.sendRequest' : 'SEND REQUEST',
   'profile.yourRequestWillBe' : 'YOUR REQUEST WILL BE',
   'profile.or' : 'OR',

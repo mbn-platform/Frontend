@@ -20,7 +20,7 @@ class ContractDetails extends React.Component {
           <div className="row justify-content-between request-sent-info">
             <div className="container-fluid">
               <ContractDetailRow
-                name={this.props.intl.messages['profile.durationOfContract']}
+                name={this.props.intl.messages['profile.durationOfContractInDetails']}
                 value={this.props.duration}
                 dim="days"
               />
