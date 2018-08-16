@@ -9,7 +9,7 @@ import {updateChallenge} from '../../actions/challenge';
 import {connect} from 'react-redux';
 
 
-const NUMBER_OF_ROUNDS = 4,
+const NUMBER_OF_ROUNDS = 5,
   infoPlaces= ['1', '2', '3', '4', '5', '6-10', '11-20', '21-50', '51-100', '101+'],
   infoPoints= ['100', '75', '50', '35', '25', '15', '10', '5', '3', '1'];
 
