@@ -68,11 +68,7 @@ class FundSelect extends React.Component {
                 key={fund._id}
                 onClick={e => this.onKeySelect(e, fund)}
                 className={classNames('key', {active: this.props.selectedFund && this.props.selectedFund._id === fund._id})}>
-                {fund.name ||
-                <FormattedMessage id="userTrustToMe"
-                  defaultMessage="{name} trusted to me"
-                  values={{name: fund.from.name}}/>
-                }
+                {this.renderFundName(fund)}
               </div>
             ))}
           </div>
@@ -87,19 +83,25 @@ class FundSelect extends React.Component {
       <span className="dropdown-link">
         <FormattedMessage id="apiKey"
           defaultMessage="API KEY"/>
-        &nbsp;
-        {
-          this.props.selectedFund &&
-          this.props.selectedFund.name ||
-          <FormattedMessage id="userTrustToMe"
-            defaultMessage="{name} trusted to me"
-            values={{name:
-              Object.prototype.hasOwnProperty.call(this.props.selectedFund, 'from') ?
-                this.props.selectedFund.from.name :
-                ''}}/>
-        }
+        {this.props.selectedFund ? ': ' : ''}
+        {this.renderFundName(this.props.selectedFund)} <span className="arrow_down"/>
       </span>
     );
+  }
+
+  renderFundName(fund) {
+    if(!fund) {
+      return '';
+    } else if(fund.name) {
+      return fund.name;
+    } else {
+      return (
+        <FormattedMessage id="userTrustToMe"
+          defaultMessage="{name} trusted to me"
+          values={{name: fund.from.name}}
+        />
+      );
+    }
   }
 }
 
