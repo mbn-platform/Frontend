@@ -62,7 +62,7 @@ class MyOrders extends React.Component {
                         <FormattedMessage id="terminal.type" defaultMessage="Type"/>
                         <span className={classNameForColumnHeader(this.state, 'type')}/></th>
                       <th onClick={() => this.onColumnSort('limit')}>
-                        <FormattedMessage id="terminal.price" defaultMessage="Price"/>
+                        <FormattedMessage id="terminal.priceForTable" defaultMessage="Price"/>
                         <span className={classNameForColumnHeader(this.state, 'limit')}/></th>
                       <th onClick={() => this.onColumnSort('filled')}>
                         <FormattedMessage id="terminal.unitsFilled" defaultMessage="Units Filled"/>
@@ -102,7 +102,7 @@ class MyOrders extends React.Component {
                         <FormattedMessage id="terminal.type" defaultMessage="Type"/>
                         <span className={classNameForColumnHeader(this.state, 'type')}/></th>
                       <th onClick={() => this.onColumnSort('limit')}>
-                        <FormattedMessage id="terminal.price" defaultMessage="Price"/>
+                        <FormattedMessage id="terminal.priceForTable" defaultMessage="Price"/>
                         <span className={classNameForColumnHeader(this.state, 'limit')}/></th>
                       <th onClick={() => this.onColumnSort('filled')}>
                         <FormattedMessage id="terminal.unitsFilled" defaultMessage="Units Filled"/>

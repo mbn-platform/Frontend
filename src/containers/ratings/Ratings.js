@@ -153,8 +153,8 @@ class Ratings extends React.Component {
                               <th onClick={() => this.onColumnSort('minAmount')}>
                                 <span>
                                   <FormattedMessage
-                                    id="ratings.startedSince"
-                                    defaultMessage="Started {br}since"
+                                    id="ratings.minContractAmount"
+                                    defaultMessage="Min contract{bнщгк  wir}amount"
                                     values={{br: <br/>}}
                                   />
                                 </span>
@@ -204,7 +204,7 @@ class Ratings extends React.Component {
                                 <span>
                                   <FormattedMessage
                                     id="ratings.maxLoss"
-                                    defaultMessage="Max loss,%"
+                                    defaultMessage="Max loss, %"
                                   />
                                 </span>
                                 <span className={classNameForColumnHeader(this.state, 'maxLoss')}/>

@@ -198,6 +198,9 @@
 						cursor: pointer;
 						span:not(.icon-dir) {
 							opacity: .5;	
+              span {
+                opacity: 1;
+              }
 						}
 						
 						.icon-dir {

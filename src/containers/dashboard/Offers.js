@@ -148,7 +148,7 @@ class Offers extends React.Component {
       className: 'table_col_value'
     }, {
       id: '_id',
-      Header: SortHeader(this.props.intl.messages['time']),
+      Header: SortHeader(this.props.intl.messages['dashboard.time']),
       className: 'table_col_value',
       accessor: offer => {
         const date = new Date(offer.dt);
@@ -156,7 +156,7 @@ class Offers extends React.Component {
       },
       Cell: OfferCell(this.onOfferPayClick, this.state.selectedTab)
     }, {
-      Header: SortHeader(this.props.intl.messages['sum']),
+      Header: SortHeader(this.props.intl.messages['dashboard.sum']),
       className: 'table_col_value',
       id: 'amount',
       accessor: offer => {

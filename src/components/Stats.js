@@ -63,14 +63,14 @@ const Stats = ({ traderRating, investorRating, roiInUSD, roiInBTC, totalInBTC, t
         <div className="row-fuild money">
           <div className="col-auto">
             <div className="description-text">
-              <FormattedMessage id="rankInInvestorsRating"
+              <FormattedMessage id="moneyInManagement"
                 defaultMessage="money in {br} management:"
                 values={{br: <br/>}}
               />
             </div>
             <div className="value-text green">
               {(totalInUSDT || 0).toFixed(2)}<span className="currency-value-usd-text">
-              usd
+                &nbsp;usd
               </span>
             </div>
             <div className="description-text btc-text">
