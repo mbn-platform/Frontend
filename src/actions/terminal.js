@@ -1,5 +1,5 @@
-import { apiGet, apiPost, apiDelete, ApiError } from '../generic/apiCall';
-import { fetchDashboardData } from '../actions/dashboard';
+import { ApiError } from '../generic/apiCall';
+import { ApiTerminal} from '../generic/api';
 export const SELECT_FUND = 'SELECT_FUND';
 export const SELECT_MARKET = 'SELECT_MARKET';
 export const SELECT_EXCHANGE = 'SELECT_EXCHANGE';
@@ -15,10 +15,11 @@ export const UPDATE_RATINGS = 'UPDATE_RATINGS';
 export const UPDATE_TICKER = 'UPDATE_TICKER';
 export const UPDATE_ORDER_BOOK = 'UPDATE_ORDER_BOOK';
 export const UPDATE_HISTORY = 'UPDATE_HISTORY';
-export const GET_EXCHANGE_MARKETS = 'GET_EXCHANGE_MARKETS';
 export const UPDATE_MARKET_SUMMARIES = 'UPDATE_MARKET_SUMMARIES';
 export const TRADING_DATA_START = 'TRADING_DATA_START';
 export const TRADING_DATA_STOP = 'TRADING_DATA_STOP';
+
+const TerminalApi = new ApiTerminal();
 
 export function selectFund(fund) {
   localStorage.setItem('terminal.selectedFund', JSON.stringify(fund));
@@ -71,7 +72,7 @@ export function selectInterval(interval) {
 
 export function getExchangeMarkets(exchange) {
   return dispatch => {
-    return apiGet('/exchange/markets?exchange=' + exchange)
+    TerminalApi.getExchangeMarkets(exchange)
       .then(res => {
         dispatch({
           type: EXCHANGE_MARKETS,
@@ -81,14 +82,13 @@ export function getExchangeMarkets(exchange) {
       })
       .catch(e => {
         console.log('failed to get exchange info', e);
-        console.log(e.apiErrorCode);
       });
   };
 }
 
 export function getExchangeRates(exchange) {
   return dispatch => {
-    return apiGet('/exchange/rates?exchange=' + exchange)
+    TerminalApi.getExchangeRates(exchange)
       .then(res => {
         dispatch(updateRates(exchange, res));
       });
@@ -98,7 +98,7 @@ export function getExchangeRates(exchange) {
 
 export function getMyOrders(key) {
   return dispatch => {
-    apiGet('/api/trades/' + key._id)
+    TerminalApi.getMyOrders(key)
       .then(res => {
         dispatch({
           type: GET_MY_ORDERS,
@@ -111,8 +111,7 @@ export function getMyOrders(key) {
 
 export function getOrders(params) {
   return dispatch => {
-    const query = Object.entries(params).map(e => e.join('=')).join('&');
-    apiGet('/order?' + query)
+    TerminalApi.getOrders(params)
       .then(res => dispatch({
         type: GET_MY_ORDERS,
         orders: res,
@@ -126,7 +125,7 @@ export function getOrders(params) {
 
 export function cancelOrder(order) {
   return dispatch => {
-    apiDelete('/order/' + order._id)
+    TerminalApi.cancelOrder(order)
       .then(res => {
         dispatch({
           type: CANCEL_ORDER,
@@ -158,7 +157,7 @@ export function cancelOrder(order) {
 
 export function placeOrder(order) {
   return dispatch => {
-    apiPost('/order', null, order)
+    TerminalApi.placeOrder(order)
       .then(res => {
         console.log(res);
         alert('Order has been placed');
@@ -229,7 +228,7 @@ export function placeOrder(order) {
 
 export function updateRatings() {
   return dispatch => {
-    apiGet('/rating')
+    TerminalApi.updateRatings()
       .then(data => {
         dispatch({
           type: UPDATE_RATINGS,

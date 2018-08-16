@@ -1,9 +1,12 @@
-import { apiGet } from '../generic/apiCall';
+import {ApiTime} from '../generic/api';
 export const GET_TIME = 'GET_TIME';
+
+
+const TimeApi = new ApiTime();
 
 export function fetchTime() {
   return dispatch => {
-    apiGet('/time', null, dispatch)
+    TimeApi.fetch()
       .then(json => dispatch({
         type: GET_TIME,
         time: json.time
