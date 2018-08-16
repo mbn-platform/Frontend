@@ -62,20 +62,17 @@ class OrdersTable extends React.Component {
                         <FormattedMessage
                           id="orders.openDate"
                           defaultMessage="Opened Date"
-                        />
-                        <span className={classNameForColumnHeader(this.state, 'dt')}/></th>
+                        /> <span className={classNameForColumnHeader(this.state, 'dt')}/></th>
                       <th onClick={() => this.onColumnSort('market')}>
                         <FormattedMessage
                           id="orders.market"
                           defaultMessage="Market"
-                        />
-                        <span className={classNameForColumnHeader(this.state, 'market')}/></th>
+                        /> <span className={classNameForColumnHeader(this.state, 'market')}/></th>
                       <th onClick={() => this.onColumnSort('limit')}>
                         <FormattedMessage
                           id="orders.price"
                           defaultMessage="Price"
-                        />
-                        <span className={classNameForColumnHeader(this.state, 'limit')}/></th>
+                        /> <span className={classNameForColumnHeader(this.state, 'limit')}/></th>
                       <th onClick={() => this.onColumnSort('filled')}>
                         <FormattedMessage
                           id="orders.unitsFilled"
@@ -100,8 +97,7 @@ class OrdersTable extends React.Component {
                       <FormattedMessage
                         id="orders.total"
                         defaultMessage="Total"
-                      />
-                      <span className={classNameForColumnHeader(this.state, 'price')}/></th>
+                      /> <span className={classNameForColumnHeader(this.state, 'price')}/></th>
                       <th/>
                     </tr>
                   </thead>
@@ -134,20 +130,17 @@ class OrdersTable extends React.Component {
                         <FormattedMessage
                           id="orders.market"
                           defaultMessage="Market"
-                        />
-                        <span className={classNameForColumnHeader(this.state, 'market')}/></th>
+                        /> <span className={classNameForColumnHeader(this.state, 'market')}/></th>
                       <th onClick={() => this.onColumnSort('limit')}>
                         <FormattedMessage
                           id="orders.price"
                           defaultMessage="Price"
-                        />
-                        <span className={classNameForColumnHeader(this.state, 'limit')}/></th>
+                        /> <span className={classNameForColumnHeader(this.state, 'limit')}/></th>
                       <th onClick={() => this.onColumnSort('filled')}>
                         <FormattedMessage
                           id="orders.unitsFilled"
                           defaultMessage="Units Filled"
-                        />
-                        <span className={classNameForColumnHeader(this.state, 'filled')}/></th>
+                        /> <span className={classNameForColumnHeader(this.state, 'filled')}/></th>
                       <th onClick={() => this.onColumnSort('amount')}>
                         <FormattedMessage
                           id="orders.unitsTotal"
