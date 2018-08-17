@@ -42,13 +42,12 @@
 }
 
 .modal__button {
-    background-color: transparent;
-    color: #44464a;
+    color: #fff;
     border-color: #44464a;
     border-radius: 5px;
     font-size: 1.2em;
     padding: 7px 20px;
-    margin-right: 10px;
+    margin-right: 20px;
 
     &.active {
         background-color: #346255;
@@ -61,6 +60,11 @@
 
 .modal__button-wrapper {
     display: flex;
+}
+
+.modal__content {
+    display: flex;
+    justify-content: center;
 }
 
 .modal__close {
