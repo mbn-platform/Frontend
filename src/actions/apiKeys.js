@@ -64,10 +64,10 @@ export function deleteApiKey(key) {
               alert('The key is in use');
               return;
             default:
-              console.log('unhandled api error', error.apiErrorCode);
+              console.error('unhandled api error', error.apiErrorCode);
           }
         } else {
-          console.log('error deleting key', error);
+          console.error('error deleting key', error);
         }
       });
   };
@@ -101,7 +101,7 @@ export function addApiKey(key) {
               return;
             default:
               alert('failed to add api key:', error.apiErrorCode);
-              console.log('unhandled api error', error.apiErrorCode);
+              console.error('unhandled api error', error.apiErrorCode);
           }
         }
       });
@@ -118,8 +118,7 @@ export function updateApiKey(key) {
         });
       })
       .catch(err => {
-        console.log(err);
-        console.log(err.apiErrorCode);
+        console.error(err.apiErrorCode);
       });
   };
 }

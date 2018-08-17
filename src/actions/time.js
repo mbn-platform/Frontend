@@ -11,6 +11,6 @@ export function fetchTime() {
         type: GET_TIME,
         time: json.time
       }))
-      .catch(err => console.log('catched eror', err));
+      .catch(err => console.error('catched eror', err));
   };
 }

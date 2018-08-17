@@ -81,7 +81,7 @@ export function getExchangeMarkets(exchange) {
         });
       })
       .catch(e => {
-        console.log('failed to get exchange info', e);
+        console.error('failed to get exchange info', e);
       });
   };
 }
@@ -105,7 +105,7 @@ export function getMyOrders(key) {
           orders: res,
         });
       })
-      .catch(error => console.log(error));
+      .catch(error => console.error(error));
   };
 }
 
@@ -118,7 +118,7 @@ export function getOrders(params) {
         fundId: params.keyId || params.contractId,
       }))
       .catch(err => {
-        console.log(err);
+        console.error(err);
       });
   };
 }
@@ -146,10 +146,10 @@ export function cancelOrder(order) {
               break;
             default:
               alert('failed to cancel order: ' + err.apiErrorCode);
-              console.log('unhandled api error', err.apiErrorCode);
+              console.error('unhandled api error', err.apiErrorCode);
           }
         } else {
-          console.log('error performing request', err);
+          console.error('error performing request', err);
         }
       });
   };
@@ -159,7 +159,6 @@ export function placeOrder(order) {
   return dispatch => {
     TerminalApi.placeOrder(order)
       .then(res => {
-        console.log(res);
         alert('Order has been placed');
         dispatch({
           type: PLACE_ORDER,
@@ -235,7 +234,7 @@ export function updateRatings() {
           rating: data.rating,
         });
       })
-      .catch(e => console.log('error'));
+      .catch(e => console.error('error'));
   };
 }
 

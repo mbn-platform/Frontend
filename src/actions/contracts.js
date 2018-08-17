@@ -33,7 +33,7 @@ export function rateContract(feedback) {
         if(error.apiErrorCode) {
           switch(error.apiErrorCode) {
             default:
-              console.log('unhandled api error', error.apiErrorCode);
+              console.error('unhandled api error', error.apiErrorCode);
           }
         }
       });

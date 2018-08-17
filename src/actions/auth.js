@@ -44,10 +44,10 @@ export function addName(name) {
               alert('You cannot use that name, please enter another one');
               break;
             default:
-              console.log('unhandled api error');
+              console.error('unhandled api error');
           }
         } else {
-          console.log('failed to log in', e.description);
+          console.error('failed to log in', e.description);
         }
       });
   };
