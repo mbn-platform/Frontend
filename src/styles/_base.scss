@@ -126,6 +126,12 @@ input[type=number]::-webkit-outer-spin-button {
 	background-color: #346255;
 }
 
+@media (max-width: 768px) {
+    .btn {
+        width: 70px;
+    }
+}
+
 .dropdown-popover {
 	.arrow {
 		display: none;
