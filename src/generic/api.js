@@ -7,8 +7,6 @@ const responseSchemaHandler = resp => resp;
 export class ApiAuth {
   constructor(web3) {
     this.web3 = web3;
-    this.logIn = this.logIn.bind(this);
-    this.addName = this.addName.bind(this);
   }
 
   logIn = () => {
@@ -44,10 +42,6 @@ export class ApiAuth {
 }
 
 export class ApiChallenge {
-  constructor() {
-    this.update = this.update.bind(this);
-  }
-
   update = number =>
     apiGet('/challenge/' + number)
       .then(errorHandler)
@@ -55,11 +49,6 @@ export class ApiChallenge {
 }
 
 export class ApiContract {
-  constructor() {
-    this.fetch = this.fetch.bind(this);
-    this.rate = this.rate.bind(this);
-  }
-
   fetch = () =>
     apiGet('/contract')
       .then(errorHandler)
@@ -72,10 +61,6 @@ export class ApiContract {
 }
 
 export class ApiDashboard {
-  constructor() {
-    this.fetch = this.fetch.bind(this);
-  }
-
   fetch = () =>
     apiGet('/api/dashboard')
       .then(errorHandler)
@@ -83,11 +68,6 @@ export class ApiDashboard {
 }
 
 export class ApiExchange {
-  constructor() {
-    this.update = this.update.bind(this);
-    this.getCurrencies = this.getCurrencies.bind(this);
-  }
-
   update = () =>
     apiGet('/exchanges')
       .then(errorHandler)
@@ -103,10 +83,6 @@ export class ApiExchange {
 export class ApiOffers {
   constructor(web3) {
     this.web3 = web3;
-    this.accept = this.accept.bind(this);
-    this.cancel = this.cancel.bind(this);
-    this.reject = this.reject.bind(this);
-    this.pay = this.pay.bind(this);
   }
 
   accept = offer =>
@@ -216,14 +192,6 @@ export class ApiOffers {
 }
 
 export class ApiProfile {
-  constructor() {
-    this.updateContractSettings = this.updateContractSettings.bind(this);
-    this.toggleAvailable = this.toggleAvailable.bind(this);
-    this.getProfilePageInfo = this.getProfilePageInfo.bind(this);
-    this.getFeedbacks = this.getFeedbacks.bind(this);
-    this.getTradesForUser = this.getTradesForUser.bind(this);
-  }
-
   updateContractSettings = (name, settings) =>
     apiPut(`/profile/${name}/contractSettings`, null, settings)
       .then(errorHandler)
@@ -251,16 +219,6 @@ export class ApiProfile {
 }
 
 export class ApiTerminal {
-  constructor() {
-    this.getExchangeMarkets = this.getExchangeMarkets.bind(this);
-    this.getExchangeRates = this.getExchangeRates.bind(this);
-    this.getMyOrders = this.getMyOrders.bind(this);
-    this.getOrders = this.getOrders.bind(this);
-    this.cancelOrder = this.cancelOrder.bind(this);
-    this.placeOrder = this.placeOrder.bind(this);
-    this.updateRatings = this.updateRatings.bind(this);
-  }
-
   getExchangeMarkets = exchange =>
     apiGet('/exchange/markets?exchange=' + exchange)
       .then(errorHandler)
@@ -299,10 +257,6 @@ export class ApiTerminal {
 }
 
 export class ApiTime {
-  constructor() {
-    this.fetch = this.fetch.bind(this);
-  }
-
   fetch = () =>
     apiGet('/time', null)
       .then(errorHandler)
@@ -310,13 +264,6 @@ export class ApiTime {
 }
 
 export class ApiKeys {
-  constructor() {
-    this.fetch = this.fetch.bind(this);
-    this.delete = this.delete.bind(this);
-    this.add = this.add.bind(this);
-    this.update = this.update.bind(this);
-  }
-
   fetch = () =>
     apiGet('/key')
       .then(errorHandler)
