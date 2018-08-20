@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Row, Col } from 'reactstrap';
 import { Desktop, Mobile } from '../../generic/MediaQuery';
+import ModalWindow from '../../components/Modal';
 import {FormattedMessage, injectIntl} from 'react-intl';
 
 class ContractSettings extends React.Component {
@@ -9,7 +10,7 @@ class ContractSettings extends React.Component {
   constructor(props) {
     super(props);
     this.onToggleClick = this.onToggleClick.bind(this);
-    this.state = {isEditing: false};
+    this.state = {isEditing: false, informModalIsOpen: false};
     this.onEditButtonClick = this.onEditButtonClick.bind(this);
     this.onFieldEdit = this.onFieldEdit.bind(this);
     this.onCurrencySelected = this.onCurrencySelected.bind(this);
@@ -47,7 +48,10 @@ class ContractSettings extends React.Component {
       const duration = parseFloat(this.state.duration) || this.props.duration;
       if(fee >= 100 || fee <= 0 || minAmount < 0 || roi <= 0 ||
         duration <= 0 || maxLoss <= 0) {
-        alert(this.props.intl.messages['profile.enterSetting.']);
+        this.setState({
+          informModalIsOpen: true,
+          currentInformModelText: this.props.intl.messages['profile.enterSetting.']
+        });
         return;
       } else {
         const update = { fee, minAmount, currency, roi, maxLoss, duration };
@@ -57,6 +61,24 @@ class ContractSettings extends React.Component {
     } else {
       this.setState({...this.getInitialState(), isEditing: true});
     }
+  }
+
+  renderInformModel = () => {
+    const { informModalIsOpen, currentInformModelText } = this.state;
+    return (
+      <ModalWindow
+        modalIsOpen={informModalIsOpen}
+        onClose={() => this.setState({informModalIsOpen: false })}
+        title={currentInformModelText}
+        content={
+          <div>
+            <button className="modal__button btn" onClick={() => this.setState({informModalIsOpen: false})}>
+              {this.props.intl.messages['ok']}
+            </button>
+          </div>
+        }
+      />
+    );
   }
 
   getInitialState() {
@@ -76,7 +98,10 @@ class ContractSettings extends React.Component {
     const { minAmount, fee, maxLoss, duration, roi } = this.props;
     if(fee >= 100 || fee <= 0 || minAmount <= 0 || roi <= 0 ||
       duration <= 0 || maxLoss <= 0) {
-      alert(this.props.intl.messages['profile.needEditFirst']);
+      this.setState({
+        informModalIsOpen: true,
+        currentInformModelText: this.props.intl.messages['profile.needEditFirst']
+      });
       return;
     }
     this.props.onToggleClick(!this.props.availableForOffers);
@@ -255,7 +280,7 @@ class ContractSettings extends React.Component {
             onChange={(e) => this.onFieldEdit(e,[0,99])}
           />
         </Col>
-
+        {this.renderInformModel()}
       </div>
     );
   }

@@ -1,6 +1,7 @@
 const en = {
   'yes' : 'Yes',
   'no' : 'No',
+  'ok' : 'Ok',
   'feedbacks' : 'FEEDBACKS',
   'apiKey' : 'API KEY',
   'userTrustToMe' : '{name} trusted to me',
