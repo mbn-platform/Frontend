@@ -10,7 +10,7 @@ export const VERIFY_OFFER = 'VERIFY_OFFER';
 export const PAY_OFFER = 'PAY_OFFER';
 export const NEW_OFFER = 'NEW_OFFER';
 
-const OffersApi = new ApiOffers();
+const OffersApi = new ApiOffers(window.web3);
 
 export function acceptOffer(offer) {
   return dispatch => {

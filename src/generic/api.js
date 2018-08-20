@@ -125,7 +125,7 @@ export class ApiOffers {
                 alert('Unlock metamask');
                 return;
               }
-              res(this.sendTransaction(CONTRACT_ADDRESS, offer, ETHEREUM_NET));
+              res(ApiOffers.sendTransaction(CONTRACT_ADDRESS, offer, ETHEREUM_NET));
             }
           });
         }
