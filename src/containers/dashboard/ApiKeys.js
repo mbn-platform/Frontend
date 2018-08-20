@@ -17,6 +17,7 @@ class Funds extends React.Component {
     this.state = {
       filtered: [{id: 'name', value: ''}, {id: 'exchange', value: 'All'}],
       removeConfirmModalIsOpen: false,
+      chosenRow: null,
     };
     this.onFilter = this.onFilter.bind(this);
     this.onExchangeChange = this.onExchangeChange.bind(this);
@@ -121,7 +122,10 @@ class Funds extends React.Component {
           const canDeleteKey = true;
           const onClick =  e => {
             e.stopPropagation();
-            this.setState({removeConfirmModalIsOpen: true});
+            this.setState({
+              chosenRow: row.original,
+              removeConfirmModalIsOpen: true
+            });
           };
           const className = classNames('delete_key_button', {can_delete_key: canDeleteKey});
           return (<div className={className} onClick={onClick}/>);
@@ -132,20 +136,21 @@ class Funds extends React.Component {
   }
 
   renderConfirmModel = () => {
-    const { removeConfirmModalIsOpen } = this.state;
+    const { removeConfirmModalIsOpen, chosenRow} = this.state;
     return (
       <ModalWindow
         modalIsOpen={removeConfirmModalIsOpen}
+        onClose={() => this.setState({removeConfirmModalIsOpen: false, chosenRow: null})}
         title={this.props.intl.messages['dashboard.deleteConfirm']}
         content={
           <div>
-            <button className="modal__button" onClick={() => {
-              this.props.onKeyDeleteClick(this.props.selectedApiKey);
-              this.setState({removeConfirmModalIsOpen: false});
+            <button className="modal__button btn" onClick={() => {
+              this.props.onKeyDeleteClick(chosenRow);
+              this.setState({removeConfirmModalIsOpen: false, chosenRow: null});
             }}>
               {this.props.intl.messages['yes']}
             </button>
-            <button className="modal__button" onClick={() => this.setState({removeConfirmModalIsOpen: false})}>
+            <button className="modal__button btn" onClick={() => this.setState({removeConfirmModalIsOpen: false})}>
               {this.props.intl.messages['no']}
             </button>
           </div>

@@ -42,13 +42,16 @@
 }
 
 .modal__button {
-    background-color: transparent;
-    color: #44464a;
+    color: #fff;
     border-color: #44464a;
     border-radius: 5px;
     font-size: 1.2em;
     padding: 7px 20px;
-    margin-right: 10px;
+    margin-right: 20px;
+
+    &:last-child{
+        margin-right: 0;
+    }
 
     &.active {
         background-color: #346255;
@@ -61,6 +64,11 @@
 
 .modal__button-wrapper {
     display: flex;
+}
+
+.modal__content {
+    display: flex;
+    justify-content: center;
 }
 
 .modal__close {
@@ -89,5 +97,45 @@
 
     &:after {
         transform: rotate(-45deg);
+    }
+}
+
+@media (max-width: 768px) {
+
+    .modal__title {
+        font-size: 1em;
+        max-width: 90%;
+    }
+    .modal__header {
+        padding: 15px;
+    }
+
+    .modal__close {
+        width: 25px;
+        height: 25px;
+        top: 5px;
+        right: 10px;
+        &:before, &:after {
+            right: 12px;
+            width: 1px;
+            height: 15px;
+            background-color: #fff;
+        }
+    }
+
+    .modal__body {
+        padding: 10px;
+    }
+
+    .modal__button {
+        font-size:  1em;
+        margin-right: 10px;
+        &:last-child{
+            margin-right: 0;
+        }
+    }
+
+        .modal__content {
+        padding: 0;
     }
 }

@@ -8,6 +8,7 @@ class ModalWindow extends React.Component {
     content: PropTypes.any.isRequired,
     title: PropTypes.any,
     afterOpenModal: PropTypes.func,
+    onClose: PropTypes.func,
     modalIsOpen: PropTypes.bool.isRequired,
   };
 
@@ -28,18 +29,13 @@ class ModalWindow extends React.Component {
     return null;
   }
 
-  closeModal() {
-    this.setState({modalIsOpen: false});
-  }
-
-
   render() {
-    const { title, content, afterOpenModal } = this.props;
+    const { title, content, afterOpenModal, onClose } = this.props;
     return (
       <Modal
         isOpen={this.state.modalIsOpen}
         onAfterOpen={afterOpenModal}
-        onRequestClose={this.closeModal}
+        onRequestClose={onClose}
         ariaHideApp={false}
         style={{
           overlay: {
@@ -54,7 +50,7 @@ class ModalWindow extends React.Component {
         }}
         contentLabel="Example Modal"
       >
-        <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-8 profit-block">
+        <div className="col-12 col-sm-12 col-md-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6 profit-block">
           <div className="modal__container">
             <div className="modal__header">
               <div className="container-fuild h-100">
@@ -64,12 +60,12 @@ class ModalWindow extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className="modal__close" onClick={() => this.closeModal()}/>
+              <div className="modal__close" onClick={() => onClose()}/>
             </div>
             <div className="modal__body">
               <div className="container d-flex flex-column ">
                 <div className="row order-2 justify-content-center">
-                  <div className="col-12">
+                  <div className="col-12 modal__content">
                     {content}
                   </div>
                 </div>
