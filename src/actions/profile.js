@@ -1,13 +1,16 @@
-import { apiPut, apiGet, ApiError } from '../generic/apiCall';
-import defaultErrorHandler, {profileErrorHandler} from '../generic/errorHandlers';
+import { profileErrorHandler } from '../generic/errorHandlers';
+import { ApiProfile} from '../generic/api';
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
 export const GET_PROFILE = 'GET_PROFILE';
 export const TRADES_FOR_USER = 'TRADES_FOR_USER';
 export const GET_FEEDBACKS = 'GET_FEEDBACKS';
 
+
+const ProfileApi = new ApiProfile();
+
 export function updateContractSettings(name, settings) {
   return dispatch => {
-    apiPut(`/profile/${name}/contractSettings`, null, settings)
+    ProfileApi.updateContractSettings(name, settings)
       .then(json => dispatch({
         type: UPDATE_PROFILE,
         profile: json,
@@ -20,7 +23,7 @@ export function updateContractSettings(name, settings) {
 
 export function toggleAvailable(name, available) {
   return dispatch => {
-    apiPut(`/profile/${name}/available`, null, available)
+    ProfileApi.toggleAvailable(name, available)
       .then(json => dispatch({
         type: UPDATE_PROFILE,
         profile: json,
@@ -31,26 +34,10 @@ export function toggleAvailable(name, available) {
   };
 }
 
-export function getProfile(name) {
-  return dispatch => {
-    return apiGet(`/profile/${name}`)
-      .then(json => {
-        dispatch({
-          type: GET_PROFILE,
-          profile: json.profile,
-        });
-        //dispatch(getTradesForUser(name));
-      })
-      .catch(err => {
-        profileErrorHandler(err, dispatch);
-      });
-  };
-}
-
 export function getProfilePageInfo(name) {
   return async dispatch => {
     try {
-      const json = await apiGet(`/profile/${name}`);
+      const json = await ProfileApi.getProfilePageInfo(name)
       dispatch({
         type: GET_PROFILE,
         profile: json.profile,
@@ -65,7 +52,7 @@ export function getProfilePageInfo(name) {
 
 export function getFeedbacks(name) {
   return dispatch => {
-    apiGet(`/profile/${name}/feedbacks`)
+    ProfileApi.getFeedbacks(name)
       .then(json => {
         dispatch({
           type: GET_FEEDBACKS,
@@ -80,7 +67,7 @@ export function getFeedbacks(name) {
 
 export function getTradesForUser(name) {
   return dispatch => {
-    apiGet(`/profile/${name}/history`)
+    ProfileApi.getTradesForUser(name)
       .then(trades => {
         dispatch({
           type: TRADES_FOR_USER,

@@ -8,7 +8,6 @@ import {
   VERIFY_OFFER
 } from '../actions/offers';
 import { FETCH_CONTRACTS } from '../actions/contracts';
-import { makeId } from '../generic/util';
 import { combineReducers } from 'redux';
 
 function incoming(state = [], action) {

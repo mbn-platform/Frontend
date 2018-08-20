@@ -1,4 +1,4 @@
-import { EXCHANGE_MARKETS, EXCHANGE_RATES, GET_EXCHANGE_MARKETS, UPDATE_MARKET_SUMMARIES } from '../actions/terminal';
+import { EXCHANGE_MARKETS, EXCHANGE_RATES, UPDATE_MARKET_SUMMARIES } from '../actions/terminal';
 import { UPDATE_EXCHANGES } from '../actions/exchanges';
 export const EXCHANGE_BITTREX = 'bittrex';
 export const EXCHANGE_CURRENCIES = 'EXCHANGE_CURRENCIES';

@@ -135,10 +135,8 @@ class ApiKeyInfo extends React.Component {
 
   render() {
     let data;
-    let isContract = false;
     if(this.props.fund) {
       data = this.props.fund.balances;
-      isContract = !!this.props.fund.contractSettings;
     } else {
       data = [];
     }
