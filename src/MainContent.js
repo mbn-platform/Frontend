@@ -9,8 +9,6 @@ import Profile from './containers/profile/ProfileContainer';
 import Leaderboard from './containers/leaderboard/Leaderboard';
 import './MainContent.css';
 import { Col } from 'reactstrap';
-window.scrollTo(0, 0);
-
 
 class MainContent extends React.Component {
   componentDidUpdate(prevProps) {
