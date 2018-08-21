@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import {defaultFormatValue, setFundId} from '../../generic/util';
 import { Desktop } from '../../generic/MediaQuery';
 import {FormattedMessage, injectIntl} from 'react-intl';
+import ModalWindow from '../../components/Modal';
 
 export const TAB_BUY = 'buy';
 export const TAB_SELL = 'sell';
@@ -24,6 +25,7 @@ class PlaceOrder extends React.Component {
       orderSize: '',
       amount: '',
       price,
+      informModalIsOpen: false,
       tickerSet: false,
       marketInfo: props.markets.find(m => m.symbol === props.market),
     };
@@ -35,7 +37,10 @@ class PlaceOrder extends React.Component {
   onSubmit(e) {
     e.preventDefault();
     if(!this.props.fund) {
-      alert('select fund');
+      this.setState({
+        informModalIsOpen: true,
+        currentInformModelText: this.props.intl.messages['terminal.selectFund']
+      });
       return;
     }
     let params = {
@@ -266,6 +271,24 @@ class PlaceOrder extends React.Component {
     this.setState(newState);
   }
 
+  renderInformModel = () => {
+    const { informModalIsOpen, currentInformModelText } = this.state;
+    return (
+      <ModalWindow
+        modalIsOpen={informModalIsOpen}
+        onClose={() => this.setState({informModalIsOpen: false })}
+        title={currentInformModelText}
+        content={
+          <div>
+            <button className="modal__button btn" onClick={() => this.setState({informModalIsOpen: false})}>
+              {this.props.intl.messages['ok']}
+            </button>
+          </div>
+        }
+      />
+    );
+  }
+
   render() {
     const minTradeSize = this.state.marketInfo ? this.state.marketInfo.minTradeSize : '';
     return (
@@ -332,6 +355,7 @@ class PlaceOrder extends React.Component {
           />
 
         </div>
+        {this.renderInformModel()}
       </div>
     );
   }

@@ -8,6 +8,7 @@ import time from './reducers/time';
 import terminal from './reducers/terminal';
 import request from './reducers/request';
 import rates from './reducers/rates';
+import modal from './reducers/modal';
 import profile from './reducers/profile';
 import exchangesInfo from './reducers/exchangesInfo';
 import { combineReducers } from 'redux';
@@ -20,6 +21,7 @@ const combined = combineReducers(
     apiKeys,
     contracts,
     ratings,
+    modal,
     offers,
     auth,
     exchanges,

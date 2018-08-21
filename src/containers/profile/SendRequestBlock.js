@@ -15,6 +15,8 @@ import ReactTable from '../../components/SelectableReactTable';
 import { Desktop, Mobile } from '../../generic/MediaQuery';
 import {getExchangeCurrencies} from '../../actions/exchanges';
 import {FormattedMessage, injectIntl} from 'react-intl';
+import ModalWindow from '../../components/Modal';
+
 
 const SEND_REQUEST_BLOCK_DETAILS = 0;
 const SEND_REQUEST_BLOCK_SELECT_API = 1;
@@ -36,7 +38,8 @@ class SendRequestBlock extends React.Component {
       changed: false,
       changedCurrencies: {},
       allSelected: false,
-      currencies: []
+      currencies: [],
+      informModalIsOpen: false,
     };
     this.onFundSelected = async (fund) => {
       const exchangeInfo = this.props.exchangesInfo[fund.exchange];
@@ -54,10 +57,12 @@ class SendRequestBlock extends React.Component {
 
   async onSendOfferClick() {
     if(!this.state.selectedFund) {
-      alert(this.props.intl.messages['profile.selectKeyFirst']);
+      this.setState({
+        informModalIsOpen: true,
+        currentInformModelText: this.props.intl.messages['profile.selectKeyFirst']
+      });
       return;
     }
-    console.log('offer', this.props.profile);
     const keyId = this.state.selectedFund._id;
     let allowedCurrencies = ['USDT','ETH','BTC'];
     let selectedCurrencies = this.state.changedCurrencies;
@@ -104,7 +109,10 @@ class SendRequestBlock extends React.Component {
     e.stopPropagation();
     const currency = e.target.dataset.currency;
     if(currency === 'USDT' || currency === 'BTC' || currency === 'ETH') {
-      alert(this.props.intl.messages['profile.shouldByAlwaysAvailable']);
+      this.setState({
+        informModalIsOpen: true,
+        currentInformModelText: this.props.intl.messages['profile.shouldByAlwaysAvailable']
+      });
       return;
     }
     if(!this.canChangeCurrency(currency)) {
@@ -175,6 +183,7 @@ class SendRequestBlock extends React.Component {
       }
     ];
   }
+
   renderCurrencyTable(currencies) {
     let data = [];
     currencies.forEach(currency => {
@@ -215,6 +224,24 @@ class SendRequestBlock extends React.Component {
           </div>
         </Mobile>
       </div>
+    );
+  }
+
+  renderInformModel = () => {
+    const { informModalIsOpen, currentInformModelText } = this.state;
+    return (
+      <ModalWindow
+        modalIsOpen={informModalIsOpen}
+        onClose={() => this.setState({informModalIsOpen: false })}
+        title={currentInformModelText}
+        content={
+          <div>
+            <button className="modal__button btn" onClick={() => this.setState({informModalIsOpen: false})}>
+              {this.props.intl.messages['ok']}
+            </button>
+          </div>
+        }
+      />
     );
   }
 
@@ -329,6 +356,7 @@ class SendRequestBlock extends React.Component {
                 </button>
               </div>
             </div>
+            {this.renderInformModel()}
           </div>
         );
       }

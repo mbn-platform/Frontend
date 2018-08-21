@@ -20,7 +20,9 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { Navbar, NavbarToggler, NavbarBrand, Nav, Collapse, Col } from 'reactstrap';
 import { Desktop, Mobile } from './generic/MediaQuery';
+import ModalWindow from './components/Modal';
 import { Container, Row } from 'reactstrap';
+import {injectIntl} from "react-intl";
 
 class Navigation extends React.Component {
 
@@ -51,6 +53,26 @@ class Navigation extends React.Component {
       </div>
     );
   }
+
+  renderGlobalInformModel = () => {
+    const { isOpen, modalText } = this.props.modal;
+    console.warn(isOpen, modalText);
+    return (
+      <ModalWindow
+        modalIsOpen={isOpen}
+        onClose={() => this.setState({informModalIsOpen: false })}
+        title={modalText}
+        content={
+          <div>
+            <button className="modal__button btn" onClick={() => this.setState({informModalIsOpen: false})}>
+              {this.props.intl.messages['ok']}
+            </button>
+          </div>
+        }
+      />
+    );
+  }
+
   render() {
     return (
       <Col xs="12" md="auto" className="d-block menu-panel">
@@ -80,6 +102,7 @@ class Navigation extends React.Component {
             </Collapse>
           </Mobile>
         </Navbar>
+        {this.renderGlobalInformModel()}
       </Col>
     );
   }
@@ -221,6 +244,6 @@ class Navigation extends React.Component {
   }
 }
 
-const connected = withRouter(connect(state => ({auth: state.auth}))(Navigation));
+const connected = withRouter(connect(state => ({auth: state.auth, modal: state.modal}))(Navigation));
 
-export default connected;
+export default injectIntl(connected);

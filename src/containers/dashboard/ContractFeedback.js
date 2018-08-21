@@ -1,8 +1,9 @@
 import React from 'react';
 import RatingBar from '../../components/RatingBar';
-import { FormattedMessage } from 'react-intl';
+import {FormattedMessage, injectIntl} from 'react-intl';
+import ModalWindow from '../../components/Modal';
 
-const ContractFeedback = ({contract, onContractRate}) => {
+const ContractFeedback = ({contract, onContractRate, intl}) => {
   return (
     <div className="table">
       <div className="table_title_wrapper clearfix">
@@ -16,6 +17,7 @@ const ContractFeedback = ({contract, onContractRate}) => {
       <LeaveComment
         onContractRate={onContractRate}
         id={contract._id}
+        intl={intl}
       />
     </div>
   );
@@ -25,7 +27,11 @@ class LeaveComment extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {comment: '', rate: null};
+    this.state = {
+      comment: '',
+      informModalIsOpen: false,
+      rate: null
+    };
     this.onClick = this.onClick.bind(this);
   }
 
@@ -37,11 +43,18 @@ class LeaveComment extends React.Component {
 
   onClick(e) {
     if(this.state.rate === null) {
-      alert('rate first');
+      console.warn(this.props);
+      this.setState({
+        informModalIsOpen: true,
+        currentInformModelText: this.props.intl.messages['dashboard.rateFirst']
+      });
       return;
     }
     if(this.state.comment.length < 10) {
-      alert('comment must me at least 10 characters long');
+      this.setState({
+        informModalIsOpen: true,
+        currentInformModelText: this.props.intl.messages['dashboard.commentMustBeOver']
+      });
       return;
     }
     const feedback = {
@@ -50,6 +63,27 @@ class LeaveComment extends React.Component {
       text: this.state.comment
     };
     this.props.onContractRate(feedback);
+  }
+
+  renderInformModel = () => {
+    const { informModalIsOpen, currentInformModelText } = this.state;
+    return (
+      <ModalWindow
+        modalIsOpen={informModalIsOpen}
+        onClose={() => this.setState({informModalIsOpen: false })}
+        title={currentInformModelText}
+        content={
+          <div>
+            <button className="modal__button btn" onClick={() => this.setState({informModalIsOpen: false})}>
+              <FormattedMessage
+                id="ok"
+                defaultMessage="Ok"
+              />
+            </button>
+          </div>
+        }
+      />
+    );
   }
 
   render() {
@@ -65,6 +99,7 @@ class LeaveComment extends React.Component {
         <div className="rate_button_wrapper">
           <input onClick={this.onClick} className="send_rate_btn" type="submit" value="Submit" name=""/>
         </div>
+        {this.renderInformModel()}
       </div>
     );
   }
@@ -83,4 +118,4 @@ class LeaveComment extends React.Component {
 //   </div>
 // );
 
-export default ContractFeedback;
+export default injectIntl(ContractFeedback);
