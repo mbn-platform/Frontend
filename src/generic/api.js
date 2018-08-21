@@ -269,8 +269,8 @@ export class ApiKeys {
       .then(errorHandler)
       .then(responseSchemaHandler);
 
-  delete = keyId =>
-    apiDelete('/key/' + keyId)
+  delete = key =>
+    apiDelete('/key/' + key._id)
       .then(errorHandler)
       .then(responseSchemaHandler);
 
