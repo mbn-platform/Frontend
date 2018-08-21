@@ -1,9 +1,10 @@
-import { apiPut, apiDelete, apiGet, apiPost, ApiError } from '../generic/apiCall';
+import { ApiError } from '../generic/apiCall';
 import defaultErrorHandler from '../generic/errorHandlers';
 import { LOGGED_OUT } from '../actions/auth';
 import {UPDATE_KEYS} from './dashboard';
 import {SELECT_FUND} from './terminal';
 import { ApiKeys } from '../generic/api';
+import { showModal } from './modal';
 export const DELETE_API_KEY = 'DELETE_API_KEY';
 export const ADD_API_KEY = 'ADD_API_KEY';
 export const UPDATE_API_KEY = 'UPDATE_API_KEY';
@@ -61,7 +62,7 @@ export function deleteApiKey(key) {
               break;
             }
             case ApiError.KEY_IN_USE:
-              alert('The key is in use');
+              dispatch(showModal('The key is in use'));
               return;
             default:
               console.error('unhandled api error', error.apiErrorCode);
@@ -94,13 +95,13 @@ export function addApiKey(key) {
         if(error.apiErrorCode) {
           switch(error.apiErrorCode) {
             case ApiError.INVALID_PARAMS_SET:
-              alert('Invalid key/secret pair');
+              dispatch(showModal('Invalid key/secret pair'));
               return;
             case ApiError.UNIQUE_VIOLATION:
-              alert('This key already in system');
+              dispatch(showModal('This key already in system'));
               return;
             default:
-              alert('failed to add api key:', error.apiErrorCode);
+              dispatch(showModal('failed to add api key:', error.apiErrorCode));
               console.error('unhandled api error', error.apiErrorCode);
           }
         }

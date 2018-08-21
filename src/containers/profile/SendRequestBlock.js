@@ -15,8 +15,7 @@ import ReactTable from '../../components/SelectableReactTable';
 import { Desktop, Mobile } from '../../generic/MediaQuery';
 import {getExchangeCurrencies} from '../../actions/exchanges';
 import {FormattedMessage, injectIntl} from 'react-intl';
-import ModalWindow from '../../components/Modal';
-
+import { showModal } from '../../actions/modal';
 
 const SEND_REQUEST_BLOCK_DETAILS = 0;
 const SEND_REQUEST_BLOCK_SELECT_API = 1;
@@ -39,7 +38,6 @@ class SendRequestBlock extends React.Component {
       changedCurrencies: {},
       allSelected: false,
       currencies: [],
-      informModalIsOpen: false,
     };
     this.onFundSelected = async (fund) => {
       const exchangeInfo = this.props.exchangesInfo[fund.exchange];
@@ -57,10 +55,7 @@ class SendRequestBlock extends React.Component {
 
   async onSendOfferClick() {
     if(!this.state.selectedFund) {
-      this.setState({
-        informModalIsOpen: true,
-        currentInformModelText: this.props.intl.messages['profile.selectKeyFirst']
-      });
+      this.props.showModalWindow(this.props.intl.messages['profile.selectKeyFirst']);
       return;
     }
     const keyId = this.state.selectedFund._id;
@@ -108,11 +103,8 @@ class SendRequestBlock extends React.Component {
   onCurrencyStateClicked(e) {
     e.stopPropagation();
     const currency = e.target.dataset.currency;
-    if(currency === 'USDT' || currency === 'BTC' || currency === 'ETH') {
-      this.setState({
-        informModalIsOpen: true,
-        currentInformModelText: this.props.intl.messages['profile.shouldByAlwaysAvailable']
-      });
+    if(currency === 'USDT' || currency === 'BTC' || currency === 'ETH') {;
+      this.props.showModalWindow(this.props.intl.messages['profile.shouldByAlwaysAvailable'])
       return;
     }
     if(!this.canChangeCurrency(currency)) {
@@ -227,24 +219,6 @@ class SendRequestBlock extends React.Component {
     );
   }
 
-  renderInformModel = () => {
-    const { informModalIsOpen, currentInformModelText } = this.state;
-    return (
-      <ModalWindow
-        modalIsOpen={informModalIsOpen}
-        onClose={() => this.setState({informModalIsOpen: false })}
-        title={currentInformModelText}
-        content={
-          <div>
-            <button className="modal__button btn" onClick={() => this.setState({informModalIsOpen: false})}>
-              {this.props.intl.messages['ok']}
-            </button>
-          </div>
-        }
-      />
-    );
-  }
-
   render() {
     const profile = this.props.profile;
     const contractSettings = profile.contractSettings;
@@ -356,7 +330,6 @@ class SendRequestBlock extends React.Component {
                 </button>
               </div>
             </div>
-            {this.renderInformModel()}
           </div>
         );
       }
@@ -399,6 +372,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  showModalWindow: text => dispatch(showModal(text)),
   sendOffer: offer => dispatch(sendOffer(offer)),
   onGotItClick: () => dispatch(clearRequest('sendOffer')),
   getExchangeCurrencies: exchange => dispatch(getExchangeCurrencies(exchange)),

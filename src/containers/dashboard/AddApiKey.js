@@ -3,7 +3,7 @@ import ExchangeSelect from '../../components/ExchangeSelect';
 import { connect } from 'react-redux';
 import { addApiKey } from '../../actions/apiKeys';
 import { injectIntl } from 'react-intl';
-import ModalWindow from '../../components/Modal';
+import {showModal} from '../../actions/modal';
 
 class AddApiKey extends React.Component {
   constructor(props) {
@@ -20,7 +20,6 @@ class AddApiKey extends React.Component {
       secret: '',
       value: '',
       exchange: '',
-      informModalIsOpen: false,
     };
   }
 
@@ -28,10 +27,7 @@ class AddApiKey extends React.Component {
     event.preventDefault();
     const { name, value, exchange, secret } = this.state;
     if(!name || !value || !exchange || !secret) {
-      this.setState({
-        informModalIsOpen: true,
-        currentInformModelText: this.props.intl.messages['dashboard.addAlert']
-      });
+      this.props.showModalWindow(this.props.intl.messages['dashboard.addAlert'])
       return;
     }
     this.props.onApiKeyCreated({name, key: value.trim(), exchange, secret: secret.trim()});
@@ -46,24 +42,6 @@ class AddApiKey extends React.Component {
 
   handleExchangeChange(exchange) {
     this.setState({exchange: exchange});
-  }
-
-  renderInformModel = () => {
-    const { informModalIsOpen, currentInformModelText } = this.state;
-    return (
-      <ModalWindow
-        modalIsOpen={informModalIsOpen}
-        onClose={() => this.setState({informModalIsOpen: false })}
-        title={currentInformModelText}
-        content={
-          <div>
-            <button className="modal__button btn" onClick={() => this.setState({informModalIsOpen: false})}>
-              {this.props.intl.messages['ok']}
-            </button>
-          </div>
-        }
-      />
-    );
   }
 
   render() {
@@ -119,7 +97,6 @@ class AddApiKey extends React.Component {
             </div>
           </div>
         </form>
-        {this.renderInformModel()}
       </div>
     );
   }
@@ -127,7 +104,8 @@ class AddApiKey extends React.Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onApiKeyCreated: key => dispatch(addApiKey(key))
+    onApiKeyCreated: key => dispatch(addApiKey(key)),
+    showModalWindow: text => dispatch(showModal(text)),
   };
 };
 

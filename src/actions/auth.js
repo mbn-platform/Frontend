@@ -1,5 +1,6 @@
 import { ApiError } from '../generic/apiCall';
 import { ApiAuth } from '../generic/api';
+import { showModal } from './modal';
 
 
 export const LOGGED_OUT = 'LOGGED_OUT';
@@ -18,7 +19,7 @@ export function logIn() {
           dispatch(loggedIn(profile));
         }
       }, (error) => {
-        alert(error.code);
+        dispatch(showModal(error.code));
       });
   };
 }
@@ -38,10 +39,10 @@ export function addName(name) {
               });
               break;
             case ApiError.INVALID_PARAMS_SET:
-              alert('Invalid name');
+              dispatch(showModal('Invalid name'));
               return;
             case ApiError.UNIQUE_VIOLATION:
-              alert('You cannot use that name, please enter another one');
+              dispatch(showModal('You cannot use that name, please enter another one'));
               break;
             default:
               console.error('unhandled api error');

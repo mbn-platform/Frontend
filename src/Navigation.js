@@ -22,7 +22,9 @@ import { Navbar, NavbarToggler, NavbarBrand, Nav, Collapse, Col } from 'reactstr
 import { Desktop, Mobile } from './generic/MediaQuery';
 import ModalWindow from './components/Modal';
 import { Container, Row } from 'reactstrap';
-import {injectIntl} from "react-intl";
+import {injectIntl} from 'react-intl';
+import {closeModal} from './actions/modal';
+
 
 class Navigation extends React.Component {
 
@@ -55,16 +57,16 @@ class Navigation extends React.Component {
   }
 
   renderGlobalInformModel = () => {
-    const { isOpen, modalText } = this.props.modal;
-    console.warn(isOpen, modalText);
+    const { modal, closeModalWindow } = this.props;
+    console.warn(modal.isOpen, modal.modalText);
     return (
       <ModalWindow
-        modalIsOpen={isOpen}
-        onClose={() => this.setState({informModalIsOpen: false })}
-        title={modalText}
+        modalIsOpen={modal.isOpen}
+        onClose={closeModalWindow}
+        title={modal.modalText}
         content={
           <div>
-            <button className="modal__button btn" onClick={() => this.setState({informModalIsOpen: false})}>
+            <button className="modal__button btn" onClick={closeModalWindow}>
               {this.props.intl.messages['ok']}
             </button>
           </div>
@@ -244,6 +246,12 @@ class Navigation extends React.Component {
   }
 }
 
-const connected = withRouter(connect(state => ({auth: state.auth, modal: state.modal}))(Navigation));
+const mapDispatchToProps = dispatch => {
+  return {
+    closeModalWindow: () => dispatch(closeModal),
+  };
+};
+
+const connected = withRouter(connect(state => ({auth: state.auth, modal: state.modal}), mapDispatchToProps)(Navigation));
 
 export default injectIntl(connected);
