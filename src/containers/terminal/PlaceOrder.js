@@ -37,7 +37,7 @@ class PlaceOrder extends React.Component {
   onSubmit(e) {
     e.preventDefault();
     if(!this.props.fund) {;
-      this.props.showModalWindow(this.props.intl.messages['terminal.selectFund'])
+      this.props.showModalWindow('terminal.selectFund')
       return;
     }
     let params = {

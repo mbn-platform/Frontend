@@ -49,7 +49,7 @@ class ContractSettings extends React.Component {
       const duration = parseFloat(this.state.duration) || this.props.duration;
       if(fee >= 100 || fee <= 0 || minAmount < 0 || roi <= 0 ||
         duration <= 0 || maxLoss <= 0) {;
-        this.props.showModalWindow(this.props.intl.messages['profile.enterSetting.'])
+        this.props.showModalWindow('profile.enterSetting')
         return;
       } else {
         const update = { fee, minAmount, currency, roi, maxLoss, duration };
@@ -77,8 +77,8 @@ class ContractSettings extends React.Component {
   onToggleClick(e) {
     const { minAmount, fee, maxLoss, duration, roi } = this.props;
     if(fee >= 100 || fee <= 0 || minAmount <= 0 || roi <= 0 ||
-      duration <= 0 || maxLoss <= 0) {;
-      this.props.showModalWindow(this.props.intl.messages['profile.needEditFirst'])
+      duration <= 0 || maxLoss <= 0) {
+      this.props.showModalWindow('profile.needEditFirst')
       return;
     }
     this.props.onToggleClick(!this.props.availableForOffers);

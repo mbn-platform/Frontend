@@ -137,16 +137,16 @@ export function cancelOrder(order) {
         if(err.apiErrorCode) {
           switch(err.apiErrorCode) {
             case ApiError.ORDER_NOT_OPEN:
-              dispatch(showModal('this order is already closed'));
+              dispatch(showModal('thisOrderIsAlreadyClosed'));
               break;
             case ApiError.TRY_AGAIN_LATER:
-              dispatch(showModal('Server is busy. Try again later'));
+              dispatch(showModal('serverIsBusyTryAgainLater'));
               break;
             case ApiError.ORDER_ALREADY_CLOSED:
-              dispatch(showModal('This order is already closed'));
+              dispatch(showModal('thisOrderIsAlreadyClosed'));
               break;
             default:
-              dispatch(showModal('failed to cancel order: ' + err.apiErrorCode));
+              dispatch(showModal('failedToCancelOrder', {order :err.apiErrorCode}));
               console.error('unhandled api error', err.apiErrorCode);
           }
         } else {
@@ -160,7 +160,7 @@ export function placeOrder(order) {
   return dispatch => {
     TerminalApi.placeOrder(order)
       .then(res => {
-        dispatch(showModal('Order has been placed'));
+        dispatch(showModal('orderHasBeenPlaced'));
         dispatch({
           type: PLACE_ORDER,
           order: res,
@@ -170,25 +170,25 @@ export function placeOrder(order) {
         if(error.apiErrorCode) {
           switch(error.apiErrorCode) {
             case ApiError.INSUFFICIENT_FUNDS:
-              dispatch(showModal('Error. Insufficient funds'));
+              dispatch(showModal('errorInsufficientFunds'));
               break;
             case ApiError.TRY_AGAIN_LATER:
-              dispatch(showModal('Server is busy. Try again later'));
+              dispatch(showModal('serverIsBusyTryAgainLater'));
               break;
             case ApiError.MIN_TRADE_REQUIREMENT_NOT_MET:
-              dispatch(showModal('Min trade requirement not met'));
+              dispatch(showModal('minTradeRequirementNotMet'));
               break;
             case ApiError.MARKET_NOT_ALLOWED:
-              dispatch(showModal('You are not allowed to trade on that market'));
+              dispatch(showModal('youAreNotAllowedToTradeOnThatMarket'));
               break;
             case ApiError.THROTTLE_LIMIT:
-              dispatch(showModal('You have made too many orders, please try later'));
+              dispatch(showModal('youHaveMadeTooManyOrders'));
               break;
             case ApiError.LOCK:
-              dispatch(showModal('You can place only one order at once'));
+              dispatch(showModal('youCanPlaceOnlyOneOrderAtOnce'));
               break;
             default:
-              dispatch(showModal('failed to place order:', error.apiErrorCode));
+              dispatch(showModal('failedToPlaceOrder', {order : error.apiErrorCode}));
               console.log('unhandled api error', error.apiErrorCode);
           }
         }

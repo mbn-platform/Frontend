@@ -54,17 +54,17 @@ export function sendOffer(offer) {
         if(err.apiErrorCode) {
           switch(err.apiErrorCode) {
             case ApiError.WRONG_MIN_AMOUNT: {
-              dispatch(showModal('Your api key balance is lower that trader\'s minmum contract amount'));
+              dispatch(showModal('yourApiKeyBalanceIsLowerThatTraderMinimum'));
               break;
             }
             case ApiError.WRONG_DEAL_TERMS:
-              dispatch(showModal('Trader has changed contract settings, please reload page'));
+              dispatch(showModal('traderHasChangedContractSettings'));
               break;
             case ApiError.INSUFFICIENT_FUNDS:
-              dispatch(showModal('Error. Insufficient funds'));
+              dispatch(showModal('errorInsufficientFunds'));
               break;
             case ApiError.TRADER_NOT_AVAILABLE:
-              dispatch(showModal('Error. Trader not available'));
+              dispatch(showModal('errorTraderNotAvailable'));
               break;
             default:
               defaultErrorHandler(err, dispatch);

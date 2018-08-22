@@ -22,7 +22,7 @@ import { Navbar, NavbarToggler, NavbarBrand, Nav, Collapse, Col } from 'reactstr
 import { Desktop, Mobile } from './generic/MediaQuery';
 import ModalWindow from './components/Modal';
 import { Container, Row } from 'reactstrap';
-import {injectIntl} from 'react-intl';
+import {injectIntl, FormattedMessage} from 'react-intl';
 import {closeModal} from './actions/modal';
 
 
@@ -58,12 +58,17 @@ class Navigation extends React.Component {
 
   renderGlobalInformModel = () => {
     const { modal, closeModalWindow } = this.props;
-    console.warn(modal.isOpen, modal.modalText);
     return (
       <ModalWindow
         modalIsOpen={modal.isOpen}
         onClose={closeModalWindow}
-        title={modal.modalText}
+        title={
+          <FormattedMessage
+            id={modal.modalTextID || 'message'}
+            defaultMessage="Message"
+            values={modal.modalTextValues}
+          />
+        }
         content={
           <div>
             <button className="modal__button btn" onClick={closeModalWindow}>
@@ -118,7 +123,7 @@ class Navigation extends React.Component {
       this.props.dispatch({
         type: 'LOGGED_OUT',
       });
-    }
+    };
     return (
       <a onClick={onClick} href="/" className="nav-link">
         <Container className="h-100" fluid >
@@ -198,7 +203,7 @@ class Navigation extends React.Component {
         imgClass: 'profile',
         icon: ProfileIcon,
         iconHover: ProfileIconHover
-      },    
+      },
       {
         name: 'Dashboard',
         to: '/dashboard',
@@ -219,7 +224,7 @@ class Navigation extends React.Component {
         imgClass: 'ratings',
         icon: RaitingIcon,
         iconHover: RaitingIconHover
-      },      
+      },
       {
         name: 'Terminal',
         to: '/terminal',

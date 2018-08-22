@@ -55,7 +55,7 @@ class SendRequestBlock extends React.Component {
 
   async onSendOfferClick() {
     if(!this.state.selectedFund) {
-      this.props.showModalWindow(this.props.intl.messages['profile.selectKeyFirst']);
+      this.props.showModalWindow('profile.selectKeyFirst');
       return;
     }
     const keyId = this.state.selectedFund._id;
@@ -104,7 +104,7 @@ class SendRequestBlock extends React.Component {
     e.stopPropagation();
     const currency = e.target.dataset.currency;
     if(currency === 'USDT' || currency === 'BTC' || currency === 'ETH') {;
-      this.props.showModalWindow(this.props.intl.messages['profile.shouldByAlwaysAvailable'])
+      this.props.showModalWindow('profile.shouldByAlwaysAvailable')
       return;
     }
     if(!this.canChangeCurrency(currency)) {

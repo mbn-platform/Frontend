@@ -4,7 +4,7 @@ import {FormattedMessage, injectIntl} from 'react-intl';
 import {connect} from 'react-redux';
 import {showModal} from '../../actions/modal';
 
-const ContractFeedback = ({contract, onContractRate, intl}) => {
+const ContractFeedback = ({contract, onContractRate, intl, showModalWindow}) => {
   return (
     <div className="table">
       <div className="table_title_wrapper clearfix">
@@ -19,6 +19,7 @@ const ContractFeedback = ({contract, onContractRate, intl}) => {
         onContractRate={onContractRate}
         id={contract._id}
         intl={intl}
+        showModalWindow={showModalWindow}
       />
     </div>
   );
@@ -43,11 +44,11 @@ class LeaveComment extends React.Component {
 
   onClick(e) {
     if(this.state.rate === null) {
-      this.props.showModalWindow(this.props.intl.messages['dashboard.rateFirst'])
+      this.props.showModalWindow('dashboard.rateFirst')
       return;
     }
     if(this.state.comment.length < 10) {
-      this.props.showModalWindow(this.props.intl.messages['dashboard.commentMustBeOver'])
+      this.props.showModalWindow('dashboard.commentMustBeOver')
       return;
     }
     const feedback = {

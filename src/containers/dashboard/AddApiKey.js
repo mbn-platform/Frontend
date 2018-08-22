@@ -27,7 +27,7 @@ class AddApiKey extends React.Component {
     event.preventDefault();
     const { name, value, exchange, secret } = this.state;
     if(!name || !value || !exchange || !secret) {
-      this.props.showModalWindow(this.props.intl.messages['dashboard.addAlert'])
+      this.props.showModalWindow('dashboard.addAlert')
       return;
     }
     this.props.onApiKeyCreated({name, key: value.trim(), exchange, secret: secret.trim()});

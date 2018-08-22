@@ -19,7 +19,7 @@ export function logIn() {
           dispatch(loggedIn(profile));
         }
       }, (error) => {
-        dispatch(showModal(error.code));
+        dispatch(showModal('simpleValue', {value : error.code}));
       });
   };
 }
@@ -39,10 +39,10 @@ export function addName(name) {
               });
               break;
             case ApiError.INVALID_PARAMS_SET:
-              dispatch(showModal('Invalid name'));
+              dispatch(showModal('invalidName'));
               return;
             case ApiError.UNIQUE_VIOLATION:
-              dispatch(showModal('You cannot use that name, please enter another one'));
+              dispatch(showModal('youCannotUseThatName'));
               break;
             default:
               console.error('unhandled api error');

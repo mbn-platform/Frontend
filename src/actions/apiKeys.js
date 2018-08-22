@@ -62,7 +62,7 @@ export function deleteApiKey(key) {
               break;
             }
             case ApiError.KEY_IN_USE:
-              dispatch(showModal('The key is in use'));
+              dispatch(showModal('theKeyIsInUse'));
               return;
             default:
               console.error('unhandled api error', error.apiErrorCode);
@@ -95,13 +95,13 @@ export function addApiKey(key) {
         if(error.apiErrorCode) {
           switch(error.apiErrorCode) {
             case ApiError.INVALID_PARAMS_SET:
-              dispatch(showModal('Invalid key/secret pair'));
+              dispatch(showModal('invalidKeySecretPair'));
               return;
             case ApiError.UNIQUE_VIOLATION:
-              dispatch(showModal('This key already in system'));
+              dispatch(showModal('thisKeyAlreadyInSystem'));
               return;
             default:
-              dispatch(showModal('failed to add api key:', error.apiErrorCode));
+              dispatch(showModal('failedToAddApiKey', {key: error.apiErrorCode}));
               console.error('unhandled api error', error.apiErrorCode);
           }
         }
