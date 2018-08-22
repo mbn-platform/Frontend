@@ -64,9 +64,9 @@ class Navigation extends React.Component {
         onClose={closeModalWindow}
         title={
           <FormattedMessage
-            id={modal.modalTextID || 'message'}
+            id={modal.modalComponent || 'message'}
             defaultMessage="Message"
-            values={modal.modalTextValues}
+            values={modal.modalProps}
           />
         }
         content={
