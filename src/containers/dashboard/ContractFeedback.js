@@ -2,7 +2,7 @@ import React from 'react';
 import RatingBar from '../../components/RatingBar';
 import {FormattedMessage, injectIntl} from 'react-intl';
 import {connect} from 'react-redux';
-import {showModal} from '../../actions/modal';
+import { showInfoModal } from '../../actions/modal';
 
 const ContractFeedback = ({contract, onContractRate, intl, showModalWindow}) => {
   return (
@@ -91,7 +91,7 @@ class LeaveComment extends React.Component {
 // );
 
 const mapDispatchToProps = dispatch => ({
-  showModalWindow: text => dispatch(showModal(text)),
+  showModalWindow: text => dispatch(showInfoModal(text)),
 });
 
 export default injectIntl(connect(state => state, mapDispatchToProps)(ContractFeedback));

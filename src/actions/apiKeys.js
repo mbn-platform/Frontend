@@ -4,7 +4,7 @@ import { LOGGED_OUT } from '../actions/auth';
 import {UPDATE_KEYS} from './dashboard';
 import {SELECT_FUND} from './terminal';
 import { ApiKeys } from '../generic/api';
-import { showModal } from './modal';
+import { showInfoModal } from './modal';
 export const DELETE_API_KEY = 'DELETE_API_KEY';
 export const ADD_API_KEY = 'ADD_API_KEY';
 export const UPDATE_API_KEY = 'UPDATE_API_KEY';
@@ -62,7 +62,7 @@ export function deleteApiKey(key) {
               break;
             }
             case ApiError.KEY_IN_USE:
-              dispatch(showModal('theKeyIsInUse'));
+              dispatch(showInfoModal('theKeyIsInUse'));
               return;
             default:
               console.error('unhandled api error', error.apiErrorCode);
@@ -95,13 +95,13 @@ export function addApiKey(key) {
         if(error.apiErrorCode) {
           switch(error.apiErrorCode) {
             case ApiError.INVALID_PARAMS_SET:
-              dispatch(showModal('invalidKeySecretPair'));
+              dispatch(showInfoModal('invalidKeySecretPair'));
               return;
             case ApiError.UNIQUE_VIOLATION:
-              dispatch(showModal('thisKeyAlreadyInSystem'));
+              dispatch(showInfoModal('thisKeyAlreadyInSystem'));
               return;
             default:
-              dispatch(showModal('failedToAddApiKey', {key: error.apiErrorCode}));
+              dispatch(showInfoModal('failedToAddApiKey', {key: error.apiErrorCode}));
               console.error('unhandled api error', error.apiErrorCode);
           }
         }

@@ -6,8 +6,9 @@ import SearchHeader from '../../components/SearchHeader';
 import classNames from 'classnames';
 import { Desktop, Mobile } from '../../generic/MediaQuery';
 import Pagination from '../../components/Pagination';
-import ModalWindow from '../../components/Modal';
 import {FormattedMessage, injectIntl} from 'react-intl';
+import {showConfirmModal } from '../../actions/modal';
+import {connect} from 'react-redux';
 
 
 class Funds extends React.Component {
@@ -16,8 +17,6 @@ class Funds extends React.Component {
     super(props);
     this.state = {
       filtered: [{id: 'name', value: ''}, {id: 'exchange', value: 'All'}],
-      removeConfirmModalIsOpen: false,
-      chosenRow: null,
     };
     this.onFilter = this.onFilter.bind(this);
     this.onExchangeChange = this.onExchangeChange.bind(this);
@@ -122,10 +121,7 @@ class Funds extends React.Component {
           const canDeleteKey = true;
           const onClick =  e => {
             e.stopPropagation();
-            this.setState({
-              chosenRow: row.original,
-              removeConfirmModalIsOpen: true
-            });
+            this.props.showConfirmModal('dashboard.deleteConfirm', {}, () => this.props.onKeyDeleteClick(row.original))
           };
           const className = classNames('delete_key_button', {can_delete_key: canDeleteKey});
           return (<div className={className} onClick={onClick}/>);
@@ -133,30 +129,6 @@ class Funds extends React.Component {
 
       }
     ];
-  }
-
-  renderConfirmModel = () => {
-    const { removeConfirmModalIsOpen, chosenRow} = this.state;
-    return (
-      <ModalWindow
-        modalIsOpen={removeConfirmModalIsOpen}
-        onClose={() => this.setState({removeConfirmModalIsOpen: false, chosenRow: null})}
-        title={this.props.intl.messages['dashboard.deleteConfirm']}
-        content={
-          <div>
-            <button className="modal__button btn" onClick={() => {
-              this.props.onKeyDeleteClick(chosenRow);
-              this.setState({removeConfirmModalIsOpen: false, chosenRow: null});
-            }}>
-              {this.props.intl.messages['yes']}
-            </button>
-            <button className="modal__button btn" onClick={() => this.setState({removeConfirmModalIsOpen: false})}>
-              {this.props.intl.messages['no']}
-            </button>
-          </div>
-        }
-      />
-    );
   }
 
   renderContent() {
@@ -187,7 +159,6 @@ class Funds extends React.Component {
             PaginationComponent={Pagination}
           />
         </Mobile>
-        {this.renderConfirmModel()}
       </div>
     );
   }
@@ -224,4 +195,10 @@ Funds.propTypes = {
   selectedApiKey: PropTypes.object
 };
 
-export default injectIntl(Funds);
+const mapDispatchToProps = dispatch => {
+  return {
+    showConfirmModal: (text, values, confirmHandler) => dispatch(showConfirmModal(text, values, confirmHandler))
+  };
+};
+
+export default injectIntl(connect(null, mapDispatchToProps)(Funds));

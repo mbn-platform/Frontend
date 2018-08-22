@@ -23,7 +23,7 @@ import { Desktop, Mobile } from './generic/MediaQuery';
 import ModalWindow from './components/Modal';
 import { Container, Row } from 'reactstrap';
 import {injectIntl, FormattedMessage} from 'react-intl';
-import {closeModal} from './actions/modal';
+import {closeConfirmModal, closeInfoModal} from './actions/modal';
 
 
 class Navigation extends React.Component {
@@ -56,12 +56,12 @@ class Navigation extends React.Component {
     );
   }
 
-  renderGlobalInformModel = () => {
-    const { modal, closeModalWindow } = this.props;
+  renderGlobalConfirmModel = () => {
+    const { modal, closeConfirmModalWindow,  } = this.props;
     return (
       <ModalWindow
-        modalIsOpen={modal.isOpen}
-        onClose={closeModalWindow}
+        modalIsOpen={modal.isConfirmModalOpen}
+        onClose={closeConfirmModalWindow}
         title={
           <FormattedMessage
             id={modal.modalComponent || 'message'}
@@ -71,7 +71,37 @@ class Navigation extends React.Component {
         }
         content={
           <div>
-            <button className="modal__button btn" onClick={closeModalWindow}>
+            <button className="modal__button btn" onClick={() => {
+              modal.confirmCallback();
+              closeConfirmModalWindow();
+            }}>
+              {this.props.intl.messages['yes']}
+            </button>
+            <button className="modal__button btn" onClick={closeConfirmModalWindow}>
+              {this.props.intl.messages['no']}
+            </button>
+          </div>
+        }
+      />
+    );
+  }
+
+  renderGlobalInformModel = () => {
+    const { modal, closeInfoModalWindow } = this.props;
+    return (
+      <ModalWindow
+        modalIsOpen={modal.isInfoModalOpen}
+        onClose={closeInfoModalWindow}
+        title={
+          <FormattedMessage
+            id={modal.modalComponent || 'message'}
+            defaultMessage="Message"
+            values={modal.modalProps}
+          />
+        }
+        content={
+          <div>
+            <button className="modal__button btn" onClick={closeInfoModalWindow}>
               {this.props.intl.messages['ok']}
             </button>
           </div>
@@ -110,6 +140,7 @@ class Navigation extends React.Component {
           </Mobile>
         </Navbar>
         {this.renderGlobalInformModel()}
+        {this.renderGlobalConfirmModel()}
       </Col>
     );
   }
@@ -253,7 +284,8 @@ class Navigation extends React.Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    closeModalWindow: () => dispatch(closeModal),
+    closeInfoModalWindow: () => dispatch(closeInfoModal),
+    closeConfirmModalWindow: () => dispatch(closeConfirmModal),
   };
 };
 

@@ -15,7 +15,7 @@ import ReactTable from '../../components/SelectableReactTable';
 import { Desktop, Mobile } from '../../generic/MediaQuery';
 import {getExchangeCurrencies} from '../../actions/exchanges';
 import {FormattedMessage, injectIntl} from 'react-intl';
-import { showModal } from '../../actions/modal';
+import { showInfoModal } from '../../actions/modal';
 
 const SEND_REQUEST_BLOCK_DETAILS = 0;
 const SEND_REQUEST_BLOCK_SELECT_API = 1;
@@ -55,7 +55,7 @@ class SendRequestBlock extends React.Component {
 
   async onSendOfferClick() {
     if(!this.state.selectedFund) {
-      this.props.showModalWindow('profile.selectKeyFirst');
+      this.props.showInfoModalWindow('profile.selectKeyFirst');
       return;
     }
     const keyId = this.state.selectedFund._id;
@@ -372,7 +372,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  showModalWindow: text => dispatch(showModal(text)),
+  showModalWindow: text => dispatch(showInfoModal(text)),
   sendOffer: offer => dispatch(sendOffer(offer)),
   onGotItClick: () => dispatch(clearRequest('sendOffer')),
   getExchangeCurrencies: exchange => dispatch(getExchangeCurrencies(exchange)),

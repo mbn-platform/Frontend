@@ -5,7 +5,7 @@ import { acceptOffer, cancelOffer, rejectOffer, payOffer } from '../../actions/o
 import { updateExchanges } from '../../actions/exchanges';
 import { rateContract } from '../../actions/contracts';
 import { getExchangeRates } from '../../actions/terminal';
-import { showModal } from '../../actions/modal';
+import { showInfoModal } from '../../actions/modal';
 import { injectIntl } from 'react-intl';
 
 const mapStateToProps = state => {
@@ -27,7 +27,7 @@ const mapDispatchToProps = dispatch => {
   return {
     onKeyDeleteClick: apiKey => {
       if(apiKey.inUse) {
-        dispatch(showModal(this.props.intl.messages['dashboard.cannotDeleteKey']));
+        dispatch(showInfoModal(this.props.intl.messages['dashboard.cannotDeleteKey']));
       } else {
         dispatch(deleteApiKey(apiKey));
       }

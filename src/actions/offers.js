@@ -1,7 +1,7 @@
 import { ApiError } from '../generic/apiCall';
 import defaultErrorHandler from '../generic/errorHandlers';
 import { ApiOffers } from '../generic/api';
-import {showModal} from './modal';
+import {showInfoModal} from './modal';
 
 export const ACCEPT_OFFER = 'ACCEPT_OFFER';
 export const REJECT_OFFER = 'REJECT_OFFER';
@@ -54,17 +54,17 @@ export function sendOffer(offer) {
         if(err.apiErrorCode) {
           switch(err.apiErrorCode) {
             case ApiError.WRONG_MIN_AMOUNT: {
-              dispatch(showModal('yourApiKeyBalanceIsLowerThatTraderMinimum'));
+              dispatch(showInfoModal('yourApiKeyBalanceIsLowerThatTraderMinimum'));
               break;
             }
             case ApiError.WRONG_DEAL_TERMS:
-              dispatch(showModal('traderHasChangedContractSettings'));
+              dispatch(showInfoModal('traderHasChangedContractSettings'));
               break;
             case ApiError.INSUFFICIENT_FUNDS:
-              dispatch(showModal('errorInsufficientFunds'));
+              dispatch(showInfoModal('errorInsufficientFunds'));
               break;
             case ApiError.TRADER_NOT_AVAILABLE:
-              dispatch(showModal('errorTraderNotAvailable'));
+              dispatch(showInfoModal('errorTraderNotAvailable'));
               break;
             default:
               defaultErrorHandler(err, dispatch);

@@ -3,7 +3,7 @@ import ExchangeSelect from '../../components/ExchangeSelect';
 import { connect } from 'react-redux';
 import { addApiKey } from '../../actions/apiKeys';
 import { injectIntl } from 'react-intl';
-import {showModal} from '../../actions/modal';
+import {showInfoModal} from '../../actions/modal';
 
 class AddApiKey extends React.Component {
   constructor(props) {
@@ -105,7 +105,7 @@ class AddApiKey extends React.Component {
 const mapDispatchToProps = dispatch => {
   return {
     onApiKeyCreated: key => dispatch(addApiKey(key)),
-    showModalWindow: text => dispatch(showModal(text)),
+    showModalWindow: text => dispatch(showInfoModal(text)),
   };
 };
 

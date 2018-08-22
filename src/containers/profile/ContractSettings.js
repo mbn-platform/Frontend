@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Row, Col } from 'reactstrap';
 import { Desktop, Mobile } from '../../generic/MediaQuery';
 import {FormattedMessage, injectIntl} from 'react-intl';
-import {showModal} from '../../actions/modal';
+import {showInfoModal} from '../../actions/modal';
 import {connect} from 'react-redux';
 
 class ContractSettings extends React.Component {
@@ -382,7 +382,7 @@ const EditSettingsEntry = ({className, placeholder,value, dimension, name, onCha
 );
 
 const mapDispatchToProps = dispatch => ({
-  showModalWindow: text => dispatch(showModal(text)),
+  showModalWindow: text => dispatch(showInfoModal(text)),
 });
 
 export default injectIntl(connect(state => state, mapDispatchToProps)(ContractSettings));

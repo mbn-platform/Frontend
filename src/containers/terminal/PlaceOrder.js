@@ -5,7 +5,7 @@ import {defaultFormatValue, setFundId} from '../../generic/util';
 import { Desktop } from '../../generic/MediaQuery';
 import {FormattedMessage, injectIntl} from 'react-intl';
 import {connect} from 'react-redux';
-import {showModal} from '../../actions/modal';
+import {showInfoModal} from '../../actions/modal';
 
 export const TAB_BUY = 'buy';
 export const TAB_SELL = 'sell';
@@ -375,7 +375,7 @@ const Balance = ({name, value, onClick}) => (
 );
 
 const mapDispatchToProps = dispatch => ({
-  showModalWindow: text => dispatch(showModal(text)),
+  showModalWindow: text => dispatch(showInfoModal(text)),
 });
 
 export default injectIntl(connect(state => state, mapDispatchToProps)(PlaceOrder));

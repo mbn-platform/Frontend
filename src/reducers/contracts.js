@@ -42,7 +42,6 @@ export default function(state = {current: [], finished: []}, action) {
         _id,
         keyId,
       };
-      console.log(state);
       return {...state, current: state.current.concat(contract)};
     }
     case FETCH_CONTRACTS: {
