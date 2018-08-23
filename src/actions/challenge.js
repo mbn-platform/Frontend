@@ -1,4 +1,5 @@
 import { ApiChallenge} from '../generic/api';
+import {leaderboardErrorHandler} from '../generic/errorHandlers';
 
 export const UPDATE_CHALLENGE = 'UPDATE_CHALLENGE';
 
@@ -14,9 +15,7 @@ export const updateChallenge = number => {
           challenge: data,
         });
       })
-      .catch(dispatch({
-        type: UPDATE_CHALLENGE,
-        challenge: null,
-      }));
+      .catch(err =>
+        leaderboardErrorHandler(err, dispatch));
   };
 };

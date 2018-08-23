@@ -696,6 +696,16 @@
 	}
 }
 
+@include media-breakpoint-down(md) {
+	.ratings-main__block {
+		.block__top-switch {
+			font-size: 12px;
+			white-space: nowrap;
+		}
+	}
+}
+
+
 /*
 	ohO_oho: Mobile layout (<576px)
  */
@@ -713,19 +723,18 @@
 				.block__top-switch-wrap {
 					margin-bottom: 10px;
 					margin-top: 10px;
-					padding-left: 15px !important;
 				}
 
 				.block__top-switch {
-					font-size: 15px;
+					font-size: 8px;
 					font-weight: 500;
 
 					&:first-child {
-						margin-right: 0px;
+						margin-right: 0;
 					}
-          & {
-            margin-left: 20px;
-          }
+					  & {
+						margin-left: 5px;
+					  }
 				}
 			}
 

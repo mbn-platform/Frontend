@@ -4,6 +4,8 @@ const en = {
   'ok' : 'Ok',
   'message' : 'Message',
   'simpleValue' : '{value}',
+  'noSuchProfile' : 'No such profile',
+  'noDataAboutCurrentRound' : 'No data about current round',
   'theKeyIsInUse' : 'The key is in use',
   'invalidKeySecretPair' : 'Invalid key/secret pair',
   'yourApiKeyBalanceIsLowerThatTraderMinimum' : 'Your api key balance is lower that trader\'s minimum contract amount',
