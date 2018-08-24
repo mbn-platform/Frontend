@@ -57,6 +57,10 @@ export function getInitialState() {
     exchangesInfo: {
 
     },
+    modal: {
+      isInfoModalOpen: false, isConfirmModalOpen: false,
+      modalComponent: '',  modalProps: {},
+    },
   };
 }
 
