@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import $ from 'jquery';
 import classNames from 'classnames';
-import queryString from 'query-string';
+import qs from 'qs';
 import {sortData, onColumnSort, classNameForColumnHeader, defaultSortFunction} from '../../generic/terminalSortFunctions';
 import { injectIntl } from 'react-intl';
 import { FormattedMessage } from 'react-intl';
@@ -38,14 +38,19 @@ class Leaderboard extends React.Component {
 
   componentDidMount() {
     window.customize();
-    const { round } = queryString.parse(this.props.location.search);
+    const { round } = qs.parse(this.props.location.search);
     const $table = $('.js-table-wrapper .table');
     $table.on('reflowed', (e, $container) => {
       if(this.shouldFocus) {
         $($container).find('input').focus();
       }
     });
-    this.selectRound(+round);
+    if (round && round.match(/^[0-9]+$/)) {
+      this.selectRound(parseInt(round, 10));
+    }
+    else {
+      this.selectRound(0);
+    }
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
