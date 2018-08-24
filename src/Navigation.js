@@ -20,7 +20,11 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { Navbar, NavbarToggler, NavbarBrand, Nav, Collapse, Col } from 'reactstrap';
 import { Desktop, Mobile } from './generic/MediaQuery';
+import ModalWindow from './components/Modal';
 import { Container, Row } from 'reactstrap';
+import {injectIntl, FormattedMessage} from 'react-intl';
+import {closeConfirmModal, closeInfoModal} from './actions/modal';
+
 
 class Navigation extends React.Component {
 
@@ -51,6 +55,61 @@ class Navigation extends React.Component {
       </div>
     );
   }
+
+  renderGlobalConfirmModel = () => {
+    const { modal, closeConfirmModalWindow,  } = this.props;
+    return (
+      <ModalWindow
+        modalIsOpen={modal.isConfirmModalOpen}
+        onClose={closeConfirmModalWindow}
+        title={
+          <FormattedMessage
+            id={modal.modalComponent || 'message'}
+            defaultMessage="Message"
+            values={modal.modalProps}
+          />
+        }
+        content={
+          <div>
+            <button className="modal__button btn" onClick={() => {
+              modal.confirmCallback();
+              closeConfirmModalWindow();
+            }}>
+              {this.props.intl.messages['yes']}
+            </button>
+            <button className="modal__button btn" onClick={closeConfirmModalWindow}>
+              {this.props.intl.messages['no']}
+            </button>
+          </div>
+        }
+      />
+    );
+  }
+
+  renderGlobalInformModel = () => {
+    const { modal, closeInfoModalWindow } = this.props;
+    return (
+      <ModalWindow
+        modalIsOpen={modal.isInfoModalOpen}
+        onClose={closeInfoModalWindow}
+        title={
+          <FormattedMessage
+            id={modal.modalComponent || 'message'}
+            defaultMessage="Message"
+            values={modal.modalProps}
+          />
+        }
+        content={
+          <div>
+            <button className="modal__button btn" onClick={closeInfoModalWindow}>
+              {this.props.intl.messages['ok']}
+            </button>
+          </div>
+        }
+      />
+    );
+  }
+
   render() {
     return (
       <Col xs="12" md="auto" className="d-block menu-panel">
@@ -80,6 +139,8 @@ class Navigation extends React.Component {
             </Collapse>
           </Mobile>
         </Navbar>
+        {this.renderGlobalInformModel()}
+        {this.renderGlobalConfirmModel()}
       </Col>
     );
   }
@@ -93,7 +154,7 @@ class Navigation extends React.Component {
       this.props.dispatch({
         type: 'LOGGED_OUT',
       });
-    }
+    };
     return (
       <a onClick={onClick} href="/" className="nav-link">
         <Container className="h-100" fluid >
@@ -173,7 +234,7 @@ class Navigation extends React.Component {
         imgClass: 'profile',
         icon: ProfileIcon,
         iconHover: ProfileIconHover
-      },    
+      },
       {
         name: 'Dashboard',
         to: '/dashboard',
@@ -194,7 +255,7 @@ class Navigation extends React.Component {
         imgClass: 'ratings',
         icon: RaitingIcon,
         iconHover: RaitingIconHover
-      },      
+      },
       {
         name: 'Terminal',
         to: '/terminal',
@@ -221,6 +282,13 @@ class Navigation extends React.Component {
   }
 }
 
-const connected = withRouter(connect(state => ({auth: state.auth}))(Navigation));
+const mapDispatchToProps = dispatch => {
+  return {
+    closeInfoModalWindow: () => dispatch(closeInfoModal),
+    closeConfirmModalWindow: () => dispatch(closeConfirmModal),
+  };
+};
 
-export default connected;
+const connected = withRouter(connect(state => ({auth: state.auth, modal: state.modal}), mapDispatchToProps)(Navigation));
+
+export default injectIntl(connected);

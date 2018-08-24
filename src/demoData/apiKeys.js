@@ -16,7 +16,6 @@ const generateKey = (state, owner, name) => {
     exchange: exchange.name, key: keyValue,
     _id: generateId()
   };
-  console.log(key);
   return key;
 };
 

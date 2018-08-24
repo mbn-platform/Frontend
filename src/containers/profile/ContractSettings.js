@@ -3,13 +3,15 @@ import classNames from 'classnames';
 import { Row, Col } from 'reactstrap';
 import { Desktop, Mobile } from '../../generic/MediaQuery';
 import {FormattedMessage, injectIntl} from 'react-intl';
+import {showInfoModal} from '../../actions/modal';
+import {connect} from 'react-redux';
 
 class ContractSettings extends React.Component {
 
   constructor(props) {
     super(props);
     this.onToggleClick = this.onToggleClick.bind(this);
-    this.state = {isEditing: false};
+    this.state = {isEditing: false };
     this.onEditButtonClick = this.onEditButtonClick.bind(this);
     this.onFieldEdit = this.onFieldEdit.bind(this);
     this.onCurrencySelected = this.onCurrencySelected.bind(this);
@@ -46,8 +48,8 @@ class ContractSettings extends React.Component {
       const maxLoss = parseInt(this.state.maxLoss, 10) || this.props.maxLoss;
       const duration = parseFloat(this.state.duration) || this.props.duration;
       if(fee >= 100 || fee <= 0 || minAmount < 0 || roi <= 0 ||
-        duration <= 0 || maxLoss <= 0) {
-        alert(this.props.intl.messages['profile.enterSetting.']);
+        duration <= 0 || maxLoss <= 0) {;
+        this.props.showModalWindow('profile.enterSetting')
         return;
       } else {
         const update = { fee, minAmount, currency, roi, maxLoss, duration };
@@ -76,7 +78,7 @@ class ContractSettings extends React.Component {
     const { minAmount, fee, maxLoss, duration, roi } = this.props;
     if(fee >= 100 || fee <= 0 || minAmount <= 0 || roi <= 0 ||
       duration <= 0 || maxLoss <= 0) {
-      alert(this.props.intl.messages['profile.needEditFirst']);
+      this.props.showModalWindow('profile.needEditFirst')
       return;
     }
     this.props.onToggleClick(!this.props.availableForOffers);
@@ -255,7 +257,6 @@ class ContractSettings extends React.Component {
             onChange={(e) => this.onFieldEdit(e,[0,99])}
           />
         </Col>
-
       </div>
     );
   }
@@ -380,5 +381,9 @@ const EditSettingsEntry = ({className, placeholder,value, dimension, name, onCha
   </div>
 );
 
+const mapDispatchToProps = dispatch => ({
+  showModalWindow: text => dispatch(showInfoModal(text)),
+});
 
-export default injectIntl(ContractSettings);
+export default injectIntl(connect(state => state, mapDispatchToProps)(ContractSettings));
+

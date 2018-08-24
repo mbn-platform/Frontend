@@ -15,6 +15,7 @@ import ReactTable from '../../components/SelectableReactTable';
 import { Desktop, Mobile } from '../../generic/MediaQuery';
 import {getExchangeCurrencies} from '../../actions/exchanges';
 import {FormattedMessage, injectIntl} from 'react-intl';
+import { showInfoModal } from '../../actions/modal';
 
 const SEND_REQUEST_BLOCK_DETAILS = 0;
 const SEND_REQUEST_BLOCK_SELECT_API = 1;
@@ -36,7 +37,7 @@ class SendRequestBlock extends React.Component {
       changed: false,
       changedCurrencies: {},
       allSelected: false,
-      currencies: []
+      currencies: [],
     };
     this.onFundSelected = async (fund) => {
       const exchangeInfo = this.props.exchangesInfo[fund.exchange];
@@ -54,10 +55,9 @@ class SendRequestBlock extends React.Component {
 
   async onSendOfferClick() {
     if(!this.state.selectedFund) {
-      alert(this.props.intl.messages['profile.selectKeyFirst']);
+      this.props.showInfoModalWindow('profile.selectKeyFirst');
       return;
     }
-    console.log('offer', this.props.profile);
     const keyId = this.state.selectedFund._id;
     let allowedCurrencies = ['USDT','ETH','BTC'];
     let selectedCurrencies = this.state.changedCurrencies;
@@ -103,8 +103,8 @@ class SendRequestBlock extends React.Component {
   onCurrencyStateClicked(e) {
     e.stopPropagation();
     const currency = e.target.dataset.currency;
-    if(currency === 'USDT' || currency === 'BTC' || currency === 'ETH') {
-      alert(this.props.intl.messages['profile.shouldByAlwaysAvailable']);
+    if(currency === 'USDT' || currency === 'BTC' || currency === 'ETH') {;
+      this.props.showModalWindow('profile.shouldByAlwaysAvailable')
       return;
     }
     if(!this.canChangeCurrency(currency)) {
@@ -175,6 +175,7 @@ class SendRequestBlock extends React.Component {
       }
     ];
   }
+
   renderCurrencyTable(currencies) {
     let data = [];
     currencies.forEach(currency => {
@@ -371,6 +372,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  showModalWindow: text => dispatch(showInfoModal(text)),
   sendOffer: offer => dispatch(sendOffer(offer)),
   onGotItClick: () => dispatch(clearRequest('sendOffer')),
   getExchangeCurrencies: exchange => dispatch(getExchangeCurrencies(exchange)),

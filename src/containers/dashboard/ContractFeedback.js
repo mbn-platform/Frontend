@@ -1,8 +1,10 @@
 import React from 'react';
 import RatingBar from '../../components/RatingBar';
-import { FormattedMessage } from 'react-intl';
+import {FormattedMessage, injectIntl} from 'react-intl';
+import {connect} from 'react-redux';
+import { showInfoModal } from '../../actions/modal';
 
-const ContractFeedback = ({contract, onContractRate}) => {
+const ContractFeedback = ({contract, onContractRate, intl, showModalWindow}) => {
   return (
     <div className="table">
       <div className="table_title_wrapper clearfix">
@@ -16,6 +18,8 @@ const ContractFeedback = ({contract, onContractRate}) => {
       <LeaveComment
         onContractRate={onContractRate}
         id={contract._id}
+        intl={intl}
+        showModalWindow={showModalWindow}
       />
     </div>
   );
@@ -25,7 +29,10 @@ class LeaveComment extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {comment: '', rate: null};
+    this.state = {
+      comment: '',
+      rate: null
+    };
     this.onClick = this.onClick.bind(this);
   }
 
@@ -37,11 +44,11 @@ class LeaveComment extends React.Component {
 
   onClick(e) {
     if(this.state.rate === null) {
-      alert('rate first');
+      this.props.showModalWindow('dashboard.rateFirst')
       return;
     }
     if(this.state.comment.length < 10) {
-      alert('comment must me at least 10 characters long');
+      this.props.showModalWindow('dashboard.commentMustBeOver')
       return;
     }
     const feedback = {
@@ -83,4 +90,8 @@ class LeaveComment extends React.Component {
 //   </div>
 // );
 
-export default ContractFeedback;
+const mapDispatchToProps = dispatch => ({
+  showModalWindow: text => dispatch(showInfoModal(text)),
+});
+
+export default injectIntl(connect(state => state, mapDispatchToProps)(ContractFeedback));

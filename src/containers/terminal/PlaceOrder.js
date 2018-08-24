@@ -4,6 +4,8 @@ import classNames from 'classnames';
 import {defaultFormatValue, setFundId} from '../../generic/util';
 import { Desktop } from '../../generic/MediaQuery';
 import {FormattedMessage, injectIntl} from 'react-intl';
+import {connect} from 'react-redux';
+import {showInfoModal} from '../../actions/modal';
 
 export const TAB_BUY = 'buy';
 export const TAB_SELL = 'sell';
@@ -34,8 +36,8 @@ class PlaceOrder extends React.Component {
 
   onSubmit(e) {
     e.preventDefault();
-    if(!this.props.fund) {
-      alert('select fund');
+    if(!this.props.fund) {;
+      this.props.showModalWindow('terminal.selectFund')
       return;
     }
     let params = {
@@ -330,7 +332,6 @@ class PlaceOrder extends React.Component {
             secondary={this.state.secondary}
             onSecondaryClick={e => this.setOrderSize(e.target.innerHTML)}
           />
-
         </div>
       </div>
     );
@@ -373,4 +374,8 @@ const Balance = ({name, value, onClick}) => (
   </div>
 );
 
-export default injectIntl(PlaceOrder);
+const mapDispatchToProps = dispatch => ({
+  showModalWindow: text => dispatch(showInfoModal(text)),
+});
+
+export default injectIntl(connect(state => state, mapDispatchToProps)(PlaceOrder));

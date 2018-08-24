@@ -3,6 +3,7 @@ import ExchangeSelect from '../../components/ExchangeSelect';
 import { connect } from 'react-redux';
 import { addApiKey } from '../../actions/apiKeys';
 import { injectIntl } from 'react-intl';
+import {showInfoModal} from '../../actions/modal';
 
 class AddApiKey extends React.Component {
   constructor(props) {
@@ -18,7 +19,7 @@ class AddApiKey extends React.Component {
       name: '',
       secret: '',
       value: '',
-      exchange: ''
+      exchange: '',
     };
   }
 
@@ -26,7 +27,7 @@ class AddApiKey extends React.Component {
     event.preventDefault();
     const { name, value, exchange, secret } = this.state;
     if(!name || !value || !exchange || !secret) {
-      alert(this.props.intl.messages['dashboard.addAlert']);
+      this.props.showModalWindow('dashboard.addAlert')
       return;
     }
     this.props.onApiKeyCreated({name, key: value.trim(), exchange, secret: secret.trim()});
@@ -96,7 +97,6 @@ class AddApiKey extends React.Component {
             </div>
           </div>
         </form>
-        
       </div>
     );
   }
@@ -104,7 +104,8 @@ class AddApiKey extends React.Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onApiKeyCreated: key => dispatch(addApiKey(key))
+    onApiKeyCreated: key => dispatch(addApiKey(key)),
+    showModalWindow: text => dispatch(showInfoModal(text)),
   };
 };
 
