@@ -5,7 +5,9 @@ import PropTypes from 'prop-types';
 class RoundSelect extends React.Component {
   static propTypes = {
     onSelectClick: PropTypes.func,
-    rounds: PropTypes.arrayOf(PropTypes.any),
+    rounds: PropTypes.arrayOf([PropTypes.string,
+      PropTypes.number,PropTypes.object]
+    ),
   };
 
   static defaultProps = {
@@ -18,10 +20,13 @@ class RoundSelect extends React.Component {
     return (
       <div className="leaderboard__select-wrapper">
         <div className="leaderboard__select-value">
-          <FormattedMessage
-            id="leaderboard.selectRound"
-            defaultMessage="Place"
-          />
+          {
+            this.props.currentValue ||
+            <FormattedMessage
+              id="leaderboard.selectRound"
+              defaultMessage="Place"
+            />
+          }
           <div className="leaderboard__select-value-bg" />
         </div>
         <div className="leaderboard__select-values-wrapper">

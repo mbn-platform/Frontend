@@ -2,6 +2,8 @@ import React from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import $ from 'jquery';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import lodash from 'lodash';
 import qs from 'qs';
 import {sortData, onColumnSort, classNameForColumnHeader, defaultSortFunction} from '../../generic/terminalSortFunctions';
 import { injectIntl } from 'react-intl';
@@ -16,6 +18,14 @@ const MAX_DISPLAYED_TABS = 4,
   infoPoints= ['100', '75', '50', '35', '25', '15', '10', '5', '3', '1'];
 
 class Leaderboard extends React.Component {
+  static propTypes = {
+    maxDisplayedTabs: PropTypes.number,
+  };
+
+  static defaultProps = {
+    maxDisplayedTabs: 4,
+  };
+
 
   constructor(props) {
     super(props);
@@ -39,7 +49,7 @@ class Leaderboard extends React.Component {
 
   componentDidMount() {
     window.customize();
-    const { round } = qs.parse(this.props.location.search);
+    const { round } = qs.parse(this.props.location.search.slice(1));
     const $table = $('.js-table-wrapper .table');
     $table.on('reflowed', (e, $container) => {
       if(this.shouldFocus) {
@@ -66,7 +76,7 @@ class Leaderboard extends React.Component {
     const { updateChallenge, challenge } = this.props;
     this.props.history.push({
       pathname: '/leaderboard',
-      search: number > 0 ? `?round=${number}` : '',
+      search: number > 0 ? `round=${number}` : '',
     });
     clearInterval(this.interval);
     updateChallenge(number);
@@ -152,14 +162,16 @@ class Leaderboard extends React.Component {
   renderRoundsBlocks() {
     const rounds = [];
     const currentTotalRound = this.state.round ? this.state.round.total : 0;
+    const {maxDisplayedTabs } = this.props;
+    const {selectedRound } = this.state;
     for(let i = currentTotalRound; i >= 1; i--) {
-      if ( i > (currentTotalRound - MAX_DISPLAYED_TABS)) {
+      if ( i > (currentTotalRound - maxDisplayedTabs)) {
         rounds.push(
           <a
-            href={null}
+            href={'#'}
             key={i}
-            onClick={() => this.selectRound(i)}
-            className={classNames('block__top-switch', 'ratings-traders', {active: this.state.selectedRound === i})}>
+            onClick={e => {e.preventDefault(); this.selectRound(i);}}
+            className={classNames('block__top-switch', 'ratings-traders', {active: selectedRound === i})}>
             <FormattedMessage
               id="leaderboard.round"
               defaultMessage="ROUND {count}"
@@ -169,10 +181,11 @@ class Leaderboard extends React.Component {
         );
       }
     }
-    if (currentTotalRound > MAX_DISPLAYED_TABS) {
+    if (currentTotalRound > maxDisplayedTabs) {
       rounds.push(
         <RoundSelect onSelectClick={RoundNumber => this.selectRound(RoundNumber)}
-          rounds={[...Array(currentTotalRound - MAX_DISPLAYED_TABS).keys()].map(x => ++x).reverse()}/>
+          currentValue={selectedRound <= currentTotalRound - maxDisplayedTabs ? selectedRound : null}
+          rounds={lodash.times(currentTotalRound - maxDisplayedTabs, (i) => 1 + i).reverse()} />
       );
     }
 
