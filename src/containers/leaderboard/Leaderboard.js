@@ -30,7 +30,6 @@ class Leaderboard extends React.Component {
   constructor(props) {
     super(props);
     this.onNameFilterChange = this.onNameFilterChange.bind(this);
-    this.onTabClick = this.onTabClick.bind(this);
     this.sortData = sortData.bind(this);
     this.onColumnSort = onColumnSort.bind(this);
     this.sortFunctions = {
@@ -90,11 +89,6 @@ class Leaderboard extends React.Component {
     }
     const name = e.currentTarget.dataset.name;
     this.props.history.push(`/${name}`);
-  }
-
-  onTabClick(tab) {
-    this.setState({tab});
-    $('.js-table-wrapper table').floatThead('reflow');
   }
 
   onNameFilterChange(e) {
