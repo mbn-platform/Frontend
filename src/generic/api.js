@@ -1,6 +1,7 @@
 import { apiPost } from '../generic/apiCall';
 import {apiDelete, apiGet, apiPut} from './apiCall';
 import {ABI, CONTRACT_ADDRESS, ETHEREUM_NET} from '../eth/MercatusFactory';
+import qs from 'qs';
 const errorHandler = resp => resp;
 const responseSchemaHandler = resp => resp;
 
@@ -43,7 +44,7 @@ export class ApiAuth {
 
 export class ApiChallenge {
   update = number =>
-    apiGet('/challenge/' + number)
+    apiGet('/challenge/result?' + qs.stringify({round: number}))
       .then(errorHandler)
       .then(responseSchemaHandler);
 }
