@@ -8,9 +8,10 @@ import { injectIntl } from 'react-intl';
 import { FormattedMessage } from 'react-intl';
 import {updateChallenge} from '../../actions/challenge';
 import {connect} from 'react-redux';
+import RoundSelect from './RoundSelect';
 
 
-const NUMBER_OF_ROUNDS = 6,
+const MAX_DISPLAYED_TABS = 4,
   infoPlaces= ['1', '2', '3', '4', '5', '6-10', '11-20', '21-50', '51-100', '101+'],
   infoPoints= ['100', '75', '50', '35', '25', '15', '10', '5', '3', '1'];
 
@@ -150,21 +151,31 @@ class Leaderboard extends React.Component {
 
   renderRoundsBlocks() {
     const rounds = [];
-    for(let i = NUMBER_OF_ROUNDS; i >= 1; i--) {
+    const currentTotalRound = this.state.round ? this.state.round.total : 0;
+    for(let i = currentTotalRound; i >= 1; i--) {
+      if ( i > (currentTotalRound - MAX_DISPLAYED_TABS)) {
+        rounds.push(
+          <a
+            href={null}
+            key={i}
+            onClick={() => this.selectRound(i)}
+            className={classNames('block__top-switch', 'ratings-traders', {active: this.state.selectedRound === i})}>
+            <FormattedMessage
+              id="leaderboard.round"
+              defaultMessage="ROUND {count}"
+              values={{count: i}}
+            />
+          </a>
+        );
+      }
+    }
+    if (currentTotalRound > MAX_DISPLAYED_TABS) {
       rounds.push(
-        <a
-          href={null}
-          key={i}
-          onClick={() => this.selectRound(i)}
-          className={classNames('block__top-switch', 'ratings-traders', {active: this.state.selectedRound === i})}>
-          <FormattedMessage
-            id="leaderboard.round"
-            defaultMessage="ROUND {count}"
-            values={{count: i}}
-          />
-        </a>
+        <RoundSelect onSelectClick={RoundNumber => this.selectRound(RoundNumber)}
+          rounds={[...Array(currentTotalRound - MAX_DISPLAYED_TABS).keys()].map(x => ++x).reverse()}/>
       );
     }
+
     return rounds;
   }
 

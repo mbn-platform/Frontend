@@ -18,3 +18,120 @@
     font-size: 12px;
     color: #6c757d;
 }
+
+
+.leaderboard__select-wrapper:hover
+{
+    border: 1px solid #7c7c7d;
+    color: #7c7c7d;
+    border-radius: 3px 3px 0 0;
+}
+
+.leaderboard__select-values-wrapper
+{
+    max-height: 0;
+    height: auto;
+    opacity: 1;
+    position: absolute;
+    z-index: 2;
+    background: #232629;
+    left: -1px;
+    right: -1px;
+    border: 1px solid #232629;
+    border-top: 0 !important;
+    border-bottom: 1px solid #44464a;
+    box-sizing: border-box;
+    top: 24px;
+    transition-property: height, border, max-height;
+    transition-duration: 400ms;
+    transition: height 400ms, border 400ms, max-height 400ms;
+    overflow: hidden;
+}
+.leaderboard__select-wrapper:hover .leaderboard__select-values-wrapper
+{
+    height: auto;
+    max-height: 400px;
+    opacity: 1;
+    color: #7c7c7d;
+    border: 1px solid #7c7c7d;
+}
+
+.leaderboard__select-value {
+    margin-left: 15px;
+}
+
+.leaderboard__select-wrapper
+{
+    border: 1px solid #44464a;
+    border-bottom: 0;
+    border-radius: 3px;
+    padding-left: 17px;
+    text-align: left;
+    color: #505153;
+    height: 26px;
+    box-sizing: border-box;
+    line-height: 26px;
+    margin-left: 15px;
+    z-index: 10000;
+    font-size: 12px;
+    background-color: inherit;
+    cursor: pointer;
+    position: relative;
+    transition-property: color, border;
+    transition-duration: 400ms;
+    transition: color 400ms, border 400ms;
+    display: inline-block;
+    vertical-align: middle;
+    width: 30%;
+    text-transform: uppercase;
+}
+
+.leaderboard__select-value-bg
+{
+    background: url(../assets/img/SelectArrow.png) no-repeat center right;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    float: right;
+    margin-top: 3px;
+    margin-right: 10px;
+    position: absolute;
+    right: 0;
+}
+.leaderboard__select-ul
+{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.leaderboard__select-li
+{
+    padding: 0 15px;
+    border-bottom: 1px solid #383838;
+    color: #7c7c7d;
+    background: #232629;
+    transition-property: background, color;
+    transition-duration: 400ms;
+    transition: background 400ms, color 400ms;
+}
+.leaderboard__select-li:hover
+{
+    background: #3c3c3c;
+}
+
+@include media-breakpoint-down(xs) {
+    .leaderboard__select-wrapper {
+        font-size: 8px;
+        width: 25%;
+        padding: 5px;
+    }
+
+    .leaderboard__select-value {
+        margin-left: 5px;
+    }
+
+    .leaderboard__select-value-bg {
+        background: none;
+    }
+}
+
