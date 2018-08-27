@@ -2,6 +2,7 @@ import React from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import $ from 'jquery';
 import classNames from 'classnames';
+import qs from 'qs';
 import {sortData, onColumnSort, classNameForColumnHeader, defaultSortFunction} from '../../generic/terminalSortFunctions';
 import { injectIntl } from 'react-intl';
 import { FormattedMessage } from 'react-intl';
@@ -37,13 +38,19 @@ class Leaderboard extends React.Component {
 
   componentDidMount() {
     window.customize();
+    const { round } = qs.parse(this.props.location.search);
     const $table = $('.js-table-wrapper .table');
     $table.on('reflowed', (e, $container) => {
       if(this.shouldFocus) {
         $($container).find('input').focus();
       }
     });
-    this.selectRound(0);
+    if (round && round.match(/^[0-9]+$/)) {
+      this.selectRound(parseInt(round, 10));
+    }
+    else {
+      this.selectRound(0);
+    }
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -56,6 +63,10 @@ class Leaderboard extends React.Component {
 
   selectRound(number) {
     const { updateChallenge, challenge } = this.props;
+    this.props.history.push({
+      pathname: '/leaderboard',
+      search: number > 0 ? `?round=${number}` : '',
+    });
     clearInterval(this.interval);
     updateChallenge(number);
     this.setState({selectedRound: number, round: challenge});
@@ -139,9 +150,10 @@ class Leaderboard extends React.Component {
 
   renderRoundsBlocks() {
     const rounds = [];
-    for(let i = 1; i <= NUMBER_OF_ROUNDS; i++) {
+    for(let i = NUMBER_OF_ROUNDS; i >= 1; i--) {
       rounds.push(
-        <span
+        <a
+          href={null}
           key={i}
           onClick={() => this.selectRound(i)}
           className={classNames('block__top-switch', 'ratings-traders', {active: this.state.selectedRound === i})}>
@@ -150,7 +162,7 @@ class Leaderboard extends React.Component {
             defaultMessage="ROUND {count}"
             values={{count: i}}
           />
-        </span>
+        </a>
       );
     }
     return rounds;
