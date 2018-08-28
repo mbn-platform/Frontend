@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import BigNumber from 'bignumber.js';
 import {defaultFormatValue, setFundId} from '../../generic/util';
 import { Desktop } from '../../generic/MediaQuery';
 import {FormattedMessage, injectIntl} from 'react-intl';
@@ -17,7 +18,7 @@ class PlaceOrder extends React.Component {
     const [main, secondary] = props.market.split('-');
     let price = props.ticker.last || '';
     if(price) {
-      price = price.toString();
+      price = price.toString(10);
     }
     this.state = {
       main,
@@ -75,8 +76,8 @@ class PlaceOrder extends React.Component {
       (nextProps.type && nextProps.type !== this.props.type)) {
       let price = nextProps.price || this.state.price;
       let orderSize = nextProps.size || this.state.orderSize;
-      price = parseFloat(price);
-      const os = parseFloat(orderSize);
+      price = new BigNumber(price).toString(10);
+      const os = new BigNumber(orderSize).toString(10);
       const newState = {price, orderSize, selectedTab: nextProps.type};
       if(price >= 0 && os >= 0) {
         switch(this.props.exchange) {
@@ -107,21 +108,21 @@ class PlaceOrder extends React.Component {
     switch(this.props.exchange) {
       case 'binance': {
         const minPriceSize = this.state.marketInfo ? this.state.marketInfo.minPriceSize.toString() : '';
-        const rounded = this.floorBinance(price, minPriceSize.toString());
+        const rounded = this.floorBinance(price, new BigNumber(minPriceSize));
         const newState = {price: rounded};
-        const orderSize = parseFloat(this.state.orderSize);
+        const orderSize = new BigNumber(this.state.orderSize).toString(10);
         if(orderSize) {
-          const amount = parseFloat(rounded) * orderSize;
+          const amount = new BigNumber(rounded).multipliedBy(orderSize).toString(10);
           newState.amount = defaultFormatValue(amount);
         }
         this.setState(newState);
         break;
       }
       default: {
-        const value = parseFloat(price);
+        const value = new BigNumber(price).toString(10);
         if(value >= 0) {
           const newState = {price};
-          const orderSize = parseFloat(this.state.orderSize);
+          const orderSize = new BigNumber(this.state.orderSize).toString(10);
           if(orderSize >= 0) {
             const amount = price * orderSize * this.commissionPercent(this.props.type);
             newState.amount = defaultFormatValue(amount);
@@ -139,12 +140,12 @@ class PlaceOrder extends React.Component {
     }
     switch(this.props.exchange) {
       case 'binance': {
-        const price = parseFloat(this.state.price);
-        const value = parseFloat(amount);
+        const price = new BigNumber(this.state.price).toString(10);
+        const value = new BigNumber(amount).toString(10);
         if(price >= 0) {
-          const minTradeSize = this.state.marketInfo ? this.state.marketInfo.minTradeSize.toString() : '';
+          const minTradeSize = this.state.marketInfo ? new BigNumber(this.state.marketInfo.minTradeSize).toString(10) : '';
           const maxOrderSize = value / price;
-          const rounded = this.floorBinance(maxOrderSize.toString(), minTradeSize);
+          const rounded = this.floorBinance(new BigNumber(maxOrderSize).toString(10), minTradeSize);
           this.setState({orderSize: rounded, amount});
         } else {
           this.setState({amount});
@@ -152,10 +153,10 @@ class PlaceOrder extends React.Component {
       }
         break;
       default: {
-        const value = parseFloat(amount);
+        const value = new BigNumber(amount).toString(10);
         if(value >= 0) {
           const newState = {amount};
-          const price = parseFloat(this.state.price);
+          const price = new BigNumber(this.state.price).toString(10);
           if(price >= 0) {
             const orderSize = value / this.commissionPercent(this.props.type) / price;
             newState.orderSize = defaultFormatValue(orderSize);
@@ -173,11 +174,11 @@ class PlaceOrder extends React.Component {
     }
     switch(this.props.exchange) {
       case 'binance': {
-        const minTradeSize = this.state.marketInfo ? this.state.marketInfo.minTradeSize.toString() : '';
+        const minTradeSize = this.state.marketInfo ? new BigNumber(this.state.marketInfo.minTradeSize).toString(10) : '';
         const rounded = this.floorBinance(orderSize, minTradeSize);
-        const newState = {orderSize: rounded.toString()};
-        const price = parseFloat(this.state.price);
-        const value = parseFloat(rounded);
+        const newState = {orderSize: new BigNumber(rounded).toString(10)};
+        const price = new BigNumber(this.state.price).toString(10);
+        const value = new BigNumber(rounded).toString(10);
         if(price >= 0) {
           const amount = value * price;
           newState.amount = defaultFormatValue(amount);
@@ -186,10 +187,10 @@ class PlaceOrder extends React.Component {
       }
         break;
       default: {
-        const value = parseFloat(orderSize);
+        const value = new BigNumber(orderSize).toString(10);
         if(value >= 0) {
           const newState = {orderSize: value};
-          const price = parseFloat(this.state.price);
+          const price = new BigNumber(this.state.price).toString(10);
           if(price >= 0) {
             const amount = value * price * this.commissionPercent(this.props.type);
             newState.amount = defaultFormatValue(amount);
@@ -205,13 +206,13 @@ class PlaceOrder extends React.Component {
     if(step.startsWith('1e')) {
       afterComma = parseInt(step.split('-')[1], 10);
     } else {
-      afterComma = (step.toString().split('.')[1] || '').length;
+      afterComma = new BigNumber(step).decimalPlaces();
     }
-    const numberAfterComma = (string.split('.')[1] || '').length;
+    const numberAfterComma = new BigNumber(string).decimalPlaces();
     if(afterComma === 0) {
-      return Math.floor(parseFloat(string)).toString();
+      return Math.floor(new BigNumber(string).toString(10));
     } else if(numberAfterComma > afterComma) {
-      return parseFloat(string.slice(0, afterComma - numberAfterComma));
+      return new BigNumber(string.slice(0, afterComma - numberAfterComma)).toString(10);
     } else {
       return string;
     }
@@ -259,8 +260,8 @@ class PlaceOrder extends React.Component {
 
   onTabClick(tab) {
     const newState = {selectedTab: tab};
-    const orderSize = parseFloat(this.state.orderSize);
-    const price = parseFloat(this.state.price);
+    const orderSize = new BigNumber(this.state.orderSize).toString(10);
+    const price = new BigNumber(this.state.price).toString(10);
     if(orderSize >= 0 && price >= 0) {
       const amount = orderSize * price * this.commissionPercent(tab);
       newState.amount = defaultFormatValue(amount);

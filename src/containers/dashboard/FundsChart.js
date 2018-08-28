@@ -3,6 +3,7 @@ import 'amcharts3/amcharts/amcharts';
 import 'amcharts3/amcharts/pie';
 import 'amcharts3/amcharts/serial';
 import AmChartsReact from '@amcharts/amcharts3-react';
+import BigNumber from 'bignumber.js';
 import { FormattedMessage } from 'react-intl';
 
 class FundsChart extends React.Component {
@@ -16,16 +17,16 @@ class FundsChart extends React.Component {
 
   getValueInBTC(currencyName, currencyValue) {
     if (currencyName === 'BTC') {
-      return currencyValue;
+      return new BigNumber(currencyValue).toString(10);
     }
     const rates = this.props.exchangesInfo['binance'] ? this.props.exchangesInfo['binance'].rates || [] : [];
     let marketName;
     if (currencyName === 'USDT') {
-      return parseFloat((currencyValue / rates['USDT-BTC']).toFixed(8));
+      return new BigNumber(currencyValue).div(rates['USDT-BTC']).toFixed(8).toString(10);
     } else {
       marketName = `BTC-${currencyName}`;
     }
-    return parseFloat((currencyValue * (rates[marketName] || 0)).toFixed(8));
+    return new BigNumber(currencyValue).multipliedBy(rates[marketName] || 0).toFixed(8).toString(10);
   }
 
   formatData(apiKeys) {
