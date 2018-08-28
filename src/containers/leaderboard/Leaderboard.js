@@ -158,7 +158,6 @@ class Leaderboard extends React.Component {
   }
 
   renderRoundsBlocks(count) {
-    console.log(count);
     const rounds = [];
     const {maxDisplayedTabs } = this.props;
     const {selectedRound } = this.state;
