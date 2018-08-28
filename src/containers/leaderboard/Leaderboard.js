@@ -3,7 +3,7 @@ import { Container, Row, Col } from 'reactstrap';
 import $ from 'jquery';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import lodash from 'lodash';
+import times from 'lodash.times';
 import qs from 'qs';
 import {sortData, onColumnSort, classNameForColumnHeader, defaultSortFunction} from '../../generic/terminalSortFunctions';
 import { injectIntl } from 'react-intl';
@@ -183,7 +183,7 @@ class Leaderboard extends React.Component {
       rounds.push(
         <RoundSelect onSelectClick={RoundNumber => this.selectRound(RoundNumber)}
           currentValue={selectedRound <= count - maxDisplayedTabs ? selectedRound : null}
-          rounds={lodash.times(count - maxDisplayedTabs, (i) => 1 + i).reverse()} />
+          rounds={times(count - maxDisplayedTabs, (i) => 1 + i).reverse()} />
       );
     }
 
