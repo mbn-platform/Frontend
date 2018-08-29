@@ -24,6 +24,7 @@ import ModalWindow from './components/Modal';
 import { Container, Row } from 'reactstrap';
 import {injectIntl, FormattedMessage} from 'react-intl';
 import {closeConfirmModal, closeInfoModal} from './actions/modal';
+import { loggedOut } from './actions/auth';
 
 
 class Navigation extends React.Component {
@@ -151,9 +152,7 @@ class Navigation extends React.Component {
     }
     const onClick = e => {
       e.preventDefault();
-      this.props.dispatch({
-        type: 'LOGGED_OUT',
-      });
+      this.props.logOut()
     };
     return (
       <a onClick={onClick} href="/" className="nav-link">
@@ -286,6 +285,7 @@ const mapDispatchToProps = dispatch => {
   return {
     closeInfoModalWindow: () => dispatch(closeInfoModal),
     closeConfirmModalWindow: () => dispatch(closeConfirmModal),
+    logOut: () => dispatch(loggedOut()),
   };
 };
 
