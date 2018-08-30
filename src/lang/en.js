@@ -57,6 +57,7 @@ const en = {
   'leaderboard.title': 'LEADERBOARD',
   'leaderboard.global': 'GLOBAL',
   'leaderboard.round': 'ROUND {count}',
+  'leaderboard.selectRound' : 'Select round',
   'leaderboard.place': 'Place',
   'leaderboard.name': 'Name',
   'leaderboard.points': 'Points',

@@ -2,24 +2,33 @@ import React from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import $ from 'jquery';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import times from 'lodash.times';
 import qs from 'qs';
 import {sortData, onColumnSort, classNameForColumnHeader, defaultSortFunction} from '../../generic/terminalSortFunctions';
 import { injectIntl } from 'react-intl';
 import { FormattedMessage } from 'react-intl';
 import {updateChallenge} from '../../actions/challenge';
 import {connect} from 'react-redux';
+import RoundSelect from './RoundSelect';
 
 
-const NUMBER_OF_ROUNDS = 6,
-  infoPlaces= ['1', '2', '3', '4', '5', '6-10', '11-20', '21-50', '51-100', '101+'],
-  infoPoints= ['100', '75', '50', '35', '25', '15', '10', '5', '3', '1'];
+const infoPlaces= ['1', '2', '3', '4', '5', '6-10', '11-20', '21-50', '51-100', '101+'];
+const infoPoints = ['100', '75', '50', '35', '25', '15', '10', '5', '3', '1'];
 
 class Leaderboard extends React.Component {
+  static propTypes = {
+    maxDisplayedTabs: PropTypes.number,
+  };
+
+  static defaultProps = {
+    maxDisplayedTabs: 4,
+  };
+
 
   constructor(props) {
     super(props);
     this.onNameFilterChange = this.onNameFilterChange.bind(this);
-    this.onTabClick = this.onTabClick.bind(this);
     this.sortData = sortData.bind(this);
     this.onColumnSort = onColumnSort.bind(this);
     this.sortFunctions = {
@@ -27,7 +36,6 @@ class Leaderboard extends React.Component {
     };
     this.state = {
       selectedRound: 0,
-      round: null,
       nameFilter: '',
       sort: {},
     };
@@ -38,7 +46,7 @@ class Leaderboard extends React.Component {
 
   componentDidMount() {
     window.customize();
-    const { round } = qs.parse(this.props.location.search);
+    const { round } = qs.parse(this.props.location.search.slice(1));
     const $table = $('.js-table-wrapper .table');
     $table.on('reflowed', (e, $container) => {
       if(this.shouldFocus) {
@@ -53,23 +61,15 @@ class Leaderboard extends React.Component {
     }
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if(nextProps.challenge !== prevState.challenge) {
-      return {round: nextProps.challenge};
-    } else {
-      return null;
-    }
-  }
-
   selectRound(number) {
-    const { updateChallenge, challenge } = this.props;
+    const { updateChallenge } = this.props;
     this.props.history.push({
       pathname: '/leaderboard',
-      search: number > 0 ? `?round=${number}` : '',
+      search: number > 0 ? `round=${number}` : '',
     });
     clearInterval(this.interval);
     updateChallenge(number);
-    this.setState({selectedRound: number, round: challenge});
+    this.setState({selectedRound: number});
     this.interval = setInterval(() => updateChallenge(number), 30000);
   }
 
@@ -79,11 +79,6 @@ class Leaderboard extends React.Component {
     }
     const name = e.currentTarget.dataset.name;
     this.props.history.push(`/${name}`);
-  }
-
-  onTabClick(tab) {
-    this.setState({tab});
-    $('.js-table-wrapper table').floatThead('reflow');
   }
 
   onNameFilterChange(e) {
@@ -96,14 +91,28 @@ class Leaderboard extends React.Component {
     } else {
       this.shouldFocus = false;
     }
-    let data = [];
-    if(this.state.round) {
-      data = this.state.round.results;
+    let roundInfo = null;
+    let results = [];
+    let count = 0;
+    const {challenge} = this.props;
+    if(challenge) {
+      count = challenge.count;
+      if(challenge.global && this.state.selectedRound === 0) {
+        roundInfo = null;
+        results = challenge.results;
+      } else if(
+        challenge.roundInfo &&
+        challenge.roundInfo.number === this.state.selectedRound
+      ) {
+
+        roundInfo = challenge.roundInfo;
+        results = challenge.results;
+      }
     }
-    data = data.filter(profile => {
+    results = results.filter(profile => {
       return profile.name.toLowerCase().indexOf(this.state.nameFilter.toLowerCase()) >= 0;
     });
-    const sortedData = this.sortData(data);
+    const sortedData = this.sortData(results);
     return (
       <Container fluid className="ratings">
         <Row>
@@ -126,14 +135,14 @@ class Leaderboard extends React.Component {
                         defaultMessage="GLOBAL"
                       />
                     </span>
-                    {this.renderRoundsBlocks()}
+                    {this.renderRoundsBlocks(count)}
                   </div>
                 </div>
-                {this.renderRound()}
+                {this.renderRound(roundInfo)}
                 <div className="ratings-tabs">
                   <div className="ratings-tab ratings-traders active">
                     <div className="ratings-table-wrap js-table-wrapper">
-                      {this.state.selectedRound === 0 ? this.renderGlobalBoard(sortedData) : this.renderRoundBoard(sortedData)}
+                      {this.state.selectedRound === 0 ? this.renderGlobalBoard(sortedData) : this.renderRoundBoard(sortedData, roundInfo)}
                     </div>
                   </div>
                 </div>
@@ -148,23 +157,35 @@ class Leaderboard extends React.Component {
     );
   }
 
-  renderRoundsBlocks() {
+  renderRoundsBlocks(count) {
     const rounds = [];
-    for(let i = NUMBER_OF_ROUNDS; i >= 1; i--) {
+    const {maxDisplayedTabs } = this.props;
+    const {selectedRound } = this.state;
+    for(let i = count; i >= 1; i--) {
+      if ( i > (count - maxDisplayedTabs)) {
+        rounds.push(
+          <a
+            href={'#'}
+            key={i}
+            onClick={e => {e.preventDefault(); this.selectRound(i);}}
+            className={classNames('block__top-switch', 'ratings-traders', {active: selectedRound === i})}>
+            <FormattedMessage
+              id="leaderboard.round"
+              defaultMessage="ROUND {count}"
+              values={{count: i}}
+            />
+          </a>
+        );
+      }
+    }
+    if (count > maxDisplayedTabs) {
       rounds.push(
-        <a
-          href={null}
-          key={i}
-          onClick={() => this.selectRound(i)}
-          className={classNames('block__top-switch', 'ratings-traders', {active: this.state.selectedRound === i})}>
-          <FormattedMessage
-            id="leaderboard.round"
-            defaultMessage="ROUND {count}"
-            values={{count: i}}
-          />
-        </a>
+        <RoundSelect onSelectClick={RoundNumber => this.selectRound(RoundNumber)}
+          currentValue={selectedRound <= count - maxDisplayedTabs ? selectedRound : null}
+          rounds={times(count - maxDisplayedTabs, (i) => 1 + i).reverse()} />
       );
     }
+
     return rounds;
   }
 
@@ -175,13 +196,12 @@ class Leaderboard extends React.Component {
     clearInterval(this.interval);
   }
 
-  renderRound() {
-    if(this.state.round && !this.state.round.global) {
-      const round = this.state.round;
+  renderRound(info) {
+    if(info) {
       return (
         <div className="round_info">
-          <div>{formatDate(new Date(round.dtStart))} - {formatDate(new Date(round.dtEnd))}</div>
-          <div>{round.state}</div>
+          <div>{formatDate(new Date(info.dtStart))} - {formatDate(new Date(info.dtEnd))}</div>
+          <div>{info.state}</div>
         </div>
       );
     } else {
@@ -229,7 +249,7 @@ class Leaderboard extends React.Component {
         </thead>
         <tbody>
           {infoPlaces.map((infoItem, index) => (
-            <tr>
+            <tr key={index}>
               <th className="place">
                 <span>
                   {infoPlaces[index]}
@@ -289,13 +309,13 @@ class Leaderboard extends React.Component {
           </tr>
         </thead>
         <tbody>
-          {data.map(rating => <RatingRow key={rating.place} {...rating} onClick={this.onRowClick} round={this.state.round} />)}
+          {data.map(rating => <RatingRow key={rating.place} {...rating} onClick={this.onRowClick} global={true} />)}
         </tbody>
       </table>
     );
   }
 
-  renderRoundBoard(data) {
+  renderRoundBoard(data, info) {
     return (
       <table className="table">
         <thead>
@@ -324,7 +344,7 @@ class Leaderboard extends React.Component {
                 />
               </span><span className={classNameForColumnHeader(this.state, 'profit')}/>
             </th>
-            {(this.state.round && !this.state.round.global) ? (
+            {info ? (
               <th onClick={() => this.onColumnSort('percent')}>
                 <span>
                   <FormattedMessage
@@ -345,11 +365,11 @@ class Leaderboard extends React.Component {
                 <input ref={this.inputRef} value={this.state.nameFilter} onChange={this.onNameFilterChange} type="text" className="input_search" placeholder={this.props.intl.messages['leaderboard.searchPlaceholder']} />
               </div>
             </th>
-            {(this.state.round && !this.state.round.global) ? (<th/>) : null}
+            <th/>
           </tr>
         </thead>
         <tbody>
-          {data.map(rating => <RatingRow key={rating.place} {...rating} onClick={this.onRowClick} round={this.state.round} />)}
+          {data.map(rating => <RatingRow key={rating.place} {...rating} onClick={this.onRowClick} global={false} />)}
         </tbody>
       </table>
     );
@@ -378,13 +398,13 @@ const RatingRow = (props) => (
       <div className="name nickname">@{props.name}</div>
     </td>
     <td>
-      {props.round.global ? (
+      {props.global ? (
         <ProfitCell profit={props.points} />
       ) : (
         <ProfitCell {...props} />
       )}
     </td>
-    {props.round.global ? null : (
+    {props.global ? null : (
       <td>
         <div className="percent">{(props.percent || 0).toFixed(2)}</div>
       </td>
