@@ -5,9 +5,7 @@ import PropTypes from 'prop-types';
 class RoundSelect extends React.Component {
   static propTypes = {
     onSelectClick: PropTypes.func,
-    rounds: PropTypes.arrayOf([PropTypes.string,
-      PropTypes.number,PropTypes.object]
-    ),
+    rounds: PropTypes.arrayOf(PropTypes.number),
   };
 
   static defaultProps = {

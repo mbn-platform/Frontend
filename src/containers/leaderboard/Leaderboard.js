@@ -86,6 +86,7 @@ class Leaderboard extends React.Component {
   }
 
   render() {
+    const { selectedRound } = this.state;
     if(this.inputRef.current && document.activeElement === this.inputRef.current) {
       this.shouldFocus = true;
     } else {
@@ -97,7 +98,7 @@ class Leaderboard extends React.Component {
     const {challenge} = this.props;
     if(challenge) {
       count = challenge.count;
-      if(challenge.global && this.state.selectedRound === 0) {
+      if(challenge.global && selectedRound === 0) {
         roundInfo = null;
         results = challenge.results;
       } else if(
@@ -109,9 +110,9 @@ class Leaderboard extends React.Component {
         results = challenge.results;
       }
     }
-    results = results.filter(profile => {
-      return profile.name.toLowerCase().indexOf(this.state.nameFilter.toLowerCase()) >= 0;
-    });
+    const nameFilter = this.state.nameFilter.toLowerCase();
+    results = results.filter(({name}) => name.toLowerCase().includes(nameFilter));
+    const isSelectedRoundExist = count >= selectedRound;
     const sortedData = this.sortData(results);
     return (
       <Container fluid className="ratings">
@@ -138,14 +139,7 @@ class Leaderboard extends React.Component {
                     {this.renderRoundsBlocks(count)}
                   </div>
                 </div>
-                {this.renderRound(roundInfo)}
-                <div className="ratings-tabs">
-                  <div className="ratings-tab ratings-traders active">
-                    <div className="ratings-table-wrap js-table-wrapper">
-                      {this.state.selectedRound === 0 ? this.renderGlobalBoard(sortedData) : this.renderRoundBoard(sortedData, roundInfo)}
-                    </div>
-                  </div>
-                </div>
+                {this.renderBoard(sortedData, roundInfo, isSelectedRoundExist)}
               </div>
               <div className="leaderboard__info">
                 {this.renderInfoBoard()}
@@ -155,6 +149,18 @@ class Leaderboard extends React.Component {
         </Row>
       </Container>
     );
+  }
+
+  renderBoard(sortedData, roundInfo, isSelectedRoundExists) {
+    if (!isSelectedRoundExists) {
+      return this.renderMissingRoundNotice();
+    }
+    else if (sortedData) {
+      return this.renderMainBoard(sortedData, roundInfo);
+    }
+    else {
+      return null;
+    }
   }
 
   renderRoundsBlocks(count) {
@@ -196,6 +202,10 @@ class Leaderboard extends React.Component {
     clearInterval(this.interval);
   }
 
+  renderMainBoard = (sortedData, roundInfo) =>  this.state.selectedRound === 0 ?
+    this.renderGlobalBoard(sortedData)  :
+    this.renderRoundBoard(sortedData, roundInfo)
+
   renderRound(info) {
     if(info) {
       return (
@@ -208,6 +218,24 @@ class Leaderboard extends React.Component {
       return null;
     }
   }
+
+  renderMissingRoundNotice = () => (
+    <div className="ratings-tabs">
+      <div className="ratings-tab ratings-traders active">
+        <div className="ratings-table-wrap js-table-wrapper">
+          <div className="ratings-empty-data">
+            <FormattedMessage
+              id="leaderboard.roundIsNotStartedYet"
+              defaultMessage="Round {round} is not started yet"
+              values={{
+                round: this.state.selectedRound
+              }}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 
   renderInfoBoard = () => (
     <div>
