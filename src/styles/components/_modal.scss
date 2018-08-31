@@ -71,6 +71,52 @@
     justify-content: center;
 }
 
+.modal__input {
+    height: 32px;
+    border-radius: 2px;
+    background-color: #2d3034;
+    border: none;
+    color: #9094A1;
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 20px;
+    font-size: 18px;
+    -webkit-appearance: none;
+
+    &:focus {
+        outline: none;
+    }
+}
+
+.modal__2fa-input {
+    width: 300px;
+    font-size: 28px;
+    height: 52px;
+}
+
+.modal__input-wrapper {
+    position: relative;
+}
+
+.modal__content-wrapper {
+    display: flex;
+    justify-content: center;
+    flex-flow: column nowrap;
+    margin-top: 15px;
+    align-items: center;
+}
+
+.modal__input-text-error {
+    font-size: 15px;
+    position: absolute;
+    bottom: -10px;
+    color: #d74c4b;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-flow: row wrap;
+}
+
 .modal__close {
     height: 40px;
     width: 40px;

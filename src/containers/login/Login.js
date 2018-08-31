@@ -7,8 +7,7 @@ import Competition from './Competition';
 import MetamaskClosed from './MetamaskClosed';
 import LoginForm from './LoginForm';
 import { FormattedMessage } from 'react-intl';
-
-
+import TwoFactorAuthModal from './TwoFactorAuthModal'
 
 class Login extends React.Component {
 
@@ -76,6 +75,7 @@ class Login extends React.Component {
           </div>
           {!window.web3 && isIOSorAndroid && <Competition/>}
         </div>
+        <TwoFactorAuthModal/>
       </div>
     );
   }

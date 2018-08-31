@@ -7,6 +7,8 @@ const en = {
   'noSuchProfile' : 'No such profile',
   'noDataAboutCurrentRound' : 'No data about current round',
   'theKeyIsInUse' : 'The key is in use',
+  'enterConfirmationCode' : 'Enter confirmation code',
+  'wrong2FACode' : 'Wrong 2FA code',
   'invalidKeySecretPair' : 'Invalid key/secret pair',
   'yourApiKeyBalanceIsLowerThatTraderMinimum' : 'Your api key balance is lower that trader\'s minimum contract amount',
   'traderHasChangedContractSettings' : 'Trader has changed contract settings, please reload page',
