@@ -320,7 +320,7 @@ class Ratings extends React.Component {
                               <th>
                                 <div className="help" data-toggle="ratings-help-popover" data-placement="bottom"
                                   data-total={this.props.intl.messages['ratings.amountOfContracts']}
-                                  data-success={this.props.intl.messages['ratings.amountOfFinishedContracts']}>>?</div>
+                                  data-success={this.props.intl.messages['ratings.amountOfFinishedContracts']}>?</div>
                               </th>
                               <th>
                                 <DropdownSelect
