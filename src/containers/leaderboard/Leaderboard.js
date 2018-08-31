@@ -127,14 +127,15 @@ class Leaderboard extends React.Component {
               <div className="ratings-main__block">
                 <div className="block__top">
                   <div className="block__top-switch-wrap">
-                    <span
-                      onClick={() => this.selectRound(0)}
+                    <a
+                      href={'.'}
+                      onClick={e => {e.preventDefault();this.selectRound(0)}}
                       className={classNames('block__top-switch', 'ratings-traders', {active: this.state.selectedRound === 0})}>
                       <FormattedMessage
                         id="leaderboard.global"
                         defaultMessage="GLOBAL"
                       />
-                    </span>
+                    </a>
                     {this.renderRoundsBlocks(count)}
                   </div>
                 </div>
