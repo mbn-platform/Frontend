@@ -56,6 +56,7 @@ const en = {
   'roiCalculatedBy': 'ROI CALCULATED BY MEMBRANA ANALYSIS SYSTEM',
   'leaderboard.title': 'LEADERBOARD',
   'leaderboard.global': 'GLOBAL',
+  'leaderboard.roundIsNotStartedYet': 'Round {round} is not started yet',
   'leaderboard.round': 'ROUND {count}',
   'leaderboard.selectRound' : 'Select round',
   'leaderboard.place': 'Place',

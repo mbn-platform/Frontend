@@ -13,6 +13,16 @@
 			height: 100%;
 		}
 	}
+
+  .ratings-empty-data {
+	  display: flex;
+	  justify-content: center;
+	  height: 100%;
+	  font-size: 1.8em;
+	  color: rgba(#fff,.5);
+	  align-items: center;
+  }
+
   .round_info {
     font-size: 12px;
   }
