@@ -377,8 +377,8 @@ class Leaderboard extends React.Component {
               <th onClick={() => this.onColumnSort('percent')}>
                 <span>
                   <FormattedMessage
-                    id="leaderboard.profitPercent"
-                    defaultMessage="Profit, %"
+                    id="leaderboard.points"
+                    defaultMessage="Points"
                   />
                 </span><span className={classNameForColumnHeader(this.state, 'percent')}/>
               </th>
@@ -435,7 +435,7 @@ const RatingRow = (props) => (
     </td>
     {props.global ? null : (
       <td>
-        <div className="percent">{(props.percent || 0).toFixed(2)}</div>
+        <div className="percent">{(props.points || '')}</div>
       </td>
     )}
   </tr>
