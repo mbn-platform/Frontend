@@ -2,6 +2,7 @@ import React from 'react';
 import ProfileInfo from './ProfileInfo';
 import TablesScreen from './TablesScreen';
 import { Row, Container } from 'reactstrap';
+import {apiGet} from '../../generic/apiCall';
 
 class Profile extends React.Component {
 

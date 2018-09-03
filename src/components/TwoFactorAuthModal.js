@@ -1,19 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ModalWindow from '../../components/Modal';
+import ModalWindow from './Modal';
 import {injectIntl, FormattedMessage} from 'react-intl';
+import {connect} from 'react-redux';
+import { closeTwoFactorAuthModal } from '../actions/modal';
 
 class TwoFactorAuthModal extends React.Component {
   state = {
-    isInfoModalOpen: true,
+    isInfoModalOpen: this.props.modal.isTwoFactorAuthModalOpen,
     codeIsWrong: false,
     currentCode: '',
     firstAutoSubmit: true,
   };
 
   static propTypes = {
-    onSubmit: PropTypes.func.isRequired,
+    onTwoFactorAuthSubmit: PropTypes.func.isRequired,
   };
+
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.modal.isTwoFactorAuthModalOpen !== prevState.isInfoModalOpen) {
+      return {
+        isInfoModalOpen: nextProps.modal.isTwoFactorAuthModalOpen
+      };
+    }
+    return null;
+  }
 
   onChangeAutoSubmit = e => {
     const { firstAutoSubmit } = this.state;
@@ -29,11 +41,11 @@ class TwoFactorAuthModal extends React.Component {
   };
 
   submitForm = async () => {
-    const { onSubmit } = this.props;
+    const { onTwoFactorAuthSubmit, closeTwoFactorAuthModalWindow } = this.props;
     const { currentCode } = this.state;
     try {
-      await onSubmit(currentCode);
-      this.setState({isInfoModalOpen: false});
+      await onTwoFactorAuthSubmit(currentCode);
+      closeTwoFactorAuthModalWindow();
     } catch(e) {
       this.setState({codeIsWrong: true, firstAutoSubmit: false});
     }
@@ -56,11 +68,11 @@ class TwoFactorAuthModal extends React.Component {
 
   renderModal = () => {
     const { isInfoModalOpen, codeIsWrong, currentCode } = this.state;
-
+    const { closeTwoFactorAuthModalWindow } = this.props;
     return (
       <ModalWindow
         modalIsOpen={isInfoModalOpen}
-        onClose={() => this.setState({isInfoModalOpen: false})}
+        onClose={closeTwoFactorAuthModalWindow}
         title={
           <FormattedMessage
             id="enterConfirmationCode"
@@ -97,4 +109,10 @@ class TwoFactorAuthModal extends React.Component {
   }
 }
 
-export default injectIntl(TwoFactorAuthModal);
+const mapDispatchToProps = dispatch => {
+  return {
+    closeTwoFactorAuthModalWindow: () => dispatch(closeTwoFactorAuthModal),
+  };
+};
+
+export default injectIntl(connect(state => ({modal: state.modal}), mapDispatchToProps)(TwoFactorAuthModal));

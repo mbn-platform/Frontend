@@ -21,9 +21,10 @@ import { withRouter } from 'react-router';
 import { Navbar, NavbarToggler, NavbarBrand, Nav, Collapse, Col } from 'reactstrap';
 import { Desktop, Mobile } from './generic/MediaQuery';
 import ModalWindow from './components/Modal';
+import TwoFactorAuthModal from './components/TwoFactorAuthModal'
 import { Container, Row } from 'reactstrap';
 import {injectIntl, FormattedMessage} from 'react-intl';
-import {closeConfirmModal, closeInfoModal} from './actions/modal';
+import {closeConfirmModal, closeInfoModal, closeTwoFactorAuthModal } from './actions/modal';
 import { loggedOut } from './actions/auth';
 
 
@@ -111,6 +112,9 @@ class Navigation extends React.Component {
     );
   }
 
+  renderTwoFactorAuthModal = () => <TwoFactorAuthModal />
+
+
   render() {
     return (
       <Col xs="12" md="auto" className="d-block menu-panel">
@@ -142,6 +146,7 @@ class Navigation extends React.Component {
         </Navbar>
         {this.renderGlobalInformModel()}
         {this.renderGlobalConfirmModel()}
+        {this.renderTwoFactorAuthModal()}
       </Col>
     );
   }
