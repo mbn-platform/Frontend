@@ -8,6 +8,8 @@ const en = {
   'noDataAboutCurrentRound' : 'No data about current round',
   'theKeyIsInUse' : 'The key is in use',
   'enterConfirmationCode' : 'Enter confirmation code',
+  'saveAndConfirmSecretCode' : 'Save and confirm secret code',
+  'yourSecretKeyIs' : 'Your secret key is {br}{key}',
   'wrong2FACode' : 'Wrong 2FA code',
   'invalidKeySecretPair' : 'Invalid key/secret pair',
   'yourApiKeyBalanceIsLowerThatTraderMinimum' : 'Your api key balance is lower that trader\'s minimum contract amount',

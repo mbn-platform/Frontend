@@ -1,10 +1,9 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import ProfileInfo from './ProfileInfo';
 import TablesScreen from './TablesScreen';
 import { Row, Container } from 'reactstrap';
-import {ApiTwoFactorAuth} from '../../generic/api';
-import {showTwoFactorAuthModal} from '../../actions/modal';
-import {connect} from 'react-redux';
+import {enableTwoFactorAuthModal, disableTwoFactorAuthModal} from '../../actions/modal';
 
 class Profile extends React.Component {
 
@@ -58,10 +57,7 @@ class Profile extends React.Component {
 
   componentDidMount() {
     const name = this.props.name;
-    const Api2FA = new ApiTwoFactorAuth();
-    Api2FA.enable().then(() => {
-      this.props.show2FAModal()
-    });
+    this.props.enable2FA();
     this.props.getProfilePageInfo(name);
     this.props.getExchangeRates('binance');
     this.props.updateExchanges();
@@ -98,7 +94,8 @@ class Profile extends React.Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    show2FAModal: onSubmit => dispatch(showTwoFactorAuthModal(onSubmit)),
+    enable2FA: () => dispatch(enableTwoFactorAuthModal()),
+    disable2FA: () => dispatch(disableTwoFactorAuthModal()),
   };
 };
 

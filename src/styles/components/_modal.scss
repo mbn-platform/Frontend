@@ -106,6 +106,28 @@
     align-items: center;
 }
 
+
+.modal__secret-wrapper {
+    margin-bottom: 20px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+
+.modal__qr-wrapper {
+    padding: 15px;
+    display: inline-block;
+    background-color: #fff;
+    margin-bottom: 20px;
+}
+
+.modal__key-wrapper {
+    width: 100%;
+    text-align: center;
+    padding: 5px;
+    font-size: 15px;
+}
+
 .modal__input-text-error {
     font-size: 15px;
     position: absolute;

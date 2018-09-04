@@ -112,7 +112,7 @@ class Navigation extends React.Component {
     );
   }
 
-  renderTwoFactorAuthModal = () => <TwoFactorAuthModal />
+  renderTwoFactorAuthModal = () => <TwoFactorAuthModal/>
 
 
   render() {

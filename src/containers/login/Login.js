@@ -7,8 +7,6 @@ import Competition from './Competition';
 import MetamaskClosed from './MetamaskClosed';
 import LoginForm from './LoginForm';
 import { FormattedMessage } from 'react-intl';
-import {connect} from 'react-redux';
-import { showTwoFactorAuthModal } from '../../actions/modal';
 
 class Login extends React.Component {
 
@@ -59,7 +57,6 @@ class Login extends React.Component {
   }
 
   render() {
-    const {show2FAModal} = this.props;
     const isIOSorAndroid = (/android|iphone|ipad/i).test(window.navigator.userAgent);
     return (
       <div className={'login_wrapper container-fluid ' + (!window.web3 ? 'login_wrapper_no_metamask' : '')}>
@@ -73,7 +70,6 @@ class Login extends React.Component {
                 />
               </div>
             </div>
-            {show2FAModal()}
             {this.renderStep()}
           </div>
           {!window.web3 && isIOSorAndroid && <Competition/>}
@@ -83,10 +79,4 @@ class Login extends React.Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    show2FAModal: onSubmit => dispatch(showTwoFactorAuthModal(onSubmit)),
-  };
-};
-
-export default connect(null, mapDispatchToProps)(Login);
+export default Login;

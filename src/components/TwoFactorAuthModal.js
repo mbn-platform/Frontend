@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ModalWindow from './Modal';
+import QRCode from 'qrcode.react';
 import {injectIntl, FormattedMessage} from 'react-intl';
 import {connect} from 'react-redux';
-import { closeTwoFactorAuthModal } from '../actions/modal';
+import { closeTwoFactorAuthModal, disableTFA, confirmTFA } from '../actions/modal';
 import { ApiTwoFactorAuth } from '../generic/api';
 
 
@@ -18,12 +19,19 @@ class TwoFactorAuthModal extends React.Component {
   };
 
   static propTypes = {
-    isDisable: PropTypes.bool,
+    modal: PropTypes.shape({
+      mode: PropTypes.string,
+    }),
     onTwoFactorAuthSubmit: PropTypes.func,
+    secret: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
   };
 
   static defaultProps = {
-    isDisable: false,
+    modal: {},
+    secret: '',
     onTwoFactorAuthSubmit: () => ({}),
   };
 
@@ -51,12 +59,18 @@ class TwoFactorAuthModal extends React.Component {
   };
 
   submitForm = async () => {
-    const { onTwoFactorAuthSubmit, closeTwoFactorAuthModalWindow, isDisable } = this.props;
+    const {
+      onTwoFactorAuthSubmit,
+      closeTwoFactorAuthModalWindow,
+      modal: {mode},
+      disableTFA,
+      confirmTFA
+    } = this.props;
     const { currentCode } = this.state;
     try {
-      isDisable ?
-        await Api2FA.disable(currentCode) :
-        await Api2FA.confirm(currentCode);
+      mode === 'disable' ?
+        await disableTFA(currentCode) :
+        await confirmTFA(currentCode);
       onTwoFactorAuthSubmit(currentCode);
       closeTwoFactorAuthModalWindow();
     } catch(e) {
@@ -83,19 +97,42 @@ class TwoFactorAuthModal extends React.Component {
 
   renderModal = () => {
     const { isInfoModalOpen, codeIsWrong, currentCode } = this.state;
-    const { closeTwoFactorAuthModalWindow } = this.props;
+    const { closeTwoFactorAuthModalWindow,  modal: {mode, authData } } = this.props;
+    const { username, secret } = mode === 'enable' && authData;
     return (
       <ModalWindow
         modalIsOpen={isInfoModalOpen}
         onClose={closeTwoFactorAuthModalWindow}
         title={
-          <FormattedMessage
-            id="enterConfirmationCode"
-            defaultMessage="Enter confirmation code"
-          />
+          mode === 'enable' ?
+            <FormattedMessage
+              id="saveAndConfirmSecretCode"
+              defaultMessage="Save and confirm secret code"
+            />
+            :
+            <FormattedMessage
+              id="enterConfirmationCode"
+              defaultMessage="Enter confirmation code"
+            />
         }
         content={
           <div className="modal__content-wrapper">
+            {mode === 'enable' &&
+            <div className="modal__secret-wrapper">
+              <div className="modal__qr-wrapper">
+                <QRCode
+                  level="L"
+                  value={`otpauth://totp/Membrana:${username}@membrana.io?secret=${secret}=Membrana`}
+                />
+              </div>
+              <div className="modal__key-wrapper">
+                <FormattedMessage
+                  id="yourSecretKeyIs"
+                  defaultMessage="Your secret key is {br}{key}"
+                  values={{key: secret, br: <br/>}}
+                />
+              </div>
+            </div>}
             <div className="modal__input-wrapper">
               <input onChange={this.onChangeAutoSubmit}
                 onKeyDown={this.onEnterPress}
@@ -127,7 +164,13 @@ class TwoFactorAuthModal extends React.Component {
 const mapDispatchToProps = dispatch => {
   return {
     closeTwoFactorAuthModalWindow: () => dispatch(closeTwoFactorAuthModal),
+    disableTFA: currentCode => dispatch(disableTFA(currentCode)),
+    confirmTFA: currentCode => dispatch(confirmTFA(currentCode)),
   };
 };
 
-export default injectIntl(connect(state => ({modal: state.modal}), mapDispatchToProps)(TwoFactorAuthModal));
+export default injectIntl(connect(state => ({
+  modal: state.modal,
+  mode: state.mode,
+  authData: state.authData
+}), mapDispatchToProps)(TwoFactorAuthModal));
