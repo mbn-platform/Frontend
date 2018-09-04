@@ -4,6 +4,10 @@ import ModalWindow from './Modal';
 import {injectIntl, FormattedMessage} from 'react-intl';
 import {connect} from 'react-redux';
 import { closeTwoFactorAuthModal } from '../actions/modal';
+import { ApiTwoFactorAuth } from '../generic/api';
+
+
+const Api2FA = new ApiTwoFactorAuth();
 
 class TwoFactorAuthModal extends React.Component {
   state = {
@@ -14,7 +18,13 @@ class TwoFactorAuthModal extends React.Component {
   };
 
   static propTypes = {
-    onTwoFactorAuthSubmit: PropTypes.func.isRequired,
+    isDisable: PropTypes.bool,
+    onTwoFactorAuthSubmit: PropTypes.func,
+  };
+
+  static defaultProps = {
+    isDisable: false,
+    onTwoFactorAuthSubmit: () => ({}),
   };
 
 
@@ -41,10 +51,13 @@ class TwoFactorAuthModal extends React.Component {
   };
 
   submitForm = async () => {
-    const { onTwoFactorAuthSubmit, closeTwoFactorAuthModalWindow } = this.props;
+    const { onTwoFactorAuthSubmit, closeTwoFactorAuthModalWindow, isDisable } = this.props;
     const { currentCode } = this.state;
     try {
-      await onTwoFactorAuthSubmit(currentCode);
+      isDisable ?
+        await Api2FA.disable(currentCode) :
+        await Api2FA.confirm(currentCode);
+      onTwoFactorAuthSubmit(currentCode);
       closeTwoFactorAuthModalWindow();
     } catch(e) {
       this.setState({codeIsWrong: true, firstAutoSubmit: false});
@@ -62,7 +75,9 @@ class TwoFactorAuthModal extends React.Component {
   onPaste = e => {
     const pasteValue = e.clipboardData.getData('Text');
     if ((/^[0-9]{6}$/i).test(pasteValue)) {
-      this.submitForm();
+      this.setState({currentCode: pasteValue.toString()}, ()=>{
+        this.submitForm();
+      });
     }
   }
 

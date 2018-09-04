@@ -42,6 +42,23 @@ export class ApiAuth {
       .then(responseSchemaHandler);
 }
 
+export class ApiTwoFactorAuth {
+  enable = () =>
+    apiGet('/mfa/enable')
+      .then(errorHandler)
+      .then(responseSchemaHandler)
+
+  confirm = token =>
+    apiPost('/mfa/confirm', null, {token})
+      .then(errorHandler)
+      .then(responseSchemaHandler)
+
+  disable = token =>
+    apiPut('/mfa/disable', { headers: {'X-2FA': token}})
+      .then(errorHandler)
+      .then(responseSchemaHandler)
+}
+
 export class ApiChallenge {
   update = number =>
     apiGet('/challenge/result?' + qs.stringify({round: number}))
