@@ -35,7 +35,7 @@ class Leaderboard extends React.Component {
       name: (a, b) => defaultSortFunction(a.name.toLowerCase(), b.name.toLowerCase(),),
     };
     this.state = {
-      selectedRound: 0,
+      selectedRound: null,
       nameFilter: '',
       sort: {},
     };
@@ -63,6 +63,9 @@ class Leaderboard extends React.Component {
 
   selectRound(number) {
     const { updateChallenge } = this.props;
+    if(this.state.selectedRound === number) {
+      return;
+    }
     this.props.history.push({
       pathname: '/leaderboard',
       search: number > 0 ? `round=${number}` : '',
@@ -129,7 +132,7 @@ class Leaderboard extends React.Component {
                 <div className="block__top">
                   <div className="block__top-switch-wrap">
                     <a
-                      href={'.'}
+                      href={'/leaderboard'}
                       onClick={e => {e.preventDefault();this.selectRound(0)}}
                       className={classNames('block__top-switch', 'ratings-traders', {active: this.state.selectedRound === 0})}>
                       <FormattedMessage
@@ -172,7 +175,7 @@ class Leaderboard extends React.Component {
       if ( i > (count - maxDisplayedTabs)) {
         rounds.push(
           <a
-            href={'#'}
+            href={`leaderboard?round=${i}`}
             key={i}
             onClick={e => {e.preventDefault(); this.selectRound(i);}}
             className={classNames('block__top-switch', 'ratings-traders', {active: selectedRound === i})}>

@@ -287,6 +287,7 @@ class Ratings extends React.Component {
                                   <FormattedMessage
                                     id="ratings.startedSince"
                                     defaultMessage="Started since"
+                                    values={{br: <br/>}}
                                   />
                                 </span>
                                 <span className={classNameForColumnHeader(this.state, 'dateCreated')}/>
