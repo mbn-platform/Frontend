@@ -4,7 +4,7 @@ import ModalWindow from './Modal';
 import QRCode from 'qrcode.react';
 import {injectIntl, FormattedMessage} from 'react-intl';
 import {connect} from 'react-redux';
-import { closeTwoFactorAuthModal, disableTFA, confirmTFA } from '../actions/modal';
+import { closeTwoFactorAuthModal, disableTFA, confirm2FA } from '../actions/modal';
 import { ApiTwoFactorAuth } from '../generic/api';
 
 
@@ -64,13 +64,13 @@ class TwoFactorAuthModal extends React.Component {
       closeTwoFactorAuthModalWindow,
       modal: {mode},
       disableTFA,
-      confirmTFA
+      confirm2FA
     } = this.props;
     const { currentCode } = this.state;
     try {
       mode === 'disable' ?
         await disableTFA(currentCode) :
-        await confirmTFA(currentCode);
+        await confirm2FA(currentCode);
       onTwoFactorAuthSubmit(currentCode);
       closeTwoFactorAuthModalWindow();
     } catch(e) {
@@ -122,7 +122,7 @@ class TwoFactorAuthModal extends React.Component {
               <div className="modal__qr-wrapper">
                 <QRCode
                   level="L"
-                  value={`otpauth://totp/Membrana:${username}@membrana.io?secret=${secret}=Membrana`}
+                  value={`otpauth://totp/membrana.io:${username}@membrana.io?secret=${secret}=Membrana`}
                 />
               </div>
               <div className="modal__key-wrapper">
@@ -165,7 +165,7 @@ const mapDispatchToProps = dispatch => {
   return {
     closeTwoFactorAuthModalWindow: () => dispatch(closeTwoFactorAuthModal),
     disableTFA: currentCode => dispatch(disableTFA(currentCode)),
-    confirmTFA: currentCode => dispatch(confirmTFA(currentCode)),
+    confirm2FA: currentCode => dispatch(confirm2FA(currentCode)),
   };
 };
 

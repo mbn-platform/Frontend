@@ -39,7 +39,7 @@ export function disableTFA (currentCode) {
   };
 }
 
-export function confirmTFA (currentCode) {
+export function confirm2FA (currentCode) {
   return async dispatch => {
     try {
       return await Api2FA.confirm(currentCode);
@@ -49,17 +49,6 @@ export function confirmTFA (currentCode) {
     }
   };
 }
-
-export function confirm2FA(currentCode) {
-  return async dispatch => {
-    try {
-      await Api2FA.confirm(currentCode);
-    }
-    catch(err) {
-      defaultErrorHandler(err, dispatch);
-    }
-  };
-};
 
 
 export const showInfoModal = (textID='message', values={}) => ({

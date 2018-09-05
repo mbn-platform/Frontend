@@ -3,18 +3,26 @@ import classNames from 'classnames';
 import { Row, Col } from 'reactstrap';
 import { Desktop, Mobile } from '../../generic/MediaQuery';
 import {FormattedMessage, injectIntl} from 'react-intl';
-import {showInfoModal} from '../../actions/modal';
+import {disableTwoFactorAuthModal, enableTwoFactorAuthModal, showInfoModal} from '../../actions/modal';
 import {connect} from 'react-redux';
+import {getProfilePageInfo} from '../../actions/profile';
 
 class ContractSettings extends React.Component {
 
   constructor(props) {
     super(props);
     this.onToggleClick = this.onToggleClick.bind(this);
-    this.state = {isEditing: false };
+    this.state = {isEditing: false,  is2FAEnable: this.props.profile.mfaEnabled || false} ;
     this.onEditButtonClick = this.onEditButtonClick.bind(this);
     this.onFieldEdit = this.onFieldEdit.bind(this);
     this.onCurrencySelected = this.onCurrencySelected.bind(this);
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    if (state.is2FAEnable !== props.profile.mfaEnabled) {
+      return {is2FAEnable: props.profile.mfaEnabled};
+    }
+    return null;
   }
 
   onCurrencySelected(e) {
@@ -49,7 +57,7 @@ class ContractSettings extends React.Component {
       const duration = parseFloat(this.state.duration) || this.props.duration;
       if(fee >= 100 || fee <= 0 || minAmount < 0 || roi <= 0 ||
         duration <= 0 || maxLoss <= 0) {;
-        this.props.showModalWindow('profile.enterSetting')
+        this.props.showModalWindow('profile.enterSetting');
         return;
       } else {
         const update = { fee, minAmount, currency, roi, maxLoss, duration };
@@ -78,10 +86,17 @@ class ContractSettings extends React.Component {
     const { minAmount, fee, maxLoss, duration, roi } = this.props;
     if(fee >= 100 || fee <= 0 || minAmount <= 0 || roi <= 0 ||
       duration <= 0 || maxLoss <= 0) {
-      this.props.showModalWindow('profile.needEditFirst')
+      this.props.showModalWindow('profile.needEditFirst');
       return;
     }
     this.props.onToggleClick(!this.props.availableForOffers);
+  }
+
+  on2FASwitcherToggle = (e) => {
+    const { is2FAEnable } = this.state;
+    const { disable2FA, enable2FA } = this.props;
+    e.preventDefault();
+    is2FAEnable ? disable2FA() : enable2FA();
   }
 
   renderAcceptsRequests() {
@@ -96,7 +111,45 @@ class ContractSettings extends React.Component {
               />
             </Col>
             <Col xs="auto" className="switch" onClick={this.onToggleClick}>
-              <input className="cmn-toggle cmn-toggle-round-flat" type="checkbox" onChange={this.onToggleClick} checked={this.props.availableForOffers || false}/>
+              <input className="cmn-toggle cmn-toggle-round-flat" type="checkbox"
+                onChange={this.onToggleClick}
+                checked={this.props.availableForOffers || false}/>
+              <label className="cmn-toggle-background"/>
+              <label className="cmn-text cmn-yes-text">
+                <FormattedMessage
+                  id="yes"
+                  defaultMessage="yes"
+                />
+              </label>
+              <label className="cmn-text cmn-no-text">
+                <FormattedMessage
+                  id="no"
+                  defaultMessage="no"
+                />
+              </label>
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+    );
+  }
+
+  render2FASwitcher() {
+    const { is2FAEnable = false } = this.state;
+    return (
+      <Row className="row accept-requests">
+        <Col xs="12" className="align-middle">
+          <Row className="justify-content-between accept-block">
+            <Col xs="auto" className="text">
+              <FormattedMessage
+                id="profile.enable2FA"
+                defaultMessage="Enable 2FA"
+              />
+            </Col>
+            <Col xs="auto" className="switch" onClick={this.on2FASwitcherToggle}>
+              <input className="cmn-toggle cmn-toggle-round-flat" type="checkbox"
+                onChange={this.on2FASwitcherToggle}
+                checked={is2FAEnable}/>
               <label className="cmn-toggle-background"/>
               <label className="cmn-text cmn-yes-text">
                 <FormattedMessage
@@ -170,6 +223,16 @@ class ContractSettings extends React.Component {
             </button>
           </div>
         )}
+        <div className="row title-setting">
+          <div className="col-auto text-center align-middle contract-setting-title title-text">
+            <span className="icon icon-settings icon-006-wrench"/>
+            <FormattedMessage
+              id="profile.securitySettings"
+              defaultMessage="Security settings"
+            />
+          </div>
+        </div>
+        {this.render2FASwitcher()}
       </div>
     );
   }
@@ -383,6 +446,8 @@ const EditSettingsEntry = ({className, placeholder,value, dimension, name, onCha
 
 const mapDispatchToProps = dispatch => ({
   showModalWindow: text => dispatch(showInfoModal(text)),
+  enable2FA: () => dispatch(enableTwoFactorAuthModal()),
+  disable2FA: () => dispatch(disableTwoFactorAuthModal()),
 });
 
 export default injectIntl(connect(state => state, mapDispatchToProps)(ContractSettings));
