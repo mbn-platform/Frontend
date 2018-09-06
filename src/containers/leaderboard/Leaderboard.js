@@ -129,7 +129,7 @@ class Leaderboard extends React.Component {
                 <div className="block__top">
                   <div className="block__top-switch-wrap">
                     <a
-                      href={'.'}
+                      href={'/leaderboard'}
                       onClick={e => {e.preventDefault();this.selectRound(0)}}
                       className={classNames('block__top-switch', 'ratings-traders', {active: this.state.selectedRound === 0})}>
                       <FormattedMessage
@@ -188,7 +188,7 @@ class Leaderboard extends React.Component {
     if (count > maxDisplayedTabs) {
       rounds.push(
         <RoundSelect key="dropdown" onSelectClick={RoundNumber => this.selectRound(RoundNumber)}
-          currentValue={selectedRound <= count - maxDisplayedTabs ? selectedRound : null}
+          currentValue={selectedRound <= count - maxDisplayedTabs && selectedRound !== 0 ? selectedRound : null}
           rounds={times(count - maxDisplayedTabs, (i) => 1 + i).reverse()} />
       );
     }
