@@ -17,6 +17,7 @@ import LeaderboardIconHover from './assets/svg/MenuIconLeaderboardHover.svg';
 import SignOut from './assets/svg/SignOut.svg';
 import SignOutHover from './assets/svg/SignOutHover.svg';
 import { connect } from 'react-redux';
+import {APP_NAME, APP_HOST} from './constants';
 import { withRouter } from 'react-router';
 import { Navbar, NavbarToggler, NavbarBrand, Nav, Collapse, Col } from 'reactstrap';
 import { Desktop, Mobile } from './generic/MediaQuery';
@@ -112,7 +113,7 @@ class Navigation extends React.Component {
     );
   }
 
-  renderTwoFactorAuthModal = () => <TwoFactorAuthModal/>
+  renderTwoFactorAuthModal = () => <TwoFactorAuthModal appName={APP_NAME} appHost={APP_HOST}/>
 
 
   render() {

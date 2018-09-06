@@ -105,7 +105,7 @@ class TwoFactorAuthModal extends React.Component {
 
   renderModal = () => {
     const { isInfoModalOpen, codeIsWrong, currentCode, success2FA } = this.state;
-    const { closeTwoFactorAuthModalWindow,  modal: {mode, authData } } = this.props;
+    const { closeTwoFactorAuthModalWindow,  modal: {mode, authData }, appName, appHost } = this.props;
     const { username, secret } = mode === 'enable' && authData;
     return (
       <ModalWindow
@@ -132,7 +132,7 @@ class TwoFactorAuthModal extends React.Component {
                   <div className="modal__qr-wrapper">
                     <QRCode
                       level="L"
-                      value={`otpauth://totp/${username}@membrana.io?secret=${secret}&issuer=Membrana`}
+                      value={`otpauth://totp/${username}@${appHost}?secret=${secret}&issuer=${appName}`}
                     />
                   </div>
                   <div className="modal__key-wrapper">
