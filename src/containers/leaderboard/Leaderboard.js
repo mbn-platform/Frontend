@@ -166,13 +166,13 @@ class Leaderboard extends React.Component {
 
   renderRoundsBlocks(count) {
     const rounds = [];
-    const {maxDisplayedTabs } = this.props;
+    const {maxDisplayedTabs, location: {pathname : path} } = this.props;
     const {selectedRound } = this.state;
     for(let i = count; i >= 1; i--) {
       if ( i > (count - maxDisplayedTabs)) {
         rounds.push(
           <a
-            href={'#'}
+            href={`${path}?round=${i}`}
             key={i}
             onClick={e => {e.preventDefault(); this.selectRound(i);}}
             className={classNames('block__top-switch', 'ratings-traders', {active: selectedRound === i})}>
@@ -187,7 +187,7 @@ class Leaderboard extends React.Component {
     }
     if (count > maxDisplayedTabs) {
       rounds.push(
-        <RoundSelect onSelectClick={RoundNumber => this.selectRound(RoundNumber)}
+        <RoundSelect key="dropdown" onSelectClick={RoundNumber => this.selectRound(RoundNumber)}
           currentValue={selectedRound <= count - maxDisplayedTabs ? selectedRound : null}
           rounds={times(count - maxDisplayedTabs, (i) => 1 + i).reverse()} />
       );
