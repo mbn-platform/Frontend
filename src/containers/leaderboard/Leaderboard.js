@@ -63,7 +63,7 @@ class Leaderboard extends React.Component {
 
   selectRound(number) {
     const { updateChallenge } = this.props;
-    this.props.history.push({
+    this.props.history.replace({
       pathname: '/leaderboard',
       search: number > 0 ? `round=${number}` : '',
     });
