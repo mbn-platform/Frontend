@@ -30,25 +30,12 @@ export function disableTwoFactorAuthModal() {
 }
 
 export function disable2FA (currentCode) {
-  return async dispatch => {
-    try {
-      return await Api2FA.disable(currentCode).then(data => dispatch(updateProfile(data.user)));
-    }
-    catch(err) {
-      defaultErrorHandler(err, dispatch);
-    }
-  };
+  return async dispatch =>
+    await Api2FA.disable(currentCode).then(data => dispatch(updateProfile(data.user)));
 }
 
 export function confirm2FA (currentCode) {
-  return async dispatch => {
-    try {
-      return await Api2FA.confirm(currentCode).then(data => dispatch(updateProfile(data.user)));
-    }
-    catch(err) {
-      defaultErrorHandler(err, dispatch);
-    }
-  };
+  return async dispatch => await Api2FA.confirm(currentCode).then(data => dispatch(updateProfile(data.user)));
 }
 
 

@@ -12,6 +12,7 @@ class TwoFactorAuthModal extends React.Component {
     codeIsWrong: false,
     currentCode: '',
     firstAutoSubmit: true,
+    success2FA: false,
   };
 
   static propTypes = {
@@ -35,10 +36,13 @@ class TwoFactorAuthModal extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.modal.isTwoFactorAuthModalOpen !== prevState.isInfoModalOpen) {
       return {
+        success2FA: false,
         isInfoModalOpen: nextProps.modal.isTwoFactorAuthModalOpen
       };
     }
-    return null;
+    return {
+      success2FA: false,
+    };
   }
 
   onChangeAutoSubmit = e => {
@@ -67,9 +71,16 @@ class TwoFactorAuthModal extends React.Component {
       mode === 'disable' ?
         await disable2FA(currentCode) :
         await confirm2FA(currentCode);
-      onTwoFactorAuthSubmit(currentCode);
-      closeTwoFactorAuthModalWindow();
-      this.setState({currentCode: ''});
+      if (mode === 'disable' || mode === 'enable') {
+        this.setState({success2FA: true}, () => {
+          onTwoFactorAuthSubmit(currentCode);
+          this.setState({currentCode: ''});
+        });
+      } else {
+        closeTwoFactorAuthModalWindow();
+        onTwoFactorAuthSubmit(currentCode);
+        this.setState({currentCode: ''});
+      }
     } catch(e) {
       this.setState({codeIsWrong: true, firstAutoSubmit: false});
     }
@@ -93,7 +104,7 @@ class TwoFactorAuthModal extends React.Component {
   }
 
   renderModal = () => {
-    const { isInfoModalOpen, codeIsWrong, currentCode } = this.state;
+    const { isInfoModalOpen, codeIsWrong, currentCode, success2FA } = this.state;
     const { closeTwoFactorAuthModalWindow,  modal: {mode, authData } } = this.props;
     const { username, secret } = mode === 'enable' && authData;
     return (
@@ -114,38 +125,50 @@ class TwoFactorAuthModal extends React.Component {
         }
         content={
           <div className="modal__content-wrapper">
-            {mode === 'enable' &&
-            <div className="modal__secret-wrapper">
-              <div className="modal__qr-wrapper">
-                <QRCode
-                  level="L"
-                  value={`otpauth://totp/membrana.io:${username}@membrana.io?secret=${secret}&issuer=Membrana`}
+            {!success2FA ?
+              <React.Fragment>
+                {mode === 'enable' &&
+                <div className="modal__secret-wrapper">
+                  <div className="modal__qr-wrapper">
+                    <QRCode
+                      level="L"
+                      value={`otpauth://totp/${username}@membrana.io?secret=${secret}&issuer=Membrana`}
+                    />
+                  </div>
+                  <div className="modal__key-wrapper">
+                    <FormattedMessage
+                      id="yourSecretKeyIs"
+                      defaultMessage="Your secret key is {br}{key}"
+                      values={{key: secret, br: <br/>}}
+                    />
+                  </div>
+                </div>
+                }
+                <div className="modal__input-wrapper">
+                  <input onChange={this.onChangeAutoSubmit}
+                    onKeyDown={this.onEnterPress}
+                    onPaste={this.onPaste}
+                    value={currentCode}
+                    maxLength={6}
+                    type="text"
+                    name='ordersize'
+                    className="modal__input modal__2fa-input" />
+                  {codeIsWrong && <div className="modal__input-text-error">
+                    <FormattedMessage
+                      id="wrong2FACode"
+                      defaultMessage="Wrong 2FA code"/>
+                  </div>}
+                </div>
+              </React.Fragment> :
+              <div className="modal__success-title">
+                <FormattedMessage
+                  id="successToggle2FA"
+                  defaultMessage="Two-factor authentication successfully {action}"
+                  values={{action: mode}}
                 />
               </div>
-              <div className="modal__key-wrapper">
-                <FormattedMessage
-                  id="yourSecretKeyIs"
-                  defaultMessage="Your secret key is {br}{key}"
-                  values={{key: secret, br: <br/>}}
-                />
-              </div>
-            </div>}
-            <div className="modal__input-wrapper">
-              <input onChange={this.onChangeAutoSubmit}
-                onKeyDown={this.onEnterPress}
-                onPaste={this.onPaste}
-                value={currentCode}
-                maxLength={6}
-                type="text"
-                name='ordersize'
-                className="modal__input modal__2fa-input" />
-              {codeIsWrong && <div className="modal__input-text-error">
-                <FormattedMessage
-                  id="wrong2FACode"
-                  defaultMessage="Wrong 2FA code"/>
-              </div>}
-            </div>
-            <button type="submit" disabled={codeIsWrong} className="modal__button btn" onClick={this.submitForm}>
+            }
+            <button type="submit" disabled={codeIsWrong} className="modal__button btn" onClick={!success2FA ? this.submitForm : closeTwoFactorAuthModalWindow}>
               {this.props.intl.messages['ok']}
             </button>
           </div>

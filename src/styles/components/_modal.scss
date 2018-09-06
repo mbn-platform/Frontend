@@ -1,7 +1,3 @@
-.asd {
-    background-color: #fff;
-}
-
 .modal__container {
     height: 100%;
     overflow-x: hidden;
@@ -88,10 +84,16 @@
     }
 }
 
+.modal__success-title {
+    color: #28a745;
+    font-size: 21px;
+}
+
 .modal__2fa-input {
     width: 300px;
     font-size: 28px;
     height: 52px;
+    text-align: center;
 }
 
 .modal__input-wrapper {
@@ -169,6 +171,13 @@
 }
 
 @media (max-width: 768px) {
+    .modal__main {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        right: 20px;
+        bottom: 20px;
+    }
 
     .modal__title {
         font-size: 1em;
@@ -191,8 +200,30 @@
         }
     }
 
+    .modal__content-wrapper {
+        width: 100%;
+        font-size: 12px;
+    }
+
+    .modal__qr-wrapper {
+        padding: 20px;
+    }
+
     .modal__body {
         padding: 10px;
+    }
+
+    .modal__key-wrapper {
+        font-size: 10px;
+    }
+
+    .modal__input-wrapper, .modal__2fa-input {
+        width: 100%;
+    }
+
+    .modal__2fa-input {
+        font-size: 22px;
+        height: 42px;
     }
 
     .modal__button {
@@ -203,7 +234,14 @@
         }
     }
 
-        .modal__content {
+    .modal__success-title {
+        color: #28a745;
+        font-size: 13px;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .modal__content {
         padding: 0;
     }
 }
