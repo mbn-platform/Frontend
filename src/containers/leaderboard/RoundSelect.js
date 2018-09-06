@@ -19,7 +19,11 @@ class RoundSelect extends React.Component {
       <div className="leaderboard__select-wrapper">
         <div className="leaderboard__select-value">
           {
-            this.props.currentValue ||
+            <FormattedMessage
+              id="leaderboard.round"
+              defaultMessage="Round {count}"
+              values={{count: this.props.currentValue}}
+            /> ||
             <FormattedMessage
               id="leaderboard.selectRound"
               defaultMessage="Place"
@@ -43,7 +47,11 @@ class RoundSelect extends React.Component {
         key={round}
         className="leaderboard__select-li upper"
         onClick={() => onSelectClick(round)}
-      >{round}</li>
+      > <FormattedMessage
+          id="leaderboard.round"
+          defaultMessage="Round {count}"
+          values={{count: round}}
+        /></li>
     ));
   }
 
