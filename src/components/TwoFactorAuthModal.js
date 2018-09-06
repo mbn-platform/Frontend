@@ -4,11 +4,7 @@ import ModalWindow from './Modal';
 import QRCode from 'qrcode.react';
 import {injectIntl, FormattedMessage} from 'react-intl';
 import {connect} from 'react-redux';
-import { closeTwoFactorAuthModal, disableTFA, confirm2FA } from '../actions/modal';
-import { ApiTwoFactorAuth } from '../generic/api';
-
-
-const Api2FA = new ApiTwoFactorAuth();
+import { closeTwoFactorAuthModal, disable2FA, confirm2FA } from '../actions/modal';
 
 class TwoFactorAuthModal extends React.Component {
   state = {
@@ -51,7 +47,7 @@ class TwoFactorAuthModal extends React.Component {
     if (currentCode.length <= 6) {
       this.setState({currentCode, codeIsWrong: false});
     } else {
-      this.setState({ currentCode: currentCode.slice(0, 6) });
+      this.setState({ currentCode: currentCode });
     }
     if (currentCode.length === 6 && firstAutoSubmit) {
       this.submitForm();
@@ -63,16 +59,17 @@ class TwoFactorAuthModal extends React.Component {
       onTwoFactorAuthSubmit,
       closeTwoFactorAuthModalWindow,
       modal: {mode},
-      disableTFA,
-      confirm2FA
+      disable2FA,
+      confirm2FA,
     } = this.props;
     const { currentCode } = this.state;
     try {
       mode === 'disable' ?
-        await disableTFA(currentCode) :
+        await disable2FA(currentCode) :
         await confirm2FA(currentCode);
       onTwoFactorAuthSubmit(currentCode);
       closeTwoFactorAuthModalWindow();
+      this.setState({currentCode: ''});
     } catch(e) {
       this.setState({codeIsWrong: true, firstAutoSubmit: false});
     }
@@ -122,7 +119,7 @@ class TwoFactorAuthModal extends React.Component {
               <div className="modal__qr-wrapper">
                 <QRCode
                   level="L"
-                  value={`otpauth://totp/membrana.io:${username}@membrana.io?secret=${secret}=Membrana`}
+                  value={`otpauth://totp/membrana.io:${username}@membrana.io?secret=${secret}&issuer=Membrana`}
                 />
               </div>
               <div className="modal__key-wrapper">
@@ -138,7 +135,8 @@ class TwoFactorAuthModal extends React.Component {
                 onKeyDown={this.onEnterPress}
                 onPaste={this.onPaste}
                 value={currentCode}
-                type="number"
+                maxLength={6}
+                type="text"
                 name='ordersize'
                 className="modal__input modal__2fa-input" />
               {codeIsWrong && <div className="modal__input-text-error">
@@ -164,7 +162,7 @@ class TwoFactorAuthModal extends React.Component {
 const mapDispatchToProps = dispatch => {
   return {
     closeTwoFactorAuthModalWindow: () => dispatch(closeTwoFactorAuthModal),
-    disableTFA: currentCode => dispatch(disableTFA(currentCode)),
+    disable2FA: currentCode => dispatch(disable2FA(currentCode)),
     confirm2FA: currentCode => dispatch(confirm2FA(currentCode)),
   };
 };

@@ -10,7 +10,6 @@ import RecentTrades from './RecentTrades';
 import OrderBook from './OrderBook';
 import MediaQuery from 'react-responsive';
 import {setFundId} from '../../generic/util';
-import {ApiTwoFactorAuth} from '../../generic/api';
 
 class Terminal extends React.Component {
 
@@ -38,9 +37,7 @@ class Terminal extends React.Component {
     return allowedOwnKeys.concat(allowedReceivedKeys);
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    const Api2FA = new ApiTwoFactorAuth();
-    Api2FA.disable();
+  componentDidUpdate(prevProps) {
     if(this.props.fund && (prevProps.market !== this.props.market ||
       (!prevProps.fund || prevProps.fund._id !== this.props.fund._id))) {
       let payload = {

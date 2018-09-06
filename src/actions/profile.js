@@ -1,6 +1,7 @@
 import { profileErrorHandler } from '../generic/errorHandlers';
 import { ApiProfile} from '../generic/api';
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
+export const UPDATE_PROFILE_AVAILABLE = 'UPDATE_PROFILE_AVAILABLE';
 export const GET_PROFILE = 'GET_PROFILE';
 export const TRADES_FOR_USER = 'TRADES_FOR_USER';
 export const GET_FEEDBACKS = 'GET_FEEDBACKS';
@@ -12,7 +13,7 @@ export function updateContractSettings(name, settings) {
   return dispatch => {
     ProfileApi.updateContractSettings(name, settings)
       .then(json => dispatch({
-        type: UPDATE_PROFILE,
+        type: UPDATE_PROFILE_AVAILABLE,
         profile: json,
       }))
       .catch(err => {
@@ -25,7 +26,7 @@ export function toggleAvailable(name, available) {
   return dispatch => {
     ProfileApi.toggleAvailable(name, available)
       .then(json => dispatch({
-        type: UPDATE_PROFILE,
+        type: UPDATE_PROFILE_AVAILABLE,
         profile: json,
       }))
       .catch(err => {
@@ -34,10 +35,18 @@ export function toggleAvailable(name, available) {
   };
 }
 
+export function updateProfile(profile) {
+  return dispatch =>
+    dispatch({
+      type: UPDATE_PROFILE,
+      profile,
+    });
+}
+
 export function getProfilePageInfo(name) {
   return async dispatch => {
     try {
-      const json = await ProfileApi.getProfilePageInfo(name)
+      const json = await ProfileApi.getProfilePageInfo(name);
       dispatch({
         type: GET_PROFILE,
         profile: json.profile,

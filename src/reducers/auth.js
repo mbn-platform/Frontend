@@ -1,5 +1,5 @@
 import { LOGGED_IN, NAME_REQUIRED } from '../actions/auth';
-import { UPDATE_PROFILE, GET_PROFILE } from '../actions/profile';
+import { UPDATE_PROFILE_AVAILABLE, GET_PROFILE } from '../actions/profile';
 import {saveReduxState} from '../rootReducer';
 
 export default function reducer(auth = {}, action) {
@@ -23,7 +23,7 @@ export default function reducer(auth = {}, action) {
       }
       return auth;
     }
-    case UPDATE_PROFILE: {
+    case UPDATE_PROFILE_AVAILABLE: {
       if(!auth.loggedIn) {
         return auth;
       }

@@ -1,5 +1,6 @@
 import defaultErrorHandler from '../generic/errorHandlers';
 import {ApiTwoFactorAuth} from '../generic/api';
+import { updateProfile } from './profile';
 
 export const SHOW_INFORM_MODAL = 'SHOW_INFORM_MODAL';
 export const SHOW_CONFIRM_MODAL = 'SHOW_CONFIRM_MODAL';
@@ -28,10 +29,10 @@ export function disableTwoFactorAuthModal() {
   };
 }
 
-export function disableTFA (currentCode) {
+export function disable2FA (currentCode) {
   return async dispatch => {
     try {
-      return await Api2FA.disable(currentCode);
+      return await Api2FA.disable(currentCode).then(data => dispatch(updateProfile(data.user)));
     }
     catch(err) {
       defaultErrorHandler(err, dispatch);
@@ -42,7 +43,7 @@ export function disableTFA (currentCode) {
 export function confirm2FA (currentCode) {
   return async dispatch => {
     try {
-      return await Api2FA.confirm(currentCode);
+      return await Api2FA.confirm(currentCode).then(data => dispatch(updateProfile(data.user)));
     }
     catch(err) {
       defaultErrorHandler(err, dispatch);
