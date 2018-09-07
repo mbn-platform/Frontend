@@ -287,13 +287,13 @@ export class ApiKeys {
       .then(errorHandler)
       .then(responseSchemaHandler);
 
-  delete = key =>
-    apiDelete('/key/' + key._id)
+  delete = (key, token2FA) =>
+    apiDelete('/key/' + key._id, token2FA && {headers: {'X-2FA': token2FA}})
       .then(errorHandler)
       .then(responseSchemaHandler);
 
-  add = key =>
-    apiPost('/key', null, key)
+  add = (key, token2FA) =>
+    apiPost('/key', token2FA && {headers: {'X-2FA': token2FA}}, key)
       .then(errorHandler)
       .then(responseSchemaHandler);
 

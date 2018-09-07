@@ -26,10 +26,11 @@ const modal = (state = {isInfoModalOpen: false, isConfirmModalOpen: false, modal
         isTwoFactorAuthModalOpen: true,
         mode: action.mode,
         authData: action.authData,
+        onTwoFactorAuthSubmit: action.onTwoFactorAuthSubmit,
       };
     }
     case CLOSE_TWO_FACTOR_AUTH_MODAL: {
-      return {...state,  isTwoFactorAuthModalOpen: false, onTwoFactorAuthSubmit: action.onTwoFactorAuthSubmit };
+      return {...state,  isTwoFactorAuthModalOpen: false };
     }
     default:
       return state;

@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import { Desktop, Mobile } from '../../generic/MediaQuery';
 import Pagination from '../../components/Pagination';
 import {FormattedMessage, injectIntl} from 'react-intl';
-import {showConfirmModal } from '../../actions/modal';
+import {showTwoFactorAuthModal, showConfirmModal} from '../../actions/modal';
 import {connect} from 'react-redux';
 
 
@@ -64,6 +64,7 @@ class Funds extends React.Component {
   }
 
   getColumns() {
+    const { is2FAEnable } = this.props;
     const nameFilter = this.state.filtered.find(f => f.id === 'name').value;
     const exchangeFilter = this.state.filtered.find(f => f.id === 'exchange').value;
     return [
@@ -121,7 +122,13 @@ class Funds extends React.Component {
           const canDeleteKey = true;
           const onClick =  e => {
             e.stopPropagation();
-            this.props.showConfirmModal('dashboard.deleteConfirm', {}, () => this.props.onKeyDeleteClick(row.original))
+            if (is2FAEnable) {
+              this.props.showConfirmModal('dashboard.deleteConfirm', {},
+                () =>  this.props.showTwoFactorAuthModal('',{}, data=> {this.props.onKeyDeleteClick(row.original, data)})
+              );
+            } else {
+              this.props.showConfirmModal('dashboard.deleteConfirm', {}, () => this.props.onKeyDeleteClick(row.original))
+            }
           };
           const className = classNames('delete_key_button', {can_delete_key: canDeleteKey});
           return (<div className={className} onClick={onClick}/>);
@@ -197,8 +204,11 @@ Funds.propTypes = {
 
 const mapDispatchToProps = dispatch => {
   return {
-    showConfirmModal: (text, values, confirmHandler) => dispatch(showConfirmModal(text, values, confirmHandler))
+    showConfirmModal: (text, values, confirmHandler) => dispatch(showConfirmModal(text, values, confirmHandler)),
+    showTwoFactorAuthModal: (mode, authData, onTwoFactorAuthSubmit) => dispatch(showTwoFactorAuthModal(mode, authData, onTwoFactorAuthSubmit)),
   };
 };
 
-export default injectIntl(connect(null, mapDispatchToProps)(Funds));
+export default injectIntl(connect(state => ({
+  is2FAEnable: state.profile.mfaEnabled,
+}), mapDispatchToProps)(Funds));

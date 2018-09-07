@@ -4,6 +4,7 @@ import ModalWindow from './Modal';
 import QRCode from 'qrcode.react';
 import {injectIntl, FormattedMessage} from 'react-intl';
 import {connect} from 'react-redux';
+import to from 'await-to-js';
 import { closeTwoFactorAuthModal, disable2FA, confirm2FA } from '../actions/modal';
 
 class TwoFactorAuthModal extends React.Component {
@@ -12,7 +13,6 @@ class TwoFactorAuthModal extends React.Component {
     codeIsWrong: false,
     currentCode: '',
     firstAutoSubmit: true,
-    success2FA: false,
   };
 
   static propTypes = {
@@ -37,12 +37,10 @@ class TwoFactorAuthModal extends React.Component {
     if (nextProps.modal.isTwoFactorAuthModalOpen !== prevState.isInfoModalOpen) {
       return {
         success2FA: false,
-        isInfoModalOpen: nextProps.modal.isTwoFactorAuthModalOpen
+        isInfoModalOpen: nextProps.modal.isTwoFactorAuthModalOpen,
       };
     }
-    return {
-      success2FA: false,
-    };
+    return null;
   }
 
   onChangeAutoSubmit = e => {
@@ -60,26 +58,28 @@ class TwoFactorAuthModal extends React.Component {
 
   submitForm = async () => {
     const {
-      onTwoFactorAuthSubmit,
       closeTwoFactorAuthModalWindow,
-      modal: {mode},
+      modal: {mode, onTwoFactorAuthSubmit},
       disable2FA,
       confirm2FA,
     } = this.props;
     const { currentCode } = this.state;
     try {
-      mode === 'disable' ?
-        await disable2FA(currentCode) :
-        await confirm2FA(currentCode);
+      mode === 'disable' && await disable2FA(currentCode);
+      mode === 'enable' && await confirm2FA(currentCode);
       if (mode === 'disable' || mode === 'enable') {
         this.setState({success2FA: true}, () => {
-          onTwoFactorAuthSubmit(currentCode);
           this.setState({currentCode: ''});
         });
       } else {
-        closeTwoFactorAuthModalWindow();
-        onTwoFactorAuthSubmit(currentCode);
-        this.setState({currentCode: ''});
+        const [ err ] = await to(onTwoFactorAuthSubmit(currentCode));
+        if (err) {
+          console.warn(err);
+          this.setState({codeIsWrong: true, firstAutoSubmit: false});
+        } else {
+          closeTwoFactorAuthModalWindow();
+          this.setState({currentCode: ''});
+        }
       }
     } catch(e) {
       this.setState({codeIsWrong: true, firstAutoSubmit: false});
@@ -87,7 +87,7 @@ class TwoFactorAuthModal extends React.Component {
   };
 
   onEnterPress = e => {
-    const {currentCode} = this.state;
+    const {currentCode } = this.state;
     if (e.keyCode === 13 && e.shiftKey === false && currentCode.length === 6) {
       e.preventDefault();
       this.submitForm();
@@ -168,7 +168,16 @@ class TwoFactorAuthModal extends React.Component {
                 />
               </div>
             }
-            <button type="submit" disabled={codeIsWrong} className="modal__button btn" onClick={!success2FA ? this.submitForm : closeTwoFactorAuthModalWindow}>
+            <button type="submit"
+              disabled={codeIsWrong}
+              className="modal__button btn"
+              onClick={((mode === 'disable' || mode === 'enable') && success2FA) ?
+                () => {
+                  closeTwoFactorAuthModalWindow();
+                  this.setState({success2FA: false});
+                } :
+                this.submitForm
+              }>
               {this.props.intl.messages['ok']}
             </button>
           </div>
@@ -190,8 +199,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default injectIntl(connect(state => ({
-  modal: state.modal,
-  mode: state.mode,
-  authData: state.authData
-}), mapDispatchToProps)(TwoFactorAuthModal));
+export default injectIntl(connect(state => state, mapDispatchToProps)(TwoFactorAuthModal));

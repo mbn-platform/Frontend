@@ -25,7 +25,7 @@ import ModalWindow from './components/Modal';
 import TwoFactorAuthModal from './components/TwoFactorAuthModal'
 import { Container, Row } from 'reactstrap';
 import {injectIntl, FormattedMessage} from 'react-intl';
-import {closeConfirmModal, closeInfoModal, closeTwoFactorAuthModal } from './actions/modal';
+import {closeConfirmModal, closeInfoModal } from './actions/modal';
 import { loggedOut } from './actions/auth';
 
 

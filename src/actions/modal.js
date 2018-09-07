@@ -15,7 +15,7 @@ export function enableTwoFactorAuthModal() {
   return async dispatch => {
     try {
       const {secret, user: {name: username}} = await Api2FA.enable();
-      return dispatch(showTwoFactorAuthModal (() => null, 'enable', {secret, username}));
+      return dispatch(showTwoFactorAuthModal ('enable', {secret, username}));
     }
     catch(err){
       defaultErrorHandler(err, dispatch);
@@ -25,7 +25,7 @@ export function enableTwoFactorAuthModal() {
 
 export function disableTwoFactorAuthModal() {
   return dispatch => {
-    dispatch(showTwoFactorAuthModal(() => null, 'disable'));
+    dispatch(showTwoFactorAuthModal('disable'));
   };
 }
 
@@ -35,7 +35,10 @@ export function disable2FA (currentCode) {
 }
 
 export function confirm2FA (currentCode) {
-  return async dispatch => await Api2FA.confirm(currentCode).then(data => dispatch(updateProfile(data.user)));
+  return async dispatch => {
+    await Api2FA.confirm(currentCode).then(data => dispatch(updateProfile(data.user)));
+    return currentCode;
+  };
 }
 
 
@@ -60,12 +63,14 @@ export const closeConfirmModal = {
   type: 'CLOSE_CONFIRM_MODAL',
 };
 
-export const showTwoFactorAuthModal = (onTwoFactorAuthSubmit=()=>({}), mode, authData={username:'', secret:''}) => ({
-  type: 'SHOW_TWO_FACTOR_AUTH_MODAL',
-  onTwoFactorAuthSubmit,
-  mode,
-  authData,
-});
+export const showTwoFactorAuthModal = (mode, authData={username:'', secret:''}, onTwoFactorAuthSubmit) => {
+  return {
+    type: 'SHOW_TWO_FACTOR_AUTH_MODAL',
+    mode,
+    authData,
+    onTwoFactorAuthSubmit,
+  };
+}
 
 export const closeTwoFactorAuthModal = {
   type: 'CLOSE_TWO_FACTOR_AUTH_MODAL',

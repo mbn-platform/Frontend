@@ -25,9 +25,9 @@ export function fetchKeys() {
   };
 }
 
-export function deleteApiKey(key) {
+export function deleteApiKey(key, token2FA) {
   return (dispatch, getState) => {
-    KeysApi.delete(key)
+    KeysApi.delete(key, token2FA)
       .then(() => {
         const selectedKey = getState().terminal.fund;
         const storageKey = JSON.parse(localStorage.getItem('terminal.selectedFund'));
@@ -75,9 +75,9 @@ export function deleteApiKey(key) {
 }
 
 
-export function addApiKey(key) {
+export function addApiKey(key, token2FA) {
   return (dispatch, getState) => {
-    KeysApi.add(key)
+    KeysApi.add(key, token2FA)
       .then(json => {
         dispatch({
           type: ADD_API_KEY,
