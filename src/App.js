@@ -11,8 +11,6 @@ import { Container, Row } from 'reactstrap';
 import './App.css';
 import $ from 'jquery';
 window.jQuery = window.$ = $;
-window.Tether = require('tether');
-window.Popper = require('popper.js');
 require('floatthead');
 require('bootstrap');
 require('malihu-custom-scrollbar-plugin');
