@@ -1,5 +1,5 @@
 import { LOGGED_IN, NAME_REQUIRED } from '../actions/auth';
-import { UPDATE_PROFILE_AVAILABLE, GET_PROFILE } from '../actions/profile';
+import { UPDATE_PROFILE, UPDATE_PROFILE_AVAILABLE, GET_PROFILE } from '../actions/profile';
 import {saveReduxState} from '../rootReducer';
 
 export default function reducer(auth = {}, action) {
@@ -34,6 +34,10 @@ export default function reducer(auth = {}, action) {
       const state = {...auth, profile: update};
       saveReduxState({auth: state});
       return state;
+    }
+
+    case UPDATE_PROFILE: {
+     return {...auth, profile: action.profile}
     }
     default:
       return auth;

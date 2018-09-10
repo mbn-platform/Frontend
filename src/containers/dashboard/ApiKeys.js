@@ -124,7 +124,8 @@ class Funds extends React.Component {
             e.stopPropagation();
             if (is2FAEnable) {
               this.props.showConfirmModal('dashboard.deleteConfirm', {},
-                () =>  this.props.showTwoFactorAuthModal('',{}, data=> {this.props.onKeyDeleteClick(row.original, data)})
+                () =>
+                  this.props.showTwoFactorAuthModal('', {}, async data => await(this.props.onKeyDeleteClick(row.original, data)))
               );
             } else {
               this.props.showConfirmModal('dashboard.deleteConfirm', {}, () => this.props.onKeyDeleteClick(row.original))
@@ -210,5 +211,5 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default injectIntl(connect(state => ({
-  is2FAEnable: state.profile.mfaEnabled,
+  is2FAEnable: state.auth.profile.mfaEnabled,
 }), mapDispatchToProps)(Funds));

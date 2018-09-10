@@ -34,7 +34,7 @@ class AddApiKey extends React.Component {
     if (is2FAEnable) {
       showTwoFactorAuthModal('',
         {},
-        token => this.props.onApiKeyCreated({name, key: value.trim(), exchange, secret: secret.trim()}, token)
+        async token => await this.props.onApiKeyCreated({name, key: value.trim(), exchange, secret: secret.trim()}, token)
       );
     } else {
       this.props.onApiKeyCreated({name, key: value.trim(), exchange, secret: secret.trim()});
@@ -123,5 +123,5 @@ export default injectIntl(
   connect(state => ({
     userId: state.auth.profile._id,
     exchanges: state.exchanges,
-    is2FAEnable: state.profile.mfaEnabled,
+    is2FAEnable: state.auth.profile.mfaEnabled,
   }), mapDispatchToProps)(AddApiKey));

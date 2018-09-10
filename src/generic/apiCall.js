@@ -1,3 +1,5 @@
+import merge from 'lodash.merge';
+
 export class ApiError extends Error {
   constructor(code) {
     super();
@@ -63,7 +65,7 @@ function jsonRequest(url, params) {
 
 
 export function apiPost(url, params, data) {
-  params = {...defaultPostParams, ...params, body: JSON.stringify(data)};
+  params = merge({}, defaultPostParams, params, {body: JSON.stringify(data)});
   return jsonRequest(url, params);
 }
 
@@ -72,21 +74,18 @@ export function apiPut(url, params, data) {
 }
 
 export function apiDelete(url, params) {
-  params = {...defaultDeleteParams, ...params};
+  params = merge({},defaultDeleteParams, params);
   return jsonRequest(url, params);
 }
 
 const defaultDeleteParams = {
-  headers: {
-    'Content-Type': 'application/json',
-  },
   credentials: 'same-origin',
   method: 'DELETE',
 };
 
 
 export function apiGet(url, params) {
-  params = {...defaultGetParams, ...params};
+  params = merge({},defaultGetParams, params);
   return jsonRequest(url, params);
 }
 

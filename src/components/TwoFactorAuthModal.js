@@ -4,7 +4,6 @@ import ModalWindow from './Modal';
 import QRCode from 'qrcode.react';
 import {injectIntl, FormattedMessage} from 'react-intl';
 import {connect} from 'react-redux';
-import to from 'await-to-js';
 import { closeTwoFactorAuthModal, disable2FA, confirm2FA } from '../actions/modal';
 
 class TwoFactorAuthModal extends React.Component {
@@ -46,14 +45,14 @@ class TwoFactorAuthModal extends React.Component {
   onChangeAutoSubmit = e => {
     const { firstAutoSubmit } = this.state;
     const currentCode = e.target.value;
-    if (currentCode.length <= 6) {
-      this.setState({currentCode, codeIsWrong: false});
-    } else {
-      this.setState({ currentCode: currentCode });
-    }
-    if (currentCode.length === 6 && firstAutoSubmit) {
-      this.submitForm();
-    }
+    this.setState({ currentCode: currentCode }, () => {
+      if (currentCode.length <= 6) {
+        this.setState({ codeIsWrong: false });
+      }
+      if (currentCode.length === 6 && firstAutoSubmit) {
+        this.submitForm();
+      }
+    });
   };
 
   submitForm = async () => {
@@ -69,16 +68,15 @@ class TwoFactorAuthModal extends React.Component {
       mode === 'enable' && await confirm2FA(currentCode);
       if (mode === 'disable' || mode === 'enable') {
         this.setState({success2FA: true}, () => {
-          this.setState({currentCode: ''});
+          this.setState({currentCode: '', codeIsWrong: false, currentCode: ''});
         });
       } else {
-        const [ err ] = await to(onTwoFactorAuthSubmit(currentCode));
-        if (err) {
-          console.warn(err);
-          this.setState({codeIsWrong: true, firstAutoSubmit: false});
-        } else {
+        try {
+          await onTwoFactorAuthSubmit(currentCode);
           closeTwoFactorAuthModalWindow();
-          this.setState({currentCode: ''});
+          this.setState({currentCode: '', codeIsWrong: false, firstAutoSubmit: true});
+        } catch(e) {
+          this.setState({codeIsWrong: true, firstAutoSubmit: false});
         }
       }
     } catch(e) {
@@ -110,7 +108,7 @@ class TwoFactorAuthModal extends React.Component {
     return (
       <ModalWindow
         modalIsOpen={isInfoModalOpen}
-        onClose={closeTwoFactorAuthModalWindow}
+        onClose={() => {closeTwoFactorAuthModalWindow(); this.setState({currentCode: '', codeIsWrong: false, firstAutoSubmit: true});}}
         title={
           mode === 'enable' ?
             <FormattedMessage
@@ -131,7 +129,7 @@ class TwoFactorAuthModal extends React.Component {
                 <div className="modal__secret-wrapper">
                   <div className="modal__qr-wrapper">
                     <QRCode
-                      level="L"
+                      level="M"
                       value={`otpauth://totp/${username}@${appHost}?secret=${secret}&issuer=${appName}`}
                     />
                   </div>
@@ -174,7 +172,7 @@ class TwoFactorAuthModal extends React.Component {
               onClick={((mode === 'disable' || mode === 'enable') && success2FA) ?
                 () => {
                   closeTwoFactorAuthModalWindow();
-                  this.setState({success2FA: false});
+                  this.setState({success2FA: false, currentCode: '', codeIsWrong: false, firstAutoSubmit: true});
                 } :
                 this.submitForm
               }>

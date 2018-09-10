@@ -15,7 +15,7 @@ export default function(state = {}, action) {
       return {...state, available, contractSettings, currencies};
       
     case UPDATE_PROFILE:
-      return {...action.profile};
+      return {...state, ...action.profile};
 
     case TRADES_FOR_USER: {
       if(action.name === state.name) {
