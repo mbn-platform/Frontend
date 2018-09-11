@@ -158,9 +158,16 @@ class Leaderboard extends React.Component {
   renderRoundsBlocks(count) {
     const {location: {pathname : path}} = this.props;
     const {selectedRound } = this.state;
-    return  <RoundSelect key="dropdown" path={path} onSelectClick={RoundNumber => this.selectRound(RoundNumber)}
+    return  <RoundSelect
+      key="dropdown"
+      path={path}
+      onSelectClick={RoundNumber => this.selectRound(RoundNumber)}
       currentValue={selectedRound}
-      rounds={times(count, (i) => 1 + i).reverse()} />;
+      rounds={times(count, (i) => 1 + i).reverse()}
+      targetId="leaderboard__select"
+      elementClassName="leaderboard__select-list-item"
+      dropdownClassName="leaderboard__select-wrapper"
+    />;
   }
 
   componentWillUnmount() {
