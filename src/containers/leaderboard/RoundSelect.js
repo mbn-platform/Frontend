@@ -15,14 +15,19 @@ class RoundSelect extends React.Component {
 
 
   render() {
+    const { onSelectClick, currentValue, path } = this.props;
     return (
       <div className="leaderboard__select-wrapper">
         <div className="leaderboard__select-value">
-          {
+          {   currentValue === 0 ?
+            <FormattedMessage
+              id="leaderboard.global"
+              defaultMessage="GLOBAL"
+            /> : 
             <FormattedMessage
               id="leaderboard.round"
               defaultMessage="Round {count}"
-              values={{count: this.props.currentValue}}
+              values={{count: currentValue}}
             /> ||
             <FormattedMessage
               id="leaderboard.selectRound"
@@ -32,26 +37,36 @@ class RoundSelect extends React.Component {
           <div className="leaderboard__select-value-bg" />
         </div>
         <div className="leaderboard__select-values-wrapper">
-          <ul className="leaderboard__select-ul">
+          <div className="leaderboard__select-list-wrapper">
+            <a
+              href={path}
+              onClick={e => {e.preventDefault();onSelectClick(0);}}
+              className="leaderboard__select-list-item upper ">
+              <FormattedMessage
+                id="leaderboard.global"
+                defaultMessage="GLOBAL"
+              />
+            </a>
             {this.renderRound()}
-          </ul>
+          </div>
         </div>
       </div>
     );
   }
 
   renderRound() {
-    const {rounds, onSelectClick} = this.props;
+    const {rounds, onSelectClick, path} = this.props;
     return rounds.map(round => (
-      <li value={round}
+      <a
+        href={`${path}?round=${round}`}
         key={round}
-        className="leaderboard__select-li upper"
-        onClick={() => onSelectClick(round)}
+        className="leaderboard__select-list-item upper"
+        onClick={e => {e.preventDefault();onSelectClick(round);}}
       > <FormattedMessage
           id="leaderboard.round"
           defaultMessage="Round {count}"
           values={{count: round}}
-        /></li>
+        /></a>
     ));
   }
 
