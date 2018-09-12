@@ -18,8 +18,9 @@ export function logIn() {
         } else {
           dispatch(loggedIn(profile));
         }
-      }, (error) => {
-        dispatch(showInfoModal('simpleValue', {value : error.code}));
+      })
+      .catch(error => {
+        error.code && dispatch(showInfoModal('simpleValue', {value : error.code}));
       });
   };
 }
