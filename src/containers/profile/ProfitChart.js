@@ -76,6 +76,11 @@ class ProfitChart extends React.Component {
           }
           numberOfPoints = 18;
         }
+        break;
+      default:
+        startDate = endDate - 86400000;
+        numberOfPoints = 25;
+        break;
     }
     const isUsd = this.state.selectedCurrency === 0;
     data = calculatePoints(startDate, endDate, numberOfPoints, data, isUsd, this.props.rates);

@@ -17,9 +17,8 @@ require('malihu-custom-scrollbar-plugin');
 
 window.uncustomize = function() {
   $(document).off('click');
-}
+};
 window.customize = function() {
-  console.log('component did mount');
   $('[data-toggle="tooltip"]').tooltip();
   $('[data-toggle="popover"]').popover();
 
@@ -138,24 +137,13 @@ window.customize = function() {
   var mobileScreenShowButton = ($group, $item, countItem, textMore, textLess,heightEle) => {
     let heightList = 0;
     $item.each(function(i,el) {
-      if(i == countItem) {
+      if(i.toString() === countItem.toString()) {
         return false;
       } else {
         heightList += heightEle || $(this).height();
       }
     });
-    if($item.length > countItem) {
-
-      //$(".feedback-card .card-body .list-group").height(heightList)
-      let countClickedMore = 0;
-      /*if($(".feedback-card .card-body .list-group .list-group-item").length > 10) {
-        $(".feedback-card .card-body .list-group .list-group-item").each(function(i,el) {
-          if(i > 9) {
-            $(this).css("display", "none")
-          }
-        })
-      }*/
-    } else {
+    if(!($item.length <= countItem)) {
       $group.height(heightList);
     }
   };
@@ -166,7 +154,6 @@ window.customize = function() {
       $('.currency-settings tbody').height($('.currency-settings .card-body').outerHeight() - $('.currency-settings thead th').outerHeight());
 
       $('.currency-settings tbody').mCustomScrollbar({
-        theme:'light-3',
         scrollButtons:{
           enable:false
         },
@@ -179,7 +166,6 @@ window.customize = function() {
 
       $('.feedback-card .card-body .list-group').height($('.feedback-card .card-body').outerHeight() - 50);
       $('.feedback-card .card-body .list-group').mCustomScrollbar({
-        theme:'light-3',
         scrollButtons:{
           enable:false
         },
@@ -196,7 +182,6 @@ window.customize = function() {
       }).blur(function(){
         $(this).attr('placeholder',$(this).data('placeholder'));
       });
-      console.log($('.currency-settings .card-body').outerHeight(), $('.currency-settings thead th').outerHeight()); //apply scrollbar with your options
     }else{
       //$(selector).mCustomScrollbar("destroy"); //destroy scrollbar
       $('.currency-settings tbody').mCustomScrollbar('destroy');
@@ -229,12 +214,12 @@ window.customize = function() {
       } else {
         $(".feedback-card .card-body .list-group").height(heightList)
       }*/
-    mobileScreenShowButton($('.feedback-card .card-body .list-group'),$('.feedback-card .card-body .list-group .list-group-item'), 5,'show next 5 feedbacks','show less 5 feedbacks');
+      mobileScreenShowButton($('.feedback-card .card-body .list-group'),$('.feedback-card .card-body .list-group .list-group-item'), 5,'show next 5 feedbacks','show less 5 feedbacks');
     //mobileScreenShowButton($(".currency-settings table tbody"),$(".currency-settings tbody tr") ,10 ,'show next 10 currencies' ,'show previous 10 currencies',$(".currency-settings tbody tr:not(.empty-tr) td").outerHeight())
 
 
 
-  }
+    }
   }).trigger('resize');
 
 
@@ -248,7 +233,7 @@ window.customize = function() {
       $('.dropdown-link').popover('hide');
     }
   });
-}
+};
 
 
 class App extends React.Component {

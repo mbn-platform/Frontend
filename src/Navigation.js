@@ -22,7 +22,7 @@ import { withRouter } from 'react-router';
 import { Navbar, NavbarToggler, NavbarBrand, Nav, Collapse, Col } from 'reactstrap';
 import { Desktop, Mobile } from './generic/MediaQuery';
 import ModalWindow from './components/Modal';
-import TwoFactorAuthModal from './components/TwoFactorAuthModal'
+import TwoFactorAuthModal from './components/TwoFactorAuthModal';
 import { Container, Row } from 'reactstrap';
 import {injectIntl, FormattedMessage} from 'react-intl';
 import {closeConfirmModal, closeInfoModal } from './actions/modal';
@@ -121,7 +121,7 @@ class Navigation extends React.Component {
       <Col xs="12" md="auto" className="d-block menu-panel">
         <Navbar expand="md"  >
           <NavbarBrand className="d-inline-block d-md-none" tag="div">
-            <a target="_blank" href="https://membrana.io">
+            <a target="_blank" rel='noopener noreferrer' href="https://membrana.io">
               <img src={LogoMobile} alt=""/>
             </a>
           </NavbarBrand>
@@ -158,7 +158,7 @@ class Navigation extends React.Component {
     }
     const onClick = e => {
       e.preventDefault();
-      this.props.logOut()
+      this.props.logOut();
     };
     return (
       <a onClick={onClick} href="/" className="nav-link">
@@ -215,7 +215,7 @@ class Navigation extends React.Component {
 
   getLogo() {
     return (
-      <a target="_blank" href="https://membrana.io" className="nav-link d-none d-md-flex">
+      <a target="_blank" href="https://membrana.io" rel='noopener noreferrer' className="nav-link d-none d-md-flex">
         <Container fluid className="h-100">
           <Row className="h-100">
             <Col xs="12" className="align-self-center">

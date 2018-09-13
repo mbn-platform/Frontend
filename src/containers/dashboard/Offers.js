@@ -143,7 +143,7 @@ class Offers extends React.Component {
     return [{
       Header: SortHeader(this.state.selectedTab === TAB_INBOX ? this.props.intl.messages['dashboard.from']: this.props.intl.messages['dashboard.to']),
       id: 'name',
-      accessor: o => this.state.selectedTab == TAB_INBOX ? o.from.name : o.to.name,
+      accessor: o => this.state.selectedTab === TAB_INBOX ? o.from.name : o.to.name,
       Cell: row => (<div className="contractor_link">@<Link className="table_col_value_a" to={'/' + row.value}>{row.value}</Link></div>),
       className: 'table_col_value'
     }, {

@@ -1,7 +1,7 @@
 import {LOGGED_IN} from './actions/auth';
 import {fetchKeys} from './actions/apiKeys';
 import {fetchContracts, FETCH_CONTRACTS} from './actions/contracts';
-import {SELECT_EXCHANGE, getExchangeMarkets, selectMarket} from './actions/terminal';
+import {SELECT_EXCHANGE, getExchangeMarkets } from './actions/terminal';
 import { CONTRACT_STATE_INIT, CONTRACT_STATE_ACCEPTED,
   CONTRACT_STATE_VERIFIED, CONTRACT_STATE_FINISHED,
   CONTRACT_STATE_HALTED } from './constants';

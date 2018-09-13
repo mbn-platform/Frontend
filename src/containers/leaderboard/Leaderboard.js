@@ -130,7 +130,7 @@ class Leaderboard extends React.Component {
                   <div className="block__top-switch-wrap">
                     <a
                       href={'/leaderboard'}
-                      onClick={e => {e.preventDefault();this.selectRound(0)}}
+                      onClick={e => {e.preventDefault();this.selectRound(0);}}
                       className={classNames('block__top-switch', 'ratings-traders', {active: this.state.selectedRound === 0})}>
                       <FormattedMessage
                         id="leaderboard.global"
@@ -445,7 +445,9 @@ const ProfitCell = ({profit, tx}) => {
   profit = (profit || 0).toFixed(2);
   if(tx) {
     return (
-      <div className="profit">{profit} <a className="tx_link" target="_blank" href={'https://etherscan.io/tx/' + tx} />
+      <div className="profit">{profit}
+      <a className="tx_link" target="_blank" href={'https://etherscan.io/tx/' + tx} // eslint-disable-line
+        />
       </div>
     );
   } else {

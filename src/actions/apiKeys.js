@@ -37,10 +37,10 @@ export function deleteApiKey(key, token2FA) {
         if (selectedKey && selectedKey._id === key._id) {
           const exchange = getState().terminal.exchange;
           const ownKeys = getState().apiKeys.ownKeys.filter(key => key.exchange === exchange);
-          let currentKeyIndex = ownKeys.findIndex(k => k._id == selectedKey._id);
+          let currentKeyIndex = ownKeys.findIndex(k => k._id === selectedKey._id);
           let newSelectedKey = null;
           if (ownKeys.length > 1) {
-            newSelectedKey = (currentKeyIndex == (ownKeys.length - 1) ? ownKeys[currentKeyIndex - 1] : ownKeys[currentKeyIndex + 1]);
+            newSelectedKey = (currentKeyIndex === (ownKeys.length - 1) ? ownKeys[currentKeyIndex - 1] : ownKeys[currentKeyIndex + 1]);
           }
           dispatch({
             type: SELECT_FUND,
@@ -60,12 +60,10 @@ export function deleteApiKey(key, token2FA) {
                 type: LOGGED_OUT,
               });
               throw error;
-              break;
             }
             case ApiError.KEY_IN_USE:
               dispatch(showInfoModal('theKeyIsInUse'));
               throw error;
-              return;
             default:
               console.error('unhandled api error', error.apiErrorCode);
               throw error;
@@ -101,11 +99,9 @@ export function addApiKey(key, token2FA) {
             case ApiError.INVALID_PARAMS_SET:
               dispatch(showInfoModal('invalidKeySecretPair'));
               throw error;
-              return;
             case ApiError.UNIQUE_VIOLATION:
               dispatch(showInfoModal('thisKeyAlreadyInSystem'));
               throw error;
-              return;
             default:
               dispatch(showInfoModal('failedToAddApiKey', {key: error.apiErrorCode}));
               console.error('unhandled api error', error.apiErrorCode);

@@ -42,6 +42,8 @@ const root = (state, action) => {
       clearAppState();
       return newState;
     }
+    default:
+      break;
   };
   let newState = combined(state, action);
   switch(action.type) {
@@ -75,13 +77,5 @@ function clearAppState() {
   localStorage.removeItem('terminal.selectedExchange');
   localStorage.removeItem('terminal.selectedInterval');
 }
-
-Array.prototype.findById = function(id) {
-  for(let elem of this) {
-    if(elem._id === id) {
-      return elem;
-    }
-  }
-};
 
 export default root;
