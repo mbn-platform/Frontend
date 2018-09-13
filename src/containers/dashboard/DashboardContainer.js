@@ -25,11 +25,11 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onKeyDeleteClick: apiKey => {
+    onKeyDeleteClick: async (apiKey, token2FA) => {
       if(apiKey.inUse) {
         dispatch(showInfoModal(this.props.intl.messages['dashboard.cannotDeleteKey']));
       } else {
-        dispatch(deleteApiKey(apiKey));
+        await dispatch(deleteApiKey(apiKey, token2FA));
       }
     },
     updateExchanges: () => dispatch(updateExchanges()),

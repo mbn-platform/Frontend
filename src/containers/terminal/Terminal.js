@@ -37,7 +37,7 @@ class Terminal extends React.Component {
     return allowedOwnKeys.concat(allowedReceivedKeys);
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     if(this.props.fund && (prevProps.market !== this.props.market ||
       (!prevProps.fund || prevProps.fund._id !== this.props.fund._id))) {
       let payload = {

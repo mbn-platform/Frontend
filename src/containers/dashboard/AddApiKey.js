@@ -3,7 +3,7 @@ import ExchangeSelect from '../../components/ExchangeSelect';
 import { connect } from 'react-redux';
 import { addApiKey } from '../../actions/apiKeys';
 import { injectIntl } from 'react-intl';
-import {showInfoModal} from '../../actions/modal';
+import {showInfoModal, showTwoFactorAuthModal} from '../../actions/modal';
 
 class AddApiKey extends React.Component {
   constructor(props) {
@@ -23,14 +23,22 @@ class AddApiKey extends React.Component {
     };
   }
 
-  onSubmit(event) {
+  async onSubmit(event) {
     event.preventDefault();
     const { name, value, exchange, secret } = this.state;
+    const { is2FAEnable, showTwoFactorAuthModal } = this.props;
     if(!name || !value || !exchange || !secret) {
-      this.props.showModalWindow('dashboard.addAlert')
+      this.props.showModalWindow('dashboard.addAlert');
       return;
     }
-    this.props.onApiKeyCreated({name, key: value.trim(), exchange, secret: secret.trim()});
+    if (is2FAEnable) {
+      showTwoFactorAuthModal('',
+        {},
+        async token => await this.props.onApiKeyCreated({name, key: value.trim(), exchange, secret: secret.trim()}, token)
+      );
+    } else {
+      this.props.onApiKeyCreated({name, key: value.trim(), exchange, secret: secret.trim()});
+    }
     this.setState(this.initialState());
   }
 
@@ -104,8 +112,9 @@ class AddApiKey extends React.Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onApiKeyCreated: key => dispatch(addApiKey(key)),
+    onApiKeyCreated: (key, token) => dispatch(addApiKey(key, token)),
     showModalWindow: text => dispatch(showInfoModal(text)),
+    showTwoFactorAuthModal: (mode, authData, onTwoFactorAuthSubmit) => dispatch(showTwoFactorAuthModal(mode, authData, onTwoFactorAuthSubmit)),
   };
 };
 
@@ -113,5 +122,6 @@ const mapDispatchToProps = dispatch => {
 export default injectIntl(
   connect(state => ({
     userId: state.auth.profile._id,
-    exchanges: state.exchanges
+    exchanges: state.exchanges,
+    is2FAEnable: state.auth.profile.mfaEnabled,
   }), mapDispatchToProps)(AddApiKey));

@@ -8,8 +8,6 @@ import MetamaskClosed from './MetamaskClosed';
 import LoginForm from './LoginForm';
 import { FormattedMessage } from 'react-intl';
 
-
-
 class Login extends React.Component {
 
   constructor(props) {

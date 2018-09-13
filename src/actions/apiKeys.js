@@ -25,16 +25,16 @@ export function fetchKeys() {
   };
 }
 
-export function deleteApiKey(key) {
-  return (dispatch, getState) => {
-    KeysApi.delete(key)
+export function deleteApiKey(key, token2FA) {
+  return async (dispatch, getState) => {
+    await KeysApi.delete(key, token2FA)
       .then(() => {
         const selectedKey = getState().terminal.fund;
         const storageKey = JSON.parse(localStorage.getItem('terminal.selectedFund'));
         if (storageKey && storageKey._id === key._id) {
           localStorage.removeItem('terminal.selectedFund');
         }
-        if (selectedKey._id === key._id) {
+        if (selectedKey && selectedKey._id === key._id) {
           const exchange = getState().terminal.exchange;
           const ownKeys = getState().apiKeys.ownKeys.filter(key => key.exchange === exchange);
           let currentKeyIndex = ownKeys.findIndex(k => k._id == selectedKey._id);
@@ -59,25 +59,29 @@ export function deleteApiKey(key) {
               dispatch({
                 type: LOGGED_OUT,
               });
+              throw error;
               break;
             }
             case ApiError.KEY_IN_USE:
               dispatch(showInfoModal('theKeyIsInUse'));
+              throw error;
               return;
             default:
               console.error('unhandled api error', error.apiErrorCode);
+              throw error;
           }
         } else {
           console.error('error deleting key', error);
+          throw error;
         }
       });
   };
 }
 
 
-export function addApiKey(key) {
-  return (dispatch, getState) => {
-    KeysApi.add(key)
+export function addApiKey(key, token2FA) {
+  return async (dispatch, getState) => {
+    await KeysApi.add(key, token2FA)
       .then(json => {
         dispatch({
           type: ADD_API_KEY,
@@ -96,13 +100,16 @@ export function addApiKey(key) {
           switch(error.apiErrorCode) {
             case ApiError.INVALID_PARAMS_SET:
               dispatch(showInfoModal('invalidKeySecretPair'));
+              throw error;
               return;
             case ApiError.UNIQUE_VIOLATION:
               dispatch(showInfoModal('thisKeyAlreadyInSystem'));
+              throw error;
               return;
             default:
               dispatch(showInfoModal('failedToAddApiKey', {key: error.apiErrorCode}));
               console.error('unhandled api error', error.apiErrorCode);
+              throw error;
           }
         }
       });

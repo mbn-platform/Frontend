@@ -17,13 +17,15 @@ import LeaderboardIconHover from './assets/svg/MenuIconLeaderboardHover.svg';
 import SignOut from './assets/svg/SignOut.svg';
 import SignOutHover from './assets/svg/SignOutHover.svg';
 import { connect } from 'react-redux';
+import {APP_NAME, APP_HOST} from './constants';
 import { withRouter } from 'react-router';
 import { Navbar, NavbarToggler, NavbarBrand, Nav, Collapse, Col } from 'reactstrap';
 import { Desktop, Mobile } from './generic/MediaQuery';
 import ModalWindow from './components/Modal';
+import TwoFactorAuthModal from './components/TwoFactorAuthModal'
 import { Container, Row } from 'reactstrap';
 import {injectIntl, FormattedMessage} from 'react-intl';
-import {closeConfirmModal, closeInfoModal} from './actions/modal';
+import {closeConfirmModal, closeInfoModal } from './actions/modal';
 import { loggedOut } from './actions/auth';
 
 
@@ -111,6 +113,9 @@ class Navigation extends React.Component {
     );
   }
 
+  renderTwoFactorAuthModal = () => <TwoFactorAuthModal appName={APP_NAME} appHost={APP_HOST}/>
+
+
   render() {
     return (
       <Col xs="12" md="auto" className="d-block menu-panel">
@@ -142,6 +147,7 @@ class Navigation extends React.Component {
         </Navbar>
         {this.renderGlobalInformModel()}
         {this.renderGlobalConfirmModel()}
+        {this.renderTwoFactorAuthModal()}
       </Col>
     );
   }

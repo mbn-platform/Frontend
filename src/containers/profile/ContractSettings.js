@@ -1,21 +1,23 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Row, Col } from 'reactstrap';
-import { Desktop, Mobile } from '../../generic/MediaQuery';
-import {FormattedMessage, injectIntl} from 'react-intl';
-import {showInfoModal} from '../../actions/modal';
 import {connect} from 'react-redux';
+import {FormattedMessage, injectIntl} from 'react-intl';
+import { Desktop, Mobile } from '../../generic/MediaQuery';
+import  SecuritySettings from './SecuritySettings'
+import { showInfoModal } from '../../actions/modal';
 
 class ContractSettings extends React.Component {
 
   constructor(props) {
     super(props);
     this.onToggleClick = this.onToggleClick.bind(this);
-    this.state = {isEditing: false };
+    this.state = {isEditing: false,} ;
     this.onEditButtonClick = this.onEditButtonClick.bind(this);
     this.onFieldEdit = this.onFieldEdit.bind(this);
     this.onCurrencySelected = this.onCurrencySelected.bind(this);
   }
+
 
   onCurrencySelected(e) {
     this.setState({currency: e.target.name});
@@ -49,7 +51,7 @@ class ContractSettings extends React.Component {
       const duration = parseFloat(this.state.duration) || this.props.duration;
       if(fee >= 100 || fee <= 0 || minAmount < 0 || roi <= 0 ||
         duration <= 0 || maxLoss <= 0) {;
-        this.props.showModalWindow('profile.enterSetting')
+        this.props.showModalWindow('profile.enterSetting');
         return;
       } else {
         const update = { fee, minAmount, currency, roi, maxLoss, duration };
@@ -78,7 +80,7 @@ class ContractSettings extends React.Component {
     const { minAmount, fee, maxLoss, duration, roi } = this.props;
     if(fee >= 100 || fee <= 0 || minAmount <= 0 || roi <= 0 ||
       duration <= 0 || maxLoss <= 0) {
-      this.props.showModalWindow('profile.needEditFirst')
+      this.props.showModalWindow('profile.needEditFirst');
       return;
     }
     this.props.onToggleClick(!this.props.availableForOffers);
@@ -96,7 +98,9 @@ class ContractSettings extends React.Component {
               />
             </Col>
             <Col xs="auto" className="switch" onClick={this.onToggleClick}>
-              <input className="cmn-toggle cmn-toggle-round-flat" type="checkbox" onChange={this.onToggleClick} checked={this.props.availableForOffers || false}/>
+              <input className="cmn-toggle cmn-toggle-round-flat" type="checkbox"
+                onChange={this.onToggleClick}
+                checked={this.props.availableForOffers || false}/>
               <label className="cmn-toggle-background"/>
               <label className="cmn-text cmn-yes-text">
                 <FormattedMessage
@@ -170,6 +174,7 @@ class ContractSettings extends React.Component {
             </button>
           </div>
         )}
+        <SecuritySettings/>
       </div>
     );
   }

@@ -37,6 +37,7 @@ class ModalWindow extends React.Component {
         onAfterOpen={afterOpenModal}
         onRequestClose={onClose}
         ariaHideApp={false}
+        className="modal__main"
         style={{
           overlay: {
             zIndex: '100000',

@@ -42,6 +42,23 @@ export class ApiAuth {
       .then(responseSchemaHandler);
 }
 
+export class ApiTwoFactorAuth {
+  enable = () =>
+    apiGet('/mfa/enable')
+      .then(errorHandler)
+      .then(responseSchemaHandler)
+
+  confirm = token =>
+    apiPost('/mfa/confirm', null, {token})
+      .then(errorHandler)
+      .then(responseSchemaHandler)
+
+  disable = token =>
+    apiPut('/mfa/disable', { headers: {'X-2FA': token}})
+      .then(errorHandler)
+      .then(responseSchemaHandler)
+}
+
 export class ApiChallenge {
   update = number =>
     apiGet('/challenge/result?' + qs.stringify({round: number}))
@@ -270,13 +287,13 @@ export class ApiKeys {
       .then(errorHandler)
       .then(responseSchemaHandler);
 
-  delete = key =>
-    apiDelete('/key/' + key._id)
+  delete = (key, token2FA) =>
+    apiDelete('/key/' + key._id, token2FA && {headers: {'X-2FA': token2FA}})
       .then(errorHandler)
       .then(responseSchemaHandler);
 
-  add = key =>
-    apiPost('/key', null, key)
+  add = (key, token2FA) =>
+    apiPost('/key', token2FA && {headers: {'X-2FA': token2FA}}, key)
       .then(errorHandler)
       .then(responseSchemaHandler);
 
