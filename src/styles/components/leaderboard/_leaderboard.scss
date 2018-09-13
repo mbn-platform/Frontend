@@ -19,12 +19,24 @@
     color: #6c757d;
 }
 
+#leaderboard__select {
+    height: auto;
 
-.leaderboard__select-wrapper:hover
-{
-    border: 1px solid #7c7c7d;
-    color: #7c7c7d;
-    border-radius: 3px 3px 0 0;
+    .dropdown-link {
+        padding: 10px;
+
+        div {
+            width: auto;
+        }
+    }
+}
+
+.dropdown-popover {
+    .leaderboard__select-wrapper {
+        padding: 0 !important;
+        overflow: scroll;
+        max-height: 80vh;
+    }
 }
 
 .leaderboard__select-values-wrapper
@@ -47,44 +59,11 @@
     transition: height 400ms, border 400ms, max-height 400ms;
     overflow: hidden;
 }
-.leaderboard__select-wrapper:hover .leaderboard__select-values-wrapper
-{
-    height: auto;
-    max-height: 400px;
-    opacity: 1;
-    color: #7c7c7d;
-    border: 1px solid #7c7c7d;
-}
 
 .leaderboard__select-value {
     margin-left: 15px;
 }
 
-.leaderboard__select-wrapper
-{
-    border: 1px solid #44464a;
-    border-bottom: 0;
-    border-radius: 3px;
-    padding-left: 17px;
-    text-align: left;
-    color: #505153;
-    height: 26px;
-    box-sizing: border-box;
-    line-height: 26px;
-    margin-left: 15px;
-    z-index: 10000;
-    font-size: 12px;
-    background-color: inherit;
-    cursor: pointer;
-    position: relative;
-    transition-property: color, border;
-    transition-duration: 400ms;
-    transition: color 400ms, border 400ms;
-    display: inline-block;
-    vertical-align: middle;
-    width: 30%;
-    text-transform: uppercase;
-}
 
 .leaderboard__select-value-bg
 {
@@ -98,40 +77,41 @@
     position: absolute;
     right: 0;
 }
-.leaderboard__select-ul
-{
+
+.leaderboard__select-name {
+    padding: 10px;
+}
+
+.leaderboard__select-list-wrapper {
     list-style: none;
     padding: 0;
     margin: 0;
 }
-.leaderboard__select-li
+.leaderboard__select-list-item
 {
-    padding: 0 15px;
-    border-bottom: 1px solid #383838;
-    color: #7c7c7d;
-    background: #232629;
+    padding: 10px;
+    color: #7E8190;
+    display: block;
     transition-property: background, color;
     transition-duration: 400ms;
     transition: background 400ms, color 400ms;
-}
-.leaderboard__select-li:hover
-{
-    background: #3c3c3c;
+    
+    &.active {
+        background-color: rgba(144, 148, 161, 0.25);
+    }
+    
+    &:hover {
+        text-decoration: none;
+        color: #fff;
+    }
 }
 
-@include media-breakpoint-down(xs) {
+@media (max-width: 768px) {
     .leaderboard__select-wrapper {
-        font-size: 8px;
-        width: 25%;
-        padding: 5px;
-    }
-
-    .leaderboard__select-value {
-        margin-left: 5px;
-    }
-
-    .leaderboard__select-value-bg {
-        background: none;
+        padding: 0 !important;
+        overflow: scroll;
+        max-height: 50vh;
     }
 }
+
 
