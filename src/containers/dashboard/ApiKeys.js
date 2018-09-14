@@ -49,7 +49,7 @@ class Funds extends React.Component {
 
   render() {
     return (
-      <div className="api_keys_table table">
+      <div className="api_keys_table table api_keys_table_extend">
         <div className="table_title_wrapper clearfix">
           <div className="table_title">
             <FormattedMessage
@@ -128,7 +128,7 @@ class Funds extends React.Component {
                   this.props.showTwoFactorAuthModal('', {}, async data => await(this.props.onKeyDeleteClick(row.original, data)))
               );
             } else {
-              this.props.showConfirmModal('dashboard.deleteConfirm', {}, () => this.props.onKeyDeleteClick(row.original))
+              this.props.showConfirmModal('dashboard.deleteConfirm', {}, () => this.props.onKeyDeleteClick(row.original));
             }
           };
           const className = classNames('delete_key_button', {can_delete_key: canDeleteKey});
@@ -189,6 +189,7 @@ const ExchangeHeader = (exchanges, value, onChange) => {
           showAllOption
           exchange={value}
           onChange={onChange}
+          defaultPlaceholder="Exchange"
         />
       </div>
     </div>

@@ -10,8 +10,11 @@ class ExchangeSelect extends React.Component {
   render() {
     return (
       <div className="add_keys_select_wr">
-        <div className="add_keys_select_value upper upper">{this.props.exchange ? this.props.exchange : 'Exchange' }
-          <div className="add_keys_select_value_bg" />
+        <div className="add_keys_select_value upper upper">{
+          this.props.exchange ?
+            this.props.exchange :
+            this.props.defaultPlaceholder }
+        <div className="add_keys_select_value_bg" />
         </div>
         <div className="add_keys_select_values_list_wr">
           <ul className="add_keys_select_ul">
