@@ -1,7 +1,7 @@
 import React from 'react';
 import ExchangeSelect from '../../components/ExchangeSelect';
 import { connect } from 'react-redux';
-import { addApiKey } from '../../actions/apiKeys';
+import { addBotKeys, fetchBotKeys } from '../../actions/apiKeys';
 import { injectIntl } from 'react-intl';
 import {showInfoModal, showTwoFactorAuthModal} from '../../actions/modal';
 
@@ -9,47 +9,32 @@ class AddBotApi extends React.Component {
   constructor(props) {
     super(props);
     this.state = this.initialState();
-    this.onSubmit = this.onSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleExchangeChange = this.handleExchangeChange.bind(this);
   }
 
   initialState() {
     return {
       label: '',
-      secret: '',
-      value: '',
-      exchange: '',
     };
   }
 
-  async onSubmit(event) {
-    event.preventDefault();
-    const { name, value, exchange, secret } = this.state;
-    const { is2FAEnable, showTwoFactorAuthModal } = this.props;
-    if(!name || !value || !exchange || !secret) {
-      this.props.showModalWindow('dashboard.addAlert');
-      return;
-    }
-    if (is2FAEnable) {
-      showTwoFactorAuthModal('',
-        {},
-        async token => await this.props.onApiKeyCreated({name, key: value.trim(), exchange, secret: secret.trim()}, token)
-      );
-    } else {
-      this.props.onApiKeyCreated({name, key: value.trim(), exchange, secret: secret.trim()});
-    }
-    this.setState(this.initialState());
+  componentDidMount() {
   }
 
-  handleChange(event) {
-    const name = event.target.name;
+   onSubmit = async event => {
+     event.preventDefault();
+     const { label, chosenKeyName } = this.state;
+     console.warn(this.props.apiKeys.find(key => key.name === chosenKeyName));
+     await this.props.addNewBotKeys(label, this.props.apiKeys.find(key => key.name === chosenKeyName).name);
+     this.setState({label: ''});
+   }
+
+  handleChange = event => {
     const value = event.target.value;
-    this.setState({[name]: value});
+    this.setState({label: value});
   }
 
-  handleExchangeChange(exchange) {
-    this.setState({exchange: exchange});
+  handleKeyChange = keyName => {
+    this.setState({chosenKeyName: keyName});
   }
 
   render() {
@@ -62,7 +47,7 @@ class AddBotApi extends React.Component {
                 className="add_keys_field add_keys_field_name"
                 onChange={this.handleChange}
                 type="text"
-                value={this.state.name}
+                value={this.state.label}
                 maxLength='20'
                 name="label"
                 placeholder={this.props.intl.messages['dashboard.label']}
@@ -72,9 +57,10 @@ class AddBotApi extends React.Component {
             </div>
             <div className="add_keys_field_wr select_wr">
               <ExchangeSelect
-                exchanges={this.props.exchanges}
-                onChange={this.handleExchangeChange}
-                exchange={this.state.exchange}
+                exchanges={this.props.apiKeys.map(key => key.name)}
+                onChange={this.handleKeyChange}
+                defaultPlaceholder="Select key"
+                exchange={this.state.chosenKeyName}
               />
             </div>
             <div className="keys_submit_wrapper">
@@ -89,7 +75,8 @@ class AddBotApi extends React.Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onApiKeyCreated: (key, token) => dispatch(addApiKey(key, token)),
+    addNewBotKeys: (label, keys) => dispatch(addBotKeys(label, keys)),
+    getKeys: () => dispatch(fetchBotKeys()),
     showModalWindow: text => dispatch(showInfoModal(text)),
     showTwoFactorAuthModal: (mode, authData, onTwoFactorAuthSubmit) => dispatch(showTwoFactorAuthModal(mode, authData, onTwoFactorAuthSubmit)),
   };
@@ -100,5 +87,6 @@ export default injectIntl(
   connect(state => ({
     userId: state.auth.profile._id,
     exchanges: state.exchanges,
+    apiKeys: state.apiKeys.ownKeys,
     is2FAEnable: state.auth.profile.mfaEnabled,
   }), mapDispatchToProps)(AddBotApi));

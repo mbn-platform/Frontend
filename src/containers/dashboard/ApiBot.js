@@ -60,30 +60,30 @@ class BotList extends React.Component {
           />)
         }
         </div>),
-        minWidth: window.matchMedia('(max-width: 1028px)') ? 15 : 100,
+        minWidth: window.matchMedia('(max-width: 1028px)') ? 25 : 100,
         accessor: 'name',
         headerClassName: 'table_bot_header_value',
         className: 'table_col_value upper table_bot_col_value',
       }, {
         Header: this.renderHeader(this.props.intl.messages['dashboard.exchangeKey']),
         accessor: 'exchange',
-        minWidth:  window.matchMedia('(max-width: 1028px)') ? 50 : 100,
+        minWidth:  window.matchMedia('(max-width: 1028px)') ? 60 : 100,
         headerClassName: 'table_bot_header_value',
         className: 'table_col_value upper table_bot_col_value',
       }, {
-        minWidth:  window.matchMedia('(max-width: 1028px)') ? 30 : 80,
+        minWidth:  window.matchMedia('(max-width: 1028px)') ? 40 : 80,
         Header: this.renderHeader(this.props.intl.messages['dashboard.createdAt']),
         accessor: 'createdAt',
         headerClassName: 'table_bot_header_value',
         className: 'table_col_value upper table_bot_col_value',
       },{
-        minWidth: window.matchMedia('(max-width: 1028px)') ? 30 : 80,
+        minWidth: window.matchMedia('(max-width: 1028px)') ? 40 : 80,
         Header: this.renderHeader(this.props.intl.messages['dashboard.activeAt']),
         accessor: 'activeAt',
         headerClassName: 'table_bot_header_value',
         className: 'table_col_value upper table_bot_col_value',
       },{
-        minWidth: window.matchMedia('(max-width: 1028px)') ? 30 : 80,
+        minWidth: window.matchMedia('(max-width: 1028px)') ? 40 : 80,
         Header: this.renderHeader(this.props.intl.messages['dashboard.deletedAt']),
         accessor: 'deletedAt',
         headerClassName: 'table_bot_header_value',
@@ -91,7 +91,7 @@ class BotList extends React.Component {
       }
       ,{
         Header: '',
-        minWidth: window.matchMedia('(max-width: 1028px)') ? 'auto' : 24,
+        minWidth: window.matchMedia('(max-width: 1028px)') ? 20 : 24,
         className: 'table_col_delete table_bot_col_value',
         headerClassName: 'table_bot_header_value',
       }

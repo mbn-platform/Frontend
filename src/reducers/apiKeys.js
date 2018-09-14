@@ -1,4 +1,12 @@
-import { DELETE_API_KEY, ADD_API_KEY, UPDATE_API_KEY, UPDATE_API_KEY_BALANCE } from '../actions/apiKeys';
+import {
+  DELETE_API_KEY,
+  ADD_API_KEY,
+  UPDATE_API_KEY,
+  UPDATE_API_KEY_BALANCE,
+  UPDATE_BOT_KEYS,
+  ADD_BOT_KEYS,
+  DELETE_BOT_KEYS
+} from '../actions/apiKeys';
 import {UPDATE_DASHBOARD, UPDATE_KEYS} from '../actions/dashboard';
 import { combineReducers } from 'redux';
 
@@ -38,6 +46,23 @@ function ownKeys(keys = [], action) {
       newKey.totalInUSDT = action.totalInUSDT;
       return keys.map(k => k._id === newKey._id ? newKey : k);
     }
+    default:
+      return keys;
+  }
+}
+
+function botKeys(keys = [], action) {
+  switch(action.type) {
+    case UPDATE_BOT_KEYS:
+      return keys.map(key => key._id === action._id ?
+        action._id : key);
+    case ADD_BOT_KEYS:
+      const key = keys.find(key => key._id === action._id);
+      if(!key) {
+        return keys.concat(action._id);
+      } else {
+        return keys;
+      }
     default:
       return keys;
   }

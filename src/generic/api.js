@@ -303,3 +303,15 @@ export class ApiKeys {
       .then(responseSchemaHandler);
   }
 }
+
+export class ApiBotKeys {
+  fetch = () =>
+    apiGet('/bot-api-key')
+      .then(errorHandler)
+      .then(responseSchemaHandler);
+
+  add = (label, keyId, token2FA) =>
+    apiPost('/bot-api-key ', token2FA && {headers: {'X-2FA': token2FA}}, {label, keyId})
+      .then(errorHandler)
+      .then(responseSchemaHandler);
+}

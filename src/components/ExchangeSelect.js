@@ -4,7 +4,6 @@ class ExchangeSelect extends React.Component {
 
   constructor(props) {
     super(props);
-    this.onClick = this.onClick.bind(this);
   }
 
   render() {
@@ -26,11 +25,11 @@ class ExchangeSelect extends React.Component {
     );
   }
 
-  onClick(e) {
+  onClick = e => {
     this.props.onChange(e);
   }
 
-  renderAllOption() {
+  renderAllOption = () => {
     if(this.props.showAllOption) {
       return (<li
         value="All"
@@ -43,7 +42,7 @@ class ExchangeSelect extends React.Component {
     }
   }
 
-  renderExchanges() {
+  renderExchanges= () => {
     return this.props.exchanges.map(exchange => (
       <li value={exchange}
         key={exchange}
@@ -52,7 +51,6 @@ class ExchangeSelect extends React.Component {
       >{exchange}</li>
     ));
   }
-
 }
 
 export default ExchangeSelect;
