@@ -1,6 +1,6 @@
 # Check our guides at https://confluence.atlassian.com/x/O1toN for more examples.
 # Only use spaces to indent your .yml configuration.
-image: node:carbon
+image: atlassian/default-image:2
 
 pipelines:
   tags:
