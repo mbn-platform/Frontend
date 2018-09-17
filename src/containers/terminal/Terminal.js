@@ -42,7 +42,7 @@ class Terminal extends React.Component {
       (!prevProps.fund || prevProps.fund._id !== this.props.fund._id))) {
       let payload = {
         symbol: this.props.market
-      }
+      };
       payload = setFundId(payload, this.props.fund);
       this.props.getOrders(payload);
     }
@@ -65,6 +65,8 @@ class Terminal extends React.Component {
                 exchanges={this.props.exchanges}
                 apiKeys={this.props.apiKeys.ownKeys}
                 contracts={this.props.contracts.current}
+                interval={this.props.interval}
+                onIntervalSelected={this.props.selectInterval}
                 onExchangeSelect={this.props.selectExchange}
                 onApiKeySelect={this.props.selectFund}
                 isFullScreenEnabled={this.state.fullScreenEnabled}
@@ -73,6 +75,9 @@ class Terminal extends React.Component {
                 <Col xs="12" sm="12" md="6" lg="8" className="charts__left">
                   <TradingView
                     onFullScreenChange={this.onFullScreenChange}
+                    market={this.props.market}
+                    exchange={this.props.exchange}
+                    interval={this.props.interval}
                   />
                   <MarketDepth
                     ticker={this.props.ticker || {}}
