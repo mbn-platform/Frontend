@@ -10,7 +10,7 @@ export default function(state = {
   fund: null,
   exchange: 'bittrex',
   market: 'USDT-BTC',
-  interval: '5m',
+  interval: '30 MIN',
   orderBook: {sell: [], buy: [], smap: {}, bmap: {}},
   history: [],
   ticker: null,
@@ -82,12 +82,12 @@ export default function(state = {
       const history = action.history
         .sort((t1, t2) => t2[2] - t1[2])
         .map(t => ({
-        id: Math.random().toFixed(8),
-        price: t[0],
-        amount: t[1],
-        type: t[3],
-        dt: t[2],
-      }));
+          id: Math.random().toFixed(8),
+          price: t[0],
+          amount: t[1],
+          type: t[3],
+          dt: t[2],
+        }));
       return {...state, history: history.concat(state.history).slice(0, 50)};
     }
     case UPDATE_TICKER: {

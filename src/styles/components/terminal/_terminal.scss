@@ -126,7 +126,6 @@
 			}
 			.price-chart{
 				height: 253px;
-		    background-image: url('../assets/img/price_chart.png');
 		    background-repeat: no-repeat;
 		    background-size: 100% 100%;
 				&__top{
@@ -139,6 +138,9 @@
 							margin-right: 0;
 						}
 					}
+				}
+				.chart-name {
+					position: absolute;
 				}
 				.indicator{
 					display: flex;
@@ -856,6 +858,10 @@
 			padding: 10px 0 0 !important;
 		}
 	}
+}
+
+#tv_chart_container {
+	padding-top: 10px;
 }
 
 
