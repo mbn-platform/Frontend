@@ -1,0 +1,21 @@
+# Check our guides at https://confluence.atlassian.com/x/O1toN for more examples.
+# Only use spaces to indent your .yml configuration.
+image: atlassian/default-image:2
+
+pipelines:
+  tags:
+    '*':
+      - step:
+          name: Build image
+          deployment: production
+          caches:
+            - docker
+          services:
+            - docker
+          script:
+            - export REGISTRY=registry.manhood.io
+            - export IMAGE_NAME=$REGISTRY/frontend
+            - docker build -t $IMAGE_NAME:latest -t $IMAGE_NAME:$BITBUCKET_TAG .
+            - docker login --username $DOCKER_HUB_USERNAME --password $DOCKER_HUB_PASSWORD $REGISTRY
+            - docker push $IMAGE_NAME:latest
+            - docker push $IMAGE_NAME:$BITBUCKET_TAG
