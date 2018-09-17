@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import {FormattedMessage, FormattedDate, injectIntl, Intl} from 'react-intl';
+import {FormattedMessage, FormattedDate, injectIntl } from 'react-intl';
 import ReactTable from '../../components/SelectableReactTable';
 import Pagination from '../../components/Pagination';
 import ExchangeSelect from '../../components/ExchangeSelect';
@@ -15,16 +15,18 @@ class BotList extends React.Component {
 
   state = {
     currentMode: 'Active Keys',
-    filtered: [{id: 'name', value: ''}, {id: 'exchange', value: 'All'}],
+    keysList: this.props.botKeysList,
   };
 
-  componentWillReceiveProps(nextProps) {
-    if(!nextProps.selectedApiKey) {
-      return;
-    }
-    if(this.props.selectedApiKey && this.props.selectedApiKey._id === nextProps.selectedApiKey._id) {
-      return;
-    }
+  static getDerivedStateFromProps(nextProps, ) {
+    return {
+      keysList: nextProps.botKeysList,
+    };
+  }
+
+  componentDidMount() {
+    const {getKeys} = this.props;
+    getKeys();
   }
 
   render() {
@@ -49,19 +51,6 @@ class BotList extends React.Component {
     return [
       {
         Header: this.renderHeader(this.props.intl.messages['dashboard.label']),
-        // Cell: row => (<div className="key_name_text_td">{row.value || (row.original.from._id === this.props.userId ?
-        //   <FormattedMessage
-        //     id="dashboard.trustedTo"
-        //     defaultMessage="Trusted to {name}"
-        //     values={{name: row.original.to.name}}
-        //   /> :
-        //   <FormattedMessage
-        //     id="dashboard.trustedToMe"
-        //     defaultMessage="{name} trusted to me"
-        //     values={{name: row.original.from.name}}
-        //   />)
-        // }
-        // </div>),
         minWidth: window.matchMedia('(max-width: 1028px)') ? 25 : 100,
         accessor: 'label',
         headerClassName: 'table_bot_header_value',
@@ -70,8 +59,12 @@ class BotList extends React.Component {
         Header: this.renderHeader(this.props.intl.messages['dashboard.exchangeKey']),
         accessor: 'exchange',
         Cell: row => {
-          const concomitantApiKey = apiKeys.find(key => key._id = row.original.keyId);
-          return (<div className="table_col_value table_col_text-transform_initial table_bot_col_value">{concomitantApiKey.name}</div>);
+          const concomitantApiKey = apiKeys.find(key => key._id === row.original.keyId);
+          return (<div className="table_col_value table_col_text-transform_initial table_bot_col_value">
+            {
+              concomitantApiKey.name || ''
+            }
+          </div>);
         },
         minWidth:  window.matchMedia('(max-width: 1028px)') ? 60 : 100,
         headerClassName: 'table_bot_header_value',
@@ -109,13 +102,15 @@ class BotList extends React.Component {
           const canDeleteKey = true;
           const onClick =  e => {
             e.stopPropagation();
+            const currentRowKeyId = row.original._id;
             if (is2FAEnable) {
               this.props.showConfirmModal('dashboard.deleteConfirm', {},
-                () =>
-                  this.props.showTwoFactorAuthModal('', {}, async data => await(this.props.onKeyDeleteClick(row.original, data)))
+                () => {
+                  this.props.showTwoFactorAuthModal('', {}, async () => await this.props.deleteKey(currentRowKeyId));
+                }
               );
             } else {
-              this.props.showConfirmModal('dashboard.deleteConfirm', {}, () => this.props.onKeyDeleteClick(row.original));
+              this.props.showConfirmModal('dashboard.deleteConfirm', {}, async  () => await this.props.deleteKey(currentRowKeyId));
             }
           };
           const className = classNames('delete_key_button', {can_delete_key: canDeleteKey});
@@ -147,16 +142,14 @@ class BotList extends React.Component {
   }
 
   renderContent() {
-    const data = this.props.apiKeys;
-    const { botKeysList } = this.props;
+    const { keysList } = this.state;
     return (
       <div>
         <Desktop>
           <ReactTable
             style={{height: 312}}
             columns={this.getColumns()}
-            data={botKeysList}
-            filtered={this.state.filtered}
+            data={keysList}
             selectedItem={this.props.selectedApiKey}
             onItemSelected={key => this.props.onKeySelected(key)}
             scrollBarHeight={217}
@@ -165,8 +158,7 @@ class BotList extends React.Component {
         <Mobile>
           <ReactTable
             columns={this.getColumns()}
-            data={botKeysList}
-            filtered={this.state.filtered}
+            data={keysList}
             selectedItem={this.props.selectedApiKey}
             onItemSelected={key => this.props.onKeySelected(key)}
             minRows={5}
@@ -181,9 +173,7 @@ class BotList extends React.Component {
 }
 
 BotList.propTypes = {
-  userId: PropTypes.string.isRequired,
   onKeySelected: PropTypes.func.isRequired,
-  onKeyDeleteClick: PropTypes.func.isRequired,
   apiKeys: PropTypes.array.isRequired,
   selectedApiKey: PropTypes.object
 };
@@ -191,7 +181,7 @@ BotList.propTypes = {
 const mapDispatchToProps = dispatch => {
   return {
     getKeys: () => dispatch(fetchBotKeys()),
-    deleteKey: () => dispatch(deleteBotKeys()),
+    deleteKey: keyId => dispatch(deleteBotKeys(keyId)),
     showConfirmModal: (text, values, confirmHandler) => dispatch(showConfirmModal(text, values, confirmHandler)),
     showTwoFactorAuthModal: (mode, authData, onTwoFactorAuthSubmit) => dispatch(showTwoFactorAuthModal(mode, authData, onTwoFactorAuthSubmit)),
   };

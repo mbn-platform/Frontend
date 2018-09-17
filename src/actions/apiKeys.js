@@ -45,9 +45,9 @@ export function fetchBotKeys() {
 export function deleteBotKeys(keyID) {
   return dispatch => {
     KeysBotApi.delete(keyID)
-      .then(data => dispatch({
+      .then(() => dispatch({
         type: DELETE_BOT_KEYS,
-        data
+        keyID
       }))
       .catch(err => {
         defaultErrorHandler(err, dispatch);
@@ -56,17 +56,18 @@ export function deleteBotKeys(keyID) {
 }
 
 export function addBotKeys(label, keyId) {
-  return dispatch => {
-    KeysBotApi.add(label, keyId)
-      .then(json => {
-        console.warn(json);
-        dispatch({
-          type: ADD_BOT_KEYS,
-          data: json.own
-        });})
-      .catch(err => {
-        defaultErrorHandler(err, dispatch);
+  return async dispatch => {
+    try {
+      const data = await KeysBotApi.add(label, keyId);
+      dispatch({
+        type: ADD_BOT_KEYS,
+        data
       });
+      console.warn(data);
+      dispatch(showInfoModal('yourSecretKeyIs', {key: data.secret, br:'\n'}));
+    } catch(err) {
+      defaultErrorHandler(err, dispatch);
+    }
   };
 }
 

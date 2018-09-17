@@ -11,22 +11,15 @@ class AddBotApi extends React.Component {
     chosenKeyName: '',
   };
 
-  componentDidMount() {
-    this.getKeyList();
-  }
-
-  getKeyList = async () => {
-    const {getKeys} = this.props;
-    const keysList = await getKeys();
-    console.warn(keysList);
-  }
-
    onSubmit = async event => {
      event.preventDefault();
      const { label, chosenKeyName } = this.state;
-     const { apiKeys } = this.props;
-     console.warn(apiKeys.find(key => key.name === chosenKeyName));
-     await this.props.addNewBotKeys(label, this.props.apiKeys.find(key => key.name === chosenKeyName)._id);
+     const { addNewBotKeys, apiKeys } = this.props;
+     if(!label || !chosenKeyName) {
+       this.props.showModalWindow('dashboard.addAlert');
+       return;
+     }
+     await addNewBotKeys(label, apiKeys.find(key => key.name === chosenKeyName)._id);
      this.setState({label: ''});
    }
 
@@ -36,7 +29,6 @@ class AddBotApi extends React.Component {
   }
 
   handleKeyChange = keyName => {
-    console.warn(keyName);
     this.setState({chosenKeyName: keyName});
   }
 
@@ -78,8 +70,9 @@ class AddBotApi extends React.Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addNewBotKeys: (label, keys) => dispatch(addBotKeys(label, keys)),
-    getKeys: () => dispatch(fetchBotKeys()),
+    addNewBotKeys: async (label, keys) => {
+      dispatch(await addBotKeys(label, keys));
+    },
     showModalWindow: text => dispatch(showInfoModal(text)),
     showTwoFactorAuthModal: (mode, authData, onTwoFactorAuthSubmit) => dispatch(showTwoFactorAuthModal(mode, authData, onTwoFactorAuthSubmit)),
   };

@@ -123,13 +123,9 @@ class Dashboard extends React.Component {
         </div>
         <div className="keys_tables_wrapper table_wrapper">
           <BotList
-            exchangesInfo={this.props.exchangesInfo}
-            userId={this.props.userId}
             apiKeys={this.props.apiKeys.ownKeys}
             selectedApiKey={this.state.selectedApiKey}
             onKeySelected={this.onKeySelected}
-            onKeyDeleteClick={this.props.onKeyDeleteClick}
-            exchanges={this.props.exchanges}
           />
           <AddBotApi/>
         </div>

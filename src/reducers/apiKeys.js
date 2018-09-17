@@ -58,12 +58,7 @@ function botKeys(keys = [], {type, data, _id, keyID}) {
     case UPDATE_BOT_KEYS:
       return data;
     case ADD_BOT_KEYS:
-      const key = keys.find(key => key._id === _id);
-      if(!key) {
-        return keys.concat(_id);
-      } else {
-        return keys;
-      }
+      return [...keys, data];
     default:
       return keys;
   }
