@@ -51,15 +51,16 @@ function ownKeys(keys = [], action) {
   }
 }
 
-function botKeys(keys = [], action) {
-  switch(action.type) {
+function botKeys(keys = [], {type, data, _id, keyID}) {
+  switch(type) {
+    case DELETE_BOT_KEYS:
+      return keys.filter(k => k._id !== keyID);
     case UPDATE_BOT_KEYS:
-      return keys.map(key => key._id === action._id ?
-        action._id : key);
+      return data;
     case ADD_BOT_KEYS:
-      const key = keys.find(key => key._id === action._id);
+      const key = keys.find(key => key._id === _id);
       if(!key) {
-        return keys.concat(action._id);
+        return keys.concat(_id);
       } else {
         return keys;
       }
@@ -78,4 +79,4 @@ function receivedKeys(keys = [], action) {
 }
 
 
-export default combineReducers({ownKeys, receivedKeys});
+export default combineReducers({ownKeys, receivedKeys, botKeys});

@@ -6,25 +6,27 @@ import { injectIntl } from 'react-intl';
 import {showInfoModal, showTwoFactorAuthModal} from '../../actions/modal';
 
 class AddBotApi extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = this.initialState();
-  }
-
-  initialState() {
-    return {
-      label: '',
-    };
-  }
+  state = {
+    label: '',
+    chosenKeyName: '',
+  };
 
   componentDidMount() {
+    this.getKeyList();
+  }
+
+  getKeyList = async () => {
+    const {getKeys} = this.props;
+    const keysList = await getKeys();
+    console.warn(keysList);
   }
 
    onSubmit = async event => {
      event.preventDefault();
      const { label, chosenKeyName } = this.state;
-     console.warn(this.props.apiKeys.find(key => key.name === chosenKeyName));
-     await this.props.addNewBotKeys(label, this.props.apiKeys.find(key => key.name === chosenKeyName).name);
+     const { apiKeys } = this.props;
+     console.warn(apiKeys.find(key => key.name === chosenKeyName));
+     await this.props.addNewBotKeys(label, this.props.apiKeys.find(key => key.name === chosenKeyName)._id);
      this.setState({label: ''});
    }
 
@@ -34,6 +36,7 @@ class AddBotApi extends React.Component {
   }
 
   handleKeyChange = keyName => {
+    console.warn(keyName);
     this.setState({chosenKeyName: keyName});
   }
 

@@ -32,9 +32,22 @@ export function fetchKeys() {
 export function fetchBotKeys() {
   return dispatch => {
     KeysBotApi.fetch()
-      .then(json => dispatch({
+      .then(data => dispatch({
         type: UPDATE_BOT_KEYS,
-        data: json.own
+        data
+      }))
+      .catch(err => {
+        defaultErrorHandler(err, dispatch);
+      });
+  };
+}
+
+export function deleteBotKeys(keyID) {
+  return dispatch => {
+    KeysBotApi.delete(keyID)
+      .then(data => dispatch({
+        type: DELETE_BOT_KEYS,
+        data
       }))
       .catch(err => {
         defaultErrorHandler(err, dispatch);

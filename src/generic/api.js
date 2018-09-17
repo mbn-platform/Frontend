@@ -314,4 +314,9 @@ export class ApiBotKeys {
     apiPost('/bot-api-key ', token2FA && {headers: {'X-2FA': token2FA}}, {label, keyId})
       .then(errorHandler)
       .then(responseSchemaHandler);
+
+  delete = (keyID, token2FA) =>
+    apiDelete('/bot-api-key/'+ keyID, token2FA && {headers: {'X-2FA': token2FA}})
+      .then(errorHandler)
+      .then(responseSchemaHandler);
 }
