@@ -43,9 +43,9 @@ class ExchangeSelect extends React.Component {
   }
 
   renderExchanges= () => {
-    return this.props.exchanges.map(exchange => (
+    return this.props.exchanges.map((exchange, key) => (
       <li value={exchange}
-        key={exchange}
+        key={typeof exchange === 'object' ? key : exchange}
         className="add_keys_select_li upper"
         onClick={() => this.onClick(exchange)}
       >{exchange}</li>

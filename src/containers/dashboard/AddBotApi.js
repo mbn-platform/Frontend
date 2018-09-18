@@ -1,9 +1,9 @@
 import React from 'react';
 import ExchangeSelect from '../../components/ExchangeSelect';
 import { connect } from 'react-redux';
-import { addBotKeys, fetchBotKeys } from '../../actions/apiKeys';
+import { addBotKeys } from '../../actions/apiKeys';
 import { injectIntl } from 'react-intl';
-import {showInfoModal, showTwoFactorAuthModal, showCodeModal} from '../../actions/modal';
+import {showInfoModal, showTwoFactorAuthModal} from '../../actions/modal';
 
 class AddBotApi extends React.Component {
   state = {
@@ -84,5 +84,5 @@ export default injectIntl(
     userId: state.auth.profile._id,
     exchanges: state.exchanges,
     apiKeys: state.apiKeys.ownKeys,
-    is2FAEnable: state.auth.profile.mfaEnabled,
+    is2FAEnabled: state.auth.profile.mfaEnabled,
   }), mapDispatchToProps)(AddBotApi));

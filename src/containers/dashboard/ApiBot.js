@@ -10,11 +10,18 @@ import {showTwoFactorAuthModal, showConfirmModal} from '../../actions/modal';
 import {fetchBotKeys, deleteBotKeys} from '../../actions/apiKeys';
 import classNames from 'classnames';
 
-
+const ACTIVE_KEYS = <FormattedMessage
+  id="dashboard.activeKeys"
+  defaultMessage="Active Keys"
+/>;
+const DELETED_KEYS = <FormattedMessage
+  id="dashboard.deletedKeys"
+  defaultMessage="Deleted Keys"
+/>;
 class BotList extends React.Component {
 
   state = {
-    currentMode: 'Active Keys',
+    currentMode: ACTIVE_KEYS,
     keysList: this.props.botKeysList,
   };
 
@@ -131,13 +138,17 @@ class BotList extends React.Component {
 
   renderModeDropdown = () => {
     const { currentMode} = this.state;
+    const modeList = [
+      ACTIVE_KEYS,
+      DELETED_KEYS
+    ];
     return (
       <div className="mode_select_wrapper">
-        <ExchangeSelect exchanges={['Active Keys', 'Deleted Keys']}
+        <ExchangeSelect exchanges={ modeList }
           exchange={ currentMode }
           defaultPlaceholder="Current Mode"
-          onChange={ e => {
-            this.setState({currentMode: e});
+          onChange={ mode => {
+            this.setState({currentMode: mode});
           }}
         />
       </div>
