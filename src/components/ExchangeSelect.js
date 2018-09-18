@@ -1,18 +1,27 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class ExchangeSelect extends React.Component {
 
-  constructor(props) {
-    super(props);
-  }
+  static propTypes = {
+    defaultPlaceholder: PropTypes.string,
+    exchangesTitleClasses: PropTypes.string,
+    exchangesItemClasses: PropTypes.string,
+  };
+
+  static defaultProps = {
+    defaultPlaceholder: '',
+    exchangesTitleClasses: '',
+    exchangesItemClasses: '',
+  };
 
   render() {
+    const { exchangesTitleClasses, exchange, defaultPlaceholder } = this.props;
     return (
       <div className="add_keys_select_wr">
-        <div className="add_keys_select_value upper upper">{
-          this.props.exchange ?
-            this.props.exchange :
-            this.props.defaultPlaceholder }
+        <div className={`add_keys_select_value upper upper ${exchangesTitleClasses}`}>{
+          exchange ||  defaultPlaceholder
+        }
         <div className="add_keys_select_value_bg" />
         </div>
         <div className="add_keys_select_values_list_wr">
@@ -43,10 +52,11 @@ class ExchangeSelect extends React.Component {
   }
 
   renderExchanges= () => {
-    return this.props.exchanges.map((exchange, key) => (
+    const {exchanges, exchangesItemClasses } = this.props;
+    return exchanges.map((exchange, key) => (
       <li value={exchange}
         key={typeof exchange === 'object' ? key : exchange}
-        className="add_keys_select_li upper"
+        className={`add_keys_select_li upper ${exchangesItemClasses}`}
         onClick={() => this.onClick(exchange)}
       >{exchange}</li>
     ));

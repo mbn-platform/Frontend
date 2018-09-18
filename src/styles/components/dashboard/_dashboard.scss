@@ -397,8 +397,24 @@
     }
 
     .mode_select_wrapper {
-      width: 20%;
+      width: 150px;
       margin: 15px;
+
+      .add_keys_select_wr {
+        border: 0;
+
+        &:hover {
+          border: 0 ;
+        }
+      }
+
+      .add_keys_select_values_list_wr {
+        border: 0 !important;
+      }
+    }
+
+    .mode_select_container {
+      border: 0;
     }
 
     .add_keys_double_field_wr

@@ -146,6 +146,7 @@ class BotList extends React.Component {
       <div className="mode_select_wrapper">
         <ExchangeSelect exchanges={ modeList }
           exchange={ currentMode }
+          exchangesTitleClasses="mode_select_container"
           defaultPlaceholder="Current Mode"
           onChange={ mode => {
             this.setState({currentMode: mode});
