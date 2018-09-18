@@ -397,7 +397,7 @@
     }
 
     .mode_select_wrapper {
-      width: 150px;
+      width: 140px;
       margin: 15px;
 
       .add_keys_select_wr {
@@ -405,11 +405,27 @@
 
         &:hover {
           border: 0 ;
+          .add_keys_select_values_list_wr {
+            transition: border 0s;
+            box-sizing: border-box;
+            border: 1px solid #7c7c7d !important;
+          }
         }
       }
 
+      .add_keys_select_li {
+        border: 0;
+        &.active {
+          background-color: rgba(144, 148, 161, .25);
+        }
+      }
+      
+      &:hover {
+
+      }
+
       .add_keys_select_values_list_wr {
-        border: 0 !important;
+        border-bottom: 0 !important;
       }
     }
 

@@ -52,11 +52,11 @@ class ExchangeSelect extends React.Component {
   }
 
   renderExchanges= () => {
-    const {exchanges, exchangesItemClasses } = this.props;
+    const {exchanges, exchange: currentExchange, exchangesItemClasses } = this.props;
     return exchanges.map((exchange, key) => (
       <li value={exchange}
         key={typeof exchange === 'object' ? key : exchange}
-        className={`add_keys_select_li upper ${exchangesItemClasses}`}
+        className={`add_keys_select_li upper ${exchangesItemClasses} ${exchange===currentExchange && 'active'}`}
         onClick={() => this.onClick(exchange)}
       >{exchange}</li>
     ));
