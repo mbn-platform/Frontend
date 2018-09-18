@@ -4,7 +4,7 @@ import { LOGGED_OUT } from '../actions/auth';
 import {UPDATE_KEYS} from './dashboard';
 import {SELECT_FUND} from './terminal';
 import { ApiKeys, ApiBotKeys } from '../generic/api';
-import { showInfoModal } from './modal';
+import {showCodeModal, showInfoModal} from './modal';
 export const DELETE_API_KEY = 'DELETE_API_KEY';
 export const ADD_API_KEY = 'ADD_API_KEY';
 export const UPDATE_API_KEY = 'UPDATE_API_KEY';
@@ -63,8 +63,7 @@ export function addBotKeys(label, keyId) {
         type: ADD_BOT_KEYS,
         data
       });
-      console.warn(data);
-      dispatch(showInfoModal('yourSecretKeyIs', {key: data.secret, br:'\n'}));
+      dispatch(showCodeModal('yourBotSecretTitle', 'saveYourCode', data.secret));
     } catch(err) {
       defaultErrorHandler(err, dispatch);
     }

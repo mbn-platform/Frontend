@@ -8,6 +8,9 @@ export const CLOSE_INFORM_MODAL = 'CLOSE_INFORM_MODAL';
 export const CLOSE_CONFIRM_MODAL = 'CLOSE_CONFIRM_MODAL';
 export const SHOW_TWO_FACTOR_AUTH_MODAL = 'SHOW_TWO_FACTOR_AUTH_MODAL';
 export const CLOSE_TWO_FACTOR_AUTH_MODAL = 'CLOSE_TWO_FACTOR_AUTH_MODAL';
+export const SHOW_CODE_INFO_MODAL = 'SHOW_CODE_INFO_MODAL';
+export const CLOSE_CODE_INFO_MODAL = 'CLOSE_CODE_INFO_MODAL';
+
 
 const Api2FA = new ApiTwoFactorAuth();
 
@@ -52,6 +55,17 @@ export const closeInfoModal = {
   type: 'CLOSE_INFORM_MODAL',
 };
 
+export const showCodeModal = (titleID='', textID='message', code='') => ({
+  type: 'SHOW_CODE_INFO_MODAL',
+  textID,
+  titleID,
+  code,
+});
+
+export const closeCodeModal = {
+  type: 'CLOSE_CODE_INFO_MODAL',
+};
+
 export const showConfirmModal = (textID='message', values={}, confirmCallback=()=>({})) => ({
   type: 'SHOW_CONFIRM_MODAL',
   textID,
@@ -70,7 +84,7 @@ export const showTwoFactorAuthModal = (mode, authData={username:'', secret:''}, 
     authData,
     onTwoFactorAuthSubmit,
   };
-}
+};
 
 export const closeTwoFactorAuthModal = {
   type: 'CLOSE_TWO_FACTOR_AUTH_MODAL',

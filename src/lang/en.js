@@ -9,6 +9,8 @@ const en = {
   'theKeyIsInUse' : 'The key is in use',
   'enterConfirmationCode' : 'Enter confirmation code',
   'saveAndConfirmSecretCode' : 'Save and confirm secret code',
+  'yourBotSecretTitle' : 'Your Bot Secret Code',
+  'saveYourCode' : 'Safely memory your code, you will no longer be able to get it',
   'yourSecretKeyIs' : 'Your secret key is {br}{key}',
   'wrong2FACode' : 'Wrong 2FA code',
   'invalidKeySecretPair' : 'Invalid key/secret pair',

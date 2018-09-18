@@ -3,7 +3,7 @@ import ExchangeSelect from '../../components/ExchangeSelect';
 import { connect } from 'react-redux';
 import { addBotKeys, fetchBotKeys } from '../../actions/apiKeys';
 import { injectIntl } from 'react-intl';
-import {showInfoModal, showTwoFactorAuthModal} from '../../actions/modal';
+import {showInfoModal, showTwoFactorAuthModal, showCodeModal} from '../../actions/modal';
 
 class AddBotApi extends React.Component {
   state = {

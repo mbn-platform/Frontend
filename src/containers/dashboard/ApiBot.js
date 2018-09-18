@@ -79,22 +79,25 @@ class BotList extends React.Component {
             day='2-digit'
             year='2-digit'
             month='short'
-            className="table_col_value table_bot_col_value"/>);
+          />);
         },
+        className: 'table_col_value table_bot_col_value',
       },{
         minWidth: window.matchMedia('(max-width: 1028px)') ? 40 : 80,
         Header: this.renderHeader(this.props.intl.messages['dashboard.activeAt']),
         accessor: 'activeAt',
         headerClassName: 'table_bot_header_value',
         className: 'table_col_value upper table_bot_col_value',
-      },{
-        minWidth: window.matchMedia('(max-width: 1028px)') ? 40 : 80,
-        Header: this.renderHeader(this.props.intl.messages['dashboard.deletedAt']),
-        accessor: 'deletedAt',
-        headerClassName: 'table_bot_header_value',
-        className: 'table_col_value upper table_bot_col_value',
-      }
-      ,{
+      },
+      // {
+      //   minWidth: window.matchMedia('(max-width: 1028px)') ? 40 : 80,
+      //   Header: this.renderHeader(this.props.intl.messages['dashboard.deletedAt']),
+      //   accessor: 'deletedAt',
+      //   headerClassName: 'table_bot_header_value',
+      //   className: 'table_col_value upper table_bot_col_value',
+      // }
+      //,
+      {
         Header: '',
         minWidth: 24,
         className: 'table_col_delete',

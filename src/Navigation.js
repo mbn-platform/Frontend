@@ -25,7 +25,7 @@ import ModalWindow from './components/Modal';
 import TwoFactorAuthModal from './components/TwoFactorAuthModal';
 import { Container, Row } from 'reactstrap';
 import {injectIntl, FormattedMessage} from 'react-intl';
-import {closeConfirmModal, closeInfoModal } from './actions/modal';
+import {closeCodeModal, closeConfirmModal, closeInfoModal} from './actions/modal';
 import { loggedOut } from './actions/auth';
 
 
@@ -113,6 +113,41 @@ class Navigation extends React.Component {
     );
   }
 
+  renderCodeInformModel = () => {
+    const { modal, closeCodeModalWindow } = this.props;
+    return (
+      <ModalWindow
+        modalIsOpen={modal.isCodeInfoModalOpen}
+        onClose={closeCodeModalWindow}
+        title={
+          <FormattedMessage
+            id={modal.modalTitle || 'message'}
+            defaultMessage="Message"
+          />
+        }
+        content={
+          <div>
+            <div className="modal__content-wrapper">
+              <div className="modal__key-annotation">
+                <FormattedMessage
+                  id={modal.modalText || 'message'}
+                  defaultMessage="Message"
+                />
+              </div>
+              <div className="modal__key-wrapper">
+                {modal.modalCode}
+              </div>
+              <button className="modal__button btn" onClick={closeCodeModalWindow}>
+                {this.props.intl.messages['ok']}
+              </button>
+            </div>
+          </div>
+        }
+      />
+    );
+  }
+
+
   renderTwoFactorAuthModal = () => <TwoFactorAuthModal appName={APP_NAME} appHost={APP_HOST}/>
 
 
@@ -145,6 +180,7 @@ class Navigation extends React.Component {
             </Collapse>
           </Mobile>
         </Navbar>
+        {this.renderCodeInformModel()}
         {this.renderGlobalInformModel()}
         {this.renderGlobalConfirmModel()}
         {this.renderTwoFactorAuthModal()}
@@ -291,6 +327,7 @@ const mapDispatchToProps = dispatch => {
   return {
     closeInfoModalWindow: () => dispatch(closeInfoModal),
     closeConfirmModalWindow: () => dispatch(closeConfirmModal),
+    closeCodeModalWindow: () => dispatch(closeCodeModal),
     logOut: () => dispatch(loggedOut()),
   };
 };
