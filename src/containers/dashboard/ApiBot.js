@@ -181,8 +181,8 @@ class BotList extends React.Component {
   renderContent() {
     const { keysList, currentMode } = this.state;
     const currentData = keysList.filter(listItem => currentMode === DELETED_KEYS.value ?
-      Object.prototype.hasOwnProperty.call(listItem, 'deletedAt') :
-      !Object.prototype.hasOwnProperty.call(listItem, 'deletedAt'));
+      listItem.hasOwnProperty('deletedAt') :
+      !listItem.hasOwnProperty('deletedAt'));
     return (
       <div>
         <Desktop>
