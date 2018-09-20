@@ -10,18 +10,26 @@ import {showTwoFactorAuthModal, showConfirmModal} from '../../actions/modal';
 import {fetchBotKeys, deleteBotKeys} from '../../actions/apiKeys';
 import classNames from 'classnames';
 
-const ACTIVE_KEYS = <FormattedMessage
-  id="dashboard.activeKeys"
-  defaultMessage="Active Keys"
-/>;
-const DELETED_KEYS = <FormattedMessage
-  id="dashboard.deletedKeys"
-  defaultMessage="Deleted Keys"
-/>;
+const ACTIVE_KEYS =  {
+  value: 'active',
+  label : <FormattedMessage
+    id="dashboard.activeKeys"
+    defaultMessage="Active Keys"
+  />
+};
+
+const DELETED_KEYS = {
+  value: 'delete',
+  label: <FormattedMessage
+    id="dashboard.deletedKeys"
+    defaultMessage="Deleted Keys"
+  />
+};
+
 class BotList extends React.Component {
 
   state = {
-    currentMode: ACTIVE_KEYS,
+    currentMode: ACTIVE_KEYS.value,
     keysList: this.props.botKeysList,
   };
 
@@ -47,7 +55,7 @@ class BotList extends React.Component {
             />
           </div>
         </div>
-        {/*{this.renderModeDropdown()}*/}
+        {this.renderModeDropdown()}
         {this.renderContent()}
       </div>
     );
@@ -55,6 +63,7 @@ class BotList extends React.Component {
 
   getColumns() {
     const { is2FAEnable, apiKeys } = this.props;
+    const { currentMode } = this.state;
     return [
       {
         Header: this.renderHeader(this.props.intl.messages['dashboard.label']),
@@ -89,29 +98,28 @@ class BotList extends React.Component {
           />);
         },
         className: 'table_col_value table_bot_col_value',
-      },{
+      },
+      {
         minWidth: window.matchMedia('(max-width: 1028px)') ? 40 : 80,
-        Header: this.renderHeader(this.props.intl.messages['dashboard.activeAt']),
-        accessor: 'lastUsedAt',
+        Header: this.renderHeader(currentMode === ACTIVE_KEYS.value  ?
+          this.props.intl.messages['dashboard.activeAt'] :
+          this.props.intl.messages['dashboard.deletedAt']),
+        accessor: currentMode === ACTIVE_KEYS.value ?
+          'lastUsedAt' : 'deletedAt',
         headerClassName: 'table_bot_header_value',
         className: 'table_col_value upper table_bot_col_value',
         Cell: row => {
           return (<FormattedDate
-            value={row.original.lastUsedAt}
+            value={currentMode === ACTIVE_KEYS.value ?
+              row.original.lastUsedAt :
+              row.original.deletedAt
+            }
             day='2-digit'
             year='2-digit'
             month='short'
           />);
         },
       },
-      // {
-      //   minWidth: window.matchMedia('(max-width: 1028px)') ? 40 : 80,
-      //   Header: this.renderHeader(this.props.intl.messages['dashboard.deletedAt']),
-      //   accessor: 'deletedAt',
-      //   headerClassName: 'table_bot_header_value',
-      //   className: 'table_col_value upper table_bot_col_value',
-      // }
-      //,
       {
         Header: '',
         minWidth: 24,
@@ -145,7 +153,7 @@ class BotList extends React.Component {
   );
 
   renderModeDropdown = () => {
-    const { currentMode} = this.state;
+    const { currentMode } = this.state;
     const modeList = [
       ACTIVE_KEYS,
       DELETED_KEYS
@@ -165,14 +173,17 @@ class BotList extends React.Component {
   }
 
   renderContent() {
-    const { keysList } = this.state;
+    const { keysList, currentMode } = this.state;
+    const currentData = keysList.filter(listItem => currentMode === DELETED_KEYS.value ?
+      Object.prototype.hasOwnProperty.call(listItem, 'deletedAt') :
+      !Object.prototype.hasOwnProperty.call(listItem, 'deletedAt'));
     return (
       <div>
         <Desktop>
           <ReactTable
             style={{height: 312}}
             columns={this.getColumns()}
-            data={keysList}
+            data={currentData}
             selectedItem={this.props.selectedApiKey}
             onItemSelected={key => this.props.onKeySelected(key)}
             scrollBarHeight={217}
@@ -181,7 +192,7 @@ class BotList extends React.Component {
         <Mobile>
           <ReactTable
             columns={this.getColumns()}
-            data={keysList}
+            data={currentData}
             selectedItem={this.props.selectedApiKey}
             onItemSelected={key => this.props.onKeySelected(key)}
             minRows={5}
