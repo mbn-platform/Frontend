@@ -42,12 +42,12 @@ class BotList extends React.Component {
         <div className="table_title_wrapper clearfix">
           <div className="table_title">
             <FormattedMessage
-              id="dashboard.apiBotCurrencies"
-              defaultMessage="Api Bot Currencies"
+              id="dashboard.apiBotKeys"
+              defaultMessage="Api Bot Keys"
             />
           </div>
         </div>
-        {this.renderModeDropdown()}
+        {/*{this.renderModeDropdown()}*/}
         {this.renderContent()}
       </div>
     );
@@ -69,7 +69,7 @@ class BotList extends React.Component {
           const concomitantApiKey = apiKeys.find(key => key._id === row.original.keyId);
           return (<div className="table_col_value table_col_text-transform_initial table_bot_col_value">
             {
-              concomitantApiKey.name || ''
+              concomitantApiKey ? concomitantApiKey.name : ''
             }
           </div>);
         },

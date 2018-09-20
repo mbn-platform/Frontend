@@ -63,7 +63,7 @@ export function addBotKeys(label, keyId) {
         type: ADD_BOT_KEYS,
         data
       });
-      dispatch(showCodeModal('yourBotSecretTitle', 'saveYourCode', data.secret));
+      dispatch(showCodeModal('yourBotSecretTitle', 'saveYourCode', data.secret, data._id));
     } catch(err) {
       defaultErrorHandler(err, dispatch);
     }

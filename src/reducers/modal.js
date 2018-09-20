@@ -41,6 +41,7 @@ const modal = (
         ...state,
         isCodeInfoModalOpen: true,
         modalCode: action.code,
+        modalKey: action.key,
         modalText: action.textID,
         modalTitle: action.titleID
       };

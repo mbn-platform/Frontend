@@ -16,7 +16,7 @@ class AddBotApi extends React.Component {
      const { label, chosenKeyName } = this.state;
      const { addNewBotKeys, apiKeys } = this.props;
      if(!label || !chosenKeyName) {
-       this.props.showModalWindow('dashboard.addAlert');
+       this.props.showModalWindow('dashboard.addBotAlert');
        return;
      }
      await addNewBotKeys(label, apiKeys.find(key => key.name === chosenKeyName)._id);

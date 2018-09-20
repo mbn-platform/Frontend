@@ -31,6 +31,8 @@ class MyOrders extends React.Component {
     let data = this.state.tab === TAB_OPEN_ORDERS ? this.props.orders.open : this.props.orders.closed;
     data = data.filter(o => o.symbol === this.props.market);
     const sortedData = this.sortData(data);
+    console.warn(this.state.tab === TAB_OPEN_ORDERS);
+
     return (
       <div className="orders-table chart col-12 col-sm-6 col-md-12 col-lg-6">
         <div className="orders-table__top justify-content-between row col-12">
@@ -78,6 +80,25 @@ class MyOrders extends React.Component {
                     </tr>
                   </thead>
                   <tbody>
+                    <tr className={''}>
+                      {false ?
+                        <td className="text-capitalize">
+                          <span className="round"/>
+                        </td> :
+                        <td>
+                          <div className="round-wrapper">
+                            <span className="round center"/>
+                          </div>
+                        </td>
+                      }
+                      {false && <td>{new Date('Wed Sep 19 2018 15:20:43 GMT+0300')}</td>}
+                      {false && <td>{'asd' + '/' + 'asd'}</td>}
+                      <td>{1231231231231223}</td>
+                      <td>{1232}</td>
+                      <td>{219}</td>
+                      <td className="ellipsis-cell">{0.0412}</td>
+                      <td onClick={() => this.props.cancelOrder('asd')}><span className="remove"/></td>
+                    </tr>
                     {sortedData.map(o => (
                       <OpenOrder
                         onOrderCancel={() => this.props.cancelOrder(o)}

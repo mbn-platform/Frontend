@@ -135,7 +135,21 @@ class Navigation extends React.Component {
                 />
               </div>
               <div className="modal__key-wrapper">
-                {modal.modalCode}
+                <div className="modal__key-item">
+                  <FormattedMessage
+                    id="keyIs"
+                    defaultMessage="Key: {key}"
+                    values={{key: modal.modalKey}}
+                  />
+                </div>
+                <div className="modal__key-item">
+                  <FormattedMessage
+                    id="secretIs"
+                    defaultMessage="Secret: {secret}"
+                    values={{secret: modal.modalCode}}
+                  />
+                </div>
+
               </div>
               <button className="modal__button btn" onClick={closeCodeModalWindow}>
                 {this.props.intl.messages['ok']}

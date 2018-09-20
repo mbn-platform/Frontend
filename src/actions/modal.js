@@ -55,10 +55,11 @@ export const closeInfoModal = {
   type: 'CLOSE_INFORM_MODAL',
 };
 
-export const showCodeModal = (titleID='', textID='message', code='') => ({
+export const showCodeModal = (titleID='', textID='message', code='', key='') => ({
   type: 'SHOW_CODE_INFO_MODAL',
   textID,
   titleID,
+  key,
   code,
 });
 
