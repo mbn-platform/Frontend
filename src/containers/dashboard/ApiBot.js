@@ -62,7 +62,7 @@ class BotList extends React.Component {
   }
 
   getColumns() {
-    const { is2FAEnable, apiKeys } = this.props;
+    const { is2FAEnable, apiKeys, getKeys } = this.props;
     const { currentMode } = this.state;
     return [
       {
@@ -132,11 +132,17 @@ class BotList extends React.Component {
             if (is2FAEnable) {
               this.props.showConfirmModal('dashboard.deleteConfirm', {},
                 () => {
-                  this.props.showTwoFactorAuthModal('', {}, async () => await this.props.deleteKey(currentRowKeyId));
-                }
-              );
+                  this.props.showTwoFactorAuthModal('', {}, async () => {
+                    await this.props.deleteKey(currentRowKeyId);
+                    getKeys();
+                  }
+                  );
+                });
             } else {
-              this.props.showConfirmModal('dashboard.deleteConfirm', {}, async  () => await this.props.deleteKey(currentRowKeyId));
+              this.props.showConfirmModal('dashboard.deleteConfirm', {}, async  () => {
+                await this.props.deleteKey(currentRowKeyId);
+                getKeys();
+              });
             }
           };
           const className = classNames('delete_key_button', {can_delete_key: canDeleteKey});
