@@ -92,9 +92,17 @@ class BotList extends React.Component {
       },{
         minWidth: window.matchMedia('(max-width: 1028px)') ? 40 : 80,
         Header: this.renderHeader(this.props.intl.messages['dashboard.activeAt']),
-        accessor: 'activeAt',
+        accessor: 'lastUsedAt',
         headerClassName: 'table_bot_header_value',
         className: 'table_col_value upper table_bot_col_value',
+        Cell: row => {
+          return (<FormattedDate
+            value={row.original.lastUsedAt}
+            day='2-digit'
+            year='2-digit'
+            month='short'
+          />);
+        },
       },
       // {
       //   minWidth: window.matchMedia('(max-width: 1028px)') ? 40 : 80,
