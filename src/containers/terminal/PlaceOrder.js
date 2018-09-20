@@ -37,7 +37,7 @@ class PlaceOrder extends React.Component {
   onSubmit(e) {
     e.preventDefault();
     if(!this.props.fund) {;
-      this.props.showModalWindow('terminal.selectFund')
+      this.props.showModalWindow('terminal.selectFund');
       return;
     }
     let params = {
@@ -106,8 +106,8 @@ class PlaceOrder extends React.Component {
     }
     switch(this.props.exchange) {
       case 'binance': {
-        const minPriceSize = this.state.marketInfo ? this.state.marketInfo.minPriceSize.toString() : '';
-        const rounded = this.floorBinance(price, minPriceSize.toString());
+        const priceStep = this.state.marketInfo ? this.state.marketInfo.priceStep.toString() : '';
+        const rounded = this.floorBinance(price, priceStep.toString());
         const newState = {price: rounded};
         const orderSize = parseFloat(this.state.orderSize);
         if(orderSize) {
