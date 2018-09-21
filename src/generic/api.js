@@ -1,6 +1,7 @@
 import { apiPost } from '../generic/apiCall';
 import {apiDelete, apiGet, apiPut} from './apiCall';
 import {ABI, CONTRACT_ADDRESS, ETHEREUM_NET} from '../eth/MercatusFactory';
+import store from '../store'; //TODO: REMOVE, ONLY FOR EXAMPLE
 import qs from 'qs';
 const errorHandler = resp => resp;
 const responseSchemaHandler = resp => resp;
@@ -277,6 +278,34 @@ export class ApiTerminal {
 export class ApiTime {
   fetch = () =>
     apiGet('/time', null)
+      .then(errorHandler)
+      .then(responseSchemaHandler);
+}
+
+export class Hashlog {
+
+  fetchBlocksPage = (currentPage, pageSize) => {
+    // return apiGet('/hashlog/blocks?page=' + currentPage + '&size=' + pageSize, null)
+    //   .then(errorHandler)
+    //   .then(responseSchemaHandler);
+    //TODO: REMOVE, ONLY FOR EXAMPLE
+    return new Promise(resolve => {
+      let testData = [];
+      for (let i = 0; i < store.getState().hashlog.blocksPageSize; i++) {
+        testData.push({
+          actions: '123',
+          createdAt: '09/13/18 14:01',
+          hash: 'ad662eb20c95681ca481bd359ea8cc8f10d456eccaa0fd483ea14226a5f9d27e',
+          number: i + 1,
+          vertex: 'vertex',
+        });
+      }
+      resolve({items : testData, count: 300});
+    });
+  }
+
+  fetchActionsPage = () =>
+    apiGet('/hashlog/actions', null)
       .then(errorHandler)
       .then(responseSchemaHandler);
 }

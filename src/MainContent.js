@@ -7,13 +7,14 @@ import Ratings from './containers/ratings/Ratings';
 import Orders from './containers/orders/Orders';
 import Profile from './containers/profile/ProfileContainer';
 import Leaderboard from './containers/leaderboard/Leaderboard';
+import Hashlog from './containers/hashlog/Hashlog';
 import './MainContent.css';
 import { Col } from 'reactstrap';
 
 class MainContent extends React.Component {
   componentDidUpdate(prevProps) {
     if (this.props.location !== prevProps.location) {
-      window.scrollTo(0, 0)
+      window.scrollTo(0, 0);
     }
   }
 
@@ -26,6 +27,7 @@ class MainContent extends React.Component {
         <ProtectedRoute exact path="/terminal" component={Terminal} loggedIn={loggedIn}/>
         <ProtectedRoute exact path="/orders" component={Orders} loggedIn={loggedIn}/>
         <Route exact path="/rating" component={Ratings} loggedIn={loggedIn}/>
+        <Route exact path="/hashlog" component={Hashlog} loggedIn={loggedIn}/>
         <Redirect exact from="/ratings" to="/leaderboard"/>
         <Route exact path="/leaderboard" component={Leaderboard}/>
         <Redirect exact from="/profile" to={loggedIn ? `/${profile.name}` : '/login'}/>

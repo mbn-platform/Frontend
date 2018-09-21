@@ -4,7 +4,6 @@ import $ from 'jquery';
 import PropTypes from 'prop-types';
 import times from 'lodash.times';
 import qs from 'qs';
-import classnames from 'classnames';
 import {sortData, onColumnSort, classNameForColumnHeader, defaultSortFunction} from '../../generic/terminalSortFunctions';
 import { injectIntl } from 'react-intl';
 import { FormattedMessage } from 'react-intl';

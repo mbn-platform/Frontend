@@ -7,6 +7,7 @@ import challenge from './reducers/challenge';
 import time from './reducers/time';
 import terminal from './reducers/terminal';
 import request from './reducers/request';
+import hashlog from './reducers/hashlog';
 import rates from './reducers/rates';
 import modal from './reducers/modal';
 import profile from './reducers/profile';
@@ -24,6 +25,7 @@ const combined = combineReducers(
     modal,
     offers,
     auth,
+    hashlog,
     exchanges,
     time,
     request,
