@@ -33,7 +33,8 @@ export default () => {
               <img className="trust_link_img link_img" src={Trust} alt="" title=""/>
               <div className="metamask_separator"/>
               <div className="metamask_link_text-wrapper">
-                <img src={PlayButton} className="metamask_link_text-icon"/>
+                <img alt={<FormattedMessage id="playImageAlt"
+                  defaultMessage="Play button"/>} src={PlayButton} className="metamask_link_text-icon"/>
                 <div className="metamask_link_text">
                   <FormattedMessage id="installTrust"
                     defaultMessage="Install Trust"/>
@@ -47,10 +48,16 @@ export default () => {
             <a
               href="https://www.toshi.org/"
               className="metamask_link metamask_link_mobile" rel="nofollow">
-              <img className="toshi_link_img link_img" src={Toshi} alt="" title=""/>
+              <img alt={<FormattedMessage id="toshiImageAlt"
+                defaultMessage="Toshi"/>}
+              className="toshi_link_img link_img"
+              src={Toshi}
+              title=""/>
               <div className="metamask_separator"/>
               <div className="metamask_link_text-wrapper">
-                <img src={PlayButton} className="metamask_link_text-icon"/>
+                <img src={PlayButton} alt={<FormattedMessage id="playImageAlt"
+                  defaultMessage="Play button"/>}
+                className="metamask_link_text-icon"/>
                 <div className="metamask_link_text">
                   <FormattedMessage id="installToshi"
                     defaultMessage="Install Toshi"/></div>
@@ -63,10 +70,14 @@ export default () => {
             <a
               href="https://www.cipherbrowser.com/"
               className="metamask_link metamask_link_mobile" rel="nofollow">
-              <img className="cipher_link_img link_img" src={Cipher} alt="" title=""/>
+              <img alt={<FormattedMessage id="ciperImageAlt"
+                defaultMessage="Ciper"/>}
+              className="cipher_link_img link_img" src={Cipher} title=""/>
               <div className="metamask_separator"/>
               <div className="metamask_link_text-wrapper">
-                <img src={PlayButton} className="metamask_link_text-icon"/>
+                <img src={PlayButton} alt={<FormattedMessage id="playImageAlt"
+                  defaultMessage="Play button"/>}
+                className="metamask_link_text-icon"/>
                 <div className="metamask_link_text">
                   <FormattedMessage id="installChiper"
                     defaultMessage="Install Chiper"/>

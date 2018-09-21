@@ -63,7 +63,6 @@ class Ratings extends React.Component {
       this.shouldFocus = false;
     }
     let data = this.props.ratings;
-    let period = this.state.selectedPeriod;
     data = data.filter(profile => {
       return profile.name.toLowerCase().indexOf(this.state.nameFilter.toLowerCase()) >= 0;
     });

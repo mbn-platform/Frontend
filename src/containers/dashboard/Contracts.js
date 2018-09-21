@@ -394,7 +394,8 @@ const NegativeValuesCell = row => (
 );
 
 const TXCell = net => ({value}) => (
-  <a className="tx_link" target="_blank" href={etherscanLink(net, value)} />
+  <a className="tx_link" target="_blank" href={etherscanLink(net, value)} //eslint-disable-line
+  />
 );
 
 function etherscanLink(net, tx) {
@@ -405,6 +406,9 @@ function etherscanLink(net, tx) {
       break;
     case 'testnet':
       url = 'https://ropsten.etherscan.io/tx/';
+      break;
+    default:
+      url = 'https://etherscan.io/tx/';
       break;
   }
   return url + tx;

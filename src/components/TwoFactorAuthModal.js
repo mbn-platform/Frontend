@@ -68,7 +68,7 @@ class TwoFactorAuthModal extends React.Component {
       mode === 'enable' && await confirm2FA(currentCode);
       if (mode === 'disable' || mode === 'enable') {
         this.setState({success2FA: true}, () => {
-          this.setState({currentCode: '', codeIsWrong: false, currentCode: ''});
+          this.setState({codeIsWrong: false, currentCode: ''});
         });
       } else {
         try {

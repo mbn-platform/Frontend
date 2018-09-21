@@ -91,7 +91,7 @@ class TradeHistory extends React.Component {
         minWidth: 30,
         className: 'table_col_value',
         Cell: rowInfo => rowInfo.original.first ? 
-          (<a className="tx_link" target="_blank" href={rowInfo.value || '/'} />)
+          (<a className="tx_link" target="_blank" href={rowInfo.value || '/'} />) // eslint-disable-line
           : null,
       },
     ];
@@ -135,7 +135,6 @@ class TradeHistory extends React.Component {
             <ReactTable
               getTrProps={(state, rowInfo, column, instance) => {
                 if(rowInfo && rowInfo.original.first) {
-                  console.log('first row');
                   return {
                     className: 'first-row'
                   };

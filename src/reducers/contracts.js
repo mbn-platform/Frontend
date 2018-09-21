@@ -1,8 +1,7 @@
 import {RATE_CONTRACT, FETCH_CONTRACTS, UPDATE_CONTRACT_BALANCE, FINISH_CONTRACT, UPDATE_CONTRACT_TOTAL_BALANCE} from '../actions/contracts';
 import {PAY_OFFER, VERIFY_OFFER} from '../actions/offers';
 import { makeId } from '../generic/util';
-import { UPDATE_DASHBOARD } from '../actions/dashboard';
-import { CONTRACT_STATE_VERIFIED, CONTRACT_STATE_FINISHED, CONTRACT_STATE_HALTED } from '../constants';
+import { CONTRACT_STATE_VERIFIED } from '../constants';
 
 export default function(state = {current: [], finished: []}, action) {
   switch(action.type) {

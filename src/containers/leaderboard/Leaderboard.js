@@ -1,10 +1,10 @@
 import React from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import $ from 'jquery';
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import times from 'lodash.times';
 import qs from 'qs';
+import classnames from 'classnames';
 import {sortData, onColumnSort, classNameForColumnHeader, defaultSortFunction} from '../../generic/terminalSortFunctions';
 import { injectIntl } from 'react-intl';
 import { FormattedMessage } from 'react-intl';
@@ -419,7 +419,9 @@ const ProfitCell = ({profit, tx}) => {
   profit = (profit || 0).toFixed(2);
   if(tx) {
     return (
-      <div className="profit">{profit} <a className="tx_link" target="_blank" href={'https://etherscan.io/tx/' + tx} />
+      <div className="profit">{profit}
+      <a className="tx_link" target="_blank" href={'https://etherscan.io/tx/' + tx} // eslint-disable-line
+        />
       </div>
     );
   } else {

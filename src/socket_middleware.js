@@ -1,5 +1,4 @@
 import io from 'socket.io-client';
-//import { WEBSOCKET_CONNECT, WEBSOCKET_DISCONNECT, WEBSOCKET_TERMINAL } from './actions/websocket';
 import { SELECT_MARKET, SELECT_EXCHANGE, EXCHANGE_MARKETS,
   TRADING_DATA_START, TRADING_DATA_STOP } from './actions/terminal';
 import { LOGGED_OUT, LOGGED_IN } from './actions/auth';
@@ -18,13 +17,13 @@ const socketMiddleware = store => next => action => {
           store.dispatch(action);
         });
         socket.on('orders', ({name, content}) => {
-          const [exchange, orders, market] = name.split('.');
+          const [exchange,, market] = name.split('.');
           const buy = content.bids;
           const sell = content.asks;
           store.dispatch(updateOrderBook(exchange, market, {buy, sell}));
         });
         socket.on('trades', ({name, content}) => {
-          const [exchange, trades, market] = name.split('.');
+          const [exchange,, market] = name.split('.');
           store.dispatch(updateHistory(exchange, market, content.trades));
         });
         socket.on('rates', ({name, content} ) => {
@@ -32,7 +31,7 @@ const socketMiddleware = store => next => action => {
           store.dispatch(updateRates(exchange, content.rates));
         });
         socket.on('ticker', ({name, content}) => {
-          const [exchange, ticker, market] = name.split('.');
+          const [exchange,,market] = name.split('.');
           store.dispatch(updateTicker(exchange, market, content.ticker));
         });
         socket.on('balances', ({_id, content, totalInBTC, totalInUSDT}) => {
