@@ -16,11 +16,13 @@ class ExchangeSelect extends React.Component {
   };
 
   render() {
-    const { exchangesTitleClasses, exchange, defaultPlaceholder } = this.props;
+    const { exchanges, exchangesTitleClasses, exchange, defaultPlaceholder } = this.props;
     return (
       <div className="add_keys_select_wr">
         <div className={`add_keys_select_value upper upper ${exchangesTitleClasses}`}>{
-          exchange ||  defaultPlaceholder
+          exchange && typeof exchanges[0] === 'object' ? 
+            exchanges.find(exchangeItem => exchangeItem.value === exchange).label
+            : exchange || defaultPlaceholder
         }
         <div className="add_keys_select_value_bg" />
         </div>
@@ -56,7 +58,7 @@ class ExchangeSelect extends React.Component {
     return exchanges.map((exchange, key) => {
       const isCurrentItemObject  = typeof exchange === 'object';
       return (
-        <li value={isCurrentItemObject ? exchange.value : exchange}
+        <li value={isCurrentItemObject ? exchange.label : exchange}
           key={isCurrentItemObject ? key : exchange}
           className={`add_keys_select_li upper ${exchangesItemClasses} ${exchange === currentExchange && 'active'}`}
           onClick={() => this.onClick(isCurrentItemObject ? exchange.value : exchange)}

@@ -67,7 +67,7 @@ class BotList extends React.Component {
     return [
       {
         Header: this.renderHeader(this.props.intl.messages['dashboard.label']),
-        minWidth: window.matchMedia('(max-width: 1028px)') ? 25 : 100,
+        minWidth: window.matchMedia('(max-width: 1028px)') ? 30 : 100,
         accessor: 'label',
         headerClassName: 'table_bot_header_value',
         className: 'table_col_value upper table_bot_col_value',
@@ -85,7 +85,8 @@ class BotList extends React.Component {
         minWidth:  window.matchMedia('(max-width: 1028px)') ? 60 : 100,
         headerClassName: 'table_bot_header_value',
       }, {
-        minWidth:  window.matchMedia('(max-width: 1028px)') ? 40 : 80,
+        minWidth:  window.matchMedia('(max-width: 1028px)') ? 40 :
+          currentMode === ACTIVE_KEYS.value ? 80 : 150,
         Header: this.renderHeader(this.props.intl.messages['dashboard.createdAt']),
         accessor: 'createdAt',
         headerClassName: 'table_bot_header_value',
@@ -100,7 +101,8 @@ class BotList extends React.Component {
         className: 'table_col_value table_bot_col_value',
       },
       {
-        minWidth: window.matchMedia('(max-width: 1028px)') ? 40 : 80,
+        minWidth: window.matchMedia('(max-width: 1028px)') ? 40 :
+          currentMode === ACTIVE_KEYS.value ? 80 : 150,
         Header: this.renderHeader(currentMode === ACTIVE_KEYS.value  ?
           this.props.intl.messages['dashboard.activeAt'] :
           this.props.intl.messages['dashboard.deletedAt']),
@@ -120,13 +122,13 @@ class BotList extends React.Component {
           />);
         },
       },
-      {
+      ...(currentMode === ACTIVE_KEYS.value ? [{
         Header: '',
         minWidth: 24,
         className: 'table_col_delete',
         Cell: row => {
           const canDeleteKey = true;
-          const onClick =  e => {
+          const onClick = e => {
             e.stopPropagation();
             const currentRowKeyId = row.original._id;
             if (is2FAEnable) {
@@ -139,7 +141,7 @@ class BotList extends React.Component {
                   );
                 });
             } else {
-              this.props.showConfirmModal('dashboard.deleteConfirm', {}, async  () => {
+              this.props.showConfirmModal('dashboard.deleteConfirm', {}, async () => {
                 await this.props.deleteKey(currentRowKeyId);
                 getKeys();
               });
@@ -148,7 +150,7 @@ class BotList extends React.Component {
           const className = classNames('delete_key_button', {can_delete_key: canDeleteKey});
           return (<div className={className} onClick={onClick}/>);
         },
-      }
+      }] : {})
     ];
   }
 

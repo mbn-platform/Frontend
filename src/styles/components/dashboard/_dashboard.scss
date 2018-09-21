@@ -397,8 +397,9 @@
     }
 
     .mode_select_wrapper {
-      width: 140px;
-      margin: 15px;
+      width: 135px;
+      margin-top: 15px;
+      margin-left: 0;
 
       .add_keys_select_wr {
         border: 0;
@@ -1870,8 +1871,9 @@
       }
 
       .mode_select_wrapper {
-        width: 50%;
+        width: 130px;
         margin: 15px;
+        margin-left: 0;
       }
 
       .add_keys_form_wrapper
@@ -1921,6 +1923,22 @@
 
       .table_bot_col_value {
         font-size: 12px;
+      }
+
+      .table_bot_header_value, .table_bot_col_value {
+          margin-left: 15px !important;
+          text-align: center;
+        &:last-child {
+          margin-right: 15px;
+        }
+      }
+
+      .mode_select_container {
+        text-align: left;
+      }
+
+      .table_bot_col_value {
+        font-size: 10px;
       }
 
       .keys_submit
