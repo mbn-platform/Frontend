@@ -21,6 +21,7 @@
 
 #leaderboard__select {
     height: auto;
+    border: 0;
 
     .dropdown-link {
         padding: 10px;
@@ -80,6 +81,7 @@
 
 .leaderboard__select-name {
     padding: 10px;
+    width: 150px;
 }
 
 .leaderboard__select-list-wrapper {
