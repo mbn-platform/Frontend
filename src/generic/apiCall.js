@@ -79,6 +79,7 @@ export function apiDelete(url, params) {
 }
 
 const defaultDeleteParams = {
+  headers: {},
   credentials: 'same-origin',
   method: 'DELETE',
 };

@@ -1,0 +1,28 @@
+body.chart-page
+{
+  background-color: #2C2F33 !important;
+}
+body.chart-page .chart-container
+{
+  background-color: #2C2F33 !important;
+}
+
+#loading-indicator
+{
+  background-color: #2C2F33 !important;
+  display: none !important;
+}
+
+.onchart-tv-logo.expanded .inner
+{
+  background: none !important;
+}
+.onchart-tv-logo.expanded .wrapper
+{
+  background: none;
+}
+.chart-page .chart-container
+{
+  border: none;
+}
+

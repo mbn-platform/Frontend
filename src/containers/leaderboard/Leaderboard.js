@@ -1,10 +1,10 @@
 import React from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import $ from 'jquery';
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import times from 'lodash.times';
 import qs from 'qs';
+import classnames from 'classnames';
 import {sortData, onColumnSort, classNameForColumnHeader, defaultSortFunction} from '../../generic/terminalSortFunctions';
 import { injectIntl } from 'react-intl';
 import { FormattedMessage } from 'react-intl';
@@ -128,15 +128,6 @@ class Leaderboard extends React.Component {
               <div className="ratings-main__block">
                 <div className="block__top">
                   <div className="block__top-switch-wrap">
-                    <a
-                      href={'/leaderboard'}
-                      onClick={e => {e.preventDefault();this.selectRound(0);}}
-                      className={classNames('block__top-switch', 'ratings-traders', {active: this.state.selectedRound === 0})}>
-                      <FormattedMessage
-                        id="leaderboard.global"
-                        defaultMessage="GLOBAL"
-                      />
-                    </a>
                     {this.renderRoundsBlocks(count)}
                   </div>
                 </div>
@@ -165,35 +156,18 @@ class Leaderboard extends React.Component {
   }
 
   renderRoundsBlocks(count) {
-    const rounds = [];
-    const {maxDisplayedTabs, location: {pathname : path} } = this.props;
+    const {location: {pathname : path}} = this.props;
     const {selectedRound } = this.state;
-    for(let i = count; i >= 1; i--) {
-      if ( i > (count - maxDisplayedTabs)) {
-        rounds.push(
-          <a
-            href={`${path}?round=${i}`}
-            key={i}
-            onClick={e => {e.preventDefault(); this.selectRound(i);}}
-            className={classNames('block__top-switch', 'ratings-traders', {active: selectedRound === i})}>
-            <FormattedMessage
-              id="leaderboard.round"
-              defaultMessage="ROUND {count}"
-              values={{count: i}}
-            />
-          </a>
-        );
-      }
-    }
-    if (count > maxDisplayedTabs) {
-      rounds.push(
-        <RoundSelect key="dropdown" onSelectClick={RoundNumber => this.selectRound(RoundNumber)}
-          currentValue={selectedRound <= count - maxDisplayedTabs && selectedRound !== 0 ? selectedRound : null}
-          rounds={times(count - maxDisplayedTabs, (i) => 1 + i).reverse()} />
-      );
-    }
-
-    return rounds;
+    return  <RoundSelect
+      key="dropdown"
+      path={path}
+      onSelectClick={RoundNumber => this.selectRound(RoundNumber)}
+      currentValue={selectedRound}
+      rounds={times(count, (i) => 1 + i).reverse()}
+      targetId="leaderboard__select"
+      elementClassName="leaderboard__select-list-item"
+      dropdownClassName="leaderboard__select-wrapper"
+    />;
   }
 
   componentWillUnmount() {

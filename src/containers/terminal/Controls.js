@@ -39,15 +39,12 @@ class Controls extends React.Component {
           targetId="market_select"
         />
         <DropdownSelect
-          selected={this.state.selectedTime}
+          selected={this.props.interval}
           items={TIME_RANGE_OPTIONS}
           targetId="time_select"
           elementClassName="time__switch"
           dropdownClassName="time"
-          onItemSelect={item => {
-            this.setState({selectedTime: item});
-            localStorage.setItem('terminal.selectedTime', item);
-          }}
+          onItemSelect={this.props.onIntervalSelected}
         />
       </div>
     );
