@@ -1926,8 +1926,12 @@
       }
 
       .table_bot_header_value, .table_bot_col_value {
+        text-align: center;
+
+        &:first-child{
           margin-left: 15px !important;
-          text-align: center;
+
+        }
         &:last-child {
           margin-right: 15px;
         }
