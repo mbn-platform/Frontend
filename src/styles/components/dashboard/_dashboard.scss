@@ -199,7 +199,8 @@
       background: url('../assets/img/HelpLeftTriangle.png') no-repeat center center;
     }
     .ReactTable .rt-td.table_col_delete {
-      text-align: left !important;
+      margin-right: 10px;
+      text-align: right !important;
     }
     .table_header_help_wrapper:hover .table_header_help_text
     {
@@ -690,13 +691,11 @@
       margin-left: 0;
     }
 
-    .table_bot_header_icon {
-      display: inline-block !important;
-      margin-left: 15px !important;
-    }
-
-    @media only screen and (max-width : 1028px) {
-      display: block;
+    @media only screen and (min-width : 1028px) {
+      .table_bot_header_icon {
+        display: inline-block !important;
+        margin-left: 15px !important;
+      }
     }
 
     .api_key_currencies_table .table_title
@@ -833,7 +832,7 @@
     .delete_key_button
     {
       background: url('../assets/svg/DeleteKey.svg') no-repeat center center;
-      width: 100%;
+      width: 30px;
       height: 100%;
       
       vertical-align: middle;
@@ -1941,6 +1940,10 @@
         &:first-child{
           margin-left: 15px !important;
 
+          .table_bot_header_icon {
+            text-align: left;
+            margin-left: 15px;
+          }
         }
         &:last-child {
           margin-right: 15px;
