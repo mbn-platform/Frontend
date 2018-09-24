@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import {FormattedMessage, FormattedDate, injectIntl } from 'react-intl';
+import {FormattedMessage, FormattedDate, FormattedTime, injectIntl } from 'react-intl';
 import ReactTable from '../../components/SelectableReactTable';
 import Pagination from '../../components/Pagination';
 import ExchangeSelect from '../../components/ExchangeSelect';
@@ -91,12 +91,18 @@ class BotList extends React.Component {
         accessor: 'createdAt',
         headerClassName: 'table_bot_header_value',
         Cell: row => {
-          return (<FormattedDate
-            value={row.original.createdAt}
-            day='2-digit'
-            year='2-digit'
-            month='2-digit'
-          />);
+          return (
+            <div className="table_bot_data_wrapper">
+              <FormattedDate
+                value={row.original.createdAt}
+                day='2-digit'
+                year='2-digit'
+                month='2-digit'
+              />
+              &nbsp;
+              <FormattedTime value={row.original.createdAt}/>
+            </div>
+          );
         },
         className: 'table_col_value table_bot_col_value',
       },
@@ -111,15 +117,21 @@ class BotList extends React.Component {
         headerClassName: 'table_bot_header_value',
         className: 'table_col_value upper table_bot_col_value',
         Cell: row => {
-          return (<FormattedDate
-            value={currentMode === ACTIVE_KEYS.value ?
-              row.original.lastUsedAt :
-              row.original.deletedAt
-            }
-            day='2-digit'
-            year='2-digit'
-            month='2-digit'
-          />);
+          return (
+            <div className="table_bot_data_wrapper">
+              <FormattedDate
+                value={currentMode === ACTIVE_KEYS.value ?
+                  row.original.lastUsedAt :
+                  row.original.deletedAt
+                }
+                day='2-digit'
+                year='2-digit'
+                month='2-digit'
+              />
+              &nbsp;
+              <FormattedTime value={row.original.createdAt}/>
+            </div>
+          );
         },
       }];
     if (currentMode !== ACTIVE_KEYS.value) {

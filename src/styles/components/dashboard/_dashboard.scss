@@ -698,6 +698,16 @@
       }
     }
 
+
+    @media only screen and (max-width : 1028px) {
+      .table_bot_data_wrapper {
+        display: flex;
+        flex-flow: row wrap;
+        line-height: 16px;
+        justify-content: center;
+      }
+    }
+
     .api_key_currencies_table .table_title
     {
       background: url('../assets/img/Currencies.png') no-repeat left center;
