@@ -93,14 +93,15 @@ class BotList extends React.Component {
         Cell: row => {
           return (
             <div className="table_bot_data_wrapper">
+              <FormattedTime value={row.original.createdAt}/>
+              &nbsp;
               <FormattedDate
                 value={row.original.createdAt}
                 day='2-digit'
                 year='2-digit'
                 month='2-digit'
               />
-              &nbsp;
-              <FormattedTime value={row.original.createdAt}/>
+
             </div>
           );
         },
@@ -119,6 +120,8 @@ class BotList extends React.Component {
         Cell: row => {
           return (
             <div className="table_bot_data_wrapper">
+              <FormattedTime value={row.original.createdAt}/>
+              &nbsp;
               <FormattedDate
                 value={currentMode === ACTIVE_KEYS.value ?
                   row.original.lastUsedAt :
@@ -128,8 +131,6 @@ class BotList extends React.Component {
                 year='2-digit'
                 month='2-digit'
               />
-              &nbsp;
-              <FormattedTime value={row.original.createdAt}/>
             </div>
           );
         },
