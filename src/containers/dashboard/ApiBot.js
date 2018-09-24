@@ -95,7 +95,7 @@ class BotList extends React.Component {
             value={row.original.createdAt}
             day='2-digit'
             year='2-digit'
-            month='short'
+            month='2-digit'
           />);
         },
         className: 'table_col_value table_bot_col_value',
@@ -118,7 +118,7 @@ class BotList extends React.Component {
             }
             day='2-digit'
             year='2-digit'
-            month='short'
+            month='2-digit'
           />);
         },
       }];
@@ -163,6 +163,9 @@ class BotList extends React.Component {
   renderHeader = header => (
     <div className="table_header_wrapper contract_header_wrapper">
       <span className="table_header">{header}</span>
+      <div className="sort_icon_wrapper table_bot_header_icon">
+        <div className="green_arrow green_arrow_bottom"/>
+      </div>
     </div>
   );
 

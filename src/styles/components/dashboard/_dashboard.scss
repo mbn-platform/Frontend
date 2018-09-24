@@ -156,6 +156,7 @@
       display: block;
       margin: 0;
     }
+
     .table_header_help_wrapper
     {
       position: absolute;
@@ -687,6 +688,15 @@
       display: block;
       height: 30px;
       margin-left: 0;
+    }
+
+    .table_bot_header_icon {
+      display: inline-block !important;
+      margin-left: 15px !important;
+    }
+
+    @media only screen and (max-width : 1028px) {
+      display: block;
     }
 
     .api_key_currencies_table .table_title
