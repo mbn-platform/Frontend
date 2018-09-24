@@ -64,7 +64,7 @@ class BotList extends React.Component {
   getColumns() {
     const { is2FAEnable, apiKeys, getKeys } = this.props;
     const { currentMode } = this.state;
-    return [
+    const commonHeaders = [
       {
         Header: this.renderHeader(this.props.intl.messages['dashboard.label']),
         minWidth: window.matchMedia('(max-width: 1028px)') ? 40 : 100,
@@ -121,37 +121,43 @@ class BotList extends React.Component {
             month='short'
           />);
         },
-      },
-      ...(currentMode === ACTIVE_KEYS.value ? [{
-        Header: '',
-        minWidth: 24,
-        className: 'table_col_delete',
-        Cell: row => {
-          const canDeleteKey = true;
-          const onClick = e => {
-            e.stopPropagation();
-            const currentRowKeyId = row.original._id;
-            if (is2FAEnable) {
-              this.props.showConfirmModal('dashboard.deleteConfirm', {},
-                () => {
-                  this.props.showTwoFactorAuthModal('', {}, async () => {
-                    await this.props.deleteKey(currentRowKeyId);
-                    getKeys();
-                  }
-                  );
+      }];
+    if (currentMode !== ACTIVE_KEYS.value) {
+      return commonHeaders;
+    } else {
+      return [
+        ...commonHeaders,
+        {
+          Header: '',
+          minWidth: 24,
+          className: 'table_col_delete',
+          Cell: row => {
+            const canDeleteKey = true;
+            const onClick = e => {
+              e.stopPropagation();
+              const currentRowKeyId = row.original._id;
+              if (is2FAEnable) {
+                this.props.showConfirmModal('dashboard.deleteConfirm', {},
+                  () => {
+                    this.props.showTwoFactorAuthModal('', {}, async () => {
+                      await this.props.deleteKey(currentRowKeyId);
+                      getKeys();
+                    }
+                    );
+                  });
+              } else {
+                this.props.showConfirmModal('dashboard.deleteConfirm', {}, async () => {
+                  await this.props.deleteKey(currentRowKeyId);
+                  getKeys();
                 });
-            } else {
-              this.props.showConfirmModal('dashboard.deleteConfirm', {}, async () => {
-                await this.props.deleteKey(currentRowKeyId);
-                getKeys();
-              });
-            }
-          };
-          const className = classNames('delete_key_button', {can_delete_key: canDeleteKey});
-          return (<div className={className} onClick={onClick}/>);
-        },
-      }] : {})
-    ];
+              }
+            };
+            const className = classNames('delete_key_button', {can_delete_key: canDeleteKey});
+            return (<div className={className} onClick={onClick}/>);
+          },
+        }
+      ];
+    }
   }
 
   renderHeader = header => (

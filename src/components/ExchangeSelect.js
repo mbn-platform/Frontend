@@ -17,10 +17,11 @@ class ExchangeSelect extends React.Component {
 
   render() {
     const { exchanges, exchangesTitleClasses, exchange, defaultPlaceholder } = this.props;
+    const isCurrentExchangesListObjects = exchange && typeof exchanges[0] === 'object';
     return (
       <div className="add_keys_select_wr">
         <div className={`add_keys_select_value upper upper ${exchangesTitleClasses}`}>{
-          exchange && typeof exchanges[0] === 'object' ? 
+          isCurrentExchangesListObjects ?
             exchanges.find(exchangeItem => exchangeItem.value === exchange).label
             : exchange || defaultPlaceholder
         }
