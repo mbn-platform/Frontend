@@ -67,7 +67,7 @@ class BotList extends React.Component {
     const commonHeaders = [
       {
         Header: this.renderHeader(this.props.intl.messages['dashboard.label']),
-        minWidth: window.matchMedia('(max-width: 1028px)') ? 40 : 100,
+        minWidth: window.matchMedia('(max-width: 1028px)') ? 25 : 100,
         accessor: 'label',
         headerClassName: 'table_bot_header_value',
         className: 'table_col_value upper table_bot_col_value',
@@ -82,7 +82,7 @@ class BotList extends React.Component {
             }
           </div>);
         },
-        minWidth:  window.matchMedia('(max-width: 1028px)') ? 60 : 100,
+        minWidth:  window.matchMedia('(max-width: 1028px)') ? 55 : 100,
         headerClassName: 'table_bot_header_value',
       }, {
         minWidth:  window.matchMedia('(max-width: 1028px)') ? 40 :
@@ -110,23 +110,17 @@ class BotList extends React.Component {
       {
         minWidth: window.matchMedia('(max-width: 1028px)') ? 40 :
           currentMode === ACTIVE_KEYS.value ? 60 : 150,
-        Header: this.renderHeader(currentMode === ACTIVE_KEYS.value  ?
-          this.props.intl.messages['dashboard.activeAt'] :
-          this.props.intl.messages['dashboard.deletedAt']),
-        accessor: currentMode === ACTIVE_KEYS.value ?
-          'lastUsedAt' : 'deletedAt',
+        Header: this.renderHeader(this.props.intl.messages['dashboard.activeAt']),
+        accessor: 'lastUsedAt',
         headerClassName: 'table_bot_header_value',
         className: 'table_col_value upper table_bot_col_value',
         Cell: row => {
           return (
             <div className="table_bot_data_wrapper">
-              <FormattedTime value={row.original.createdAt}/>
+              <FormattedTime value={row.original.lastUsedAt}/>
               &nbsp;
               <FormattedDate
-                value={currentMode === ACTIVE_KEYS.value ?
-                  row.original.lastUsedAt :
-                  row.original.deletedAt
-                }
+                value={row.original.lastUsedAt}
                 day='2-digit'
                 year='2-digit'
                 month='2-digit'
@@ -136,7 +130,29 @@ class BotList extends React.Component {
         },
       }];
     if (currentMode !== ACTIVE_KEYS.value) {
-      return commonHeaders;
+      return [...commonHeaders,
+        {
+          minWidth: window.matchMedia('(max-width: 1028px)') ? 40 : 60,
+          Header: this.renderHeader(this.props.intl.messages['dashboard.deletedAt']),
+          accessor: 'deletedAt',
+          headerClassName: 'table_bot_header_value',
+          className: 'table_col_value upper table_bot_col_value',
+          Cell: row => {
+            return (
+              <div className="table_bot_data_wrapper">
+                <FormattedTime value={row.original.deletedAt}/>
+                &nbsp;
+                <FormattedDate
+                  value={row.original.deletedAt}
+                  day='2-digit'
+                  year='2-digit'
+                  month='2-digit'
+                />
+              </div>
+            );
+          },
+        }
+      ];
     } else {
       return [
         ...commonHeaders,
