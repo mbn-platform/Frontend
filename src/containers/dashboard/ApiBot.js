@@ -5,8 +5,8 @@ import {FormattedMessage, FormattedDate, FormattedTime, injectIntl } from 'react
 import ReactTable from '../../components/SelectableReactTable';
 import Pagination from '../../components/Pagination';
 import ExchangeSelect from '../../components/ExchangeSelect';
-import { Desktop, Mobile } from '../../generic/MediaQuery';
 import {showTwoFactorAuthModal, showConfirmModal} from '../../actions/modal';
+import createMqProvider, {querySchema} from '../../MediaQuery';
 import {fetchBotKeys, deleteBotKeys} from '../../actions/apiKeys';
 import classNames from 'classnames';
 
@@ -25,6 +25,8 @@ const DELETED_KEYS = {
     defaultMessage="Deleted Keys"
   />
 };
+
+const {MediaQuery, Screen} = createMqProvider(querySchema);
 
 class BotList extends React.Component {
 
@@ -224,30 +226,35 @@ class BotList extends React.Component {
       listItem.hasOwnProperty('deletedAt') :
       !listItem.hasOwnProperty('deletedAt'));
     return (
-      <div>
-        <Desktop>
-          <ReactTable
-            style={{height: 312}}
-            columns={this.getColumns()}
-            data={currentData}
-            selectedItem={this.props.selectedApiKey}
-            onItemSelected={key => this.props.onKeySelected(key)}
-            scrollBarHeight={217}
-          />
-        </Desktop>
-        <Mobile>
-          <ReactTable
-            columns={this.getColumns()}
-            data={currentData}
-            selectedItem={this.props.selectedApiKey}
-            onItemSelected={key => this.props.onKeySelected(key)}
-            minRows={5}
-            showPagination={true}
-            defaultPageSize={5}
-            PaginationComponent={Pagination}
-          />
-        </Mobile>
-      </div>
+      <MediaQuery>
+        <div>
+          <Screen on={(size) => {
+            switch(size) {
+              case 'lg': return (
+                <ReactTable
+                  style={{height: 312}}
+                  columns={this.getColumns()}
+                  data={currentData}
+                  selectedItem={this.props.selectedApiKey}
+                  onItemSelected={key => this.props.onKeySelected(key)}
+                  scrollBarHeight={217}
+                />);
+              case 'sm': return (
+                <ReactTable
+                  columns={this.getColumns()}
+                  data={currentData}
+                  selectedItem={this.props.selectedApiKey}
+                  onItemSelected={key => this.props.onKeySelected(key)}
+                  minRows={5}
+                  showPagination={true}
+                  defaultPageSize={5}
+                  PaginationComponent={Pagination}
+                /> );
+              default: return null;
+            }
+          }} />
+        </div>
+      </MediaQuery>
     );
   }
 }
