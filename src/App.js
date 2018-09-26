@@ -124,7 +124,6 @@ window.customize = function() {
       $('.edit-btn').removeClass('active');
       $('.edit-btn').text('edit');
     }
-    console.log($('.info-screen').hasClass('disable-block'));
     if($('.info-screen').hasClass('disable-block')) {
       $('.duration-contract .form-control').prop('disabled',true);
       $('#cmn-toggle-4').prop('disabled',true);

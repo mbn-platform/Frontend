@@ -34,6 +34,7 @@ $tooltip-arrow-color: #494d4d;
 @import 'styles/components/terminal/terminal';
 @import 'styles/components/leaderboard/leaderboard';
 @import 'styles/components/modal';
+@import 'styles/components/notification';
 @import 'styles/components/orders/orders';
 @import 'styles/components/history/history';
 @import 'styles/components/ratings/ratings';
@@ -781,6 +782,50 @@ body {
 	}
 
 	
+}
+
+.close-button {
+	height: 40px;
+	width: 40px;
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	cursor: pointer;
+
+	&:before, &:after {
+		content: '';
+		display: block;
+		position: absolute;
+		top: 10px;
+		right: 20px;
+		width: 2px;
+		height: 20px;
+		background-color: #fff;
+	}
+
+	&:before {
+		transform: rotate(45deg);
+
+	}
+
+	&:after {
+		transform: rotate(-45deg);
+	}
+}
+
+@media (max-width: 1024px) {
+	.close-button {
+		width: 25px;
+		height: 25px;
+		top: 5px;
+		right: 10px;
+		&:before, &:after {
+			right: 12px;
+			width: 1px;
+			height: 15px;
+			background-color: #fff;
+		}
+	}
 }
 
 .reset-button {

@@ -4,11 +4,11 @@ import $ from 'jquery';
 import PropTypes from 'prop-types';
 import times from 'lodash.times';
 import qs from 'qs';
-import classnames from 'classnames';
 import {sortData, onColumnSort, classNameForColumnHeader, defaultSortFunction} from '../../generic/terminalSortFunctions';
 import { injectIntl } from 'react-intl';
 import { FormattedMessage } from 'react-intl';
 import {updateChallenge} from '../../actions/challenge';
+import {showNotification} from '../../actions/notification';
 import {connect} from 'react-redux';
 import RoundSelect from './RoundSelect';
 
@@ -46,6 +46,7 @@ class Leaderboard extends React.Component {
 
   componentDidMount() {
     window.customize();
+    this.props.showNotificationBar();
     const { round } = qs.parse(this.props.location.search.slice(1));
     const $table = $('.js-table-wrapper .table');
     $table.on('reflowed', (e, $container) => {
@@ -433,6 +434,13 @@ const ProfitCell = ({profit, tx}) => {
 
 export default injectIntl(connect(
   state => ({challenge: state.challenge}),
-  dispatch => ({updateChallenge: number => dispatch(updateChallenge(number))}),
+  dispatch => ({
+    updateChallenge: number => dispatch(updateChallenge(number)),
+    showNotificationBar: () => dispatch(showNotification(
+      'warning',
+      '"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."',
+      'http://yandex.ru')
+    )
+  }),
 )(Leaderboard));
 

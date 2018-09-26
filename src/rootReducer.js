@@ -7,6 +7,7 @@ import challenge from './reducers/challenge';
 import time from './reducers/time';
 import terminal from './reducers/terminal';
 import request from './reducers/request';
+import notification from './reducers/notification';
 import rates from './reducers/rates';
 import modal from './reducers/modal';
 import profile from './reducers/profile';
@@ -19,6 +20,7 @@ import ratings from './reducers/ratings';
 const combined = combineReducers(
   {
     apiKeys,
+    notification,
     contracts,
     ratings,
     modal,

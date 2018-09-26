@@ -1,0 +1,135 @@
+.notification__container {
+  width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: start;
+  justify-content: space-between;
+  padding: 15px 20px 5px 20px !important;
+  position: relative;
+  background-color: #2D3034;
+  border: 1px solid rgba(58, 62, 66, 0.7);
+  overflow: hidden;
+
+  .close-button {
+    position: relative;
+    right: 0;
+    top: -5px;
+    order: 4;
+  }
+}
+
+.notification__type-wrapper {
+  order: 1;
+  font-size: 20px;
+  color: #9094A1;
+  margin-left: 20px;
+  text-transform: uppercase;
+}
+
+.notification__type-wrapper_warning {
+  color: #d74c4b;
+}
+
+.notification__text-wrapper {
+  color: #fff;
+  margin: 0 10px;
+  max-width: 60%;
+  display: grid;
+  font-size: 12px;
+  min-width: 0;
+  text-align: left;
+  position: relative;
+  line-height: 17px;
+  order: 2;
+  padding-top: 5px !important;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.notification__text-wrapper_overflowed {
+  &:after {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 0;
+    height: 0;
+    right: -20px;
+    top: 9px;
+    border-style: solid;
+    border-width: 6px 3px 0 3px;
+    border-color: #fff transparent transparent transparent;
+    transition: transform 0.2s;
+  }
+}
+
+.notification__text-wrapper_expand {
+  white-space: normal;
+
+  &:after {
+    transform: rotate(-180deg);
+  }
+}
+
+.notification__text {
+  display: inline;
+  text-overflow: ellipsis;
+  overflow: hidden;
+
+}
+
+.notification__type-wrapper {
+
+}
+
+.notification__button {
+  padding: 5px 20px !important;
+  font-size: 14px;
+  order: 3;
+  display: block;
+  color: #9094A1;
+  border-radius: 7px;
+  background-color: #3f4348;
+  border: 1px solid rgba(58, 62, 66, 1);
+
+  &:hover {
+    color: #fff;
+    text-decoration: none;
+  }
+}
+
+@media only screen and (max-width : 1028px) {
+  .notification__container
+  {
+    flex-flow: row wrap;
+    justify-content: space-between;
+    padding: 15px !important;
+
+    .close-button {
+      order: 3;
+    }
+  }
+
+  .notification__type-wrapper {
+    font-size: 18px;
+  }
+
+  .notification__text-wrapper {
+    margin-top: 10px;
+    width: 100%;
+    text-align: center;
+    order: 4;
+  }
+
+  .notification__text-wrapper_overflowed {
+    max-width: 90%;
+    width: auto;
+    text-align: left;
+  }
+
+  .notification__button {
+    margin-left: auto;
+    margin-right: 20px;
+    padding: 2px 10px !important;
+    order: 2;
+  }
+}
