@@ -156,6 +156,7 @@
       display: block;
       margin: 0;
     }
+
     .table_header_help_wrapper
     {
       position: absolute;
@@ -198,7 +199,8 @@
       background: url('../assets/img/HelpLeftTriangle.png') no-repeat center center;
     }
     .ReactTable .rt-td.table_col_delete {
-      text-align: left !important;
+      margin-right: 10px;
+      text-align: right !important;
     }
     .table_header_help_wrapper:hover .table_header_help_text
     {
@@ -334,6 +336,11 @@
       box-sizing: border-box;
       border-radius: 0 0 4px 4px;
     }
+
+    .add_bot_form_wrapper {
+      width: 100%;
+    }
+
     .add_keys_form
     {
 
@@ -389,6 +396,44 @@
       transition-property: color, border;
       transition-duration: 400ms;
       transition: color 400ms, border 400ms;
+    }
+
+    .mode_select_wrapper {
+      width: 135px;
+      margin-top: 15px;
+      margin-left: 0;
+
+      .add_keys_select_wr {
+        border: 0;
+
+        &:hover {
+          border: 0 ;
+          .add_keys_select_values_list_wr {
+            transition: border 0s;
+            box-sizing: border-box;
+            border: 1px solid #7c7c7d !important;
+          }
+        }
+      }
+
+      .add_keys_select_li {
+        border: 0;
+        &.active {
+          background-color: rgba(144, 148, 161, .25);
+        }
+      }
+      
+      &:hover {
+
+      }
+
+      .add_keys_select_values_list_wr {
+        border-bottom: 0 !important;
+      }
+    }
+
+    .mode_select_container {
+      border: 0;
     }
 
     .add_keys_double_field_wr
@@ -646,6 +691,23 @@
       margin-left: 0;
     }
 
+    @media only screen and (min-width : 1028px) {
+      .table_bot_header_icon {
+        display: inline-block !important;
+        margin-left: 15px !important;
+      }
+    }
+
+
+    @media only screen and (max-width : 1028px) {
+      .table_bot_data_wrapper {
+        display: flex;
+        flex-flow: row wrap;
+        line-height: 16px;
+        justify-content: center;
+      }
+    }
+
     .api_key_currencies_table .table_title
     {
       background: url('../assets/img/Currencies.png') no-repeat left center;
@@ -697,10 +759,18 @@
     {
       width: 55%;
       float: left;
-      border-right: 0;
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-      border-bottom-left-radius: 0;
+
+      &.api_keys_table_width_100 {
+        width: 100%;
+
+      }
+
+      &.api_keys_table_extend {
+        border-right: 0;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+      }
     }
 
     .table_title_wrapper
@@ -732,6 +802,10 @@
       font-size: 1.2em;
       margin-top: 8px;
 
+    }
+
+    .table_col_text-transform_initial {
+      text-transform: initial;
     }
 
     .api_keys_table .table_title_wrapper
@@ -768,7 +842,7 @@
     .delete_key_button
     {
       background: url('../assets/svg/DeleteKey.svg') no-repeat center center;
-      width: 100%;
+      width: 30px;
       height: 100%;
       
       vertical-align: middle;
@@ -1814,6 +1888,13 @@
       {
         padding: 0;
       }
+
+      .mode_select_wrapper {
+        width: 130px;
+        margin: 15px;
+        margin-left: 0;
+      }
+
       .add_keys_form_wrapper
       {
         height: auto;
@@ -1858,6 +1939,35 @@
         border: none;
         margin-bottom: 20px;
       }
+
+      .table_bot_col_value {
+        font-size: 12px;
+      }
+
+      .table_bot_header_value, .table_bot_col_value {
+        text-align: center;
+
+        &:first-child{
+          margin-left: 15px !important;
+
+          .table_bot_header_icon {
+            text-align: left;
+            margin-left: 15px;
+          }
+        }
+        &:last-child {
+          margin-right: 15px;
+        }
+      }
+
+      .mode_select_container {
+        text-align: left;
+      }
+
+      .table_bot_col_value {
+        font-size: 10px;
+      }
+
       .keys_submit
       {
         width: 100%;

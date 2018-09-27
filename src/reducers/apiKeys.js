@@ -1,4 +1,12 @@
-import { DELETE_API_KEY, ADD_API_KEY, UPDATE_API_KEY, UPDATE_API_KEY_BALANCE } from '../actions/apiKeys';
+import {
+  DELETE_API_KEY,
+  ADD_API_KEY,
+  UPDATE_API_KEY,
+  UPDATE_API_KEY_BALANCE,
+  UPDATE_BOT_KEYS,
+  ADD_BOT_KEYS,
+  DELETE_BOT_KEYS
+} from '../actions/apiKeys';
 import {UPDATE_DASHBOARD, UPDATE_KEYS} from '../actions/dashboard';
 import { combineReducers } from 'redux';
 
@@ -43,6 +51,19 @@ function ownKeys(keys = [], action) {
   }
 }
 
+function botKeys(keys = [], {type, data, _id, keyID}) {
+  switch(type) {
+    case DELETE_BOT_KEYS:
+      return keys.filter(k => k._id !== keyID);
+    case UPDATE_BOT_KEYS:
+      return data;
+    case ADD_BOT_KEYS:
+      return [...keys, data];
+    default:
+      return keys;
+  }
+}
+
 function receivedKeys(keys = [], action) {
   switch(action.type) {
     case UPDATE_DASHBOARD:
@@ -53,4 +74,4 @@ function receivedKeys(keys = [], action) {
 }
 
 
-export default combineReducers({ownKeys, receivedKeys});
+export default combineReducers({ownKeys, receivedKeys, botKeys});

@@ -72,6 +72,7 @@ class AddApiKey extends React.Component {
             </div>
             <div className="add_keys_field_wr select_wr">
               <ExchangeSelect
+                defaultPlaceholder={this.props.intl.messages['dashboard.exchange']}
                 exchanges={this.props.exchanges}
                 onChange={this.handleExchangeChange}
                 exchange={this.state.exchange}

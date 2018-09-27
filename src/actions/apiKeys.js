@@ -3,14 +3,18 @@ import defaultErrorHandler from '../generic/errorHandlers';
 import { LOGGED_OUT } from '../actions/auth';
 import {UPDATE_KEYS} from './dashboard';
 import {SELECT_FUND} from './terminal';
-import { ApiKeys } from '../generic/api';
-import { showInfoModal } from './modal';
+import { ApiKeys, ApiBotKeys } from '../generic/api';
+import {showCodeModal, showInfoModal} from './modal';
 export const DELETE_API_KEY = 'DELETE_API_KEY';
 export const ADD_API_KEY = 'ADD_API_KEY';
 export const UPDATE_API_KEY = 'UPDATE_API_KEY';
 export const UPDATE_API_KEY_BALANCE = 'UPDATE_API_KEY_BALANCE';
+export const UPDATE_BOT_KEYS = 'UPDATE_BOT_KEYS';
+export const ADD_BOT_KEYS = 'ADD_BOT_KEYS';
+export const DELETE_BOT_KEYS = 'DELETE_BOT_KEYS';
 
 const KeysApi = new ApiKeys();
+const KeysBotApi = new ApiBotKeys();
 
 export function fetchKeys() {
   return dispatch => {
@@ -22,6 +26,47 @@ export function fetchKeys() {
       .catch(err => {
         defaultErrorHandler(err, dispatch);
       });
+  };
+}
+
+export function fetchBotKeys() {
+  return dispatch => {
+    KeysBotApi.fetch()
+      .then(data => dispatch({
+        type: UPDATE_BOT_KEYS,
+        data
+      }))
+      .catch(err => {
+        defaultErrorHandler(err, dispatch);
+      });
+  };
+}
+
+export function deleteBotKeys(keyID) {
+  return dispatch => {
+    KeysBotApi.delete(keyID)
+      .then(() => dispatch({
+        type: DELETE_BOT_KEYS,
+        keyID
+      }))
+      .catch(err => {
+        defaultErrorHandler(err, dispatch);
+      });
+  };
+}
+
+export function addBotKeys(label, keyId) {
+  return async dispatch => {
+    try {
+      const data = await KeysBotApi.add(label, keyId);
+      dispatch({
+        type: ADD_BOT_KEYS,
+        data
+      });
+      dispatch(showCodeModal('yourBotSecretTitle', 'saveYourCode', data.secret, data._id));
+    } catch(err) {
+      defaultErrorHandler(err, dispatch);
+    }
   };
 }
 

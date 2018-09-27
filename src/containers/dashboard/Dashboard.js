@@ -1,6 +1,8 @@
 import React from 'react';
 import Funds from './ApiKeys';
+import BotList from './ApiBot';
 import AddApiKey from './AddApiKey';
+import AddBotApi from './AddBotApi';
 import ApiKeyInfo from './ApiKeyInfo';
 import Contracts from './Contracts';
 import Offers from './Offers';
@@ -94,7 +96,6 @@ class Dashboard extends React.Component {
           <ApiKeyInfo
             fund={this.state.selectedOffer || this.state.selectedContract || this.state.selectedApiKey}
           />
-
         </div>
         <div className="table_wrapper contracts_table_wrapper">
           <Contracts
@@ -119,6 +120,14 @@ class Dashboard extends React.Component {
         </div>
         <div className="table_wrapper contracts_chart">
           <SelectedContractChart contract={this.state.selectedContract} exchangesInfo={this.props.exchangesInfo}/>
+        </div>
+        <div className="keys_tables_wrapper table_wrapper">
+          <BotList
+            apiKeys={this.props.apiKeys.ownKeys}
+            selectedApiKey={this.state.selectedApiKey}
+            onKeySelected={this.onKeySelected}
+          />
+          <AddBotApi/>
         </div>
       </div>
     );

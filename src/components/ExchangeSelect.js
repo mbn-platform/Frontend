@@ -1,17 +1,31 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class ExchangeSelect extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.onClick = this.onClick.bind(this);
-  }
+  static propTypes = {
+    defaultPlaceholder: PropTypes.string,
+    exchangesTitleClasses: PropTypes.string,
+    exchangesItemClasses: PropTypes.string,
+  };
+
+  static defaultProps = {
+    defaultPlaceholder: '',
+    exchangesTitleClasses: '',
+    exchangesItemClasses: '',
+  };
 
   render() {
+    const { exchanges, exchangesTitleClasses, exchange, defaultPlaceholder } = this.props;
+    const isCurrentExchangesListObjects = exchange && typeof exchanges[0] === 'object';
     return (
       <div className="add_keys_select_wr">
-        <div className="add_keys_select_value upper upper">{this.props.exchange ? this.props.exchange : 'Exchange' }
-          <div className="add_keys_select_value_bg" />
+        <div className={`add_keys_select_value upper upper ${exchangesTitleClasses}`}>{
+          isCurrentExchangesListObjects ?
+            exchanges.find(exchangeItem => exchangeItem.value === exchange).label
+            : exchange || defaultPlaceholder
+        }
+        <div className="add_keys_select_value_bg" />
         </div>
         <div className="add_keys_select_values_list_wr">
           <ul className="add_keys_select_ul">
@@ -23,11 +37,11 @@ class ExchangeSelect extends React.Component {
     );
   }
 
-  onClick(e) {
+  onClick = e => {
     this.props.onChange(e);
   }
 
-  renderAllOption() {
+  renderAllOption = () => {
     if(this.props.showAllOption) {
       return (<li
         value="All"
@@ -40,16 +54,19 @@ class ExchangeSelect extends React.Component {
     }
   }
 
-  renderExchanges() {
-    return this.props.exchanges.map(exchange => (
-      <li value={exchange}
-        key={exchange}
-        className="add_keys_select_li upper"
-        onClick={() => this.onClick(exchange)}
-      >{exchange}</li>
-    ));
+  renderExchanges= () => {
+    const {exchanges, exchange: currentExchange, exchangesItemClasses } = this.props;
+    return exchanges.map((exchange, key) => {
+      const isCurrentItemObject  = typeof exchange === 'object';
+      return (
+        <li value={isCurrentItemObject ? exchange.label : exchange}
+          key={isCurrentItemObject ? key : exchange}
+          className={`add_keys_select_li upper ${exchangesItemClasses} ${exchange === currentExchange && 'active'}`}
+          onClick={() => this.onClick(isCurrentItemObject ? exchange.value : exchange)}
+        >{isCurrentItemObject ? exchange.label : exchange }</li>
+      );
+    });
   }
-
 }
 
 export default ExchangeSelect;
