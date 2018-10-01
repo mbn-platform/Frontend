@@ -1,7 +1,7 @@
 import MainContent from './MainContent';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
-import { closeNotification } from './actions/notification';
+import { closeNotification, showNotification } from './actions/notification';
 
 const mapStateToProps = state =>  ({
   loggedIn: state.auth.loggedIn,
@@ -15,6 +15,17 @@ const mapStateToProps = state =>  ({
 
 const mapDispatchToProps = dispatch => {
   return {
+    showNotificationBar: (
+      notificationType,
+      notificationID,
+      message,
+      url
+    ) => dispatch(showNotification(
+      notificationType,
+      notificationID,
+      message,
+      url)
+    ),
     closeNotificationBar: () => dispatch(closeNotification()),
   };
 };

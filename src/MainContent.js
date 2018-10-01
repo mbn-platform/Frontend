@@ -10,11 +10,31 @@ import Leaderboard from './containers/leaderboard/Leaderboard';
 import './MainContent.css';
 import { Col } from 'reactstrap';
 import NotificationBar from './components/NotificationBar';
+import { ApiNotification } from './generic/api';
+
+const NotificationApi = new ApiNotification();
 
 class MainContent extends React.Component {
+
+  componentDidMount() {
+    this.getNotificationData();
+  }
+
   componentDidUpdate(prevProps) {
     if (this.props.location !== prevProps.location) {
       window.scrollTo(0, 0);
+    }
+  }
+  
+  getNotificationData = async () => {
+    const { showNotificationBar } = this.props;
+    try {
+      const data = await NotificationApi.fetch();
+      data.forEach(({id, message, type, url}) => {
+        showNotificationBar(type, id, message, url);
+      });
+    } catch(e) {
+      console.error(e);
     }
   }
 

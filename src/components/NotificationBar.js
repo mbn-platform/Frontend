@@ -65,7 +65,7 @@ class NotificationBar extends React.Component {
             defaultMessage="Details"
           />
         </a> }
-        <div className="close-button" onClick={textOverflowed ? closeNotification : null}/>
+        <div className="close-button" onClick={closeNotification}/>
       </div>
     );
   }
