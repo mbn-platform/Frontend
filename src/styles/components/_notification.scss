@@ -39,7 +39,7 @@
   min-width: 0;
   text-align: left;
   position: relative;
-  line-height: 17px;
+  line-height: 25px;
   order: 2;
   padding-top: 5px !important;
   white-space: nowrap;
@@ -47,6 +47,8 @@
 }
 
 .notification__text-wrapper_overflowed {
+  line-height: 17px;
+
   &:after {
     content: '';
     display: block;
