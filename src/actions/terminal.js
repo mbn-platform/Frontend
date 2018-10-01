@@ -189,7 +189,6 @@ export function placeOrder(order) {
               break;
             default:
               dispatch(showInfoModal('failedToPlaceOrder', {order : error.apiErrorCode}));
-              console.log('unhandled api error', error.apiErrorCode);
           }
         }
       });

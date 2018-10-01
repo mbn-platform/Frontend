@@ -44,7 +44,6 @@ class Navigation extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if(this.props.auth.loggedIn && !nextProps.auth.loggedIn) {
-      console.log('redirecting to login');
       nextProps.history.push('/login');
     }
   }

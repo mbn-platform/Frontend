@@ -2,14 +2,23 @@ export const SHOW_NOTIFICATION = 'SHOW_NOTIFICATION';
 export const CLOSE_NOTIFICATION = 'CLOSE_NOTIFICATION';
 
 
-export const showNotification = (notificationType='info', message='', url='') => {
+export const showNotification = (notificationType='info', notificationID = null, message='', url='') => {
   return dispatch => {
-    dispatch({
-      type: SHOW_NOTIFICATION,
-      notificationType,
-      message,
-      url
-    });
+    const viewedNotificationIDs = localStorage['viewedNotification'] ?
+      JSON.parse(localStorage.getItem('viewedNotification')) : [];
+    const isCurrentNotificationWasViewed = viewedNotificationIDs.find(currentNotificationID =>{
+      return currentNotificationID.toString() === notificationID.toString(); }
+    );
+    if (!isCurrentNotificationWasViewed) {
+      dispatch({
+        type: SHOW_NOTIFICATION,
+        notificationType,
+        notificationID,
+        message,
+        url
+      });
+      localStorage.setItem('viewedNotification', JSON.stringify([notificationID, ...viewedNotificationIDs]));
+    } 
   };
 };
 

@@ -2,12 +2,14 @@ import { SHOW_NOTIFICATION, CLOSE_NOTIFICATION } from '../actions/notification';
 
 export default function(state = {
   notificationType : 'info',
-  message:'',
+  message: '',
   url: '',
+  notificationID: null,
   isVisible: false
 },
 {
   notificationType,
+  notificationID,
   message,
   url,
   type
@@ -16,9 +18,10 @@ export default function(state = {
     case SHOW_NOTIFICATION:
       return {
         ...state,
-        notificationType: notificationType,
-        message: message,
-        url: url,
+        notificationType,
+        notificationID,
+        message,
+        url,
         isVisible: true,
       };
     case CLOSE_NOTIFICATION:

@@ -34,6 +34,13 @@ export function getInitialState() {
         contractSettings: {}
       }
     },
+    notification: {
+      notificationType : 'info',
+      message: '',
+      url: '',
+      notificationID: null,
+      isVisible: false,
+    },
     ratings: [],
     exchanges: [],
     time: null,
