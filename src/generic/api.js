@@ -320,3 +320,10 @@ export class ApiBotKeys {
       .then(errorHandler)
       .then(responseSchemaHandler);
 }
+
+export class ApiNotification {
+  fetch = () =>
+    apiGet('/notifications')
+      .then(errorHandler)
+      .then(responseSchemaHandler);
+}

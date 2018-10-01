@@ -61,7 +61,7 @@ class ModalWindow extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className="modal__close" onClick={() => onClose()}/>
+              <div className="close-button" onClick={() => onClose()}/>
             </div>
             <div className="modal__body">
               <div className="container d-flex flex-column ">
