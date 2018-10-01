@@ -6,9 +6,10 @@ export const showNotification = (notificationType='info', notificationID = null,
   return dispatch => {
     const viewedNotificationIDs = localStorage['viewedNotification'] ?
       JSON.parse(localStorage.getItem('viewedNotification')) : [];
-    const isCurrentNotificationWasViewed = viewedNotificationIDs.find(currentNotificationID =>{
-      return currentNotificationID.toString() === notificationID.toString(); }
-    );
+    const isCurrentNotificationWasViewed = viewedNotificationIDs.length > 0 ?
+      viewedNotificationIDs.find(currentNotificationID =>{
+        return currentNotificationID.toString() === notificationID.toString(); }
+      ) : false;
     if (!isCurrentNotificationWasViewed) {
       dispatch({
         type: SHOW_NOTIFICATION,
@@ -17,13 +18,20 @@ export const showNotification = (notificationType='info', notificationID = null,
         message,
         url
       });
-      localStorage.setItem('viewedNotification', JSON.stringify([notificationID, ...viewedNotificationIDs]));
-    } 
+    }
   };
 };
 
-export const closeNotification = () => {
+export const closeNotification = notificationID => {
   return dispatch => {
+    const viewedNotificationIDs = localStorage['viewedNotification'] ?
+      JSON.parse(localStorage.getItem('viewedNotification')) : [];
+    const isCurrentNotificationWasViewed = viewedNotificationIDs.find(currentNotificationID =>{
+      return currentNotificationID === notificationID; }
+    );
+    if (!isCurrentNotificationWasViewed) {
+      localStorage.setItem('viewedNotification', JSON.stringify([notificationID, ...viewedNotificationIDs]));
+    }
     dispatch({
       type: CLOSE_NOTIFICATION,
     });

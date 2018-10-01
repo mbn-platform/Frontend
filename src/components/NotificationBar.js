@@ -38,8 +38,8 @@ class NotificationBar extends React.Component {
   };
 
   render() {
-    const {notificationType, message, url, closeNotification} = this.props;
-    const {textExpand, textOverflowed} = this.state;
+    const {notificationType, message, url, closeNotification, notificationID } = this.props;
+    const {textExpand, textOverflowed } = this.state;
     return (
       <div className="notification__container">
         <div
@@ -65,7 +65,9 @@ class NotificationBar extends React.Component {
             defaultMessage="Details"
           />
         </a> }
-        <div className="close-button" onClick={closeNotification}/>
+        <div className="close-button" onClick={() => {
+          closeNotification(notificationID);
+        }}/>
       </div>
     );
   }

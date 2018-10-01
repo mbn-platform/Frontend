@@ -44,7 +44,8 @@ class MainContent extends React.Component {
       closeNotificationBar,
       notificationMessage,
       notificationUrl,
-      notificationType
+      notificationType,
+      notificationID,
     } = this.props;
     return (
       isNotificationOpen &&
@@ -53,6 +54,7 @@ class MainContent extends React.Component {
         url={notificationUrl}
         message={notificationMessage}
         notificationType={notificationType}
+        notificationID={notificationID}
       />
     );
   }

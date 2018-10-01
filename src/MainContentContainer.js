@@ -8,6 +8,7 @@ const mapStateToProps = state =>  ({
   profile: state.auth.profile,
   isNotificationOpen:  state.notification.isVisible,
   notificationUrl:  state.notification.url,
+  notificationID:  state.notification.notificationID,
   notificationType:  state.notification.notificationType,
   notificationMessage:  state.notification.message,
 
@@ -26,7 +27,7 @@ const mapDispatchToProps = dispatch => {
       message,
       url)
     ),
-    closeNotificationBar: () => dispatch(closeNotification()),
+    closeNotificationBar: notificationID => dispatch(closeNotification(notificationID)),
   };
 };
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MainContent));
