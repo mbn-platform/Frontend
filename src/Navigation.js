@@ -10,8 +10,6 @@ import TermianlIcon from './assets/svg/terminal.svg';
 import TermianlIconHover from './assets/svg/terminal_hover.svg';
 import OrdersIcon from './assets/svg/orders.svg';
 import OrdersIconHover from './assets/svg/orders_hover.svg';
-import RaitingIcon from './assets/svg/MenuIconRatings.svg';
-import RaitingIconHover from './assets/svg/MenuIconRatingsHover.svg';
 import LeaderboardIcon from './assets/svg/MenuIconLeaderboard.svg';
 import LeaderboardIconHover from './assets/svg/MenuIconLeaderboardHover.svg';
 import SignOut from './assets/svg/SignOut.svg';
@@ -302,13 +300,6 @@ class Navigation extends React.Component {
         imgClass: 'leaderboard',
         icon: LeaderboardIcon,
         iconHover: LeaderboardIconHover
-      },
-      {
-        name: 'Ratings',
-        to: '/rating',
-        imgClass: 'ratings',
-        icon: RaitingIcon,
-        iconHover: RaitingIconHover
       },
       {
         name: 'Terminal',
