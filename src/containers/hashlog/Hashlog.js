@@ -7,7 +7,7 @@ import ReactTable from '../../components/SelectableReactTable';
 import createMqProvider, {querySchema} from '../../MediaQuery';
 import PaginationWithPage from '../../components/PaginationWithPage';
 
-const {MediaQuery, Screen} = createMqProvider(querySchema);
+const {Screen} = createMqProvider(querySchema);
 
 class Hashlog extends React.Component {
   state = {
@@ -30,37 +30,36 @@ class Hashlog extends React.Component {
     } = this.props;
     return (
       <React.Fragment>
-        <MediaQuery>
-          <Screen on={screenWidth => (
-            <ReactTable
-              data={blockList}
-              columns={this.getColumns()}
-              pages={Math.ceil(totalBlocks/blocksPageSize)}
-              page={blocksPage}
-              defaultPageSize={blocksPageSize}
-              pageSize={blocksPageSize}
-              showPagination={true}
-              screenWidth={screenWidth}
-              showPaginationBottom={true}
-              manual
-              paginationPageDispatcher={page => {
-                setBlocksPage(page);
-                getBlocksPages(page, blocksPageSize);
-              }}
-              paginationPageSizeDispatcher={pageSize => {
-                setBlocksPageSize(pageSize);
-                getBlocksPages(blocksPage, pageSize);
-              }}
-              onItemSelected={() => {}}
-              PaginationComponent={PaginationWithPage}
-            />)}
-          />
-        </MediaQuery>
+        <Screen on={screenWidth => (
+          <ReactTable
+            data={blockList}
+            columns={this.getColumns(screenWidth)}
+            pages={Math.ceil(totalBlocks/blocksPageSize)}
+            page={blocksPage}
+            defaultPageSize={blocksPageSize}
+            pageSize={blocksPageSize}
+            showPagination={true}
+            screenWidth={screenWidth}
+            showPaginationBottom={true}
+            manual
+            paginationPageDispatcher={page => {
+              setBlocksPage(page);
+              getBlocksPages(page, blocksPageSize);
+            }}
+            paginationPageSizeDispatcher={pageSize => {
+              setBlocksPageSize(pageSize);
+              getBlocksPages(blocksPage, pageSize);
+            }}
+            onItemSelected={() => {}}
+            PaginationComponent={PaginationWithPage}
+          />)}
+        />
       </React.Fragment>
     );
   }
 
-  getColumns() {
+  getColumns = screenWidth => {
+    const lgBreakpoint = parseInt(querySchema.lg.replace(/[^0-9]/g, ''), 10);
     return [
       {
         Header: this.props.intl.messages['hashlog.blockNumber'],
@@ -68,7 +67,7 @@ class Hashlog extends React.Component {
         accessor: 'number',
         headerClassName: 'hashlog__table-header-title',
         className: 'table_col_value',
-        minWidth: window.matchMedia('(max-width: 1028px)') ? 25 : 60,
+        minWidth: screenWidth < lgBreakpoint ? 25 : 60,
       },
       {
         Header: this.props.intl.messages['hashlog.blockHash'],
@@ -81,14 +80,14 @@ class Hashlog extends React.Component {
         Header: this.props.intl.messages['hashlog.actionCount'],
         className: 'table_col_value',
         headerClassName: 'hashlog__table-header-title',
-        minWidth: window.matchMedia('(max-width: 1028px)') ? 30 : 100,
+        minWidth:  screenWidth < lgBreakpoint ? 30 : 100,
         accessor: 'actions'
       },
       {
         Header: this.props.intl.messages['hashlog.createdAt'],
         className: 'table_col_value',
         headerClassName: 'hashlog__table-header-title',
-        minWidth: window.matchMedia('(max-width: 1028px)') ? 70 : 100,
+        minWidth: screenWidth < lgBreakpoint ? 70 : 100,
         accessor: 'createdAt'
       }
     ];

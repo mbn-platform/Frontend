@@ -8,12 +8,15 @@ import MainContent from './MainContentContainer';
 import Navigation from './Navigation';
 import { fetchTime } from './actions/time';
 import { Container, Row } from 'reactstrap';
+import createMqProvider, {querySchema} from './MediaQuery';
 import './App.css';
 import $ from 'jquery';
 window.jQuery = window.$ = $;
 require('floatthead');
 require('bootstrap');
 require('malihu-custom-scrollbar-plugin');
+
+const {MediaQuery} = createMqProvider(querySchema);
 
 window.uncustomize = function() {
   $(document).off('click');
@@ -286,12 +289,14 @@ class App extends React.Component {
 
 const MainRouter = () => (
   <BrowserRouter>
-    <Container className="main-panel" fluid>
-      <Row noGutters className='flex-wrap flex-md-nowrap'>
-        <Navigation />
-        <MainContent />
-      </Row>
-    </Container>
+    <MediaQuery>
+      <Container className="main-panel" fluid>
+        <Row noGutters className='flex-wrap flex-md-nowrap'>
+          <Navigation />
+          <MainContent />
+        </Row>
+      </Container>
+    </MediaQuery>
   </BrowserRouter>
 );
 

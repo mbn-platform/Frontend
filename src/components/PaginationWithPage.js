@@ -15,42 +15,45 @@ export default class PaginationWithPage extends React.Component {
   constructor(props) {
     super();
     this.state = {
-      visiblePages: this.getVisiblePages(props.page, props.pages, props.screenWidth)
+      visiblePages: this.getVisiblePages(props.page, props.pages, props.screenSize)
     };
   }
 
   static propTypes = {
-    pages: PropTypes.number,
+    pages: PropTypes.number.isRequired,
     page: PropTypes.number,
     PageButtonComponent: PropTypes.any,
     onPageChange: PropTypes.func,
     previousText: PropTypes.string,
-    nextText: PropTypes.string
+    nextText: PropTypes.string,
+    screenSize: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   };
 
   componentWillReceiveProps(nextProps) {
     if (this.props.pages !== nextProps.pages) {
       this.setState({
-        visiblePages: this.getVisiblePages(nextProps.page, nextProps.pages, nextProps.screenWidth)
+        visiblePages: this.getVisiblePages(nextProps.page, nextProps.pages, nextProps.screenSize)
       });
       this.props.paginationPageDispatcher(nextProps.page);
     }
   }
 
-  getVisiblePages = (page, total, screenWidth) => {
-    const isMobileScreen = (screenWidth === 'sm');
+  getVisiblePages = (page, total, screenSize) => {
+    const isMobileScreen = (screenSize === 'sm');
     if (isMobileScreen) {
       if (total < 5) {
         return times(total, (i) => 1 + i);
       } else {
         if (page < 3) {
           return [1, 2, 3, 4, total];
-        }
-        if (total - page <= 2) {
-          return [1, total - 3, total - 2, total - 1, total];
-        }
-        if (page + 3 % 3 >= 0) {
-          return [1, page - 1, page, page + 1,  total];
+        } else {
+          if (total - page <= 2) {
+            return [1, total - 3, total - 2, total - 1, total];
+          } else {
+            if (page + 3 % 3 >= 0) {
+              return [1, page - 1, page, page + 1, total];
+            }
+          }
         }
       }
     } else {
@@ -58,9 +61,7 @@ export default class PaginationWithPage extends React.Component {
         return times(total, (i) => 1 + i);
       } else {
         if (page < 5) {
-          return isMobileScreen ?
-            [1, 2, 3, 4, 5, 6, total] :
-            [1, 2, 3, 4, 5, 6, total];
+          return [1, 2, 3, 4, 5, 6, total];
         }
         if (total - page <= 2) {
           return [1, total - 5, total - 4, total - 3, total - 2, total - 1, total];
@@ -80,13 +81,13 @@ export default class PaginationWithPage extends React.Component {
       pageSize,
       paginationPageDispatcher,
       paginationPageSizeDispatcher,
-      screenWidth
+      screenSize
     } = this.props;
     const { visiblePages } = this.state;
     return (
       <div className="table__pagination">
         <div className="table__prev-page-wrapper">
-          {screenWidth !== 'sm' &&
+          {screenSize !== 'sm' &&
             <PageButtonComponent
               className=" btn btn-secondary table__page-button"
               onClick={() => {
@@ -95,7 +96,7 @@ export default class PaginationWithPage extends React.Component {
                 }
                 paginationPageDispatcher(page - 1);
                 this.setState({
-                  visiblePages: this.getVisiblePages(page - 1, total, screenWidth)
+                  visiblePages: this.getVisiblePages(page - 1, total, screenSize)
                 });
               }}
               disabled={page === 1}
@@ -118,7 +119,7 @@ export default class PaginationWithPage extends React.Component {
                 onClick={() => {
                   paginationPageDispatcher(currentPage);
                   this.setState({
-                    visiblePages: this.getVisiblePages(currentPage, total, screenWidth)
+                    visiblePages: this.getVisiblePages(currentPage, total, screenSize)
                   });
                 }}
               >
@@ -131,7 +132,7 @@ export default class PaginationWithPage extends React.Component {
           })}
         </div>
         <div className="table__next-page-wrapper">
-          {screenWidth !== 'sm' &&
+          {screenSize !== 'sm' &&
           <PageButtonComponent
             className=" btn btn-secondary table__page-button"
             onClick={() => {
@@ -140,7 +141,7 @@ export default class PaginationWithPage extends React.Component {
               }
               paginationPageDispatcher(page + 1);
               this.setState({
-                visiblePages: this.getVisiblePages(page + 1, total, screenWidth)
+                visiblePages: this.getVisiblePages(page + 1, total, screenSize)
               });
             }}
             disabled={page === this.props.pages}
