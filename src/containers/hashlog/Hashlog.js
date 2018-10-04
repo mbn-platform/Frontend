@@ -17,7 +17,7 @@ class Hashlog extends React.Component {
   };
 
   componentDidMount() {
-    const {getBlocksPages, blocksPage, blocksPageSize} = this.props;
+    const {getBlocksPages, hashlog : {blocksPage, blocksPageSize}} = this.props;
     getBlocksPages(blocksPage, blocksPageSize);
   }
 
