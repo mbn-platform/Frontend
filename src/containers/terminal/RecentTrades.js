@@ -24,6 +24,7 @@ class RecentTrades extends React.Component {
 
   getColumns = () => {
     const [base, secondary] = this.props.market.split('-');
+
     return [
       {
         Header: <div onClick={() => this.onColumnSort('Price')}

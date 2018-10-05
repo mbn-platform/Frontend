@@ -8,12 +8,15 @@ import MainContent from './MainContentContainer';
 import Navigation from './Navigation';
 import { fetchTime } from './actions/time';
 import { Container, Row } from 'reactstrap';
+import createMqProvider, {querySchema} from './MediaQuery';
 import './App.css';
 import $ from 'jquery';
 window.jQuery = window.$ = $;
 require('floatthead');
 require('bootstrap');
 require('malihu-custom-scrollbar-plugin');
+
+const {MediaQuery} = createMqProvider(querySchema);
 
 window.uncustomize = function() {
   $(document).off('click');
@@ -124,6 +127,7 @@ window.customize = function() {
       $('.edit-btn').removeClass('active');
       $('.edit-btn').text('edit');
     }
+    console.log($('.info-screen').hasClass('disable-block'));
     if($('.info-screen').hasClass('disable-block')) {
       $('.duration-contract .form-control').prop('disabled',true);
       $('#cmn-toggle-4').prop('disabled',true);
@@ -214,7 +218,7 @@ window.customize = function() {
         $(".feedback-card .card-body .list-group").height(heightList)
       }*/
       mobileScreenShowButton($('.feedback-card .card-body .list-group'),$('.feedback-card .card-body .list-group .list-group-item'), 5,'show next 5 feedbacks','show less 5 feedbacks');
-    //mobileScreenShowButton($(".currency-settings table tbody"),$(".currency-settings tbody tr") ,10 ,'show next 10 currencies' ,'show previous 10 currencies',$(".currency-settings tbody tr:not(.empty-tr) td").outerHeight())
+      //mobileScreenShowButton($(".currency-settings table tbody"),$(".currency-settings tbody tr") ,10 ,'show next 10 currencies' ,'show previous 10 currencies',$(".currency-settings tbody tr:not(.empty-tr) td").outerHeight())
 
 
 
@@ -285,17 +289,15 @@ class App extends React.Component {
 
 const MainRouter = () => (
   <BrowserRouter>
-    <Container className="main-panel" fluid>
-      <Row noGutters className='flex-wrap flex-md-nowrap'>
-        <Navigation />
-        <MainContent />
-      </Row>
-    </Container>
+    <MediaQuery>
+      <Container className="main-panel" fluid>
+        <Row noGutters className='flex-wrap flex-md-nowrap'>
+          <Navigation />
+          <MainContent />
+        </Row>
+      </Container>
+    </MediaQuery>
   </BrowserRouter>
 );
-
-
-
-
 
 export default App;
