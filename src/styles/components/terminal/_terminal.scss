@@ -24,6 +24,69 @@
     }
   }
 
+  .orders-table-wrapper {
+    .ReactTable {
+      .rt-thead {
+        border: 0;
+        .rt-tr {
+          padding-top: 0 !important;
+        }
+      }
+    }
+  }
+
+  .terminal__table-order-remove {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+
+    .remove {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      background: url('../assets/svg/cross.svg') no-repeat center;
+      background-size: contain;
+      &:hover {
+        opacity: 1;
+        background: url('../assets/svg/cross_white.svg') no-repeat center;
+        background-size: contain;
+      }
+    }
+  }
+
+  .terminal__table-order-type {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .round.center {
+      margin: 0 auto;
+      display: block;
+    }
+    .round-wrapper {
+      width: 40px;
+    }
+
+    .round {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .buy {
+      .round {
+        background-color: #32B994;
+      }
+    }
+    .sell {
+      .round {
+        background-color: #D74C4C;
+      }
+    }
+  }
+
   .-sort-asc {
     .icon-dir:before {
       content: '\e808';
@@ -645,6 +708,13 @@
   opacity: .5;
 }
 
+
+@media (max-width: 1028px) {
+  .terminal__header-wrapper {
+    font-size: 9px;
+  }
+}
+
 /*
 	Hide columns on <768px
  */
@@ -816,9 +886,6 @@
 
   }
 
-  .orders-table-wrapper {
-    height: 165px;
-  }
   .orderbook-table-wrapper {
     height: 140px;
   }
@@ -845,9 +912,7 @@
       height: 300px;
     }
   }
-  .orders-table-wrapper {
-    height: 165px;
-  }
+
   .orderbook-table-wrapper {
     height: 140px;
   }

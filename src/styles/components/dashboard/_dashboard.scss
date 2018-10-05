@@ -1941,6 +1941,8 @@
       }
 
       .table_bot_col_value {
+        white-space: nowrap;
+        overflow: hidden;
         font-size: 12px;
       }
 

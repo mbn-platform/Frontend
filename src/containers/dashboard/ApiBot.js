@@ -26,7 +26,7 @@ const DELETED_KEYS = {
   />
 };
 
-const {MediaQuery, Screen} = createMqProvider(querySchema);
+const { Screen} = createMqProvider(querySchema);
 
 class BotList extends React.Component {
 
@@ -226,35 +226,33 @@ class BotList extends React.Component {
       listItem.hasOwnProperty('deletedAt') :
       !listItem.hasOwnProperty('deletedAt'));
     return (
-      <MediaQuery>
-        <div>
-          <Screen on={(size) => {
-            switch(size) {
-              case 'lg': return (
-                <ReactTable
-                  style={{height: 312}}
-                  columns={this.getColumns()}
-                  data={currentData}
-                  selectedItem={this.props.selectedApiKey}
-                  onItemSelected={key => this.props.onKeySelected(key)}
-                  scrollBarHeight={217}
-                />);
-              case 'sm': return (
-                <ReactTable
-                  columns={this.getColumns()}
-                  data={currentData}
-                  selectedItem={this.props.selectedApiKey}
-                  onItemSelected={key => this.props.onKeySelected(key)}
-                  minRows={5}
-                  showPagination={true}
-                  defaultPageSize={5}
-                  PaginationComponent={Pagination}
-                /> );
-              default: return null;
-            }
-          }} />
-        </div>
-      </MediaQuery>
+      <div>
+        <Screen on={(size) => {
+          switch(size) {
+            case 'lg': return (
+              <ReactTable
+                style={{height: 312}}
+                columns={this.getColumns()}
+                data={currentData}
+                selectedItem={this.props.selectedApiKey}
+                onItemSelected={key => this.props.onKeySelected(key)}
+                scrollBarHeight={217}
+              />);
+            case 'sm': return (
+              <ReactTable
+                columns={this.getColumns()}
+                data={currentData}
+                selectedItem={this.props.selectedApiKey}
+                onItemSelected={key => this.props.onKeySelected(key)}
+                minRows={5}
+                showPagination={true}
+                defaultPageSize={5}
+                PaginationComponent={Pagination}
+              /> );
+            default: return null;
+          }
+        }} />
+      </div>
     );
   }
 }
