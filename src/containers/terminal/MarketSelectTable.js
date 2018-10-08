@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import $ from 'jquery';
 import classNames from 'classnames';
 import { defaultFormatValue } from '../../generic/util';
+import ReactTable from '../../components/SelectableReactTable';
 import {sortData, onColumnSort, classNameForColumnHeader}  from '../../generic/terminalSortFunctions';
 import {selectMarket} from '../../actions/terminal';
 import { connect } from 'react-redux';
@@ -21,7 +22,6 @@ class MarketSelectTable extends React.Component {
       hideZeros: false,
     };
     this.onBaseCurrencySelected = this.onBaseCurrencySelected.bind(this);
-    this.onSecondaryCurrencySelected = this.onSecondaryCurrencySelected.bind(this);
     this.onChange = this.onChange.bind(this);
     this.sortData = sortData.bind(this);
     this.onColumnSort = onColumnSort.bind(this);
@@ -78,7 +78,7 @@ class MarketSelectTable extends React.Component {
     $('.popover-body .js-dropdown-table-wrapper table').floatThead('reflow');
   }
 
-  onSecondaryCurrencySelected(e) {
+  onSecondaryCurrencySelected = e => {
     e.stopPropagation();
     const currency = e.target.parentElement.dataset.currency;
     const market = this.state.baseCurrency + '-' + currency;
@@ -127,6 +127,110 @@ class MarketSelectTable extends React.Component {
       return total;
     }
   }
+
+  getColumns = () => {
+    const { baseCurrency } = this.state;
+    const { balances, rates } = this.props;
+
+    let balanceValue;
+    const isBTC = baseCurrency === 'BTC';
+
+
+
+    function calculateChange(currentMarketValue) {
+      if(balances) {
+        let c;
+        c = balances.find(m => m.name === currentMarketValue.second);
+        balanceValue = (c && c.available) || 0;
+        balanceValue = balanceValue * rates[currentMarketValue.symbol];
+      }
+
+      const val=rates[currentMarketValue.symbol] ? rates[currentMarketValue.symbol] : '';
+      const prevDay = currentMarketValue.prevDay;
+      return prevDay ? (val / prevDay * 100 - 100) : null;
+    }
+
+
+    const marketColumns =  [
+      {
+        Header:
+          <div onClick={() => this.onColumnSort('second')} className="table__header-wrapper">
+            <FormattedMessage id="terminal.currency" defaultMessage="Currency"/>
+            <span className={classNameForColumnHeader(this.state, 'second')}/>
+          </div>,
+        minWidth: 100,
+        className: 'terminal__table-order-type',
+        Cell: row =>  (
+          <div>
+            {row.original.second}
+          </div>
+        )
+      },
+      {
+        Header:   <div onClick={() => this.onColumnSort('last')} className="table__header-wrapper">
+          <FormattedMessage id="terminal.price" defaultMessage="Price"/>
+          <span className={classNameForColumnHeader(this.state, 'last')}/>
+        </div>,
+        Cell: row => (
+          <div>{defaultFormatValue(row.original.last, row.original.base)}</div>
+        ),
+        minWidth: 90,
+      },
+      {
+        minWidth:  90,
+        Header: <div onClick={() => this.onColumnSort('volume')} className="table__header-wrapper">
+          <FormattedMessage id="terminal.volumeCurrency" defaultMessage="Volume({baseCurrency})" values={{baseCurrency}}/>
+          <span className={classNameForColumnHeader(this.state, 'volume')}/>
+        </div>,
+        Cell: row => {
+          return (
+            <div>{Math.round(row.original.volume * row.original.last)}</div>
+          );
+        },
+      },
+      {
+        Header: <div onClick={() => this.onColumnSort('change')} className="table__header-wrapper">
+          <FormattedMessage id="terminal.change" defaultMessage="Change" values={{baseCurrency}}/>
+          <span className={classNameForColumnHeader(this.state, 'change')}/>
+        </div>,
+        minWidth:  90,
+        Cell: row => (
+          <div className="ellipsis-cell">{calculateChange(row.original).toFixed(2) + '%'}</div>
+        )
+      },
+    ];
+
+    return [
+      ...marketColumns,
+      ...(this.props.balances ? [
+        {
+          Header: <div onClick={() => this.onColumnSort('Balance')} className="table__header-wrapper">
+            <FormattedMessage id="terminal.balance" defaultMessage="Balance ({baseCurrency}) " values={{baseCurrency}}/>
+            <span className={classNameForColumnHeader(this.state, 'Balance')}/><br/></div>,
+          minWidth: 80,
+          Cell: row => (
+            <div>{defaultFormatValue(balanceValue, row.original.base)}</div>
+          )
+        }
+      ] : []),
+    ];
+  }
+
+  onRowClick = () => {
+    return {
+      onClick: e => this.onSecondaryCurrencySelected(e)
+    };
+  }
+
+  renderMarketTable = (data) => (
+    <ReactTable
+      getTrProps={this.onRowClick}
+      columns={this.getColumns()}
+      data={data}
+      scrollBarHeight={140}
+      style={{height: 180}}
+    />
+  )
 
   render() {
     if(!this.tableHeight) {
@@ -181,46 +285,7 @@ class MarketSelectTable extends React.Component {
         </div>
 
         <div style={{height: this.tableHeight + 'px'}} className="dropdown-table-wrapper js-dropdown-table-wrapper">
-          <table className="table">
-            <thead>
-              <tr>
-                <th onClick={() => this.onColumnSort('second')}>
-                  <FormattedMessage id="terminal.currency" defaultMessage="Currency"/>
-                  <span className={classNameForColumnHeader(this.state, 'second')}/></th>
-                <th onClick={() => this.onColumnSort('last')}>
-                  <FormattedMessage id="terminal.price" defaultMessage="Price"/>
-                  <span className={classNameForColumnHeader(this.state, 'last')}/></th>
-                <th onClick={() => this.onColumnSort('volume')}>
-                  <FormattedMessage id="terminal.volumeCurrency" defaultMessage="Volume({baseCurrency})" values={{baseCurrency}}/>
-                  <span className={classNameForColumnHeader(this.state, 'volume')}/></th>
-                <th onClick={() => this.onColumnSort('change')}>
-                  <FormattedMessage id="terminal.change" defaultMessage="Change" values={{baseCurrency}}/>
-                  <span className={classNameForColumnHeader(this.state, 'change')}/>
-                </th>
-                {this.props.balances ? (
-                  <th onClick={() => this.onColumnSort('Balance')}>
-                    <FormattedMessage id="terminal.balance" defaultMessage="Balance ({baseCurrency}) " values={{baseCurrency}}/>
-                    <span className={classNameForColumnHeader(this.state, 'Balance')}/><br/></th>
-                ) : null}
-              </tr>
-            </thead>
-            <tbody>
-              {
-                sortedData
-                  .filter(m => m.second.toLowerCase().indexOf(this.state.filter.toLowerCase()) >= 0)
-                  .map(m => (
-                    <MarketRow
-                      rates={this.props.rates}
-                      balances={this.props.balances}
-                      isBTC={isBTC}
-                      key={m.symbol}
-                      onClick={this.onSecondaryCurrencySelected}
-                      market={m}
-                    />
-                  ))
-              }
-            </tbody>
-          </table>
+          {this.renderMarketTable(sortedData.filter(m => m.second.toLowerCase().indexOf(this.state.filter.toLowerCase()) >= 0))}
         </div>
       </div>
     );

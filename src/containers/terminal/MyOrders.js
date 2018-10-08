@@ -63,7 +63,7 @@ class MyOrders extends React.Component {
       },
       {
         minWidth: screenWidth === 'lg' ? 70 : 50,
-        Header: <div onClick={() => this.onColumnSort('filled')} className="terminal__header-wrapper">
+        Header: <div onClick={() => this.onColumnSort('filled')} className="table__header-wrapper">
           <FormattedMessage id="terminal.unitsFilled" defaultMessage="Units Filled"/>
           <span className={classNameForColumnHeader(this.state, 'filled')}/></div>,
         Cell: row => {
@@ -73,7 +73,7 @@ class MyOrders extends React.Component {
         },
       },
       {
-        Header: <div onClick={() => this.onColumnSort('amount')} className="terminal__header-wrapper">
+        Header: <div onClick={() => this.onColumnSort('amount')} className="table__header-wrapper">
           <FormattedMessage id="terminal.unitsTotal" defaultMessage="Units Total"/>
           <span className={classNameForColumnHeader(this.state, 'amount')}/>
         </div>,
@@ -85,7 +85,7 @@ class MyOrders extends React.Component {
         },
       },
       {
-        Header: <div onClick={() => this.onColumnSort('price')} className="terminal__header-wrapper">
+        Header: <div onClick={() => this.onColumnSort('price')} className="table__header-wrapper">
           <span><FormattedMessage id="terminal.est" defaultMessage="Est."/></span>
           <FormattedMessage id="terminal.total" defaultMessage="Total"/>
           <span className={classNameForColumnHeader(this.state, 'price')}/>
