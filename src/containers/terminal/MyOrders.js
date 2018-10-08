@@ -3,10 +3,8 @@ import classNames from 'classnames';
 import $ from 'jquery';
 import { Desktop } from '../../generic/MediaQuery';
 import ReactTable from '../../components/SelectableReactTable';
-import { OpenOrder, CompletedOrder } from '../../components/OrdersStatements';
 import {sortData, onColumnSort, classNameForColumnHeader}  from '../../generic/terminalSortFunctions';
 import { FormattedMessage } from 'react-intl';
-import {BigNumber} from 'bignumber.js/bignumber';
 import createMqProvider, {querySchema} from '../../MediaQuery';
 
 const TAB_OPEN_ORDERS = 0;
@@ -40,7 +38,7 @@ class MyOrders extends React.Component {
     const ordersColumn = [
       {
         Header:
-          <div onClick={() => this.onColumnSort('type')} className="terminal__header-wrapper">
+          <div onClick={() => this.onColumnSort('type')} className="table__header-wrapper">
             <FormattedMessage id="terminal.type" defaultMessage="Type"/>
             <span className={classNameForColumnHeader(this.state, 'type')}/>
           </div>,
@@ -55,7 +53,7 @@ class MyOrders extends React.Component {
         )
       },
       {
-        Header:   <div onClick={() => this.onColumnSort('limit')} className="terminal__header-wrapper">
+        Header:   <div onClick={() => this.onColumnSort('limit')} className="table__header-wrapper">
           <FormattedMessage id="terminal.priceForTable" defaultMessage="Price"/>
           <span className={classNameForColumnHeader(this.state, 'limit')}/></div>,
         Cell: row => (

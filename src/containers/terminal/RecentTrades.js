@@ -28,7 +28,7 @@ class RecentTrades extends React.Component {
     return [
       {
         Header: <div onClick={() => this.onColumnSort('Price')}
-          className="terminal__header-wrapper">
+          className="table__header-wrapper">
           <FormattedMessage id="terminal.priceRecent"
             defaultMessage="Price ({base})" values={{base}}/>
           <span className={classNameForColumnHeader(this.state, 'Price')}/>
@@ -45,7 +45,7 @@ class RecentTrades extends React.Component {
         }
       }, {
         Header:<div onClick={() => this.onColumnSort('Quantity')}
-          className="terminal__header-wrapper">
+          className="table__header-wrapper">
           <FormattedMessage id="terminal.tradeSize"
             defaultMessage="Trade Size ({secondary})" values={{secondary}}/>
           <span className={classNameForColumnHeader(this.state, 'Quantity')}/>
@@ -62,7 +62,7 @@ class RecentTrades extends React.Component {
       }, {
         minWidth: 70,
         Header: <div onClick={() => this.onColumnSort('TimeStamp')}
-          className="terminal__header-wrapper">
+          className="table__header-wrapper">
           <FormattedMessage id="terminal.time"
             defaultMessage="Time" />
           <span className={classNameForColumnHeader(this.state, 'TimeStamp')}/>

@@ -352,6 +352,27 @@ body {
 .add_keys_field:focus::-moz-placeholder           {color:#7c7c7d;}/* Firefox 18- */
 .add_keys_field:focus::-ms-input-placeholder      {color:#7c7c7d;}
 
+.table__header-wrapper {
+	border: none;
+	text-transform: capitalize;
+	font-size: 12px;
+	text-align: left;
+	margin-bottom: 5px;
+	color: #5B5F67;
+	white-space: nowrap;
+	font-family: "SF-UI" !important;
+
+	&:hover {
+		color: #fff;
+		cursor: pointer;
+	}
+}
+
+@media (max-width: 1028px) {
+	.table__header-wrapper {
+		font-size: 9px;
+	}
+}
 
 .main-panel.container-fluid {
 	padding: 0;

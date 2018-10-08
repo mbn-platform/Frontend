@@ -684,35 +684,12 @@
   }
 }
 
-.terminal__header-wrapper {
-  border: none;
-  text-transform: capitalize;
-  font-size: 12px;
-  text-align: left;
-  margin-bottom: 5px;
-  color: #5B5F67;
-  white-space: nowrap;
-  font-family: "SF-UI" !important;
-
-  &:hover {
-    color: #fff;
-    cursor: pointer;
-  }
-}
-
 .terminal__recent-table-wrapper {
   height: 100% !important;
 }
 
 .terminal__sub-cell {
   opacity: .5;
-}
-
-
-@media (max-width: 1028px) {
-  .terminal__header-wrapper {
-    font-size: 9px;
-  }
 }
 
 /*

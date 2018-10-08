@@ -42,7 +42,7 @@ const Stats = ({ traderRating, investorRating, roiInUSD, roiInBTC, totalInBTC, t
                 <FormattedMessage id="percentInBtc"
                   defaultMessage="% in btc"/>
               </span>
-            </div>            
+            </div>
           </Col>
         </div>
       </div>
