@@ -8,6 +8,9 @@ import {sortData, onColumnSort, classNameForColumnHeader}  from '../../generic/t
 import {selectMarket} from '../../actions/terminal';
 import { connect } from 'react-redux';
 import {FormattedMessage, injectIntl} from 'react-intl';
+import createMqProvider, {querySchema} from '../../MediaQuery';
+
+const { Screen} = createMqProvider(querySchema);
 
 class MarketSelectTable extends React.Component {
   constructor(props) {
@@ -20,6 +23,7 @@ class MarketSelectTable extends React.Component {
       markets: props.markets.filter(m => m.base === base),
       sort: {},
       hideZeros: false,
+      dropDownHeight: 400,
     };
     this.onBaseCurrencySelected = this.onBaseCurrencySelected.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -37,6 +41,7 @@ class MarketSelectTable extends React.Component {
     };
     this.onHideZeroClick = this.onHideZeroClick.bind(this);
     this.onResize = this.onResize.bind(this);
+    this.dropDownWrapper = React.createRef();
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -78,9 +83,9 @@ class MarketSelectTable extends React.Component {
     $('.popover-body .js-dropdown-table-wrapper table').floatThead('reflow');
   }
 
-  onSecondaryCurrencySelected = e => {
+  onSecondaryCurrencySelected = (e, rowInfo) => {
     e.stopPropagation();
-    const currency = e.target.parentElement.dataset.currency;
+    const currency = rowInfo.original.second;
     const market = this.state.baseCurrency + '-' + currency;
     if(market !== this.props.market) {
       this.props.selectMarket(this.state.baseCurrency + '-' + currency);
@@ -112,9 +117,8 @@ class MarketSelectTable extends React.Component {
         return $container;
       },
       position: 'absolute',
-      // debug: true
     });
-
+    this.setState({dropDownHeight: this.dropDownWrapper.current.offsetHeight - 180});
   };
 
   getTableHeight() {
@@ -128,7 +132,7 @@ class MarketSelectTable extends React.Component {
     }
   }
 
-  getColumns = () => {
+  getColumns = screenWidth => {
     const { baseCurrency } = this.state;
     const { balances, rates } = this.props;
 
@@ -158,8 +162,8 @@ class MarketSelectTable extends React.Component {
             <FormattedMessage id="terminal.currency" defaultMessage="Currency"/>
             <span className={classNameForColumnHeader(this.state, 'second')}/>
           </div>,
-        minWidth: 100,
-        className: 'terminal__table-order-type',
+        minWidth:  screenWidth === 'lg' ? 100 : 40,
+        className: 'terminal__market-table-cell terminal__market-table-cell_color-white',
         Cell: row =>  (
           <div>
             {row.original.second}
@@ -171,32 +175,32 @@ class MarketSelectTable extends React.Component {
           <FormattedMessage id="terminal.price" defaultMessage="Price"/>
           <span className={classNameForColumnHeader(this.state, 'last')}/>
         </div>,
+        className: 'terminal__market-table-cell',
         Cell: row => (
           <div>{defaultFormatValue(row.original.last, row.original.base)}</div>
         ),
-        minWidth: 90,
+        minWidth:  screenWidth === 'lg' ? 90 : 40,
       },
       {
-        minWidth:  90,
+        minWidth:  screenWidth === 'lg' ? 120 : 60,
+        className: 'terminal__market-table-cell',
         Header: <div onClick={() => this.onColumnSort('volume')} className="table__header-wrapper">
           <FormattedMessage id="terminal.volumeCurrency" defaultMessage="Volume({baseCurrency})" values={{baseCurrency}}/>
           <span className={classNameForColumnHeader(this.state, 'volume')}/>
         </div>,
-        Cell: row => {
-          return (
-            <div>{Math.round(row.original.volume * row.original.last)}</div>
-          );
-        },
+        Cell: row => Math.round(row.original.volume * row.original.last)
       },
       {
         Header: <div onClick={() => this.onColumnSort('change')} className="table__header-wrapper">
           <FormattedMessage id="terminal.change" defaultMessage="Change" values={{baseCurrency}}/>
           <span className={classNameForColumnHeader(this.state, 'change')}/>
         </div>,
-        minWidth:  90,
-        Cell: row => (
-          <div className="ellipsis-cell">{calculateChange(row.original).toFixed(2) + '%'}</div>
-        )
+        className: 'terminal__market-table-cell',
+        minWidth:  screenWidth === 'lg' ? 130 : 40,
+        Cell: row =>
+          <div className={row.original.change >= 0 ? 'terminal__market-table-cell_up' : 'terminal__market-table-cell_down'}>
+            {calculateChange(row.original).toFixed(2) + '%'}
+          </div>
       },
     ];
 
@@ -208,6 +212,7 @@ class MarketSelectTable extends React.Component {
             <FormattedMessage id="terminal.balance" defaultMessage="Balance ({baseCurrency}) " values={{baseCurrency}}/>
             <span className={classNameForColumnHeader(this.state, 'Balance')}/><br/></div>,
           minWidth: 80,
+          className: 'terminal__market-table-cell',
           Cell: row => (
             <div>{defaultFormatValue(balanceValue, row.original.base)}</div>
           )
@@ -216,19 +221,18 @@ class MarketSelectTable extends React.Component {
     ];
   }
 
-  onRowClick = () => {
+  onRowClick = (state, rowInfo) => {
     return {
-      onClick: e => this.onSecondaryCurrencySelected(e)
+      onClick: e => this.onSecondaryCurrencySelected(e, rowInfo)
     };
   }
 
-  renderMarketTable = (data) => (
+  renderMarketTable = (data, screenWidth) => (
     <ReactTable
       getTrProps={this.onRowClick}
-      columns={this.getColumns()}
+      columns={this.getColumns(screenWidth)}
       data={data}
-      scrollBarHeight={140}
-      style={{height: 180}}
+      scrollBarHeight={this.state.dropDownHeight}
     />
   )
 
@@ -252,7 +256,7 @@ class MarketSelectTable extends React.Component {
       <div onClick={e => {
         e.stopPropagation();
         e.nativeEvent.stopImmediatePropagation();
-      }} className="dropdown search">
+      }} className="dropdown search" ref={this.dropDownWrapper}>
         <div onClick={this.props.close} className="dropdown__name">
           <span>{this.props.market}</span>
           <span>
@@ -283,10 +287,11 @@ class MarketSelectTable extends React.Component {
             className={classNames('dropdown__btn', {active: baseCurrency === 'USDT'})}
           >USDT</button>
         </div>
-
-        <div style={{height: this.tableHeight + 'px'}} className="dropdown-table-wrapper js-dropdown-table-wrapper">
-          {this.renderMarketTable(sortedData.filter(m => m.second.toLowerCase().indexOf(this.state.filter.toLowerCase()) >= 0))}
-        </div>
+        <Screen on={screenWidth => (
+          <div style={{height: this.tableHeight + 'px'}} className="dropdown-table-wrapper js-dropdown-table-wrapper">
+            {this.renderMarketTable(sortedData.filter(m => m.second.toLowerCase().indexOf(this.state.filter.toLowerCase()) >= 0), screenWidth)}
+          </div>
+        )}/>
       </div>
     );
   }

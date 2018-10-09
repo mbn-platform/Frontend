@@ -692,10 +692,33 @@
   opacity: .5;
 }
 
+.terminal__market-table-cell {
+  text-align: left !important;
+  justify-content: start;
+  white-space: nowrap;
+  overflow-x: scroll !important;
+  font-size: 8px;
+}
+
+.terminal__market-table-cell_up {
+  color: #32B994;
+}
+
+.terminal__market-table-cell_down {
+  color: #D74C4C;
+}
+
+.terminal__market-table-cell_color-white {
+  color: #fff;
+}
+
 /*
 	Hide columns on <768px
  */
 @media (max-width: 768px) {
+  .terminal__market-table-cell {
+    text-align: center !important;
+  }
 
   .orders-table-tab .table {
     th, td {
