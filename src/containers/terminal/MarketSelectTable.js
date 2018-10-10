@@ -137,7 +137,6 @@ class MarketSelectTable extends React.Component {
     const { balances, rates } = this.props;
 
     let balanceValue;
-    const isBTC = baseCurrency === 'BTC';
 
 
 
@@ -241,7 +240,6 @@ class MarketSelectTable extends React.Component {
       this.tableHeight = this.getTableHeight();
     }
     const baseCurrency = this.state.baseCurrency;
-    const isBTC = baseCurrency === 'BTC';
     let sortedData = [];
     if(this.props.balances && this.state.hideZeros) {
       sortedData = this.state.markets.filter(m => {

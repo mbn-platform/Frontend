@@ -697,7 +697,7 @@
   justify-content: start;
   white-space: nowrap;
   overflow-x: scroll !important;
-  font-size: 8px;
+  font-size: 12px;
 }
 
 .terminal__market-table-cell_up {
@@ -718,6 +718,7 @@
 @media (max-width: 768px) {
   .terminal__market-table-cell {
     text-align: center !important;
+    font-size: 8px;
   }
 
   .orders-table-tab .table {

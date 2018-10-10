@@ -5,6 +5,7 @@ import {sortData, onColumnSort, classNameForColumnHeader} from '../../generic/te
 import classNames from 'classnames';
 import {BigNumber} from 'bignumber.js';
 import $ from 'jquery';
+import ReactTable from '../../components/SelectableReactTable';
 import { FormattedMessage } from 'react-intl';
 
 class OrderBook extends React.Component {
@@ -89,6 +90,15 @@ class OrderBook extends React.Component {
     }
   }
 
+  renderOrderBookTable = data => {
+    return <ReactTable
+      getTrProps={this.onRowClick}
+      columns={this.getColumns()}
+      data={data}
+      scrollBarHeight={this.state.dropDownHeight}
+    />;
+  }
+
   render() {
     const [main, secondary] = this.props.market.split('-');
     let sortedDataSell = [];
@@ -155,6 +165,7 @@ class OrderBook extends React.Component {
               ))}
             </tbody>
           </table>
+          {/*{this.renderOrderBookTable(sortedDataSell)}*/}
         </div>
         {this.renderLastPrice()}
         <div className="orderbook-table-wrapper js-table-wrapper" ref={elem => this.tableBuy = elem}>
