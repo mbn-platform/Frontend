@@ -705,7 +705,17 @@
 	}
 }
 @media (max-width: 768px){
-	.ratings-main {
+	.ratings__table-cell {
+		font-size: 10px;
+		height: 30px;
+	}
+
+	.ratings__input-search {
+		width: 60px;
+		font-size: 9px;
+	}
+
+		.ratings-main {
 		.table thead th.rank{
 			white-space: nowrap;
 			&> div:first-child{
