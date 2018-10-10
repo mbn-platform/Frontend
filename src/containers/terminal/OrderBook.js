@@ -7,6 +7,9 @@ import {BigNumber} from 'bignumber.js';
 import $ from 'jquery';
 import ReactTable from '../../components/SelectableReactTable';
 import { FormattedMessage } from 'react-intl';
+import createMqProvider, {querySchema} from '../../MediaQuery';
+
+const { Screen} = createMqProvider(querySchema);
 
 class OrderBook extends React.Component {
 
@@ -20,12 +23,6 @@ class OrderBook extends React.Component {
       relativeSize: (a, b) => a.Rate * a.Quantity - b.Rate * b.Quantity,
     };
     this.state = {last: null, sort: {}, prelast: null, scroll: true};
-  }
-
-  onOrderClick(type, e) {
-    e.stopPropagation();
-    const target = e.currentTarget;
-    this.props.onOrderSelect(parseFloat(target.dataset.price), target.dataset.size, type);
   }
 
   reset() {
@@ -90,12 +87,103 @@ class OrderBook extends React.Component {
     }
   }
 
-  renderOrderBookTable = data => {
+  getColumns = (type, screenWidth)  => {
+    const { market, orderBook } = this.props;
+    const [main, secondary] = market.split('-');
+    const isSellTable = type === 'sell';
+    return [
+      {
+        Header: isSellTable ?
+          <div onClick={() => this.onColumnSort('price')}>
+            <FormattedMessage id="terminal.ask" defaultMessage="Ask"/>
+            <span className={classNameForColumnHeader(this.state, 'price')}/>
+          </div> :
+          '',
+        minWidth: screenWidth === 'lg' ? 110 : 90,
+        className: `${isSellTable ? 
+          'terminal__orderbook-table-cell_sell' : 
+          'terminal__orderbook-table-cell_buy'
+        } 
+        terminal__orderbook-table-cell`,
+        Cell: row => BigNumber(row.original.Rate).toString(10),
+        headerClassName: 'terminal__orderbook-table-header table__header-wrapper',
+      },
+      {
+        Header: isSellTable ?
+          <div onClick={() => this.onColumnSort('Quantity')}>
+            <FormattedMessage id="terminal.size" defaultMessage="Size"/> ({secondary})<span
+              className={classNameForColumnHeader(this.state, 'Quantity')}/>
+          </div> :
+          '',
+        className: 'terminal__orderbook-table-cell',
+        Cell: row => {
+          const sizeParts = formatFloat(row.original.Quantity).split('.');
+          return (
+            <div><span className="terminal__orderbook-table-cell_color_white">{sizeParts[0]}.</span>
+              <span>{sizeParts[1]}</span>
+            </div>
+          );
+        },
+        minWidth: screenWidth === 'lg' ? 80 : 70,
+        headerClassName: 'terminal__orderbook-table-header table__header-wrapper',
+      },
+      {
+        minWidth: screenWidth === 'lg' ? 70 : 60,
+        Header: isSellTable ?
+          <div onClick={() => this.onColumnSort('relativeSize')}>
+            <FormattedMessage id="terminal.total" defaultMessage="Total "/>({main}) <span
+              className={classNameForColumnHeader(this.state, 'relativeSize')}/></div> :
+          '',
+        headerClassName: 'terminal__orderbook-table-header table__header-wrapper',
+        Cell: row => {
+          return (
+            <div>
+              {defaultFormatValue( row.original.Rate *  row.original.Quantity, main)}
+            </div>
+          );
+        },
+        className: 'terminal__orderbook-table-cell',
+      },
+      {
+        Header: '',
+        minWidth: 30,
+        headerClassName: 'terminal__orderbook-table-header table__header-wrapper',
+        Cell: row => {
+          const relativeSize = this.relativeSize( isSellTable ?
+            orderBook.minSell :
+            orderBook.minBuy, 
+          isSellTable ?
+            orderBook.maxSell :
+            orderBook.maxBuy,
+          row.original.Quantity * row.original.Rate);
+          return  <span className={`
+          terminal__orderbook-table-dash
+          ${isSellTable ?
+            'terminal__orderbook-table-dash_red' :
+            'terminal__orderbook-table-dash_green'}`
+          } style={{width: new BigNumber(relativeSize * 100 + 1).toFixed() + '%'}}/>;
+        },
+        className: 'terminal__orderbook-table-cell',
+      }
+    ];
+  }
+
+  onRowClick = (state, rowInfo) => {
+    return {
+      onClick: () => {
+        this.props.onOrderSelect(parseFloat(rowInfo.original.Rate), rowInfo.original.Quantity);
+      }
+    };
+  }
+
+  relativeSize = (minSize, maxSize, size) => Math.max((size - minSize) / (maxSize - minSize), 0.02);
+
+  renderOrderBookTable = (data, type, screenWidth) => {
     return <ReactTable
       getTrProps={this.onRowClick}
-      columns={this.getColumns()}
+      columns={this.getColumns(type, screenWidth)}
       data={data}
-      scrollBarHeight={this.state.dropDownHeight}
+      scrollBarHeight={140}
     />;
   }
 
@@ -118,72 +206,29 @@ class OrderBook extends React.Component {
     }
     return (
       <div className="orderbook-table chart col-12 col-sm-6 col-md-12">
-        <div className="chart__top justify-content-between row">
-          <div className="chart-name">
-            <FormattedMessage id="terminal.orderBook" defaultMessage="Order Book"/>
-          </div>
-          <a role="button" className="reset-button text-muted" onClick={this.reset}>
-            <FormattedMessage id="terminal.resetSort" defaultMessage="Reset sort"/>
-          </a>
-          <Desktop>
-            <div className="chart-controls align-items-center justify-content-between row">
+        <Screen on={screenWidth => (
+          <React.Fragment>
+            <div className="chart__top justify-content-between row">
+              <div className="chart-name">
+                <FormattedMessage id="terminal.orderBook" defaultMessage="Order Book"/>
+              </div>
+              <a role="button" className="reset-button text-muted" onClick={this.reset}>
+                <FormattedMessage id="terminal.resetSort" defaultMessage="Reset sort"/>
+              </a>
+              <Desktop>
+                <div className="chart-controls align-items-center justify-content-between row">
+                </div>
+              </Desktop>
             </div>
-          </Desktop>
-        </div>
-        <div className="orderbook-table-wrapper js-table-wrapper" ref={elem => this.tableSell = elem}>
-          <table className="table red">
-            <thead>
-              <tr>
-                <th onClick={() => this.onColumnSort('price')}>
-                  <div>
-                    <FormattedMessage id="terminal.ask" defaultMessage="Ask"/>
-                    <span className={classNameForColumnHeader(this.state, 'price')}/></div>
-                </th>
-                <th onClick={() => this.onColumnSort('Quantity')}>
-                  <div>
-                    <FormattedMessage id="terminal.size" defaultMessage="Size"/> ({secondary})<span
-                      className={classNameForColumnHeader(this.state, 'Quantity')}/></div>
-                </th>
-                <th onClick={() => this.onColumnSort('relativeSize')}>
-                  <div>
-                    <FormattedMessage id="terminal.total" defaultMessage="Total "/>({main}) <span
-                      className={classNameForColumnHeader(this.state, 'relativeSize')}/></div>
-                </th>
-                <th/>
-              </tr>
-            </thead>
-            <tbody className="tbody">
-              {sortedDataSell.map((order, i) => (
-                <BuyOrderCell
-                  onClickCapture={this.onOrderClick.bind(this, 'sell')}
-                  currency={main}
-                  key={i}
-                  price={order.Rate}
-                  size={order.Quantity}
-                  relativeSize={relativeSize(this.props.orderBook.minSell, this.props.orderBook.maxSell, order.Quantity * order.Rate)}
-                />
-              ))}
-            </tbody>
-          </table>
-          {/*{this.renderOrderBookTable(sortedDataSell)}*/}
-        </div>
-        {this.renderLastPrice()}
-        <div className="orderbook-table-wrapper js-table-wrapper" ref={elem => this.tableBuy = elem}>
-          <table className="table green">
-            <tbody>
-              {sortedDataBuy.map((order, i) => (
-                <BuyOrderCell
-                  onClickCapture={this.onOrderClick.bind(this, 'buy')}
-                  currency={main}
-                  key={i}
-                  price={order.Rate}
-                  size={order.Quantity}
-                  relativeSize={relativeSize(this.props.orderBook.minBuy, this.props.orderBook.maxBuy, order.Quantity * order.Rate)}
-                />
-              ))}
-            </tbody>
-          </table>
-        </div>
+            <div className="terminal__orderbook-table-wrapper js-table-wrapper" ref={elem => this.tableSell = elem}>
+              {this.renderOrderBookTable(sortedDataSell, 'sell', screenWidth)}
+            </div>
+            {this.renderLastPrice()}
+            <div className="terminal__orderbook-table-wrapper terminal__orderbook-table-wrapper_buy js-table-wrapper" ref={elem => this.tableBuy = elem}>
+              {this.renderOrderBookTable(sortedDataBuy, 'buy', screenWidth)}
+            </div>
+          </React.Fragment>
+        )} />
       </div>
 
     );
@@ -211,29 +256,6 @@ class OrderBook extends React.Component {
     );
   }
 }
-
-function relativeSize(minSize, maxSize, size) {
-  return Math.max((size - minSize) / (maxSize - minSize), 0.02);
-}
-
-const BuyOrderCell = ({price, size, relativeSize, currency, onClickCapture}) => {
-  const sizeParts = formatFloat(size).split('.');
-  return (
-    <tr onClickCapture={onClickCapture} data-price={price} data-size={size}>
-      <td>{BigNumber(price).toString(10)}</td>
-      <td>
-        <span className="white">{sizeParts[0]}.</span>
-        <span>{sizeParts[1]}</span>
-      </td>
-      <td>
-        {defaultFormatValue(price * size, currency)}
-      </td>
-      <td>
-        <span className="dash" style={{width: relativeSize * 100 + '%'}}/>
-      </td>
-    </tr>
-  );
-};
 
 
 export default OrderBook;

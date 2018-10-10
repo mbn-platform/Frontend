@@ -20,8 +20,8 @@ class Terminal extends React.Component {
     this.onFullScreenChange = this.onFullScreenChange.bind(this);
   }
 
-  onOrderSelect(price, size, type) {
-    this.setState({price: price || '', size: size || '', type: type || this.state.type});
+  onOrderSelect(price, size, ) {
+    this.setState({price: price || '', size: size || ''});
   }
 
   onFullScreenChange(value) {
