@@ -19,38 +19,6 @@ require('malihu-custom-scrollbar-plugin');
 const {MediaQuery} = createMqProvider(querySchema);
 
 window.customize = function() {
-
-  /*
-    Ratings: 'Rank legend' popover
-    */
-  $('[data-toggle="ratings-help-popover"]').popover({
-    trigger: 'hover',
-    container: $('.ratings-main'),
-    html: true,
-    animation: false,
-    template: `
-      <div class="popover help-popover">
-        <div class="arrow"></div>
-        <div class="popover-body"></div>
-      </div>`,
-    content: function() {
-      let total   = $(this).data('total');
-      let success = $(this).data('success');
-      let investors = $('.ratings-investors.active').length ? ' success-investors' : '';
-
-      return `
-        <div class="total row">
-          <div><span class="round"></span></div>
-          <div><span>${total}</span></div>
-        </div>
-        <div class="success row${investors}">
-          <div><span class="round"></span></div>
-          <div><span>${success}</span></div>
-        </div>`;
-    }
-  });
-
-
   /*
     Ratings: ROI chart period selectbox
     */
@@ -83,28 +51,12 @@ window.customize = function() {
         autoExpandScrollbar:true,
         theme: 'dark'
       });
-      $('.feedback-card .card-body .list-group .mCSB_draggerContainer').height($('.feedback-card .card-body').outerHeight() + 50);
-
-      $('input[type="text"]').focus(function(){
-        $(this).data('placeholder',$(this).attr('placeholder'))
-          .attr('placeholder','');
-      }).blur(function(){
-        $(this).attr('placeholder',$(this).data('placeholder'));
-      });
     }else{
       $('.feedback-card .card-body .list-group').mCustomScrollbar('destroy');
       mobileScreenShowButton($('.feedback-card .card-body .list-group'),$('.feedback-card .card-body .list-group .list-group-item'), 5,'show next 5 feedbacks','show less 5 feedbacks');
 
     }
   }).trigger('resize');
-
-
-
-  $(document).on('click', function(e) {
-    if (!$(e.target).closest('.dropdown').length && !$(e.target).closest('.dropdown-link').length) {
-      $('.dropdown-link').popover('hide');
-    }
-  });
 };
 
 

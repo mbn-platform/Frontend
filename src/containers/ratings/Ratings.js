@@ -4,7 +4,6 @@ import BestTraders from './BestTraders';
 import BestInvestors from './BestInvestors';
 import classNames from 'classnames';
 import DropdownSelect from '../../components/DropdownSelect';
-import $ from 'jquery';
 import {sortData, onColumnSort, classNameForColumnHeader, defaultSortFunction} from '../../generic/terminalSortFunctions';
 import { connect } from 'react-redux';
 import { updateRatings } from '../../actions/terminal';
@@ -356,21 +355,7 @@ class Ratings extends React.Component {
     );
   }
   componentDidMount() {
-    window.customize();
-    const $table = $('.js-table-wrapper .table');
-    $table.on('reflowed', (e, $container) => {
-      if(this.shouldFocus) {
-        $($container).find('input').focus();
-      }
-    });
-
     this.props.updateRatings();
-  }
-
-  componentWillUnmount() {
-    const $table = $('js-table-wrapper table');
-    $table.off();
-    window.uncustomize();
   }
 }
 
