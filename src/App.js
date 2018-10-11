@@ -19,8 +19,36 @@ require('malihu-custom-scrollbar-plugin');
 const {MediaQuery} = createMqProvider(querySchema);
 
 window.customize = function() {
-  $('[data-toggle="tooltip"]').tooltip();
-  $('[data-toggle="popover"]').popover();
+
+  /*
+    Global: Sticky table headers
+    */
+  let processScrollableTable = function($table) {
+    $table.on('reflowed', function(e, $floatContainer) {
+      let headHeight = $('tr', this).first().height();
+
+      $floatContainer.parent('.floatThead-wrapper').css({'padding-top': headHeight});
+      $(this).css('margin-top', -headHeight);
+    });
+    $table.floatThead({
+      scrollContainer: function($table){
+        let $container = $table.parents('.js-table-wrapper');
+        if (!$container.length) {
+          $container = $table.parents('.js-dropdown-table-wrapper');
+        }
+
+        return $container;
+      },
+      position: 'absolute',
+      autoReflow: 'true',
+      width: '100px',
+      debug: true
+    });
+  };
+  $('.js-table-wrapper table').each(function(index, el) {
+    let $table = $(el);
+    processScrollableTable($table);
+  });
 
   /*
     Ratings: 'Rank legend' popover
@@ -57,45 +85,6 @@ window.customize = function() {
     Ratings: ROI chart period selectbox
     */
 
-
-  $('.icon-fullscreen').each(function() {
-    $(this).click(function() {
-      let element = $(this).parent().parent().parent().parent().parent().get(0);
-      if (element.requestFullscreen) {
-        element.requestFullscreen();
-      }
-      else if(element.msRequestFullscreen) {
-        element.msRequestFullscreen();
-      }
-      else if(element.mozRequestFullScreen) {
-        element.mozRequestFullScreen();
-      }
-      else if(element.webkitRequestFullscreen) {
-        element.webkitRequestFullscreen();
-      }
-    });
-  });
-
-  function editGroupEnable() {
-    if($('#cmn-toggle-4').prop('checked')) {
-      $('.info-screen').addClass('edit-block');
-      $('.edit-btn').addClass('active');
-      $('.edit-btn').text('save changes');
-    } else {
-      $('.info-screen').removeClass('edit-block');
-      $('.edit-btn').removeClass('active');
-      $('.edit-btn').text('edit');
-    }
-    console.log($('.info-screen').hasClass('disable-block'));
-    if($('.info-screen').hasClass('disable-block')) {
-      $('.duration-contract .form-control').prop('disabled',true);
-      $('#cmn-toggle-4').prop('disabled',true);
-
-    }
-  }
-  editGroupEnable();
-  $( '#cmn-toggle-4' ).on( 'click', editGroupEnable );
-
   var mobileScreenShowButton = ($group, $item, countItem, textMore, textLess,heightEle) => {
     let heightList = 0;
     $item.each(function(i,el) {
@@ -113,18 +102,6 @@ window.customize = function() {
   $(window).resize((e) => {
     if($(window).width() > 1020){
 
-      $('.currency-settings tbody').height($('.currency-settings .card-body').outerHeight() - $('.currency-settings thead th').outerHeight());
-
-      $('.currency-settings tbody').mCustomScrollbar({
-        scrollButtons:{
-          enable:false
-        },
-        setHeight: ($('.currency-settings .card-body').outerHeight() - $('.currency-settings thead th').outerHeight()),
-        mouseWheel:{ preventDefault: true },
-        scrollbarPosition: 'inside',
-        autoExpandScrollbar:true,
-        theme: 'dark'
-      });
 
       $('.feedback-card .card-body .list-group').height($('.feedback-card .card-body').outerHeight() - 50);
       $('.feedback-card .card-body .list-group').mCustomScrollbar({
@@ -146,40 +123,8 @@ window.customize = function() {
       });
     }else{
       //$(selector).mCustomScrollbar("destroy"); //destroy scrollbar
-      $('.currency-settings tbody').mCustomScrollbar('destroy');
-
       $('.feedback-card .card-body .list-group').mCustomScrollbar('destroy');
-
-      /*let heightList = 0;
-      $(".feedback-card .card-body .list-group .list-group-item").each(function(i,el) {
-        if(i == 5) {
-          return false
-        } else {
-          heightList += $(this).height()
-        }
-      })
-      if($(".feedback-card .card-body .list-group .list-group-item").length > 5) {
-
-    //$(".feedback-card .card-body .list-group").height(heightList)
-        let countClickedMore = 0;
-        $(".feedback-card .card-body .list-group").readmore({
-          collapsedHeight:heightList,
-          speed: 500,
-          moreLink: '<div class="d-flex justify-content-center show-feedbacks-block"><button type="button" class="show-feedbacks-btn btn btn-secondary">show next 5 feedbacks</button></div>',
-          lessLink: '<div class="d-flex justify-content-center show-feedbacks-block"><button type="button" class="show-feedbacks-btn btn btn-secondary">show less 5 feedbacks</button></div>',
-          afterToggle: function(trigger, element, expanded) {
-            if(! expanded) {
-    //$(".feedback-card .card-body .list-group").readmore('toggle');
-            }
-          }
-        });
-      } else {
-        $(".feedback-card .card-body .list-group").height(heightList)
-      }*/
       mobileScreenShowButton($('.feedback-card .card-body .list-group'),$('.feedback-card .card-body .list-group .list-group-item'), 5,'show next 5 feedbacks','show less 5 feedbacks');
-      //mobileScreenShowButton($(".currency-settings table tbody"),$(".currency-settings tbody tr") ,10 ,'show next 10 currencies' ,'show previous 10 currencies',$(".currency-settings tbody tr:not(.empty-tr) td").outerHeight())
-
-
 
     }
   }).trigger('resize');

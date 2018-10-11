@@ -3,7 +3,6 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import Login from './containers/login/LoginContainer';
 import Dashboard from './containers/dashboard/DashboardContainer';
 import Terminal from './containers/terminal/TerminalContainer';
-import Ratings from './containers/ratings/Ratings';
 import Orders from './containers/orders/Orders';
 import Profile from './containers/profile/ProfileContainer';
 import Leaderboard from './containers/leaderboard/Leaderboard';
@@ -69,8 +68,8 @@ class MainContent extends React.Component {
           <ProtectedRoute exact path="/dashboard" component={Dashboard} loggedIn={loggedIn}/>
           <ProtectedRoute exact path="/terminal" component={Terminal} loggedIn={loggedIn}/>
           <ProtectedRoute exact path="/orders" component={Orders} loggedIn={loggedIn}/>
-          <Route exact path="/rating" component={Ratings} loggedIn={loggedIn}/>
           <Redirect exact from="/ratings" to="/leaderboard"/>
+          <Redirect exact from="/rating" to="/leaderboard"/>
           <Route exact path="/leaderboard" component={Leaderboard}/>
           <Redirect exact from="/profile" to={loggedIn ? `/${profile.name}` : '/login'}/>
           <Route exact path="/:id" component={Profile}/>

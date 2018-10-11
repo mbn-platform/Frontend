@@ -4,7 +4,7 @@ import { Row, Col } from 'reactstrap';
 import {connect} from 'react-redux';
 import {FormattedMessage, injectIntl} from 'react-intl';
 import { Desktop, Mobile } from '../../generic/MediaQuery';
-import  SecuritySettings from './SecuritySettings'
+import  SecuritySettings from './SecuritySettings';
 import { showInfoModal } from '../../actions/modal';
 
 class ContractSettings extends React.Component {
@@ -164,9 +164,7 @@ class ContractSettings extends React.Component {
             <button
               tabIndex={10}
               onClick={this.onEditButtonClick} type="button"
-              className={classNames('edit-btn', 'btn', 'btn-secondary', {active: this.state.isEditing})}
-              data-toggle="popover" data-trigger="hover"
-              data-content={this.props.intl.messages['profile.toChangeYouProfileMessage']}>
+              className={classNames('edit-btn', 'btn', 'btn-secondary', {active: this.state.isEditing})}>
               <FormattedMessage
                 id="profile.edit"
                 defaultMessage="EDIT"
