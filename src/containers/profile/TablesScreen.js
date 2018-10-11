@@ -2,7 +2,7 @@ import React from 'react';
 import { Col, Row, Container } from 'reactstrap';
 import ProfitChart from './ProfitChart';
 import Feedback from '../../components/Feedback';
-import CurrencySettings from './CurrencySettings';
+// import CurrencySettings from './CurrencySettings';
 import TradeHistory from './TradeHistory';
 
 class TablesScreen extends React.Component {
