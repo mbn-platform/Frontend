@@ -1,6 +1,5 @@
 import React from 'react';
 import { Container, Row, Col } from 'reactstrap';
-import $ from 'jquery';
 import PropTypes from 'prop-types';
 import times from 'lodash.times';
 import qs from 'qs';
@@ -79,12 +78,6 @@ class Leaderboard extends React.Component {
   componentDidMount() {
     window.customize();
     const { round } = qs.parse(this.props.location.search.slice(1));
-    const $table = $('.js-table-wrapper .table');
-    $table.on('reflowed', (e, $container) => {
-      if(this.shouldFocus) {
-        $($container).find('input').focus();
-      }
-    });
     if (round && round.match(/^[0-9]+$/)) {
       this.selectRound(parseInt(round, 10));
     }
@@ -211,9 +204,6 @@ class Leaderboard extends React.Component {
   }
 
   componentWillUnmount() {
-    const $table = $('js-table-wrapper table');
-    $table.off();
-    window.uncustomize();
     clearInterval(this.interval);
   }
 
@@ -321,7 +311,7 @@ class Leaderboard extends React.Component {
   renderMissingRoundNotice = () => (
     <div className="ratings-tabs">
       <div className="ratings-tab ratings-traders active">
-        <div className="ratings-table-wrap js-table-wrapper">
+        <div className="ratings-table-wrap">
           <div className="ratings-empty-data">
             <FormattedMessage
               id="leaderboard.roundIsNotStartedYet"

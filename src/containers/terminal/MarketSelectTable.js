@@ -40,7 +40,6 @@ class MarketSelectTable extends React.Component {
       },
     };
     this.onHideZeroClick = this.onHideZeroClick.bind(this);
-    this.onResize = this.onResize.bind(this);
     this.dropDownWrapper = React.createRef();
   }
 
@@ -52,14 +51,6 @@ class MarketSelectTable extends React.Component {
       };
     } else {
       return null;
-    }
-  }
-
-  onResize() {
-    const total = this.getTableHeight();
-    if(this.tableHeigth !== total) {
-      this.tableHeight = total;
-      this.forceUpdate();
     }
   }
 
@@ -97,27 +88,6 @@ class MarketSelectTable extends React.Component {
   }
 
   componentDidMount() {
-    window.addEventListener('resize', this.onResize);
-    const $table = $('.popover-body .js-dropdown-table-wrapper table');
-    $table.on('reflowed', function(e, $floatContainer) {
-      let headHeight = $('tr', this).first().height();
-
-      $floatContainer.parent('.floatThead-wrapper').css('padding-top', headHeight);
-      $(this).css('margin-top', -headHeight);
-    });
-
-    $table.floatThead({
-      scrollContainer: function($table){
-        let $container = $table.parents('.js-table-wrapper');
-
-        if (!$container.length) {
-          $container = $table.parents('.js-dropdown-table-wrapper');
-        }
-
-        return $container;
-      },
-      position: 'absolute',
-    });
     this.setState({dropDownHeight: this.dropDownWrapper.current.offsetHeight - 180});
   };
 
@@ -301,28 +271,6 @@ MarketSelectTable.propTypes = {
   markets: PropTypes.array.isRequired,
   rates: PropTypes.object.isRequired,
   selectMarket: PropTypes.func.isRequired,
-};
-
-const MarketRow = ({balances, market, onClick, isBTC, rates}) => {
-  let balanceValue;
-  if(balances) {
-    let c;
-    c = balances.find(m => m.name === market.second);
-    balanceValue = (c && c.available) || 0;
-    balanceValue = balanceValue * rates[market.symbol];
-  }
-  const val=rates[market.symbol] ? rates[market.symbol] : '';
-  const prevDay = market.prevDay;
-  const change = prevDay ? (val / prevDay * 100 - 100) : null;
-  return (
-    <tr onClick={onClick} data-currency={market.second} className={market.change >= 0 ? 'up' : 'down'}>
-      <td>{market.second}</td>
-      <td>{defaultFormatValue(market.last, market.base)}</td>
-      <td>{Math.round(market.volume * market.last)}</td>
-      <td>{change.toFixed(2) + '%'}</td>
-      {balances ?  (<td>{defaultFormatValue(balanceValue, market.base)}</td>) : null}
-    </tr>
-  );
 };
 
 const mapStateToProps = state => {

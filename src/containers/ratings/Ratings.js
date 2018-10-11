@@ -48,7 +48,6 @@ class Ratings extends React.Component {
 
   onTabClick(tab) {
     this.setState({tab});
-    $('.js-table-wrapper table').floatThead('reflow');
   }
 
 
@@ -250,7 +249,7 @@ class Ratings extends React.Component {
                     </div>
                   ) : (
                     <div className="ratings-tab ratings-investors active">
-                      <div className="ratings-table-wrap js-table-wrapper">
+                      <div className="ratings-table-wraps">
                         <table className="table">
                           <thead>
                             <tr>

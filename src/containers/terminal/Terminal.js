@@ -160,7 +160,6 @@ class Terminal extends React.Component {
 
 
   componentWillUnmount() {
-    window.uncustomize();
     this.props.stopTradingDataUpdates();
   }
 }

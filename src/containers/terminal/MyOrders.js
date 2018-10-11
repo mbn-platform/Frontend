@@ -1,6 +1,5 @@
 import React from 'react';
 import classNames from 'classnames';
-import $ from 'jquery';
 import { Desktop } from '../../generic/MediaQuery';
 import ReactTable from '../../components/SelectableReactTable';
 import {sortData, onColumnSort, classNameForColumnHeader}  from '../../generic/terminalSortFunctions';
@@ -26,7 +25,6 @@ class MyOrders extends React.Component {
   onTabClick(tab) {
     if(this.state.tab !== tab) {
       this.setState({tab});
-      $('.js-table-wrapper table').floatThead('reflow');
     }
   }
 
@@ -152,7 +150,7 @@ class MyOrders extends React.Component {
           <div className="orders-table-tabs">
             {
               <div className={classNames('orders-table-tab', tab === TAB_OPEN_ORDERS ? 'orders-open' : 'orders-completed' , 'active')}>
-                <div className="orders-table-wrapper js-table-wrapper">
+                <div className="orders-table-wrapper">
                   {this.renderOrdersTable(tab === TAB_OPEN_ORDERS ? sortedData.open : sortedData.closed, screenWidth)}
                 </div>
               </div>

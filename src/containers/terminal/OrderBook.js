@@ -4,7 +4,6 @@ import {Desktop} from '../../generic/MediaQuery';
 import {sortData, onColumnSort, classNameForColumnHeader} from '../../generic/terminalSortFunctions';
 import classNames from 'classnames';
 import {BigNumber} from 'bignumber.js';
-import $ from 'jquery';
 import ReactTable from '../../components/SelectableReactTable';
 import { FormattedMessage } from 'react-intl';
 import createMqProvider, {querySchema} from '../../MediaQuery';
@@ -27,36 +26,6 @@ class OrderBook extends React.Component {
 
   reset() {
     this.setState({scroll: true, sort: {}});
-  }
-
-  componentDidMount() {
-    let processScrollableTable = function ($table) {
-      $table.on('reflowed', function (e, $floatContainer) {
-        let headHeight = $('tr', this).first().height();
-
-        $floatContainer.parent('.floatThead-wrapper').css({'padding-top': headHeight});
-        $(this).css('margin-top', -headHeight);
-      });
-      $table.floatThead({
-        scrollContainer: function ($table) {
-          let $container = $table.parents('.js-table-wrapper');
-          if (!$container.length) {
-            $container = $table.parents('.js-dropdown-table-wrapper');
-          }
-
-          return $container;
-        },
-        position: 'absolute',
-        autoReflow: 'true',
-        width: '100px',
-        debug: true
-      });
-    };
-    $('.orderbook-table .js-table-wrapper table').each(function (index, el) {
-      let $table = $(el);
-      processScrollableTable($table);
-    });
-    $('.js-table-wrapper table').floatThead('reflow');
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -188,7 +157,6 @@ class OrderBook extends React.Component {
   }
 
   render() {
-    const [main, secondary] = this.props.market.split('-');
     let sortedDataSell = [];
     let sortedDataBuy = [];
     const {sell, buy} = this.props.orderBook;
@@ -220,11 +188,11 @@ class OrderBook extends React.Component {
                 </div>
               </Desktop>
             </div>
-            <div className="terminal__orderbook-table-wrapper js-table-wrapper" ref={elem => this.tableSell = elem}>
+            <div className="terminal__orderbook-table-wrapper" ref={elem => this.tableSell = elem}>
               {this.renderOrderBookTable(sortedDataSell, 'sell', screenWidth)}
             </div>
             {this.renderLastPrice()}
-            <div className="terminal__orderbook-table-wrapper terminal__orderbook-table-wrapper_buy js-table-wrapper" ref={elem => this.tableBuy = elem}>
+            <div className="terminal__orderbook-table-wrapper terminal__orderbook-table-wrapper_buy" ref={elem => this.tableBuy = elem}>
               {this.renderOrderBookTable(sortedDataBuy, 'buy', screenWidth)}
             </div>
           </React.Fragment>

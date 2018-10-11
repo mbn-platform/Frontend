@@ -18,50 +18,9 @@ require('malihu-custom-scrollbar-plugin');
 
 const {MediaQuery} = createMqProvider(querySchema);
 
-window.uncustomize = function() {
-  $(document).off('click');
-};
 window.customize = function() {
   $('[data-toggle="tooltip"]').tooltip();
   $('[data-toggle="popover"]').popover();
-
-  /*
-    Global: Sticky table headers
-    */
-  let processScrollableTable = function($table) {
-    $table.on('reflowed', function(e, $floatContainer) {
-      let headHeight = $('tr', this).first().height();
-
-      $floatContainer.parent('.floatThead-wrapper').css({'padding-top': headHeight});
-      $(this).css('margin-top', -headHeight);
-    });
-    $table.floatThead({
-      scrollContainer: function($table){
-        let $container = $table.parents('.js-table-wrapper');
-        if (!$container.length) {
-          $container = $table.parents('.js-dropdown-table-wrapper');
-        }
-
-        return $container;
-      },
-      position: 'absolute',
-      autoReflow: 'true',
-      width: '100px',
-      debug: true
-    });
-  };
-  $('.js-table-wrapper table').each(function(index, el) {
-    let $table = $(el);
-    processScrollableTable($table);
-  });
-
-
-
-  /*
-    Global: Dropdowns behavior
-    */
-
-
 
   /*
     Ratings: 'Rank legend' popover
