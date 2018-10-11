@@ -32,61 +32,60 @@ class OrdersTable extends React.Component {
     const ordersColumn = [
       {
         Header: <div onClick={() => this.onColumnSort('type')}
-          className="table__header-wrapper">
-          <br className="show-mobile"/>
+          className="table__header-wrapper orders__table-header-wrapper">
           <span className={classNameForColumnHeader(this.state, 'type')}/>
         </div>,
-        minWidth: 40 ,
-        className: 'ratings__table-cell',
-        Cell: () => {
-          return <td className="text-capitalize">
-            <span className="round"/>
-          </td>;
+        minWidth: screenWidth === 'lg' ? 40 : 8,
+        className: ' orders__table_cell',
+        Cell: row => {
+          return <div>
+            <span className={`orders__table_round ${row.original.type}`}/>
+          </div>;
         }
       }, {
         Header:<div onClick={() => this.onColumnSort('dt')}
-          className="table__header-wrapper">
+          className="table__header-wrapper orders__table-header-wrapper">
           <FormattedMessage
             id="orders.openDate"
             defaultMessage="Opened Date"
           /> <span className={classNameForColumnHeader(this.state, 'dt')}/>
         </div>,
         minWidth: 60,
-        className: 'ratings__table-cell',
+        className: ' orders__table_cell',
         Cell: row => {
           return this.formatDate(new Date(row.original.dt));
         },
       }, {
         Header: <div onClick={() => this.onColumnSort('market')}
-          className="table__header-wrapper">
+          className="table__header-wrapper orders__table-header-wrapper">
           <FormattedMessage
             id="orders.market"
             defaultMessage="Market"
           /> <span className={classNameForColumnHeader(this.state, 'market')}/>
         </div>,
-        minWidth: screenWidth === 'lg' ? 80 : 50,
+        minWidth: screenWidth === 'lg' ? 80 : 30,
         Cell: row => {
-          const [main, secondary] = row.origin.symbol.split('-');
+          const [main, secondary] = row.original.symbol.split('-');
 
           return secondary + '/' + main;
         },
-        className: 'ratings__table-cell',
+        className: ' orders__table_cell',
       },
       {
         Header: <div onClick={() => this.onColumnSort('limit')}
-          className="table__header-wrapper">
+          className="table__header-wrapper orders__table-header-wrapper">
           <FormattedMessage
             id="orders.price"
             defaultMessage="Price"
           /> <span className={classNameForColumnHeader(this.state, 'limit')}/>
         </div>,
-        minWidth: screenWidth === 'lg' ? 80 : 50,
-        Cell: row => row.origin.limit,
-        className: 'ratings__table-cell',
+        minWidth: screenWidth === 'lg' ? 80 : 30,
+        Cell: row => row.original.limit,
+        className: ' orders__table_cell',
       },
       {
         Header: <div onClick={() => this.onColumnSort('filled')}
-          className="table__header-wrapper">
+          className="table__header-wrapper orders__table-header-wrapper">
           <FormattedMessage
             id="orders.unitsFilled"
             defaultMessage="Units Filled"
@@ -94,11 +93,11 @@ class OrdersTable extends React.Component {
         </div>,
         minWidth: screenWidth === 'lg' ? 80 : 50,
         Cell: row => row.original.filled,
-        className: 'ratings__table-cell',
+        className: ' orders__table_cell',
       },
       {
         Header: <div onClick={() => this.onColumnSort('amount')}
-          className="table__header-wrapper">
+          className="table__header-wrapper orders__table-header-wrapper">
           <FormattedMessage
             id="orders.unitsTotal"
             defaultMessage="Units Total"
@@ -106,11 +105,11 @@ class OrdersTable extends React.Component {
         </div>,
         minWidth: screenWidth === 'lg' ? 80 : 50,
         Cell: row => row.original.amount,
-        className: 'ratings__table-cell',
+        className: ' orders__table_cell',
       },
       {
         Header: <div onClick={() => this.onColumnSort('price')}
-          className="table__header-wrapper">
+          className="table__header-wrapper orders__table-header-wrapper">
           <span className="hide-mobile">
             <FormattedMessage
               id="orders.estimated"
@@ -127,19 +126,22 @@ class OrdersTable extends React.Component {
             defaultMessage="Total"
           /> <span className={classNameForColumnHeader(this.state, 'price')}/>
         </div>,
-        minWidth: screenWidth === 'lg' ? 80 : 50,
-        Cell: row => row.original.global,
-        className: 'ellipsis-cell',
+        minWidth: screenWidth === 'lg' ? 80 : 40,
+        Cell: row => {
+          return  row.original.price;
+        },
+        className: 'ellipsis-cell orders__table_cell',
       }];
 
     return [...ordersColumn,
       ...(isOpenOrder ?
         [{
           Header: '',
-          minWidth: screenWidth === 'lg' ? 80 : 50,
+          minWidth: screenWidth === 'lg' ? 80 : 10,
           Cell: row => <div onClick={() => this.props.cancelOrder(row.original)}>
-            <span className="remove"/>
+            <span className="orders__table-remove"/>
           </div>,
+          className: ' orders__table_cell',
         }] : [])
     ];
   };
@@ -197,7 +199,7 @@ class OrdersTable extends React.Component {
             </div>
             <div className="orders-tabs">
               <div className="orders-tab orders-open active">
-                <div className="orders-table-wrap">
+                <div className="orders__table-wraper">
                   {this.renderOrderTable(sortedData, screenWidth, isOpenOrder)}
                 </div>
               </div>

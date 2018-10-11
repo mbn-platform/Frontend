@@ -151,16 +151,59 @@
 		}
 	}
 }
+.orders__table_round {
+	width: 5px;
+	height: 5px;
+	border-radius: 50%;
+	display: inline-block;
+	vertical-align: middle;
 
-/*
-	Hide columns on <768px
- */
-@media (min-width: 5000px){
-	.orders-main {
-		// height: 1000px!important;
+	&.buy{
+		background-color: #32B994;
+	}
+	&.sell{
+		background-color: #D74C4C;
 	}
 }
+
+.orders__table_cell {
+	display: flex;
+	justify-content: center;
+	flex-flow: row nowrap;
+	align-items: center;
+}
+
+.orders__table-remove{
+	display: block;
+	width: 14px;
+	height: 14px;
+	background: url('../assets/svg/cross.svg') no-repeat center;
+	background-size: contain;
+	&:hover{
+		opacity: 1;
+		background: url('../assets/svg/cross_white.svg') no-repeat center;
+		background-size: contain;
+	}
+}
+
+
 @media (max-width: 768px){
+	.orders__table-wraper {
+		.rt-td, .rt-th {
+			&:first-child {
+				margin-left: 5px !important;
+			}
+		}
+	}
+
+	.orders__table_cell {
+		font-size: 8px;
+	}
+
+	.orders__table-header-wrapper {
+		font-size: 8px;
+	}
+
 	.orders-main {
 		.orders-tab .table {
 			th, td {
@@ -177,6 +220,14 @@
 	ohO_oho: Mobile layout (<576px)
  */
 @include media-breakpoint-down(xs) {
+	.orders__table_cell {
+		font-size: 6px;
+	}
+
+	.orders__table-header-wrapper {
+		font-size: 6px;
+	}
+
 	.orders {
 		&-main {
 			margin: 0px!important;

@@ -271,7 +271,7 @@ class PlaceOrder extends React.Component {
   render() {
     const minTradeSize = this.state.marketInfo ? this.state.marketInfo.minTradeSize : '';
     return (
-      <div className="buysell col-12 col-sm-6 col-md-12">
+      <div className="buysell col-sm-12 col-md-12 col-lg-4">
         <div className="buysell__top justify-content-between row col-12">
           <div className="buysell__switch-wrap ">
             <span onClick={() => this.onTabClick(TAB_BUY)}

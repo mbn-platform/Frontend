@@ -57,7 +57,7 @@ class MyOrders extends React.Component {
         Cell: row => (
           <div>{row.original.limit}</div>
         ),
-        minWidth: screenWidth === 'lg' ? 45 : 30,
+        minWidth: screenWidth === 'lg' ? 45 : 20,
       },
       {
         minWidth: screenWidth === 'lg' ? 70 : 50,
@@ -127,7 +127,7 @@ class MyOrders extends React.Component {
     data = data.filter(o => o.symbol === market);
     const sortedData = this.sortData(data);
     return (
-      <div className="orders-table chart col-12 col-sm-6 col-md-12 col-lg-6">
+      <div className="orders-table chart col-sm-12 col-md-12 col-lg-8">
         <div className="orders-table__top justify-content-between row col-12">
           <div className="orders-table__switch-wrap ">
             <span
