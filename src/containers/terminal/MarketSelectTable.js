@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import $ from 'jquery';
 import classNames from 'classnames';
 import { defaultFormatValue } from '../../generic/util';
 import ReactTable from '../../components/SelectableReactTable';
@@ -71,7 +70,6 @@ class MarketSelectTable extends React.Component {
       baseCurrency: base, secondaryCurrency: null,
       markets: this.props.markets.filter(m => m.base === base),
     });
-    $('.popover-body .js-dropdown-table-wrapper table').floatThead('reflow');
   }
 
   onSecondaryCurrencySelected = (e, rowInfo) => {
@@ -91,16 +89,6 @@ class MarketSelectTable extends React.Component {
     this.setState({dropDownHeight: this.dropDownWrapper.current.offsetHeight - 180});
   };
 
-  getTableHeight() {
-    const $controls = $('.row.dropdowns');
-    const $md = $('.marketdepth-chart');
-    const total = $md.offset().top + $md.outerHeight() - $controls.offset().top - 145;
-    if(this.props.balance) {
-      return total - 15;
-    } else {
-      return total;
-    }
-  }
 
   getColumns = screenWidth => {
     const { baseCurrency } = this.state;
@@ -148,10 +136,10 @@ class MarketSelectTable extends React.Component {
         Cell: row => (
           <div>{defaultFormatValue(row.original.last, row.original.base)}</div>
         ),
-        minWidth:  screenWidth === 'lg' ? 90 : 40,
+        minWidth:  screenWidth === 'lg' ? 70 : 40,
       },
       {
-        minWidth:  screenWidth === 'lg' ? 120 : 60,
+        minWidth:  screenWidth === 'lg' ? 110 : 60,
         className: 'terminal__market-table-cell',
         Header: <div onClick={() => this.onColumnSort('volume')} className="table__header-wrapper">
           <FormattedMessage id="terminal.volumeCurrency" defaultMessage="Volume({baseCurrency})" values={{baseCurrency}}/>
@@ -165,7 +153,7 @@ class MarketSelectTable extends React.Component {
           <span className={classNameForColumnHeader(this.state, 'change')}/>
         </div>,
         className: 'terminal__market-table-cell',
-        minWidth:  screenWidth === 'lg' ? 130 : 40,
+        minWidth:  screenWidth === 'lg' ? 70 : 40,
         Cell: row =>
           <div className={row.original.change >= 0 ? 'terminal__market-table-cell_up' : 'terminal__market-table-cell_down'}>
             {calculateChange(row.original).toFixed(2) + '%'}
@@ -180,7 +168,7 @@ class MarketSelectTable extends React.Component {
           Header: <div onClick={() => this.onColumnSort('Balance')} className="table__header-wrapper">
             <FormattedMessage id="terminal.balance" defaultMessage="Balance ({baseCurrency}) " values={{baseCurrency}}/>
             <span className={classNameForColumnHeader(this.state, 'Balance')}/><br/></div>,
-          minWidth: 80,
+          minWidth: 100,
           className: 'terminal__market-table-cell',
           Cell: row => (
             <div>{defaultFormatValue(balanceValue, row.original.base)}</div>
@@ -206,9 +194,6 @@ class MarketSelectTable extends React.Component {
   )
 
   render() {
-    if(!this.tableHeight) {
-      this.tableHeight = this.getTableHeight();
-    }
     const baseCurrency = this.state.baseCurrency;
     let sortedData = [];
     if(this.props.balances && this.state.hideZeros) {
@@ -256,7 +241,7 @@ class MarketSelectTable extends React.Component {
           >USDT</button>
         </div>
         <Screen on={screenWidth => (
-          <div style={{height: this.tableHeight + 'px'}} className="dropdown-table-wrapper js-dropdown-table-wrapper">
+          <div className="terminal__market-select-dropdown-container dropdown-table-wrapper js-dropdown-table-wrapper">
             {this.renderMarketTable(sortedData.filter(m => m.second.toLowerCase().indexOf(this.state.filter.toLowerCase()) >= 0), screenWidth)}
           </div>
         )}/>

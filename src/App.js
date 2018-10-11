@@ -92,7 +92,6 @@ window.customize = function() {
         $(this).attr('placeholder',$(this).data('placeholder'));
       });
     }else{
-      //$(selector).mCustomScrollbar("destroy"); //destroy scrollbar
       $('.feedback-card .card-body .list-group').mCustomScrollbar('destroy');
       mobileScreenShowButton($('.feedback-card .card-body .list-group'),$('.feedback-card .card-body .list-group .list-group-item'), 5,'show next 5 feedbacks','show less 5 feedbacks');
 
@@ -102,10 +101,6 @@ window.customize = function() {
 
 
   $(document).on('click', function(e) {
-    if (!$(e.target).closest('.all-time').length && !$(e.target).closest('.all-time_dropdown').length) {
-      $('.all-time').popover('hide');
-    }
-
     if (!$(e.target).closest('.dropdown').length && !$(e.target).closest('.dropdown-link').length) {
       $('.dropdown-link').popover('hide');
     }
