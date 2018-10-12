@@ -695,6 +695,8 @@
 
 .terminal__sub-cell {
   opacity: .5;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .terminal__market-table-cell {
@@ -946,7 +948,7 @@
 @media (min-width: 576px) {
 
   .buysell {
-    margin-right: 10px;
+    margin-right: 20px;
   }
 
   .orderbook-table {
@@ -1004,7 +1006,7 @@
 
 @media (min-width: 1230px) {
   .buysell {
-    margin-right: 10px;
+    margin-right: 20px;
 
   }
 }

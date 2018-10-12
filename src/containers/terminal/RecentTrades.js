@@ -25,7 +25,7 @@ class RecentTrades extends React.Component {
     this.setState({tableHeight: this.tableWrapper.current.offsetHeight + 130});
   }
 
-  getColumns = screenWidth => {
+  getColumns = () => {
     const [base, secondary] = this.props.market.split('-');
 
     return [
@@ -36,7 +36,7 @@ class RecentTrades extends React.Component {
             defaultMessage="Price ({base})" values={{base}}/>
           <span className={classNameForColumnHeader(this.state, 'Price')}/>
         </div>,
-        minWidth: screenWidth === 'lg' ? 110 : 80,
+        minWidth:  70,
         className: 'table_col_value upper table_bot_col_value',
         Cell: row => {
           const isSellOrder = row.original.type === 'SELL';
@@ -60,7 +60,7 @@ class RecentTrades extends React.Component {
             {formatFloat(row.original.amount)}
           </div>);
         },
-        minWidth: screenWidth === 'lg' ? 130 : 90,
+        minWidth: 85,
         headerClassName: 'table_bot_header_value',
       }, {
         minWidth: 60,
