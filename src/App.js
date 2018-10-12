@@ -10,55 +10,10 @@ import { fetchTime } from './actions/time';
 import { Container, Row } from 'reactstrap';
 import createMqProvider, {querySchema} from './MediaQuery';
 import './App.css';
-import $ from 'jquery';
-window.jQuery = window.$ = $;
-require('floatthead');
 require('bootstrap');
 require('malihu-custom-scrollbar-plugin');
 
 const {MediaQuery} = createMqProvider(querySchema);
-
-window.customize = function() {
-  /*
-    Ratings: ROI chart period selectbox
-    */
-
-  var mobileScreenShowButton = ($group, $item, countItem, textMore, textLess,heightEle) => {
-    let heightList = 0;
-    $item.each(function(i,el) {
-      if(i.toString() === countItem.toString()) {
-        return false;
-      } else {
-        heightList += heightEle || $(this).height();
-      }
-    });
-    if(!($item.length <= countItem)) {
-      $group.height(heightList);
-    }
-  };
-
-  $(window).resize((e) => {
-    if($(window).width() > 1020){
-
-
-      $('.feedback-card .card-body .list-group').height($('.feedback-card .card-body').outerHeight() - 50);
-      $('.feedback-card .card-body .list-group').mCustomScrollbar({
-        scrollButtons:{
-          enable:false
-        },
-        mouseWheel:{ preventDefault: true },
-        scrollbarPosition: 'outside',
-        autoExpandScrollbar:true,
-        theme: 'dark'
-      });
-    }else{
-      $('.feedback-card .card-body .list-group').mCustomScrollbar('destroy');
-      mobileScreenShowButton($('.feedback-card .card-body .list-group'),$('.feedback-card .card-body .list-group .list-group-item'), 5,'show next 5 feedbacks','show less 5 feedbacks');
-
-    }
-  }).trigger('resize');
-};
-
 
 class App extends React.Component {
 

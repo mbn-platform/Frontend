@@ -149,7 +149,6 @@ class Terminal extends React.Component {
   }
 
   componentDidMount() {
-    window.customize();
     this.props.startTradingDataUpdates();
     const savedFund = localStorage.getItem('terminal.selectedFund');
     if (savedFund) {

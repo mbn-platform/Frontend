@@ -76,7 +76,6 @@ class Leaderboard extends React.Component {
   }
 
   componentDidMount() {
-    window.customize();
     const { round } = qs.parse(this.props.location.search.slice(1));
     if (round && round.match(/^[0-9]+$/)) {
       this.selectRound(parseInt(round, 10));
