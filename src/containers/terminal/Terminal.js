@@ -116,7 +116,7 @@ class Terminal extends React.Component {
                     </MediaQuery>
                   </Row>
                 </Col>
-                <Col xs="12" sm="12" md="6" lg="4" className="charts__right">
+                <Col xs="12" sm="12" md="6" lg="4"  className="charts__right">
                   <Row>
                     <MediaQuery query="(min-width: 576px)">
                       <OrderBook

@@ -4,6 +4,7 @@
   font-weight: 400;
   -webkit-font-smoothing: auto;
   -moz-osx-font-smoothing: auto;
+
   .fullscreen-chart {
     position: fixed !important;
     width: 100vw;
@@ -689,10 +690,6 @@
   min-height: 400px;
 }
 
-.terminal__recent-table-wrapper {
-  height: 100% !important;
-}
-
 .terminal__sub-cell {
   opacity: .5;
   white-space: nowrap;
@@ -717,6 +714,12 @@
 
 .terminal__market-table-cell_color-white {
   color: #fff;
+}
+
+.terminal__recent-table-wrapper {
+  .ReactTable {
+    height: 100%;
+  }
 }
 
 /*
@@ -787,6 +790,15 @@
       }
     }
   }
+
+  .terminal__recent-table-wrapper {
+    height: 100% !important;
+    padding-bottom: 15px !important;
+
+    .ReactTable {
+      height: 100%;
+    }
+  }
 }
 
 .terminal__orderbook-table-cell {
@@ -801,7 +813,12 @@
 }
 
 .terminal__orderbook-table-wrapper {
-  overflow: scroll;
+  overflow: hidden;
+  height: 47%;
+
+  .ReactTable {
+    height: 100%;
+  }
 
   .rt-thead {
     border-bottom: 0 !important;
@@ -824,6 +841,7 @@
   .rt-thead {
     display: none;
   }
+  height: 38%;
 }
 
 .terminal__orderbook-table-dash {
@@ -947,17 +965,14 @@
 
 @media (min-width: 576px) {
 
-  .buysell {
-    margin-right: 20px;
-  }
-
   .orderbook-table {
-    margin-right: 10px;
     tbody {
       height: 130px;
     }
-
+    max-width: 48%;
+    margin-right: 10px;
   }
+
   .trades-table {
     tbody {
       height: 300px;
@@ -983,7 +998,9 @@
       // text-align: left;
     }
   }
-
+  .orderbook-table {
+    max-width: inherit;
+  }
 }
 
 @media (min-width: 992px) {
@@ -998,16 +1015,15 @@
     margin-right: 0px;
 
   }
+
   .orderbook-table {
     margin-right: 0px;
-
   }
 }
 
 @media (min-width: 1230px) {
   .buysell {
     margin-right: 20px;
-
   }
 }
 

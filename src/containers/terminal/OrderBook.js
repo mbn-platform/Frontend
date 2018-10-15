@@ -21,21 +21,27 @@ class OrderBook extends React.Component {
       price: (a, b) => a.Rate - b.Rate,
       relativeSize: (a, b) => a.Rate * a.Quantity - b.Rate * b.Quantity,
     };
-    this.state = {last: null, sort: {}, prelast: null, scroll: true};
+    this.state = {last: null, sort: {}, prelast: null, scroll: true };
+    this.lastPrice = React.createRef();
+    this.orderTable = React.createRef();
   }
 
   reset() {
     this.setState({scroll: true, sort: {}});
   }
 
+  componentDidMount() {
+    const orderTableHeight = this.orderTable.current.offsetHeight;
+    this.setState({ heightOfTable: orderTableHeight });
+  }
+
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.orderBook.sell.length > 0 && !this.state.sort.column && this.state.scroll) {
-      this.tableSell.scrollTop = this.tableSell.scrollHeight - 26.6;
-      this.tableBuy.scrollTop = 0;
-      this.setState({scroll: false});
-    } else if (this.state.sort !== prevState.sort) {
-      this.tableBuy.scrollTop = 0;
-      this.tableSell.scrollTop = 0;
+    if (prevProps.orderBook.sell.length === 0 && this.props.orderBook.sell.length > 0 ) {
+      this.scrollToBottom();
+    }
+
+    if (this.orderTable.current.offsetHeight !== prevState.heightOfTable) {
+      this.setState({ heightOfTable : this.orderTable.current.offsetHeight });
     }
   }
 
@@ -152,8 +158,14 @@ class OrderBook extends React.Component {
       getTrProps={this.onRowClick}
       columns={this.getColumns(type, screenWidth)}
       data={data}
-      scrollBarHeight={140}
+      scrollBarHeight={'100%'}
     />;
+  };
+
+  scrollToBottom = () => {
+    const tableScrollingElement = this.tableSell.getElementsByClassName('rt-tbody')[0];
+    tableScrollingElement.scrollIntoView(false);
+    this.setState({openedScroll: true});
   }
 
   render() {
@@ -173,7 +185,7 @@ class OrderBook extends React.Component {
       sortedDataBuy = this.sortData(buy).slice(0, 50);
     }
     return (
-      <div className="orderbook-table chart col-12 col-sm-6 col-md-12">
+      <div ref={this.orderTable } className="orderbook-table chart col-12 col-sm-6 col-md-12">
         <Screen on={screenWidth => (
           <React.Fragment>
             <div className="chart__top justify-content-between row">
@@ -213,7 +225,7 @@ class OrderBook extends React.Component {
     }
 
     return (
-      <div className={classNames('value', 'last-price', 'row', isUp ? 'up' : 'down')}>
+      <div ref={this.lastPrice} className={classNames('value', 'last-price', 'row', isUp ? 'up' : 'down')}>
         <div className={'bid-label'}>
           <FormattedMessage id="terminal.bid" defaultMessage="Bid"/>
         </div>
