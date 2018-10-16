@@ -6,6 +6,7 @@ import { getBlockListPage, setBlockListPage, setBlockListPageSize } from '../../
 import ReactTable from '../../components/SelectableReactTable';
 import createMqProvider, {querySchema} from '../../MediaQuery';
 import PaginationWithPage from '../../components/PaginationWithPage';
+import classNames from 'classnames';
 
 const {Screen} = createMqProvider(querySchema);
 
@@ -81,7 +82,11 @@ class Hashlog extends React.Component {
         className: 'table_col_value',
         headerClassName: 'hashlog__table-header-title',
         minWidth:  screenWidth < lgBreakpoint ? 30 : 100,
-        accessor: 'actions'
+        Cell: row => (
+          <div>
+            {row.original.actions.length}
+          </div>
+        ),
       },
       {
         Header: this.props.intl.messages['hashlog.createdAt'],
