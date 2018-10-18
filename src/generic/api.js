@@ -289,10 +289,16 @@ export class Hashlog {
       .then(responseSchemaHandler);
   }
 
-  fetchActionsPage = () =>
-    apiGet('/hashlog/actions', null)
+}
+
+export class ActionList {
+
+  getActionList = (blockNumber, page, size) => {
+    return apiGet('/api/v2/hashlog/actions/blockNumber=' + blockNumber)
       .then(errorHandler)
       .then(responseSchemaHandler);
+  }
+
 }
 
 export class ApiKeys {

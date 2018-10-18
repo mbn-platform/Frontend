@@ -69,6 +69,8 @@ const en = {
   'hashlog.title': 'Hashlog',
   'hashlog.actionCount': 'Action Count',
   'hashlog.createdAt': 'Created At',
+  'hashlog.titleBlock': 'Block',
+  'hashlog.titleActions': 'Action',
   'leaderboard.title': 'LEADERBOARD',
   'leaderboard.global': 'GLOBAL',
   'leaderboard.roundIsNotStartedYet': 'Round {round} is not started yet',

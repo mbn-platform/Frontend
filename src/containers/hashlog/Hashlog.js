@@ -1,8 +1,10 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { Container, Row, Col } from 'reactstrap';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { getBlockListPage, setBlockListPage, setBlockListPageSize } from '../../actions/hashlog';
+import { getActionListPage } from '../../actions/actionsList';
 import ReactTable from '../../components/SelectableReactTable';
 import createMqProvider, {querySchema} from '../../MediaQuery';
 import PaginationWithPage from '../../components/PaginationWithPage';
@@ -21,6 +23,13 @@ class Hashlog extends React.Component {
     getBlocksPages(blocksPage, blocksPageSize);
   }
 
+  onRowClick = rowData=> {
+    const { getActionList,  history} = this.props;
+    console.warn(rowData);
+    history.push('/action-list?number=' + rowData.original._id);
+    //getActionList(rowData.original._id, 1, 25);
+  }
+
   renderBlocklist = () => {
     const {
       hashlog: {blockList, totalBlocks, blocksPage, blocksPageSize},
@@ -32,6 +41,11 @@ class Hashlog extends React.Component {
       <React.Fragment>
         <Screen on={screenWidth => (
           <ReactTable
+            getTrProps={(state, rowInfo) => {
+              return {
+                onClick: () => this.onRowClick(rowInfo),
+              };
+            }}
             data={blockList}
             columns={this.getColumns(screenWidth)}
             pages={Math.ceil(totalBlocks/blocksPageSize)}
@@ -126,9 +140,10 @@ class Hashlog extends React.Component {
 const mapDispatchToProps = dispatch => {
   return {
     getBlocksPages: (pages, size) => dispatch(getBlockListPage(pages, size)),
+    getActionList: (blockNumber, page, size) => dispatch(getActionListPage(blockNumber, page, size)),
     setBlocksPage: page => dispatch(setBlockListPage(page)),
     setBlocksPageSize: pageSize => dispatch(setBlockListPageSize(pageSize)),
   };
 };
 
-export default injectIntl(connect(state => state, mapDispatchToProps)(Hashlog));
+export default withRouter(injectIntl(connect(state => state, mapDispatchToProps)(Hashlog)));
