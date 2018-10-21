@@ -294,7 +294,7 @@ export class Hashlog {
 export class ActionList {
 
   getActionList = (blockNumber, page, size) => {
-    return apiGet('/api/v2/hashlog/actions/blockNumber=' + blockNumber)
+    return apiGet('/hashlog/actions/?q.blockNumber=' + blockNumber + '&page=1&size=25')
       .then(errorHandler)
       .then(responseSchemaHandler);
   }
