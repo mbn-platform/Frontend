@@ -31,12 +31,12 @@ export default (state = {
     case SET_ACTION_LIST_PAGE:
       return {
         ...state,
-        actionListPage: action.blocksPage,
+        actionListPage: action.actionListPage,
       };
     case SET_ACTION_LIST_PAGE_SIZE:
       return {
         ...state,
-        actionListPageSize: action.blocksPageSize,
+        actionListPageSize: action.actionListPageSize,
       };
 
     default:

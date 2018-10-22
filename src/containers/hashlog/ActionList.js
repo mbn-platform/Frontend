@@ -278,6 +278,14 @@ class ActionList extends React.Component {
 
 
   render() {
+    const {
+      actionList: {
+        blockInfo,
+        actionListPage,
+        actionListPageSize
+      }
+    } = this.props;
+    const { number: currentBlockNumberFromUrl } = qs.parse(this.props.location.search.slice(1));
     return (
       <Container fluid>
         <Row>
@@ -303,6 +311,14 @@ class ActionList extends React.Component {
                   id="hashlog.titleAction"
                   defaultMessage="Hashlog"
                 />
+                <a href={`https://${window.location.host}/api/v2/hashlog/actions?q.blockNumber=${blockInfo.number || currentBlockNumberFromUrl}&page=${actionListPage}&size=${actionListPageSize}`}
+                  target="_blank"
+                  className="hashlog__export-to-json">
+                  <FormattedMessage
+                    id="hashlog.exportToJson"
+                    defaultMessage="Export to JSON"
+                  />
+                </a>
               </div>
               <div className="hashlog__main-board">
                 {this.renderActionListTable()}

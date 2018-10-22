@@ -8,8 +8,23 @@
   margin-bottom: 20px;
   font-size: 22px;
   color: #fff;
+  position: relative;
   font-weight: 500;
   text-transform: uppercase;
+}
+
+.hashlog__export-to-json {
+  position: absolute;
+  display: block;
+  right: 0;
+  top: 0;
+  color: #fff;
+  text-decoration: underline;
+  font-size: 12px;
+
+  &:hover {
+    color: #7c7c7d;
+  }
 }
 
 .hashlog__table-cell {
@@ -149,5 +164,9 @@
 @media (max-width: 768px) {
   .hashlog__table-header-title {
     font-size: 10px;
+  }
+
+  .hashlog__export-to-json {
+    top: 7px;
   }
 }

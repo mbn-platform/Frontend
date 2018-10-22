@@ -69,6 +69,7 @@ const en = {
   'hashlog.prevBlockHash': 'Prev Block Hash',
   'hashlog.title': 'Hashlog',
   'hashlog.hash': 'Hash',
+  'hashlog.exportToJson': 'Export to JSON',
   'hashlog.titleAction': 'Actions',
   'hashlog.index': 'Index',
   'hashlog.id': 'id',

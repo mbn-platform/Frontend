@@ -28,20 +28,18 @@ export const setBlockForActionList = blockInfo => {
 };
 
 export const setActionListPage = page => {
-  return dispatch => {
+  return dispatch =>
     dispatch({
       type: SET_ACTION_LIST_PAGE,
       actionListPage: page,
     });
-  };
 };
 
 export const setActionListPageSize = pageSize => {
-  return dispatch => {
+  return dispatch =>
     dispatch({
       type: SET_ACTION_LIST_PAGE_SIZE,
       actionListPageSize: pageSize,
     });
-  };
 };
 
