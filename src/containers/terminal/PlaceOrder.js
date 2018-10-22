@@ -138,6 +138,7 @@ class PlaceOrder extends React.Component {
       return;
     }
     switch(this.props.exchange) {
+      case 'huobi':
       case 'binance': {
         const price = parseFloat(this.state.price);
         const value = parseFloat(amount);
@@ -172,6 +173,7 @@ class PlaceOrder extends React.Component {
       return;
     }
     switch(this.props.exchange) {
+      case 'huobi':
       case 'binance': {
         const minTradeSize = this.state.marketInfo ? this.state.marketInfo.minTradeSize.toString() : '';
         const rounded = this.floorBinance(orderSize, minTradeSize);
@@ -222,6 +224,7 @@ class PlaceOrder extends React.Component {
       case 'bittrex': {
         return orderSide === TAB_BUY ? 1.0025 : 0.9975;
       }
+      case 'huobi':
       case 'binance': {
         return 1;
       }
