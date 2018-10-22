@@ -245,7 +245,7 @@ const MarketRow = ({balances, market, onClick, isBTC, rates}) => {
   }
   const val=rates[market.symbol] ? rates[market.symbol] : '';
   const prevDay = market.prevDay;
-  const change = prevDay ? (val / prevDay * 100 - 100) : null;
+  const change = prevDay ? (val / prevDay * 100 - 100) : 0;
   return (
     <tr onClick={onClick} data-currency={market.second} className={market.change >= 0 ? 'up' : 'down'}>
       <td>{market.second}</td>
