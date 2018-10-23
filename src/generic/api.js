@@ -284,17 +284,24 @@ export class ApiTime {
 export class Hashlog {
 
   fetchBlocksPage = (currentPage, pageSize) => {
-    return apiGet('/hashlog/blocks?page=' + currentPage + '&size=' + pageSize, null)
+    const requestParams= qs.stringify({page:currentPage, size: pageSize});
+    return apiGet('/hashlog/blocks?' + requestParams)
+      .then(errorHandler)
+      .then(responseSchemaHandler);
+  };
+
+  fetchBlock = blockNumber => {
+    return apiGet('/hashlog/blocks/?blockNumber=' + blockNumber)
       .then(errorHandler)
       .then(responseSchemaHandler);
   }
-
 }
 
 export class ActionList {
 
   getActionList = (blockNumber, page, size) => {
-    return apiGet('/hashlog/actions/?q.blockNumber=' + blockNumber + '&page=1&size=25')
+    const requestParams= qs.stringify({'q.blockNumber': blockNumber, page, size});
+    return apiGet('/hashlog/actions/?' + requestParams)
       .then(errorHandler)
       .then(responseSchemaHandler);
   }

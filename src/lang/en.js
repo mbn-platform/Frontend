@@ -75,7 +75,7 @@ const en = {
   'hashlog.id': 'Id',
   'hashlog.record': 'Record',
   'hashlog.copy': 'Copy',
-  'hashlog.actionCount': 'Action Count',
+  'hashlog.actionCount': 'Actions Count',
   'hashlog.createdAt': 'Created At',
   'hashlog.titleBlock': 'Block',
   'hashlog.titleActions': 'Action',

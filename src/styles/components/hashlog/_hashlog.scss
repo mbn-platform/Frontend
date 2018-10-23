@@ -72,6 +72,11 @@
   justify-content: start;
   align-items: center;
   padding: 10px !important;
+
+  &:last-child {
+    text-align: center !important;
+    justify-content: center !important;
+  }
 }
 
 .hashlog__table-cell_hash-value {
@@ -153,7 +158,6 @@
   background: #2d3034;
   max-height: 50px;
   border-bottom: 1px solid #494d4d;
-  padding-left: 15px !important;
   padding-top: 14px !important;
   padding-bottom: 14px !important;
   font-size: 10px;
@@ -205,6 +209,30 @@
   color: #fff;
 }
 
+.hashlog__table-cell-number-wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+.hashlog__table-cell-number {
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+
+  &:hover {
+    color: #7c7c7d;
+    text-decoration: none;
+  }
+}
+
+.hashlog__main-board {
+  .table__page-size-wrapper {
+    margin-top: 14px;
+  }
+}
+
 @media (max-width: 1028px) {
   .hashlog__table-cell {
     font-size: 10px !important;
@@ -228,31 +256,10 @@
   }
 }
 
-.hashlog__table-cell-number-wrapper {
-  width: 100%;
-  height: 100%;
-}
-
-.hashlog__table-cell-number {
-  cursor: pointer;
-  display: block;
-  width: 100%;
-  height: 100%;
-  color: #fff;
-  
-  &:hover {
-    color: #7c7c7d;
-    text-decoration: none;
-  }
-}
 
 @media (max-width: 768px) {
   .hashlog__table-header-title {
     font-size: 10px;
-  }
-
-  .hashlog__action-list-main-title {
-    padding-left: 0 !important;
   }
 
   .hashlog__export-to-json {

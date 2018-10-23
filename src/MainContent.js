@@ -29,7 +29,7 @@ class MainContent extends React.Component {
         <ProtectedRoute exact path="/orders" component={Orders} loggedIn={loggedIn}/>
         <Route exact path="/rating" component={Ratings} loggedIn={loggedIn}/>
         <Route exact path="/hashlog" component={Hashlog} loggedIn={loggedIn}/>
-        <Route exact path="/action-list" component={ActionList} loggedIn={loggedIn}/>
+        <Route exact path="/hashlog/actions/" component={ActionList} loggedIn={loggedIn}/>
         <Redirect exact from="/ratings" to="/leaderboard"/>
         <Route exact path="/leaderboard" component={Leaderboard}/>
         <Redirect exact from="/profile" to={loggedIn ? `/${profile.name}` : '/login'}/>

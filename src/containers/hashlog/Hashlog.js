@@ -8,6 +8,7 @@ import { setBlockForActionList } from '../../actions/actionsList';
 import ReactTable from '../../components/SelectableReactTable';
 import createMqProvider, {querySchema} from '../../MediaQuery';
 import PaginationWithPage from '../../components/PaginationWithPage';
+import qs from 'qs';
 
 const {Screen} = createMqProvider(querySchema);
 
@@ -24,8 +25,21 @@ class Hashlog extends React.Component {
   }
 
   onRowClick = rowData=> {
-    const { setActionBlock,  history} = this.props;
-    history.push('/action-list?number=' + rowData.original.number);
+    const { 
+      setActionBlock,
+      history,
+      actionList:
+        {
+          actionListPage,
+          actionListPageSize
+        }
+    } = this.props;
+    const requestParams= qs.stringify({
+      blockNumber: rowData.original.blockNumber,
+      page: actionListPage,
+      size:actionListPageSize
+    });
+    history.push('/hashlog/actions/?' + requestParams);
     setActionBlock(rowData.original);
   }
 
@@ -74,34 +88,43 @@ class Hashlog extends React.Component {
         accessor: 'number',
         headerClassName: 'hashlog__table-header-title',
         className: 'table_col_value hashlog__table-cell hashlog__table-cell-number-wrapper',
-        minWidth: screenWidth === 'lg' ? 60 : 25  ,
-        Cell: row => (
-          <a
-            className="hashlog__table-cell-number"
-            href={'/action-list?number=' + row.original.number}
-            onClick={ e => {
-              e.preventDefault();
-              this.onRowClick(row);
-            }}>
-            {row.original.number}
-          </a>
-        ),
+        minWidth: screenWidth === 'lg' ? 40 : 25  ,
+        Cell: row => {
+          const requestParams= qs.stringify(
+            {
+              'blockNumber': row.original.blockNumber,
+              page: 1,
+              size: 25
+            }
+          );
+          return (
+            <a
+              className="hashlog__table-cell-number"
+              href={'/hashlog/actions/?' + requestParams}
+              onClick={ e => {
+                e.preventDefault();
+                this.onRowClick(row);
+              }}>
+              {row.original.blockNumber}
+            </a>
+          );
+        },
       },
       {
         Header: this.props.intl.messages['hashlog.blockHash'],
         className: 'table_col_value hashlog__table-cell hashlog__table-cell_hash-value',
         headerClassName: 'hashlog__table-header-title',
-        minWidth: 100,
-        accessor: 'hash'
+        minWidth:  screenWidth  === 'lg' ? 170 : 90,
+        accessor: 'blockHash'
       },
       {
         Header: this.props.intl.messages['hashlog.actionCount'],
-        className: 'table_col_value hashlog__table-cell',
+        className: 'table_col_вvalue hashlog__table-cell',
         headerClassName: 'hashlog__table-header-title',
-        minWidth:  screenWidth  === 'lg' ? 100 : 30,
+        minWidth:  screenWidth  === 'lg' ? 50 : 30,
         Cell: row => (
           <div>
-            {row.original.actions.length}
+            {row.original.actionsCount}
           </div>
         ),
       },
@@ -149,6 +172,11 @@ class Hashlog extends React.Component {
   }
 }
 
+const mapStateToProps = state => ({
+  actionList: state.actionList,
+  hashlog: state.hashlog,
+});
+
 const mapDispatchToProps = dispatch => {
   return {
     getBlocksPages: (pages, size) => dispatch(getBlockListPage(pages, size)),
@@ -158,4 +186,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default withRouter(injectIntl(connect(state => state, mapDispatchToProps)(Hashlog)));
+export default withRouter(injectIntl(connect(mapStateToProps, mapDispatchToProps)(Hashlog)));
