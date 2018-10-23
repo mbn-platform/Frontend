@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Container, Row, Col } from 'reactstrap';
-import { FormattedMessage, injectIntl } from 'react-intl';
+import { FormattedMessage, FormattedDate, injectIntl } from 'react-intl';
 import { getBlockListPage, setBlockListPage, setBlockListPageSize } from '../../actions/hashlog';
 import { setBlockForActionList } from '../../actions/actionsList';
 import ReactTable from '../../components/SelectableReactTable';
@@ -101,12 +101,19 @@ class Hashlog extends React.Component {
       },
       {
         Header: this.props.intl.messages['hashlog.createdAt'],
-        className: 'table_col_value hashlog__table-cell',
+        className: 'table_col_value hashlog__table-cell hashlog__table-cell-time',
         headerClassName: 'hashlog__table-header-title',
         minWidth: screenWidth  === 'lg' ?  100 : 70,
         Cell: row => (
           <div>
-            {new Date(row.original.createdAt).toLocaleTimeString()}
+            <FormattedDate
+              value={new Date(row.original.createdAt)}
+              year='numeric'
+              month='2-digit'
+              day='2-digit'
+              hour="numeric"
+              minute="numeric"
+            />
           </div>
         ),
       }

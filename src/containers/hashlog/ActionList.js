@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import { Container, Row, Col } from 'reactstrap';
-import { FormattedMessage, injectIntl } from 'react-intl';
+import { FormattedMessage, FormattedDate, injectIntl } from 'react-intl';
 import { getActionListPage, setActionListPage, setActionListPageSize } from '../../actions/actionsList';
 import ReactTable from '../../components/SelectableReactTable';
 import createMqProvider, {querySchema} from '../../MediaQuery';
@@ -27,7 +27,7 @@ class ActionList extends React.Component {
         id: 'currency',
         accessor: 'number',
         headerClassName: 'hashlog__table-header-title',
-        className: 'table_col_value hashlog__table-cell',
+        className: 'table_col_value hashlog__table-cell hashlog__acion-list-table-cell',
         minWidth: screenWidth === 'lg' ? 60 : 25  ,
       },
       {
@@ -57,12 +57,19 @@ class ActionList extends React.Component {
       },
       {
         Header: this.props.intl.messages['hashlog.createdAt'],
-        className: 'table_col_value hashlog__table-cell',
+        className: 'table_col_value hashlog__table-cell hashlog__table-cell-time',
         headerClassName: 'hashlog__table-header-title',
         minWidth: screenWidth  === 'lg' ?  100 : 70,
         Cell: row => (
           <div>
-            {new Date(row.original.createdAt).toLocaleTimeString()}
+            <FormattedDate
+              value={new Date(row.original.createdAt)}
+              year='numeric'
+              month='2-digit'
+              day='2-digit'
+              hour="numeric"
+              minute="numeric"
+            />
           </div>
         ),
       }
@@ -92,14 +99,14 @@ class ActionList extends React.Component {
         headerClassName: 'hashlog__table-header-title',
         minWidth:  screenWidth  === 'lg' ? 100 : 60,
         Cell: row => (
-          <div>
+          <div className="hashlog__table-unformatted-container">
             <div className="hashlog__table-unformatted">
               <pre className='hashlog__table-unformatted-pre'>
                 {
                   JSON.stringify({
                     type : row.original.type,
                     params: row.original.params,
-                  }, null, '\t')
+                  }, null, 2)
                 }
               </pre>
             </div>
@@ -107,7 +114,7 @@ class ActionList extends React.Component {
               JSON.stringify({
                 type : row.original.type,
                 params: row.original.params,
-              }, null, '\t')
+              }, null, 2)
             }>
               <button  className='hashlog__copy-button'>
                 <FormattedMessage
@@ -171,22 +178,22 @@ class ActionList extends React.Component {
         return (
           <div key={index} className="hashlog__mobileActionListItemWrapper">
             <div className="hashlog__mobileActionListRow">
-              <div className="hashlog__mobileActionListTitle">{this.props.intl.messages['hashlog.index'] + ':'}</div>
+              <div className="hashlog__mobileActionListTitle">{this.props.intl.messages['hashlog.index']}</div>
               <div className="hashlog__mobileActionListValue">{actionsListItem.version}</div>
             </div>
             <div className="hashlog__mobileActionListRow">
-              <div className="hashlog__mobileActionListTitle">{this.props.intl.messages['hashlog.id'] + ':'}</div>
+              <div className="hashlog__mobileActionListTitle">{this.props.intl.messages['hashlog.id']}</div>
               <div className="hashlog__mobileActionListValue">{actionsListItem.keyId}</div>
             </div>
             <div className="hashlog__mobileActionListRow">
-              <div className="hashlog__mobileActionListTitle">{this.props.intl.messages['hashlog.record'] + ':'}</div>
+              <div className="hashlog__mobileActionListTitle">{this.props.intl.messages['hashlog.record']}</div>
               <div className="hashlog__mobileActionListValue"> <div className="hashlog__table-unformatted">
                 <pre className='hashlog__table-unformatted-pre'>
                   {
                     JSON.stringify({
                       type : actionsListItem.type,
                       params: actionsListItem.params,
-                    }, null, '\t')
+                    }, null, 2)
                   }
                 </pre>
               </div>
@@ -194,7 +201,7 @@ class ActionList extends React.Component {
                 JSON.stringify({
                   type : actionsListItem.type,
                   params: actionsListItem.params,
-                }, null, '\t')
+                }, null, 2)
               }>
                 <button  className='hashlog__copy-button'>
                   <FormattedMessage
@@ -207,7 +214,7 @@ class ActionList extends React.Component {
             </div>
             <div className="hashlog__mobileActionListRow">
               <div className="hashlog__mobileActionListTitle">
-                {this.props.intl.messages['hashlog.hash'] + ':'}
+                {this.props.intl.messages['hashlog.hash']}
               </div>
               <div className="hashlog__mobileActionListValue">
                 <div className='hashlog__copied-block'>
@@ -291,14 +298,18 @@ class ActionList extends React.Component {
         <Row>
           <Col xs="12" sm="12" md="12" lg="12">
             <div className="hashlog__main">
-              <div className="hashlog__main-title">
-                <FormattedMessage
-                  id="hashlog.titleBlock"
-                  defaultMessage="Hashlog"
-                />
-              </div>
-              <div className="hashlog__main-board hashlog__info-board">
-                {this.renderBlockInfoTable()}
+              <div className="hashlog__action-list-table-wrapper">
+                <div className="hashlog__main-title hashlog__action-list-main-title-wrapper">
+                  <div className="hashlog__action-list-main-title">
+                    <FormattedMessage
+                      id="hashlog.titleBlock"
+                      defaultMessage="Hashlog"
+                    />
+                  </div>
+                </div>
+                <div className="hashlog__info-board">
+                  {this.renderBlockInfoTable()}
+                </div>
               </div>
             </div>
           </Col>
@@ -306,22 +317,26 @@ class ActionList extends React.Component {
         <Row>
           <Col xs="12" sm="12" md="12" lg="12">
             <div className="hashlog__main">
-              <div className="hashlog__main-title">
-                <FormattedMessage
-                  id="hashlog.titleAction"
-                  defaultMessage="Hashlog"
-                />
-                <a href={`https://${window.location.host}/api/v2/hashlog/actions?q.blockNumber=${blockInfo.number || currentBlockNumberFromUrl}&page=${actionListPage}&size=${actionListPageSize}`}
-                  target="_blank"
-                  className="hashlog__export-to-json">
-                  <FormattedMessage
-                    id="hashlog.exportToJson"
-                    defaultMessage="Export to JSON"
-                  />
-                </a>
-              </div>
-              <div className="hashlog__main-board">
-                {this.renderActionListTable()}
+              <div className="hashlog__action-list-table-wrapper">
+                <div className="hashlog__main-title hashlog__action-list-main-title-wrapper">
+                  <div className="hashlog__action-list-main-title">
+                    <FormattedMessage
+                      id="hashlog.titleAction"
+                      defaultMessage="Hashlog"
+                    />
+                  </div>
+                  <a href={`https://${window.location.host}/api/v2/hashlog/actions?q.blockNumber=${blockInfo.number || currentBlockNumberFromUrl}&page=${actionListPage}&size=${actionListPageSize}`}
+                    target="_blank"
+                    className="hashlog__export-to-json">
+                    <FormattedMessage
+                      id="hashlog.asJson"
+                      defaultMessage="As JSON"
+                    />
+                  </a>
+                </div>
+                <div className="hashlog__action-list-table">
+                  {this.renderActionListTable()}
+                </div>
               </div>
             </div>
           </Col>
