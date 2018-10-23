@@ -162,15 +162,39 @@ class ActionList extends React.Component {
     return (
       <React.Fragment>
         <Screen on={screenWidth => (
-          <ReactTable
+          screenWidth  === 'lg' ?<ReactTable
             data={[blockInfo]}
             columns={this.getBlockInfoColumns(screenWidth)}
             screenWidth={screenWidth}
-          />)}
+          /> : this.renderMobileBlockInfo(blockInfo)
+        )}
         />
       </React.Fragment>
     );
   };
+
+  renderMobileBlockInfo = blockInfo => (
+    <div className="hashlog__mobileActionListWrapper">
+      <div  className="hashlog__mobileActionListItemWrapper">
+        <div className="hashlog__mobileActionListRow">
+          <div className="hashlog__mobileActionListTitle">{this.props.intl.messages['hashlog.blockListNumberTitle']}</div>
+          <div className="hashlog__mobileActionListValue">{blockInfo.number}</div>
+        </div>
+        <div className="hashlog__mobileActionListRow">
+          <div className="hashlog__mobileActionListTitle">{this.props.intl.messages['hashlog.blockHash']}</div>
+          <div className="hashlog__mobileActionListValue">{blockInfo.hash}</div>
+        </div>
+        <div className="hashlog__mobileActionListRow">
+          <div className="hashlog__mobileActionListTitle">{this.props.intl.messages['hashlog.actionCount']}</div>
+          <div className="hashlog__mobileActionListValue">{blockInfo.actions.length}</div>
+        </div>
+        <div className="hashlog__mobileActionListRow">
+          <div className="hashlog__mobileActionListTitle">{this.props.intl.messages['hashlog.createdAt']}</div>
+          <div className="hashlog__mobileActionListValue">{blockInfo.createdAt}</div>
+        </div>
+      </div>
+    </div>
+  )
 
   renderMobileActionList = actionsList => (
     <div className="hashlog__mobileActionListWrapper">

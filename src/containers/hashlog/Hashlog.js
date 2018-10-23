@@ -40,11 +40,6 @@ class Hashlog extends React.Component {
       <React.Fragment>
         <Screen on={screenWidth => (
           <ReactTable
-            getTrProps={(state, rowInfo) => {
-              return {
-                onClick: () => this.onRowClick(rowInfo),
-              };
-            }}
             data={blockList}
             columns={this.getColumns(screenWidth)}
             pages={Math.ceil(totalBlocks/blocksPageSize)}
@@ -78,8 +73,19 @@ class Hashlog extends React.Component {
         id: 'currency',
         accessor: 'number',
         headerClassName: 'hashlog__table-header-title',
-        className: 'table_col_value hashlog__table-cell',
+        className: 'table_col_value hashlog__table-cell hashlog__table-cell-number-wrapper',
         minWidth: screenWidth === 'lg' ? 60 : 25  ,
+        Cell: row => (
+          <a
+            className="hashlog__table-cell-number"
+            href={'/action-list?number=' + row.original.number}
+            onClick={ e => {
+              e.preventDefault();
+              this.onRowClick(row);
+            }}>
+            {row.original.number}
+          </a>
+        ),
       },
       {
         Header: this.props.intl.messages['hashlog.blockHash'],
