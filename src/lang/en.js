@@ -77,7 +77,7 @@ const en = {
   'hashlog.copy': 'Copy',
   'hashlog.actionCount': 'Actions Count',
   'hashlog.createdAt': 'Created At',
-  'hashlog.titleBlock': 'Block',
+  'hashlog.titleBlock': 'Block #{number}',
   'hashlog.titleActions': 'Action',
   'hashlog.blockListNumberTitle': 'Block Number',
   'leaderboard.title': 'LEADERBOARD',

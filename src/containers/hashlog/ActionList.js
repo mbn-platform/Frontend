@@ -41,14 +41,6 @@ class ActionList extends React.Component {
   getBlockInfoColumns = screenWidth => {
     return [
       {
-        Header: this.props.intl.messages['hashlog.blockListNumberTitle'],
-        id: 'currency',
-        accessor: 'blockNumber',
-        headerClassName: 'hashlog__table-header-title',
-        className: 'table_col_value hashlog__table-cell hashlog__acion-list-table-cell',
-        minWidth: screenWidth === 'lg' ? 30 : 25,
-      },
-      {
         Header: this.props.intl.messages['hashlog.blockHash'],
         className: 'table_col_value hashlog__table-cell hashlog__table-cell_hash-value',
         headerClassName: 'hashlog__table-header-title',
@@ -101,7 +93,7 @@ class ActionList extends React.Component {
         id: 'currency',
         headerClassName: 'hashlog__table-header-title',
         className: 'table_col_value hashlog__acion-list-table-cell',
-        minWidth: screenWidth === 'lg' ? 60 : 10  ,
+        minWidth: screenWidth === 'lg' ? 30 : 10  ,
         Cell: row => (
           <div>
             {row.index + 1}
@@ -112,7 +104,7 @@ class ActionList extends React.Component {
         Header: this.props.intl.messages['hashlog.id'],
         className: 'table_col_value hashlog__acion-list-table-cell',
         headerClassName: 'hashlog__table-header-title',
-        minWidth: screenWidth === 'lg' ? 60 : 35,
+        minWidth: screenWidth === 'lg' ? 90 : 35,
         accessor: 'id'
       },
       {
@@ -121,31 +113,37 @@ class ActionList extends React.Component {
         headerClassName: 'hashlog__table-header-title',
         minWidth:  screenWidth  === 'lg' ? 100 : 60,
         Cell: row => {
-          console.warn();
           return (<div className="hashlog__table-unformatted-container">
-            <div className="hashlog__table-unformatted">
-              <pre className='hashlog__table-unformatted-pre'>
-                {
+            {(row.original.record === null || row.original.record.params === null) ?
+              <div className="hashlog__table-no-data">
+                -
+              </div> :
+              <React.Fragment>
+                <div className="hashlog__table-unformatted">
+                  <pre className='hashlog__table-unformatted-pre'>
+                    {
+                      JSON.stringify({
+                        type: row.original.record.type,
+                        params: row.original.record.params,
+                      }, null, 2)
+                    }
+                  </pre>
+                </div>
+                <CopyToClipboard text={
                   JSON.stringify({
                     type: row.original.record.type,
                     params: row.original.record.params,
                   }, null, 2)
-                }
-              </pre>
-            </div>
-            <CopyToClipboard text={
-              JSON.stringify({
-                type: row.original.record.type,
-                params: row.original.record.params,
-              }, null, 2)
-            }>
-              <button className='hashlog__copy-button'>
-                <FormattedMessage
-                  id="hashlog.copy"
-                  defaultMessage="Copy"
-                />
-              </button>
-            </CopyToClipboard>
+                }>
+                  <button className='hashlog__copy-button'>
+                    <FormattedMessage
+                      id="hashlog.copy"
+                      defaultMessage="Copy"
+                    />
+                  </button>
+                </CopyToClipboard>
+              </React.Fragment>
+            }
           </div>);
         },
       },
@@ -153,7 +151,7 @@ class ActionList extends React.Component {
         Header: this.props.intl.messages['hashlog.hash'],
         className: 'table_col_value hashlog__acion-list-table-cell',
         headerClassName: 'hashlog__table-header-title',
-        minWidth: screenWidth  === 'lg' ?  100 : 70,
+        minWidth: screenWidth  === 'lg' ?  160 : 70,
         Cell: row => (
           <div>
             <div className='hashlog__copied-block'>
@@ -218,10 +216,6 @@ class ActionList extends React.Component {
     <div className="hashlog__mobileActionListWrapper">
       <div  className="hashlog__mobileActionListItemWrapper">
         <div className="hashlog__mobileActionListRow">
-          <div className="hashlog__mobileActionListTitle">{this.props.intl.messages['hashlog.blockListNumberTitle']}</div>
-          <div className="hashlog__mobileActionListValue">{blockInfo.blockNumber}</div>
-        </div>
-        <div className="hashlog__mobileActionListRow">
           <div className="hashlog__mobileActionListTitle">{this.props.intl.messages['hashlog.blockHash']}</div>
           <div className="hashlog__mobileActionListValue">{blockInfo.blockHash}</div>
         </div>
@@ -256,29 +250,39 @@ class ActionList extends React.Component {
             </div>
             <div className="hashlog__mobileActionListRow">
               <div className="hashlog__mobileActionListTitle">{this.props.intl.messages['hashlog.record']}</div>
-              <div className="hashlog__mobileActionListValue"> <div className="hashlog__table-unformatted">
-                <pre className='hashlog__table-unformatted-pre'>
-                  {
-                    JSON.stringify({
-                      type: actionsListItem.record.type,
-                      params: actionsListItem.record.params,
-                    }, null, 2)
+              <div className="hashlog__mobileActionListValue">
+                <div className="hashlog__table-unformatted-container">
+                  {(actionsListItem.record === null || actionsListItem.record.params === null) ?
+                    <div className="hashlog__table-no-data">
+                      -
+                    </div> :
+                    <React.Fragment>
+                      <div className="hashlog__table-unformatted">
+                        <pre className='hashlog__table-unformatted-pre'>
+                          {
+                            JSON.stringify({
+                              type: actionsListItem.record.type,
+                              params: actionsListItem.record.params,
+                            }, null, 2)
+                          }
+                        </pre>
+                      </div>
+                      <CopyToClipboard text={
+                        JSON.stringify({
+                          type: actionsListItem.record.type,
+                          params: actionsListItem.record.params,
+                        }, null, 2)
+                      }>
+                        <button className='hashlog__copy-button'>
+                          <FormattedMessage
+                            id="hashlog.copy"
+                            defaultMessage="Copy"
+                          />
+                        </button>
+                      </CopyToClipboard>
+                    </React.Fragment>
                   }
-                </pre>
-              </div>
-              <CopyToClipboard text={
-                JSON.stringify({
-                  type: actionsListItem.record.type,
-                  params: actionsListItem.record.params,
-                }, null, 2)
-              }>
-                <button  className='hashlog__copy-button'>
-                  <FormattedMessage
-                    id="hashlog.copy"
-                    defaultMessage="Copy"
-                  />
-                </button>
-              </CopyToClipboard>
+                </div>
               </div>
             </div>
             <div className="hashlog__mobileActionListRow">
@@ -309,7 +313,7 @@ class ActionList extends React.Component {
 
 
   renderActionListTable = () =>  {
-    const {
+    let {
       actionList: {
         actionsList,
         blockInfo,
@@ -379,7 +383,8 @@ class ActionList extends React.Component {
                   <div className="hashlog__action-list-main-title">
                     <FormattedMessage
                       id="hashlog.titleBlock"
-                      defaultMessage="Hashlog"
+                      defaultMessage="Block #{number}"
+                      values={{number: blockInfo.blockNumber}}
                     />
                   </div>
                 </div>

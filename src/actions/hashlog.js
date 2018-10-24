@@ -1,5 +1,4 @@
 import {Hashlog} from '../generic/api';
-import {setBlockForActionList} from './actionsList';
 
 const HashlogApi = new Hashlog();
 
