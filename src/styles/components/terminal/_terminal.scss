@@ -729,6 +729,19 @@
   .terminal__market-table-cell {
     text-align: center !important;
     font-size: 8px;
+    margin-left: 0 !important;
+  }
+
+  .terminal__market-header-table {
+    .table__header-wrapper {
+      text-align: center !important;
+    }
+  }
+
+  .terminal__market-select-dropdown-container {
+    .rt-th {
+      margin-left: 0 !important;
+    }
   }
 
   .orders-table-tab .table {

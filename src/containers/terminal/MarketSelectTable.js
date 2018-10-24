@@ -24,8 +24,6 @@ class MarketSelectTable extends React.Component {
       hideZeros: false,
       dropDownHeight: 400,
     };
-    this.onBaseCurrencySelected = this.onBaseCurrencySelected.bind(this);
-    this.onChange = this.onChange.bind(this);
     this.sortData = sortData.bind(this);
     this.onColumnSort = onColumnSort.bind(this);
     this.sortFunctions = {
@@ -38,7 +36,6 @@ class MarketSelectTable extends React.Component {
         return bFirst * a.last - bSecond * b.last;
       },
     };
-    this.onHideZeroClick = this.onHideZeroClick.bind(this);
     this.dropDownWrapper = React.createRef();
   }
 
@@ -53,17 +50,17 @@ class MarketSelectTable extends React.Component {
     }
   }
 
-  onHideZeroClick(e) {
+  onHideZeroClick = (e) => {
     e.stopPropagation();
     e.nativeEvent.stopImmediatePropagation();
     this.setState({hideZeros: !this.state.hideZeros});
   }
 
-  onChange(e) {
+  onChange = (e) => {
     this.setState({filter: e.target.value});
   }
 
-  onBaseCurrencySelected(e, base) {
+  onBaseCurrencySelected = (e, base) => {
     e.stopPropagation();
     e.nativeEvent.stopImmediatePropagation();
     this.setState({
@@ -96,8 +93,6 @@ class MarketSelectTable extends React.Component {
 
     let balanceValue;
 
-
-
     function calculateChange(currentMarketValue) {
       if(balances) {
         let c;
@@ -108,7 +103,7 @@ class MarketSelectTable extends React.Component {
 
       const val=rates[currentMarketValue.symbol] ? rates[currentMarketValue.symbol] : '';
       const prevDay = currentMarketValue.prevDay;
-      return prevDay ? (val / prevDay * 100 - 100) : null;
+      return prevDay ? (val / prevDay * 100 - 100).toFixed(2) : null;
     }
 
 
@@ -119,7 +114,8 @@ class MarketSelectTable extends React.Component {
             <FormattedMessage id="terminal.currency" defaultMessage="Currency"/>
             <span className={classNameForColumnHeader(this.state, 'second')}/>
           </div>,
-        minWidth:  screenWidth === 'lg' ? 100 : 40,
+        minWidth:  screenWidth === 'lg' ? 80 : 40,
+        headerClassName: 'terminal__market-header-table',
         className: 'terminal__market-table-cell terminal__market-table-cell_color-white',
         Cell: row =>  (
           <div>
@@ -133,14 +129,16 @@ class MarketSelectTable extends React.Component {
           <span className={classNameForColumnHeader(this.state, 'last')}/>
         </div>,
         className: 'terminal__market-table-cell',
+        headerClassName: 'terminal__market-header-table',
         Cell: row => (
           <div>{defaultFormatValue(row.original.last, row.original.base)}</div>
         ),
-        minWidth:  screenWidth === 'lg' ? 70 : 40,
+        minWidth:  screenWidth === 'lg' ? 90 : 40,
       },
       {
-        minWidth:  screenWidth === 'lg' ? 110 : 60,
+        minWidth:  screenWidth === 'lg' ? 110 : 70,
         className: 'terminal__market-table-cell',
+        headerClassName: 'terminal__market-header-table',
         Header: <div onClick={() => this.onColumnSort('volume')} className="table__header-wrapper">
           <FormattedMessage id="terminal.volumeCurrency" defaultMessage="Volume({baseCurrency})" values={{baseCurrency}}/>
           <span className={classNameForColumnHeader(this.state, 'volume')}/>
@@ -152,12 +150,15 @@ class MarketSelectTable extends React.Component {
           <FormattedMessage id="terminal.change" defaultMessage="Change" values={{baseCurrency}}/>
           <span className={classNameForColumnHeader(this.state, 'change')}/>
         </div>,
+        headerClassName: 'terminal__market-header-table',
         className: 'terminal__market-table-cell',
-        minWidth:  screenWidth === 'lg' ? 70 : 40,
-        Cell: row =>
-          <div className={row.original.change >= 0 ? 'terminal__market-table-cell_up' : 'terminal__market-table-cell_down'}>
-            {calculateChange(row.original).toFixed(2) + '%'}
-          </div>
+        minWidth:  screenWidth === 'lg' ? 70 : 30,
+        Cell: row => {
+          return (<div
+            className={row.original.change >= 0 ? 'terminal__market-table-cell_up' : 'terminal__market-table-cell_down'}>
+            {calculateChange(row.original) + '%'}
+          </div>);
+        }
       },
     ];
 
@@ -169,6 +170,7 @@ class MarketSelectTable extends React.Component {
             <FormattedMessage id="terminal.balance" defaultMessage="Balance ({baseCurrency}) " values={{baseCurrency}}/>
             <span className={classNameForColumnHeader(this.state, 'Balance')}/><br/></div>,
           minWidth: 100,
+          headerClassName: 'terminal__market-header-table',
           className: 'terminal__market-table-cell',
           Cell: row => (
             <div>{defaultFormatValue(balanceValue, row.original.base)}</div>
