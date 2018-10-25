@@ -291,7 +291,7 @@ export class Hashlog {
   };
 
   fetchBlock = blockNumber => {
-    return apiGet('/hashlog/blocks/?blockNumber=' + blockNumber)
+    return apiGet(`/hashlog/blocks/${blockNumber}`)
       .then(errorHandler)
       .then(responseSchemaHandler);
   }

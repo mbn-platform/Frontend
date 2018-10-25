@@ -1,4 +1,5 @@
 import {Hashlog} from '../generic/api';
+import { setBlockForActionList } from './actionsList';
 
 const HashlogApi = new Hashlog();
 
@@ -22,8 +23,8 @@ export const getBlockListPage = (page, size) => {
 export const getBlock = blockNumber => {
   return dispatch => {
     HashlogApi.fetchBlock(blockNumber)
-      .then(res => {
-        console.warn(res);
+      .then(blockInfo => {
+        dispatch(setBlockForActionList(blockInfo));
       });
   };
 };

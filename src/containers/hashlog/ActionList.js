@@ -7,7 +7,6 @@ import {
   getActionListPage,
   setActionListPage,
   setActionListPageSize,
-  setBlockForActionList
 } from '../../actions/actionsList';
 import { getBlock } from '../../actions/hashlog';
 import ReactTable from '../../components/SelectableReactTable';
@@ -27,7 +26,6 @@ class ActionList extends React.Component {
       actionListPage,
       actionListPageSize,
       getCurrentBlock,
-      setActionBlock
     } = this.props;
     const { blockNumber: currentBlockNumberFromUrl } = qs.parse(this.props.location.search.slice(1));
     if (blockInfo.blockNumber) {
@@ -437,7 +435,6 @@ const mapDispatchToProps = dispatch => {
     setActionPage: page => dispatch(setActionListPage(page)),
     setActionPageSize: pageSize => dispatch(setActionListPageSize(pageSize)),
     getCurrentBlock: blockNumber => dispatch(getBlock(blockNumber)),
-    setActionBlock: blockInfo => dispatch(setBlockForActionList(blockInfo)),
   };
 };
 
