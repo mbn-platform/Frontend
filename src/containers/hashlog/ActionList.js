@@ -94,22 +94,15 @@ class ActionList extends React.Component {
         minWidth: screenWidth === 'lg' ? 30 : 10  ,
         Cell: row => (
           <div>
-            {row.index + 1}
+            {row.original.blockIndex}
           </div>
         ),
-      },
-      {
-        Header: this.props.intl.messages['hashlog.id'],
-        className: 'table_col_value hashlog__acion-list-table-cell',
-        headerClassName: 'hashlog__table-header-title',
-        minWidth: screenWidth === 'lg' ? 90 : 35,
-        accessor: 'id'
       },
       {
         Header: this.props.intl.messages['hashlog.record'],
         className: 'table_col_value hashlog__acion-list-table-cell',
         headerClassName: 'hashlog__table-header-title',
-        minWidth:  screenWidth  === 'lg' ? 100 : 60,
+        minWidth:  screenWidth  === 'lg' ? 140 : 60,
         Cell: row => {
           return (<div className="hashlog__table-unformatted-container">
             {(row.original.record === null || row.original.record.params === null) ?
@@ -149,7 +142,7 @@ class ActionList extends React.Component {
         Header: this.props.intl.messages['hashlog.hash'],
         className: 'table_col_value hashlog__acion-list-table-cell',
         headerClassName: 'hashlog__table-header-title',
-        minWidth: screenWidth  === 'lg' ?  160 : 70,
+        minWidth: screenWidth  === 'lg' ?  200 : 70,
         Cell: row => (
           <div>
             <div className='hashlog__copied-block'>
@@ -240,11 +233,7 @@ class ActionList extends React.Component {
           <div key={index} className="hashlog__mobileActionListItemWrapper">
             <div className="hashlog__mobileActionListRow">
               <div className="hashlog__mobileActionListTitle">{this.props.intl.messages['hashlog.index']}</div>
-              <div className="hashlog__mobileActionListValue">{index + 1}</div>
-            </div>
-            <div className="hashlog__mobileActionListRow">
-              <div className="hashlog__mobileActionListTitle">{this.props.intl.messages['hashlog.id']}</div>
-              <div className="hashlog__mobileActionListValue">{actionsListItem.id}</div>
+              <div className="hashlog__mobileActionListValue">{actionsListItem.blockIndex}</div>
             </div>
             <div className="hashlog__mobileActionListRow">
               <div className="hashlog__mobileActionListTitle">{this.props.intl.messages['hashlog.record']}</div>
