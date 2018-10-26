@@ -164,7 +164,6 @@ class Navigation extends React.Component {
 
   render() {
     const { isExpanded } = this.state;
-    console.warn(document.body.scrollTop);
     return (
       <Col xs="12"
         md="auto"
