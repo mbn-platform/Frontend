@@ -43,7 +43,7 @@ class ActionList extends React.Component {
         className: 'table_col_value hashlog__table-cell hashlog__table-cell_hash-value',
         headerClassName: 'hashlog__table-header-title',
         minWidth: 160,
-        accessor: 'blockHash'
+        accessor: 'hash'
       },
       {
         Header: this.props.intl.messages['hashlog.prevBlockHash'],
@@ -208,7 +208,7 @@ class ActionList extends React.Component {
       <div  className="hashlog__mobileActionListItemWrapper">
         <div className="hashlog__mobileActionListRow">
           <div className="hashlog__mobileActionListTitle">{this.props.intl.messages['hashlog.blockHash']}</div>
-          <div className="hashlog__mobileActionListValue">{blockInfo.blockHash}</div>
+          <div className="hashlog__mobileActionListValue">{blockInfo.hash}</div>
         </div>
         <div className="hashlog__mobileActionListRow">
           <div className="hashlog__mobileActionListTitle">{this.props.intl.messages['hashlog.blockHash']}</div>
@@ -371,7 +371,7 @@ class ActionList extends React.Component {
                     <FormattedMessage
                       id="hashlog.titleBlock"
                       defaultMessage="Block #{number}"
-                      values={{number: blockInfo.blockNumber}}
+                      values={{number: blockInfo.number}}
                     />
                   </div>
                 </div>

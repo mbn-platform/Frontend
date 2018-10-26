@@ -35,7 +35,7 @@ class Hashlog extends React.Component {
         }
     } = this.props;
     const requestParams= qs.stringify({
-      blockNumber: rowData.original.blockNumber,
+      blockNumber: rowData.original.number,
       page: actionListPage,
       size:actionListPageSize
     });
@@ -92,7 +92,7 @@ class Hashlog extends React.Component {
         Cell: row => {
           const requestParams= qs.stringify(
             {
-              'blockNumber': row.original.blockNumber,
+              'blockNumber': row.original.number,
               page: 1,
               size: 25
             }
@@ -105,7 +105,7 @@ class Hashlog extends React.Component {
                 e.preventDefault();
                 this.onRowClick(row);
               }}>
-              {row.original.blockNumber}
+              {row.original.number}
             </a>
           );
         },
@@ -115,7 +115,7 @@ class Hashlog extends React.Component {
         className: 'table_col_value hashlog__table-cell hashlog__table-cell_hash-value',
         headerClassName: 'hashlog__table-header-title',
         minWidth:  screenWidth  === 'lg' ? 170 : 90,
-        accessor: 'blockHash'
+        accessor: 'hash'
       },
       {
         Header: this.props.intl.messages['hashlog.actionCount'],
