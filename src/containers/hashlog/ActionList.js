@@ -107,7 +107,7 @@ class ActionList extends React.Component {
           return (<div className="hashlog__table-unformatted-container">
             {(row.original.record === null || row.original.record.params === null) ?
               <div className="hashlog__table-no-data">
-                -
+                &#8212;
               </div> :
               <React.Fragment>
                 <div className="hashlog__table-unformatted">
