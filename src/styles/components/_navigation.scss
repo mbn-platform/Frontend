@@ -106,15 +106,16 @@
 
 .navigation__splitter {
   height: 100%;
-  width: 5px;
+  width: 10px;
   position: absolute;
-  right: 0;
+  right: -9px;
+  border-left: 2px solid transparent;
   top: 0;
   cursor: pointer;
-  transition: background-color .2s;
+  transition: border-color .2s;
 
   &:hover {
-    background-color: rgba(#fff, 0.4);
+    border-color: rgba(#fff, 0.4);
     .navigation__splitter-arrow {
       &:before {
         border-color: rgba(#fff, 0.4);
@@ -139,10 +140,10 @@
       position: absolute;
       background-color: transparent;
       top: 0;
-      left: 0;
+      left: 6px;
       height: 20px;
       border-right: 2px solid;
-      width: 15px;
+      width: 2px;
     }
 
     &:after {
@@ -150,14 +151,13 @@
       display: block;
       position: absolute;
       top: 0;
-      left: 10px;
+      left: 12px;
       width: 10px;
       height: 10px;
       border-top: 2px solid;
       border-right: 2px solid;
       background-color: transparent;
       border-color: transparent;
-      transition: all .2s;
     }
 
     &:hover {
@@ -170,7 +170,7 @@
         display: none;
         background-color: transparent;
         top: 0;
-        left: 5px;
+        left: 7px;
         transform: rotate(-135deg);
       }
 
@@ -180,7 +180,7 @@
         display: block;
         background-color: transparent;
         top: 7px;
-        left: 7px;
+        left: 8px;
         transform: rotate(-135deg);
         border-top: 2px solid;
         border-right: 2px solid;
@@ -216,13 +216,13 @@
     }
 
     .navigation__splitter-arrow {
-      left: 70px;
+      left: 72px;
 
       &:hover {
         &:after {
           transform: rotate(45deg);
-          left: 5px;
-          top: 3px;
+          left: 1px;
+          top: 7px;
         }
       }
     }
