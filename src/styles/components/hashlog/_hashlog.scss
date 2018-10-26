@@ -172,11 +172,14 @@
   cursor: pointer;
   border: 0;
   background-color: #393d42;
-  text-transform: uppercase;
   color: #fff;
 
   &:hover {
     background-color: #346255;
+  }
+
+  * {
+    text-transform: none;
   }
 }
 
@@ -252,7 +255,12 @@
 }
 
 .hashlog__table-unformatted-container {
+  text-transform: none;
   width: 100%;
+}
+
+.hashlog__copy {
+  text-transform: none !important;
 }
 
 .hashlog__table-unformatted-pre {

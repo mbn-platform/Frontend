@@ -18,6 +18,9 @@ import qs from 'qs';
 const {Screen} = createMqProvider(querySchema);
 
 class ActionList extends React.Component {
+  state = {
+    actionAnchor: null
+  };
 
   componentDidMount() {
     const {
@@ -35,6 +38,14 @@ class ActionList extends React.Component {
       getActionList(currentBlockNumberFromUrl);
     }
   };
+
+  static getDerivedStateFromProps({actionList: {actionsList}, location}, prevState) {
+    if (actionsList.length > 0) {
+      return {
+        actionAnchor: location.hash,
+      };
+    }
+  }
 
   getBlockInfoColumns = screenWidth => {
     return [
@@ -93,7 +104,7 @@ class ActionList extends React.Component {
         className: 'table_col_value hashlog__acion-list-table-cell',
         minWidth: screenWidth === 'lg' ? 30 : 10  ,
         Cell: row => (
-          <div>
+          <div ref={`action-${row.original.blockIndex}`}>
             {row.original.blockIndex}
           </div>
         ),
@@ -104,6 +115,10 @@ class ActionList extends React.Component {
         headerClassName: 'hashlog__table-header-title',
         minWidth:  screenWidth  === 'lg' ? 140 : 60,
         Cell: row => {
+          const paramsText = JSON.stringify({
+            type: row.original.record.type,
+            params: row.original.record.params,
+          }, null, 2);
           return (<div className="hashlog__table-unformatted-container">
             {(row.original.record === null || row.original.record.params === null) ?
               <div className="hashlog__table-no-data">
@@ -113,18 +128,12 @@ class ActionList extends React.Component {
                 <div className="hashlog__table-unformatted">
                   <pre className='hashlog__table-unformatted-pre'>
                     {
-                      JSON.stringify({
-                        type: row.original.record.type,
-                        params: row.original.record.params,
-                      }, null, 2)
+                      paramsText
                     }
                   </pre>
                 </div>
                 <CopyToClipboard text={
-                  JSON.stringify({
-                    type: row.original.record.type,
-                    params: row.original.record.params,
-                  }, null, 2)
+                  paramsText
                 }>
                   <button className='hashlog__copy-button'>
                     <FormattedMessage
@@ -241,7 +250,7 @@ class ActionList extends React.Component {
                 <div className="hashlog__table-unformatted-container">
                   {(actionsListItem.record === null || actionsListItem.record.params === null) ?
                     <div className="hashlog__table-no-data">
-                      -
+                      &#8212;
                     </div> :
                     <React.Fragment>
                       <div className="hashlog__table-unformatted">
@@ -329,11 +338,11 @@ class ActionList extends React.Component {
             manual
             paginationPageDispatcher={page => {
               setActionPage(page);
-              getActionList(blockInfo.blockNumber || currentBlockNumberFromUrl, page, actionListPageSize);
+              getActionList(blockInfo.number || currentBlockNumberFromUrl, page, actionListPageSize);
             }}
             paginationPageSizeDispatcher={pageSize => {
               setActionPageSize(pageSize);
-              getActionList(blockInfo.blockNumber || currentBlockNumberFromUrl, actionListPage, pageSize);
+              getActionList(blockInfo.number || currentBlockNumberFromUrl, actionListPage, pageSize);
             }}
             onItemSelected={() => {}}
             PaginationComponent={PaginationWithPage}
@@ -348,18 +357,10 @@ class ActionList extends React.Component {
     const {
       actionList: {
         blockInfo,
-        actionListPage,
-        actionListPageSize
       }
     } = this.props;
+    const { actionAnchor } = this.state;
     const { blockNumber: currentBlockNumberFromUrl } = qs.parse(this.props.location.search.slice(1));
-    const requestParams= qs.stringify(
-      {
-        'q.blockNumber': blockInfo.blockNumber || currentBlockNumberFromUrl,
-        page: actionListPage,
-        size:actionListPageSize
-      }
-    );
     return (
       <Container fluid>
         <Row>
@@ -371,7 +372,7 @@ class ActionList extends React.Component {
                     <FormattedMessage
                       id="hashlog.titleBlock"
                       defaultMessage="Block #{number}"
-                      values={{number: blockInfo.number}}
+                      values={{number: blockInfo.number  || currentBlockNumberFromUrl}}
                     />
                   </div>
                 </div>
@@ -393,7 +394,7 @@ class ActionList extends React.Component {
                       defaultMessage="Hashlog"
                     />
                   </div>
-                  <a href={`/api/v2/hashlog/actions?${requestParams}`}
+                  <a href={`/api/v2/hashlog/blocks/${blockInfo.number || currentBlockNumberFromUrl}/actions`}
                     target="_blank"
                     className="hashlog__export-to-json">
                     <FormattedMessage

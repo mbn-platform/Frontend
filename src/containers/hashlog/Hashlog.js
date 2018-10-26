@@ -28,16 +28,9 @@ class Hashlog extends React.Component {
     const { 
       setActionBlock,
       history,
-      actionList:
-        {
-          actionListPage,
-          actionListPageSize
-        }
     } = this.props;
     const requestParams= qs.stringify({
       blockNumber: rowData.original.number,
-      page: actionListPage,
-      size:actionListPageSize
     });
     history.push('/hashlog/actions/?' + requestParams);
     setActionBlock(rowData.original);
@@ -48,7 +41,7 @@ class Hashlog extends React.Component {
       hashlog: {blockList, totalBlocks, blocksPage, blocksPageSize},
       setBlocksPage,
       setBlocksPageSize,
-      getBlocksPages
+      getBlocksPages,
     } = this.props;
     return (
       <React.Fragment>
@@ -93,8 +86,6 @@ class Hashlog extends React.Component {
           const requestParams= qs.stringify(
             {
               'blockNumber': row.original.number,
-              page: 1,
-              size: 25
             }
           );
           return (
