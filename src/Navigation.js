@@ -250,7 +250,7 @@ class Navigation extends React.Component {
   getBar = ({name, to, imgClass, icon, iconHover}) => {
     const {isExpanded} = this.state;
     return (
-      <NavLink to={to} key={name} className="nav-link">
+      <NavLink to={to} key={name} title={name} className="nav-link">
         <Container className="h-100" fluid >
           <Row className="h-100">
             <Col xs="12" md={isExpanded ? 12 : 4} className="align-self-center navigation__tab-item">

@@ -125,9 +125,9 @@
   .navigation__splitter-arrow {
     display: block;
     position: fixed;
-    left: 173px;
     top: 50vh;
     width: 25px;
+    left: 174px;
     height: 25px;
     background-color: transparent;
     border-color: transparent;
@@ -150,31 +150,28 @@
       display: block;
       position: absolute;
       top: 0;
-      left: 0;
+      left: 10px;
       width: 10px;
       height: 10px;
       border-top: 2px solid;
-      border-left: 2px solid;
+      border-right: 2px solid;
       background-color: transparent;
       border-color: transparent;
       transition: all .2s;
     }
 
     &:hover {
-      left: 174px;
       background-color: transparent;
       border-color: transparent;
 
       &:before {
         content: '';
         position: absolute;
-        display: block;
+        display: none;
         background-color: transparent;
         top: 0;
         left: 5px;
         transform: rotate(-135deg);
-        border-top: 2px solid;
-        border-right: 2px solid;
       }
 
       &:after {
@@ -182,11 +179,12 @@
         position: absolute;
         display: block;
         background-color: transparent;
-        top: 0;
-        left: 5px;
+        top: 7px;
+        left: 7px;
         transform: rotate(-135deg);
         border-top: 2px solid;
         border-right: 2px solid;
+        border-color: rgba(#fff, 0.4)
       }
     }
   }
@@ -218,12 +216,14 @@
     }
 
     .navigation__splitter-arrow {
-      left: 72px;
-      padding: 10px !important;
+      left: 70px;
 
       &:hover {
-        padding: 6px !important;
-        transform: rotate(-135deg);
+        &:after {
+          transform: rotate(45deg);
+          left: 5px;
+          top: 3px;
+        }
       }
     }
   }
