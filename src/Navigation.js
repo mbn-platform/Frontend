@@ -205,9 +205,10 @@ class Navigation extends React.Component {
         {this.renderGlobalConfirmModel()}
         {this.renderTwoFactorAuthModal()}
         <div
-          style={{'--splitter-arrow-top-offset': document.body.scrollTop}}
           className="navigation__splitter"
-          onClick={() => this.setState({isExpanded: !isExpanded})}/>
+          onClick={() => this.setState({isExpanded: !isExpanded})}>
+          <div className="navigation__splitter-arrow"/>
+        </div>
       </Col>
     );
   }
