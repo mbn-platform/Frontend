@@ -104,10 +104,10 @@ class ActionList extends React.Component {
         className: 'table_col_value hashlog__acion-list-table-cell',
         minWidth: screenWidth === 'lg' ? 30 : 10  ,
         Cell: row => (
-          <div ref={`action-${row.original.blockIndex}`}>
+          <div id={`action-${row.original.blockIndex}`}>
             {row.original.blockIndex}
           </div>
-        ),
+        )
       },
       {
         Header: this.props.intl.messages['hashlog.record'],
@@ -115,10 +115,12 @@ class ActionList extends React.Component {
         headerClassName: 'hashlog__table-header-title',
         minWidth:  screenWidth  === 'lg' ? 140 : 60,
         Cell: row => {
-          const paramsText = JSON.stringify({
-            type: row.original.record.type,
-            params: row.original.record.params,
-          }, null, 2);
+          const paramsText = row.original.record === null ? {} :
+            JSON.stringify({
+              type: row.original.record.type,
+              timestamp: row.original.record.timestamp,
+              params: row.original.record.params,
+            }, null, 2);
           return (<div className="hashlog__table-unformatted-container">
             {(row.original.record === null || row.original.record.params === null) ?
               <div className="hashlog__table-no-data">
@@ -220,7 +222,7 @@ class ActionList extends React.Component {
           <div className="hashlog__mobileActionListValue">{blockInfo.hash}</div>
         </div>
         <div className="hashlog__mobileActionListRow">
-          <div className="hashlog__mobileActionListTitle">{this.props.intl.messages['hashlog.blockHash']}</div>
+          <div className="hashlog__mobileActionListTitle">{this.props.intl.messages['hashlog.prevBlockHash']}</div>
           <div className="hashlog__mobileActionListValue">{blockInfo.prevBlockHash}</div>
         </div>
         <div className="hashlog__mobileActionListRow">
@@ -240,7 +242,7 @@ class ActionList extends React.Component {
       {actionsList.map((actionsListItem, index) => {
         return (
           <div key={index} className="hashlog__mobileActionListItemWrapper">
-            <div className="hashlog__mobileActionListRow">
+            <div className="hashlog__mobileActionListRow" id={`action-${actionsListItem.blockIndex}`}>
               <div className="hashlog__mobileActionListTitle">{this.props.intl.messages['hashlog.index']}</div>
               <div className="hashlog__mobileActionListValue">{actionsListItem.blockIndex}</div>
             </div>
@@ -258,6 +260,7 @@ class ActionList extends React.Component {
                           {
                             JSON.stringify({
                               type: actionsListItem.record.type,
+                              timestamp: actionsListItem.record.timestamp,
                               params: actionsListItem.record.params,
                             }, null, 2)
                           }
@@ -267,6 +270,7 @@ class ActionList extends React.Component {
                         JSON.stringify({
                           type: actionsListItem.record.type,
                           params: actionsListItem.record.params,
+                          timestamp: actionsListItem.record.timestamp,
                         }, null, 2)
                       }>
                         <button className='hashlog__copy-button'>
@@ -361,6 +365,10 @@ class ActionList extends React.Component {
     } = this.props;
     const { actionAnchor } = this.state;
     const { blockNumber: currentBlockNumberFromUrl } = qs.parse(this.props.location.search.slice(1));
+    if (actionAnchor) {
+      const searchingElement = document.getElementById(actionAnchor.substr(1));
+      searchingElement && searchingElement.scrollIntoView();
+    }
     return (
       <Container fluid>
         <Row>
