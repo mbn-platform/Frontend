@@ -65,6 +65,11 @@ body {
 	color: #494d4d;
 }
 
+//For top offset
+.ReactModal__Content {
+	margin-top: calc(50px + 15vh) !important;
+}
+
 .text-underline {
 	display: inline-block;
 	hr {
