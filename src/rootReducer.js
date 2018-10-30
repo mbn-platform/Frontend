@@ -8,6 +8,8 @@ import time from './reducers/time';
 import terminal from './reducers/terminal';
 import request from './reducers/request';
 import notification from './reducers/notification';
+import hashlog from './reducers/hashlog';
+import actionList from './reducers/actionsList';
 import rates from './reducers/rates';
 import modal from './reducers/modal';
 import profile from './reducers/profile';
@@ -21,11 +23,13 @@ const combined = combineReducers(
   {
     apiKeys,
     notification,
+    actionList,
     contracts,
     ratings,
     modal,
     offers,
     auth,
+    hashlog,
     exchanges,
     time,
     request,

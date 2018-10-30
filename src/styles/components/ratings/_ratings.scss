@@ -546,7 +546,13 @@
 			}
 		}
 	}
-
+	.dropdown-popover {
+		.all-time {
+			&_dropdown {
+				display: block;
+			}
+		}
+	}
 	.dropdown-link-wrap {
 		font-size: 12px;
 		cursor: pointer;
@@ -565,7 +571,7 @@
 				width: 106px;
 				display: flex;
 				align-items: center;
-				justify-content: space-around;				
+				justify-content: space-around;
 			}
 		}
 		&:hover {
@@ -599,15 +605,8 @@
 			}
 		}
 	}
-
-	.dropdown-popover {
-		.all-time {
-			&_dropdown {
-				display: block;
-			}
-		}
-	}
 }
+
 
 @media (max-width: 575px){
 	.ratings__best-item{

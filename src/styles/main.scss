@@ -33,6 +33,7 @@ $tooltip-arrow-color: #494d4d;
 @import 'styles/components/profile/profile';
 @import 'styles/components/terminal/terminal';
 @import 'styles/components/leaderboard/leaderboard';
+@import 'styles/components/hashlog/hashlog';
 @import 'styles/components/modal';
 @import 'styles/components/notification';
 @import 'styles/components/orders/orders';
@@ -49,7 +50,6 @@ body {
     background-color: #1f2225;
     // font-family: 'maven_proregular';
     // letter-spacing: 1px;
-    text-transform: uppercase;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;    
 }
