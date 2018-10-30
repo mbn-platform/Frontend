@@ -16,7 +16,6 @@ import profile from './reducers/profile';
 import exchangesInfo from './reducers/exchangesInfo';
 import { combineReducers } from 'redux';
 import { LOGGED_OUT } from './actions/auth';
-import { getInitialState } from './store';
 import ratings from './reducers/ratings';
 
 const combined = combineReducers(
@@ -43,10 +42,9 @@ const combined = combineReducers(
 const root = (state, action) => {
   switch(action.type) {
     case LOGGED_OUT: {
-      const newState = getInitialState();
-      saveReduxState({auth: {...newState.auth, loggedIn: false}});
+      saveReduxState({auth: {loggedIn: false}});
       clearAppState();
-      return newState;
+      return undefined;
     }
     default:
       break;
