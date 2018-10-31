@@ -8,9 +8,9 @@ import {FETCH_CONTRACTS} from '../actions/contracts';
 
 export default function(state = {
   fund: null,
-  exchange: 'bittrex',
-  market: 'USDT-BTC',
-  interval: '30 MIN',
+  exchange: localStorage.getItem('terminal.selectedExchange') || 'binance',
+  market: localStorage.getItem('terminal.selectedMarket') || 'USDT-BTC',
+  interval: localStorage.getItem('terminal.selectedInterval') || '30 MIN',
   orderBook: {sell: [], buy: [], smap: {}, bmap: {}},
   history: [],
   ticker: null,
