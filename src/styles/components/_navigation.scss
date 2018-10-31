@@ -17,7 +17,7 @@
     margin-left: 0;
   }
   background-color: #2d3034 !important;
-  transition: width .2s;
+  transition: width .4s;
   z-index: 10;
   width: 174px;
   box-shadow: 7px 12.124px 54px 0px rgba(0, 0, 0, 0.039);
@@ -31,7 +31,7 @@
     height: 105px;
     border-radius: 0px;
     color: #7c7e80 !important;
-    transition: height .2s;
+    transition: height .4s;
     border-bottom: 1px solid rgba(58, 62, 66, .7);
     &.no-hover-link {
       cursor: default;
@@ -108,7 +108,7 @@
   border-left: 2px solid transparent;
   top: 0;
   cursor: pointer;
-  transition: border-color .2s;
+  transition: border-color .4s;
 
   &:hover {
     border-color: rgba(#fff, 0.4);
@@ -128,7 +128,7 @@
     height: 25px;
     background-color: transparent;
     border-color: transparent;
-    transition: all .2s;
+    transition: all .4s;
 
     &:before {
       content: '';
