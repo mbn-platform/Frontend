@@ -210,7 +210,7 @@ input[type=number]::-webkit-outer-spin-button {
 			text-transform: uppercase;
 		}
 		&.search{
-			min-width: 290px;
+			min-width: 450px;
 			.dropdown{
 				&__form{
 					margin-bottom: 10px;
@@ -328,6 +328,14 @@ input[type=number]::-webkit-outer-spin-button {
 					}
 				}
 			}
+		}
+	}
+}
+
+@media (max-width: 560px) {
+	.dropdown-popover {
+		.search {
+			min-width: 280px !important;
 		}
 	}
 }

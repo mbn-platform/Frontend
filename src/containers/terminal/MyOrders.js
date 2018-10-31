@@ -54,6 +54,7 @@ class MyOrders extends React.Component {
         Header:   <div onClick={() => this.onColumnSort('limit')} className="table__header-wrapper">
           <FormattedMessage id="terminal.priceForTable" defaultMessage="Price"/>
           <span className={classNameForColumnHeader(this.state, 'limit')}/></div>,
+        className: 'terminal__table-order-type',
         Cell: row => (
           <div>{row.original.limit}</div>
         ),
@@ -61,6 +62,7 @@ class MyOrders extends React.Component {
       },
       {
         minWidth: screenWidth === 'lg' ? 70 : 50,
+        className: 'terminal__table-order-type',
         Header: <div onClick={() => this.onColumnSort('filled')} className="table__header-wrapper">
           <FormattedMessage id="terminal.unitsFilled" defaultMessage="Units Filled"/>
           <span className={classNameForColumnHeader(this.state, 'filled')}/></div>,
@@ -75,7 +77,8 @@ class MyOrders extends React.Component {
           <FormattedMessage id="terminal.unitsTotal" defaultMessage="Units Total"/>
           <span className={classNameForColumnHeader(this.state, 'amount')}/>
         </div>,
-        minWidth: screenWidth === 'lg' ? 70 : 50,
+        className: 'terminal__table-order-type',
+        minWidth: 50,
         Cell: row => {
           return (
             <div>{row.original.amount}</div>
@@ -88,6 +91,7 @@ class MyOrders extends React.Component {
           <FormattedMessage id="terminal.total" defaultMessage="Total"/>
           <span className={classNameForColumnHeader(this.state, 'price')}/>
         </div>,
+        className: 'terminal__table-order-type',
         minWidth: screenWidth === 'lg' ? 40 : 20,
         Cell: row => (
           <div className="ellipsis-cell">{row.original.price}</div>
@@ -100,6 +104,7 @@ class MyOrders extends React.Component {
       ...(isOpenOrdersTable ?
         [{
           Header: '',
+          className: 'terminal__table-order-type',
           minWidth: 20,
           Cell: row =>  (
             <div onClick={() => cancelOrder(row.original)} className="terminal__table-order-remove">
@@ -111,14 +116,13 @@ class MyOrders extends React.Component {
     ];
   }
 
-  renderOrdersTable = (data, screenWidth) => {
-    return  (<ReactTable
+  renderOrdersTable = (data, screenWidth) =>
+    <ReactTable
       columns={this.getOrderColumns(screenWidth)}
       data={data}
       scrollBarHeight={140}
       style={{height: 180}}
-    />);
-  }
+    />
 
   render() {
     const { tab } = this.state;
@@ -151,7 +155,7 @@ class MyOrders extends React.Component {
             {
               <div className={classNames('orders-table-tab', tab === TAB_OPEN_ORDERS ? 'orders-open' : 'orders-completed' , 'active')}>
                 <div className="orders-table-wrapper">
-                  {this.renderOrdersTable(tab === TAB_OPEN_ORDERS ? sortedData.open : sortedData.closed, screenWidth)}
+                  {this.renderOrdersTable(sortedData, screenWidth)}
                 </div>
               </div>
             }

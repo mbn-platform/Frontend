@@ -384,7 +384,7 @@ class Leaderboard extends React.Component {
       <ReactTable
         columns={this.getGlobalBoardColumns(isGlobal, screenWidth)}
         data={data}
-        scrollBarHeight={300}
+        scrollBarHeight={500}
         getTrProps={this.onRowClick}
       />
     );

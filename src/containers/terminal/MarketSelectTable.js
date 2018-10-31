@@ -110,12 +110,12 @@ class MarketSelectTable extends React.Component {
     const marketColumns =  [
       {
         Header:
-          <div onClick={() => this.onColumnSort('second')} className="table__header-wrapper">
+          <div onClick={() => this.onColumnSort('second')}>
             <FormattedMessage id="terminal.currency" defaultMessage="Currency"/>
             <span className={classNameForColumnHeader(this.state, 'second')}/>
           </div>,
-        minWidth:  screenWidth === 'lg' ? 80 : 40,
-        headerClassName: 'terminal__market-header-table',
+        minWidth:  screenWidth === 'lg' ? 80 : 30,
+        headerClassName: 'table__header-wrapper terminal__market-header-table',
         className: 'terminal__market-table-cell terminal__market-table-cell_color-white',
         Cell: row =>  (
           <div>
@@ -124,33 +124,33 @@ class MarketSelectTable extends React.Component {
         )
       },
       {
-        Header:   <div onClick={() => this.onColumnSort('last')} className="table__header-wrapper">
+        Header:   <div onClick={() => this.onColumnSort('last')}>
           <FormattedMessage id="terminal.price" defaultMessage="Price"/>
           <span className={classNameForColumnHeader(this.state, 'last')}/>
         </div>,
         className: 'terminal__market-table-cell',
-        headerClassName: 'terminal__market-header-table',
+        headerClassName: 'table__header-wrapper terminal__market-header-table',
         Cell: row => (
           <div>{defaultFormatValue(row.original.last, row.original.base)}</div>
         ),
         minWidth:  screenWidth === 'lg' ? 90 : 40,
       },
       {
-        minWidth:  screenWidth === 'lg' ? 110 : 70,
+        minWidth:  screenWidth === 'lg' ? 110 : 40,
         className: 'terminal__market-table-cell',
-        headerClassName: 'terminal__market-header-table',
-        Header: <div onClick={() => this.onColumnSort('volume')} className="table__header-wrapper">
+        headerClassName: 'table__header-wrapper terminal__market-header-table',
+        Header: <div onClick={() => this.onColumnSort('volume')}>
           <FormattedMessage id="terminal.volumeCurrency" defaultMessage="Volume({baseCurrency})" values={{baseCurrency}}/>
           <span className={classNameForColumnHeader(this.state, 'volume')}/>
         </div>,
         Cell: row => Math.round(row.original.volume * row.original.last)
       },
       {
-        Header: <div onClick={() => this.onColumnSort('change')} className="table__header-wrapper">
+        Header: <div onClick={() => this.onColumnSort('change')}>
           <FormattedMessage id="terminal.change" defaultMessage="Change" values={{baseCurrency}}/>
           <span className={classNameForColumnHeader(this.state, 'change')}/>
         </div>,
-        headerClassName: 'terminal__market-header-table',
+        headerClassName: 'table__header-wrapper terminal__market-header-table',
         className: 'terminal__market-table-cell',
         minWidth:  screenWidth === 'lg' ? 70 : 30,
         Cell: row => {
@@ -166,11 +166,11 @@ class MarketSelectTable extends React.Component {
       ...marketColumns,
       ...(this.props.balances ? [
         {
-          Header: <div onClick={() => this.onColumnSort('Balance')} className="table__header-wrapper">
+          Header: <div onClick={() => this.onColumnSort('Balance')}>
             <FormattedMessage id="terminal.balance" defaultMessage="Balance ({baseCurrency}) " values={{baseCurrency}}/>
             <span className={classNameForColumnHeader(this.state, 'Balance')}/><br/></div>,
-          minWidth: 100,
-          headerClassName: 'terminal__market-header-table',
+          minWidth: 30,
+          headerClassName: 'table__header-wrapper terminal__market-header-table',
           className: 'terminal__market-table-cell',
           Cell: row => (
             <div>{defaultFormatValue(balanceValue, row.original.base)}</div>

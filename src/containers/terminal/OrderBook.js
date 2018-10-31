@@ -185,7 +185,7 @@ class OrderBook extends React.Component {
       sortedDataBuy = this.sortData(buy).slice(0, 50);
     }
     return (
-      <div ref={this.orderTable } className="orderbook-table chart col-12 col-sm-6 col-md-12">
+      <div ref={this.orderTable } className="orderbook-table chart col-12 col-lg-6 col-sm-12 col-md-12">
         <Screen on={screenWidth => (
           <React.Fragment>
             <div className="chart__top justify-content-between row">

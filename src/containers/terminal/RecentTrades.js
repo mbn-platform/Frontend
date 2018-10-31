@@ -102,7 +102,7 @@ class RecentTrades extends React.Component {
         sortedData = this.sortData(history);
       }
       return (
-        <div className="trades-table chart col-12 col-sm-6 col-md-12">
+        <div className="trades-table chart col-12 col-sm-12 col-md-12">
           <Screen on={screenWidth => {
             return (
               <React.Fragment>

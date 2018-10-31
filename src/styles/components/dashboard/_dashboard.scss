@@ -44,10 +44,6 @@
       padding-top: 15px;
     }
 
-    .ReactTable .rt-tr {
-      min-height: 30px;
-    }
-
     .-filters .rt-th
     {
       padding-top: 4px;
@@ -94,7 +90,6 @@
       transition: background 400ms;
       cursor: pointer;
       border-bottom: 1px solid #2c2f33;
-      min-height: 30px;
       line-height: 30px;
     }
     .ReactTable .rt-tr-group .rt-tr:not(.-padRow).-selected {

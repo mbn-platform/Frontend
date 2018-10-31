@@ -150,6 +150,18 @@
 			}
 		}
 	}
+
+	.rt-th {
+		&:first-child {
+			.orders__table-header-wrapper {
+				text-align: left;
+			}
+		}
+	}
+
+	.orders__table-header-wrapper {
+		text-align: center;
+	}
 }
 .orders__table_round {
 	width: 5px;
@@ -166,11 +178,17 @@
 	}
 }
 
+
 .orders__table_cell {
 	display: flex;
 	justify-content: center;
 	flex-flow: row nowrap;
 	align-items: center;
+	font-size: 12px;
+
+	&:first-child {
+		justify-content: start;
+	}
 }
 
 .orders__table-remove{

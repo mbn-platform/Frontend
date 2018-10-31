@@ -58,7 +58,7 @@
 
   .terminal__table-order-type {
     display: flex;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
 
     .round.center {
@@ -688,6 +688,10 @@
 .terminal__market-select-dropdown-container {
   height: 70vh;
   min-height: 400px;
+
+  .rt-tr {
+    line-height: 20px !important;
+  }
 }
 
 .terminal__sub-cell {
@@ -700,6 +704,7 @@
   text-align: left !important;
   justify-content: start;
   white-space: nowrap;
+  line-height: 20px !important;
   overflow-x: scroll !important;
   font-size: 12px;
 }
@@ -722,10 +727,37 @@
   }
 }
 
+@media (max-width: 1231px) {
+  .orderbook-table {
+    height: 600px;
+  }
+}
+
+@media (max-width: 1027px) {
+
+  .terminal__market-header-table {
+    font-size: 7.5px !important;
+  }
+
+  .terminal__market-table-cell {
+    font-size: 10px;
+  }
+
+  .orderbook-table {
+    margin-bottom: 20px;
+  }
+}
+
+
 /*
 	Hide columns on <768px
  */
 @media (max-width: 768px) {
+
+  .orderbook-table {
+    margin-bottom: 0;
+  }
+
   .terminal__market-table-cell {
     text-align: center !important;
     font-size: 8px;
@@ -733,6 +765,8 @@
   }
 
   .terminal__market-header-table {
+    font-size: 7.5px !important;
+    text-align: center !important;
     .table__header-wrapper {
       text-align: center !important;
     }
@@ -982,8 +1016,6 @@
     tbody {
       height: 130px;
     }
-    max-width: 48%;
-    margin-right: 10px;
   }
 
   .trades-table {
@@ -1034,7 +1066,7 @@
   }
 }
 
-@media (min-width: 1230px) {
+@media (min-width: 1232px) {
   .buysell {
     margin-right: 20px;
   }
