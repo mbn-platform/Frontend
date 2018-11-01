@@ -123,18 +123,22 @@
       margin-bottom: -10px !important;
     }
 
-    // table{
-    // 	thead th{
-    // 		border: none;
-    // 		text-transform: capitalize;
-    // 		font-size: 12px;
-    //     white-space: nowrap;
-    // 		font-family: "SF-UI"!important;
-    // 	}
-    // 	tr{
-    // 		// display: block;
-    // 		// width: 100%;
-    // 		// height: 25px;
+		.dropdown-link {
+			text-transform: uppercase;
+		}
+
+		// table{
+		// 	thead th{
+		// 		border: none;
+		// 		text-transform: capitalize;
+		// 		font-size: 12px;
+		//     white-space: nowrap;
+		// 		font-family: "SF-UI"!important;
+		// 	}
+		// 	tr{
+		// 		// display: block;
+		// 		// width: 100%;
+		// 		// height: 25px;
 
     // 	}
     // 	th,td{

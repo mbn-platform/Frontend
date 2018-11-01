@@ -163,8 +163,16 @@ class Navigation extends React.Component {
 
 
   render() {
+    const { isExpanded } = this.state;
     return (
-      <Col xs="12" md="auto" className="d-block menu-panel">
+      <Col xs="12"
+        md="auto"
+        className={`
+           d-block
+           menu-panel
+           navigation__tab-container
+           ${!isExpanded && 'navigation__tab-container_hidden'}`
+        }>
         <Navbar expand="md"  >
           <NavbarBrand className="d-inline-block d-md-none" tag="div">
             <a target="_blank" rel='noopener noreferrer' href="https://membrana.io">
@@ -173,7 +181,7 @@ class Navigation extends React.Component {
           </NavbarBrand>
           <NavbarToggler onClick={this.toggle} className={this.state.isOpen ? '' : 'collapsed'} />
           <Desktop>
-            <Collapse isOpen={this.state.isOpen} className="ml-auto ml-md-0" navbar>
+            <Collapse isOpen={this.state.isOpen} className="ml-auto ml-md-0 navigation__tab-wrapper" navbar>
               <Nav pills className="flex-column w-100 align-middle" tag="div">
                 {this.getLogo()}
                 {this.getLinks().map(this.getBar)}
@@ -195,6 +203,11 @@ class Navigation extends React.Component {
         {this.renderGlobalInformModel()}
         {this.renderGlobalConfirmModel()}
         {this.renderTwoFactorAuthModal()}
+        <div
+          className="navigation__splitter"
+          onClick={() => this.setState({isExpanded: !isExpanded})}>
+          <div className="navigation__splitter-arrow"/>
+        </div>
       </Col>
     );
   }
@@ -233,12 +246,13 @@ class Navigation extends React.Component {
     );
   }
 
-  getBar({name, to, imgClass, icon, iconHover}) {
+  getBar = ({name, to, imgClass, icon, iconHover}) => {
+    const {isExpanded} = this.state;
     return (
-      <NavLink to={to} key={name} className="nav-link">
+      <NavLink to={to} key={name} title={name} className="nav-link">
         <Container className="h-100" fluid >
           <Row className="h-100">
-            <Col xs="12" className="align-self-center">
+            <Col xs="12" md={isExpanded ? 12 : 4} className="align-self-center navigation__tab-item">
               <Container fluid className="align-middle">
                 <Row>
                   <Col xs="3" md="12" className="d-flex justify-content-end justify-content-md-center">
@@ -248,7 +262,7 @@ class Navigation extends React.Component {
                   <Col xs="auto" className="d-flex d-md-none">
                     <div className="gap"/>
                   </Col>
-                  <Col xs="3" md="12" className="d-flex justify-content-start justify-content-md-center">
+                  <Col xs="3" md="12" className={'d-flex justify-content-start justify-content-md-center'}>
                     <div className="menu-text">{name}</div>
                   </Col>
                 </Row>

@@ -441,151 +441,157 @@
       align-items: baseline;
       justify-content: center;
       line-height: 18px;
-      .text {
-        margin-left: 10px;
-      }
-    }
-  }
-  &-traders {
-    .ratings__best-item {
-      .ratings__best-top {
-        width: 250px;
-        padding: 0 30px;
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-position: center;
-        margin-left: auto;
-        margin-right: auto;
-      }
-      &.best_alltime {
-        color: #32B994;
-        .ratings__best-top {
-          background-image: url('../assets/svg/wreath.svg');
-        }
-      }
-      &.best_year {
-        color: #A0832C;
-        .ratings__best-top {
-          background-image: url('../assets/svg/wreath_gold.svg');
-        }
-      }
-      &.best_quart {
-        color: #7E9191;
-        .ratings__best-top {
-          background-image: url('../assets/svg/wreath_silver.svg');
-        }
-      }
-      &.best_month {
-        color: #A76F45;
-        .ratings__best-top {
-          background-image: url('../assets/svg/wreath_bronze.svg');
-        }
-      }
-    }
-    .table {
-      tr th {
-        &:nth-child(5) {
-          min-width: 85px;
-        }
-        &:nth-child(7) {
-          min-width: 125px;
-        }
-        &:nth-child(8) {
-          min-width: 80px;
-        }
-        &:nth-child(9) {
-          min-width: 115px;
-        }
-      }
-    }
-  }
-  &-investors {
-    .table {
-      .help_dropdown {
-        .succes {
-          .round {
-            background-color: #0290E5;
-          }
-        }
-      }
-      td {
-        .success {
-          color: #0290E5;
-        }
-      }
-      .graph {
-        background: url('../assets/img/graph_blue.png') no-repeat center;
-      }
-      th {
-        &:nth-child(5) {
-          min-width: 85px;
-        }
-        &:nth-child(7) {
-          min-width: 115px;
-        }
-      }
-    }
-    .ratings__best-item {
-      .ratings__best-top {
-        width: 250px;
-        padding: 0 30px;
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-position: center;
-        margin-left: auto;
-        margin-right: auto;
-      }
-      &.best_alltime {
-        color: #0290E5;
-        .ratings__best-top {
-          background-image: url('../assets/svg/wreath_blue.svg');
-        }
-      }
-      &.best_year {
-        color: #A0832C;
-        .ratings__best-top {
-          background-image: url('../assets/svg/wreath_gold.svg');
-        }
-      }
-      &.best_quart {
-        color: #7E9191;
-        .ratings__best-top {
-          background-image: url('../assets/svg/wreath_silver.svg');
-        }
-      }
-      &.best_month {
-        color: #A76F45;
-        .ratings__best-top {
-          background-image: url('../assets/svg/wreath_bronze.svg');
-        }
-      }
-    }
-  }
-
-  .dropdown-link-wrap {
-    font-size: 12px;
-    cursor: pointer;
-    color: #7E8190;
-    position: relative;
-    height: 18px;
-    width: 106px;
-    border: 1px solid #4A4D54;
-    border-radius: 2px;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    .dropdown-link {
-      width: 100%;
-      div {
-        width: 106px;
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-      }
-    }
-    &:hover {
-      color: rgba(#fff, .5);
-    }
+    	.text{
+    		margin-left: 10px;
+    	}
+		}
+	}
+	&-traders{
+		.ratings__best-item{
+			.ratings__best-top{
+				width: 250px;
+		    	padding: 0 30px;
+				background-size: contain;
+				background-repeat: no-repeat;
+				background-position: center;
+				margin-left: auto;
+				margin-right: auto;
+			}
+			&.best_alltime{
+				color: #32B994;
+				.ratings__best-top{
+					background-image: url('../assets/svg/wreath.svg');
+				}
+			}
+			&.best_year{
+				color: #A0832C;
+				.ratings__best-top{
+					background-image: url('../assets/svg/wreath_gold.svg');
+				}
+			}
+			&.best_quart{
+				color: #7E9191;
+				.ratings__best-top{
+					background-image: url('../assets/svg/wreath_silver.svg');
+				}
+			}
+			&.best_month{
+				color: #A76F45;
+				.ratings__best-top{
+					background-image: url('../assets/svg/wreath_bronze.svg');
+				}
+			}
+		}
+		.table {
+			tr th {
+				&:nth-child(5) {
+					min-width: 85px;
+				}
+				&:nth-child(7) {
+					min-width: 125px;
+				}
+				&:nth-child(8) {
+					min-width: 80px;
+				}
+				&:nth-child(9) {
+					min-width: 115px;
+				}
+			}
+		}
+	}
+	&-investors{
+		.table{
+			.help_dropdown{
+				.succes{
+					.round{
+						background-color: #0290E5;
+					}
+				}
+			}
+			td{
+				.success{
+					color: #0290E5;
+				}
+			}
+			.graph{
+				background: url('../assets/img/graph_blue.png') no-repeat center;
+			}
+			th {
+				&:nth-child(5) {
+					min-width: 85px;
+				}
+				&:nth-child(7) {
+					min-width: 115px;
+				}
+			}
+		}
+		.ratings__best-item{
+			.ratings__best-top{
+				width: 250px;
+		    	padding: 0 30px;
+				background-size: contain;
+				background-repeat: no-repeat;
+				background-position: center;
+				margin-left: auto;
+				margin-right: auto;				
+			}
+			&.best_alltime{
+				color: #0290E5;
+				.ratings__best-top{
+					background-image: url('../assets/svg/wreath_blue.svg');
+				}
+			}
+			&.best_year{
+				color: #A0832C;
+				.ratings__best-top{
+					background-image: url('../assets/svg/wreath_gold.svg');
+				}
+			}
+			&.best_quart{
+				color: #7E9191;
+				.ratings__best-top{
+					background-image: url('../assets/svg/wreath_silver.svg');
+				}
+			}
+			&.best_month{
+				color: #A76F45;
+				.ratings__best-top{
+					background-image: url('../assets/svg/wreath_bronze.svg');
+				}
+			}
+		}
+	}
+	.dropdown-popover {
+		.all-time {
+			&_dropdown {
+				display: block;
+			}
+		}
+	}
+	.dropdown-link-wrap {
+		font-size: 12px;
+		cursor: pointer;
+		color: #7E8190;
+		position: relative;
+		height: 18px;
+		width: 106px;
+		border: 1px solid #4A4D54;
+		border-radius: 2px;
+		display: flex;
+		align-items: center;
+		justify-content: space-around;
+		.dropdown-link {
+			width: 100%;
+			div {
+				width: 106px;
+				display: flex;
+				align-items: center;
+				justify-content: space-around;
+			}
+		}
+		&:hover {
+			color: rgba(#fff,.5);
+		}
 
     &_dropdown {
       display: none;
@@ -623,6 +629,7 @@
     }
   }
 }
+
 
 .ratings__input-search {
   height: 18px;

@@ -34,16 +34,27 @@ class DropdownSelect extends React.Component {
   }
 
   render() {
+    const {
+      selected,
+      items,
+      header,
+      targetId,
+      elementClassName,
+      dropdownClassName,
+      switcherClassName=''
+    } = this.props;
+    const { isOpen } = this.state;
     return(
-      <div onClick={() => this.setState({isOpen: !this.state.isOpen})} id={this.props.targetId} className="dropdown-link-wrap">
+      <div onClick={() => this.setState({isOpen: !this.state.isOpen})} id={targetId}
+        className={classNames('dropdown-link-wrap', switcherClassName)}>
         <div className="dropdown-link">
           <div>{this.props.selected ? this.props.selected : this.props.header} <span className="arrow_down"/></div>
         </div>
         <Popover
           onClick={this.onOutsideClick}
           innerClassName="popover-body"
-          isOpen={this.state.isOpen}
-          target={this.props.targetId}
+          isOpen={isOpen}
+          target={targetId}
           placement="bottom-start"
           className="dropdown-popover"
         >
@@ -52,15 +63,15 @@ class DropdownSelect extends React.Component {
               e.stopPropagation();
               e.nativeEvent.stopImmediatePropagation();
             }}
-            className={classNames('dropdown', this.props.dropdownClassName)}>
+            className={classNames('dropdown', dropdownClassName)}>
             <div className="dropdown__name" onClick={this.onOutsideClick}>
-              <span>{this.props.selected ? this.props.selected : this.props.header}</span><span className="arrow_down"/>
+              <span>{selected ? selected : header}</span><span className="arrow_down"/>
             </div>
-            {this.props.items.map(item => (
+            {items.map(item => (
               <div
                 key={item}
                 onClick={e => this.onItemSelect(e, item)}
-                className={classNames(this.props.elementClassName, {active: item === this.props.selected})}
+                className={classNames(elementClassName, {active: item === selected})}
               >{item}</div>
             ))}
           </div>

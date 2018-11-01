@@ -6,6 +6,8 @@ import Terminal from './containers/terminal/TerminalContainer';
 import Orders from './containers/orders/Orders';
 import Profile from './containers/profile/ProfileContainer';
 import Leaderboard from './containers/leaderboard/Leaderboard';
+import Hashlog from './containers/hashlog/Hashlog';
+import ActionList from './containers/hashlog/ActionList';
 import './MainContent.css';
 import { Col } from 'reactstrap';
 import NotificationBar from './components/NotificationBar';
@@ -70,6 +72,8 @@ class MainContent extends React.Component {
           <ProtectedRoute exact path="/orders" component={Orders} loggedIn={loggedIn}/>
           <Redirect exact from="/ratings" to="/leaderboard"/>
           <Redirect exact from="/rating" to="/leaderboard"/>
+          <Route exact path="/hashlog" component={Hashlog} loggedIn={loggedIn}/>
+          <Route exact path="/hashlog/actions/" component={ActionList} loggedIn={loggedIn}/>
           <Route exact path="/leaderboard" component={Leaderboard}/>
           <Redirect exact from="/profile" to={loggedIn ? `/${profile.name}` : '/login'}/>
           <Route exact path="/:id" component={Profile}/>

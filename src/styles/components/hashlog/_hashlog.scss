@@ -1,0 +1,337 @@
+.hashlog__main {
+  padding: 20px !important;
+  display: flex;
+  flex-direction: column;
+  .dropdown-link-wrap {
+    font-size: 12px;
+    cursor: pointer;
+    color: #7E8190;
+    position: relative;
+    height: 18px;
+    width: 106px;
+    border: 1px solid #4A4D54;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    .dropdown-link {
+      width: 100%;
+      div {
+        width: 106px;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+      }
+    }
+    &:hover {
+      color: rgba(#fff, .5);
+    }
+
+    &_dropdown {
+      display: none;
+      padding: 10px 0;
+      width: 90px;
+      background-color: #2D3034;
+      font-size: 12px;
+      letter-spacing: 1px;
+      color: #9094A1;
+
+      &-link {
+        color: #9094A1;
+        display: block;
+        text-decoration: none;
+        padding: 8px !important;
+        font-weight: 400;
+
+        &:hover {
+          color: #fff;
+        }
+
+        &.active {
+          background-color: rgba(#9094A1, .25);
+          color: #fff;
+        }
+      }
+    }
+  }
+}
+
+.hashlog__table-no-data {
+  color: #fff;
+  font-weight: 700;
+}
+
+.hashlog__main-title {
+  margin-bottom: 20px;
+  font-size: 22px;
+  color: #fff;
+  position: relative;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.hashlog__action-list-table {
+  .rt-tr {
+    align-items: start;
+
+    &:hover {
+      background-color: inherit !important;
+    }
+  }
+
+  .table__page-size-wrapper {
+    margin-right: 10px;
+    margin-top: 13px;
+  }
+}
+
+.hashlog__info-board {
+  .rt-tr {
+    align-items: center;
+  }
+}
+
+.hashlog__export-to-json {
+  position: absolute;
+  display: block;
+  right: 20px;
+  top: 15px;
+  color: #fff;
+  text-decoration: underline;
+  font-size: 12px;
+
+  &:hover {
+    color: #7c7c7d;
+  }
+}
+
+.hashlog__table-cell {
+  padding-left: 10px;
+  word-break: break-all;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+
+  &:first-child {
+    justify-content: start;
+  }
+}
+
+.hashlog__copied-block {
+  margin-bottom: 10px;
+}
+
+.hashlog__acion-list-table-cell {
+  display: flex;
+  word-break: break-word;
+  text-align: left !important;
+  justify-content: start;
+  align-items: center;
+  padding: 10px !important;
+
+  &:last-child {
+    text-align: center !important;
+    justify-content: center !important;
+  }
+}
+
+.hashlog__table-cell_hash-value {
+  text-align: left !important;
+  overflow: visible !important;
+  padding: 10px !important;
+  line-height: 16px;
+}
+
+.hashlog__main-board {
+  margin-bottom: 70px;
+
+  .rt-tr {
+    align-items: center;
+    cursor: default !important;
+  }
+}
+
+.hashlog__table-header-title {
+  margin-bottom: 15px;
+  font-size: 1.6em;
+  line-height: 1.4;
+  color: #fff;
+  text-transform: none;
+}
+
+.hashlog__table-unformatted {
+  background-color: #393d42;
+  margin-bottom: 10px;
+}
+
+.hashlog__copy-button {
+  line-height: 12px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: 0;
+  background-color: #393d42;
+  color: #fff;
+
+  &:hover {
+    background-color: #346255;
+  }
+
+  * {
+    text-transform: none;
+  }
+}
+
+.hashlog__mobileActionListItemWrapper {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid #393d42;
+
+  &:last-child {
+    border-bottom: 0;
+  }
+}
+
+.hashlog__mobileActionListRow {
+  margin-bottom: 10px;
+  width: 100%;
+  display: flex;
+  padding: 10px !important;
+  flex-flow: column nowrap;
+  justify-content: start;
+  align-items: start;
+
+  &:first-child {
+    margin-top: 10px;
+  }
+}
+
+.hashlog__action-list-table-wrapper {
+  border: 1px solid #494d4d;
+  border-radius: 4px;
+}
+
+.hashlog__action-list-main-title-wrapper {
+  background: #2d3034;
+  max-height: 50px;
+  border-bottom: 1px solid #494d4d;
+  padding-top: 14px !important;
+  padding-bottom: 14px !important;
+  font-size: 10px;
+  margin-bottom: 0;
+}
+
+.hashlog__action-list-main-title {
+  font-size: 1.8em;
+  text-align: left;
+  color: #727274;
+  font-family: 'maven_proregular';
+  text-transform: uppercase;
+  height: 22px;
+  line-height: 24px;
+  padding-left: 25px !important;
+  letter-spacing: 1px;
+}
+
+.hashlog__mobileActionListTitle {
+  color: rgba(255, 255, 255, .7);
+  vertical-align: middle;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.hashlog__mobileActionListValue {
+  font-size: 10px;
+  color: #fff;
+  vertical-align: middle;
+  width: 100%;
+  word-break: break-all;
+  max-width: 500px;
+}
+
+.hashlog__table-unformatted-container {
+  text-transform: none;
+  width: 100%;
+}
+
+.hashlog__copy {
+  text-transform: none !important;
+}
+
+.hashlog__table-unformatted-pre {
+  white-space: pre-wrap;
+  text-align: left;
+  padding: 10px;
+  line-height: 16px;
+  text-transform: none;
+  margin-bottom: 0;
+  font-size: 10px;
+  color: #fff;
+}
+
+.hashlog__table-cell-number-wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+.hashlog__table-cell-number {
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+
+  &:hover {
+    color: #7c7c7d;
+    text-decoration: none;
+  }
+}
+
+.hashlog__main-board {
+  .table__page-size-wrapper {
+    margin-top: 14px;
+  }
+}
+
+@media (max-width: 1028px) {
+  .hashlog__table-cell {
+    font-size: 10px !important;
+  }
+
+  .hashlog__copied-block {
+    word-break: break-all;
+  }
+
+  .hashlog__info-board {
+    margin-bottom: 20px;
+  }
+
+  .hashlog__table-unformatted-pre {
+    font-size: 8px;
+  }
+
+  .hashlog__acion-list-table-cell {
+    padding: 5px !important;
+    font-size: 10px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .hashlog__table-header-title {
+    font-size: 10px;
+  }
+
+  .hashlog__export-to-json {
+    top: 17px;
+  }
+
+  .hashlog__table-cell-time {
+    word-break: inherit;
+    line-height: 16px;
+  }
+}

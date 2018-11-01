@@ -8,24 +8,27 @@ import time from './reducers/time';
 import terminal from './reducers/terminal';
 import request from './reducers/request';
 import notification from './reducers/notification';
+import hashlog from './reducers/hashlog';
+import actionList from './reducers/actionsList';
 import rates from './reducers/rates';
 import modal from './reducers/modal';
 import profile from './reducers/profile';
 import exchangesInfo from './reducers/exchangesInfo';
 import { combineReducers } from 'redux';
 import { LOGGED_OUT } from './actions/auth';
-import { getInitialState } from './store';
 import ratings from './reducers/ratings';
 
 const combined = combineReducers(
   {
     apiKeys,
     notification,
+    actionList,
     contracts,
     ratings,
     modal,
     offers,
     auth,
+    hashlog,
     exchanges,
     time,
     request,
@@ -39,10 +42,9 @@ const combined = combineReducers(
 const root = (state, action) => {
   switch(action.type) {
     case LOGGED_OUT: {
-      const newState = getInitialState();
-      saveReduxState({auth: {...newState.auth, loggedIn: false}});
+      saveReduxState({auth: {loggedIn: false}});
       clearAppState();
-      return newState;
+      return undefined;
     }
     default:
       break;
