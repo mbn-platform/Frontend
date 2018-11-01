@@ -30,13 +30,13 @@ class RecentTrades extends React.Component {
 
       return [
         {
-          Header: <div onClick={() => this.onColumnSort('Price')}
-            className="table__header-wrapper">
+          Header: <div onClick={() => this.onColumnSort('Price')}>
             <FormattedMessage id="terminal.priceRecent"
               defaultMessage="Price ({base})" values={{base}}/>
             <span className={classNameForColumnHeader(this.state, 'Price')}/>
           </div>,
           minWidth:  70,
+          headerClassName: 'terminal__recent-table-header',
           className: 'table_col_value upper table_bot_col_value',
           Cell: row => {
             const isSellOrder = row.original.type === 'SELL';
@@ -47,13 +47,13 @@ class RecentTrades extends React.Component {
             </div>);
           }
         }, {
-          Header:<div onClick={() => this.onColumnSort('Quantity')}
-            className="table__header-wrapper">
+          Header:<div onClick={() => this.onColumnSort('Quantity')}>
             <FormattedMessage id="terminal.tradeSize"
               defaultMessage="Trade Size ({secondary})" values={{secondary}}/>
             <span className={classNameForColumnHeader(this.state, 'Quantity')}/>
           </div>,
           className: 'table_col_value upper table_bot_col_value',
+          headerClassName: 'table_bot_header_value terminal__recent-table-header',
           Cell: row => {
             const isSellOrder = row.original.type === 'SELL';
             return (<div className={`terminal__sub-cell ${isSellOrder ? 'up' : 'down'}`}>
@@ -61,16 +61,14 @@ class RecentTrades extends React.Component {
             </div>);
           },
           minWidth: 85,
-          headerClassName: 'table_bot_header_value',
         }, {
           minWidth: 60,
-          Header: <div onClick={() => this.onColumnSort('TimeStamp')}
-            className="table__header-wrapper">
+          Header: <div onClick={() => this.onColumnSort('TimeStamp')}>
             <FormattedMessage id="terminal.time"
               defaultMessage="Time" />
             <span className={classNameForColumnHeader(this.state, 'TimeStamp')}/>
           </div>,
-          headerClassName: 'table_bot_header_value',
+          headerClassName: 'table_bot_header_value terminal__recent-table-header',
           Cell: row => {
             const isSellOrder = row.original.type === 'SELL';
             return (
@@ -84,7 +82,7 @@ class RecentTrades extends React.Component {
         {
           Header: '',
           minWidth: 24,
-          className: 'table_col_value upper table_bot_col_value',
+          headerClassName: 'table_bot_header_value terminal__recent-table-header',
           Cell: row => {
             const isSellOrder = row.original.type === 'SELL';
             return (<div className={`terminal__sub-cell ${isSellOrder ? 'up' : 'down'}`}>

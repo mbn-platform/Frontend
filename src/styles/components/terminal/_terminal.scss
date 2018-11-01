@@ -727,6 +727,22 @@
   }
 }
 
+.terminal__recent-table-header {
+  font-size: 12px;
+  color: #5B5F67;
+  font-weight: 500;
+  white-space: nowrap;
+  text-align: left !important;
+  font-family: "SF-UI" !important;
+  text-transform: capitalize;
+}
+
+@media (max-width: 1400px) {
+  .terminal__recent-table-header {
+    font-size: 10px;
+  }
+}
+
 @media (max-width: 1231px) {
   .orderbook-table {
     height: 600px;
@@ -753,6 +769,10 @@
 	Hide columns on <768px
  */
 @media (max-width: 768px) {
+
+  .terminal__recent-table-header {
+    font-size: 9px;
+  }
 
   .orderbook-table {
     margin-bottom: 0;
