@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import Login from './containers/login/LoginContainer';
 import Dashboard from './containers/dashboard/DashboardContainer';
-import Terminal from './containers/terminal/TerminalContainer';
+import Terminal from './containers/terminal/Terminal';
 import Orders from './containers/orders/Orders';
 import Profile from './containers/profile/ProfileContainer';
 import Leaderboard from './containers/leaderboard/Leaderboard';

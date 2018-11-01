@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import ReactTable from '../../components/SelectableReactTable';
+import { connect } from 'react-redux';
 import { formatFloat } from '../../generic/util';
 import { Desktop } from '../../generic/MediaQuery';
 import {sortData, onColumnSort, classNameForColumnHeader}  from '../../generic/terminalSortFunctions';
@@ -132,5 +133,12 @@ class RecentTrades extends React.Component {
     }
 }
 
+const mapStateToProps = state => {
+  const {market, history} = state.terminal;
+  return {
+    market,
+    history,
+  };
+};
 
-export default injectIntl(RecentTrades);
+export default injectIntl(connect(mapStateToProps)(RecentTrades));

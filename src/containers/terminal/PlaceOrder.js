@@ -6,6 +6,7 @@ import { Desktop } from '../../generic/MediaQuery';
 import {FormattedMessage, injectIntl} from 'react-intl';
 import {connect} from 'react-redux';
 import {showInfoModal} from '../../actions/modal';
+import {placeOrder} from '../../actions/terminal';
 
 export const TAB_BUY = 'buy';
 export const TAB_SELL = 'sell';
@@ -15,7 +16,7 @@ class PlaceOrder extends React.Component {
   constructor(props) {
     super(props);
     const [main, secondary] = props.market.split('-');
-    let price = props.ticker.last || '';
+    let price = (props.ticker || {}).last || '';
     if(price) {
       price = price.toString();
     }
@@ -377,8 +378,22 @@ const Balance = ({name, value, onClick}) => (
   </div>
 );
 
+const mapStateToProps = state => {
+  const { exchangesInfo, terminal: {market, exchange, ticker, fund}} = state;
+  return {
+    key: market + exchange,
+    markets: ( exchangesInfo[exchange] || {}).markets || [],
+    ticker,
+    exchange,
+    market,
+    fund,
+  };
+};
+
+
 const mapDispatchToProps = dispatch => ({
   showModalWindow: text => dispatch(showInfoModal(text)),
+  placeOrder: order => dispatch(placeOrder(order)),
 });
 
-export default injectIntl(connect(state => state, mapDispatchToProps)(PlaceOrder));
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(PlaceOrder));

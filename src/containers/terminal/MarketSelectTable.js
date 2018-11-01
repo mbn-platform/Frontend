@@ -167,9 +167,18 @@ class MarketSelectTable extends React.Component {
       ...(this.props.balances ? [
         {
           Header: <div onClick={() => this.onColumnSort('Balance')}>
-            <FormattedMessage id="terminal.balance" defaultMessage="Balance ({baseCurrency}) " values={{baseCurrency}}/>
+            {screenWidth === 'lg' ?
+              <FormattedMessage
+                id="terminal.balance"
+                defaultMessage="Balance ({baseCurrency}) "
+                values={{baseCurrency}}/> :
+              <FormattedMessage
+                id="terminal.balance-mobile"
+                defaultMessage="Balance"
+                values={{baseCurrency}}/>
+            }
             <span className={classNameForColumnHeader(this.state, 'Balance')}/><br/></div>,
-          minWidth: 30,
+          minWidth:  screenWidth === 'lg' ? 60 : 30,
           headerClassName: 'table__header-wrapper terminal__market-header-table',
           className: 'terminal__market-table-cell',
           Cell: row => (

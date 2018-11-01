@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container, Row, Col } from 'reactstrap';
+import { connect } from 'react-redux';
 import HeaderStatus from '../../components/HeaderStatus';
 import Controls from './Controls';
 import TradingView from './TradingView';
@@ -10,32 +11,37 @@ import RecentTrades from './RecentTrades';
 import OrderBook from './OrderBook';
 import MediaQuery from 'react-responsive';
 import {setFundId} from '../../generic/util';
+import {
+  getOrders,
+  selectExchange,
+  selectFund,
+  startTradingDataUpdates,
+  stopTradingDataUpdates
+} from '../../actions/terminal';
 
 class Terminal extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {fullScreenEnabled: false, selectedInterval: '30 M', type: 'buy'};
-    this.onOrderSelect = this.onOrderSelect.bind(this);
-    this.onFullScreenChange = this.onFullScreenChange.bind(this);
   }
 
-  onOrderSelect(price, size, ) {
+  onOrderSelect = (price, size) => {
     this.setState({price: price || '', size: size || ''});
   }
 
-  onFullScreenChange(value) {
+  onFullScreenChange = value => {
     this.setState({fullScreenEnabled: value});
   }
 
-  allowedApiKeys(apiKeys, contracts) {
-    const allowedOwnKeys = apiKeys.ownKeys.filter(k => k.state === 'FREE');
-    const allowedReceivedKeys = apiKeys.receivedKeys.filter(k => {
-      const contract = contracts.find(c => c.keyId === k._id);
-      return !!contract;
-    });
-    return allowedOwnKeys.concat(allowedReceivedKeys);
-  }
+  // allowedApiKeys(apiKeys, contracts) {
+  //   const allowedOwnKeys = apiKeys.ownKeys.filter(k => k.state === 'FREE');
+  //   const allowedReceivedKeys = apiKeys.receivedKeys.filter(k => {
+  //     const contract = contracts.find(c => c.keyId === k._id);
+  //     return !!contract;
+  //   });
+  //   return allowedOwnKeys.concat(allowedReceivedKeys);
+  // }
 
   componentDidUpdate(prevProps) {
     if(this.props.fund && (prevProps.market !== this.props.market ||
@@ -53,66 +59,26 @@ class Terminal extends React.Component {
       <Container fluid className="terminal">
         <Row>
           <Col xs="12" sm="12" md="12" lg="12" className="terminal-container">
-            <HeaderStatus
-              {...this.props.exchangeInfo}
-            />
+            <HeaderStatus />
             <div className="terminal-main">
               <Controls
-                market={this.props.market}
-                fund={this.props.fund}
-                userId={this.props.userId}
-                exchange={this.props.exchange}
-                exchanges={this.props.exchanges}
-                apiKeys={this.props.apiKeys.ownKeys}
-                contracts={this.props.contracts.current}
-                interval={this.props.interval}
-                onIntervalSelected={this.props.selectInterval}
-                onExchangeSelect={this.props.selectExchange}
-                onApiKeySelect={this.props.selectFund}
                 isFullScreenEnabled={this.state.fullScreenEnabled}
               />
               <Row className="charts">
                 <Col xs="12" sm="12" md="6" lg="8" className="charts__left">
-                  <TradingView
-                    onFullScreenChange={this.onFullScreenChange}
-                    market={this.props.market}
-                    exchange={this.props.exchange}
-                    interval={this.props.interval}
-                  />
-                  <MarketDepth
-                    ticker={this.props.ticker || {}}
-                    key={this.props.market + this.props.exchange}
-                    market={this.props.market}
-                    {...this.props.orderBook}
-                  />
+                  <TradingView onFullScreenChange={this.onFullScreenChange}/>
+                  <MarketDepth />
                   <Row className="justify-content-between">
                     <PlaceOrder
-                      key={this.props.market + this.props.exchange}
-                      exchange={this.props.exchange}
                       price={this.state.price}
                       type={this.state.type}
                       size={this.state.size}
-                      markets={(this.props.exchangeInfo || {}).markets || []}
-                      ticker={this.props.ticker || {}}
-                      placeOrder={this.props.placeOrder}
-                      fund={this.props.fund}
-                      market={this.props.market}
                     />
                     <MediaQuery query="(min-width: 576px)">
-                      <MyOrders
-                        market={this.props.market}
-                        orders={this.props.orders}
-                        cancelOrder={this.props.cancelOrder}
-                      />
+                      <MyOrders/>
                     </MediaQuery>
                     <MediaQuery query="(max-width: 575px)">
-                      <OrderBook
-                        onOrderSelect={this.onOrderSelect}
-                        orderBook={this.props.orderBook}
-                        market={this.props.market}
-                        exchange={this.props.exchange}
-                        ticker={this.props.ticker || {}}
-                      />
+                      <OrderBook onOrderSelect={this.onOrderSelect} />
                     </MediaQuery>
                   </Row>
                 </Col>
@@ -121,23 +87,12 @@ class Terminal extends React.Component {
                     <MediaQuery query="(min-width: 576px)">
                       <OrderBook
                         onOrderSelect={this.onOrderSelect}
-                        orderBook={this.props.orderBook}
-                        exchange={this.props.exchange}
-                        ticker={this.props.ticker || {}}
-                        market={this.props.market}
                       />
                     </MediaQuery>
                     <MediaQuery query="(max-width: 575px)">
-                      <MyOrders
-                        market={this.props.market}
-                        orders={this.props.orders}
-                        cancelOrder={this.props.cancelOrder}
-                      />
+                      <MyOrders />
                     </MediaQuery>
-                    <RecentTrades
-                      market={this.props.market}
-                      history={this.props.history}
-                    />
+                    <RecentTrades />
                   </Row>
                 </Col>
               </Row>
@@ -163,4 +118,21 @@ class Terminal extends React.Component {
   }
 }
 
-export default Terminal;
+const mapStateToProps = state => {
+  const { fund, market, exchange } = state.terminal;
+  return {
+    fund,
+    market,
+    exchange
+  };
+};
+
+const mapDispatchToProps =  dispatch => ({
+  startTradingDataUpdates: () => dispatch(startTradingDataUpdates()),
+  stopTradingDataUpdates: () => dispatch(stopTradingDataUpdates()),
+  selectExchange: (exchange, restore) => dispatch(selectExchange(exchange, restore)),
+  selectFund: fund => dispatch(selectFund(fund)),
+  getOrders: apiKey => dispatch(getOrders(apiKey)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Terminal);

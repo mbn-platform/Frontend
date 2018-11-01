@@ -1,10 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
+import { connect } from 'react-redux';
 import { Desktop } from '../../generic/MediaQuery';
 import ReactTable from '../../components/SelectableReactTable';
 import {sortData, onColumnSort, classNameForColumnHeader}  from '../../generic/terminalSortFunctions';
 import { FormattedMessage } from 'react-intl';
 import createMqProvider, {querySchema} from '../../MediaQuery';
+import { cancelOrder } from '../../actions/terminal';
 
 const TAB_OPEN_ORDERS = 0;
 const TAB_COMPLETED_ORDERS = 1;
@@ -20,6 +22,12 @@ class MyOrders extends React.Component {
     this.onColumnSort = onColumnSort.bind(this);
     this.sortData = sortData.bind(this);
     this.sortFunctions = {};
+  }
+
+  onRowClick = () => {
+    return {
+      onClick: () => null
+    };
   }
 
   onTabClick(tab) {
@@ -118,6 +126,7 @@ class MyOrders extends React.Component {
 
   renderOrdersTable = (data, screenWidth) =>
     <ReactTable
+      getTrProps={this.onRowClick}
       columns={this.getOrderColumns(screenWidth)}
       data={data}
       scrollBarHeight={140}
@@ -166,4 +175,16 @@ class MyOrders extends React.Component {
   }
 }
 
-export default MyOrders;
+const mapStateToProps = state => {
+  const {market, orders} = state.terminal;
+  return {
+    market,
+    orders,
+  };
+};
+
+const mapDispatchToProps =  dispatch => ({
+  cancelOrder: order => dispatch(cancelOrder(order)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MyOrders);

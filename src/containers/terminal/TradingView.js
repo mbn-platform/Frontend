@@ -6,6 +6,7 @@ import {ESCAPE_KEYCODE} from '../../constants';
 
 
 import TradingViewDatafeed from '../../generic/TradingViewDatafeed';
+import {connect} from 'react-redux';
 
 class TradingView extends React.PureComponent {
   constructor(props) {
@@ -249,6 +250,13 @@ function createTradingView(symbol, interval, socketPath) {
   return widget;
 }
 
+const mapStateToProps = state => {
+  const { market, exchange, interval} = state.terminal;
+  return {
+    exchange,
+    market,
+    interval
+  };
+};
 
-
-export default TradingView;
+export default connect(mapStateToProps)(TradingView);

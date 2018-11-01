@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Container, Row, Col } from 'reactstrap';
 import classNames from 'classnames';
+import {connect} from 'react-redux';
 
 class HeaderStatus extends React.Component {
 
@@ -56,4 +57,11 @@ const Rate = ({ pair, marketInfo, val }) => {
   );
 };
 
-export default HeaderStatus;
+const mapStateToProps = state => {
+  const {exchangesInfo} = state;
+  return {
+    ...exchangesInfo
+  };
+};
+
+export default connect(mapStateToProps)(HeaderStatus);

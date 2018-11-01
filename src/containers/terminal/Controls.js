@@ -3,6 +3,8 @@ import FundSelect from '../../components/FundSelect';
 import DropdownSelect from '../../components/DropdownSelect';
 import MarketSelect from './MarketSelect';
 import classNames from 'classnames';
+import {connect} from 'react-redux';
+import { selectExchange, selectFund, selectInterval} from '../../actions/terminal';
 const TIME_RANGE_OPTIONS = ['1 MIN', '5 MIN', '30 MIN', '1 H', '4 H', '12 H', '1 D', '1 W'];
 
 class Controls extends React.Component {
@@ -28,7 +30,7 @@ class Controls extends React.Component {
         />
         <DropdownSelect
           selected={this.props.exchange}
-          items={this.props.exchanges}
+          items={this.props.exchanges || []}
           targetId="exchange_select"
           elementClassName="exchange__switch"
           dropdownClassName="exchange"
@@ -51,5 +53,48 @@ class Controls extends React.Component {
   }
 }
 
-export default Controls;
+const mapStateToProps = state => {
+  const {
+    exchangesInfo: {
+      exchanges = [],
+    },
+    terminal: {
+      market,
+      exchange,
+      ticker,
+      fund,
+      interval
+    },
+    auth: {
+      profile: {
+        _id: userId,
+      }
+    },
+    apiKeys: {
+      ownKeys: apiKeys,
+    },
+    contracts: {
+      current: contracts,
+    },
+  } = state;
+  return {
+    exchange,
+    exchanges,
+    contracts,
+    fund,
+    apiKeys,
+    userId,
+    ticker,
+    market,
+    interval,
+  };
+};
+
+const mapDispatchToProps =  dispatch => ({
+  onIntervalSelected: interval => dispatch(selectInterval(interval)),
+  onExchangeSelect: (exchange, restore) => dispatch(selectExchange(exchange, restore)),
+  onApiKeySelect: fund => dispatch(selectFund(fund)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Controls);
 

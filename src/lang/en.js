@@ -269,6 +269,7 @@ const en = {
   'terminal.volumeCurrency': 'Volume({baseCurrency}) ',
   'terminal.change': 'Change',
   'terminal.balance': 'Balance ({baseCurrency}) ',
+  'terminal.balance-mobile': 'Balance',
   'terminal.openOrders': 'Open Orders ',
   'terminal.completedOrders': 'Completed orders ',
   'terminal.type': 'Type ',
