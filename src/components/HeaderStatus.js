@@ -58,9 +58,9 @@ const Rate = ({ pair, marketInfo, val }) => {
 };
 
 const mapStateToProps = state => {
-  const {exchangesInfo} = state;
+  const {exchangesInfo, terminal: {exchange}} = state;
   return {
-    ...exchangesInfo
+    ...exchangesInfo[exchange]
   };
 };
 
