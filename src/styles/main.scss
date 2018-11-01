@@ -374,6 +374,16 @@ body {
 	}
 }
 
+.ReactTable {
+	.rt-tbody {
+		.rt-tr {
+			&:hover {
+				background-color: hsla(226, 8%, 60%, .25) !important;
+			}
+		}
+	}
+}
+
 @media (max-width: 1028px) {
 	.table__header-wrapper {
 		font-size: 10.5px;
