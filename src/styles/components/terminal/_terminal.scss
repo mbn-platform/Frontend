@@ -689,6 +689,10 @@
   }
 }
 
+.terminal__orderbook-table-header {
+  margin-bottom: 0 !important;
+}
+
 .terminal__market-select-dropdown-container {
   height: 70vh;
   min-height: 400px;
@@ -723,6 +727,11 @@
 
 .terminal__market-table-cell_color-white {
   color: #fff;
+}
+
+.terminal__recent-table-header_color_white {
+  color: #8c8c8c;
+
 }
 
 .terminal__recent-table-wrapper {
@@ -880,7 +889,7 @@
   font-family: "SF-UI" !important;
   text-align: left !important;
   font-weight: 500;
-  color: #4f525d;
+  color: #777b8a;
 }
 
 .terminal__orderbook-table-wrapper {

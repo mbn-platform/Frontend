@@ -224,6 +224,11 @@
     }
   }
 }
+@media (max-width: 1028px) {
+.navigation__splitter {
+   display: none;
+  }
+}
 
 @include media-breakpoint-down(sm) {
   .main-panel {

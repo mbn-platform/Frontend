@@ -141,7 +141,6 @@ input[type=number]::-webkit-outer-spin-button {
 	border: 1px solid #4F525D !important;
 	padding: 0 !important;
 	margin-top: -29px !important;
-	max-width: 600px !important;
 
 	&--select {
 		border-radius: 2px !important;
@@ -330,6 +329,12 @@ input[type=number]::-webkit-outer-spin-button {
 				}
 			}
 		}
+	}
+}
+
+@media (min-width: 1028px) {
+	.dropdown-popover {
+		max-width: 600px !important;
 	}
 }
 
@@ -625,6 +630,12 @@ input[type=number]::-webkit-outer-spin-button {
 	ohO_oho: Tablet and up (>576px)
  */
 @include media-breakpoint-up(sm) {
+
+	.dropdown-popover.market-select {
+		max-width: 100vw;
+		width: 97%;
+	}
+
 	.table-rewind {
 		display: none;
 	}
@@ -632,13 +643,12 @@ input[type=number]::-webkit-outer-spin-button {
 
 @include media-breakpoint-down(xs) {
 	.dropdown-popover.market-select {
-		margin-left: 10px;
 		max-width: 100vw;
+		width: 97%;
 		.dropdown-table-wrapper {
 			max-height: calc(100vh - 290px);
 			min-height: 140px;
 		}
-		max-width: 370px;
 		.dropdown .table {
 			th, td {
 				&:nth-child(5) {

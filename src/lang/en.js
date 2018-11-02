@@ -289,7 +289,7 @@ const en = {
   'terminal.amountLabel': 'Amount ({amount}) ',
   'terminal.recentTrades': 'Recent Trades' ,
   'terminal.priceRecent': 'Price ({base}) ',
-  'terminal.tradeSize': 'Trade Size ({secondary}) ',
+  'terminal.secondary': '({secondary}) ',
   'terminal.time': 'Time ',
 };
 

@@ -104,12 +104,28 @@ class Terminal extends React.Component {
   }
 
   componentDidMount() {
-    this.props.startTradingDataUpdates();
+    const {
+      startTradingDataUpdates,
+      selectExchange,
+      selectFund,
+      fund,
+      market,
+      getOrders,
+      exchange
+    } = this.props;
+    startTradingDataUpdates();
     const savedFund = localStorage.getItem('terminal.selectedFund');
     if (savedFund) {
-      this.props.selectFund(JSON.parse(savedFund));
+      selectFund(JSON.parse(savedFund));
     }
-    this.props.selectExchange(this.props.exchange, true);
+    if (fund) {
+      let payload = {
+        symbol: market
+      };
+      payload = setFundId(payload, this.props.fund);
+      getOrders(payload);
+    }
+    selectExchange(exchange, true);
   }
 
 
