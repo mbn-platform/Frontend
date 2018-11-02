@@ -12,7 +12,7 @@ class Login extends React.Component {
 
   constructor(props) {
     super(props);
-    if(window.web3) {
+    if(window.ethereum) {
       const intervalId = setInterval(() =>
         window.web3.eth.getAccounts((err, accounts) => {
           this.setState({hasActiveAccount: (!err && accounts.length)});
@@ -39,7 +39,7 @@ class Login extends React.Component {
   }
 
   renderStep() {
-    if(!window.web3) {
+    if(!window.ethereum) {
       return (<NoMetamask />);
     } else if(this.props.nameRequired) {
       return (<EnterNickname onNicknameSet={this.props.onNicknameSet} />);
@@ -72,7 +72,7 @@ class Login extends React.Component {
             </div>
             {this.renderStep()}
           </div>
-          {!window.web3 && isIOSorAndroid && <Competition/>}
+          {!window.ethereum && isIOSorAndroid && <Competition/>}
         </div>
       </div>
     );
