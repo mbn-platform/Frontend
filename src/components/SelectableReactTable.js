@@ -19,7 +19,7 @@ class SelectableReactTable extends React.Component {
     };
 
     const getTbodyProps = (state, rowInfo, column, instance) => {
-      return {scrollBarHeight: instance.props.scrollBarHeight};
+      return {scrollBarHeight: instance.props.scrollBarHeight, scrollToBottom: instance.props.scrollToBottom};
     };
     const props = {
       noDataText: '',
@@ -62,30 +62,53 @@ class SelectableReactTable extends React.Component {
 }
 
 
-const FixHeightTBodyComponent = (props) => {
-  const { TbodyComponent } = ReactTableDefaults;
-  let {scrollBarHeight, ...rest} = props;
-  return (
-    <Scrollbars style={{height: scrollBarHeight}}
-        >
-      <TbodyComponent {...rest} />
-    </Scrollbars>
-  );
+class FixHeightTBodyComponent extends React.Component {
 
+  componentDidMount () {
+    const {scrollbar} = this.refs;
+    let {scrollToBottom} = this.props;
+    console.warn(scrollToBottom);
+    if (scrollToBottom) {
+      scrollbar.view.scrollTop = 100;
+    }
+  }
+
+  render() {
+    const { TbodyComponent } = ReactTableDefaults;
+    let {scrollBarHeight,  ...rest} = this.props;
+    return (
+      <Scrollbars style={{height: scrollBarHeight}}
+        ref='scrollbar'
+      >
+        <TbodyComponent {...rest} />
+      </Scrollbars>
+    );
+  }
 };
 
-const AutoHeightTBodyComponent = (props) => {
-  const { TbodyComponent } = ReactTableDefaults;
-  let {scrollBarHeight, ...rest} = props;
-  return (
-    <Scrollbars style={{height: '100%'}}
+class AutoHeightTBodyComponent extends React.Component {
+
+  componentDidMount () {
+    const {scrollbar} = this.refs;
+    let {scrollToBottom} = this.props;
+    if (scrollToBottom) {
+      scrollbar.view.scrollTop = 100;
+    }
+  }
+
+  render(){
+    const { TbodyComponent } = ReactTableDefaults;
+    let {scrollBarHeight, ...rest} = this.props;
+    return (
+      <Scrollbars style={{height: '100%'}}
         autoHeightMin={100}
         autoHeightMax={'100%'}
-        >
-      <TbodyComponent {...rest} />
-    </Scrollbars>
-  );
-
+        ref='scrollbar'
+      >
+        <TbodyComponent {...rest} />
+      </Scrollbars>
+    );
+  }
 };
 
 export default SelectableReactTable;

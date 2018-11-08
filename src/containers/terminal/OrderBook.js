@@ -24,6 +24,7 @@ class OrderBook extends React.Component {
     this.state = {last: null, sort: {}, prelast: null, scroll: true };
     this.lastPrice = React.createRef();
     this.orderTable = React.createRef();
+    this.scrollTable = React.createRef();
   }
 
   reset() {
@@ -37,7 +38,7 @@ class OrderBook extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.orderBook.sell.length === 0 && this.props.orderBook.sell.length > 0 ) {
-      this.scrollToBottom();
+      //this.scrollToBottom();
     }
 
     if (this.orderTable.current.offsetHeight !== prevState.heightOfTable) {
@@ -159,12 +160,12 @@ class OrderBook extends React.Component {
       columns={this.getColumns(type, screenWidth)}
       data={data}
       scrollBarHeight={'100%'}
+      scrollToBottom={type === 'buy'}
     />;
   };
 
   scrollToBottom = () => {
     const tableScrollingElement = this.tableSell.getElementsByClassName('rt-tbody')[0];
-    tableScrollingElement.scrollIntoView(false);
     this.setState({openedScroll: true});
   }
 

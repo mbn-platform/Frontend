@@ -126,7 +126,6 @@ class TradeHistory extends React.Component {
               className="profile_table"
               onItemSelected={() => {}}
               columns={this.getColumns()}
-              scrollBarHeightAuto='true'
             />
           </div>
         </Desktop>
