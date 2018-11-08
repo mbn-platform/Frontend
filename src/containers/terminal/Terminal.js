@@ -10,7 +10,6 @@ import MyOrders from './MyOrders';
 import RecentTrades from './RecentTrades';
 import OrderBook from './OrderBook';
 import MediaQuery from 'react-responsive';
-import qs from 'qs';
 import {setFundId} from '../../generic/util';
 import {
   getOrders,
@@ -55,16 +54,14 @@ class Terminal extends React.Component {
     }
     const {
       market,
-      exchange,
-      interval
+      exchange
     } = this.props;
-
     const {
-      market: marketParam,
-      exchange: exchangeParam,
-      interval: intervalParam
-    } = qs.parse(this.props.location.search.slice(1));
-    if (marketParam !== market ||  exchangeParam !== exchange || intervalParam !== interval) {
+      exchangeParam,
+      marketParam
+    } = this.state;
+
+    if (marketParam !== market ||  exchangeParam !== exchange) {
       this.updateUrlParams();
     }
   }
@@ -122,19 +119,15 @@ class Terminal extends React.Component {
     const {
       startTradingDataUpdates,
       selectExchange,
-      selectInterval,
       selectFund,
       selectMarket,
       fund,
       market,
       getOrders,
-      exchange
+      exchange,
+      history,
+      exchanges
     } = this.props;
-    const {
-      market: marketParam,
-      exchange: exchangeParam,
-      interval: intervalParam
-    } = qs.parse(this.props.location.search.slice(1));
     startTradingDataUpdates();
     const savedFund = localStorage.getItem('terminal.selectedFund');
     if (savedFund) {
@@ -147,16 +140,27 @@ class Terminal extends React.Component {
       payload = setFundId(payload, this.props.fund);
       getOrders(payload);
     }
-    if (exchangeParam) {
-      selectExchange(exchangeParam, true);
+    const currentPath = history.location.pathname;
+    if (currentPath.length > 9) {
+      const indexOfBasePathEnd = currentPath.indexOf('/', 1) + 1;
+      const exchangeParam = currentPath.substring(indexOfBasePathEnd, currentPath.indexOf('/', indexOfBasePathEnd));
+      const marketParam = currentPath.substring(currentPath.indexOf(exchangeParam) + exchangeParam.length + 1);
+      if (exchanges.some(exchangesItem => exchangesItem === exchangeParam)) {
+        this.setState({
+          exchangeParam,
+          marketParam
+        });
+        selectExchange(exchangeParam, true);
+        selectMarket(marketParam);
+      } else {
+        this.setState({
+          exchangeParam: exchange,
+          marketParam
+        });
+        selectExchange(exchange|| exchanges[0], true);
+      }
     } else {
-      selectExchange(exchange, true);
-    }
-    if (intervalParam) {
-      selectInterval(intervalParam);
-    }
-    if (marketParam) {
-      selectMarket(marketParam);
+      selectExchange(exchange || exchanges[0], true);
     }
   }
 
@@ -167,25 +171,34 @@ class Terminal extends React.Component {
 
   updateUrlParams = () => {
     const {
-      market,
       exchange,
-      interval
+      market
     } = this.props;
-    const currentSearchParams = `market=${market}&exchange=${exchange}&interval=${interval}`;
-    this.props.history.replace({
-      pathname: '/terminal',
-      search: currentSearchParams,
+    this.setState({
+      exchangeParam: exchange,
+      marketParam: market,
     });
+    const currentSearchParams = `/${exchange}/${market}`;
+    this.props.history.push(`/terminal${currentSearchParams}`);
   }
 }
 
 const mapStateToProps = state => {
-  const { fund, market, exchange, interval } = state.terminal;
+  const {
+    terminal: {
+      fund,
+      market,
+      exchange,
+      interval
+    },
+    exchanges
+  } = state;
   return {
     fund,
     market,
     exchange,
-    interval
+    interval,
+    exchanges
   };
 };
 
