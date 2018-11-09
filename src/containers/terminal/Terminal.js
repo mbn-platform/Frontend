@@ -161,6 +161,7 @@ class Terminal extends React.Component {
       }
     } else {
       selectExchange(exchange || exchanges[0], true);
+      this.props.history.push(`/terminal/${exchange}/${market}`);
     }
   }
 
