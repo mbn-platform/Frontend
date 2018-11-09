@@ -121,7 +121,6 @@ class TradingViewContainer extends React.Component {
     this.widget = createTradingView(symbol, this.props.interval, path);
     this.widget.onChartReady(() => {
       this.setState({ready: true});
-
     });
   }
 

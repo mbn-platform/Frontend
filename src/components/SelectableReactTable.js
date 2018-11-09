@@ -64,12 +64,15 @@ class SelectableReactTable extends React.Component {
 
 class FixHeightTBodyComponent extends React.Component {
 
-  componentDidMount () {
-    const {scrollbar} = this.refs;
+  state = {
+    firstLaunch: true,
+  };
+
+  componentDidUpdate() {
     let {scrollToBottom} = this.props;
-    console.warn(scrollToBottom);
-    if (scrollToBottom) {
-      scrollbar.view.scrollTop = 100;
+    const {scrollbar} = this.refs;
+    if (scrollToBottom && scrollbar.view.scrollTop === 0) {
+      scrollbar.scrollToBottom();
     }
   }
 
@@ -88,19 +91,24 @@ class FixHeightTBodyComponent extends React.Component {
 
 class AutoHeightTBodyComponent extends React.Component {
 
-  componentDidMount () {
-    const {scrollbar} = this.refs;
+  state = {
+    firstLaunch: true,
+  };
+
+  componentDidUpdate() {
     let {scrollToBottom} = this.props;
-    if (scrollToBottom) {
-      scrollbar.view.scrollTop = 100;
+    const {scrollbar} = this.refs;
+    if (scrollToBottom && scrollbar.view.scrollTop === 0) {
+      scrollbar.scrollToBottom();
     }
   }
 
-  render(){
+  render() {
     const { TbodyComponent } = ReactTableDefaults;
-    let {scrollBarHeight, ...rest} = this.props;
+    let {...rest} = this.props;
     return (
-      <Scrollbars style={{height: '100%'}}
+      <Scrollbars
+        style={{height: '100%'}}
         autoHeightMin={100}
         autoHeightMax={'100%'}
         ref='scrollbar'
