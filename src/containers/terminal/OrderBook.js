@@ -25,6 +25,7 @@ class OrderBook extends React.Component {
     this.state = {last: null, sort: {}, prelast: null, scroll: true };
     this.lastPrice = React.createRef();
     this.orderTable = React.createRef();
+    this.scrollTable = React.createRef();
   }
 
   reset() {
@@ -37,10 +38,6 @@ class OrderBook extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.orderBook.sell.length === 0 && this.props.orderBook.sell.length > 0 ) {
-      this.scrollToBottom();
-    }
-
     if (this.orderTable.current.offsetHeight !== prevState.heightOfTable) {
       this.setState({ heightOfTable : this.orderTable.current.offsetHeight });
     }
@@ -51,7 +48,7 @@ class OrderBook extends React.Component {
       this.setState({prelast: null, sort: {}, scroll: true});
     }
     if (nextProps.ticker !== this.props.ticker) {
-      this.setState({prelast: (this.props.ticker || {}).l});
+      this.setState({prelast: this.props.ticker.l});
     }
     if (nextProps.orderBook !== this.props.orderBook) {
       const {sell, buy} = nextProps.orderBook;
@@ -76,8 +73,8 @@ class OrderBook extends React.Component {
           </div> :
           '',
         minWidth: screenWidth === 'lg' ? 110 : 90,
-        className: `${isSellTable ? 
-          'terminal__orderbook-table-cell_sell' : 
+        className: `${isSellTable ?
+          'terminal__orderbook-table-cell_sell' :
           'terminal__orderbook-table-cell_buy'
         } 
         terminal__orderbook-table-cell`,
@@ -160,14 +157,9 @@ class OrderBook extends React.Component {
       columns={this.getColumns(type, screenWidth)}
       data={data}
       scrollBarHeight={'100%'}
+      scrollToBottom={type === 'sell'}
     />;
   };
-
-  scrollToBottom = () => {
-    const tableScrollingElement = this.tableSell.getElementsByClassName('rt-tbody')[0];
-    tableScrollingElement.scrollIntoView(false);
-    this.setState({openedScroll: true});
-  }
 
   render() {
     let sortedDataSell = [];
@@ -217,7 +209,7 @@ class OrderBook extends React.Component {
 
   renderLastPrice() {
     let isUp;
-    const last = (this.props.ticker || {}).l;
+    const last = this.props.ticker.l;
     const prelast = this.state.prelast;
     if (prelast && last && prelast > last) {
       isUp = false;
