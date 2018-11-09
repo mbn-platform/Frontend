@@ -161,7 +161,7 @@ class Terminal extends React.Component {
       }
     } else {
       selectExchange(exchange || exchanges[0], true);
-      this.props.history.push(`/terminal/${exchange}/${market}`);
+      this.props.history.replace(`/terminal/${exchange}/${market}`);
     }
   }
 
@@ -180,7 +180,7 @@ class Terminal extends React.Component {
       marketParam: market,
     });
     const currentSearchParams = `/${exchange}/${market}`;
-    this.props.history.push(`/terminal${currentSearchParams}`);
+    this.props.history.replace(`/terminal${currentSearchParams}`);
   }
 }
 
