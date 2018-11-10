@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import { withRouter } from 'react-router';
 import ReactTable from '../../components/SelectableReactTable';
 import {sortData, onColumnSort, classNameForColumnHeader}  from '../../generic/terminalSortFunctions';
 import { FormattedMessage } from 'react-intl';
@@ -156,14 +157,18 @@ class OrdersTable extends React.Component {
     return day + '.' + month + '.' + year;
   }
 
-
+  onRowClick = (state, rowInfo) => {
+    return {
+      onClick: () => {
+        this.props.history.push(`/orders/${rowInfo.original._id}`);
+      }
+    };
+  }
 
   renderOrderTable = (sortedData, screenWidth, isOpenOrder) => {
     return <ReactTable
       columns={this.getColumns(isOpenOrder, screenWidth)}
-      getTrProps={() => ({
-        onClick: () => null,
-      })}
+      getTrProps={this.onRowClick}
       data={sortedData}
       scrollBarHeight={300}
     />;
@@ -211,4 +216,4 @@ class OrdersTable extends React.Component {
   }
 }
 
-export default OrdersTable;
+export default withRouter(OrdersTable);
