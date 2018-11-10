@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import { Container, Row, Col } from 'reactstrap';
+import HeaderStatus from '../../components/HeaderStatus';
 import { FormattedMessage, FormattedDate, injectIntl } from 'react-intl';
 import {
   getOrderInfo,
@@ -8,13 +9,15 @@ import {
 } from '../../actions/orderList';
 import ReactTable from '../../components/SelectableReactTable';
 import createMqProvider, {querySchema} from '../../MediaQuery';
+import {getExchangeMarkets, selectExchange} from '../../actions/terminal';
 
 const {Screen} = createMqProvider(querySchema);
 
 class OrdersPage extends React.Component {
   componentDidMount() {
-    const {getOrderInfoPage, getOrderList, location} = this.props;
+    const {getOrderInfoPage, getOrderList, location, selectExchange, exchange} = this.props;
     const currentOrderId = location.pathname.substring(location.pathname.indexOf('/', 1) + 1);
+    selectExchange(exchange);
     getOrderInfoPage(currentOrderId);
     getOrderList(currentOrderId);
   };
@@ -172,46 +175,54 @@ class OrdersPage extends React.Component {
 
 
   render() {
+    const { exchangeInfo } = this.props;
     const currentOrderId = this.props.location.pathname.substring(this.props.location.pathname.indexOf('/', 1) + 1);
     return (
-      <Container className="order__order-page-container">
-        <Row>
-          <Col>
-            <div className="order__order-page-title">
-              <FormattedMessage
-                id="order.title"
-                defaultMessage="ORDER #{orderNumber}"
-                values={{orderNumber: currentOrderId}}
-              />
-            </div>
-          </Col>
-        </Row>
-        <Row>
-          <Col xs="12" sm="12" md="4" lg="4">
-            {this.renderInfoBlock()}
-          </Col>
-          <Col xs="12" sm="12" md="8" lg="8">
-            <div className='order__history-table-wrapper'>
-              <div className="order__info-title">
+      <React.Fragment>
+        <HeaderStatus
+          {...exchangeInfo}
+        />
+        <Container>
+          <Row className="order__order-page-container">
+            <Col>
+              <div className="order__order-page-title">
                 <FormattedMessage
-                  id="order.history"
-                  defaultMessage="History"
+                  id="order.title"
+                  defaultMessage="ORDER #{orderNumber}"
+                  values={{orderNumber: currentOrderId}}
                 />
               </div>
-              {this.renderOrderListTable()}
-            </div>
-          </Col>
-        </Row>
-      </Container>
+            </Col>
+          </Row>
+          <Row>
+            <Col xs="12" sm="12" md="4" lg="4">
+              {this.renderInfoBlock()}
+            </Col>
+            <Col xs="12" sm="12" md="8" lg="8">
+              <div className='order__history-table-wrapper'>
+                <div className="order__info-title">
+                  <FormattedMessage
+                    id="order.history"
+                    defaultMessage="History"
+                  />
+                </div>
+                {this.renderOrderListTable()}
+              </div>
+            </Col>
+          </Row>
+        </Container>
+      </React.Fragment>
     );
   }
 }
 
 const mapStateToProps = state => {
-  const { orderInfo, ordersList } = state.order;
+  const { order: {orderInfo, ordersList}, exchangesInfo } = state;
   return {
     orderInfo,
-    ordersList
+    ordersList,
+    exchangeInfo: state.exchangesInfo[state.terminal.exchange],
+    exchange: state.terminal.exchange,
   };
 };
 
@@ -219,6 +230,10 @@ const mapDispatchToProps = dispatch => {
   return {
     getOrderInfoPage: orderId => dispatch(getOrderInfo(orderId)),
     getOrderList: orderId => dispatch(getOrderListPage(orderId)),
+    selectExchange: exchange => {
+      dispatch(selectExchange(exchange));
+      dispatch(getExchangeMarkets(exchange));
+    },
   };
 };
 
