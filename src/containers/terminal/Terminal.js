@@ -14,7 +14,7 @@ import {setFundId} from '../../generic/util';
 import {
   getOrders,
   selectExchange,
-  selectFund,
+  selectFund, selectInterval, selectMarket,
   startTradingDataUpdates,
   stopTradingDataUpdates
 } from '../../actions/terminal';
@@ -51,6 +51,18 @@ class Terminal extends React.Component {
       };
       payload = setFundId(payload, this.props.fund);
       this.props.getOrders(payload);
+    }
+    const {
+      market,
+      exchange
+    } = this.props;
+    const {
+      exchangeParam,
+      marketParam
+    } = this.state;
+
+    if (marketParam !== market ||  exchangeParam !== exchange) {
+      this.updateUrlParams();
     }
   }
 
@@ -108,10 +120,13 @@ class Terminal extends React.Component {
       startTradingDataUpdates,
       selectExchange,
       selectFund,
+      selectMarket,
       fund,
       market,
       getOrders,
-      exchange
+      exchange,
+      history,
+      exchanges
     } = this.props;
     startTradingDataUpdates();
     const savedFund = localStorage.getItem('terminal.selectedFund');
@@ -125,27 +140,74 @@ class Terminal extends React.Component {
       payload = setFundId(payload, this.props.fund);
       getOrders(payload);
     }
-    selectExchange(exchange, true);
+    const currentPath = history.location.pathname;
+    if (currentPath.length > 9) {
+      const indexOfBasePathEnd = currentPath.indexOf('/', 1) + 1;
+      const exchangeParam = currentPath.substring(indexOfBasePathEnd, currentPath.indexOf('/', indexOfBasePathEnd));
+      const marketParam = currentPath.substring(currentPath.indexOf(exchangeParam) + exchangeParam.length + 1);
+      if (exchanges.some(exchangesItem => exchangesItem === exchangeParam)) {
+        this.setState({
+          exchangeParam,
+          marketParam
+        });
+        selectExchange(exchangeParam, true);
+        selectMarket(marketParam);
+      } else {
+        this.setState({
+          exchangeParam: exchange,
+          marketParam
+        });
+        selectExchange(exchange|| exchanges[0], true);
+      }
+    } else {
+      selectExchange(exchange || exchanges[0], true);
+      this.props.history.replace(`/terminal/${exchange}/${market}`);
+    }
   }
 
 
   componentWillUnmount() {
     this.props.stopTradingDataUpdates();
   }
+
+  updateUrlParams = () => {
+    const {
+      exchange,
+      market
+    } = this.props;
+    this.setState({
+      exchangeParam: exchange,
+      marketParam: market,
+    });
+    const currentSearchParams = `/${exchange}/${market}`;
+    this.props.history.replace(`/terminal${currentSearchParams}`);
+  }
 }
 
 const mapStateToProps = state => {
-  const { fund, market, exchange } = state.terminal;
+  const {
+    terminal: {
+      fund,
+      market,
+      exchange,
+      interval
+    },
+    exchanges
+  } = state;
   return {
     fund,
     market,
-    exchange
+    exchange,
+    interval,
+    exchanges
   };
 };
 
 const mapDispatchToProps =  dispatch => ({
   startTradingDataUpdates: () => dispatch(startTradingDataUpdates()),
   stopTradingDataUpdates: () => dispatch(stopTradingDataUpdates()),
+  selectInterval: interval => dispatch(selectInterval(interval)),
+  selectMarket: market => dispatch(selectMarket(market)),
   selectExchange: (exchange, restore) => dispatch(selectExchange(exchange, restore)),
   selectFund: fund => dispatch(selectFund(fund)),
   getOrders: apiKey => dispatch(getOrders(apiKey)),
