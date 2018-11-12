@@ -69,7 +69,7 @@ class FixHeightTBodyComponent extends React.Component {
   };
 
   componentDidUpdate() {
-    let {scrollToBottom} = this.props;
+    const {scrollToBottom} = this.props;
     const {scrollbar} = this.refs;
     if (scrollToBottom && scrollbar.view.scrollTop === 0) {
       scrollbar.scrollToBottom();
@@ -78,7 +78,7 @@ class FixHeightTBodyComponent extends React.Component {
 
   render() {
     const { TbodyComponent } = ReactTableDefaults;
-    let {scrollBarHeight,  ...rest} = this.props;
+    const {scrollBarHeight, scrollToBottom,  ...rest} = this.props;
     return (
       <Scrollbars style={{height: scrollBarHeight}}
         ref='scrollbar'
@@ -96,7 +96,7 @@ class AutoHeightTBodyComponent extends React.Component {
   };
 
   componentDidUpdate() {
-    let {scrollToBottom} = this.props;
+    const {scrollToBottom} = this.props;
     const {scrollbar} = this.refs;
     if (scrollToBottom && scrollbar.view.scrollTop === 0) {
       scrollbar.scrollToBottom();
@@ -105,7 +105,7 @@ class AutoHeightTBodyComponent extends React.Component {
 
   render() {
     const { TbodyComponent } = ReactTableDefaults;
-    let {...rest} = this.props;
+    const {scrollBarHeight, scrollToBottom, ...rest} = this.props;
     return (
       <Scrollbars
         style={{height: '100%'}}
