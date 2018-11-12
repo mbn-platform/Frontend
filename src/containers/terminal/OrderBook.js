@@ -48,7 +48,7 @@ class OrderBook extends React.Component {
       this.setState({prelast: null, sort: {}, scroll: true});
     }
     if (nextProps.ticker !== this.props.ticker) {
-      this.setState({prelast: this.props.ticker.l});
+      this.setState({prelast: (this.props.ticker || {}).l});
     }
     if (nextProps.orderBook !== this.props.orderBook) {
       const {sell, buy} = nextProps.orderBook;
@@ -209,7 +209,7 @@ class OrderBook extends React.Component {
 
   renderLastPrice() {
     let isUp;
-    const last = this.props.ticker.l;
+    const last = (this.props.ticker || {}).l;
     const prelast = this.state.prelast;
     if (prelast && last && prelast > last) {
       isUp = false;
