@@ -125,6 +125,7 @@ class Terminal extends React.Component {
       market,
       getOrders,
       exchange,
+      match,
       history,
       exchanges
     } = this.props;
@@ -137,15 +138,12 @@ class Terminal extends React.Component {
       let payload = {
         symbol: market
       };
-      payload = setFundId(payload, this.props.fund);
+      payload = setFundId(payload, fund);
       getOrders(payload);
     }
-    const currentPath = history.location.pathname;
-    if (currentPath.length > 9) {
-      const indexOfBasePathEnd = currentPath.indexOf('/', 1) + 1;
-      const exchangeParam = currentPath.substring(indexOfBasePathEnd, currentPath.indexOf('/', indexOfBasePathEnd));
-      const marketParam = currentPath.substring(currentPath.indexOf(exchangeParam) + exchangeParam.length + 1);
-      if (exchanges.some(exchangesItem => exchangesItem === exchangeParam)) {
+    const { exchangeParam, marketParam } = match.params;
+    if (marketParam) {
+      if (exchanges.indexOf(exchangeParam) !== -1) {
         this.setState({
           exchangeParam,
           marketParam
@@ -161,7 +159,7 @@ class Terminal extends React.Component {
       }
     } else {
       selectExchange(exchange || exchanges[0], true);
-      this.props.history.replace(`/terminal/${exchange}/${market}`);
+      history.replace(`/terminal/${exchange}/${market}`);
     }
   }
 
