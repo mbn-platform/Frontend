@@ -1,7 +1,7 @@
 import React from 'react';
 import { Col, Row } from 'reactstrap';
 import { FormattedMessage } from 'react-intl';
-
+import {connect} from 'react-redux';
 import AmChartsReact from '@amcharts/amcharts3-react';
 import { formatFloat, defaultFormatValue } from '../../generic/util';
 import { Desktop } from '../../generic/MediaQuery';
@@ -116,8 +116,8 @@ class MarketDepth extends React.Component {
 
     }
     let res = [];
-    processData(props.buy, props.minBuy, props.maxBuy, 'buy', true, props.ticker.l);
-    processData(props.sell, props.minSell, props.maxSell ,'sell', false, props.ticker.l);
+    processData(props.buy, props.minBuy, props.maxBuy, 'buy', true, (props.ticker || {}).l);
+    processData(props.sell, props.minSell, props.maxSell ,'sell', false, (props.ticker || {}).l);
 
     return res;
   }
@@ -356,8 +356,19 @@ class MarketDepth extends React.Component {
   }
 }
 
+const mapStateToProps = state => {
+  const { market, exchange, ticker, orderBook} = state.terminal;
+  return {
+    exchange,
+    ticker,
+    market,
+    ...orderBook,
+  };
+};
+
+
 function relativeSize(minSize, maxSize, size) {
   return (size - minSize) / (maxSize - minSize);
 }
 
-export default debounceRender(MarketDepth, 2000, {maxWait: 2000}) ;
+export default debounceRender(connect(mapStateToProps)(MarketDepth), 2000, {maxWait: 2000}) ;

@@ -4,7 +4,6 @@ import BestTraders from './BestTraders';
 import BestInvestors from './BestInvestors';
 import classNames from 'classnames';
 import DropdownSelect from '../../components/DropdownSelect';
-import $ from 'jquery';
 import {sortData, onColumnSort, classNameForColumnHeader, defaultSortFunction} from '../../generic/terminalSortFunctions';
 import { connect } from 'react-redux';
 import { updateRatings } from '../../actions/terminal';
@@ -48,7 +47,6 @@ class Ratings extends React.Component {
 
   onTabClick(tab) {
     this.setState({tab});
-    $('.js-table-wrapper table').floatThead('reflow');
   }
 
 
@@ -250,7 +248,7 @@ class Ratings extends React.Component {
                     </div>
                   ) : (
                     <div className="ratings-tab ratings-investors active">
-                      <div className="ratings-table-wrap js-table-wrapper">
+                      <div className="ratings-table-wraps">
                         <table className="table">
                           <thead>
                             <tr>
@@ -357,21 +355,7 @@ class Ratings extends React.Component {
     );
   }
   componentDidMount() {
-    window.customize();
-    const $table = $('.js-table-wrapper .table');
-    $table.on('reflowed', (e, $container) => {
-      if(this.shouldFocus) {
-        $($container).find('input').focus();
-      }
-    });
-
     this.props.updateRatings();
-  }
-
-  componentWillUnmount() {
-    const $table = $('js-table-wrapper table');
-    $table.off();
-    window.uncustomize();
   }
 }
 

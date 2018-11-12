@@ -52,7 +52,7 @@ class ProfileInfo extends React.Component {
               <Col xs="12">
                 {this.getHeader()}
                 {this.getHeaderSeparator()}
-                <RatingBar rating={0}/>
+                {/*<RatingBar rating={0}/>*/}
                 <Stats
                   traderRating={profile.topTraders}
                   investorRating={profile.topInvesters}

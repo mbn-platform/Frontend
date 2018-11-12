@@ -6,14 +6,18 @@ import {UPDATE_ORDER_BOOK, UPDATE_HISTORY, UPDATE_TICKER} from '../actions/termi
 import {UPDATE_KEYS} from '../actions/dashboard';
 import {FETCH_CONTRACTS} from '../actions/contracts';
 
+const defaultExchange = (localStorage.getItem('terminal.selectedExchange') !== 'undefined') ?
+  localStorage.getItem('terminal.selectedExchange') :
+  'binance';
+
 export default function(state = {
   fund: null,
-  exchange: localStorage.getItem('terminal.selectedExchange') || 'binance',
+  exchange: defaultExchange,
   market: localStorage.getItem('terminal.selectedMarket') || 'USDT-BTC',
   interval: localStorage.getItem('terminal.selectedInterval') || '30 MIN',
   orderBook: {sell: [], buy: [], smap: {}, bmap: {}},
   history: [],
-  ticker: null,
+  ticker: {},
   orders: {open: [], closed: []},
 }, action) {
   switch(action.type) {

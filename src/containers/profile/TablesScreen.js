@@ -2,7 +2,7 @@ import React from 'react';
 import { Col, Row, Container } from 'reactstrap';
 import ProfitChart from './ProfitChart';
 import Feedback from '../../components/Feedback';
-import CurrencySettings from './CurrencySettings';
+// import CurrencySettings from './CurrencySettings';
 import TradeHistory from './TradeHistory';
 
 class TablesScreen extends React.Component {
@@ -28,11 +28,11 @@ class TablesScreen extends React.Component {
                   <Col xs="12" className="gap-card"/>
                 </Row>
                 <Row className="table-row">
-                  <CurrencySettings
-                    own={this.props.own}
-                    onCurrencyToggle={this.props.onCurrencyToggle}
-                    currencies={this.props.currencies}
-                  />
+                  {/*<CurrencySettings*/}
+                  {/*own={this.props.own}*/}
+                  {/*onCurrencyToggle={this.props.onCurrencyToggle}*/}
+                  {/*currencies={this.props.currencies}*/}
+                  {/*/>*/}
                   <TradeHistory
                     trades={this.props.profile.trades || []}
                   />

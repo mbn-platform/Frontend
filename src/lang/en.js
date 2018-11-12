@@ -269,6 +269,7 @@ const en = {
   'terminal.volumeCurrency': 'Volume({baseCurrency}) ',
   'terminal.change': 'Change',
   'terminal.balance': 'Balance ({baseCurrency}) ',
+  'terminal.balance-mobile': 'Balance',
   'terminal.openOrders': 'Open Orders ',
   'terminal.completedOrders': 'Completed orders ',
   'terminal.type': 'Type ',
@@ -288,7 +289,7 @@ const en = {
   'terminal.amountLabel': 'Amount ({amount}) ',
   'terminal.recentTrades': 'Recent Trades' ,
   'terminal.priceRecent': 'Price ({base}) ',
-  'terminal.tradeSize': 'Trade Size ({secondary}) ',
+  'terminal.secondary': '({secondary}) ',
   'terminal.time': 'Time ',
 };
 

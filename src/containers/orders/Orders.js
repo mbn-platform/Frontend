@@ -52,7 +52,6 @@ class Orders extends React.Component {
     );
   }
   componentDidMount() {
-    window.customize();
     this.props.startTradingDataUpdates();
     this.props.selectExchange(this.props.exchange);
     if(this.props.fund) {
@@ -69,7 +68,6 @@ class Orders extends React.Component {
   }
 
   componentWillUnmount() {
-    window.uncustomize();
     this.props.stopTradingDataUpdates();
   }
 }

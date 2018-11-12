@@ -357,6 +357,44 @@ body {
 .add_keys_field:focus::-moz-placeholder           {color:#7c7c7d;}/* Firefox 18- */
 .add_keys_field:focus::-ms-input-placeholder      {color:#7c7c7d;}
 
+.table__header-wrapper {
+	border: none;
+	text-transform: capitalize;
+	font-size: 12px;
+	text-align: left;
+	margin-bottom: 10px;
+	color: #5B5F67;
+	font-weight: 500;
+	white-space: nowrap;
+	font-family: "SF-UI" !important;
+
+	&:hover {
+		color: #fff;
+		cursor: pointer;
+	}
+}
+
+.ReactTable {
+	.rt-tbody {
+		.rt-tr {
+			&:hover {
+				background-color: rgba(93, 95, 103, 0.25) !important;
+			}
+		}
+	}
+}
+
+@media (max-width: 1028px) {
+	.table__header-wrapper {
+		font-size: 10.5px;
+	}
+}
+
+@media (max-width: 640px) {
+	.table__header-wrapper {
+		font-size: 8px;
+	}
+}
 
 .main-panel.container-fluid {
 	padding: 0;
@@ -533,10 +571,6 @@ body {
 	  padding-top: 15px;
 	}
 
-	.ReactTable .rt-tr {
-	  min-height: 30px;
-	}
-
 	.-filters .rt-th
 	{
 	  padding-top: 4px;
@@ -583,9 +617,9 @@ body {
 	  transition: background 400ms;
 	  cursor: pointer;
 	  border-bottom: 1px solid #2c2f33;
-	  min-height: 30px;
 	  line-height: 30px;
 	}
+
 	.ReactTable .rt-tr-group .rt-tr:not(.-padRow).-selected {
 	  background: #346255;
 	  /*background: linear-gradient(270deg, rgba(52, 98, 85, 0), rgba(52, 98, 85, 0.8), #346255);*/
