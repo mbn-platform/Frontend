@@ -36,6 +36,9 @@
     &.no-hover-link {
       cursor: default;
     }
+    &:last-child {
+      margin-top: auto;
+    }
     .menu-text {
       font-family: 'maven_promedium';
       font-size: 1.2em;
@@ -187,8 +190,23 @@
 
 }
 @media only screen and (min-width: 1028px) {
+  .navbar {
+    align-items: flex-start;
+  }
 
-  .navigation__tab-container_hidden {
+  .navigation__wrapper {
+    height: 100%;
+  }
+
+  .nav-pills {
+    height: 100%;
+  }
+
+  .navigation__tab-wrapper {
+    height: 100%;
+  }
+
+    .navigation__tab-container_hidden {
     width: 70px !important;
 
     .navigation__tab-wrapper {

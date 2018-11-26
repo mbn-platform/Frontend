@@ -173,7 +173,7 @@ class Navigation extends React.Component {
            navigation__tab-container
            ${!isExpanded && 'navigation__tab-container_hidden'}`
         }>
-        <Navbar expand="md"  >
+        <Navbar className="navigation__wrapper" expand="md"  >
           <NavbarBrand className="d-inline-block d-md-none" tag="div">
             <a target="_blank" rel='noopener noreferrer' href="https://membrana.io">
               <img src={LogoMobile} alt=""/>
