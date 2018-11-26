@@ -9,6 +9,7 @@ import terminal from './reducers/terminal';
 import request from './reducers/request';
 import notification from './reducers/notification';
 import hashlog from './reducers/hashlog';
+import order from './reducers/orderList';
 import actionList from './reducers/actionsList';
 import rates from './reducers/rates';
 import modal from './reducers/modal';
@@ -33,6 +34,7 @@ const combined = combineReducers(
     time,
     request,
     challenge,
+    order,
     terminal,
     rates,
     profile,
