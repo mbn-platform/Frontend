@@ -182,7 +182,7 @@ class OrdersPage extends React.Component {
         <HeaderStatus
           {...exchangeInfo}
         />
-        <Container>
+        <div className="order__order-page-main-wrapper">
           <Row className="order__order-page-container">
             <Col>
               <div className="order__order-page-title">
@@ -210,7 +210,7 @@ class OrdersPage extends React.Component {
               </div>
             </Col>
           </Row>
-        </Container>
+        </div>
       </React.Fragment>
     );
   }

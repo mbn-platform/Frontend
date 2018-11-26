@@ -234,8 +234,12 @@
 	}
 }
 
+.order__order-page-main-wrapper {
+	padding: 0 55px !important;
+}
+
 .order__order-page-container {
-	padding: 20px !important;
+	padding: 20px 0 !important;
 	max-width: 100% !important;
 }
 
@@ -249,7 +253,6 @@
 }
 
 .order__order-page-title {
-	margin-bottom: 20px;
 	font-size: 22px;
 	font-weight: 500;
 	color: #fff;
@@ -298,22 +301,18 @@
 	margin-bottom: 10px;
 	color: #5B5F67;
 	font-weight: 500;
-
-	&:first-child {
-		padding-left: 10px !important;
-	}
 }
 
 .order__info-subtitle {
 	font-size: 14px;
 	font-weight: 500;
-	color: #bfbfc1;
 	text-transform: uppercase;
+	color: #7c7c7d;
 }
 
 .order__info-value {
-	color: #7c7c7d;
 	font-size: 14px;
+	color: #bfbfc1;
 	font-weight: 500;
 }
 
@@ -326,6 +325,11 @@
 }
 
 @media (max-width: 1028px) {
+
+	.order__order-page-main-wrapper {
+		padding: 0 25px !important;
+	}
+
 	.order__table-cell {
 		font-size: 12px !important;
 		line-height: 28px;
@@ -354,6 +358,10 @@
 	.order__info-title {
 		font-size: 14px;
 		padding: 10px;
+	}
+
+	.order__order-page-main-wrapper {
+		padding: 0 10px !important;
 	}
 }
 /*
