@@ -32,7 +32,7 @@ export default function createMediaQueryProvider(queryObject) {
   let subscriptions = [];
   const queries = unwrapQueries(queryObject);
   let currentSize = getMatchedSize(queries);
-
+  
   class MqProvider extends Component {
     componentDidMount() {
       currentSize = getMatchedSize(queries);
@@ -46,10 +46,11 @@ export default function createMediaQueryProvider(queryObject) {
 
     onResize = () => {
       const size = getMatchedSize(queries);
-
       if (size === currentSize) {
         return;
       }
+
+      console.warn(subscriptions);
 
       for (const sub of subscriptions) {
         sub(size, currentSize);
@@ -81,6 +82,7 @@ export default function createMediaQueryProvider(queryObject) {
     }
 
     redraw = (newSize) => {
+      console.warn(newSize);
       this.setState({size: newSize});
     }
 
@@ -94,3 +96,7 @@ export default function createMediaQueryProvider(queryObject) {
     Screen: MqConsumer,
   };
 }
+
+export const { Screen } = createMediaQueryProvider(querySchema);
+export const { MediaQuery } = createMediaQueryProvider(querySchema);
+
