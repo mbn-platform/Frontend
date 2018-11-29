@@ -204,6 +204,7 @@
   }
 
   .navigation__wrapper {
+    transition: all .4s;
     height: 490px;
     position: fixed;
     width: 174px;
@@ -228,7 +229,7 @@
     width: 70px !important;
 
     .navigation__wrapper {
-      width: 75px;
+      width: 70px;
     }
 
     .navigation__tab-wrapper {
