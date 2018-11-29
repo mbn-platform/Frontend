@@ -881,6 +881,70 @@
   }
 }
 
+.terminal__market-select-tab {
+  background-color: transparent;
+  border: 0;
+  color: #9094A1;
+  font-size: 16px;
+  padding: 0 !important;
+  margin-right: 20px;
+
+  &:after {
+    content: '';
+    margin-top: 8px;
+    width: 100%;
+    display: block;
+    height: 1px;
+    background-color: #9094A1;
+  }
+  
+  &.active {
+    color: #319d7e;
+
+    &:after {
+      background-color: #319d7e;
+    }
+  }
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.terminal__market-select-instruments-wrapper {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+}
+
+.terminal__market-select-header-wrapper {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px !important;
+}
+
+.terminal__market-select-currency {
+  color: #fff;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.terminal__market-select-filter-wrapper {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px !important;
+  border-bottom: 1px solid #494d4d;
+  border-top: 1px solid #494d4d;
+}
+
+.terminal__market-select-search-filter {
+  width: 30% !important;
+  margin-bottom: 0 !important;
+}
+
 .terminal__orderbook-table-cell {
   display: flex;
   flex-flow: row nowrap;
@@ -1040,6 +1104,23 @@
   }
   .trades-table-wrapper {
     height: 325px;
+  }
+
+  .terminal__market-select-tab {
+    font-size: 12px;
+    margin-right: 15px;
+
+    &:after {
+      margin-top: 5px;
+    }
+  }
+
+  .terminal__market-select-search-filter {
+    width: 50% !important;
+  }
+
+  .terminal__market-select-currency {
+    font-size: 16px;
   }
 }
 
