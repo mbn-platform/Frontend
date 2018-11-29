@@ -142,33 +142,31 @@ class Leaderboard extends React.Component {
     const sortedData = this.sortData(results);
     return (
       <Container fluid className="ratings">
-        <Screen on={screenWidth => {
-          console.warn(screenWidth);
-          return (
-            <Row>
-              <Col xs="12" sm="12" md="12" lg="12">
-                <div className="ratings-main">
-                  <div className="ratings-main__title">
-                    <FormattedMessage
-                      id="leaderboard.title"
-                      defaultMessage="LEADERBOARD"
-                    />
-                  </div>
-                  <div className="ratings-main__block">
-                    <div className="block__top">
-                      <div className="block__top-switch-wrap">
-                        {this.renderRoundsBlocks(count)}
-                      </div>
-                    </div>
-                    {this.renderBoard(sortedData, roundInfo, isSelectedRoundExist, screenWidth)}
-                  </div>
-                  <div className="leaderboard__info">
-                    {this.renderInfoBoard(screenWidth)}
-                  </div>
+        <Screen on={screenWidth => (
+          <Row>
+            <Col xs="12" sm="12" md="12" lg="12">
+              <div className="ratings-main">
+                <div className="ratings-main__title">
+                  <FormattedMessage
+                    id="leaderboard.title"
+                    defaultMessage="LEADERBOARD"
+                  />
                 </div>
-              </Col>
-            </Row>
-          );}} />
+                <div className="ratings-main__block">
+                  <div className="block__top">
+                    <div className="block__top-switch-wrap">
+                      {this.renderRoundsBlocks(count)}
+                    </div>
+                  </div>
+                  {this.renderBoard(sortedData, roundInfo, isSelectedRoundExist, screenWidth)}
+                </div>
+                <div className="leaderboard__info">
+                  {this.renderInfoBoard(screenWidth)}
+                </div>
+              </div>
+            </Col>
+          </Row>
+        )} />
       </Container>
     );
   }

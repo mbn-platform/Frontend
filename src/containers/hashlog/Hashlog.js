@@ -6,11 +6,9 @@ import { FormattedMessage, FormattedDate, injectIntl } from 'react-intl';
 import { getBlockListPage, setBlockListPage, setBlockListPageSize } from '../../actions/hashlog';
 import { setBlockForActionList } from '../../actions/actionsList';
 import ReactTable from '../../components/SelectableReactTable';
-import createMqProvider, {querySchema} from '../../MediaQuery';
+import { Screen } from '../../MediaQuery';
 import PaginationWithPage from '../../components/PaginationWithPage';
 import qs from 'qs';
-
-const {Screen} = createMqProvider(querySchema);
 
 class Hashlog extends React.Component {
   state = {

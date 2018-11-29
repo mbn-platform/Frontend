@@ -5,13 +5,11 @@ import { Desktop } from '../../generic/MediaQuery';
 import ReactTable from '../../components/SelectableReactTable';
 import {sortData, onColumnSort, classNameForColumnHeader}  from '../../generic/terminalSortFunctions';
 import { FormattedMessage } from 'react-intl';
-import createMqProvider, {querySchema} from '../../MediaQuery';
+import { Screen } from '../../MediaQuery';
 import { cancelOrder } from '../../actions/terminal';
 
 const TAB_OPEN_ORDERS = 0;
 const TAB_COMPLETED_ORDERS = 1;
-
-const { Screen} = createMqProvider(querySchema);
 
 class MyOrders extends React.Component {
 

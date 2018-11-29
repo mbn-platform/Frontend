@@ -10,12 +10,9 @@ import {
 } from '../../actions/actionsList';
 import { getBlock } from '../../actions/hashlog';
 import ReactTable from '../../components/SelectableReactTable';
-import createMqProvider, {querySchema} from '../../MediaQuery';
+import { Screen } from '../../MediaQuery';
 import PaginationWithPage from '../../components/PaginationWithPage';
-
 import qs from 'qs';
-
-const {Screen} = createMqProvider(querySchema);
 
 class ActionList extends React.Component {
   state = {

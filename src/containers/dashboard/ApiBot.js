@@ -6,7 +6,7 @@ import ReactTable from '../../components/SelectableReactTable';
 import Pagination from '../../components/Pagination';
 import ExchangeSelect from '../../components/ExchangeSelect';
 import {showTwoFactorAuthModal, showConfirmModal} from '../../actions/modal';
-import createMqProvider, {querySchema} from '../../MediaQuery';
+import { Screen } from '../../MediaQuery';
 import {fetchBotKeys, deleteBotKeys} from '../../actions/apiKeys';
 import classNames from 'classnames';
 
@@ -25,8 +25,6 @@ const DELETED_KEYS = {
     defaultMessage="Deleted Keys"
   />
 };
-
-const { Screen} = createMqProvider(querySchema);
 
 class BotList extends React.Component {
 
