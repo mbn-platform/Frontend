@@ -4,9 +4,7 @@ import { withRouter } from 'react-router';
 import ReactTable from '../../components/SelectableReactTable';
 import {sortData, onColumnSort, classNameForColumnHeader}  from '../../generic/terminalSortFunctions';
 import { FormattedMessage } from 'react-intl';
-import createMqProvider, {querySchema} from '../../MediaQuery';
-
-const { Screen} = createMqProvider(querySchema);
+import { Screen } from '../../MediaQuery';
 
 const TAB_OPEN_ORDERS = 0;
 const TAB_COMPLETED_ORDERS = 1;
