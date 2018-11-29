@@ -83,7 +83,7 @@ class MarketSelectTable extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({dropDownHeight: this.dropDownWrapper.current.offsetHeight - 160});
+    this.setState({dropDownHeight: this.dropDownWrapper.current.offsetHeight - 170});
   };
 
 
