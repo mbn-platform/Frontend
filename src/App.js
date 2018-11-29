@@ -8,12 +8,10 @@ import MainContent from './MainContentContainer';
 import Navigation from './Navigation';
 import { fetchTime } from './actions/time';
 import { Container, Row } from 'reactstrap';
-import createMqProvider, {querySchema} from './MediaQuery';
+import { MediaQuery } from './MediaQuery';
 import './App.css';
 require('bootstrap');
 require('malihu-custom-scrollbar-plugin');
-
-const {MediaQuery} = createMqProvider(querySchema);
 
 class App extends React.Component {
 

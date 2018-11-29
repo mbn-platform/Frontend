@@ -10,9 +10,7 @@ import {updateChallenge} from '../../actions/challenge';
 import {connect} from 'react-redux';
 import RoundSelect from './RoundSelect';
 import ReactTable from '../../components/SelectableReactTable';
-import createMqProvider, {querySchema} from '../../MediaQuery';
-
-const { Screen} = createMqProvider(querySchema);
+import { Screen } from '../../MediaQuery';
 
 const infoTableData= [
   {
