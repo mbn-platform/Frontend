@@ -8,10 +8,9 @@ import {
   getOrderListPage,
 } from '../../actions/orderList';
 import ReactTable from '../../components/SelectableReactTable';
-import createMqProvider, {querySchema} from '../../MediaQuery';
+import { Screen } from '../../MediaQuery';
 import {getExchangeMarkets, selectExchange} from '../../actions/terminal';
 
-const {Screen} = createMqProvider(querySchema);
 
 class OrdersPage extends React.Component {
   componentDidMount() {
