@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import { Container, Row, Col } from 'reactstrap';
+import { Row, Col } from 'reactstrap';
 import HeaderStatus from '../../components/HeaderStatus';
 import { FormattedMessage, FormattedDate, injectIntl } from 'react-intl';
 import {
@@ -8,10 +8,8 @@ import {
   getOrderListPage,
 } from '../../actions/orderList';
 import ReactTable from '../../components/SelectableReactTable';
-import createMqProvider, {querySchema} from '../../MediaQuery';
 import {getExchangeMarkets, selectExchange} from '../../actions/terminal';
-
-const {Screen} = createMqProvider(querySchema);
+import { Screen } from '../../MediaQuery';
 
 class OrdersPage extends React.Component {
   componentDidMount() {
@@ -217,7 +215,7 @@ class OrdersPage extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const { order: {orderInfo, ordersList}, exchangesInfo } = state;
+  const { order: {orderInfo, ordersList} } = state;
   return {
     orderInfo,
     ordersList,
