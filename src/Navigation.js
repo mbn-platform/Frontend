@@ -276,7 +276,7 @@ class Navigation extends React.Component {
 
   getLogo() {
     return (
-      <a target="_blank" href="https://membrana.io" rel='noopener noreferrer' className="nav-link d-none d-md-flex">
+      <a target="_blank" href="https://membrana.io" rel='noopener noreferrer' className="navigation__logo-href nav-link">
         <div className="navigation__logo-wrapper">
           <img className="cursor-pointer" src={Logo} width="36" height="36" alt="" />
         </div>
