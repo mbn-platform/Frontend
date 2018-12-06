@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import { Container, Row, Col } from 'reactstrap';
+import { Row, Col } from 'reactstrap';
 import HeaderStatus from '../../components/HeaderStatus';
 import { FormattedMessage, FormattedDate, injectIntl } from 'react-intl';
 import {
@@ -216,7 +216,7 @@ class OrdersPage extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const { order: {orderInfo, ordersList}, exchangesInfo } = state;
+  const { order: {orderInfo, ordersList} } = state;
   return {
     orderInfo,
     ordersList,
