@@ -8,21 +8,88 @@
     display: none;
     justify-content: center;
     flex-flow: row nowrap;
+    -ms-align-items: center;
+    align-items: center;
+
+    -webkit-transition: all ease .6s;
+    -o-transition: all ease .6s;
+    transition: all ease .6s;
+}
+
+.competition__container-hidden{
+    bottom: -100%;
+}
+
+.competition__container-2{
+    -webkit-flex-direction: row-reverse;
+    -moz-flex-direction: row-reverse;
+    -ms-flex-direction: row-reverse;
+    -o-flex-direction: row-reverse;
+    flex-direction: row-reverse;
+
+    background-color: #4f0ec3;
+}
+
+.competition__container-2 .competition__icon{
+    position: absolute;
+
+    height: 260px;
+    width: 310px;
+    left: -40px;
+    bottom: -65px;
+}
+
+a.competition__container-2 div.competition__title{
+    padding-left: 50%;
+
+    position: relative;
+    z-index: 2;
+}
+
+.competition__closer{
+    position: absolute;
+    z-index: 3;
+
+    width: 30px;
+    height: 30px;
+    right: 10px;
+    top: 10px;
+}
+
+.competition__closer::after,
+.competition__closer::before{
+    position: absolute;
+    content: '';
+
+    width: 30px;
+    height: 2px;
+    left: 0;
+    top: 50%;    
+    -webkit-transform: translateY(-50%) rotate(-45deg);
+    -ms-transform: translateY(-50%) rotate(-45deg);
+    -o-transform: translateY(-50%) rotate(-45deg);
+    transform: translateY(-50%) rotate(-45deg);
+
+    background-color: #000;
+}
+
+.competition__closer::after{
+    -webkit-transform: translateY(-50%) rotate(45deg);
+    -ms-transform: translateY(-50%) rotate(45deg);
+    -o-transform: translateY(-50%) rotate(45deg);
+    transform: translateY(-50%) rotate(45deg);
 }
 
 .competition__icon {
-    height: 100px;
     width: auto;
+    height: 130px;
+    margin: -25px -10px 0 0;
 }
 
 .competition__title {
-    text-align: center;
     font-family: 'maven_proregular',sans-serif;
+    color: #fff;
     font-size: 20px;
-}
-
-.competition__subtitle {
-    color: #000;
 }
 
 .competition__subtitle_underline {
@@ -38,8 +105,18 @@
     height: 25px;
 }
 
+div.login_content a.competition__container{
+    padding: 5px 10px 5px 25px;
+}
+
 @media only screen and (max-width: 992px) {
     .competition__container {
         display: flex;
+    }
+}
+
+@media only screen and (max-width: 374px) {
+    .competition__title{
+        font-size: 16px;
     }
 }
