@@ -1,13 +1,7 @@
 import React from 'react';
 import './Competition.css';
 import Lambo from '../../assets/img/Lambo.png';
-import HappyTrader from '../../assets/img/HappyTrader.svg';
-
-const bannerTexts = [
-  'Get X% bonus on Membrana Platform presale',
-  'Want passive income? Join presale now with X% bonus',
-  'Make smart invesmtent with X% bonus, join presale now',
-];
+import HappyTrader from '../../assets/svg/HappyTrader.svg';
 
 class Banner extends React.Component {
 
@@ -19,9 +13,8 @@ class Banner extends React.Component {
   render() {
     return (
       <a href={this.state.ref} className="competition__container">
-        <div className="competition__subtitle competition__title">
-          {this.state.text}
-        </div>
+        {this.state.banner}
+        <img src={this.state.image} alt="Competition" className="competition__icon"/>
       </a>
     );
   }
@@ -29,14 +22,29 @@ class Banner extends React.Component {
 export default Banner;
 
 function getRandomBanner() {
-  const percent = getBonusPercent();
   const index = Math.floor(Math.random() * bannerTexts.length);
-  console.log(index);
-  const text = bannerTexts[index];
+  const banner = bannerTexts[index];
   const ref = `https://membrana.io/presale/?utm_source=beta_membrana_mobile&utm_medium=banner&utm_campaign=banner_mobile&utm_content=${index}`;
-  const bannerText = text.replace('X%', `${percent}%`);
-  return { ref, text: bannerText };
+  let image;
+  if (index === 2) {
+    image = Lambo;
+  } else {
+    image = HappyTrader;
+  }
+  return { ref, banner, image };
 }
+
+const bannerTexts = [
+  (<div className="competition__subtitle competition__title">
+    <u>Get {getBonusPercent()}% bonus</u> on Membrana Platform presale!
+  </div>),
+  (<div className="competition__subtitle competition__title">
+    Want passive income? <u>Join presale now</u> with {getBonusPercent()}% bonus!
+  </div>),
+  (<div className="competition__subtitle competition__title">
+    Make smart invesmtent with {getBonusPercent()}% bonus. <u>Join presale now</u>!
+  </div>),
+];
 
 function getBonusPercent() {
   const date = Date.now();
