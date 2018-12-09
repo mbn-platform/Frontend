@@ -33,10 +33,10 @@
 .competition__container-2 .competition__icon{
     position: absolute;
 
-    height: 260px;
+    height: 240px;
     width: 310px;
-    left: -40px;
-    bottom: -65px;
+    left: -85px;
+    bottom: -55px;
 }
 
 a.competition__container-2 div.competition__title{
@@ -50,8 +50,8 @@ a.competition__container-2 div.competition__title{
     position: absolute;
     z-index: 3;
 
-    width: 30px;
-    height: 30px;
+    width: 24px;
+    height: 24px;
     right: 10px;
     top: 10px;
 }
@@ -61,7 +61,7 @@ a.competition__container-2 div.competition__title{
     position: absolute;
     content: '';
 
-    width: 30px;
+    width: 24px;
     height: 2px;
     left: 0;
     top: 50%;    
