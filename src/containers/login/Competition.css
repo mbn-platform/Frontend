@@ -70,7 +70,7 @@ a.competition__container-2 div.competition__title{
     -o-transform: translateY(-50%) rotate(-45deg);
     transform: translateY(-50%) rotate(-45deg);
 
-    background-color: #000;
+    background-color: #7c7e80;
 }
 
 .competition__closer::after{
