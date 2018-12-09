@@ -1,5 +1,7 @@
 import React from 'react';
 import './Competition.css';
+import Lambo from '../../assets/img/Lambo.png';
+import HappyTrader from '../../assets/img/HappyTrader.svg';
 
 const bannerTexts = [
   'Get X% bonus on Membrana Platform presale',
