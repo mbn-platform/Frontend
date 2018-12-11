@@ -94,16 +94,24 @@ class Navigation extends React.Component {
         onClose={closeInfoModalWindow}
         title={
           <FormattedMessage
-            id={modal.modalComponent || 'message'}
-            defaultMessage="Message"
-            values={modal.modalProps}
+            id={'modal.error'}
+            defaultMessage="Error"
           />
         }
         content={
           <div>
-            <button className="modal__button btn" onClick={closeInfoModalWindow}>
-              {this.props.intl.messages['ok']}
-            </button>
+            <div className="modal__content-wrapper">
+              <div className="modal__key-annotation">
+                <FormattedMessage
+                  id={modal.modalComponent || 'message'}
+                  defaultMessage="Message"
+                  values={modal.modalProps}
+                />
+              </div>
+              <button className="modal__button btn" onClick={closeInfoModalWindow}>
+                {this.props.intl.messages['ok']}
+              </button>
+            </div>
           </div>
         }
       />
