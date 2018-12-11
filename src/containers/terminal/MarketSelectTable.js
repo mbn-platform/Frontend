@@ -7,9 +7,7 @@ import {sortData, onColumnSort, classNameForColumnHeader}  from '../../generic/t
 import {selectMarket} from '../../actions/terminal';
 import { connect } from 'react-redux';
 import {FormattedMessage, injectIntl} from 'react-intl';
-import createMqProvider, {querySchema} from '../../MediaQuery';
-
-const { Screen} = createMqProvider(querySchema);
+import { Screen } from '../../MediaQuery';
 
 class MarketSelectTable extends React.Component {
   constructor(props) {
