@@ -157,7 +157,6 @@ input[type=number]::-webkit-outer-spin-button {
 
 	.dropdown {
 		display: block;
-		padding: 10px !important;
 		text-transform: uppercase;
 		letter-spacing: 1px;
 
@@ -334,7 +333,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 @media (min-width: 1028px) {
 	.dropdown-popover {
-		max-width: 600px !important;
+		max-width: 650px !important;
 	}
 }
 
