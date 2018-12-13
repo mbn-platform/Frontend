@@ -6,26 +6,7 @@
 	color: #fff;
 	height: 100%;
     -webkit-font-smoothing: auto;
-    -moz-osx-font-smoothing: auto;	
-	&>.row{
-		height: 100%;
-		&>div{
-			height: 100%;
-		}
-	}
-	&-table-wrap{
-		flex: 1 1 auto;
-	    overflow: scroll;
-	  	max-height: 100%;
-	  	overflow-x: hidden;
-	  	// height: auto;
-		// margin-bottom: 30px;
-		// min-height: 60vh;
-		max-height: 70vh;
-		.table {
-			margin-bottom: 0;
-		}
-	}
+    -moz-osx-font-smoothing: auto;
 	&-tabs{
 		display: flex;
 		flex: 1 1 auto;
@@ -80,71 +61,6 @@
 					&.active{
 						opacity: 1;
 						border-bottom: 2px solid #fff;
-					}
-				}
-			}
-		}
-		.table{
-			width: 100%;
-			font-size: 12px;
-			font-family: "SF-UI"!important;
-			font-weight: 400;
-			// thead{
-			// 	display: block;
-			// 	th{
-			// 		width: calc(100% / 8);
-			// 	}
-			// }
-			// tbody{
-			// 	display: block;
-			// 	overflow: scroll;
-			// 	td{
-			// 		width: calc(100% / 8);
-			// 	}
-			// }
-			th{
-				color: #494C54;
-				font-size: 12px;
-				font-family: "SF-UI"!important;
-				font-weight: 500;
-				vertical-align: bottom;
-			}
-			td{
-				font-weight: 400;
-				&:first-child{
-					white-space: nowrap;
-				}
-				.remove{
-					display: block;
-					width: 14px;
-					height: 14px;
-					background: url('../assets/svg/cross.svg') no-repeat center;
-					background-size: contain;
-					&:hover{
-						opacity: 1;
-						background: url('../assets/svg/cross_white.svg') no-repeat center;
-						background-size: contain;
-					}
-				}
-			}
-			tr{
-				.round{
-						width: 5px;
-						height: 5px;
-						border-radius: 50%;
-						display: inline-block;
-						vertical-align: middle;
-					}
-				&.buy{
-					text-transform: uppercase;
-					.round{
-						background-color: #32B994;
-					}
-				}
-				&.sell{
-					text-transform: uppercase;
-					.round{
-						background-color: #D74C4C;
 					}
 				}
 			}
@@ -220,17 +136,6 @@
 
 	.orders__table-header-wrapper {
 		font-size: 8px;
-	}
-
-	.orders-main {
-		.orders-tab .table {
-			th, td {
-				&:nth-child(5),
-				&:nth-child(6) {
-					display: none;
-				}
-			}
-		}
 	}
 }
 
@@ -398,44 +303,6 @@
 
 					&:first-child {
 						margin-right: 22px;
-					}
-				}
-			}
-
-			.table {
-				table-layout: auto !important;
-				min-width: auto !important;
-				max-width: 100%;
-				letter-spacing: 0;
-
-				th, td {
-					padding: 5px 3px;
-
-					&:nth-child(1) {
-						padding-left: 5px;
-					}
-
-					&:nth-child(7) {
-						padding-right: 5px;
-					}
-				}
-
-				th {
-					font-size: 11px;
-
-					span {
-						display: block;
-						font-size: 12px;
-					}
-				}
-
-				td {
-					font-size: 10px;
-
-					&.ellipsis-cell {
-						max-width: 20px;
-						overflow: hidden;
-						text-overflow: ellipsis;
 					}
 				}
 			}
