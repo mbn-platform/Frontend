@@ -12,6 +12,8 @@ import OrdersIcon from './assets/svg/orders.svg';
 import OrdersIconHover from './assets/svg/orders_hover.svg';
 import LeaderboardIcon from './assets/svg/MenuIconLeaderboard.svg';
 import LeaderboardIconHover from './assets/svg/MenuIconLeaderboardHover.svg';
+import HashlogIcon from './assets/svg/MenuIconHashlog.svg';
+import HashlogIconHover from './assets/svg/MenuIconHashlogHover.svg';
 import SignOut from './assets/svg/SignOut.svg';
 import SignOutHover from './assets/svg/SignOutHover.svg';
 import { connect } from 'react-redux';
@@ -328,6 +330,12 @@ class Navigation extends React.Component {
         imgClass: 'orders',
         icon: OrdersIcon,
         iconHover: OrdersIconHover
+      }, {
+        name: 'Hashlog',
+        to: '/hashlog',
+        imgClass: 'hashlog',
+        icon: HashlogIcon,
+        iconHover: HashlogIconHover,
       },
     ];
   }
