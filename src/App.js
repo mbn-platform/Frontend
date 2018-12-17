@@ -25,7 +25,13 @@ class App extends React.Component {
   componentDidMount() {
     window.addEventListener('load', () => {
       if(window.ethereum) {
-        window.web3 = new window.Web3(window.ethereum);
+        window.ethereum.enable().then(() =>
+        {
+          window.web3 = new window.Web3(window.ethereum);
+        }
+        ).catch(error => {
+          console.error(error);
+        });
       }
       if(store.getState().auth.loggedIn) {
         apiGet('/profile')

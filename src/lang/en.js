@@ -7,6 +7,7 @@ const en = {
   'secretIs' : 'Secret: {secret}',
   'noSuchProfile' : 'No such profile',
   'noDataAboutCurrentRound' : 'No data about current round',
+  'nometamask.loginToMetamask' : 'Please login into your Metamask account',
   'theKeyIsInUse' : 'The key is in use',
   'enterConfirmationCode' : 'Enter confirmation code',
   'saveAndConfirmSecretCode' : 'Save and confirm secret code',
