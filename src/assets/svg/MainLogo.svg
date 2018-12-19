@@ -2,10 +2,9 @@
 <!-- Generator: Adobe Illustrator 17.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 55.5 47.9" enable-background="new 0 0 55.5 47.9" xml:space="preserve">
+	 viewBox="-13 -14 80.5 80.9" enable-background="new 0 0 70.5 80.9" xml:space="preserve">
 <g>
-	
-		<image overflow="visible" opacity="0.4" width="93" height="85" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAF0AAABVCAYAAAArIuiuAAAACXBIWXMAAAsSAAALEgHS3X78AAAA
+		<image clip-path="url(#cut-off-bottom)" overflow="visible" opacity="0.3" width="93" height="65" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAF0AAABVCAYAAAArIuiuAAAACXBIWXMAAAsSAAALEgHS3X78AAAA
 GXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAJk9JREFUeNrsfcmSHEeSpS3uHhG5
 YSGT3RhBDWt44AE8UmSuhQ+oK3+if4LE9+AXRmRQ55E6tRCHahFKUQrSWY0kkUtkZIS7m5n2e2rm
 HpEbgMTCKhlBkIlYMsJD7Znq08XMNI35dPt0+3T7dPt0+3T7dHvnm/2NPyv/H2EhvyVwdv2VcvuP
@@ -179,31 +178,59 @@ APvZn3RS5UKD++HGAW/+WYWN3ujXga9fXVqPX5Zh8BVcO3jxcC5ckL920j9Qu/H33TmzboY8DPxC
 //iRsDv3lb9q8J6N9d9/u9KNf2cit9HeNPvX3XLj90IfN/+9iZsGe7Wz9CUlYHNP9pp8azk+4t/v
 +BCgXwX/staN690/Xv99uqx1DX3c/s/a3Az+m2S4To6P9JdqPiTo1w98LCu84c/ajAO8QiHyD5Ph
 0pU+LEAf7/YuevqhB3k72P65/vjVp9un26fbp9un26fbp9vl238LMADElN+CtedKhgAAAABJRU5E
-rkJggg==" transform="matrix(1 0 0 1 -18.8641 -18.8989)">
+rkJggg==" transform="scale(3,2) translate(-38.8641 -20.8989)">
+			<animate id="p5" attributeName="opacity" begin="0s" values="0.3; 0; 0.3"
+					 dur="2s"
+                      repeatCount="indefinite"
+                      fill="freeze"  calcMode="paced"/>
 	</image>
+		 <clipPath id="cut-off-bottom">
+	 		<circle cx="48" cy="33" r="20"  />
+		 </clipPath>
 	<g>
 		<g>
 			<g>
-				<polygon fill="#32BA94" points="0,14.7 0,24.8 27.8,41.6 55.5,24.8 55.5,14.7 27.8,31.6 				"/>
+				<polygon stroke="#D0FFF5" fill="#32BA94" points="0,14.7 0,24.8 27.8,41.6 55.5,24.8 55.5,14.7 27.8,31.6"
+				 stroke-dasharray="100" stroke-dashoffset="0">
+					<animate id="p1" attributeName="stroke-dashoffset" begin="0s" values="100; 0; 100" dur="15s"
+                      repeatCount="indefinite"
+                      fill="freeze"  calcMode="paced"/>
+				</polygon>
 			</g>
 			<g>
-				<polygon fill="#32BA94" points="0,39.5 13.9,47.9 13.9,37.8 0,29.4 				"/>
+				<polygon  stroke="#D0FFF5" fill="#32BA94" points="0,39.5 13.9,47.9 13.9,37.8 0,29.4 				"
+				 stroke-dasharray="100" stroke-dashoffset="0">
+						<animate id="p2" attributeName="stroke-dashoffset" begin="0s" values="100; 0; 100" dur="15s"
+                      repeatCount="indefinite"
+                      fill="freeze"  calcMode="paced"/>
+				</polygon>
 			</g>
 			<g>
-				<polygon fill="#32BA94" points="27.8,16.9 0,0 0,10 27.8,26.9 55.5,10 55.5,0 				"/>
+				<polygon stroke="#D0FFF5" fill="#32BA94" points="27.8,16.9 0,0 0,10 27.8,26.9 55.5,10 55.5,0 				"
+				 stroke-dasharray="100" stroke-dashoffset="0">
+						<animate id="p3" attributeName="stroke-dashoffset" begin="0s" values="100; 0; 100" dur="15s"
+                      repeatCount="indefinite"
+                      fill="freeze"  calcMode="paced"/>
+				</polygon>
 			</g>
 			<g>
-				<polygon fill="#32BA94" points="41.6,47.9 55.5,39.5 55.5,29.4 41.6,37.8 				"/>
+				<polygon  stroke="#D0FFF5" fill="#32BA94" points="41.6,47.9 55.5,39.5 55.5,29.4 41.6,37.8 				"
+				 stroke-dasharray="100" stroke-dashoffset="0">
+						<animate id="p4" attributeName="stroke-dashoffset" begin="0s" values="100; 0; 100" dur="30s"
+                      repeatCount="indefinite"
+                      fill="freeze"  calcMode="paced"/>
+				</polygon>
 			</g>
 		</g>
 	</g>
 </g>
 <g>
-	<polygon fill="#219370" points="27.8,26.9 0,10 0,0 27.8,16.9 	"/>
-	<polygon fill="#219370" points="27.8,41.6 0,24.8 0,14.7 27.8,31.6 	"/>
+	<polygon fill="#219370" points="27.8,26.9 0,10 0,0 27.8,16.9 	" />
+	<polygon fill="#219370" points="27.8,41.6 0,24.8 0,14.7 27.8,31.6 	" />
 	<polygon fill="#219370" points="13.9,47.9 0,39.5 0,29.4 13.9,37.8 	"/>
 	<polygon fill="#32BA94" points="27.8,26.9 55.5,10 55.5,0 27.8,16.9 	"/>
 	<polygon fill="#32BA94" points="27.8,41.6 55.5,24.8 55.5,14.7 27.8,31.6 	"/>
 	<polygon fill="#32BA94" points="41.6,47.9 55.5,39.5 55.5,29.4 41.6,37.8 	"/>
 </g>
+
 </svg>
