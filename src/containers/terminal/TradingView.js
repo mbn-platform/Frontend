@@ -211,7 +211,7 @@ function createTradingView(symbol, interval, socketPath) {
     container_id: 'tv_chart_container',
     //	BEWARE: no trailing slash is expected in feed URL
     datafeed: new TradingViewDatafeed(socketPath),
-    library_path: 'charting_library/charting_library/',
+    library_path: '/charting_library/charting_library/',
     locale: 'en',
     //	Regression Trend-related functionality is not implemented yet, so it's hidden for a while
     drawings_access: { type: 'black', tools: [ { name: 'Regression Trend' } ] },
