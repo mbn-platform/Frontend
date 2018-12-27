@@ -6,7 +6,8 @@ import qs from 'qs';
 import {sortData, onColumnSort, classNameForColumnHeader, defaultSortFunction} from '../../generic/terminalSortFunctions';
 import { injectIntl } from 'react-intl';
 import { FormattedMessage } from 'react-intl';
-import {updateChallenge} from '../../actions/challenge';
+import { UncontrolledTooltip } from 'reactstrap';
+import {updateChallenge, getNextInfo, takePart} from '../../actions/challenge';
 import {connect} from 'react-redux';
 import RoundSelect from './RoundSelect';
 import ReactTable from '../../components/SelectableReactTable';
@@ -76,11 +77,23 @@ class Leaderboard extends React.Component {
   }
 
   componentDidMount() {
+    if (this.props.loggedIn) {
+      this.props.getNextInfo();
+    }
     const { round } = qs.parse(this.props.location.search.slice(1));
     if (round && round.match(/^[0-9]+$/)) {
       this.selectRound(parseInt(round, 10));
     }
     else {
+      this.selectRound(0);
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.challenge
+      && prevProps.challenge.nextRound === false
+      && this.props.challenge.nextRound
+      && this.props.challenge.global) {
       this.selectRound(0);
     }
   }
@@ -95,6 +108,10 @@ class Leaderboard extends React.Component {
     updateChallenge(number);
     this.setState({selectedRound: number});
     this.interval = setInterval(() => updateChallenge(number), 30000);
+  }
+
+  onTakePartClick = () => {
+    this.props.takePart();
   }
 
   onRowClick = (state, rowInfo) => {
@@ -154,6 +171,7 @@ class Leaderboard extends React.Component {
                     defaultMessage="LEADERBOARD"
                   />
                 </div>
+                {this.renderNextRoundButton()}
                 <div className="ratings-main__block">
                   <div className="block__top">
                     <div className="block__top-switch-wrap">
@@ -171,6 +189,35 @@ class Leaderboard extends React.Component {
         )} />
       </Container>
     );
+  }
+
+  renderNextRoundButton() {
+    const { loggedIn, challenge } = this.props;
+    if (!loggedIn) {
+      return null;
+    } else {
+      const canParticipate = challenge && challenge.nextRound !== undefined && !challenge.nextRound;
+      return (
+        <div className="leaderboard__form">
+          <span className="leaderboard__title">
+            <FormattedMessage
+              id="leaderboard.nextRoundMessage"
+            />
+            <div id="help-icon-tx" className="table_header_help_wrapper"/>
+          </span>
+          <button disabled={!canParticipate} type="submit" onClick={this.onTakePartClick} className="leaderboard__form-submit">
+            <FormattedMessage
+              id="leaderboard.nextRoundConfirm"
+            />
+          </button>
+          <UncontrolledTooltip target="help-icon-tx">
+            <FormattedMessage
+              id="leaderboard.nextRoundHelp"
+            />
+          </UncontrolledTooltip>
+        </div>
+      );
+    }
   }
 
   renderBoard(sortedData, roundInfo, isSelectedRoundExists, screenWidth) {
@@ -206,8 +253,98 @@ class Leaderboard extends React.Component {
     clearInterval(this.interval);
   }
 
-  getGlobalBoardColumns = (isGlobal, screenWidth) => {
-    const globalTableColumns =  [
+  getGlobalColumns = (screenWidth) => {
+    return [
+      {
+        Header: null,
+        maxWidth: screenWidth === 'lg' ? 80 : 40,
+        className: 'ratings__table-cell',
+        Cell: row => 
+          (
+            <div>
+              {row.index + 1}
+            </div>
+          ),
+        sortable: false,
+      }, {
+        Header:<div className="table__header-wrapper">
+          <div className="rating__header-title-wrapper" onClick={() => this.onColumnSort('name')}>
+            <FormattedMessage
+              id="leaderboard.name"
+              defaultMessage="Name"
+            />
+            <span className={classNameForColumnHeader(this.state, 'name')}/>
+          </div>
+          <div>
+            <input ref={this.inputRef}
+              value={this.state.nameFilter}
+              onChange={this.onNameFilterChange}
+              type="text"
+              className="ratings__input-search"
+              placeholder={this.props.intl.messages['leaderboard.searchPlaceholder']} />
+          </div>
+        </div>,
+        minWidth: 80,
+        className: 'ratings__table-cell',
+        Cell: row => {
+          return <div onClick={this.onRowClick} className="name nickname">@{row.original.name}</div>;
+        },
+      }, {
+        Header: <div onClick={() => this.onColumnSort('average')}
+          className="table__header-wrapper">
+          <div className="rating__header-title-wrapper">
+            <FormattedMessage
+              id="leaderboard.average"
+              defaultMessage="Average"
+            />
+            <span className={classNameForColumnHeader(this.state, 'average')}/>
+          </div>
+        </div>,
+        minWidth: screenWidth === 'lg' ? 80 : 50,
+        Cell: row => row.original.average,
+        className: 'ratings__table-cell',
+      }, {
+        Header: <div onClick={() => this.onColumnSort('points')}
+          className="table__header-wrapper">
+          <div className="rating__header-title-wrapper">
+            <FormattedMessage
+              id="leaderboard.points"
+              defaultMessage="Points"
+            />
+            <span className={classNameForColumnHeader(this.state, 'points')}/>
+          </div>
+        </div>,
+        minWidth: screenWidth === 'lg' ? 80 : 50,
+        Cell: row => row.original.points,
+        className: 'ratings__table-cell',
+      }, {
+        Header: <div onClick={() => this.onColumnSort('next')}
+          className="table__header-wrapper">
+          <div className="rating__header-title-wrapper">
+            <FormattedMessage
+              id="leaderboard.nextRound"
+              defaultMessage="Next round"
+            />
+            <span className={classNameForColumnHeader(this.state, 'next')}/>
+          </div>
+        </div>,
+        minWidth: screenWidth === 'lg' ? 80 : 50,
+        Cell: row => row.original.next ? (
+          <FormattedMessage
+            id="yes"
+            defaultMessage="yes"
+          />) : (
+          <FormattedMessage
+            id="no"
+            defaultMessage="no"
+          />),
+        className: 'ratings__table-cell',
+      },
+    ];
+  }
+
+  getRoundColumns = (screenWidth) => {
+    return [
       {
         Header: <div onClick={() => this.onColumnSort('place') }
           className="table__header-wrapper">
@@ -218,7 +355,7 @@ class Leaderboard extends React.Component {
             />
           </span><span className={classNameForColumnHeader(this.state, 'place')}/>
         </div>,
-        minWidth: screenWidth === 'lg' ? 110 : 40,
+        maxWidth: screenWidth === 'lg' ? 80 : 40,
         className: 'ratings__table-cell',
         Cell: row => {
           return (<div onClick={this.onRowClick}>
@@ -260,37 +397,24 @@ class Leaderboard extends React.Component {
           </div>
         </div>,
         minWidth: screenWidth === 'lg' ? 80 : 50,
-        Cell: row => {
-
-          return row.original.global ? (
-            <ProfitCell onClick={this.onRowClick} profit={row.original.points} />
-          ) : (
-            row.original.points
-          );
-        },
+        Cell: row => row.original.points,
         className: 'ratings__table-cell',
-      },
-    ];
-    return [
-      ...globalTableColumns,
-      ...(isGlobal ?
-        [] :
-        [{
-          Header: <div onClick={() => this.onColumnSort('points')}
-            className="table__header-wrapper">
-            <FormattedMessage
-              id="leaderboard.profitUsd"
-              defaultMessage="Profit (USDT)"
-            />
-            <span className={classNameForColumnHeader(this.state, 'profit')}/>
-          </div>,
-          className: 'ratings__table-cell',
-          minWidth: screenWidth === 'lg' ? 80 : 40,
-          Cell: row =>  {
-            return (
-              <ProfitCell onClick={this.onRowClick} {...row.original} />
-            );}
-        }])
+      }, {
+        Header: <div onClick={() => this.onColumnSort('points')}
+          className="table__header-wrapper">
+          <FormattedMessage
+            id="leaderboard.profitUsd"
+            defaultMessage="Profit (USDT)"
+          />
+          <span className={classNameForColumnHeader(this.state, 'profit')}/>
+        </div>,
+        className: 'ratings__table-cell',
+        minWidth: screenWidth === 'lg' ? 80 : 40,
+        Cell: row =>  {
+          return (
+            <ProfitCell onClick={this.onRowClick} {...row.original} />
+          );}
+      }
     ];
   }
 
@@ -382,7 +506,7 @@ class Leaderboard extends React.Component {
   renderGlobalBoard = (data, isGlobal, screenWidth) => {
     return (
       <ReactTable
-        columns={this.getGlobalBoardColumns(isGlobal, screenWidth)}
+        columns={isGlobal ? this.getGlobalColumns(screenWidth) : this.getRoundColumns(screenWidth)}
         data={data}
         scrollBarHeight={500}
         getTrProps={this.onRowClick}
@@ -421,7 +545,11 @@ const ProfitCell = ({profit, tx}) => {
 };
 
 export default injectIntl(connect(
-  state => ({challenge: state.challenge}),
-  dispatch => ({updateChallenge: number => dispatch(updateChallenge(number))}),
+  state => ({challenge: state.challenge, loggedIn: state.auth.loggedIn}),
+  dispatch => ({
+    updateChallenge: number => dispatch(updateChallenge(number)),
+    takePart: () => dispatch(takePart()),
+    getNextInfo: () => dispatch(getNextInfo()),
+  }),
 )(Leaderboard));
 

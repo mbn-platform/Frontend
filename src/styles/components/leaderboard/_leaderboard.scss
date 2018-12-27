@@ -108,6 +108,47 @@
     }
 }
 
+.leaderboard__form {
+  margin-bottom: 20px;
+  .table_header_help_wrapper {
+    padding-top: 0px;
+  }
+  .leaderboard__title {
+    padding: 0px !important;
+    margin-right: 20px;
+  }
+}
+
+.leaderboard__form-submit {
+  border-radius: 2px;
+  background-color: #32B994;
+  text-transform: uppercase;
+  color: #161721;
+  font-size: 12px;
+  height: 32px;
+  border: none;
+  width: 100%;
+  max-width: 300px;
+  font-weight: 500;
+  cursor: pointer;
+  &:hover:active {
+    opacity: 0.7;
+  }
+  &:disabled {
+    background-color: #2d3034;
+    cursor: default;
+  }
+}
+.leaderboard__next-round {
+  background: url(../assets/svg/001-check-mark-grey.svg) no-repeat left center;
+  width: 100%;
+  height: 18px;
+  opacity: .8;
+  display: inline-block;
+  background-size: 15px;
+  margin-top: 5px;
+}
+
 @media (max-width: 768px) {
     .leaderboard__select-wrapper {
         padding: 0 !important;

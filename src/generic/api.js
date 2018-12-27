@@ -64,6 +64,16 @@ export class ApiChallenge {
     apiGet('/challenge/result?' + qs.stringify({round: number}))
       .then(errorHandler)
       .then(responseSchemaHandler);
+
+  getNextInfo = () =>
+    apiGet('/challenge/next')
+      .then(errorHandler)
+      .then(responseSchemaHandler);
+
+  takePart = () =>
+    apiPost('/challenge/next')
+      .then(errorHandler)
+      .then(responseSchemaHandler);
 }
 
 export class ApiContract {
