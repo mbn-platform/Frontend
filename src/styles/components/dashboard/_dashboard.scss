@@ -267,21 +267,6 @@
       text-align: center;
       padding-left: 0;
     }
-    .chart_title_total
-    {
-      font-size: 1.3em;
-      color: #727274;
-      text-transform: uppercase;
-      text-align: center;
-      padding: 0 30px;
-      height: 30px;
-      line-height: 30px;
-      border-bottom: 1px solid #494d4d;
-    }
-    .chart_title_total_span
-    {
-      color: #adadad;
-    }
 
     .charts {
       overflow: hidden;
@@ -336,10 +321,6 @@
       width: 100%;
     }
 
-    .add_keys_form
-    {
-
-    }
     .add_keys_str
     {
       text-align: left;
@@ -437,6 +418,7 @@
       display: inline-block;
       vertical-align: middle;
     }
+
     .add_keys_field
     {
       border: 1px solid #44464a;
@@ -668,24 +650,6 @@
       margin-right: 20px;
     }
 
-    .last_header_column_currencies {
-      display: inline;
-    }
-
-    .last_header_column_currencies .table_header
-    {
-      display: table-cell;
-      height: 40px;
-      white-space: pre;
-    }
-
-    .last_header_column_currencies .sort_icon_wrapper
-    {
-      display: block;
-      height: 30px;
-      margin-left: 0;
-    }
-
     @media only screen and (min-width : 1028px) {
       .table_bot_header_icon {
         display: inline-block !important;
@@ -826,14 +790,6 @@
       background: url('../assets/img/ApiKeysIcon.png') no-repeat left center;
     }
 
-    /*.table_col_value_a:before {*/
-      /*content: "@";*/
-      /*display: inline-block;*/
-      /*vertical-align: middle;*/
-      /*font-size: 1.2em;*/
-      /*margin-right: 2px;*/
-    /*}*/
-
     .delete_key_button
     {
       background: url('../assets/svg/DeleteKey.svg') no-repeat center center;
@@ -859,9 +815,6 @@
 
     //---------------------------------------- contract feedback
 
-    .selected_contract_table .table
-    {
-    }
     .rate_field_wrapper
     {
       width: 100%;

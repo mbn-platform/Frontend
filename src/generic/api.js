@@ -358,6 +358,20 @@ export class ApiBotKeys {
       .then(responseSchemaHandler);
 }
 
+export class OrderList {
+  getOrderInfo = orderId => {
+    return apiGet(`/order/${orderId}`)
+      .then(errorHandler)
+      .then(responseSchemaHandler);
+  }
+
+  getOrderActionsList = orderId => {
+    return apiGet(`/order/${orderId}/actions`)
+      .then(errorHandler)
+      .then(responseSchemaHandler);
+  }
+}
+
 export class ApiNotification {
   fetch = () =>
     apiGet('/notifications')

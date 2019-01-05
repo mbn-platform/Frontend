@@ -7,9 +7,7 @@ import {sortData, onColumnSort, classNameForColumnHeader}  from '../../generic/t
 import {selectMarket} from '../../actions/terminal';
 import { connect } from 'react-redux';
 import {FormattedMessage, injectIntl} from 'react-intl';
-import createMqProvider, {querySchema} from '../../MediaQuery';
-
-const { Screen} = createMqProvider(querySchema);
+import { Screen } from '../../MediaQuery';
 
 class MarketSelectTable extends React.Component {
   constructor(props) {
@@ -83,7 +81,7 @@ class MarketSelectTable extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({dropDownHeight: this.dropDownWrapper.current.offsetHeight - 180});
+    this.setState({dropDownHeight: this.dropDownWrapper.current.offsetHeight - 170});
   };
 
 
@@ -133,10 +131,10 @@ class MarketSelectTable extends React.Component {
         Cell: row => (
           <div>{defaultFormatValue(row.original.last, row.original.base)}</div>
         ),
-        minWidth:  screenWidth === 'lg' ? 90 : 40,
+        minWidth:  screenWidth === 'lg' ? 70 : 40,
       },
       {
-        minWidth:  screenWidth === 'lg' ? 110 : 40,
+        minWidth:  screenWidth === 'lg' ? 90 : 40,
         className: 'terminal__market-table-cell',
         headerClassName: 'table__header-wrapper terminal__market-header-table',
         Header: <div onClick={() => this.onColumnSort('volume')}>
@@ -221,35 +219,38 @@ class MarketSelectTable extends React.Component {
         e.stopPropagation();
         e.nativeEvent.stopImmediatePropagation();
       }} className="dropdown search" ref={this.dropDownWrapper}>
-        <div onClick={this.props.close} className="dropdown__name">
-          <span>{this.props.market}</span>
-          <span>
+        <div onClick={this.props.close} className="terminal__market-select-header-wrapper">
+          <div className="terminal__market-select-currency">{this.props.market}</div>
+          <div className="terminal__market-select-instruments-wrapper">
             {
               this.props.balances !== null && <span className="hide_zeros" onClick={this.onHideZeroClick}>
                 <FormattedMessage id="terminal.hideZeros" defaultMessage="Hide zeros "/>
                 <div className={classNames('currency_status_checkbox', {selected: this.state.hideZeros})}/>
               </span>
             }
-            <span className="arrow_down"/>
-          </span>
+            <div className="arrow_down"/>
+          </div>
         </div>
-        <form action="" className="dropdown__form">
-          <input autoComplete="off" value={this.state.filter} type="text" name="filter" onChange={this.onChange} 
-            className="input-search" placeholder={this.props.intl.messages['terminal.search']}/>
-        </form>
-        <div className="dropdown__btn-wrap">
-          <button
-            onClick={e => this.onBaseCurrencySelected(e, 'BTC')}
-            className={classNames('dropdown__btn', {active: baseCurrency === 'BTC'})}
-          >BTC</button>
-          <button
-            onClick={e => this.onBaseCurrencySelected(e, 'ETH')}
-            className={classNames('dropdown__btn', {active: baseCurrency === 'ETH'})}
-          >ETH</button>
-          <button
-            onClick={e => this.onBaseCurrencySelected(e, 'USDT')}
-            className={classNames('dropdown__btn', {active: baseCurrency === 'USDT'})}
-          >USDT</button>
+        <div className="terminal__market-select-filter-wrapper">
+          <div className="terminal__market-select-tab-wrapper">
+            <button
+              onClick={e => this.onBaseCurrencySelected(e, 'BTC')}
+              className={classNames('terminal__market-select-tab', {active: baseCurrency === 'BTC'})}
+            >BTC</button>
+            <button
+              onClick={e => this.onBaseCurrencySelected(e, 'ETH')}
+              className={classNames('terminal__market-select-tab', {active: baseCurrency === 'ETH'})}
+            >ETH</button>
+            <button
+              onClick={e => this.onBaseCurrencySelected(e, 'USDT')}
+              className={classNames('terminal__market-select-tab', {active: baseCurrency === 'USDT'})}
+            >USDT</button>
+          </div>
+          <form action="" className="dropdown__form terminal__market-select-search-filter">
+            <input autoComplete="off" value={this.state.filter} type="text" name="filter" onChange={this.onChange} 
+              className="input-search"
+              placeholder={this.props.intl.messages['terminal.search']}/>
+          </form>
         </div>
         <Screen on={screenWidth => (
           <div className="terminal__market-select-dropdown-container dropdown-table-wrapper js-dropdown-table-wrapper">

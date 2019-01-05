@@ -4,6 +4,7 @@ import Login from './containers/login/LoginContainer';
 import Dashboard from './containers/dashboard/DashboardContainer';
 import Terminal from './containers/terminal/Terminal';
 import Orders from './containers/orders/Orders';
+import OrdersPage from './containers/orders/OrdersPage';
 import Profile from './containers/profile/ProfileContainer';
 import Leaderboard from './containers/leaderboard/Leaderboard';
 import Hashlog from './containers/hashlog/Hashlog';
@@ -72,6 +73,7 @@ class MainContent extends React.Component {
           <ProtectedRoute exact path="/terminal/:exchange" component={Terminal} loggedIn={loggedIn}/>
           <ProtectedRoute exact path="/terminal/:exchange/:market" component={Terminal} loggedIn={loggedIn}/>
           <ProtectedRoute exact path="/orders" component={Orders} loggedIn={loggedIn}/>
+          <ProtectedRoute exact path="/orders/:orderId" component={OrdersPage} loggedIn={loggedIn}/>
           <Redirect exact from="/ratings" to="/leaderboard"/>
           <Redirect exact from="/rating" to="/leaderboard"/>
           <Route exact path="/hashlog" component={Hashlog} loggedIn={loggedIn}/>

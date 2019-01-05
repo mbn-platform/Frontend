@@ -7,9 +7,7 @@ import { Desktop } from '../../generic/MediaQuery';
 import {sortData, onColumnSort, classNameForColumnHeader}  from '../../generic/terminalSortFunctions';
 import {BigNumber} from 'bignumber.js';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import createMqProvider, {querySchema} from '../../MediaQuery';
-
-const { Screen} = createMqProvider(querySchema);
+import { Screen } from '../../MediaQuery';
 
 class RecentTrades extends React.Component {
 

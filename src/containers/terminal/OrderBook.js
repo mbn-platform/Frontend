@@ -7,9 +7,7 @@ import classNames from 'classnames';
 import {BigNumber} from 'bignumber.js';
 import ReactTable from '../../components/SelectableReactTable';
 import { FormattedMessage } from 'react-intl';
-import createMqProvider, {querySchema} from '../../MediaQuery';
-
-const { Screen} = createMqProvider(querySchema);
+import { Screen } from '../../MediaQuery';
 
 class OrderBook extends React.Component {
 

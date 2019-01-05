@@ -173,9 +173,9 @@ class Navigation extends React.Component {
            d-block
            menu-panel
            navigation__tab-container
-           ${!isExpanded && 'navigation__tab-container_hidden'}`
+           ${!isExpanded ? 'navigation__tab-container_hidden' : 'navigation__tab-container_open'}`
         }>
-        <Navbar expand="md"  >
+        <Navbar className="navigation__wrapper" expand="md"  >
           <NavbarBrand className="d-inline-block d-md-none" tag="div">
             <a target="_blank" rel='noopener noreferrer' href="https://membrana.io">
               <img src={LogoMobile} alt=""/>
@@ -184,7 +184,7 @@ class Navigation extends React.Component {
           <NavbarToggler onClick={this.toggle} className={this.state.isOpen ? '' : 'collapsed'} />
           <Desktop>
             <Collapse isOpen={this.state.isOpen} className="ml-auto ml-md-0 navigation__tab-wrapper" navbar>
-              <Nav pills className="flex-column w-100 align-middle" tag="div">
+              <Nav pills className="navigation__link-container w-100 align-middle" tag="div">
                 {this.getLogo()}
                 {this.getLinks().map(this.getBar)}
                 {this.signOutButton()}
@@ -278,18 +278,10 @@ class Navigation extends React.Component {
 
   getLogo() {
     return (
-      <a target="_blank" href="https://membrana.io" rel='noopener noreferrer' className="nav-link d-none d-md-flex">
-        <Container fluid className="h-100">
-          <Row className="h-100">
-            <Col xs="12" className="align-self-center">
-              <Container fluid className="align-middle">
-                <Row className="d-flex justify-content-center">
-                  <img className="cursor-pointer" src={Logo} width="36" height="36" alt="" />
-                </Row>
-              </Container>
-            </Col>
-          </Row>
-        </Container>
+      <a target="_blank" href="https://membrana.io" rel='noopener noreferrer' className="navigation__logo-href nav-link">
+        <div className="navigation__logo-wrapper">
+          <img className="cursor-pointer" src={Logo} width="36" height="36" alt="" />
+        </div>
       </a>
     );
   }

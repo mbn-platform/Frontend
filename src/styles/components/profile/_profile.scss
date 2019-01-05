@@ -368,11 +368,9 @@
                         height: 100%;
                     }
                 }
-                tbody {
-                    height: 150px;
-                    overflow: auto;
-                }
+
                 .card-body {
+                    //TODO check
                     .table {
                         background-color: #1f2225;
                         .currency-header-block {
@@ -426,6 +424,7 @@
                 }
                 .card {
                     .card-body {
+                        //TODO check
                         .table {
                             background-color: #1f2225;
                             th, td {

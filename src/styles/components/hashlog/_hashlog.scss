@@ -26,33 +26,6 @@
     &:hover {
       color: rgba(#fff, .5);
     }
-
-    &_dropdown {
-      display: none;
-      padding: 10px 0;
-      width: 90px;
-      background-color: #2D3034;
-      font-size: 12px;
-      letter-spacing: 1px;
-      color: #9094A1;
-
-      &-link {
-        color: #9094A1;
-        display: block;
-        text-decoration: none;
-        padding: 8px !important;
-        font-weight: 400;
-
-        &:hover {
-          color: #fff;
-        }
-
-        &.active {
-          background-color: rgba(#9094A1, .25);
-          color: #fff;
-        }
-      }
-    }
   }
 }
 
@@ -145,6 +118,10 @@
 
 .hashlog__main-board {
   margin-bottom: 70px;
+
+  .table__page-size-wrapper {
+    margin-top: 14px;
+  }
 
   .rt-tr {
     align-items: center;
@@ -289,12 +266,6 @@
   &:hover {
     color: #7c7c7d;
     text-decoration: none;
-  }
-}
-
-.hashlog__main-board {
-  .table__page-size-wrapper {
-    margin-top: 14px;
   }
 }
 
