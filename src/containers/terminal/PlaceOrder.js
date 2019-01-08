@@ -2,14 +2,25 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {defaultFormatValue, setFundId} from '../../generic/util';
-import { Desktop } from '../../generic/MediaQuery';
 import {FormattedMessage, injectIntl} from 'react-intl';
 import {connect} from 'react-redux';
 import {showInfoModal} from '../../actions/modal';
 import {placeOrder} from '../../actions/terminal';
+import { Col, Row, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 export const TAB_BUY = 'buy';
 export const TAB_SELL = 'sell';
+
+const OrderType = {
+  LIMIT: 'limit',
+  STOP_LOSS_LIMIT: 'stop_loss_limit',
+  TAKE_PROFIT_LIMIT: 'take_profit_limit',
+};
+
+const OrderTypeSelectOptions = {
+  TRIGGER: 'TRIGGER',
+  LIMIT: 'LIMIT',
+};
 
 class PlaceOrder extends React.Component {
 
@@ -21,12 +32,14 @@ class PlaceOrder extends React.Component {
       price = price.toString();
     }
     this.state = {
+      orderType: OrderTypeSelectOptions.LIMIT,
       main,
       secondary,
       selectedTab: TAB_BUY,
       orderSize: '',
       amount: '',
       price,
+      stopPrice: '',
       tickerSet: false,
       marketInfo: props.markets.find(m => m.symbol === props.market),
     };
@@ -34,6 +47,8 @@ class PlaceOrder extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
   }
+
+  onOrderTypeSelect = (orderType) => this.setState({orderType})
 
   onSubmit(e) {
     e.preventDefault();
@@ -46,7 +61,6 @@ class PlaceOrder extends React.Component {
       amount: parseFloat(this.state.orderSize),
       price: parseFloat(this.state.price),
     };
-    params = setFundId(params, this.props.fund);
     switch(this.state.selectedTab) {
       case TAB_BUY:
         params.type = 'buy';
@@ -57,6 +71,35 @@ class PlaceOrder extends React.Component {
       default:
         break;
     }
+    switch(this.state.orderType) {
+      case OrderTypeSelectOptions.LIMIT:
+        params.orderType = OrderType.LIMIT;
+        break;
+      case OrderTypeSelectOptions.TRIGGER:
+        if (!this.props.ticker) {
+          return;
+        }
+        const stopPrice = parseFloat(this.state.stopPrice);
+        if (!stopPrice) {
+          return;
+        }
+        params.orderType = getOrderType(stopPrice, this.props.ticker.l, params.type);
+        params.stopPrice = stopPrice;
+        break;
+      default:
+        break;
+    }
+    if (this.state.stopPrice) {
+      if (!this.props.ticker) {
+        return;
+      }
+      const stopPrice = parseFloat(this.state.stopPrice);
+      params.stopPrice = stopPrice;
+      params.orderType = getOrderType(stopPrice, this.props.ticker.l, params.type);
+    } else {
+      params.orderType = OrderType.LIMIT;
+    }
+    params = setFundId(params, this.props.fund);
     this.props.placeOrder(params);
     this.setState({amount: '', orderSize: ''});
     return;
@@ -245,6 +288,9 @@ class PlaceOrder extends React.Component {
       case 'amount':
         this.setAmount(value);
         break;
+      case 'stopPrice':
+        this.setState({[name]: value});
+        break;
       default:
         break;
     }
@@ -275,69 +321,90 @@ class PlaceOrder extends React.Component {
   render() {
     const minTradeSize = this.state.marketInfo ? this.state.marketInfo.minTradeSize : '';
     return (
-      <div className="buysell col-sm-12 col-md-12 col-lg-4">
-        <div className="buysell__top justify-content-between row col-12">
-          <div className="buysell__switch-wrap ">
-            <span onClick={() => this.onTabClick(TAB_BUY)}
-              className={classNames('buysell__switch', 'switch-buy', {active: this.state.selectedTab === TAB_BUY})}>
-              <FormattedMessage id="terminal.buy" defaultMessage="BUY"/>
-            </span>
-            <span onClick={() => this.onTabClick(TAB_SELL)}
-              className={classNames('buysell__switch', 'switch-sell', {active: this.state.selectedTab === TAB_SELL})}
-            >
-              <FormattedMessage id="terminal.sell" defaultMessage="SELL"/>
-            </span>
-          </div>
-          <Desktop>
-            <div className="chart-controls align-items-center justify-content-between row">
-            </div>
-          </Desktop>
-        </div>
-        <div className="buysell__main">
-          <div className={classNames('buysell__main-tab', 'active', this.state.selectedTab === TAB_SELL ? 'sell' : 'buy')}>
-            <form className="buysell__form">
-              <div className="buysell__form-row">
-                <div className="buysell__form-input-wrap">
-                  <label className="buysell__form-label">
-                    <FormattedMessage id="terminal.orderSize"
-                      defaultMessage="Order size ({secondary})"
-                      values={{secondary: this.state.secondary}}/>
-                  </label>
-                  <input onChange={this.onChange}
-                    placeholder={'min ' + minTradeSize}
-                    value={this.state.orderSize} type="number" name='ordersize' className="buysell__form-input"/>
-                </div>
-                <div className="buysell__form-input-wrap">
-                  <label className="buysell__form-label">
-                    <FormattedMessage id="terminal.price"
-                      defaultMessage="Price"/>
-                  </label>
-                  <input onChange={this.onChange} value={this.state.price} type="number" name="price" className="buysell__form-input"/>
-                </div>
-              </div>
-              <div className="buysell__form-row">
-                <div className="buysell__form-input-wrap">
-                  <label className="buysell__form-label">
-                    <FormattedMessage id="terminal.amountLabel"
-                      defaultMessage="Amount ({amount})" values={{amount: this.state.main}}/>
-                  </label>
-                  <input onChange={this.onChange} type="number" value={this.state.amount} name="amount" className="buysell__form-input"/>
-                </div>
-                <button type="submit" onClick={this.onSubmit} className="buysell__form-submit">
-                  {this.state.selectedTab === TAB_SELL ? this.props.intl.messages['terminal.sell'] : this.props.intl.messages['terminal.buy']}
-                </button>
-              </div>
-            </form>
-          </div>
-          <Balances
-            fund={this.props.fund}
-            main={this.state.main}
-            onMainClick={e => this.setAmount(e.target.innerHTML)}
-            secondary={this.state.secondary}
-            onSecondaryClick={e => this.setOrderSize(e.target.innerHTML)}
-          />
-        </div>
-      </div>
+      <Col className="buysell" sm="12" md="12" lg="4">
+        <Row>
+          <Col xs="6">
+            <BuySellSwitch selectedTab={this.state.selectedTab} onTabClick={this.onTabClick} />
+          </Col>
+          <Col xs="6">
+            <OrderTypeSelect
+              onTypeSelected={this.onOrderTypeSelect}
+              selectedItem={this.state.orderType}
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col xs="6">
+            <PlaceOrderInput
+              message={(
+                <FormattedMessage id="terminal.orderSize"
+                  defaultMessage="Order size ({secondary})"
+                  values={{secondary: this.state.secondary}}
+                />
+              )}
+              placeholder={'min ' + minTradeSize}
+              onChange={this.onChange}
+              value={this.state.orderSize}
+              name="ordersize"
+            />
+          </Col>
+
+          <Col xs="6">
+            <PlaceOrderInput
+              message={(
+                <FormattedMessage
+                  id="terminal.price"
+                  defaultMessage="Price"
+                />
+              )}
+              onChange={this.onChange}
+              value={this.state.price}
+              name="price"
+            />
+          </Col>
+
+        </Row>
+        <Row>
+          <Col xs="6">
+            <PlaceOrderInput
+              message={(
+                <FormattedMessage id="terminal.amountLabel"
+                  defaultMessage="Amount ({amount})" values={{amount: this.state.main}}/>
+              )}
+              onChange={this.onChange}
+              value={this.state.amount}
+              name="amount"
+            />
+          </Col>
+          {this.state.orderType === 'LIMIT' ? null : (
+            <Col xs="6">
+              <PlaceOrderInput
+                onChange={this.onChange}
+                name="stopPrice"
+                message="Trigger price"
+                value={this.state.stopPrice}
+              />
+            </Col>
+          )}
+
+        </Row>
+        <Row>
+          <Col xs="6">
+            <Balances
+              fund={this.props.fund}
+              main={this.state.main}
+              onMainClick={e => this.setAmount(e.target.innerHTML)}
+              secondary={this.state.secondary}
+              onSecondaryClick={e => this.setOrderSize(e.target.innerHTML)}
+            />
+          </Col>
+          <Col xs="6" className="align-items-center d-flex">
+            <button type="submit" onClick={this.onSubmit} className="buysell__form-submit">
+              {this.state.selectedTab === TAB_SELL ? this.props.intl.messages['terminal.sell'] : this.props.intl.messages['terminal.buy']}
+            </button>
+          </Col>
+        </Row>
+      </Col>
     );
   }
 }
@@ -389,6 +456,91 @@ const mapStateToProps = state => {
     fund,
   };
 };
+
+class BuySellSwitch extends React.PureComponent {
+  render() {
+    const {selectedTab, onTabClick} = this.props;
+    return (
+      <div className="buysell__switch-wrap ">
+        <span onClick={() => onTabClick(TAB_BUY)}
+          className={classNames('buysell__switch', 'switch-buy', {active: selectedTab === TAB_BUY})}>
+          <FormattedMessage id="terminal.buy" defaultMessage="BUY"/>
+        </span>
+        <span onClick={() => onTabClick(TAB_SELL)}
+          className={classNames('buysell__switch', 'switch-sell', {active: selectedTab === TAB_SELL})}
+        >
+          <FormattedMessage id="terminal.sell" defaultMessage="SELL"/>
+        </span>
+      </div>
+    );
+  }
+}
+
+class PlaceOrderInput extends React.PureComponent {
+  render() {
+    const { message, onChange, placeholder, value, name } = this.props;
+    return (
+      <div>
+        <label className="buysell__form-label">
+          {message}
+        </label>
+        <input onChange={onChange}
+          placeholder={placeholder}
+          value={value} type="number" name={name} className="buysell__form-input"/>
+      </div>
+    );
+  }
+}
+
+class OrderTypeSelect extends React.PureComponent {
+
+  state = {
+    isOpen: false,
+  };
+
+  toggle = () => {
+    this.setState({isOpen: !this.state.isOpen});
+  }
+  render() {
+    const {selectedItem, onTypeSelected} = this.props;
+    return (
+      <div>
+        <label className="buysell__form-label">
+          Order Type
+        </label>
+        <Dropdown group={true} isOpen={this.state.isOpen} toggle={this.toggle}>
+          <DropdownToggle tag="div" caret>
+            {selectedItem}
+          </DropdownToggle>
+          <DropdownMenu>
+            <DropdownItem
+              onClick={(e) => onTypeSelected(OrderTypeSelectOptions.LIMIT)}
+              active={selectedItem === OrderTypeSelectOptions.LIMIT}
+            >
+              Limit
+            </DropdownItem>
+            <DropdownItem
+              onClick={(e) => onTypeSelected(OrderTypeSelectOptions.TRIGGER)}
+              active={selectedItem === OrderTypeSelectOptions.TRIGGER}
+            >
+              Trigger Limit
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
+      </div>
+    );
+  }
+}
+
+
+function getOrderType(stopPrice, lastPrice, side) {
+  if ((stopPrice > lastPrice && side === TAB_BUY)
+    || (stopPrice < lastPrice && side === TAB_SELL)) {
+    return OrderType.STOP_LOSS_LIMIT;
+  } else {
+    return OrderType.TAKE_PROFIT_LIMIT;
+  }
+}
 
 
 const mapDispatchToProps = dispatch => ({

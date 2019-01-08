@@ -349,11 +349,14 @@
             font-size: 12px;
             height: 32px;
             border: none;
-            width: 48%;
+            width: 100%;
             font-weight: 500;
             cursor: pointer;
             &:hover {
               opacity: .7;
+            }
+            &.sell {
+              background-color: #CB353C;
             }
           }
         }
@@ -376,7 +379,16 @@
             color: #fff;
           }
         }
-
+        >.row {
+          margin: 0 -10px 0 -10px;
+          padding-top: 10px;
+          &:first-child {
+            padding-top: 0px;
+          }
+          .col-6 {
+            padding: 0 10px 0 10px;
+          }
+        }
       }
       .trades-table-wrapper {
         .rt-thead {
