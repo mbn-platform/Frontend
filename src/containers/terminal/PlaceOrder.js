@@ -381,7 +381,11 @@ class PlaceOrder extends React.Component {
               <PlaceOrderInput
                 onChange={this.onChange}
                 name="stopPrice"
-                message="Trigger price"
+                message={(
+                  <FormattedMessage id="terminal.triggerPrice"
+                    defaultMessage="Trigger price"
+                  />
+                )}
                 value={this.state.stopPrice}
               />
             </Col>
@@ -506,7 +510,10 @@ class OrderTypeSelect extends React.PureComponent {
     return (
       <div>
         <label className="buysell__form-label">
-          Order Type
+          <FormattedMessage id="terminal.orderType"
+            defaultMessage="Order type"
+          />
+
         </label>
         <Dropdown group={true} isOpen={this.state.isOpen} toggle={this.toggle}>
           <DropdownToggle tag="div" caret>
@@ -517,13 +524,17 @@ class OrderTypeSelect extends React.PureComponent {
               onClick={(e) => onTypeSelected(OrderTypeSelectOptions.LIMIT)}
               active={selectedItem === OrderTypeSelectOptions.LIMIT}
             >
-              Limit
+              <FormattedMessage id="terminal.orderTypeLimit"
+                defaultMessage="Limit"
+              />
             </DropdownItem>
             <DropdownItem
               onClick={(e) => onTypeSelected(OrderTypeSelectOptions.TRIGGER)}
               active={selectedItem === OrderTypeSelectOptions.TRIGGER}
             >
-              Trigger Limit
+              <FormattedMessage id="terminal.orderTypeTrigger"
+                defaultMessage="Trigger Limit"
+              />
             </DropdownItem>
           </DropdownMenu>
         </Dropdown>

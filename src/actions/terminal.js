@@ -145,6 +145,8 @@ export function cancelOrder(order) {
             case ApiError.ORDER_ALREADY_CLOSED:
               dispatch(showInfoModal('thisOrderIsAlreadyClosed'));
               break;
+            case ApiError.ORDER_NOT_SUPPORTED:
+              dispatch(showInfoModal('orderNotSupported'));
             default:
               dispatch(showInfoModal('failedToCancelOrder', {order :err.apiErrorCode}));
               console.error('unhandled api error', err.apiErrorCode);
