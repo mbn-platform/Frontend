@@ -3,7 +3,6 @@ import { Container, Row, Col } from 'reactstrap';
 import PropTypes from 'prop-types';
 import times from 'lodash.times';
 import qs from 'qs';
-import {sortData, onColumnSort, classNameForColumnHeader, defaultSortFunction} from '../../generic/terminalSortFunctions';
 import { injectIntl } from 'react-intl';
 import { FormattedMessage } from 'react-intl';
 import { UncontrolledTooltip } from 'reactstrap';
@@ -62,11 +61,6 @@ class Leaderboard extends React.Component {
   constructor(props) {
     super(props);
     this.onNameFilterChange = this.onNameFilterChange.bind(this);
-    this.sortData = sortData.bind(this);
-    this.onColumnSort = onColumnSort.bind(this);
-    this.sortFunctions = {
-      name: (a, b) => defaultSortFunction(a.name.toLowerCase(), b.name.toLowerCase(),),
-    };
     this.state = {
       selectedRound: 0,
       nameFilter: '',
@@ -158,7 +152,6 @@ class Leaderboard extends React.Component {
     const nameFilter = this.state.nameFilter.toLowerCase();
     results = results.filter(({name}) => name.toLowerCase().includes(nameFilter));
     const isSelectedRoundExist = count >= selectedRound;
-    const sortedData = this.sortData(results);
     return (
       <Container fluid className="ratings">
         <Screen on={screenWidth => (
@@ -178,7 +171,7 @@ class Leaderboard extends React.Component {
                       {this.renderRoundsBlocks(count)}
                     </div>
                   </div>
-                  {this.renderBoard(sortedData, roundInfo, isSelectedRoundExist, screenWidth)}
+                  {this.renderBoard(results, roundInfo, isSelectedRoundExist, screenWidth)}
                 </div>
                 <div className="leaderboard__info">
                   {this.renderInfoBoard(screenWidth)}
@@ -220,14 +213,14 @@ class Leaderboard extends React.Component {
     }
   }
 
-  renderBoard(sortedData, roundInfo, isSelectedRoundExists, screenWidth) {
+  renderBoard(data, roundInfo, isSelectedRoundExists, screenWidth) {
     const { selectedRound } = this.state;
     const isGlobalRound = selectedRound === 0;
     if (!isSelectedRoundExists) {
       return this.renderMissingRoundNotice();
     }
-    else if (sortedData) {
-      return this.renderGlobalBoard(sortedData, isGlobalRound, screenWidth);
+    else if (data) {
+      return this.renderGlobalBoard(data, isGlobalRound, screenWidth);
     }
     else {
       return null;
@@ -259,7 +252,7 @@ class Leaderboard extends React.Component {
         Header: null,
         maxWidth: screenWidth === 'lg' ? 80 : 40,
         className: 'ratings__table-cell',
-        Cell: row => 
+        Cell: row =>
           (
             <div>
               {row.index + 1}
@@ -268,12 +261,11 @@ class Leaderboard extends React.Component {
         sortable: false,
       }, {
         Header:<div className="table__header-wrapper">
-          <div className="rating__header-title-wrapper" onClick={() => this.onColumnSort('name')}>
+          <div>
             <FormattedMessage
               id="leaderboard.name"
               defaultMessage="Name"
             />
-            <span className={classNameForColumnHeader(this.state, 'name')}/>
           </div>
           <div>
             <input ref={this.inputRef}
@@ -290,42 +282,39 @@ class Leaderboard extends React.Component {
           return <div onClick={this.onRowClick} className="name nickname">@{row.original.name}</div>;
         },
       }, {
-        Header: <div onClick={() => this.onColumnSort('average')}
+        Header: <div
           className="table__header-wrapper">
           <div className="rating__header-title-wrapper">
             <FormattedMessage
               id="leaderboard.average"
               defaultMessage="Average"
             />
-            <span className={classNameForColumnHeader(this.state, 'average')}/>
           </div>
         </div>,
         minWidth: screenWidth === 'lg' ? 80 : 50,
         Cell: row => row.original.average,
         className: 'ratings__table-cell',
       }, {
-        Header: <div onClick={() => this.onColumnSort('points')}
+        Header: <div
           className="table__header-wrapper">
           <div className="rating__header-title-wrapper">
             <FormattedMessage
               id="leaderboard.points"
               defaultMessage="Points"
             />
-            <span className={classNameForColumnHeader(this.state, 'points')}/>
           </div>
         </div>,
         minWidth: screenWidth === 'lg' ? 80 : 50,
         Cell: row => row.original.points,
         className: 'ratings__table-cell',
       }, {
-        Header: <div onClick={() => this.onColumnSort('next')}
+        Header: <div
           className="table__header-wrapper">
           <div className="rating__header-title-wrapper">
             <FormattedMessage
               id="leaderboard.nextRound"
               defaultMessage="Next round"
             />
-            <span className={classNameForColumnHeader(this.state, 'next')}/>
           </div>
         </div>,
         minWidth: screenWidth === 'lg' ? 80 : 50,
@@ -346,14 +335,14 @@ class Leaderboard extends React.Component {
   getRoundColumns = (screenWidth) => {
     return [
       {
-        Header: <div onClick={() => this.onColumnSort('place') }
+        Header: <div
           className="table__header-wrapper">
           <span>
             <FormattedMessage
               id="leaderboard.place"
               defaultMessage="Place"
             />
-          </span><span className={classNameForColumnHeader(this.state, 'place')}/>
+          </span>
         </div>,
         maxWidth: screenWidth === 'lg' ? 80 : 40,
         className: 'ratings__table-cell',
@@ -364,12 +353,11 @@ class Leaderboard extends React.Component {
         }
       }, {
         Header:<div className="table__header-wrapper">
-          <div className="rating__header-title-wrapper" onClick={() => this.onColumnSort('name')}>
+          <div>
             <FormattedMessage
               id="leaderboard.name"
               defaultMessage="Name"
             />
-            <span className={classNameForColumnHeader(this.state, 'name')}/>
           </div>
           <div>
             <input ref={this.inputRef}
@@ -386,27 +374,25 @@ class Leaderboard extends React.Component {
           return <div onClick={this.onRowClick} className="name nickname">@{row.original.name}</div>;
         },
       }, {
-        Header: <div onClick={() => this.onColumnSort('points')}
+        Header: <div
           className="table__header-wrapper">
           <div className="rating__header-title-wrapper">
             <FormattedMessage
               id="leaderboard.points"
               defaultMessage="Points"
             />
-            <span className={classNameForColumnHeader(this.state, 'points')}/>
           </div>
         </div>,
         minWidth: screenWidth === 'lg' ? 80 : 50,
         Cell: row => row.original.points,
         className: 'ratings__table-cell',
       }, {
-        Header: <div onClick={() => this.onColumnSort('points')}
+        Header: <div
           className="table__header-wrapper">
           <FormattedMessage
             id="leaderboard.profitUsd"
             defaultMessage="Profit (USDT)"
           />
-          <span className={classNameForColumnHeader(this.state, 'profit')}/>
         </div>,
         className: 'ratings__table-cell',
         minWidth: screenWidth === 'lg' ? 80 : 40,
@@ -473,7 +459,7 @@ class Leaderboard extends React.Component {
       <ReactTable
         columns={[
           {
-            Header: <div onClick={() => this.onColumnSort('place ')}
+            Header: <div
               className="table__header-wrapper">
               <FormattedMessage
                 id="leaderboard.placeInRating"
@@ -485,7 +471,7 @@ class Leaderboard extends React.Component {
             accessor: 'place',
           },
           {
-            Header: <div onClick={() => this.onColumnSort('points') }
+            Header: <div
               className="table__header-wrapper">
               <FormattedMessage
                 id="leaderboard.pointCount"
