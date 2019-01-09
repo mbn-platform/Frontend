@@ -149,6 +149,12 @@
   margin-top: 5px;
 }
 
+.leaderboard {
+  .table__header-wrapper {
+    white-space: normal;
+  }
+}
+
 @media (max-width: 768px) {
     .leaderboard__select-wrapper {
         padding: 0 !important;
