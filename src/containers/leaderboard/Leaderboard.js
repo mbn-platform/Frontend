@@ -220,7 +220,7 @@ class Leaderboard extends React.Component {
       return this.renderMissingRoundNotice();
     }
     else if (data) {
-      return this.renderGlobalBoard(data, isGlobalRound, screenWidth);
+      return this.renderGlobalBoard(data, isGlobalRound, screenWidth, selectedRound);
     }
     else {
       return null;
@@ -382,14 +382,16 @@ class Leaderboard extends React.Component {
           className="table__header-wrapper">
           <div className="rating__header-title-wrapper">
             <FormattedMessage
-              id="leaderboard.points"
-              defaultMessage="Points"
+              id="terminal.amountLabel"
+              defaultMessage="Amount ({amount}) "
+              values={{amount: 'USDT'}}
             />
           </div>
         </div>,
         minWidth: screenWidth === 'lg' ? 80 : 50,
-        Cell: row => row.original.points,
+        Cell: row => row.value,
         className: 'ratings__table-cell',
+        accessor: 'amount',
       }, {
         Header: <div
           className="table__header-wrapper">
@@ -401,6 +403,33 @@ class Leaderboard extends React.Component {
         className: 'ratings__table-cell',
         minWidth: screenWidth === 'lg' ? 80 : 40,
         Cell: row => (<ProfitCell tx={row.original.tx} profit={row.original.profit} />)
+      }, {
+        Header: <div
+          className="table__header-wrapper">
+          <div className="rating__header-title-wrapper">
+            <FormattedMessage
+              id="leaderboard.profitPercent"
+              defaultMessage="Profit, %"
+            />
+          </div>
+        </div>,
+        minWidth: screenWidth === 'lg' ? 80 : 50,
+        Cell: row => row.value,
+        className: 'ratings__table-cell',
+        accessor: 'percent',
+      }, {
+        Header: <div
+          className="table__header-wrapper">
+          <div className="rating__header-title-wrapper">
+            <FormattedMessage
+              id="leaderboard.points"
+              defaultMessage="Points"
+            />
+          </div>
+        </div>,
+        minWidth: screenWidth === 'lg' ? 80 : 50,
+        Cell: row => row.original.points,
+        className: 'ratings__table-cell',
       }
     ];
   }
@@ -490,13 +519,14 @@ class Leaderboard extends React.Component {
     </div>
   )
 
-  renderGlobalBoard = (data, isGlobal, screenWidth) => {
+  renderGlobalBoard = (data, isGlobal, screenWidth, number) => {
     return (
       <ReactTable
         columns={isGlobal ? this.getGlobalColumns(screenWidth) : this.getRoundColumns(screenWidth)}
         data={data}
         scrollBarHeight={500}
         getTrProps={this.onRowClick}
+        key={number}
       />
     );
   }
