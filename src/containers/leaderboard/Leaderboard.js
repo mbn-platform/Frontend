@@ -255,7 +255,7 @@ class Leaderboard extends React.Component {
         Cell: row =>
           (
             <div>
-              {row.index + 1}
+              {row.viewIndex + 1}
             </div>
           ),
         sortable: false,
@@ -279,8 +279,9 @@ class Leaderboard extends React.Component {
         minWidth: 80,
         className: 'ratings__table-cell',
         Cell: row => {
-          return <div onClick={this.onRowClick} className="name nickname">@{row.original.name}</div>;
+          return <div className="name nickname">@{row.value}</div>;
         },
+        accessor: 'name',
       }, {
         Header: <div
           className="table__header-wrapper">
@@ -305,8 +306,8 @@ class Leaderboard extends React.Component {
           </div>
         </div>,
         minWidth: screenWidth === 'lg' ? 80 : 50,
-        Cell: row => row.original.points,
         className: 'ratings__table-cell',
+        accessor: 'points'
       }, {
         Header: <div
           className="table__header-wrapper">
@@ -318,7 +319,7 @@ class Leaderboard extends React.Component {
           </div>
         </div>,
         minWidth: screenWidth === 'lg' ? 80 : 50,
-        Cell: row => row.original.next ? (
+        Cell: row => row.value ? (
           <FormattedMessage
             id="yes"
             defaultMessage="yes"
@@ -328,6 +329,7 @@ class Leaderboard extends React.Component {
             defaultMessage="no"
           />),
         className: 'ratings__table-cell',
+        accessor: 'next',
       },
     ];
   }
@@ -346,11 +348,12 @@ class Leaderboard extends React.Component {
         </div>,
         maxWidth: screenWidth === 'lg' ? 80 : 40,
         className: 'ratings__table-cell',
-        Cell: row => {
-          return (<div onClick={this.onRowClick}>
-            {row.original.place}
-          </div>);
-        }
+        Cell: row => (
+          <div onClick={this.onRowClick}>
+            {row.value}
+          </div>
+        ),
+        accessor: 'place',
       }, {
         Header:<div className="table__header-wrapper">
           <div>
@@ -371,8 +374,9 @@ class Leaderboard extends React.Component {
         minWidth: 80,
         className: 'ratings__table-cell',
         Cell: row => {
-          return <div onClick={this.onRowClick} className="name nickname">@{row.original.name}</div>;
+          return <div className="name nickname">@{row.value}</div>;
         },
+        accessor: 'name',
       }, {
         Header: <div
           className="table__header-wrapper">
@@ -396,10 +400,7 @@ class Leaderboard extends React.Component {
         </div>,
         className: 'ratings__table-cell',
         minWidth: screenWidth === 'lg' ? 80 : 40,
-        Cell: row =>  {
-          return (
-            <ProfitCell onClick={this.onRowClick} {...row.original} />
-          );}
+        Cell: row => (<ProfitCell tx={row.original.tx} profit={row.original.profit} />)
       }
     ];
   }
