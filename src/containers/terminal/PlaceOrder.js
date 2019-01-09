@@ -403,7 +403,9 @@ class PlaceOrder extends React.Component {
             />
           </Col>
           <Col xs="6" className="align-items-center d-flex">
-            <button type="submit" onClick={this.onSubmit} className="buysell__form-submit">
+            <button type="submit" onClick={this.onSubmit} className={classNames('buysell__form-submit',
+              this.state.selectedTab === TAB_SELL ? 'sell' : 'buy')}
+            >
               {this.state.selectedTab === TAB_SELL ? this.props.intl.messages['terminal.sell'] : this.props.intl.messages['terminal.buy']}
             </button>
           </Col>
