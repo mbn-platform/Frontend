@@ -153,7 +153,7 @@ class Leaderboard extends React.Component {
     results = results.filter(({name}) => name.toLowerCase().includes(nameFilter));
     const isSelectedRoundExist = count >= selectedRound;
     return (
-      <Container fluid className="ratings">
+      <Container fluid className="ratings leaderboard">
         <Screen on={screenWidth => (
           <Row>
             <Col xs="12" sm="12" md="12" lg="12">
@@ -388,7 +388,7 @@ class Leaderboard extends React.Component {
             />
           </div>
         </div>,
-        minWidth: screenWidth === 'lg' ? 80 : 50,
+        minWidth: screenWidth === 'lg' ? 80 : 40,
         Cell: row => row.value,
         className: 'ratings__table-cell',
         accessor: 'amount',
