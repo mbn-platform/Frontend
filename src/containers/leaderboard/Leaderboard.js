@@ -342,23 +342,16 @@ class Leaderboard extends React.Component {
   getRoundColumns = (screenWidth) => {
     return [
       {
-        Header: <div
-          className="table__header-wrapper">
-          <span>
-            <FormattedMessage
-              id="leaderboard.place"
-              defaultMessage="Place"
-            />
-          </span>
-        </div>,
+        Header: null,
         maxWidth: screenWidth === 'lg' ? 80 : 40,
         className: 'ratings__table-cell',
-        Cell: row => (
-          <div onClick={this.onRowClick}>
-            {row.value}
-          </div>
-        ),
-        accessor: 'place',
+        Cell: row =>
+          (
+            <div>
+              {row.viewIndex + 1}
+            </div>
+          ),
+        sortable: false,
       }, {
         Header:<div className="table__header-wrapper">
           <div>
