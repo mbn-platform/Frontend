@@ -401,7 +401,8 @@ class Leaderboard extends React.Component {
         </div>,
         className: 'ratings__table-cell',
         minWidth: screenWidth === 'lg' ? 80 : 40,
-        Cell: row => (<ProfitCell tx={row.original.tx} profit={row.original.profit} />)
+        Cell: row => (<ProfitCell tx={row.original.tx} profit={row.original.profit} />),
+        accessor: 'profit',
       }, {
         Header: <div
           className="table__header-wrapper">
