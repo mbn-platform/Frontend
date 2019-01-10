@@ -83,6 +83,10 @@ class Leaderboard extends React.Component {
     }
   }
 
+  onNameFilterClick = (e) => {
+    e.stopPropagation();
+  }
+
   componentDidUpdate(prevProps) {
     if (prevProps.challenge
       && prevProps.challenge.nextRound === false
@@ -269,6 +273,7 @@ class Leaderboard extends React.Component {
           </div>
           <div>
             <input ref={this.inputRef}
+              onClick={this.onNameFilterClick}
               value={this.state.nameFilter}
               onChange={this.onNameFilterChange}
               type="text"
@@ -364,6 +369,7 @@ class Leaderboard extends React.Component {
           </div>
           <div>
             <input ref={this.inputRef}
+              onClick={this.onNameFilterClick}
               value={this.state.nameFilter}
               onChange={this.onNameFilterChange}
               type="text"
