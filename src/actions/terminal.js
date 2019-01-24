@@ -1,6 +1,7 @@
 import { ApiError } from '../generic/apiCall';
 import { ApiTerminal} from '../generic/api';
 import {showInfoModal} from './modal';
+import { LOGGED_OUT } from './auth';
 export const SELECT_FUND = 'SELECT_FUND';
 export const SELECT_MARKET = 'SELECT_MARKET';
 export const SELECT_EXCHANGE = 'SELECT_EXCHANGE';
@@ -147,6 +148,12 @@ export function cancelOrder(order) {
               break;
             case ApiError.ORDER_NOT_SUPPORTED:
               dispatch(showInfoModal('orderNotSupported'));
+              break;
+            case ApiError.FORBIDDEN:
+              dispatch({
+                type: LOGGED_OUT,
+              });
+              break;
             default:
               dispatch(showInfoModal('failedToCancelOrder', {order :err.apiErrorCode}));
               console.error('unhandled api error', err.apiErrorCode);
@@ -171,6 +178,11 @@ export function placeOrder(order) {
       .catch(error => {
         if(error.apiErrorCode) {
           switch(error.apiErrorCode) {
+            case ApiError.FORBIDDEN:
+              dispatch({
+                type: LOGGED_OUT,
+              });
+              break;
             case ApiError.INSUFFICIENT_FUNDS:
               dispatch(showInfoModal('errorInsufficientFunds'));
               break;

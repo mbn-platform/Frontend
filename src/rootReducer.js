@@ -44,7 +44,8 @@ const root = (state, action) => {
     case LOGGED_OUT: {
       saveReduxState({auth: {loggedIn: false}});
       clearAppState();
-      return undefined;
+      state = undefined;
+      break;
     }
     default:
       break;
