@@ -95,6 +95,7 @@ const en = {
   'leaderboard.searchPlaceholder': 'Search',
   'leaderboard.profitUsd': 'Profit (USDT)',
   'leaderboard.pointCount': 'Point Count',
+  'leaderboard.legend': 'Red row indicate that user exceeded max loss. Such users skip next round',
   'leaderboard.infoTitle': 'How many tokens I will earn from postions at the Leaderboard',
   'leaderboard.annotationInfo': 'After each round of the competition, every participant receives Tournament Points according the their weekly ratings. The exact amount of points is shown in the table below. After all rounds of competition those Points will be converted into MBN tokens in rate 1/1000.{br}For example, Alice took 1st position at weekly round. She will earn 100*1000 = 100 000 tokens. {dashedTokens}',
   'leaderboard.placeInRating': 'Place In Rating',

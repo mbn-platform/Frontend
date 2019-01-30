@@ -6,6 +6,16 @@
     flex: 1 1 auto;
     margin-top: 20px;
     max-width: 600px;
+    &.legend {
+      flex-direction: row;
+      .red_square {
+        width: 5px;
+        height: 5px;
+        min-width: 5px;
+        background-color: #CB353C;
+        margin: auto 0px;
+      }
+    }
 }
 .leaderboard__title {
     padding: 5px 10px !important;
