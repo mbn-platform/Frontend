@@ -177,6 +177,12 @@ class Leaderboard extends React.Component {
                   </div>
                   {this.renderBoard(results, roundInfo, isSelectedRoundExist, screenWidth)}
                 </div>
+                <div className="leaderboard__info legend">
+                  <span className="red_square" />
+                  <div className="leaderboard__title">
+                    <FormattedMessage id="leaderboard.legend" defaultMessage="Red row indicate that user exceeded max loss. Such users skip next round"/>
+                  </div>
+                </div>
                 <div className="leaderboard__info">
                   {this.renderInfoBoard(screenWidth)}
                 </div>
@@ -370,6 +376,13 @@ class Leaderboard extends React.Component {
               placeholder={this.props.intl.messages['leaderboard.searchPlaceholder']} />
           </div>
         </div>,
+        getProps: (state, rowInfo) => {
+          return {
+            style: {
+              color: rowInfo.row._original.maxLoss ? '#CB353C' : null,
+            }
+          };
+        },
         minWidth: 80,
         className: 'ratings__table-cell',
         Cell: row => {
@@ -387,6 +400,13 @@ class Leaderboard extends React.Component {
             />
           </div>
         </div>,
+        getProps: (state, rowInfo) => {
+          return {
+            style: {
+              color: rowInfo.row._original.maxLoss ? '#CB353C' : null,
+            }
+          };
+        },
         minWidth: screenWidth === 'lg' ? 80 : 40,
         Cell: row => row.value,
         className: 'ratings__table-cell',
@@ -400,6 +420,13 @@ class Leaderboard extends React.Component {
           />
         </div>,
         className: 'ratings__table-cell',
+        getProps: (state, rowInfo) => {
+          return {
+            style: {
+              color: rowInfo.row._original.maxLoss ? '#CB353C' : null,
+            }
+          };
+        },
         minWidth: screenWidth === 'lg' ? 80 : 40,
         Cell: row => (<ProfitCell tx={row.original.tx} profit={row.original.profit} />),
         accessor: 'profit',
@@ -413,6 +440,13 @@ class Leaderboard extends React.Component {
             />
           </div>
         </div>,
+        getProps: (state, rowInfo) => {
+          return {
+            style: {
+              color: rowInfo.row._original.maxLoss ? '#CB353C' : null,
+            }
+          };
+        },
         minWidth: screenWidth === 'lg' ? 80 : 50,
         Cell: row => row.value.toFixed(2),
         className: 'ratings__table-cell',
@@ -427,6 +461,13 @@ class Leaderboard extends React.Component {
             />
           </div>
         </div>,
+        getProps: (state, rowInfo) => {
+          return {
+            style: {
+              color: rowInfo.row._original.maxLoss ? '#CB353C' : null,
+            }
+          };
+        },
         minWidth: screenWidth === 'lg' ? 80 : 50,
         Cell: row => row.original.points,
         className: 'ratings__table-cell',
