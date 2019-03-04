@@ -1,4 +1,5 @@
 import React from 'react';
+import TopBanner from './containers/login/TopBanner';
 import { BrowserRouter } from 'react-router-dom';
 import store from './store';
 import {apiGet, ApiError} from './generic/apiCall';
@@ -67,6 +68,9 @@ const MainRouter = () => (
   <BrowserRouter>
     <MediaQuery>
       <Container className="main-panel" fluid>
+        <Row style={{minHeight: 'unset'}}>
+          <TopBanner />
+        </Row>
         <Row noGutters className='flex-wrap flex-md-nowrap'>
           <Navigation />
           <MainContent />

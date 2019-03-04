@@ -121,3 +121,12 @@
   }
 
 }
+
+.top_banner {
+  width: 100%;
+  text-align: center;
+  background-color: #ffbe15;
+  font-size: 11pt;
+  z-index: 9999;
+  color: #212529;
+}
