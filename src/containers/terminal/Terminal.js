@@ -5,7 +5,7 @@ import HeaderStatus from '../../components/HeaderStatus';
 import Controls from './Controls';
 import TradingView from './TradingView';
 import MarketDepth from './MarketDepth';
-import PlaceOrder from './PlaceOrder';
+import PlaceOrder from './placeOrder/PlaceOrderContainer';
 import MyOrders from './MyOrders';
 import RecentTrades from './RecentTrades';
 import OrderBook from './OrderBook';

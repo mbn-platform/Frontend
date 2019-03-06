@@ -261,18 +261,21 @@
         input::placeholder {
           color: #495057;
         }
-        background-color: #2C2F33;
-        padding: 15px;
+        .btn {
+          text-transform: none;
+        }
+        background-color: #2b2f33;
+        padding: 20px;
         color: #9094A1;
         margin-top: 20px;
         flex: 1;
         &__switch {
+          margin: 0 0 15px 0;
+          height: 32px;
+          background-color: #232629;
           font-size: 14px;
           text-decoration: none;
           cursor: pointer;
-          &:hover {
-            opacity: .7;
-          }
           &-wrap {
             display: flex;
           }
@@ -282,16 +285,19 @@
             }
           }
           &.switch-buy {
-            color: #32F7BD;
-            margin-right: 10px;
+            &:hover {
+              background-color: #53b99480;
+            }
             &.active {
-              border-bottom: 2px solid #32F7BD;
+              background-color: #53b994;
             }
           }
           &.switch-sell {
-            color: #CB353C;
+            &:hover {
+              background-color: #CB353C80;
+            }
             &.active {
-              border-bottom: 2px solid #CB353C;
+              background-color: #CB353C;
             }
           }
         }
@@ -312,6 +318,8 @@
           }
         }
         &__form {
+          color: #c0c0c1;
+          font-size: 12px;
           &-row {
             display: flex;
             justify-content: space-between;
@@ -319,19 +327,16 @@
             margin-top: 22px;
           }
           &-label {
-            display: block;
-            // font-size: 12px;
-            text-transform: capitalize;
-            margin-bottom: 5px;
-            color: #fff;
+            font-size: 12px;
+            height: 21px;
           }
           &-input {
-            height: 32px;
-            border-radius: 2px;
+            color: #c0c0c1;
+            font-size: 11px;
+            height: 20px;
+            border: solid 1px #494d4d;
             background-color: #222529;
             width: 100%;
-            border: none;
-            color: #9094A1;
             padding: 10px;
             -webkit-appearance: none;
             &:focus {
@@ -340,12 +345,23 @@
             &-wrap {
               width: 48%;
             }
+            &__label {
+              color: #565d62;
+              position: absolute;
+              right: 6px;
+              line-height: 22px;
+              font-size: 12px;
+            }
+            &.percent {
+              text-align: center;
+            }
           }
           &-submit {
+            margin-bottom: 0;
             border-radius: 2px;
             background-color: #32B994;
             text-transform: uppercase;
-            color: #161721;
+            color: #fff;
             font-size: 12px;
             height: 32px;
             border: none;
@@ -379,14 +395,14 @@
             color: #fff;
           }
         }
-        >.row {
-          margin: 0 -10px 0 -10px;
-          padding-top: 10px;
-          &:first-child {
-            padding-top: 0px;
-          }
-          .col-6 {
-            padding: 0 10px 0 10px;
+        &__balances {
+          font-size: 14px;
+          margin-bottom: 15px;
+        }
+        &__inputs {
+          min-height: 140px;
+          & > * {
+            margin-bottom: 6px;
           }
         }
       }
