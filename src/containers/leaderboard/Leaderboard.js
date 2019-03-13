@@ -14,6 +14,20 @@ import createMqProvider, {querySchema} from '../../MediaQuery';
 
 const { Screen} = createMqProvider(querySchema);
 
+const staticContracts = [{
+  name: '',
+  amount: 1000,
+  static: true,
+}, {
+  amount: 650,
+  static: true,
+  name: '',
+}, {
+  name: '',
+  amount: 500,
+  static: true,
+}];
+
 const infoTableData= [
   {
     place:'1',
@@ -87,6 +101,24 @@ class Leaderboard extends React.Component {
     e.stopPropagation();
   }
 
+  onContractApply = (amount) => {
+    const deposit = (amount * 0.15).toFixed(2);
+    alert(`You can get contract for Trust Management with following conditions:
+1) Traders reward: 50%
+2) Amount: ${amount}
+3) Duration: until ${new Date('2019-03-20T16:00:00.000Z')}
+4) Max loss: 15%
+5) Insurance deposit: ${deposit}$
+
+To start contract you have to send insurance deposit ${deposit}$ to the Ethereum address, that will be provided later.
+Contract will be able to trading right after transaction will be confirmed.
+
+After contract finished you will receive back insurance deposit.
+Attention: if you not be successful, losses will be covered from insurance deposit.
+
+Start on March 15.
+`);
+  }
   componentDidUpdate(prevProps) {
     if (prevProps.challenge
       && prevProps.challenge.nextRound === false
@@ -116,6 +148,9 @@ class Leaderboard extends React.Component {
     return {
       onClick: e => {
         if(e.target.tagName === 'A') {
+          return;
+        }
+        if (rowInfo.original.static) {
           return;
         }
         const name = rowInfo.original.name;
@@ -151,6 +186,9 @@ class Leaderboard extends React.Component {
 
         roundInfo = challenge.roundInfo;
         results = challenge.results;
+      }
+      if (roundInfo && roundInfo.state === 'RUNNING') {
+        results = staticContracts.concat(results);
       }
     }
     const nameFilter = this.state.nameFilter.toLowerCase();
@@ -386,7 +424,11 @@ class Leaderboard extends React.Component {
         minWidth: 80,
         className: 'ratings__table-cell',
         Cell: row => {
-          return <div className="name nickname">@{row.value}</div>;
+          if (!row.value) {
+            return <div className="ratings__table-cell">Vacant</div>;;
+          } else {
+            return <div className="name nickname">@{row.value}</div>;
+          }
         },
         accessor: 'name',
       }, {
@@ -448,7 +490,13 @@ class Leaderboard extends React.Component {
           };
         },
         minWidth: screenWidth === 'lg' ? 80 : 50,
-        Cell: row => row.value.toFixed(2),
+        Cell: row => {
+          if (typeof row.value === 'number') {
+            return row.value.toFixed(2);
+          } else {
+            return '';
+          }
+        },
         className: 'ratings__table-cell',
         accessor: 'percent',
       }, {
@@ -469,7 +517,21 @@ class Leaderboard extends React.Component {
           };
         },
         minWidth: screenWidth === 'lg' ? 80 : 50,
-        Cell: row => row.original.points,
+        Cell: row => {
+          if (!row.original.static) {
+            return row.original.points;
+          } else {
+            return (
+              <button style={{
+                textTransform: 'capitalize',
+                width: 'unset',
+                height: 'unset',
+                lineHeight: '22px',
+                borderRadius: '8px',
+              }} type="submit" onClick={(e) => this.onContractApply(row.original.amount)} className="leaderboard__form-submit">Get Contract</button>
+            );
+          }
+        },
         className: 'ratings__table-cell',
       }
     ];
