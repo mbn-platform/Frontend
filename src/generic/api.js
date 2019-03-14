@@ -285,8 +285,18 @@ export class ApiTerminal {
       .then(errorHandler)
       .then(responseSchemaHandler);
 
+  cancelAlgoOrder = order =>
+    apiDelete('/algo/' + order._id)
+      .then(errorHandler)
+      .then(responseSchemaHandler)
+
   placeOrder = order =>
     apiPost('/order', null, order)
+      .then(errorHandler)
+      .then(responseSchemaHandler);
+
+  placeAlgoOrder = order =>
+    apiPost('/algo', null, order)
       .then(errorHandler)
       .then(responseSchemaHandler);
 

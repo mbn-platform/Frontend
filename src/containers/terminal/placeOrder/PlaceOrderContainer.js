@@ -6,7 +6,7 @@ import { OrderType } from './PlaceOrderType';
 import { TAB_BUY, TAB_SELL } from './BuySellSwitch';
 import { defaultFormatValue, setFundId } from '../../../generic/util';
 import { showInfoModal } from '../../../actions/modal';
-import { placeOrder } from '../../../actions/terminal';
+import { placeOrder, placeAlgoOrder } from '../../../actions/terminal';
 
 class PlaceOrderContainer extends React.Component {
 
@@ -15,6 +15,7 @@ class PlaceOrderContainer extends React.Component {
     selectedTab: TAB_BUY,
     amount: '',
     price: '',
+    stopPrice: '',
     total: '',
     tickerSet: false,
   }
@@ -73,6 +74,13 @@ class PlaceOrderContainer extends React.Component {
       this.setState(newState);
     }
   }
+
+  onOrderTypeSelected = (type) => {
+    if (this.state.selectedOrderType !== type) {
+      this.setState({selectedOrderType: type});
+    }
+  }
+
   onChange = (e) => {
     const {name, value} = e.target;
     if(value >= 0 || value === '') {
@@ -81,7 +89,6 @@ class PlaceOrderContainer extends React.Component {
   }
 
   onPercentSelected = (p) => {
-    console.log(p);
     const { fund, market } = this.props;
     if (!fund || !market) {
       return;
@@ -122,9 +129,49 @@ class PlaceOrderContainer extends React.Component {
       type: this.state.selectedTab,
       orderType: this.state.selectedOrderType,
     };
-    setFundId(params, this.props.fund);
-    this.props.placeOrder(params);
-    this.setState({total: '', amount: ''});
+    switch (params.orderType) {
+      case 'stop-limit': {
+        params.stopPrice = parseFloat(this.state.stopPrice);
+        if (!params.stopPrice) {
+          alert('Set stop price');
+          return;
+        }
+        if (this.props.ticker && this.props.ticker.l) {
+          const { l } = this.props.ticker;
+          const condition = {
+            params: {
+              price: params.stopPrice,
+            },
+            order: {
+              exchange: this.props.fund.exchange,
+              symbol: params.symbol,
+              amount: params.amount,
+              side: params.type,
+              limit: params.price,
+              type: 'limit',
+            },
+          };
+          if (params.stopPrice > l) {
+            condition.type = 'PRICE_HIGHER';
+          } else {
+            condition.type = 'PRICE_LOWER';
+          }
+          condition.index = 1;
+          const body = {conditions: [condition]};
+          setFundId(body, this.props.fund);
+          this.props.placeAlgoOrder(body);
+        }
+        break;
+      }
+      case 'limit': {
+        setFundId(params, this.props.fund);
+        this.props.placeOrder(params);
+        this.setState({total: '', amount: ''});
+        break;
+      }
+      default:
+        break;
+    }
   }
 
   setNewValue = (name, value) => {
@@ -155,6 +202,7 @@ class PlaceOrderContainer extends React.Component {
         fund={this.props.fund}
 
         selectedTab={this.state.selectedTab}
+        selectedOrderType={this.state.selectedOrderType}
 
         amount={this.state.amount}
         price={this.state.price}
@@ -164,6 +212,7 @@ class PlaceOrderContainer extends React.Component {
         marketInfo={this.state.marketInfo}
 
         onBuySellClick={this.onBuySellClick}
+        onOrderTypeSelected={this.onOrderTypeSelected}
         onChange={this.onChange}
         onPercentSelected={this.onPercentSelected}
         onPlaceOrderClick={this.onPlaceOrderClick}
@@ -301,6 +350,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
   showModalWindow: text => dispatch(showInfoModal(text)),
   placeOrder: order => dispatch(placeOrder(order)),
+  placeAlgoOrder: order => dispatch(placeAlgoOrder(order)),
 });
 function commissionPercent(exchange, orderSide) {
   switch(exchange) {
@@ -326,7 +376,7 @@ function floorBinance(string, step) {
   if(afterComma === 0) {
     return Math.floor(parseFloat(string)).toString();
   } else if(numberAfterComma > afterComma) {
-    return parseFloat(string.slice(0, afterComma - numberAfterComma));
+    return string.slice(0, afterComma - numberAfterComma);
   } else {
     return string;
   }

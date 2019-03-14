@@ -1,15 +1,14 @@
 import React from 'react';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
-import { Desktop } from '../../generic/MediaQuery';
 import ReactTable from '../../components/SelectableReactTable';
 import {sortData, onColumnSort, classNameForColumnHeader}  from '../../generic/terminalSortFunctions';
 import { FormattedMessage } from 'react-intl';
 import createMqProvider, {querySchema} from '../../MediaQuery';
 import { cancelOrder } from '../../actions/terminal';
-
-const TAB_OPEN_ORDERS = 0;
-const TAB_COMPLETED_ORDERS = 1;
+import { ClosedOrders } from './ClosedOrders';
+import { OpenOrders } from './OpenOrders';
+import { OrdersHeader } from './OrdersHeader';
 
 const { Screen} = createMqProvider(querySchema);
 
@@ -17,8 +16,7 @@ class MyOrders extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {tab: TAB_OPEN_ORDERS, sort: {}};
-    this.onTabClick = this.onTabClick.bind(this);
+    this.state = {tab: OrdersHeader.tabs[0], sort: {}};
     this.onColumnSort = onColumnSort.bind(this);
     this.sortData = sortData.bind(this);
     this.sortFunctions = {};
@@ -30,7 +28,7 @@ class MyOrders extends React.Component {
     };
   }
 
-  onTabClick(tab) {
+  onTabClick = (tab) => {
     if(this.state.tab !== tab) {
       this.setState({tab});
     }
@@ -39,7 +37,7 @@ class MyOrders extends React.Component {
   getOrderColumns = screenWidth => {
     const { tab } = this.state;
     const { cancelOrder } = this.props;
-    const isOpenOrdersTable = tab === TAB_OPEN_ORDERS;
+    const isOpenOrdersTable = tab === OrdersHeader.tabs[0];
 
     const ordersColumn = [
       {
@@ -135,36 +133,18 @@ class MyOrders extends React.Component {
 
   render() {
     const { tab } = this.state;
-    const { orders, market } = this.props;
-    let data = tab === TAB_OPEN_ORDERS ? orders.open : orders.closed;
-    data = data.filter(o => o.symbol === market);
+    const { orders } = this.props;
+    let data = tab === OrdersHeader.tabs[0] ? orders.open : orders.closed;
     const sortedData = this.sortData(data);
     return (
       <div className="orders-table chart col-sm-12 col-md-12 col-lg-8">
-        <div className="orders-table__top justify-content-between row col-12">
-          <div className="orders-table__switch-wrap ">
-            <span
-              onClick={() => this.onTabClick(TAB_OPEN_ORDERS)}
-              className={classNames('orders-table__switch', 'orders-open', {active: tab === TAB_OPEN_ORDERS})}>
-              <FormattedMessage id="terminal.openOrders" defaultMessage="Open Orders"/>
-            </span>
-            <span
-              onClick={() => this.onTabClick(TAB_COMPLETED_ORDERS)}
-              className={classNames('orders-table__switch', 'orders-completed', {active: tab === TAB_COMPLETED_ORDERS})}>
-              <FormattedMessage id="terminal.completedOrders" defaultMessage="Completed orders"/>
-            </span>
-          </div>
-          <Desktop>
-            <div className="chart-controls align-items-center justify-content-between row">
-            </div>
-          </Desktop>
-        </div>
+        <OrdersHeader selectedTab={tab} onClick={this.onTabClick} />
         <Screen on={screenWidth => (
           <div className="orders-table-tabs">
             {
-              <div className={classNames('orders-table-tab', tab === TAB_OPEN_ORDERS ? 'orders-open' : 'orders-completed' , 'active')}>
+              <div className={classNames('orders-table-tab', 'active')}>
                 <div className="orders-table-wrapper">
-                  {this.renderOrdersTable(sortedData, screenWidth)}
+                  {this.renderContent(sortedData)}
                 </div>
               </div>
             }
@@ -172,6 +152,26 @@ class MyOrders extends React.Component {
         )}/>
       </div>
     );
+  }
+
+  renderContent(data) {
+    switch (this.state.tab) {
+      case OrdersHeader.tabs[0]:
+        return (
+          <OpenOrders
+            onOrderCancel={this.props.cancelOrder}
+            orders={data}
+          />
+        );
+      case OrdersHeader.tabs[1]:
+        return (
+          <ClosedOrders
+            orders={data}
+          />
+        );
+      default:
+        return null;
+    }
   }
 }
 

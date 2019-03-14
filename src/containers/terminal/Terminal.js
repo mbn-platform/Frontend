@@ -46,10 +46,9 @@ class Terminal extends React.Component {
   componentDidUpdate(prevProps) {
     if(this.props.fund && (prevProps.market !== this.props.market ||
       (!prevProps.fund || prevProps.fund._id !== this.props.fund._id))) {
-      let payload = {
-        symbol: this.props.market
+      const payload = {
       };
-      payload = setFundId(payload, this.props.fund);
+      setFundId(payload, this.props.fund);
       this.props.getOrders(payload);
     }
     const {
@@ -135,10 +134,9 @@ class Terminal extends React.Component {
       selectFund(JSON.parse(savedFund));
     }
     if (fund) {
-      let payload = {
-        symbol: market
+      const payload = {
       };
-      payload = setFundId(payload, fund);
+      setFundId(payload, fund);
       getOrders(payload);
     }
     const { exchangeParam, marketParam } = match.params;

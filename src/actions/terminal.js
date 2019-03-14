@@ -10,6 +10,7 @@ export const EXCHANGE_MARKETS = 'EXCHANGE_MARKETS';
 export const EXCHANGE_RATES = 'EXCHANGE_RATES';
 export const CANCEL_ORDER = 'CANCEL_ORDER';
 export const PLACE_ORDER = 'PLACE_ORDER';
+export const PLACE_ALGO_ORDER = 'PLACE_ALGO_ORDER';
 export const UPDATE_ORDER = 'UPDATE_ORDER';
 export const GET_MY_ORDERS = 'GET_MY_ORDERS';
 export const UPDATE_EXCHANGE_RATES = 'UPDATE_EXCHANGE_RATES';
@@ -127,7 +128,10 @@ export function getOrders(params) {
 
 export function cancelOrder(order) {
   return dispatch => {
-    TerminalApi.cancelOrder(order)
+    (order.isAlgo ?
+      TerminalApi.cancelAlgoOrder(order) :
+      TerminalApi.cancelOrder(order)
+    )
       .then(res => {
         dispatch({
           type: CANCEL_ORDER,
@@ -162,6 +166,19 @@ export function cancelOrder(order) {
           console.error('error performing request', err);
         }
       });
+  };
+}
+
+export function placeAlgoOrder(order) {
+  return dispatch => {
+    TerminalApi.placeAlgoOrder(order)
+      .then(res => {
+        dispatch({
+          type: PLACE_ALGO_ORDER,
+          order: res,
+        });
+      })
+      .catch((e) => console.log('unhandler error: ' + JSON.stringify(e)));
   };
 }
 

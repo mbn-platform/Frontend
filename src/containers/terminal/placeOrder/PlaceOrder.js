@@ -6,6 +6,7 @@ import { PlaceOrderButton } from './PlaceOrderButton';
 import { AmountPercentSelector } from './AmountPercentSelector';
 import { PlaceOrderInput } from './PlaceOrderInput';
 import { Col, Row } from 'reactstrap';
+import { PlaceOrderHeader } from './PlaceOrderHeader';
 
 export const ORDER_TYPE_LIMIT = 'limit';
 export const ORDER_TYPE_MARKET = 'market';
@@ -31,6 +32,7 @@ export class PlaceOrder extends React.PureComponent {
     const minTradeSize = this.props.marketInfo ? this.props.marketInfo.minTradeSize : '';
     return (
       <Col className="buysell" sm="12" md="12" lg="4">
+        <PlaceOrderHeader selectedTab={this.props.selectedOrderType} onClick={this.props.onOrderTypeSelected} />
         <Row>
           <Col>
             <BuySellSwitch
@@ -73,6 +75,17 @@ export class PlaceOrder extends React.PureComponent {
               name="price"
               currency={this.state.main}
             />
+            {
+              this.props.selectedOrderType === 'stop-limit' ? (
+                <PlaceOrderInput
+                  message="terminal.placeOrder.stopPrice"
+                  onChange={this.props.onChange}
+                  value={this.props.stopPrice}
+                  name="stopPrice"
+                  currency={this.state.main}
+                />
+              ) : null
+            }
             <PlaceOrderInput
               message="terminal.placeOrder.total"
               onChange={this.props.onChange}

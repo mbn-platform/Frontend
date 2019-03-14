@@ -3,7 +3,6 @@ import { Col, Row } from 'reactstrap';
 
 export class AmountPercentSelector extends React.PureComponent {
   render() {
-    console.log('render');
     const { percents, onClick } = this.props;
     return (
       <Row>
