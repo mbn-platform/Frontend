@@ -485,7 +485,7 @@ class Leaderboard extends React.Component {
         minWidth: screenWidth === 'lg' ? 80 : 50,
         Cell: row => {
           if (!row.original.static) {
-            return row.original.points;
+            return row.value.toFixed(2);
           } else {
             return (
               <button type="submit" onClick={(e) => this.onContractApply(row.original)} className="leaderboard__form-submit get_contract_button">Get Contract</button>
