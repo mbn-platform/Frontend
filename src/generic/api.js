@@ -74,6 +74,18 @@ export class ApiChallenge {
     apiPost('/challenge/next')
       .then(errorHandler)
       .then(responseSchemaHandler);
+
+  applyForContract = (id) =>
+    apiGet(`/challenge/free/${id}`)
+      .then(errorHandler)
+      .then(responseSchemaHandler)
+
+  confirmDepositTx = (id, tx) =>
+    apiPost(`/challenge/free/${id}/confirm`, null, {
+      tx,
+    })
+      .then(errorHandler)
+      .then(responseSchemaHandler)
 }
 
 export class ApiContract {

@@ -6,27 +6,14 @@ import qs from 'qs';
 import { injectIntl } from 'react-intl';
 import { FormattedMessage } from 'react-intl';
 import { UncontrolledTooltip } from 'reactstrap';
-import {updateChallenge, getNextInfo, takePart} from '../../actions/challenge';
+import {updateChallenge, getNextInfo, takePart, applyForContract} from '../../actions/challenge';
+import {showConfirmModal} from '../../actions/modal';
 import {connect} from 'react-redux';
 import RoundSelect from './RoundSelect';
 import ReactTable from '../../components/SelectableReactTable';
 import createMqProvider, {querySchema} from '../../MediaQuery';
 
 const { Screen} = createMqProvider(querySchema);
-
-const staticContracts = [{
-  name: '',
-  amount: 1000,
-  static: true,
-}, {
-  amount: 650,
-  static: true,
-  name: '',
-}, {
-  name: '',
-  amount: 500,
-  static: true,
-}];
 
 const infoTableData= [
   {
@@ -101,23 +88,28 @@ class Leaderboard extends React.Component {
     e.stopPropagation();
   }
 
-  onContractApply = (amount) => {
-    const deposit = (amount * 0.15).toFixed(2);
-    alert(`You can get contract for Trust Management with following conditions:
-1) Traders reward: 50%
-2) Amount: ${amount}
-3) Duration: until ${new Date('2019-03-20T16:00:00.000Z')}
-4) Max loss: 15%
-5) Insurance deposit: ${deposit}$
-
-To start contract you have to send insurance deposit ${deposit}$ to the Ethereum address, that will be provided later.
-Contract will be able to trading right after transaction will be confirmed.
-
-After contract finished you will receive back insurance deposit.
-Attention: if you not be successful, losses will be covered from insurance deposit.
-
-Start on March 15.
-`);
+  onContractApply = (free) => {
+    if (!this.props.loggedIn) {
+      this.props.history.push('/login');
+      return;
+    }
+    this.props.showConfirmModal('leaderboard.payContractHeader', {},
+      () => {
+        this.props.applyForContract(free._id);
+      }, {
+        textId: 'leaderboard.payContractConditions',
+        values: {
+          expiresAt: new Date(free.expiresAt).toLocaleDateString(),
+          maxLoss: free.maxLoss,
+          amount: free.amount,
+          deposit: (free.amount * free.maxLoss / 100).toFixed(2),
+          br: <br/>,
+          attention: <b>Attention:</b>,
+        },
+        confirmText: 'leaderboard.payContract',
+        cancelText: 'leaderboard.cancel',
+      }
+    );
   }
   componentDidUpdate(prevProps) {
     if (prevProps.challenge
@@ -187,8 +179,9 @@ Start on March 15.
         roundInfo = challenge.roundInfo;
         results = challenge.results;
       }
-      if (roundInfo && roundInfo.state === 'RUNNING') {
-        results = staticContracts.concat(results);
+      if (roundInfo && roundInfo.state === 'RUNNING'
+        && challenge.free && challenge.free.length > 0) {
+        results = challenge.free.concat(results);
       }
     }
     const nameFilter = this.state.nameFilter.toLowerCase();
@@ -417,7 +410,7 @@ Start on March 15.
         getProps: (state, rowInfo) => {
           return {
             style: {
-              color: rowInfo.row._original.maxLoss ? '#CB353C' : null,
+              color: rowInfo.row._original.maxLoss === true ? '#CB353C' : null,
             }
           };
         },
@@ -425,7 +418,7 @@ Start on March 15.
         className: 'ratings__table-cell',
         Cell: row => {
           if (!row.value) {
-            return <div className="ratings__table-cell">Vacant</div>;;
+            return <div className="ratings__table-cell">Vacant</div>;
           } else {
             return <div className="name nickname">@{row.value}</div>;
           }
@@ -445,7 +438,7 @@ Start on March 15.
         getProps: (state, rowInfo) => {
           return {
             style: {
-              color: rowInfo.row._original.maxLoss ? '#CB353C' : null,
+              color: rowInfo.row._original.maxLoss === true ? '#CB353C' : null,
             }
           };
         },
@@ -465,7 +458,7 @@ Start on March 15.
         getProps: (state, rowInfo) => {
           return {
             style: {
-              color: rowInfo.row._original.maxLoss ? '#CB353C' : null,
+              color: rowInfo.row._original.maxLoss === true ? '#CB353C' : null,
             }
           };
         },
@@ -485,19 +478,21 @@ Start on March 15.
         getProps: (state, rowInfo) => {
           return {
             style: {
-              color: rowInfo.row._original.maxLoss ? '#CB353C' : null,
+              color: rowInfo.row._original.maxLoss === true ? '#CB353C' : null,
             }
           };
         },
         minWidth: screenWidth === 'lg' ? 80 : 50,
         Cell: row => {
-          if (typeof row.value === 'number') {
-            return row.value.toFixed(2);
+          if (!row.original.static) {
+            return row.original.points;
           } else {
-            return '';
+            return (
+              <button type="submit" onClick={(e) => this.onContractApply(row.original)} className="leaderboard__form-submit get_contract_button">Get Contract</button>
+            );
           }
         },
-        className: 'ratings__table-cell',
+        className: 'ratings__table-cell get_contract',
         accessor: 'percent',
       }, {
         Header: <div
@@ -512,24 +507,16 @@ Start on March 15.
         getProps: (state, rowInfo) => {
           return {
             style: {
-              color: rowInfo.row._original.maxLoss ? '#CB353C' : null,
+              color: rowInfo.row._original.maxLoss === true ? '#CB353C' : null,
             }
           };
         },
         minWidth: screenWidth === 'lg' ? 80 : 50,
         Cell: row => {
-          if (!row.original.static) {
-            return row.original.points;
+          if (typeof row.value === 'number') {
+            return row.value.toFixed(2);
           } else {
-            return (
-              <button style={{
-                textTransform: 'capitalize',
-                width: 'unset',
-                height: 'unset',
-                lineHeight: '22px',
-                borderRadius: '8px',
-              }} type="submit" onClick={(e) => this.onContractApply(row.original.amount)} className="leaderboard__form-submit">Get Contract</button>
-            );
+            return '';
           }
         },
         className: 'ratings__table-cell',
@@ -667,9 +654,11 @@ const ProfitCell = ({profit, tx}) => {
 export default injectIntl(connect(
   state => ({challenge: state.challenge, loggedIn: state.auth.loggedIn}),
   dispatch => ({
+    showConfirmModal: (text, values, confirmHandler, body) => dispatch(showConfirmModal(text, values, confirmHandler, body)),
     updateChallenge: number => dispatch(updateChallenge(number)),
     takePart: () => dispatch(takePart()),
     getNextInfo: () => dispatch(getNextInfo()),
+    applyForContract: (id) => dispatch(applyForContract(id)),
   }),
 )(Leaderboard));
 

@@ -59,7 +59,10 @@ class Navigation extends React.Component {
   }
 
   renderGlobalConfirmModel = () => {
-    const { modal, closeConfirmModalWindow,  } = this.props;
+    const { modal, closeConfirmModalWindow  } = this.props;
+    if (!modal.isConfirmModalOpen) {
+      return null;
+    }
     return (
       <ModalWindow
         modalIsOpen={modal.isConfirmModalOpen}
@@ -73,14 +76,29 @@ class Navigation extends React.Component {
         }
         content={
           <div>
+            {modal.body ?
+              <div className="modal__body_text">
+                <FormattedMessage
+                  id={modal.body.textId}
+                  values={modal.body.values || {}}
+                  defaultMessage={modal.body.textId}
+                />
+              </div>
+              : null}
             <button className="modal__button btn" onClick={() => {
               modal.confirmCallback();
               closeConfirmModalWindow();
             }}>
-              {this.props.intl.messages['yes']}
+              {modal.body && modal.body.confirmText ?
+                <FormattedMessage
+                  id={modal.body.confirmText}
+                /> : this.props.intl.messages['yes']}
             </button>
             <button className="modal__button btn" onClick={closeConfirmModalWindow}>
-              {this.props.intl.messages['no']}
+              {modal.body && modal.body.cancelText ?
+                <FormattedMessage
+                  id={modal.body.cancelText}
+                /> : this.props.intl.messages['no']}
             </button>
           </div>
         }
@@ -90,6 +108,9 @@ class Navigation extends React.Component {
 
   renderGlobalInformModel = () => {
     const { modal, closeInfoModalWindow } = this.props;
+    if (!modal.isInfoModalOpen) {
+      return null;
+    }
     return (
       <ModalWindow
         modalIsOpen={modal.isInfoModalOpen}
@@ -103,6 +124,15 @@ class Navigation extends React.Component {
         }
         content={
           <div>
+            {modal.body ?
+              <div className="modal__body_text">
+                <FormattedMessage
+                  id={modal.body.textId}
+                  values={modal.body.values || {}}
+                  defaultMessage={modal.body.textId}
+                />
+              </div>
+              : null}
             <button className="modal__button btn" onClick={closeInfoModalWindow}>
               {this.props.intl.messages['ok']}
             </button>

@@ -19,7 +19,7 @@ const modal = (
   }, action) => {
   switch(action.type) {
     case SHOW_INFORM_MODAL: {
-      return {...state,  isInfoModalOpen: true, modalComponent: action.textID, modalProps: action.values  };
+      return {...state,  isInfoModalOpen: true, modalComponent: action.textID, modalProps: action.values, body: action.body  };
     }
     case CLOSE_INFORM_MODAL: {
       return {...state,  isInfoModalOpen: false, modalComponent: '',  modalProps: {}};
@@ -30,7 +30,8 @@ const modal = (
         isConfirmModalOpen: true,
         modalComponent: action.textID,
         modalProps: action.values,
-        confirmCallback: action.confirmCallback
+        confirmCallback: action.confirmCallback,
+        body: action.body,
       };
     }
     case CLOSE_CONFIRM_MODAL: {

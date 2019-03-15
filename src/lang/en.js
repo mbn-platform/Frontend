@@ -98,6 +98,11 @@ const en = {
   'leaderboard.legend': 'Red row indicate that user exceeded max loss. Such users skip next round',
   'leaderboard.infoTitle': 'How many tokens I will earn from postions at the Leaderboard',
   'leaderboard.annotationInfo': 'After each round of the competition, every participant receives Tournament Points according the their weekly ratings. The exact amount of points is shown in the table below. After all rounds of competition those Points will be converted into MBN tokens in rate 1/1000.{br}For example, Alice took 1st position at weekly round. She will earn 100*1000 = 100 000 tokens. {dashedTokens}',
+  'leaderboard.txAccepted': 'You will receive contract after verifying your transaction',
+  'leaderboard.payContractConditions': 'You can get contract for Trust Management with following conditions:{br} 1) Traders reward: 50%{br}2) Amount: {amount}${br}3) Duration: until {expiresAt}{br}4) Max loss: 15%{br}5) Insurance deposit: {deposit}${br}{br}To start contract you have to send insurance deposit {deposit}$ in ETH equivalence.{br}Contract will be able to trading right after transaction will be confirmed.{br}{br}After contract finished you will receive back insurance deposit.{br}{attention} if you are not be successful, losses will be covered from insurance deposit.',
+  'leaderboard.payContractHeader': 'Information',
+  'leaderboard.payContract': 'Pay',
+  'leaderboard.cancel': 'Cancel',
   'leaderboard.placeInRating': 'Place In Rating',
   'leaderboard.dashedTokens': '1000 tokens = $20',
   'leaderboard.ifHardcapWillReached': 'if hardcap will reached',
@@ -302,6 +307,12 @@ const en = {
   'terminal.priceRecent': 'Price ({base}) ',
   'terminal.secondary': '({secondary}) ',
   'terminal.time': 'Time ',
+  'modal.error': 'Error',
+  'modal.error.useYourAddress': 'You have to use your address associated with your Membrana account',
+  'modal.error.deniedContractPay': 'You have rejected transaction, contract is not booked',
+  'modal.error.contractNotAvailable': 'This contract is no more available',
+  'modal.success': 'Success',
+
 };
 
 export default en;

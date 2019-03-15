@@ -45,10 +45,11 @@ export function confirm2FA (currentCode) {
 }
 
 
-export const showInfoModal = (textID='message', values={}) => ({
+export const showInfoModal = (textID='message', values={}, body) => ({
   type: 'SHOW_INFORM_MODAL',
   textID,
   values,
+  body,
 });
 
 export const closeInfoModal = {
@@ -67,11 +68,12 @@ export const closeCodeModal = {
   type: 'CLOSE_CODE_INFO_MODAL',
 };
 
-export const showConfirmModal = (textID='message', values={}, confirmCallback=()=>({})) => ({
+export const showConfirmModal = (textID='message', values={}, confirmCallback=()=>({}), body) => ({
   type: 'SHOW_CONFIRM_MODAL',
   textID,
   values,
-  confirmCallback
+  confirmCallback,
+  body
 });
 
 export const closeConfirmModal = {

@@ -669,6 +669,17 @@
   &:first-child {
     max-width: 20%;
   }
+  &.get_contract {
+    overflow: visible !important;
+    .get_contract_button {
+      text-transform: capitalize;
+      width: unset;
+      height: unset;
+      line-height: 22px;
+      border-radius: 8px;
+      white-space: nowrap;
+    }
+  }
 }
 
 .ratings__table-header-wrapper {

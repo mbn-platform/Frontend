@@ -31,6 +31,9 @@
     }
 }
 
+.modal__body_text {
+  font-size: 1.8em;
+}
 .modal__body {
     padding: 25px;
     overflow-y: hidden;
@@ -186,6 +189,9 @@
         font-size: 1em;
         max-width: 90%;
     }
+    .modal__body_text {
+      font-size: 1em;
+    }
     .modal__header {
         padding: 15px;
     }
@@ -214,6 +220,8 @@
 
     .modal__body {
         padding: 10px;
+        overflow: scroll;
+        max-height: 50vh;
     }
 
     .modal__key-wrapper {
