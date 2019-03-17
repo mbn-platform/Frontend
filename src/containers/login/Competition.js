@@ -54,5 +54,16 @@ const bannerTexts = [
 ];
 
 function getBonusPercent() {
-  return 20;
+  const date = Date.now();
+  if (date < 1544486400000) {
+    return 70;
+  } else if (date < 1545696000000) {
+    return 50;
+  } else if (date < 1546905600000) {
+    return 35;
+  } else if (date < 1548115200000) {
+    return 30;
+  } else {
+    return 25;
+  }
 }
