@@ -5,8 +5,8 @@ import { Tab } from './Tab';
 export class OrdersHeader extends React.PureComponent {
 
   static tabs = [
-    'openorders',
-    'closedorders',
+    'terminal.orders.openOrders',
+    'terminal.orders.closedOrders',
   ]
 
   state = {

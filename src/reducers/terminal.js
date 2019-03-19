@@ -137,23 +137,35 @@ export default function(state = {
       }
     }
     case UPDATE_ORDER: {
-      const orderIndex = state.orders.open.findIndex(o => o._id === action.order._id);
-      let closed = state.orders.closed;
-      let opened = state.orders.open;
-      if (orderIndex > -1) {
-        if (action.order.state === 'CLOSED') {
-          opened = opened.filter(o => o._id !== action.order._id);
-          closed = [action.order, ...closed];
-        } else {
-          opened = opened.map(o => o._id === action.order._id ? action.order : o);
+      let { open, closed } = state.orders;
+      const order = action.order;
+      switch (order.state) {
+        case 'OPEN': {
+          const old = open.find((o) => o._id === order._id);
+          if (old) {
+            open = open.map((o) => o._id === order._id ? order : o);
+          } else {
+            open = [order, ...open];
+          }
+          break;
         }
-        const orders = {
-          open: opened,
-          closed: closed,
-        };
-        return {...state, orders};
+        case 'CLOSED': {
+          const old = closed.find((o) => o._id === order._id);
+          const oldOpen = open.find((o) => o._id === order._id);
+          if (old) {
+            closed = closed.map((o) => o._id === order._id ? order: o);
+          } else {
+            closed = [order, ...closed];
+          }
+          if (oldOpen) {
+            open = open.filter((o) => o._id !== order._id);
+          }
+          break;
+        }
+        default:
+          return state;
       }
-      return state;
+      return {...state, orders: { open, closed }};
     }
     case CANCEL_ORDER: {
       const order = state.orders.open.find(o => o._id === action.order._id);

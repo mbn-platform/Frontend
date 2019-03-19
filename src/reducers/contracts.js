@@ -60,13 +60,18 @@ export default function(state = {current: [], finished: []}, action) {
       return newState;
     }
     case UPDATE_CONTRACT_BALANCE: {
-      const current = [...state.current];
-      const contractIndex = current.findIndex(c => c._id === action._id);
-      if(contractIndex < 0) {
+      const contract = state.current.find((c) => c._id === action._id);
+      if (!contract) {
         return state;
       }
-      current[contractIndex].balances = action.balances;
-      return {...state, current};
+      const updated = {...contract, balances: action.balances };
+      return {...state, current: state.current.map((c) => {
+        if (c._id === contract._id) {
+          return updated;
+        } else {
+          return c;
+        }
+      })};
     }
     case UPDATE_CONTRACT_TOTAL_BALANCE: {
       const contract = state.current.find(c => c._id === action._id);

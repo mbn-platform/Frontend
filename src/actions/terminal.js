@@ -187,10 +187,6 @@ export function placeOrder(order) {
     TerminalApi.placeOrder(order)
       .then(res => {
         dispatch(showInfoModal('orderHasBeenPlaced'));
-        dispatch({
-          type: PLACE_ORDER,
-          order: res,
-        });
       })
       .catch(error => {
         if(error.apiErrorCode) {

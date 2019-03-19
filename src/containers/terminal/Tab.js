@@ -1,13 +1,17 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Col, Row } from 'reactstrap';
+import { FormattedMessage } from 'react-intl';
 
 export class Tab extends React.PureComponent {
   render() {
     const { title, selected, onClick } = this.props;
     return (
       <Col onClick={onClick} xs="auto" className={classNames('tab', {selected})}>
-        {title}
+        <FormattedMessage
+          id={title}
+          defaulMessage={title}
+        />
       </Col>
     );
   }
