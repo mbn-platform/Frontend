@@ -173,10 +173,7 @@ export function placeAlgoOrder(order) {
   return dispatch => {
     TerminalApi.placeAlgoOrder(order)
       .then(res => {
-        dispatch({
-          type: PLACE_ALGO_ORDER,
-          order: res,
-        });
+        dispatch(showInfoModal('orderHasBeenPlaced'));
       })
       .catch((e) => console.log('unhandler error: ' + JSON.stringify(e)));
   };

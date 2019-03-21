@@ -154,7 +154,7 @@ export default function(state = {
           const oldOpen = open.find((o) => o._id === order._id);
           if (old) {
             closed = closed.map((o) => o._id === order._id ? order: o);
-          } else {
+          } else if (!order.isAlgo) {
             closed = [order, ...closed];
           }
           if (oldOpen) {

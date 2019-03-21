@@ -156,7 +156,7 @@ class PlaceOrderContainer extends React.Component {
           } else {
             condition.type = 'PRICE_LOWER';
           }
-          condition.index = 1;
+          condition.index = 0;
           const body = {conditions: [condition]};
           setFundId(body, this.props.fund);
           this.props.placeAlgoOrder(body);
