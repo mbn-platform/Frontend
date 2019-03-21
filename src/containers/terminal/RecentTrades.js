@@ -15,11 +15,21 @@ class RecentTrades extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {history: [], sort: {}, tableHeight: 200};
+    this.state = {sort: {}, tableHeight: 200};
     this.sortData = sortData.bind(this);
     this.onColumnSort = onColumnSort.bind(this);
     this.sortFunctions = {};
     this.tableWrapper = React.createRef();
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextProps.history !== this.props.history) {
+      return true;
+    }
+    if (nextState.sort !== this.state.sort) {
+      return true;
+    }
+    return false;
   }
 
   componentDidMount() {
@@ -46,7 +56,7 @@ class RecentTrades extends React.Component {
           Cell: row => {
             const isSellOrder = row.original.type === 'SELL';
             return (<div className={isSellOrder ? 'up' : 'down'}>
-              {BigNumber(row.original.price).toFixed(2).toString(10)}
+              {BigNumber(row.original.price).toString(10)}
               <span className={classNames('icon', 'icon-dir',
                 isSellOrder ? 'icon-down-dir' : 'icon-up-dir')}/>
             </div>);
