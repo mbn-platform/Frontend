@@ -1,4 +1,5 @@
 import React from 'react';
+import { ReactTableDefaults } from 'react-table';
 import { connect } from 'react-redux';
 import {formatFloat, defaultFormatValue} from '../../generic/util';
 import {Desktop} from '../../generic/MediaQuery';
@@ -8,6 +9,7 @@ import {BigNumber} from 'bignumber.js';
 import ReactTable from '../../components/SelectableReactTable';
 import { FormattedMessage } from 'react-intl';
 import createMqProvider, {querySchema} from '../../MediaQuery';
+import PropTypes from 'prop-types';
 
 const { Screen} = createMqProvider(querySchema);
 
@@ -22,8 +24,7 @@ class OrderBook extends React.Component {
       price: (a, b) => a.Rate - b.Rate,
       relativeSize: (a, b) => a.Rate * a.Quantity - b.Rate * b.Quantity,
     };
-    this.state = {last: null, sort: {}, prelast: null, scroll: true };
-    this.lastPrice = React.createRef();
+    this.state = {last: null, sort: {}, scroll: true };
     this.orderTable = React.createRef();
     this.scrollTable = React.createRef();
   }
@@ -32,31 +33,9 @@ class OrderBook extends React.Component {
     this.setState({scroll: true, sort: {}});
   }
 
-  componentDidMount() {
-    const orderTableHeight = this.orderTable.current.offsetHeight;
-    this.setState({ heightOfTable: orderTableHeight });
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (this.orderTable.current.offsetHeight !== prevState.heightOfTable) {
-      this.setState({ heightOfTable : this.orderTable.current.offsetHeight });
-    }
-  }
-
   componentWillReceiveProps(nextProps) {
     if (nextProps.market !== this.props.market || nextProps.exchange !== this.props.exchange) {
-      this.setState({prelast: null, sort: {}, scroll: true});
-    }
-    if (nextProps.ticker !== this.props.ticker) {
-      this.setState({prelast: (this.props.ticker || {}).l});
-    }
-    if (nextProps.orderBook !== this.props.orderBook) {
-      const {sell, buy} = nextProps.orderBook;
-      const maxBuy = buy.reduce((accum, value) => Math.max(accum, value.Quantity * value.Rate), 0);
-      const maxSell = sell.reduce((accum, value) => Math.max(accum, value.Quantity * value.Rate), 0);
-      const minBuy = buy.reduce((accum, value) => Math.min(accum, value.Quantity * value.Rate), maxBuy);
-      const minSell = sell.reduce((accum, value) => Math.min(accum, value.Quantity * value.Rate), maxSell);
-      this.setState({maxBuy, maxSell, minSell, minBuy});
+      this.setState({sort: {}, scroll: true});
     }
   }
 
@@ -141,23 +120,25 @@ class OrderBook extends React.Component {
     ];
   }
 
-  onRowClick = (state, rowInfo) => {
-    return {
-      onClick: () => {
-        this.props.onOrderSelect(parseFloat(rowInfo.original.Rate), rowInfo.original.Quantity);
-      }
-    };
+  onRowClick = (data) => {
+    this.props.onOrderSelect(data.Rate.toString(10), data.Quantity.toString(10));
   }
 
   relativeSize = (minSize, maxSize, size) => Math.max((size - minSize) / (maxSize - minSize), 0.02);
 
   renderOrderBookTable = (data, type, screenWidth) => {
     return <ReactTable
-      getTrProps={this.onRowClick}
       columns={this.getColumns(type, screenWidth)}
       data={data}
       scrollBarHeight={'100%'}
       scrollToBottom={type === 'sell'}
+      getTrProps={(state, rowInfo) => {
+        return {
+          data: rowInfo.original,
+          onClick: this.onRowClick,
+        };
+      }}
+      TrComponent={MyTr}
     />;
   };
 
@@ -196,7 +177,10 @@ class OrderBook extends React.Component {
             <div className="terminal__orderbook-table-wrapper" ref={elem => this.tableSell = elem}>
               {this.renderOrderBookTable(sortedDataSell, 'sell', screenWidth)}
             </div>
-            {this.renderLastPrice()}
+            <LastPrice
+              price={(this.props.ticker || {}).l}
+              onClick={this.props.onOrderSelect}
+            />
             <div className="terminal__orderbook-table-wrapper terminal__orderbook-table-wrapper_buy" ref={elem => this.tableBuy = elem}>
               {this.renderOrderBookTable(sortedDataBuy, 'buy', screenWidth)}
             </div>
@@ -206,29 +190,56 @@ class OrderBook extends React.Component {
 
     );
   }
+}
+class LastPrice extends React.Component {
 
-  renderLastPrice() {
-    let isUp;
-    const last = (this.props.ticker || {}).l;
-    const prelast = this.state.prelast;
-    if (prelast && last && prelast > last) {
-      isUp = false;
-    } else {
-      isUp = true;
+  static getDerivedStateFromProps(props, state) {
+    if (!state) {
+      return {
+        isUp: false,
+        previous: props.price,
+      };
     }
+    if (state.previous !== props.price) {
+      return {
+        isUp: props.price > state.previous,
+        previous: props.price,
+      };
+    } else {
+      return state;
+    }
+  }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextProps.price !== this.props.price) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  onClick = () => {
+    if (this.props.price) {
+      this.props.onClick(this.props.price.toString(10));
+    }
+  }
+
+  render() {
+    const { price } = this.props;
+    const { isUp } = this.state;
     return (
-      <div ref={this.lastPrice} className={classNames('value', 'last-price', 'row', isUp ? 'up' : 'down')}>
+      <div className={classNames('value', 'last-price', 'row', isUp ? 'up' : 'down')}>
         <div className={'bid-label'}>
           <FormattedMessage id="terminal.bid" defaultMessage="Bid"/>
         </div>
-        <span onClick={() => this.props.onOrderSelect(last)}>
-          {last ? BigNumber(last).toString(10) : null}</span>
+        <span onClick={this.onClick}>
+          {price ? BigNumber(price).toString(10) : null}</span>
         <span className={classNames('icon', 'icon-dir', isUp ? 'icon-up-dir' : 'icon-down-dir')}> </span>
       </div>
     );
   }
 }
+
 
 const mapStateToProps = state => {
   const {orderBook, market, exchange, ticker = {}} = state.terminal;
@@ -238,6 +249,37 @@ const mapStateToProps = state => {
     exchange,
     ticker
   };
+};
+
+class MyTr extends React.Component {
+
+  onClick = () => {
+    if (this.props.data) {
+      this.props.onClick(this.props.data);
+    }
+  }
+
+  render() {
+    return (
+      <ReactTableDefaults.TrComponent {...this.props} onClick={this.onClick} />
+    );
+  }
+}
+
+class OrderBookPresenter extends React.PureComponent {
+
+  render() {
+    console.log('render order book presenter');
+    return null;
+  }
+}
+
+OrderBookPresenter.propTypes = {
+  main: PropTypes.string.isRequired,
+  secondary: PropTypes.string.isRequired,
+  lastPrice: PropTypes.number,
+  ask: PropTypes.array.isRequired,
+  bid: PropTypes.array.isRequired,
 };
 
 

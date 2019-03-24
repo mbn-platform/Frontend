@@ -45,35 +45,44 @@ export default function(state = {
       if(!(action.market === state.market && action.exchange === state.exchange)) {
         return state;
       }
-      const smap = {...state.orderBook.smap};
-      for(const o of action.orderBook.sell) {
-        const [value, amount] = o;
-        if(amount === 0) {
-          delete smap[value];
-        } else {
-          smap[value] = {Quantity: amount, Rate: value};
+      const orderBook = {...state.orderBook};
+      if (action.orderBook.sell.length) {
+        const smap = {...state.orderBook.smap};
+        for(const o of action.orderBook.sell) {
+          const [value, amount] = o;
+          if(amount === 0) {
+            delete smap[value];
+          } else {
+            smap[value] = {Quantity: amount, Rate: value};
+          }
         }
+        const sell = Object.values(smap).sort((o1, o2) => o1.Rate - o2.Rate);
+        const maxSell = sell.reduce((accum, value) => Math.max(accum, value.Quantity * value.Rate), 0);
+        const minSell = sell.reduce((accum, value) => Math.min(accum, value.Quantity * value.Rate), maxSell);
+        orderBook.smap = smap;
+        orderBook.sell = sell;
+        orderBook.maxSell = maxSell;
+        orderBook.minSell = minSell;
       }
-      const bmap = {...state.orderBook.bmap};
-      for(const o of action.orderBook.buy) {
-        const [value, amount] = o;
-        if(amount === 0) {
-          delete bmap[value];
-        } else {
-          bmap[value] = {Quantity: amount, Rate: value};
+      if (action.orderBook.buy.length) {
+        const bmap = {...state.orderBook.bmap};
+        for(const o of action.orderBook.buy) {
+          const [value, amount] = o;
+          if(amount === 0) {
+            delete bmap[value];
+          } else {
+            bmap[value] = {Quantity: amount, Rate: value};
+          }
         }
+        const buy = Object.values(bmap).sort((o1, o2) => o2.Rate - o1.Rate);
+        const maxBuy = buy.reduce((accum, value) => Math.max(accum, value.Quantity * value.Rate), 0);
+        const minBuy = buy.reduce((accum, value) => Math.min(accum, value.Quantity * value.Rate), maxBuy);
+        orderBook.bmap = bmap;
+        orderBook.buy = buy;
+        orderBook.maxBuy = maxBuy;
+        orderBook.minBuy = minBuy;
       }
-      const buy = Object.values(bmap).sort((o1, o2) => o2.Rate - o1.Rate);
-      const sell = Object.values(smap).sort((o1, o2) => o1.Rate - o2.Rate);
-      const maxBuy = buy.reduce((accum, value) => Math.max(accum, value.Quantity * value.Rate), 0);
-      const maxSell = sell.reduce((accum, value) => Math.max(accum, value.Quantity * value.Rate), 0);
-      const minBuy = buy.reduce((accum, value) => Math.min(accum, value.Quantity * value.Rate), maxBuy);
-      const minSell = sell.reduce((accum, value) => Math.min(accum, value.Quantity * value.Rate), maxSell);
-      return {...state, orderBook: {
-        maxBuy, minBuy, maxSell, minSell,
-        buy,
-        sell,
-        smap, bmap}};
+      return {...state, orderBook };
     }
     case UPDATE_HISTORY: {
       if(!(action.market === state.market && action.exchange === state.exchange)) {

@@ -39,9 +39,9 @@ class PlaceOrderContainer extends React.Component {
       (this.props.type && this.props.type !== prevProps.type)) {
       let price = this.props.price || this.state.price;
       let amount = this.props.size || this.state.amount;
+      const newState = {price, amount, selectedTab: this.props.type};
       price = parseFloat(price);
       const os = parseFloat(amount);
-      const newState = {price, amount, selectedTab: this.props.type};
       if (price >= 0 && os >= 0) {
         switch(this.props.exchange) {
           case 'bittrex': {
