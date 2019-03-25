@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Col, Row } from 'reactstrap';
 import { FormattedMessage } from 'react-intl';
+import { UncontrolledTooltip } from 'reactstrap';
 
 export class Tab extends React.PureComponent {
   render() {
@@ -12,30 +13,23 @@ export class Tab extends React.PureComponent {
           id={title}
           defaulMessage={title}
         />
+        {this.renderTooltip()}
       </Col>
     );
   }
-}
 
-export class OrdersHeaders extends React.PureComponent {
-
-  static tabs = [
-    'openorders',
-    'closedorders',
-  ]
-
-  state = {
-    selectedTab: 'open',
-  }
-
-  render() {
-    const { selectedTab, onClick } = this.props;
-    return (
-      <Row className="orders-header">
-        {OrdersHeaders.tabs.map((t) => (
-          <Tab key={t} title={t} selected={selectedTab === t} onClick={() => onClick(t)} />
-        ))}
-      </Row>
-    );
+  renderTooltip() {
+    if (this.props.tooltip) {
+      return (
+        <div id={this.props.tooltip}>
+          <div className="table_header_help_wrapper"/>
+          <UncontrolledTooltip target={this.props.tooltip}>
+            <FormattedMessage
+              id={this.props.tooltip}
+            />
+          </UncontrolledTooltip>
+        </div>
+      );
+    }
   }
 }

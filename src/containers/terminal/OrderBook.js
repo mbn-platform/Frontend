@@ -193,13 +193,12 @@ class OrderBook extends React.Component {
 }
 class LastPrice extends React.Component {
 
+  state = {
+    isUp: false,
+    previous: undefined,
+  }
+
   static getDerivedStateFromProps(props, state) {
-    if (!state) {
-      return {
-        isUp: false,
-        previous: props.price,
-      };
-    }
     if (state.previous !== props.price) {
       return {
         isUp: props.price > state.previous,

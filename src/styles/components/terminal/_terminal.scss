@@ -272,8 +272,8 @@
             margin: -20px -20px 15px -20px;
             background-color: #232629;
           .tab {
-            padding: 0 10px 0 10px;
-            line-height: 36px;
+            padding: 4px 10px 0 10px;
+            height: 36px;
             font-size: 14px;
             color: #b1b1b2;
             border-right: solid 1px #1f2125;
@@ -281,6 +281,12 @@
               border-bottom: none;
               color: #fdfdfd;
               background-color: #2C2F33;
+            }
+            .table_header_help_wrapper {
+              bottom: 3px;
+              left: 0;
+              width: 100%;
+              margin-left: 0;
             }
           }
         }
@@ -441,8 +447,8 @@
         .orders-header {
             background-color: #232629;
           .tab {
-            padding: 0 10px 0 10px;
-            line-height: 36px;
+            padding: 4px 10px 0 10px;
+            height: 36px;
             font-size: 14px;
             color: #b1b1b2;
             border-right: solid 1px #1f2125;
@@ -452,6 +458,20 @@
               color: #fdfdfd;
               background-color: #2C2F33;
             }
+          }
+          .checkbox {
+            line-height: 36px;
+            font-size: 11px;
+            color: #a1a2a3;
+            label {
+              margin-bottom: 0px;
+              input {
+                vertical-align: middle;
+                margin-left: 16px;
+                margin-right: 6px;
+              }
+            }
+
           }
         }
         padding: 0;
@@ -1002,6 +1022,9 @@
   .terminal-main .charts .chart {
     padding: 5px;
     padding-top: 10px;
+    &.orders-table {
+      padding: 0px;
+    }
 
   }
   .terminal {
@@ -1047,7 +1070,6 @@
       &-wrapper {
         height: auto;
         min-height: auto;
-        max-height: 279px;
         margin-bottom: 0;
         overflow-y: hidden !important;
       }

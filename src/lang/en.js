@@ -320,6 +320,7 @@ const en = {
   'modal.error.deniedContractPay': 'You have rejected transaction, contract is not booked',
   'modal.error.contractNotAvailable': 'This contract is no more available',
   'modal.success': 'Success',
+  'help-stop-limit-order': 'Stop-limit orders are triggered when pair price reaches stop price. In that case a limit order is placed. Such orders don\'t block your available balance',
 
 };
 

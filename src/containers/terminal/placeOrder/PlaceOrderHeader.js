@@ -16,7 +16,10 @@ export class PlaceOrderHeader extends React.PureComponent {
     return (
       <Row className="orders-header">
         {PlaceOrderHeader.tabs.map((t) => (
-          <Tab key={t} title={'terminal.placeOrder.' + t} selected={selectedTab === t} onClick={() => onClick(t)} />
+          <Tab key={t} title={'terminal.placeOrder.' + t}
+            selected={selectedTab === t} onClick={() => onClick(t)}
+            tooltip={t === PlaceOrderHeader.tabs[1] ? 'help-stop-limit-order' : null}
+          />
         ))}
       </Row>
     );
