@@ -8,11 +8,8 @@ export class OrdersHeader extends React.PureComponent {
   static tabs = [
     'terminal.orders.openOrders',
     'terminal.orders.closedOrders',
+    'terminal.orders.balances',
   ]
-
-  state = {
-    selectedTab: 'open',
-  }
 
   render() {
     const { selectedTab, onClick } = this.props;
@@ -21,20 +18,43 @@ export class OrdersHeader extends React.PureComponent {
         {OrdersHeader.tabs.map((t) => (
           <Tab key={t} title={t} selected={selectedTab === t} onClick={() => onClick(t)} />
         ))}
-        <Checkbox
-          checked={this.props.pairFilterChecked}
-          title={this.props.market}
-          onToggle={this.props.onPairFilterChange}
-        />
+        {this.renderCheckboxes()}
       </Row>
     );
+  }
+
+  renderCheckboxes() {
+    switch (this.props.selectedTab) {
+      case OrdersHeader.tabs[0]:
+      case OrdersHeader.tabs[1]:
+        return (
+          <Checkbox
+            checked={this.props.pairFilterChecked}
+            title={this.props.market}
+            onToggle={this.props.onPairFilterChange}
+          />
+        );
+      case OrdersHeader.tabs[2]:
+        return (
+          <Checkbox
+            checked={this.props.smallAssetesFilterChecked}
+            title='Hide small assets'
+            onToggle={this.props.onSmallAssetsFilterChange}
+          />
+        );
+      default:
+        return null;
+    }
   }
 }
 
 OrdersHeader.propTypes = {
   selectedTab: PropTypes.string.isRequired,
+  pairFilterChecked: PropTypes.bool.isRequired,
+  smallAssetesFilterChecked: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired,
   onPairFilterChange: PropTypes.func.isRequired,
+  onSmallAssetsFilterChange: PropTypes.func.isRequired,
 };
 
 class Checkbox extends React.PureComponent {o
@@ -45,7 +65,7 @@ class Checkbox extends React.PureComponent {o
 
   render() {
     return (
-      <Col className='checkbox'>
+      <Col className='checkbox' xs='auto'>
         <label>
           <input type="checkbox" checked={this.props.checked} onChange={this.onChange}/>
           {this.props.title}

@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import React from 'react';
 import { Col, Row } from 'reactstrap';
 
@@ -7,8 +8,13 @@ export const Balances = ({fund, main, secondary, onMainClick, onSecondaryClick})
     const balances = fund.balances;
     value1 = balances.find(b => b.name === main);
     value1 = (value1 && value1.available) || 0;
+    value1 = BigNumber(value1).toString(10);
     value2 = balances.find(b => b.name === secondary);
     value2 = (value2 && value2.available) || 0;
+    value2 = BigNumber(value2).toString(10);
+  } else {
+    value1 = '';
+    value2 = '';
   }
   return (
     <Row className="buysell__balances">

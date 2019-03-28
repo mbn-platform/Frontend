@@ -31,81 +31,83 @@ export class PlaceOrder extends React.PureComponent {
   render() {
     const minTradeSize = this.props.marketInfo ? this.props.marketInfo.minTradeSize : '';
     return (
-      <Col className="buysell" sm="12" md="12" lg="4">
-        <PlaceOrderHeader selectedTab={this.props.selectedOrderType} onClick={this.props.onOrderTypeSelected} />
-        <Row>
-          <Col>
-            <BuySellSwitch
-              selectedTab={this.props.selectedTab}
-              onTabClick={this.props.onBuySellClick}
-              currency={this.state.secondary}
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Balances
-              fund={this.props.fund}
-              main={this.state.main}
-              onMainClick={e => this.setAmount(e.target.innerHTML)}
-              secondary={this.state.secondary}
-              onSecondaryClick={e => this.setOrderSize(e.target.innerHTML)}
-            />
-          </Col>
-        </Row>
+      <Col sm="12" md="12" lg="4">
+        <div className="buysell">
+          <PlaceOrderHeader selectedTab={this.props.selectedOrderType} onClick={this.props.onOrderTypeSelected} />
+          <Row>
+            <Col>
+              <BuySellSwitch
+                selectedTab={this.props.selectedTab}
+                onTabClick={this.props.onBuySellClick}
+                currency={this.state.secondary}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Balances
+                fund={this.props.fund}
+                main={this.state.main}
+                onMainClick={e => this.setAmount(e.target.innerHTML)}
+                secondary={this.state.secondary}
+                onSecondaryClick={e => this.setOrderSize(e.target.innerHTML)}
+              />
+            </Col>
+          </Row>
 
-        <Row>
-          <Col className="buysell__inputs">
-            <PlaceOrderInput
-              message="terminal.placeOrder.amount"
-              placeholder={'min ' + minTradeSize}
-              onChange={this.props.onChange}
-              value={this.props.amount}
-              name="amount"
-              currency={this.state.secondary}
-            />
-            <AmountPercentSelector
-              percents={this.props.percents}
-              onClick={this.props.onPercentSelected}
-            />
-            <PlaceOrderInput
-              message="terminal.placeOrder.price"
-              onChange={this.props.onChange}
-              value={this.props.price}
-              name="price"
-              currency={this.state.main}
-            />
-            {
-              this.props.selectedOrderType === 'stop-limit' ? (
-                <PlaceOrderInput
-                  message="terminal.placeOrder.stopPrice"
-                  onChange={this.props.onChange}
-                  value={this.props.stopPrice}
-                  name="stopPrice"
-                  currency={this.state.main}
-                />
-              ) : null
-            }
-            <PlaceOrderInput
-              message="terminal.placeOrder.total"
-              onChange={this.props.onChange}
-              value={this.props.total}
-              name="total"
-              currency={this.state.main}
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <PlaceOrderButton
-              onClick={this.props.onPlaceOrderClick}
-              amount={this.props.amount}
-              currency={this.state.secondary}
-              tab={this.props.selectedTab}
-              price={this.props.price}
-            />
-          </Col>
-        </Row>
+          <Row>
+            <Col className="buysell__inputs">
+              <PlaceOrderInput
+                message="terminal.placeOrder.amount"
+                placeholder={'min ' + minTradeSize}
+                onChange={this.props.onChange}
+                value={this.props.amount}
+                name="amount"
+                currency={this.state.secondary}
+              />
+              <AmountPercentSelector
+                percents={this.props.percents}
+                onClick={this.props.onPercentSelected}
+              />
+              <PlaceOrderInput
+                message="terminal.placeOrder.price"
+                onChange={this.props.onChange}
+                value={this.props.price}
+                name="price"
+                currency={this.state.main}
+              />
+              {
+                this.props.selectedOrderType === 'stop-limit' ? (
+                  <PlaceOrderInput
+                    message="terminal.placeOrder.stopPrice"
+                    onChange={this.props.onChange}
+                    value={this.props.stopPrice}
+                    name="stopPrice"
+                    currency={this.state.main}
+                  />
+                ) : null
+              }
+              <PlaceOrderInput
+                message="terminal.placeOrder.total"
+                onChange={this.props.onChange}
+                value={this.props.total}
+                name="total"
+                currency={this.state.main}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <PlaceOrderButton
+                onClick={this.props.onPlaceOrderClick}
+                amount={this.props.amount}
+                currency={this.state.secondary}
+                tab={this.props.selectedTab}
+                price={this.props.price}
+              />
+            </Col>
+          </Row>
+        </div>
       </Col>
     );
   }

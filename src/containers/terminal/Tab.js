@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Col, Row } from 'reactstrap';
+import { Col } from 'reactstrap';
 import { FormattedMessage } from 'react-intl';
 import { UncontrolledTooltip } from 'reactstrap';
 

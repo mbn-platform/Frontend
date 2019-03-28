@@ -6,6 +6,17 @@ export const querySchema = {
   lg: '(min-width: 1024px)',
 };
 
+export const ordersSchema = {
+  mobileXXs: '(max-width: 389.98px)',
+  mobileXs: '(max-width: 464.98px)',
+  mobileSm: '(max-width: 519.98px)',
+  mobileMd: '(max-width: 629.98px)',
+  mobileLg: '(max-width: 1027.98px)',
+  sm: '(max-width: 1100px)',
+  md: '(max-width: 1399.98px)',
+  lg: '(min-width: 1400px)',
+};
+
 
 function unwrapQueries(sizes) {
   const mq = [];
@@ -34,8 +45,9 @@ export default function createMediaQueryProvider(queryObject) {
   let currentSize = getMatchedSize(queries);
 
   class MqProvider extends Component {
+
     componentDidMount() {
-      currentSize = getMatchedSize(queries);
+      this.onResize();
 
       window.addEventListener('resize', this.onResize);
     }

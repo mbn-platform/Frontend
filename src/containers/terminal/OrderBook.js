@@ -121,7 +121,7 @@ class OrderBook extends React.Component {
   }
 
   onRowClick = (data) => {
-    this.props.onOrderSelect(data.Rate.toString(10), data.Quantity.toString(10));
+    this.props.onOrderSelect(data.Rate.toString(10));
   }
 
   relativeSize = (minSize, maxSize, size) => Math.max((size - minSize) / (maxSize - minSize), 0.02);
@@ -159,7 +159,7 @@ class OrderBook extends React.Component {
       sortedDataBuy = this.sortData(buy).slice(0, 50);
     }
     return (
-      <div ref={this.orderTable } className="orderbook-table chart col-12 col-lg-6 col-sm-12 col-md-12">
+      <div ref={this.orderTable } className="orderbook-table chart col-12">
         <Screen on={screenWidth => (
           <React.Fragment>
             <div className="chart__top justify-content-between row">
@@ -227,7 +227,7 @@ class LastPrice extends React.Component {
     const { price } = this.props;
     const { isUp } = this.state;
     return (
-      <div className={classNames('value', 'last-price', 'row', isUp ? 'up' : 'down')}>
+      <div className={classNames('last-price', 'row', isUp ? 'up' : 'down')}>
         <div className={'bid-label'}>
           <FormattedMessage id="terminal.bid" defaultMessage="Bid"/>
         </div>

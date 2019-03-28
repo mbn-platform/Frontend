@@ -1,26 +1,37 @@
 import React from 'react';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
-import createMqProvider, {querySchema} from '../../MediaQuery';
 import { cancelOrder } from '../../actions/terminal';
 import { ClosedOrders } from './ClosedOrders';
 import { OpenOrders } from './OpenOrders';
+import { Balances } from './Balances';
 import { OrdersHeader } from './OrdersHeader';
-
-const { Screen} = createMqProvider(querySchema);
+import createMqProvider, {ordersSchema} from '../../MediaQuery';
 
 class MyOrders extends React.Component {
+
+  constructor(props) {
+    super(props);
+    const { Screen, MediaQuery } = createMqProvider(ordersSchema);
+    this.Screen = Screen;
+    this.MediaQuery = MediaQuery;
+  }
 
   state = {
     tab: OrdersHeader.tabs[0],
     sort: {},
     pairFilterChecked: false,
+    smallAssetesFilterChecked: false,
   }
 
   onTabClick = (tab) => {
     if(this.state.tab !== tab) {
       this.setState({tab});
     }
+  }
+
+  onSmallAssetsFilterChange = (checked) => {
+    this.setState({smallAssetesFilterChecked: checked});
   }
 
   onPairFilterChange = (checked) => {
@@ -37,19 +48,17 @@ class MyOrders extends React.Component {
           selectedTab={tab} onClick={this.onTabClick}
           pairFilterChecked={this.state.pairFilterChecked}
           onPairFilterChange={this.onPairFilterChange}
+          smallAssetesFilterChecked={this.state.smallAssetesFilterChecked}
+          onSmallAssetsFilterChange={this.onSmallAssetsFilterChange}
           market={this.props.market}
         />
-        <Screen on={screenWidth => (
-          <div className="orders-table-tabs">
-            {
-              <div className={classNames('orders-table-tab', 'active')}>
-                <div className="orders-table-wrapper">
-                  {this.renderContent(data)}
-                </div>
-              </div>
-            }
+        <div className="orders-table-tabs">
+          <div className={classNames('orders-table-tab', 'active')}>
+            <div className="orders-table-wrapper">
+              {this.renderContent(data)}
+            </div>
           </div>
-        )}/>
+        </div>
       </div>
     );
   }
@@ -61,20 +70,32 @@ class MyOrders extends React.Component {
           data = data.filter((o) => o.symbol === this.props.market);
         }
         return (
-          <OpenOrders
-            onOrderCancel={this.props.cancelOrder}
-            orders={data}
-          />
+          <this.MediaQuery>
+            <this.Screen on={(size) => (
+              <OpenOrders
+                size={size}
+                onOrderCancel={this.props.cancelOrder}
+                orders={data}
+              />
+            )} />
+          </this.MediaQuery>
         );
       case OrdersHeader.tabs[1]:
         if (this.state.pairFilterChecked) {
           data = data.filter((o) => o.symbol === this.props.market);
         }
         return (
-          <ClosedOrders
-            orders={data}
-          />
+          <this.MediaQuery>
+            <this.Screen on={(size) => (
+              <ClosedOrders
+                orders={data}
+                size={size}
+              />
+            )} />
+          </this.MediaQuery>
         );
+      case OrdersHeader.tabs[2]:
+        return <Balances fund={this.props.fund} hideSmallAssets={this.state.smallAssetesFilterChecked} />;
       default:
         return null;
     }
@@ -82,10 +103,11 @@ class MyOrders extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const {market, orders} = state.terminal;
+  const {market, orders, fund} = state.terminal;
   return {
     market,
     orders,
+    fund,
   };
 };
 

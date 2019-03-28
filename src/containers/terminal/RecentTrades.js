@@ -119,7 +119,7 @@ class RecentTrades extends React.Component {
         sortedData = this.sortData(history);
       }
       return (
-        <div className="trades-table chart col-12 col-sm-12 col-md-12">
+        <div className="trades-table chart col-12">
           <Screen on={screenWidth => {
             return (
               <React.Fragment>
@@ -136,9 +136,6 @@ class RecentTrades extends React.Component {
                 <div ref={this.tableWrapper} className="trades-table-wrapper terminal__recent-table-wrapper">
                   <ReactTable
                     columns={this.getColumns(screenWidth)}
-                    getTrProps={() => ({
-                      onClick: () => null,
-                    })}
                     data={sortedData}
                     scrollBarHeight={'100%'}
                   />

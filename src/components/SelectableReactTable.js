@@ -5,18 +5,23 @@ import Scrollbars from 'react-custom-scrollbars';
 class SelectableReactTable extends React.Component {
   render() {
     const getTheadProps = () => ({className: 'clearfix'});
-    const getTrProps = (state, rowInfo, column, instance) => {
-      let className;
-      if(this.props.selectedItem && rowInfo && this.props.selectedItem._id === rowInfo.original._id) {
-        className = '-selected';
-      }
-      return {
-        className,
-        onClick: ()  => {
-          this.props.onItemSelected(rowInfo.original);
+    let getTrProps;
+    if (this.props.onItemSelected) {
+      getTrProps = (state, rowInfo, column, instance) => {
+        let className;
+        if(this.props.selectedItem && rowInfo && this.props.selectedItem._id === rowInfo.original._id) {
+          className = '-selected';
         }
+        return {
+          className,
+          onClick: ()  => {
+            if (this.props.onItemSelected) {
+              this.props.onItemSelected(rowInfo.original);
+            }
+          }
+        };
       };
-    };
+    }
 
     const getTbodyProps = (state, rowInfo, column, instance) => {
       return {scrollBarHeight: instance.props.scrollBarHeight, scrollToBottom: instance.props.scrollToBottom};

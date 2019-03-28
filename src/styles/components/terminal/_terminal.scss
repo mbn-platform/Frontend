@@ -1,6 +1,5 @@
 .terminal {
-  letter-spacing: 1px;
-  font-family: "Arial" !important;
+  font-family: ArialMT !important;
   font-weight: 400;
   -webkit-font-smoothing: auto;
   -moz-osx-font-smoothing: auto;
@@ -17,14 +16,6 @@
 
   }
 
-  .orderbook-table {
-    .floatThead-wrapper {
-      &:last-child {
-        margin-top: 20px;
-      }
-    }
-  }
-
   .orders-table-wrapper {
     .ReactTable {
       .rt-thead {
@@ -38,62 +29,10 @@
       .rt-tbody {
         .rt-tr {
           border-bottom: 1px solid #1f2125 !important;
-          &.-even {
-            background: inherit !important;
-          }
         }
-      }
-    }
-  }
-
-  .terminal__table-order-remove {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-
-    .remove {
-      display: inline-block;
-      width: 14px;
-      height: 14px;
-      background: url('../assets/svg/cross.svg') no-repeat center;
-      background-size: contain;
-      &:hover {
-        opacity: 1;
-        background: url('../assets/svg/cross_white.svg') no-repeat center;
-        background-size: contain;
-      }
-    }
-  }
-
-  .terminal__table-order-type {
-    display: flex;
-    justify-content: start;
-    align-items: center;
-
-    .round.center {
-      margin: 0 auto;
-      display: block;
-    }
-    .round-wrapper {
-      width: 40px;
-    }
-
-    .round {
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      display: inline-block;
-    }
-
-    .buy {
-      .round {
-        background-color: #32B994;
-      }
-    }
-    .sell {
-      .round {
-        background-color: #D74C4C;
+        .rt-tr-group .rt-tr.-even {
+            background: inherit;
+        }
       }
     }
   }
@@ -137,58 +76,24 @@
 			text-transform: uppercase;
 		}
 
-		// table{
-		// 	thead th{
-		// 		border: none;
-		// 		text-transform: capitalize;
-		// 		font-size: 12px;
-		//     white-space: nowrap;
-		// 		font-family: "SF-UI"!important;
-		// 	}
-		// 	tr{
-		// 		// display: block;
-		// 		// width: 100%;
-		// 		// height: 25px;
-
-    // 	}
-    // 	th,td{
-    // 		border: none;
-    // 		height: 100%;
-    // 		padding: 5px 10px;
-    // 		font-weight: 500;
-    // 		vertical-align: middle;
-    // 		height: 100%;
-    // 	}
-    // 	td{
-    // 		font-size: 12px;
-    // 	}
-    // 	tr:first-child td:first-child { border-top-left-radius: 2px; }
-    // 	tr:first-child td:last-child { border-top-right-radius: 2px; }
-    // 	tr:last-child td:first-child { border-bottom-left-radius: 2px; }
-    // 	tr:last-child td:last-child { border-bottom-right-radius: 2px; }
-
-    // 	tbody tr:nth-child(2n-1){
-    // 		background-color: rgba(#222529,.5);
-    // 	}
-    // }
     .charts {
       > div {
         padding: 10px !important;
       }
       .chart {
         background-color: #2C2F33;
-        padding: 15px;
         color: #9094A1;
-        margin-top: 20px;
+        margin-top: 7px;
         &:first-child {
           margin-top: 0px;
         }
         position: relative;
         &-name {
           color: #fff;
-          text-transform: uppercase;
           font-size: 14px;
-          margin-left: 11px;
+          font-weight: bold;
+          margin-left: 10px;
+          margin-top: 5px;
         }
         &-controls {
           position: absolute;
@@ -272,14 +177,15 @@
             margin: -20px -20px 15px -20px;
             background-color: #232629;
           .tab {
-            padding: 4px 10px 0 10px;
+            padding: 5px 10px 0 10px;
             height: 36px;
             font-size: 14px;
-            color: #b1b1b2;
+            font-weight: bold;
+            color: #c0c0c1;
             border-right: solid 1px #1f2125;
             &.selected {
               border-bottom: none;
-              color: #fdfdfd;
+              color: #ffffff;
               background-color: #2C2F33;
             }
             .table_header_help_wrapper {
@@ -294,18 +200,19 @@
           color: #495057;
         }
         .btn {
-          text-transform: none;
+          text-transform: capitalize;
         }
         background-color: #2b2f33;
         padding: 20px;
-        color: #9094A1;
-        margin-top: 20px;
-        flex: 1;
+        color: #c0c0c1;
+        margin-top: 7px;
         &__switch {
+          border-radius: 2px;
           margin: 0 0 15px 0;
           height: 32px;
           background-color: #232629;
           font-size: 14px;
+          font-weight: bold;
           text-decoration: none;
           cursor: pointer;
           &-wrap {
@@ -386,19 +293,21 @@
             }
             &.percent {
               text-align: center;
+              font-size: 10px;
+              padding: 0px;
             }
           }
           &-submit {
             margin-bottom: 0;
+            margin-top: 10px;
             border-radius: 2px;
             background-color: #32B994;
-            text-transform: uppercase;
             color: #fff;
-            font-size: 12px;
+            font-size: 14px;
             height: 32px;
             border: none;
             width: 100%;
-            font-weight: 500;
+            font-weight: bold;
             cursor: pointer;
             &:hover {
               opacity: .7;
@@ -408,28 +317,12 @@
             }
           }
         }
-        .balance {
-          &-wrap {
-            cursor: pointer;
-            font-size: 14px;
-          }
-          margin-top: 10px;
-          &-name, &-title {
-            color: #9094A1;
-          }
-          &-name {
-            margin-right: 6px;
-          }
-          &-title {
-            margin-right: 22px;
-          }
-          &-val {
-            color: #fff;
-          }
-        }
         &__balances {
           font-size: 14px;
           margin-bottom: 15px;
+          >div:first-child {
+            font-weight: bold;
+          }
         }
         &__inputs {
           min-height: 140px;
@@ -438,30 +331,26 @@
           }
         }
       }
-      .trades-table-wrapper {
-        .rt-thead {
-          border: 0;
-        }
-      }
       .orders-table {
         .orders-header {
             background-color: #232629;
           .tab {
-            padding: 4px 10px 0 10px;
+            padding: 5px 10px 0 10px;
             height: 36px;
             font-size: 14px;
+            font-weight: bold;
             color: #b1b1b2;
             border-right: solid 1px #1f2125;
             border-bottom: solid 1px #1f2125;
             &.selected {
               border-bottom: none;
-              color: #fdfdfd;
+              color: #ffffff;
               background-color: #2C2F33;
             }
           }
           .checkbox {
-            line-height: 36px;
-            font-size: 11px;
+            padding-top: 4px;
+            font-size: 12px;
             color: #a1a2a3;
             label {
               margin-bottom: 0px;
@@ -482,6 +371,7 @@
         &__switch {
           cursor: pointer;
           font-size: 14px;
+          font-weight: bold;
           text-decoration: none;
           color: #fff;
           opacity: .5;
@@ -541,6 +431,7 @@
           .subtitle {
             font-size: 11px;
             color: #565d62;
+            text-transform: capitalize;
           }
           &.sell * {
             color: #c9333d;
@@ -558,13 +449,9 @@
         }
       }
       .orderbook-table {
-        flex: 1;
-        &-wrapper {
-          overflow: auto;
+        height: 50%;
+        .last-price {
           position: relative;
-          overflow-x: hidden;
-        }
-        .value {
           font-size: 18px;
           font-weight: 600;
           margin: .5em 0;
@@ -589,103 +476,25 @@
           &.down {
             color: #D74C4C;
           }
-        }
-        .last-price {
-          z-index: 10;
-          position: relative;
-        }
-        .table {
-          color: #4F525D;
-          margin-bottom: 0;
-          table-layout: fixed;
-          thead {
-            background-color: #2C2F33;
-          }
-          tr {
-            width: 100%;
-            height: 25px;
-            &.sz-100 {
-              .dash {
-                width: 100%;
-              }
-            }
-            &.sz-75 {
-              .dash {
-                width: 75%;
-              }
-            }
-
-            &.sz-50 {
-              td .dash {
-                width: 50%;
-              }
-            }
-            &.sz-25 {
-              td .dash {
-                width: 25%;
-              }
-            }
-
-          }
-          td, th {
-            // width: 25%;
-            vertical-align: middle;
-            height: 100%;
-            padding: 5px 10px;
-            width: 25%;
-            overflow: hidden;
-          }
-          td:nth-child(1), th:nth-child(1) {
-            width: 35%;
-          }
-          td:nth-child(3), th:nth-child(3) {
-            width: 35%;
-          }
-          th:nth-child(3) {
-            overflow: visible;
-          }
-          // th{
-          // 	padding: 5px 15px;
-          // }
-          tr td:nth-child(2) {
-            font-size: 0;
+          .bid-label {
+            text-transform: none;
+            font-size: 12px;
+            top: 5px;
             white-space: nowrap;
-            padding: 0 14px 0 12px;
-            span {
-              font-size: 12px;
-            }
-          }
-          &.red {
-            tr td:first-child {
-              color: #D74C4C;
-            }
-            .dash {
-              background-color: #D74C4C;
-            }
-          }
-          &.green {
-            tr td:first-child {
-              color: #32B994;
-            }
-            .dash {
-              background-color: #32B994;
-            }
-          }
-          .white {
-            color: #fff;
-          }
-          .dash {
-            // width: 100%;
-            height: 2px;
-            display: block;
+            position: absolute;
+            left: 0;
+            cursor: pointer;
+            color: #5B5F67;
+            padding-left: 10px !important;
           }
         }
       }
       .trades-table {
-        &-wrapper {
-          overflow: auto;
-          position: relative;
-          overflow-x: hidden;
+        height: 50%;
+        .trades-table-wrapper {
+          .rt-thead {
+            border: 0;
+          }
         }
         .table_col_value {
           font-family: inherit;
@@ -713,54 +522,16 @@
               color: #32B994;
             }
           }
-
         }
-        .table {
-          margin-bottom: 0;
-          tr.up {
-            color: #D74C4C;
-          }
-          tr.down {
-            color: #32B994;
-          }
-          td, th {
-            width: 30%;
-            vertical-align: middle;
+        .terminal__recent-table-wrapper {
+          height: calc(100% - 26px) !important;
+          .ReactTable {
             height: 100%;
-            padding: 5px 10px;
-            padding-right: 0;
-            white-space: nowrap;
-            &:nth-child(3) {
-              width: 35%;
-            }
-            &:nth-child(4) {
-              width: 5%;
-              padding-left: 0;
-            }
-          }
-          tr td {
-            opacity: .5;
-            .icon {
-              color: inherit;
-            }
-            &:nth-child(1) {
-              opacity: 1;
-            }
           }
         }
+
       }
     }
-  }
-  .bid-label {
-    text-transform: none;
-    font-size: 12px;
-    top: 5px;
-    white-space: nowrap;
-    position: absolute;
-    left: 0;
-    cursor: pointer;
-    color: #5B5F67;
-    padding-left: 10px !important;
   }
 }
 
@@ -809,19 +580,12 @@
 
 }
 
-.terminal__recent-table-wrapper {
-  .ReactTable {
-    height: 100%;
-  }
-}
-
 .terminal__recent-table-header {
   font-size: 12px;
   color: #5B5F67;
   font-weight: 500;
   white-space: nowrap;
   text-align: left !important;
-  font-family: "SF-UI" !important;
   text-transform: capitalize;
 }
 
@@ -831,13 +595,8 @@
   }
 }
 
-@media (max-width: 1231px) {
-  .orderbook-table {
-    height: 600px;
-  }
-}
 
-@media (max-width: 1027px) {
+@include media-breakpoint-down(md) {
 
   .terminal__market-header-table {
     font-size: 7.5px !important;
@@ -845,10 +604,6 @@
 
   .terminal__market-table-cell {
     font-size: 10px;
-  }
-
-  .orderbook-table {
-    margin-bottom: 20px;
   }
 }
 
@@ -860,10 +615,6 @@
 
   .terminal__recent-table-header {
     font-size: 9px;
-  }
-
-  .orderbook-table {
-    margin-bottom: 0;
   }
 
   .terminal__market-table-cell {
@@ -883,14 +634,6 @@
   .terminal__market-select-dropdown-container {
     .rt-th {
       margin-left: 0 !important;
-    }
-  }
-
-  .orders-table-tab .table {
-    th, td {
-      &:nth-child(5) {
-        display: none;
-      }
     }
   }
 
@@ -923,36 +666,29 @@
             flex-direction: column;
           }
           .charts__right > .row {
+            padding-bottom: 7px;
             height: 100%;
-          }
-
-          .trades-table .floatThead-wrapper {
-            height: calc(100% - 15px);
-            .trades-table-wrapper {
-              position: absolute;
-              height: calc(100% - 32px);
-            }
-          }
-          .orderbook-table {
-            .floatThead-wrapper {
-              height: calc(50% - 24px);
-              &:last-child {
-                margin-top: 20px;
-              }
-            }
           }
         }
       }
     }
   }
+}
+@include media-breakpoint-up(md) {
+  .terminal .charts .charts__left {
+    padding-right: 0 !important;
+  }
+  .terminal .charts .charts__right {
+    padding-left: 7px !important;
+  }
+}
 
-  .terminal__recent-table-wrapper {
-    height: 100% !important;
-    padding-bottom: 15px !important;
-
-    .ReactTable {
-      height: 100%;
-    }
+@include media-breakpoint-down(sm) {
+  .terminal .charts .charts__right {
+    padding-top: 7px !important;
+  }
+  .terminal .charts .charts__left {
+    padding-bottom: 0 !important;
   }
 }
 
@@ -961,7 +697,6 @@
   flex-flow: row nowrap;
   align-items: center;
   font-size: 12px !important;
-  font-family: "SF-UI" !important;
   text-align: left !important;
   font-weight: 500;
   color: #4f525d;
@@ -969,7 +704,7 @@
 
 .terminal__orderbook-table-wrapper {
   overflow: hidden;
-  height: 47%;
+  height: calc(50% - 26px);
 
   .ReactTable {
     height: 100%;
@@ -996,7 +731,7 @@
   .rt-thead {
     display: none;
   }
-  height: 38%;
+  height: calc(50% - 45px);
 }
 
 .terminal__orderbook-table-dash {
@@ -1018,14 +753,6 @@
   }
   .terminal-main .charts > div {
     padding: 0 !important;
-  }
-  .terminal-main .charts .chart {
-    padding: 5px;
-    padding-top: 10px;
-    &.orders-table {
-      padding: 0px;
-    }
-
   }
   .terminal {
     .orders-table {
@@ -1084,59 +811,36 @@
     }
   }
 
-  .terminal-main .charts .chart.orders-table, .terminal-main .charts .chart.trades-table {
-    margin-top: 20px;
+  .terminal-main .charts .chart.orders-table, .terminal-main .charts {
+    margin-top: 7px;
   }
   .terminal-main .charts .chart.trades-table {
     margin-bottom: 20px;
   }
-}
 
-@include media-breakpoint-only(sm) {
-  .terminal-main .charts .chart.trades-table {
-    margin-top: 0px;
-    margin-bottom: 0px;
-  }
-}
-
-@media (max-width: 575px) {
   .terminal-main {
     .charts {
       .buysell {
         flex: 0 0 100%;
       }
-      .orderbook-table {
-        .table {
-          td:nth-child(3), th:nth-child(3) {
-            width: 30%;
-          }
-        }
-      }
     }
 
   }
-  .trades-table-wrapper {
-    height: 325px;
+}
+
+@include media-breakpoint-down(md) {
+  .terminal-main .charts {
+    .trades-table {
+      height: 325px;
+    }
+    .orderbook-table {
+      height: 400px;
+    }
   }
 }
 
 @media (min-width: 576px) {
 
-  .orderbook-table {
-    tbody {
-      height: 130px;
-    }
-  }
-
-  .trades-table {
-    tbody {
-      height: 300px;
-    }
-  }
-
-  .trades-table-wrapper {
-    height: 325px;
-  }
   .dropdown-table-wrapper {
     min-height: 200px;
   }
@@ -1153,16 +857,6 @@
       // text-align: left;
     }
   }
-  .orderbook-table {
-    max-width: inherit;
-  }
-}
-
-@media (min-width: 992px) {
-  .orderbook-table {
-    margin-right: 10px;
-
-  }
 }
 
 @media (min-width: 1027px) {
@@ -1171,14 +865,11 @@
 
   }
 
-  .orderbook-table {
-    margin-right: 0px;
-  }
 }
 
 @media (min-width: 1232px) {
   .buysell {
-    margin-right: 20px;
+    margin-right: 7px;
   }
 }
 
