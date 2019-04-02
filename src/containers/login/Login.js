@@ -15,14 +15,25 @@ class Login extends React.Component {
     if(window.web3) {
       const intervalId = setInterval(() =>
         window.web3.eth.getAccounts((err, accounts) => {
-          this.setState({hasActiveAccount: (!err && accounts.length)});
+          this.setState({hasActiveAccount: (!err && accounts.length),
+            modern: !!window.ethereum});
         }), 1000);
       this.state = {hasActiveAccount: false, intervalId: intervalId};
       window.web3.eth.getAccounts((err, accounts) => {
-        this.setState({hasActiveAccount: (!err && accounts.length)});
+        this.setState({hasActiveAccount: (!err && accounts.length), modern: !!window.ethereum});
       });
     } else {
       this.state = {};
+    }
+  }
+
+  onLoginClick = () => {
+    if (!this.state.hasActiveAccount && this.state.modern) {
+      window.ethereum.enable().then(() => {
+        this.props.onLoginClick();
+      }).catch(e => console.log(e));
+    } else if (this.state.hasActiveAccount) {
+      this.props.onLoginClick();
     }
   }
 
@@ -45,9 +56,9 @@ class Login extends React.Component {
       return (<EnterNickname onNicknameSet={this.props.onNicknameSet} />);
     } else {
       return (
-        this.state.hasActiveAccount ? (
+        this.state.hasActiveAccount || this.state.modern ? (
           <LoginForm
-            onClick={this.props.onLoginClick}
+            onClick={this.onLoginClick}
           />
         ) : (
           <MetamaskClosed />
