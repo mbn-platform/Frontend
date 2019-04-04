@@ -63,7 +63,11 @@ function getBonusPercent() {
     return 35;
   } else if (date < 1548115200000) {
     return 30;
-  } else {
+  } else if (date < 1551290400000) {
     return 25;
+  } else if (date < 1554400800000) {
+    return 20;
+  } else {
+    return 15;
   }
 }
