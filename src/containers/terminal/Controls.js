@@ -65,11 +65,6 @@ const mapStateToProps = state => {
       fund,
       interval
     },
-    auth: {
-      profile: {
-        _id: userId,
-      }
-    },
     apiKeys: {
       ownKeys: apiKeys,
     },
@@ -83,7 +78,6 @@ const mapStateToProps = state => {
     contracts,
     fund,
     apiKeys,
-    userId,
     ticker,
     market,
     interval,
