@@ -3,10 +3,8 @@ import EnterNickname from './EnterNickname';
 import './Login.css';
 import './LoginStep.css';
 import NoMetamask from '../../components/NoMetamask';
-import Competition from './Competition';
 import MetamaskClosed from './MetamaskClosed';
 import LoginForm from './LoginForm';
-import { FormattedMessage } from 'react-intl';
 
 class Login extends React.Component {
 
@@ -68,22 +66,19 @@ class Login extends React.Component {
   }
 
   render() {
-    const isIOSorAndroid = (/android|iphone|ipad/i).test(window.navigator.userAgent);
     return (
       <div className={'login_wrapper container-fluid ' + (!window.web3 ? 'login_wrapper_no_metamask' : '')}>
         <div className="login_content row justify-content-center align-items-center">
           <div className="login_steps">
             <div className="login_title_wrapper">
               <div className="login_title_text">
-                <FormattedMessage
-                  id="login.title"
-                  defaultMessage="Beta"
-                />
+                  Membrana Platform
+                <br/>
+                  Beta v1.6.3
               </div>
             </div>
             {this.renderStep()}
           </div>
-          {!window.web3 && isIOSorAndroid && <Competition/>}
         </div>
       </div>
     );
