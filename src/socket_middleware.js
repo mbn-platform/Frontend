@@ -5,42 +5,50 @@ import { LOGGED_OUT, LOGGED_IN } from './actions/auth';
 import {updateKeyBalance} from './actions/apiKeys';
 import {updateOrderBook, updateHistory, updateRates, updateTicker, selectMarket} from './actions/terminal';
 let socket;
+
+function createSocket(store) {
+  const path = process.env.REACT_APP_WEBSOCKET_ADDRESS;
+  const socket = io('', {
+    path,
+  });
+  socket.on('action', action => {
+    store.dispatch(action);
+  });
+  socket.on('orders', ({name, content}) => {
+    const [exchange,, market] = name.split('.');
+    const buy = content.bids;
+    const sell = content.asks;
+    store.dispatch(updateOrderBook(exchange, market, {buy, sell}));
+  });
+  socket.on('trades', ({name, content}) => {
+    const [exchange,, market] = name.split('.');
+    store.dispatch(updateHistory(exchange, market, content.trades));
+  });
+  socket.on('rates', ({name, content} ) => {
+    const [exchange] = name.split('.');
+    store.dispatch(updateRates(exchange, content.rates));
+  });
+  socket.on('ticker', ({name, content}) => {
+    const [exchange,,market] = name.split('.');
+    store.dispatch(updateTicker(exchange, market, content.ticker));
+  });
+  socket.on('balances', ({_id, content, totalInBTC, totalInUSDT}) => {
+    store.dispatch(updateKeyBalance(_id, content.balances, totalInBTC, totalInUSDT));
+  });
+  return socket;
+}
 const socketMiddleware = store => next => action => {
   switch(action.type) {
     case LOGGED_IN: {
       if(!socket) {
-        const path = process.env.REACT_APP_WEBSOCKET_ADDRESS;
-        socket = io('', {
-          path,
-        });
-        socket.on('action', action => {
-          store.dispatch(action);
-        });
-        socket.on('orders', ({name, content}) => {
-          const [exchange,, market] = name.split('.');
-          const buy = content.bids;
-          const sell = content.asks;
-          store.dispatch(updateOrderBook(exchange, market, {buy, sell}));
-        });
-        socket.on('trades', ({name, content}) => {
-          const [exchange,, market] = name.split('.');
-          store.dispatch(updateHistory(exchange, market, content.trades));
-        });
-        socket.on('rates', ({name, content} ) => {
-          const [exchange] = name.split('.');
-          store.dispatch(updateRates(exchange, content.rates));
-        });
-        socket.on('ticker', ({name, content}) => {
-          const [exchange,,market] = name.split('.');
-          store.dispatch(updateTicker(exchange, market, content.ticker));
-        });
-        socket.on('balances', ({_id, content, totalInBTC, totalInUSDT}) => {
-          store.dispatch(updateKeyBalance(_id, content.balances, totalInBTC, totalInUSDT));
-        });
+        socket = createSocket(store);
       }
       break;
     }
     case TRADING_DATA_START: {
+      if (!socket) {
+        socket = createSocket(store);
+      }
       if(socket) {
         const state = store.getState();
         const {exchange} = state.terminal;

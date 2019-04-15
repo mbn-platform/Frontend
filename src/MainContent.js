@@ -15,6 +15,8 @@ import { ApiNotification } from './generic/api';
 
 const NotificationApi = new ApiNotification();
 
+const defaultRoute = '/terminal';
+
 class MainContent extends React.Component {
 
   componentDidMount() {
@@ -68,9 +70,9 @@ class MainContent extends React.Component {
         <Switch>
           <LoginRoute exact path="/login" loggedIn={loggedIn}/>
           <ProtectedRoute exact path="/dashboard" component={Dashboard} loggedIn={loggedIn}/>
-          <ProtectedRoute exact path="/terminal" component={Terminal} loggedIn={loggedIn}/>
-          <ProtectedRoute exact path="/terminal/:exchange" component={Terminal} loggedIn={loggedIn}/>
-          <ProtectedRoute exact path="/terminal/:exchange/:market" component={Terminal} loggedIn={loggedIn}/>
+          <Route exact path="/terminal" component={Terminal} loggedIn={loggedIn}/>
+          <Route exact path="/terminal/:exchange" component={Terminal} loggedIn={loggedIn}/>
+          <Route exact path="/terminal/:exchange/:market" component={Terminal} loggedIn={loggedIn}/>
           <ProtectedRoute exact path="/orders" component={Orders} loggedIn={loggedIn}/>
           <Redirect exact from="/ratings" to="/leaderboard"/>
           <Redirect exact from="/rating" to="/leaderboard"/>
@@ -79,7 +81,7 @@ class MainContent extends React.Component {
           <Route exact path="/leaderboard" component={Leaderboard}/>
           <Redirect exact from="/profile" to={loggedIn ? `/${profile.name}` : '/login'}/>
           <Route exact path="/:id" component={Profile}/>
-          <Redirect from="/" to="/profile"/>
+          <Redirect exact from="/" to={defaultRoute}/>
         </Switch>
       </Col>
     );
@@ -88,7 +90,7 @@ class MainContent extends React.Component {
 
 const LoginRoute = ({ loggedIn, ...props }) => {
   if(loggedIn) {
-    return (<Redirect to="/profile" />);
+    return (<Redirect to={defaultRoute} />);
   } else {
     return (<Route  {...props} component={Login} />);
   }

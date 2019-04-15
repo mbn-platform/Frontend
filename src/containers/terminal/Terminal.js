@@ -7,6 +7,7 @@ import TradingView from './TradingView';
 import MarketDepth from './MarketDepth';
 import PlaceOrder from './placeOrder/PlaceOrderContainer';
 import MyOrders from './MyOrders';
+import TopBanner from '../login/TopBanner';
 import RecentTrades from './RecentTrades';
 import OrderBook from './OrderBook';
 import MediaQuery from 'react-responsive';
@@ -68,6 +69,7 @@ class Terminal extends React.Component {
   render() {
     return (
       <Container fluid className="terminal">
+        <TopBanner auth={this.props.auth} />
         <Row>
           <Col xs="12" sm="12" md="12" lg="12" className="terminal-container">
             <HeaderStatus />
@@ -182,6 +184,7 @@ class Terminal extends React.Component {
 
 const mapStateToProps = state => {
   const {
+    auth,
     terminal: {
       fund,
       market,
@@ -191,6 +194,7 @@ const mapStateToProps = state => {
     exchanges
   } = state;
   return {
+    auth,
     fund,
     market,
     exchange,
