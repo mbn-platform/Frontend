@@ -69,6 +69,7 @@ const MainRouter = () => (
   <BrowserRouter>
     <MediaQuery>
       <Container className="main-panel" fluid>
+        <Row id="top-banner" style={{minHeight: 'unset'}} />
         <Row noGutters className='flex-wrap flex-md-nowrap'>
           <Navigation />
           <MainContent />
