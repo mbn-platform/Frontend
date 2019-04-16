@@ -55,6 +55,7 @@ class Controls extends React.Component {
 
 const mapStateToProps = state => {
   const {
+    auth,
     exchangesInfo: {
       exchanges = [],
     },
@@ -73,6 +74,7 @@ const mapStateToProps = state => {
     },
   } = state;
   return {
+    userId: auth && auth.profile ? auth.profile._id : undefined,
     exchange,
     exchanges,
     contracts,
