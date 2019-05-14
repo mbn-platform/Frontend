@@ -74,7 +74,7 @@ class Login extends React.Component {
               <div className="login_title_text">
                   Membrana Platform
                 <br/>
-                  Beta v1.6.5
+                  Beta {process.env.REACT_APP_VERSION}
               </div>
             </div>
             {this.renderStep()}
