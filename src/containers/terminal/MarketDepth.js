@@ -12,7 +12,8 @@ class MarketDepth extends React.Component {
   constructor(props) {
     super(props);
     const isDesktop = window.innerWidth > 768;
-    this.state = {selectedCurrency: 0, selectedInterval: 0, isDesktop};
+    const data = this.getData(props);
+    this.state = {selectedCurrency: 0, selectedInterval: 0, isDesktop, data};
     this.formatNumber = this.formatNumber.bind(this);
     this.balloon = this.balloon.bind(this);
     this.onResize = this.onResize.bind(this);
@@ -334,13 +335,8 @@ class MarketDepth extends React.Component {
 
   render() {
     return (
-      <Col className="marketdepth-chart chart">
+      <React.Fragment>
         <Row className="chart__top justify-content-between">
-          <div className="justify-content-start row">
-            <div className="chart-name">
-              <FormattedMessage id="terminal.marketDepth" defaultMessage="MARKET DEPTH"/>
-            </div>
-          </div>
           <Desktop>
             <div className="chart-controls align-items-center justify-content-between row">
             </div>
@@ -351,7 +347,7 @@ class MarketDepth extends React.Component {
         </div>
         <div className="marketdepth-chart__item" id='chartitem' >
         </div>
-      </Col>
+      </React.Fragment>
     );
   }
 }

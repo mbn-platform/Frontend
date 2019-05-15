@@ -12,7 +12,6 @@ class TradingView extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      fullScreen: false,
       ready: false, market: props.market, interval: props.interval,
     };
     this.handleKeyDown = this.handleKeyDown.bind(this);
@@ -26,24 +25,19 @@ class TradingView extends React.PureComponent {
     window.removeEventListener('keydown', this.handleKeyDown);
   }
 
-  handleFullScreenChange(value) {
-    this.setState({fullScreen: value});
-    this.props.onFullScreenChange(value);
-  }
-
   handleKeyDown(event) {
-    if (this.state.fullScreen && event.keyCode === ESCAPE_KEYCODE) {
-      this.handleFullScreenChange(false);
+    if (this.props.fullScreen && event.keyCode === ESCAPE_KEYCODE) {
+      this.props.onFullScreenChange(false);
     }
   }
 
   render() {
     return (
-      <Col className={classNames('price-chart','chart', {'fullscreen-chart': this.state.fullScreen})}>
+      <React.Fragment>
         <div className="price-chart__top justify-content-between row col-12">
           <Desktop>
             <Row className="chart-controls align-items-center justify-content-between">
-              <div className="control-resize" onClick={()=>this.handleFullScreenChange(!this.state.fullScreen)}/>
+              <div className="control-resize" onClick={() => this.props.onFullScreenChange(!this.props.fullScreen)}/>
             </Row>
           </Desktop>
         </div>
@@ -53,7 +47,7 @@ class TradingView extends React.PureComponent {
           exchange={this.props.exchange}
           interval={this.mapInterval(this.props.interval)}
         />
-      </Col>
+      </React.Fragment>
     );
   }
 
@@ -127,7 +121,10 @@ class TradingViewContainer extends React.Component {
   }
 
   render() {
-    const style = {height: '100%'};
+    const style = {
+      height: '100%',
+      paddingBottom: '37px',
+    };
     if(!this.state.ready) {
       style.visibility = 'hidden';
     }
@@ -207,6 +204,7 @@ function createTradingView(symbol, interval, socketPath) {
     width: '100%',
     height: '100%',
     symbol,
+    toolbar_bg: '#2C2F33',
     interval: interval,
     container_id: 'tv_chart_container',
     //	BEWARE: no trailing slash is expected in feed URL
@@ -215,8 +213,8 @@ function createTradingView(symbol, interval, socketPath) {
     locale: 'en',
     //	Regression Trend-related functionality is not implemented yet, so it's hidden for a while
     drawings_access: { type: 'black', tools: [ { name: 'Regression Trend' } ] },
-    disabled_features: ['timezone_menu', 'pane_context_menu', 'legend_context_menu', 'display_market_status', 'timeframes_toolbar', 'main_series_scale_menu', 'control_bar', 'left_toolbar', 'edit_buttons_in_legend', 'header_widget', 'use_localstorage_for_settings', 'scales_context_menu', 'show_chart_property_page'],
-    enabled_features: ['study_templates'],
+    disabled_features: ['timezone_menu', 'pane_context_menu', 'legend_context_menu', 'display_market_status', 'timeframes_toolbar', 'main_series_scale_menu', 'control_bar', 'edit_buttons_in_legend', 'header_widget', 'use_localstorage_for_settings', 'scales_context_menu', 'show_chart_property_page'],
+    enabled_features: ['study_templates', 'keep_left_toolbar_visible_on_small_screens'],
     charts_storage_url: 'http://saveload.tradingview.com',
     charts_storage_api_version: '1.1',
     client_id: 'tradingview.com',

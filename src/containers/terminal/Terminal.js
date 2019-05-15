@@ -3,8 +3,7 @@ import { Container, Row, Col } from 'reactstrap';
 import { connect } from 'react-redux';
 import HeaderStatus from '../../components/HeaderStatus';
 import Controls from './Controls';
-import TradingView from './TradingView';
-import MarketDepth from './MarketDepth';
+import Charts from './Charts';
 import PlaceOrder from './placeOrder/PlaceOrderContainer';
 import MyOrders from './MyOrders';
 import TopBanner from '../login/TopBanner';
@@ -79,8 +78,7 @@ class Terminal extends React.Component {
               />
               <Row className="charts">
                 <Col xs="12" sm="12" md="6" lg="8" className="charts__left">
-                  <TradingView onFullScreenChange={this.onFullScreenChange}/>
-                  <MarketDepth />
+                  <Charts fullScreen={this.state.fullScreenEnabled} onFullScreenChange={this.onFullScreenChange} />
                   <Row className="justify-content-between">
                     <PlaceOrder
                       price={this.state.price}

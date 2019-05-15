@@ -276,6 +276,8 @@ const en = {
   'terminal.placeOrder.total': 'Total:',
   'terminal.placeOrder.stopPrice': 'Stop Price:',
   'terminal.placeOrder.amount': 'Amount:',
+  'terminal.charts.tradingView': 'Trading View',
+  'terminal.charts.marketDepth': 'Market Depth',
   'terminal.price': 'Price ',
   'terminal.priceForTable': 'Price ',
   'terminal.totalVolume' : 'Total volume: ',
