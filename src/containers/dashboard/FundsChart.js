@@ -1,5 +1,6 @@
 import React from 'react';
 import 'amcharts3/amcharts/amcharts';
+import 'amcharts3/amcharts/xy';
 import 'amcharts3/amcharts/pie';
 import 'amcharts3/amcharts/serial';
 import AmChartsReact from '@amcharts/amcharts3-react';

@@ -256,6 +256,10 @@ export class ApiProfile {
     apiGet(`/profile/${name}/history`)
       .then(errorHandler)
       .then(responseSchemaHandler);
+  getStatsForUser = name =>
+    apiGet(`/profile/${name}/stats`)
+      .then(errorHandler)
+      .then(responseSchemaHandler);
 }
 
 export class ApiTerminal {

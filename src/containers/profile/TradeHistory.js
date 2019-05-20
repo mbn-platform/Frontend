@@ -9,7 +9,7 @@ import {FormattedMessage, injectIntl} from 'react-intl';
 class TradeHistory extends React.Component {
   render() {
     return (
-      <Col xs="12" sm="12" md="12" lg="12" xl="7" className="trade-block">
+      <Col xs="12" sm="12" md="12" lg="12" xl="8" className="trade-block">
         <Container fluid className="h-100">
           <Row className="h-100">
             <Col className="trade-history">

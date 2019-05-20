@@ -5,7 +5,7 @@ export const UPDATE_PROFILE_AVAILABLE = 'UPDATE_PROFILE_AVAILABLE';
 export const GET_PROFILE = 'GET_PROFILE';
 export const TRADES_FOR_USER = 'TRADES_FOR_USER';
 export const GET_FEEDBACKS = 'GET_FEEDBACKS';
-
+export const STATS_FOR_USER = 'STATS_FOR_USER';
 
 const ProfileApi = new ApiProfile();
 
@@ -53,6 +53,7 @@ export function getProfilePageInfo(name) {
       });
       dispatch(getFeedbacks(name));
       dispatch(getTradesForUser(name));
+      dispatch(getStatsForUser(name));
     } catch(err) {
       profileErrorHandler(err, dispatch);
     }
@@ -74,6 +75,17 @@ export function getFeedbacks(name) {
   };
 }
 
+export function getStatsForUser(name) {
+  return dispatch => {
+    ProfileApi.getStatsForUser(name)
+      .then(({stats}) =>
+        dispatch({
+          type: STATS_FOR_USER,
+          stats,
+          name,
+        }));
+  };
+}
 export function getTradesForUser(name) {
   return dispatch => {
     ProfileApi.getTradesForUser(name)

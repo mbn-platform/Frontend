@@ -1,9 +1,9 @@
-import {GET_PROFILE, UPDATE_PROFILE_AVAILABLE, UPDATE_PROFILE, TRADES_FOR_USER, GET_FEEDBACKS} from '../actions/profile';
+import {GET_PROFILE, UPDATE_PROFILE_AVAILABLE, UPDATE_PROFILE, TRADES_FOR_USER, GET_FEEDBACKS, STATS_FOR_USER} from '../actions/profile';
 
 export default function(state = {}, action) {
   switch(action.type) {
     case GET_PROFILE:
-      return {...action.profile, trades: [], feedbacks: []};
+      return {...action.profile, trades: [], feedbacks: [], stats: []};
     case GET_FEEDBACKS:
       if(action.name === state.name) {
         return {...state, feedbacks: action.feedbacks};
@@ -21,6 +21,13 @@ export default function(state = {}, action) {
       if(action.name === state.name) {
         const trades = action.trades.filter(ff).map(mf).sort(sf);
         return {...state, trades};
+      } else {
+        return state;
+      }
+    }
+    case STATS_FOR_USER: {
+      if (action.name === state.name) {
+        return {...state, stats: action.stats};
       } else {
         return state;
       }
