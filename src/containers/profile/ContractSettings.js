@@ -352,6 +352,18 @@ const CurrencyOfContractButton = ({isEditing, onCurrencySelected, currency, valu
               className={classNames('btn', 'btn-secondary', {active: currency === 'BTC'})}
               type="button"
             >BTC</button>
+            <button
+              onClick={onCurrencySelected}
+              name="USDT"
+              className={classNames('btn', 'btn-secondary', {active: currency === 'USDT'})}
+              type="button"
+            >USDT</button>
+            <button
+              onClick={onCurrencySelected}
+              name="ETH"
+              className={classNames('btn', 'btn-secondary', {active: currency === 'ETH'})}
+              type="button"
+            >ETH</button>
           </span>
         </div>
 
