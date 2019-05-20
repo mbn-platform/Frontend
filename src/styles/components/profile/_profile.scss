@@ -76,9 +76,6 @@
             div, nav, a {
                 padding: 0;
             }
-            .h-custom-100 {
-                height: 100% !important;
-            }
             .icon {
                 margin-right: 15px;
                 font-size: .9rem;
@@ -119,7 +116,7 @@
                 font-family: 'maven_pro_light200' !important;
             }
             .table-screen {
-                padding: 29px 60px;
+                padding: 29px 30px;
             }
             .icon-help {
                 margin-left: 5px;
@@ -824,9 +821,6 @@
                 }
                 .currency-block {
                     padding: 0;
-                }
-                .trade-block {
-                    padding-top: 30px;
                 }
             }
             @include media-breakpoint-down(sm) {

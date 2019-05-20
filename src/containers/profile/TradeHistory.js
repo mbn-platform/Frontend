@@ -85,7 +85,7 @@ class TradeHistory extends React.Component {
         sortable: false,
       },
       {
-        Header: SortableHeader(this.props.intl.messages['profile.tx'], false),
+        Header: SortableHeader(this.props.intl.messages['profile.tx']),
         accessor: 'tx',
         sortable: false,
         minWidth: 30,
@@ -169,10 +169,6 @@ function formatFloat(value, currency) {
 const SortableHeader = (header, showSort = true) => (
   <div className="table_header_wrapper contract_header_wrapper">
     <span className="table_header">{header}</span>
-    {showSort ? (
-      <div className="sort_icon_wrapper" style={{display: 'block', margin: 0}}>
-      </div>
-    ) : null}
   </div>
 );
 
