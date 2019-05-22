@@ -49,7 +49,7 @@ class PlaceOrderContainer extends React.Component {
       const price = parseFloat(this.state.price);
       if(amount >= 0 && price >= 0) {
         const total = amount * price * commissionPercent(tab, this.props.exchange);
-        newState.amount = defaultFormatValue(total);
+        newState.total = defaultFormatValue(total);
       }
       this.setState(newState);
     }
