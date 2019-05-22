@@ -121,7 +121,7 @@ class OrderBook extends React.Component {
   }
 
   onRowClick = (data) => {
-    this.props.onOrderSelect(data.Rate.toString(10));
+    this.props.onOrderSelect(data.Rate.toString(10), data.Quantity.toString(10));
   }
 
   relativeSize = (minSize, maxSize, size) => Math.max((size - minSize) / (maxSize - minSize), 0.02);

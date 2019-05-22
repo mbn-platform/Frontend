@@ -35,30 +35,10 @@ class PlaceOrderContainer extends React.Component {
       this.setAmount(prevState.amount);
     }
     if ((this.props.price && this.props.price !== prevProps.price) ||
-      (this.props.size && this.props.size !== prevProps.size) ||
-      (this.props.type && this.props.type !== prevProps.type)) {
+      (this.props.size && this.props.size !== prevProps.size)) {
       let price = this.props.price || this.state.price;
       let amount = this.props.size || this.state.amount;
-      const newState = {price, amount, selectedTab: this.props.type};
-      price = parseFloat(price);
-      const os = parseFloat(amount);
-      if (price >= 0 && os >= 0) {
-        switch(this.props.exchange) {
-          case 'bittrex': {
-            const total = os * price * (this.props.type === TAB_BUY ? 1.0025 : 0.9975);
-            newState.total = defaultFormatValue(total);
-            break;
-          }
-          case 'binance': {
-            const total = os * price;
-            newState.total = defaultFormatValue(total);
-            break;
-          }
-          default:
-            break;
-        }
-      }
-      this.setState(newState);
+      this.setPrice(price);
     }
   }
 
@@ -324,7 +304,7 @@ class PlaceOrderContainer extends React.Component {
           const amount = parseFloat(this.state.amount);
           if(amount >= 0) {
             const tab = this.state.selectedTab;
-            const total = price * amount * this.commissionPercent(tab, this.props.exchange);
+            const total = price * amount * commissionPercent(tab, this.props.exchange);
             newState.total = defaultFormatValue(total);
           }
           this.setState(newState);
