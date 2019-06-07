@@ -8,6 +8,7 @@ import Profile from './containers/profile/ProfileContainer';
 import Leaderboard from './containers/leaderboard/Leaderboard';
 import Hashlog from './containers/hashlog/Hashlog';
 import ActionList from './containers/hashlog/ActionList';
+import Staking from './containers/staking/Staking';
 import './MainContent.css';
 import { Col } from 'reactstrap';
 import NotificationBar from './components/NotificationBar';
@@ -15,7 +16,7 @@ import { ApiNotification } from './generic/api';
 
 const NotificationApi = new ApiNotification();
 
-const defaultRoute = '/terminal';
+const defaultRoute = '/staking';
 
 class MainContent extends React.Component {
 
@@ -74,6 +75,7 @@ class MainContent extends React.Component {
           <Route exact path="/terminal/:exchange" component={Terminal} loggedIn={loggedIn}/>
           <Route exact path="/terminal/:exchange/:market" component={Terminal} loggedIn={loggedIn}/>
           <ProtectedRoute exact path="/orders" component={Orders} loggedIn={loggedIn}/>
+          <ProtectedRoute exact path="/staking" component={Staking} loggedIn={loggedIn}/>
           <Redirect exact from="/ratings" to="/leaderboard"/>
           <Redirect exact from="/rating" to="/leaderboard"/>
           <Route exact path="/hashlog" component={Hashlog} loggedIn={loggedIn}/>

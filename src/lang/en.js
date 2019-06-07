@@ -36,6 +36,8 @@ const en = {
   'ciperImageAlt' : 'Ciper',
   'invalidName' : 'Invalid name',
   'youCannotUseThatName' : 'You cannot use that name, please enter another one',
+  'youCannotUseThatAddress' : 'You cannot use that address',
+  'youWantEnableStaking': 'Are you sure you want to enable staking for address {address}?',
   'feedbacks' : 'FEEDBACKS',
   'apiKey' : 'API KEY',
   'userTrustToMe' : '{name} trusted to me',
@@ -324,6 +326,7 @@ const en = {
   'modal.error.contractNotAvailable': 'This contract is no more available',
   'modal.success': 'Success',
   'help-stop-limit-order': 'Stop-limit orders are triggered when pair price reaches stop price. In that case a limit order is placed. Such orders don\'t block your available balance',
+  'staking.title': 'Staking',
 
 };
 

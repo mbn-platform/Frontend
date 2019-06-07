@@ -17,6 +17,8 @@ import exchangesInfo from './reducers/exchangesInfo';
 import { combineReducers } from 'redux';
 import { LOGGED_OUT } from './actions/auth';
 import ratings from './reducers/ratings';
+import stakeInfo from './reducers/stakeInfo';
+import stakeTr from './reducers/stakeTr';
 
 const combined = combineReducers(
   {
@@ -36,6 +38,8 @@ const combined = combineReducers(
     terminal,
     rates,
     profile,
+    stakeInfo,
+    stakeTr,
     exchangesInfo
   });
 

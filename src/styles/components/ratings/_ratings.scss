@@ -1,4 +1,10 @@
 .ratings {
+  &.staking.description {
+    font-size: 14px;
+  }
+  &.staking .info {
+    font-size: 14px;
+  }
   letter-spacing: 1px;
   font-family: "SF-UI" !important;
   font-weight: 400;

@@ -34,7 +34,7 @@ export default class PaginationWithPage extends React.Component {
       this.setState({
         visiblePages: this.getVisiblePages(nextProps.page, nextProps.pages, nextProps.screenSize)
       });
-      this.props.paginationPageDispatcher(nextProps.page);
+      this.props.paginationPageDispatcher(nextProps.page, nextProps.pageSize);
     }
   }
 
@@ -94,7 +94,7 @@ export default class PaginationWithPage extends React.Component {
                 if (page === 1) {
                   return;
                 }
-                paginationPageDispatcher(page - 1);
+                paginationPageDispatcher(page - 1, pageSize);
                 this.setState({
                   visiblePages: this.getVisiblePages(page - 1, total, screenSize)
                 });
@@ -117,7 +117,7 @@ export default class PaginationWithPage extends React.Component {
                 : 'table__page-button'}`
                 }
                 onClick={() => {
-                  paginationPageDispatcher(currentPage);
+                  paginationPageDispatcher(currentPage, pageSize);
                   this.setState({
                     visiblePages: this.getVisiblePages(currentPage, total, screenSize)
                   });
@@ -139,7 +139,7 @@ export default class PaginationWithPage extends React.Component {
               if (page === this.props.pages) {
                 return;
               }
-              paginationPageDispatcher(page + 1);
+              paginationPageDispatcher(page + 1, pageSize);
               this.setState({
                 visiblePages: this.getVisiblePages(page + 1, total, screenSize)
               });

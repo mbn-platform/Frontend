@@ -260,6 +260,18 @@ export class ApiProfile {
     apiGet(`/profile/${name}/stats`)
       .then(errorHandler)
       .then(responseSchemaHandler);
+  verifyStakeAddress = (address, sign) =>
+    apiPost('/staking/verify', null, {address, sign})
+      .then(errorHandler)
+      .then(responseSchemaHandler);
+  getStakeTransactions = () =>
+    apiGet('/staking/transaction')
+      .then(errorHandler)
+      .then(responseSchemaHandler);
+  getStakeInfo = () =>
+    apiGet('/staking')
+      .then(errorHandler)
+      .then(responseSchemaHandler);
 }
 
 export class ApiTerminal {

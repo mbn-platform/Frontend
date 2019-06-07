@@ -9,7 +9,7 @@
 .modal__header {
     background-color: #2d3034;
     border-bottom-color: #494d4d;
-    height: 54px;
+    min-height: 54px;
     padding: 25px;
     position: relative;
     .currency-button {
@@ -22,6 +22,8 @@
 }
 
 .modal__title {
+    width: 100%;
+    text-align: center;
     font-size: 1.8em;
     .icon {
         font-size: .8em;

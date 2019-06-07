@@ -1,11 +1,17 @@
 import { profileErrorHandler } from '../generic/errorHandlers';
 import { ApiProfile} from '../generic/api';
+import { ApiError} from '../generic/apiCall';
+import { showConfirmModal, showInfoModal } from './modal';
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
 export const UPDATE_PROFILE_AVAILABLE = 'UPDATE_PROFILE_AVAILABLE';
 export const GET_PROFILE = 'GET_PROFILE';
 export const TRADES_FOR_USER = 'TRADES_FOR_USER';
 export const GET_FEEDBACKS = 'GET_FEEDBACKS';
 export const STATS_FOR_USER = 'STATS_FOR_USER';
+export const GET_TR_BLOCK = 'GET_TR_BLOCK';
+export const SET_TR_PAGE_SIZE = 'SET_TR_PAGE_SIZE';
+export const SET_TR_PAGE = 'SET_TR_PAGE';
+export const GET_STAKE_INFO = 'GET_STAKE_INFO';
 
 const ProfileApi = new ApiProfile();
 
@@ -101,3 +107,80 @@ export function getTradesForUser(name) {
       });
   };
 }
+
+export function verifyStakeAddress(address) {
+  return dispatch => {
+    const web3 = window.web3;
+    web3.eth.getAccounts((err, accounts) => {
+      const address = accounts[0];
+      if (!address) {
+        console.log('no address');
+        return;
+      }
+      dispatch(showConfirmModal('youWantEnableStaking', {address}, () => {
+        const message = web3.toHex('Token Stake');
+        web3.personal.sign(message, address, (err, signature) => {
+          if (err) {
+            console.log(err);
+          } else {
+            ProfileApi.verifyStakeAddress(address, signature)
+              .then(() => dispatch(getStakeInfo()))
+              .catch((e) => {
+                if (e.apiErrorCode === ApiError.UNIQUE_VIOLATION) {
+                  dispatch(showInfoModal('youCannotUseThatAddress'));
+                } else {
+                  console.log('unhandled error');
+                }
+              });
+          }
+        });
+      }));
+    });
+  };
+}
+
+export function getStakeInfo() {
+  return dispatch => {
+    ProfileApi.getStakeInfo()
+      .then((info) => {
+        console.log(info);
+        dispatch({
+          type: GET_STAKE_INFO,
+          info,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        if (error && error.apiErrorCode === -104) {
+          console.log(error);
+          dispatch({
+            type: GET_STAKE_INFO,
+            info: {verified: false},
+          });
+        }
+      });
+  };
+}
+
+export function getStakeTransactions(page, size) {
+  return dispatch => {
+    ProfileApi.getStakeTransactions(page, size)
+      .then((info) => {
+        dispatch({
+          type: GET_TR_BLOCK,
+          list: info.trs,
+          count: info.count,
+        });
+      });
+  };
+}
+
+export const setTrListPage = page => ({
+  type: SET_TR_PAGE,
+  page,
+});
+
+export const setTrListPageSize = pageSize => ({
+  type: SET_TR_PAGE_SIZE,
+  pageSize,
+});
