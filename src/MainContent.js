@@ -16,7 +16,7 @@ import { ApiNotification } from './generic/api';
 
 const NotificationApi = new ApiNotification();
 
-const defaultRoute = '/staking';
+const defaultRoute = '/terminal';
 
 class MainContent extends React.Component {
 
