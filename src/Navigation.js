@@ -14,6 +14,8 @@ import LeaderboardIcon from './assets/svg/MenuIconLeaderboard.svg';
 import LeaderboardIconHover from './assets/svg/MenuIconLeaderboardHover.svg';
 import HashlogIcon from './assets/svg/MenuIconHashlog.svg';
 import HashlogIconHover from './assets/svg/MenuIconHashlogHover.svg';
+import StakingIcon from './assets/svg/MenuIconStaking.svg';
+import StakingIconHover from './assets/svg/MenuIconStakingHover.svg';
 import SignOut from './assets/svg/SignOut.svg';
 import SignOutHover from './assets/svg/SignOutHover.svg';
 import { connect } from 'react-redux';
@@ -366,6 +368,12 @@ class Navigation extends React.Component {
         imgClass: 'hashlog',
         icon: HashlogIcon,
         iconHover: HashlogIconHover,
+      }, {
+        name: 'Staking',
+        to: '/staking',
+        imgClass: 'staking',
+        icon: StakingIcon,
+        iconHover: StakingIconHover,
       },
     ];
   }
