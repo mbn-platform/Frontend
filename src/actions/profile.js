@@ -139,20 +139,41 @@ export function verifyStakeAddress(address) {
   };
 }
 
+export function verifyEmail(email) {
+  return (dispatch) => {
+    ProfileApi.verifyEmail(email)
+      .then(() => {
+        dispatch(showInfoModal('emailVerificationSent'));
+      })
+      .catch((e) => {
+        switch (e.apiErrorCode) {
+          case ApiError.INVALID_PARAMS_SET:
+            dispatch(showInfoModal('invalidEmail'));
+            break;
+          case ApiError.THROTTLE_LIMIT:
+            dispatch(showInfoModal('tryAgainLater'));
+            break;
+          case ApiError.IN_PROGRESS:
+            dispatch(showInfoModal('emailVerificationSent'));
+            break;
+          default:
+            break;
+        }
+      });
+  };
+}
+
 export function getStakeInfo() {
   return dispatch => {
     ProfileApi.getStakeInfo()
       .then((info) => {
-        console.log(info);
         dispatch({
           type: GET_STAKE_INFO,
           info,
         });
       })
       .catch((error) => {
-        console.log(error);
-        if (error && error.apiErrorCode === -104) {
-          console.log(error);
+        if (error && error.apiErrorCode === ApiError.NOT_FOUND) {
           dispatch({
             type: GET_STAKE_INFO,
             info: {verified: false},

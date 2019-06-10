@@ -272,6 +272,10 @@ export class ApiProfile {
     apiGet('/staking')
       .then(errorHandler)
       .then(responseSchemaHandler);
+  verifyEmail = (email) =>
+    apiPost('/verifyEmail', null, {email})
+      .then(errorHandler)
+      .then(responseSchemaHandler)
 }
 
 export class ApiTerminal {
