@@ -20,7 +20,6 @@ class StakeInfo extends React.Component {
     if (!email) {
       return;
     }
-    console.log('verifying email', email);
     this.props.verifyEmail(email);
   }
 
@@ -135,7 +134,7 @@ class StakeInfo extends React.Component {
         <Col xs="12" md="6">
           <div>Only for pre-sale participants</div>
           <div>
-            <input style={style} type="email" name="email"
+            <input placeholder="example@mail.com" style={style} type="email" name="email"
               value={this.state.email}
               onChange={this.onEmailInput} />
           </div>
