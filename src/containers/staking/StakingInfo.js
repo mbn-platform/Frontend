@@ -53,7 +53,7 @@ class StakingInfo extends React.Component {
               <tr key={i}>
                 <td>{d[0]}</td>
                 <td>
-                  <div>Lvl 1 - {i <= 1 ? '150$': '600$'}</div>
+                  <div>Lvl 1 - {i <= 1 ? '150$': '500$'}</div>
                   <div>Lvl 2 - 6000$</div>
                 </td>
                 <td>{d[1]}</td>
