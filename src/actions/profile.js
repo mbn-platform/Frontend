@@ -12,6 +12,7 @@ export const GET_TR_BLOCK = 'GET_TR_BLOCK';
 export const SET_TR_PAGE_SIZE = 'SET_TR_PAGE_SIZE';
 export const SET_TR_PAGE = 'SET_TR_PAGE';
 export const GET_STAKE_INFO = 'GET_STAKE_INFO';
+export const PROFIT_CALCULATION = 'PROFIT_CALCULATION';
 
 const ProfileApi = new ApiProfile();
 
@@ -179,6 +180,21 @@ export function getStakeInfo() {
             info: {verified: false},
           });
         }
+      });
+  };
+}
+
+export function calculateTraderProfit(trader, start, investment) {
+  return dispatch => {
+    ProfileApi.calculateTraderProfit(trader, start, investment)
+      .then((info) => {
+        dispatch({
+          type: PROFIT_CALCULATION,
+          info,
+        });
+      })
+      .catch((error) => {
+        console.log('failed to get');
       });
   };
 }

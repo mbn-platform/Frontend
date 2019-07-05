@@ -276,6 +276,13 @@ export class ApiProfile {
     apiPost('/verifyEmail', null, {email})
       .then(errorHandler)
       .then(responseSchemaHandler)
+
+  calculateTraderProfit = (trader, start, investment) => {
+    const params = {trader, start, investment};
+    return apiGet('/calculator?' + qs.stringify(params))
+      .then(errorHandler)
+      .then(responseSchemaHandler);
+  }
 }
 
 export class ApiTerminal {

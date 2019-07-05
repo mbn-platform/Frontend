@@ -171,6 +171,10 @@ body {
 		}
 	}
 	border-radius: 0;
+  &.trader_select {
+    max-width: 143px;
+  }
+
 
 }
 .choose-help-popover {

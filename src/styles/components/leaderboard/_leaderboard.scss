@@ -17,6 +17,117 @@
       }
     }
 }
+
+.ratings-main {
+  .rating-navigation {
+    font-size: 22px;
+    font-weight: 500;
+    a {
+      color: grey;
+      &.active {
+        color: white;
+        text-decoration: underline;
+      }
+      &:not(:first-child) {
+        margin-left: 10px;
+      }
+    }
+  }
+  .row.calculator {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-family: maven_proregular;
+    letter-spacing: 0px;
+    & .col-12 {
+      padding: 20px;
+    }
+    & .col-6 {
+      padding: 20px;
+    }
+    max-width: 1000px;
+    border-radius: 5px;
+    background-color: #e1dbcd;
+    color: #1f2225;
+    font-size: 19px;
+    .title {
+      font-weight: bold;
+      font-size: 24px;
+    }
+    .param {
+      margin-top: 20px;
+      .investment {
+        color: #3bbc94;
+        border: none;
+        border-radius: 3px;
+        background-color: #cdc9bf;
+        width: 80px;
+        padding-left: 10px;
+      }
+      .trader-name {
+        color: #3bbc94;
+        text-decoration: underline;
+        text-decoration-style: dashed;
+        text-decoration-color: #3bbc94;
+        text-underline-position: under;
+      }
+      .dropdown-link-wrap {
+        display: inline-block;
+        width: unset;
+        height: unset;
+        font-size: 19px;
+        color: #3bbc94;
+        text-decoration: underline;
+        text-decoration-style: dashed;
+        text-decoration-color: #3bbc94;
+        text-underline-position: under;
+        border: none;
+        .arrow_down {
+          display: none;
+        }
+        .dropdown-link div {
+          width: unset;
+        }
+      }
+
+    }
+    .calculation {
+      min-height: 208px;
+      border-radius: 5px;
+      background-color: #fcbe19;
+      font-size: 18px;
+      padding: 10px 30px;
+
+      .profit {
+        color: #3bbc94;
+        font-size: 36px;
+        font-weight: 700;
+      }
+      button {
+        padding-left: 15px;
+        padding-right: 15px;
+        font-size: 16px;
+        color: #1f2225;
+        font-weight: bold;
+        width: unset;
+        border-radius: 3px;
+      }
+    }
+    .undertext {
+      font-size: 9px;
+      color: #a19e96;
+      margin-top: 5px;
+      padding-left: 30px;
+    }
+  }
+  .ratings-main__block {
+    margin-top: 20px;
+  }
+}
+
+.react-calendar.calendar {
+  position: absolute;
+  z-index: 10;
+}
 .leaderboard__title {
     padding: 5px 10px !important;
     font-size: 14px;

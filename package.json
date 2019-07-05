@@ -17,6 +17,7 @@
     "qrcode.react": "^0.8.0",
     "qs": "^6.5.2",
     "react": "^16.5.2",
+    "react-calendar": "^2.19.0",
     "react-copy-to-clipboard": "^5.0.1",
     "react-custom-scrollbars": "^4.2.1",
     "react-debounce-render": "^4.0.1",
