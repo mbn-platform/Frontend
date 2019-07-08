@@ -56,7 +56,7 @@ class ContractDetails extends React.Component {
                 <button onClick={this.props.onOfferSendClick} type="button" className="send-request-btn btn btn-secondary active">
                   <FormattedMessage
                     id="profile.sendRequest"
-                    defaultMessage="SEND REQUEST"
+                    defaultMessage="INVEST NOW"
                   />
                   <span id="help-icon-send-request" className="d-none d-md-inline-block icon icon-help icon-help-web-button" />
                 </button>

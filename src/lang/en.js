@@ -201,7 +201,7 @@ const en = {
   'profile.maxLossInDetails' : 'Max loss:',
   'profile.fee' : 'Fee',
   'profile.feeInDetails' : 'Fee:',
-  'profile.sendRequest' : 'SEND REQUEST',
+  'profile.sendRequest' : 'INVEST NOW',
   'profile.yourRequestWillBe' : 'YOUR REQUEST WILL BE',
   'profile.or' : 'OR',
   'profile.accepted' : ' ACCEPTED ',
