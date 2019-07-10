@@ -7,19 +7,21 @@ import { Desktop } from '../../generic/MediaQuery';
 import {sortData, onColumnSort, classNameForColumnHeader}  from '../../generic/terminalSortFunctions';
 import {BigNumber} from 'bignumber.js';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import createMqProvider, {querySchema} from '../../MediaQuery';
-
-const { Screen} = createMqProvider(querySchema);
 
 class RecentTrades extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {sort: {}, tableHeight: 200};
+    this.state = {sort: {}};
     this.sortData = sortData.bind(this);
-    this.onColumnSort = onColumnSort.bind(this);
     this.sortFunctions = {};
     this.tableWrapper = React.createRef();
+    this.columns = this.getColumns();
+  }
+
+  onColumnSort = (column) => {
+    onColumnSort.call(this, column);
+    this.columns = this.getColumns();
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -32,8 +34,11 @@ class RecentTrades extends React.Component {
     return false;
   }
 
-  componentDidMount() {
-    this.setState({tableHeight: this.tableWrapper.current.offsetHeight });
+  componentDidUpdate(prevProps) {
+    if (prevProps.market !== this.props.market) {
+      this.columns = this.getColumns();
+      this.forceUpdate();
+    }
   }
 
     getColumns = () => {
@@ -120,29 +125,23 @@ class RecentTrades extends React.Component {
       }
       return (
         <div className="trades-table chart col-12">
-          <Screen on={screenWidth => {
-            return (
-              <React.Fragment>
-                <div className="chart__top justify-content-between row">
-                  <div className="chart-name">
-                    <FormattedMessage id="terminal.recentTrades"
-                      defaultMessage="Recent Trades"/>
-                  </div>
-                  <Desktop>
-                    <div className="chart-controls align-items-center justify-content-between row">
-                    </div>
-                  </Desktop>
-                </div>
-                <div ref={this.tableWrapper} className="trades-table-wrapper terminal__recent-table-wrapper">
-                  <ReactTable
-                    columns={this.getColumns(screenWidth)}
-                    data={sortedData}
-                    scrollBarHeight={'100%'}
-                  />
-                </div>
-              </React.Fragment>
-            );
-          }} />
+          <div className="chart__top justify-content-between row">
+            <div className="chart-name">
+              <FormattedMessage id="terminal.recentTrades"
+                defaultMessage="Recent Trades"/>
+            </div>
+            <Desktop>
+              <div className="chart-controls align-items-center justify-content-between row">
+              </div>
+            </Desktop>
+          </div>
+          <div ref={this.tableWrapper} className="trades-table-wrapper terminal__recent-table-wrapper">
+            <ReactTable
+              columns={this.columns}
+              data={sortedData}
+              scrollBarHeight={'100%'}
+            />
+          </div>
         </div>
       );
     }
