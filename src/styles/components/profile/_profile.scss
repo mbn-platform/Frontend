@@ -185,7 +185,7 @@
                     }
                 }
                 .card-body {
-                    padding: 25px;
+                    padding-bottom: 25px;
                     overflow-y: hidden;
                     overflow-x: hidden;
                     .ReactTable .rt-thead .rt-tr {
@@ -526,7 +526,7 @@
                             padding: 0;
                             min-height: 300px;
                             .profit-card-body {
-                                padding: 25px;
+                                padding-bottom: 25px;
                                 position: absolute;
                                 flex: 1;
                                 height: calc(100% - 54px);
@@ -544,6 +544,24 @@
                                 }
                             }
                         }
+                    }
+                    .legend {
+                      .usdt {
+                        color: #31b993;
+                      }
+                      .btc {
+                        color: #44b6ff;
+                      }
+                      .graphs {
+                        font-size: 24px;
+                        span {
+                          text-decoration: underline;
+                          cursor: pointer;
+                        }
+                      }
+                      .values {
+                        font-size: 16px;
+                      }
                     }
                 }
             }
@@ -744,9 +762,6 @@
                     .raiting-left-item {
                         width: 131px;
                     }
-                    .raiting-right-item {
-                        width: 145px;
-                    }
                     .raiting {
                         .description-text {
                             font-size: 2.0em;
@@ -781,7 +796,7 @@
                             margin-top: 10px;
                             font-size: 2em;
                             letter-spacing: .1em;
-                            color: #cfa925;
+                            color: #44b6ff;
                             position: relative;
                             .currency-value-usd-text {
                                 font-size: 14px;
@@ -796,6 +811,7 @@
                         }
                         .btc-text {
                             font-size: 2em;
+                            color: #31b993;
                             .currency-value-btc-text {
                                 font-size: 12px;
                             }
@@ -903,9 +919,6 @@
                         margin-bottom: 17px;
                         padding: 0 32px 0 32px;
                         .raiting-left-item {
-                            width: 120px;
-                        }
-                        .raiting-right-item {
                             width: 120px;
                         }
                         .description-text {
@@ -1552,3 +1565,4 @@
 @import './contract-details';
 @import './choose-api';
 @import './contract-sent';
+@import './graphics';

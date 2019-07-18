@@ -107,8 +107,24 @@ class RatingTable extends React.PureComponent {
         Cell: row => row.original.average,
         className: 'ratings__table-cell',
       }, {
+        Header: <div
+          className="table__header-wrapper">
+          <div className="rating__header-title-wrapper">
+            <FormattedMessage
+              id="leaderboard.lastSeven"
+              defaultMessage="Last seven balance, USDT"
+            />
+          </div>
+        </div>,
+        width: 180,
+        sortable: false,
+        Cell: row => <img src={`/api/static/${row.value}_stat.png`} alt="" />,
+        className: 'ratings__table-cell',
+        accessor: 'name',
+      }, {
         Header: '',
         id: 'request',
+        className: 'ratings__table-cell justify-content-center',
         Cell: row => {
           return (
             <Link onClick={e => e.stopPropagation()} to={'/' + row.value}>
@@ -116,6 +132,7 @@ class RatingTable extends React.PureComponent {
             </Link>
           );
         },
+        minWidth: 120,
         accessor: 'name',
         sortable: false,
       }

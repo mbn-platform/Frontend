@@ -1,6 +1,5 @@
 import React from 'react';
 import { Col, Container, Row } from 'reactstrap';
-import RatingBar from './RatingBar';
 import Stats from '../../components/Stats';
 import ContractSettings from './ContractSettings';
 import SendRequestBlock from './SendRequestBlock';
@@ -52,7 +51,6 @@ class ProfileInfo extends React.Component {
               <Col xs="12">
                 {this.getHeader()}
                 {this.getHeaderSeparator()}
-                {/*<RatingBar rating={0}/>*/}
                 <Stats
                   traderRating={profile.topTraders}
                   investorRating={profile.topInvesters}
@@ -87,7 +85,6 @@ class ProfileInfo extends React.Component {
               <Col xs="12">
                 {this.getHeader()}
                 {this.getHeaderSeparator()}
-                <RatingBar rating={0}/>
                 <Stats
                   traderRating={profile.topTraders}
                   investorRating={profile.topInvesters}

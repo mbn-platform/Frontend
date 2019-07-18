@@ -257,7 +257,7 @@ export class ApiProfile {
       .then(errorHandler)
       .then(responseSchemaHandler);
   getStatsForUser = name =>
-    apiGet(`/profile/${name}/stats`)
+    apiGet(`/profile/${name}/stats_profit`)
       .then(errorHandler)
       .then(responseSchemaHandler);
   verifyStakeAddress = (address, sign) =>

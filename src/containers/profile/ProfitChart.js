@@ -4,15 +4,55 @@ import { Col } from 'reactstrap';
 import { Desktop, Mobile } from '../../generic/MediaQuery';
 import AmChartsReact from '@amcharts/amcharts3-react';
 import { FormattedMessage } from 'react-intl';
+import { formatDate } from '../../generic/util';
+import memoizeOne from 'memoize-one';
 
 class ProfitChart extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {selectedInterval: 3};
+  state = {
+    selectedInterval: 1,
+    maximum: 0,
+    minimum: 0,
+    dataProvider: [],
+    graphIds: [],
   }
 
-  segments = ['MONTH', '3 MONTH', '6 MONTH', 'YEAR']
+  segments = ['ALL', 'CURRENT']
+
+  onSegmentChange = (segment) => {
+    this.setState({selectedInterval: segment});
+  }
+
+  computeState(segment) {
+    let data = this.props.stats || [];
+    const graphIds = [];
+    const dataProvider = [];
+    if (segment === 1) {
+      data = data.filter((c) => c.state === 'VERIFIED');
+    }
+    data.forEach(({_id, points, start, sum}) => {
+      graphIds.push(_id);
+      dataProvider.push({
+        id: _id,
+        start,
+        sum,
+        [_id]: 0,
+        date: new Date(start).getTime(),
+        value: 0,
+      });
+      points.forEach((p) => {
+        dataProvider.push({
+          id: _id,
+          start,
+          sum,
+          [_id]: p.percent,
+          date: p.date,
+          value: p.percent,
+        });
+      });
+    });
+    return {dataProvider, graphIds};
+  }
 
   render() {
     return (
@@ -25,7 +65,7 @@ class ProfitChart extends React.Component {
                   <span className="icon icon-profit icon-005-growth"/>
                   <FormattedMessage
                     id="profile.profitChart"
-                    defaultMessage="PROFIT CHART"
+                    defaultMessage="PROFITABILITY PER CONTRACT UNDER MANAGEMENT"
                   />
                 </div>
                 <Col className="d-flex justify-content-end">
@@ -36,17 +76,7 @@ class ProfitChart extends React.Component {
           </div>
           <div className="card-body">
             <div className="container d-flex flex-column profit-card-body">
-
-              <div className="row order-3 order-md-1 justify-content-center">
-                <div className="col-auto profit"><div className="circle"/><div className="text">
-                  <FormattedMessage
-                    id="profile.profitAsTrader"
-                    defaultMessage="PROFIT AS TRADER"
-                  />
-
-                </div>
-                </div>
-              </div>
+              
               <div className="row order-2 justify-content-center amcharts-block">
                 <div className="col-12">
                   <div className="amcharts">
@@ -61,9 +91,7 @@ class ProfitChart extends React.Component {
                   <SegmentedControl
                     segments={this.segments}
                     selectedIndex={this.state.selectedInterval}
-                    onChange={i => {
-                      this.setState({selectedInterval: i});
-                    }}
+                    onChange={this.onSegmentChange}
                   />
                 </Desktop>
                 <Mobile>
@@ -71,9 +99,7 @@ class ProfitChart extends React.Component {
                     segments={this.segments}
                     segmentWidth={50}
                     selectedIndex={this.state.selectedInterval}
-                    onChange={i => {
-                      this.setState({selectedInterval: i});
-                    }}
+                    onChange={this.onSegmentChange}
                   />
                 </Mobile>
               </div>
@@ -86,58 +112,35 @@ class ProfitChart extends React.Component {
 
   }
 
-  makeConfig(selectedInterval) {
-    let dataProvider = [];
-    let last;
-    switch (selectedInterval) {
-      case 0:
-        last = 86400000 * 30;
-        break;
-      case 1:
-        last = 86400000 * 30 * 3;
-        break;
-      case 2:
-        last = 86400000 * 30 * 6;
-        break;
-      case 3:
-        last = 86400000 * 30 * 12;
-        break;
-      default:
-        throw new Error();
-    }
-    const now = Date.now();
-    this.props.stats.forEach((s) => {
-      const startPoint = {
-        x: new Date(s.start),
-        y: s.percent,
-        value: s.percent,
+  balloonFunction(graphItem) {
+    const data = graphItem.dataContext;
+    console.log(graphItem);
+    return `<div>
+    <div>Contract Start: ${formatDate(new Date(data.start))}</div>
+    <div>Contract Sum: ${data.sum}</div>
+    <div>Profit: ${data.value.toFixed(2)}%</div>
+    </div>`;
+  }
+
+  makeConfig = memoizeOne((data, selectedInterval) => {
+    const {dataProvider, graphIds } = this.computeState(selectedInterval);
+    const graphs = graphIds.map((id) => {
+      return {
+        id: id,
+        yField: id,
+        xField: 'date',
+        lineAlpha: 1,
+        lineThickness: 2,
+        lineColor: '#cfa925',
+        balloonFunction: this.balloonFunction,
+        bullet: 'round',
+        bulletSize: 1,
+        bulletAlpha: 0,
       };
-      const endPoint = {
-        x: new Date(s.end),
-        y: s.percent,
-        value: s.percent,
-      };
-      if (dataProvider.length !== 0) {
-        const lastPoint = dataProvider[dataProvider.length - 1];
-        if (startPoint.x.getTime() - lastPoint.x.getTime() >= 86400000) {
-          dataProvider.push({
-            x: lastPoint.x,
-            y: 0,
-            value: 0,
-          });
-          dataProvider.push({
-            x: startPoint.x,
-            y: 0,
-            value: 0,
-          });
-        }
-      }
-      dataProvider.push(startPoint);
-      dataProvider.push(endPoint);
     });
-    const maximum = dataProvider.reduce((max, d) => Math.max(max, d.value), 0);
-    const minimum = dataProvider.reduce((min, d) => Math.min(min, d.value), maximum);
-    const offset = maximum !== minimum ? (maximum - minimum) * 0.1: Math.abs(maximum) * 2;
+    let maximum = dataProvider.reduce((a, b) => a > b.value ? a : b.value, 5);
+    const minimum = dataProvider.reduce((a, b) => a < b.value ? a : b.value, -5);
+    console.log(dataProvider, graphIds);
     return {
       'type': 'xy',
       'theme': 'none',
@@ -153,26 +156,31 @@ class ProfitChart extends React.Component {
         'shadowAlpha': 0,
         'fixedPosition':true
       },
-      'graphs': [{
-        'id': 'AmGraph-1',
-        'lineAlpha': 1,
-        'lineColor': '#0a87b8',
-        lineThickness: 2,
-        'fillAlphas': 0,
-        'valueField': 'value',
-        'xField': 'x',
-        'yField': 'y'
-      },],
+      'chartCursor': {
+        cursorColor: '#c74949',
+        showBalloon: true,
+        'valueLineBalloonEnabled': true,
+        'valueLineEnabled': true,
+        listeners: [
+          // {
+          // event: 'changed',
+          // method: function() { console.log(arguments) },
+          // },
+          // {
+          // event: 'moved',
+          // method: function() { console.log(arguments) },
+          // },
+        ],
+      },
+      'graphs': graphs,
       'valueAxes': [{
-        'minimum': minimum - offset,
-        'maximum': maximum + offset,
         'id': 'ValueAxis-1',
         'title': 'Contract profit, %',
         'position': 'right',
+        maximum,
+        minimum,
         'axisAlpha': 0
       }, {
-        minimumDate: Date.now() - last,
-        maximumDate: now,
         'id': 'ValueAxis-2',
         'axisAlpha': 1,
         'position': 'bottom',
@@ -188,10 +196,14 @@ class ProfitChart extends React.Component {
       'titles': [],
       'dataProvider': dataProvider,
     };
-  }
+  })
 
   renderChart() {
-    const config = this.makeConfig(this.state.selectedInterval);
+    const config = this.makeConfig(this.props.stats, this.state.selectedInterval);
+    if (config.graphs.length === 0) {
+      return null;
+    }
+    console.log(config);
     return (
       <AmChartsReact.React  style={{height: '100%', width: '100%', backgroundColor: 'transparent',position: 'absolute'}}
         options={config} />
