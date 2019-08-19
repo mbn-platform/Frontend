@@ -104,7 +104,7 @@ class SendRequestBlock extends React.Component {
     e.stopPropagation();
     const currency = e.target.dataset.currency;
     if(currency === 'USDT' || currency === 'BTC' || currency === 'ETH') {;
-      this.props.showModalWindow('profile.shouldByAlwaysAvailable')
+      this.props.showModalWindow('profile.shouldByAlwaysAvailable');
       return;
     }
     if(!this.canChangeCurrency(currency)) {
@@ -219,6 +219,14 @@ class SendRequestBlock extends React.Component {
     );
   }
 
+  onOfferSendClick = () => {
+    if (!this.props.auth.loggedIn) {
+      window.location = '/login';
+    } else {
+      this.setState({visibleBlock: SEND_REQUEST_BLOCK_SELECT_API});
+    }
+  }
+
   render() {
     const profile = this.props.profile;
     const contractSettings = profile.contractSettings;
@@ -226,7 +234,7 @@ class SendRequestBlock extends React.Component {
       case SEND_REQUEST_BLOCK_DETAILS: {
         return (
           <ContractDetails
-            onOfferSendClick={() => this.setState({visibleBlock: SEND_REQUEST_BLOCK_SELECT_API})}
+            onOfferSendClick={this.onOfferSendClick}
             availableForOffers={profile.available}
             duration={contractSettings.duration}
             amount={contractSettings.minAmount}
@@ -368,6 +376,7 @@ const mapStateToProps = state => ({
   exchanges: state.exchanges,
   request: state.request,
   rates: state.rates,
+  auth: state.auth,
   exchangesInfo: state.exchangesInfo
 });
 

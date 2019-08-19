@@ -45,7 +45,7 @@ class ProfileInfo extends React.Component {
     const contractSettings = profile.contractSettings;
     if(this.props.own) {
       return (
-        <Col xs="12" md="auto" sm="12" className="item-screen info-screen contract-block">
+        <Col xs="12" md="auto" sm="12" className="info-screen contract-block">
           <Container fluid>
             <Row className="justify-content-center">
               <Col xs="12">
@@ -54,6 +54,7 @@ class ProfileInfo extends React.Component {
                 <Stats
                   traderRating={profile.topTraders}
                   investorRating={profile.topInvesters}
+                  averageCurrent={profile.averageCurrent}
                   roiInBTC={profile.roiInBTC}
                   roiInUSD={profile.roiInUSD}
                   totalInBTC={profile.totalInBTC}
@@ -79,7 +80,7 @@ class ProfileInfo extends React.Component {
       );
     } else {
       return (
-        <Col xs="12" md="auto" sm="12" className="item-screen info-screen contract-block">
+        <Col xs="12" md="auto" sm="12" className="info-screen contract-block">
           <Container fluid>
             <Row className="justify-content-center">
               <Col xs="12">
@@ -89,6 +90,7 @@ class ProfileInfo extends React.Component {
                   traderRating={profile.topTraders}
                   investorRating={profile.topInvesters}
                   roi={15}
+                  averageCurrent={profile.averageCurrent}
                   roiInBTC={profile.roiInBTC}
                   roiInUSD={profile.roiInUSD}                        
                   totalInBTC={profile.totalInBTC}
