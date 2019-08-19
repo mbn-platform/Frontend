@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { UncontrolledTooltip } from 'reactstrap';
 import {injectIntl, FormattedMessage} from 'react-intl';
 
@@ -31,11 +32,13 @@ class ContractDetails extends React.Component {
               <ContractDetailRow
                 name={this.props.intl.messages['profile.currencyOfContractInDetails']}
                 value={this.props.currency}
+                color={this.props.currency}
               />              
               <ContractDetailRow
                 name={this.props.intl.messages['profile.minContractAmount']}
                 value={this.props.amount}
                 dim={this.props.currency}
+                color={this.props.currency}
               />
               <ContractDetailRow
                 name={this.props.intl.messages['profile.targetProfitInDetails']}
@@ -115,18 +118,19 @@ function InvestNowButton({available, onClick}) {
   }
 }
 
-const ContractDetailRow = ({ name, value, dim }) => (
+const ContractDetailRow = ({ name, value, dim, isCurrency, color }) => (
   <div className="row d-flex justify-content-between request-sent-info-item">
     <div className="col-7 col-md-auto">
       <div className="left-info">{name}</div>
     </div>
     <div className="col-auto d-block d-none gap"/>
     <div className="col col-md-auto">
-      <div className="right-info">{value} <span className="attribute">{dim}</span>
+      <div className={classNames('right-info', color && color.toLowerCase())}>{value} <span className="attribute">{dim}</span>
       </div>
     </div>
   </div>
 );
+
 
 
 export default injectIntl(ContractDetails);
