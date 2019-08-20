@@ -1552,6 +1552,18 @@
         }
     }
 }
+input.profile-settings {
+  background-color: #1f2225;
+  width: 109px;
+  color: #727274;
+  line-height: 1;
+  padding: 1px 13px;
+  font-size: 1.6em;
+  border: 1px solid #494d4d;
+  border-radius: 5px;
+  height: 27px;
+  width: 100%;
+}
 
 @include media-breakpoint-down(sm) {
 	.profile-item {

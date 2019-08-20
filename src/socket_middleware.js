@@ -4,6 +4,8 @@ import { SELECT_MARKET, SELECT_EXCHANGE, EXCHANGE_MARKETS,
 import { LOGGED_OUT, LOGGED_IN } from './actions/auth';
 import {updateKeyBalance} from './actions/apiKeys';
 import {updateOrderBook, updateHistory, updateRates, updateTicker, selectMarket} from './actions/terminal';
+import { UPDATE_ORDER } from './actions/terminal';
+import { addQuickNotif } from './actions/quickNotif';
 let socket;
 
 function createSocket(store) {
@@ -13,6 +15,12 @@ function createSocket(store) {
   });
   socket.on('action', action => {
     store.dispatch(action);
+    if (action.type === UPDATE_ORDER && action.order && action.order.state === 'CLOSED') {
+      store.dispatch(addQuickNotif({
+        type: 'order_closed',
+        object: action.order,
+      }));
+    }
   });
   socket.on('orders', ({name, content}) => {
     const [exchange,, market] = name.split('.');

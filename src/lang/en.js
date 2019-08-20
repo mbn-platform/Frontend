@@ -189,6 +189,7 @@ const en = {
   'orders.total' : 'Total',
   'profile.contractDetails' : 'Contract Details',
   'profile.securitySettings' : 'Security settings',
+  'profile.notificationSettings' : 'Notifications',
   'profile.durationOfContract' : 'Duration of contract',
   'profile.enable2FA' : 'Enable 2FA',
   'profile.durationOfContractInDetails' : 'Duration of contract:',

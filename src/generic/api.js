@@ -237,6 +237,12 @@ export class ApiProfile {
       .then(errorHandler)
       .then(responseSchemaHandler);
 
+  updateNotificationSettings = (name, settings) =>
+    apiPut(`/profile/${name}/notificationSettings`, null, settings)
+      .then(errorHandler)
+      .then(responseSchemaHandler);
+
+
   toggleAvailable = (name, available) =>
     apiPut(`/profile/${name}/available`, null, available)
       .then(errorHandler)
@@ -412,4 +418,18 @@ export class ApiNotification {
     apiGet('/notifications')
       .then(errorHandler)
       .then(responseSchemaHandler);
+}
+
+export class ApiContacts {
+  fetch = () =>
+    apiGet('/contacts')
+
+  create = (type, value) =>
+    apiPost('/contacts', null, {
+      type,
+      value,
+    })
+
+  delete = (id) =>
+    apiDelete('/contacts/' + id)
 }

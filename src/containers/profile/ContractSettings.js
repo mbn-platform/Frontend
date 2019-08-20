@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import {FormattedMessage, injectIntl} from 'react-intl';
 import { Desktop, Mobile } from '../../generic/MediaQuery';
 import  SecuritySettings from './SecuritySettings';
+import NotificationSettings from './NotificationSettings';
 import { showInfoModal } from '../../actions/modal';
 
 class ContractSettings extends React.Component {
@@ -124,6 +125,7 @@ class ContractSettings extends React.Component {
   render() {
     return (
       <div className="row-fluid contract-setting-block">
+        <NotificationSettings />
         <div className="row title-setting">
           <div className="col-auto text-center align-middle contract-setting-title title-text">
             <span className="icon icon-settings icon-006-wrench"/>

@@ -19,6 +19,7 @@ import { LOGGED_OUT } from './actions/auth';
 import ratings from './reducers/ratings';
 import stakeInfo from './reducers/stakeInfo';
 import stakeTr from './reducers/stakeTr';
+import quickNotif from './reducers/quickNotif';
 
 const combined = combineReducers(
   {
@@ -40,7 +41,8 @@ const combined = combineReducers(
     profile,
     stakeInfo,
     stakeTr,
-    exchangesInfo
+    exchangesInfo,
+    quickNotif,
   });
 
 const root = (state, action) => {
