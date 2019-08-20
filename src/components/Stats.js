@@ -38,44 +38,10 @@ const renderRankInTrades = () => {
   );
 };
 
-const renderRoi = (roiInUSD, roiInBTC ) => (
-  <div className="row-fuild money">
-    <Col>
-      <div className="description-text">
-        <FormattedMessage id="returnOnInvestment"
-          defaultMessage="return on investment (ROI):"/>
-      </div>
-      <div className="value-text">
-        {roiInUSD}<span className="currency-value-usd-text letter-spacing-1">
-          <FormattedMessage id="percentInUsd"
-            defaultMessage="% in usd"/>
-        </span>
-        <span className="icon icon-help icon-help-web-button"  id="help-icon-roi"/>
-        <UncontrolledTooltip target="help-icon-roi">
-          <FormattedMessage id="roiCalculatedBy"
-            defaultMessage="ROI CALCULATED BY MEMBRANA ANALYSIS SYSTEM"/>
-        </UncontrolledTooltip>
 
-      </div>
-      <div className="description-text btc-text">
-        ~ {roiInBTC} <span className="currency-value-btc-text letter-spacing-1">
-          <FormattedMessage id="percentInBtc"
-            defaultMessage="% in btc"/>
-        </span>
-      </div>
-    </Col>
-  </div>
-);
-
-const Stats = ({ traderRating, investorRating, roiInUSD, roiInBTC, totalInBTC, totalInUSDT })  => (
+const Stats = ({ traderRating, investorRating, roiInUSD, roiInBTC, totalInBTC, totalInUSDT, averageCurrent })  => (
   <Row className="justify-content-between raiting-block">
-    {/*<Col xs="auto" className="raiting-left-item">*/}
-    {/*<div className="content-fuild">*/}
-    {/*{renderRankInTrades()}*/}
-    {/*{renderROI(roiInUSD, roiInBTC)}*/}
-    {/*</div>*/}
-    {/*</Col>*/}
-    <Col className="col-auto raiting-right-item">
+    <Col xs="6" md="6" className="raiting-left-item">
       <div className="container-fuild">
         {/*{renderInvestorsRank()}*/}
         <div className="row-fuild money">
@@ -98,8 +64,32 @@ const Stats = ({ traderRating, investorRating, roiInUSD, roiInBTC, totalInBTC, t
         </div>
       </div>
     </Col>
+    <Col xs="auto" md="6" className="raiting-right-item">
+      <div className="content-fuild">
+        {renderROI(averageCurrent)}
+      </div>
+    </Col>
   </Row>
 );
+
+const renderROI = (averageCurrent) => {
+  if (averageCurrent || averageCurrent === 0) {
+    averageCurrent = averageCurrent.toFixed(2);
+  }
+  return (
+    <div className="row-fuild money">
+      <Col>
+        <div className="description-text">
+          <FormattedMessage id="profile.contractCurrentProfit"
+            defaultMessage="Profit per current contract:"/>
+        </div>
+        <div className="value-text" style={{color: '#cfa925'}} >
+          {averageCurrent}%
+        </div>
+      </Col>
+    </div>
+  );
+};
 
 Stats.propTypes = {
   traderRating: PropTypes.number,

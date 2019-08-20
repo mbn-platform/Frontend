@@ -117,13 +117,17 @@ class Calculator extends React.Component {
       const {trader, start, result} = this.props.calculation;
       const investment = parseFloat(this.state.investment);
       let resultBalance = 0;
+      let percent = 0;
       if (investment > 0) {
         resultBalance = investment * result;
+        percent = (resultBalance - investment) / investment * 100;
       }
+      const percentValue = percent > 0 ? `+${percent.toFixed()}%`
+        : `${percent.toFixed(2)}%`;
       return (
         <div>
           <div>You sent in trust management {this.state.investment} USDT to @{trader.toUpperCase()} at {new Date(start).toLocaleDateString()} and today your total balance is:</div>
-          <div className='profit'>{resultBalance.toFixed(2)} USDT</div>
+          <div className='profit'>{resultBalance.toFixed(2)} USDT {' '} {percentValue}</div>
           {this.renderInvestButton(this.props.calculation.trader)}
         </div>
       );
