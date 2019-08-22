@@ -60,6 +60,19 @@ export function updateNotificationSettings(settings) {
   };
 }
 
+export function updateInfo(info) {
+  return (dispatch, getState) => {
+    const name = getState().profile.name;
+    ProfileApi.setInfo(name, info)
+      .then((profile) => dispatch({
+        type: UPDATE_PROFILE,
+        profile,
+      }))
+      .catch(err => {
+        profileErrorHandler(err, dispatch);
+      });
+  };
+}
 
 export function updateContractSettings(name, settings) {
   return dispatch => {

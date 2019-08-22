@@ -3,13 +3,14 @@ import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { Col, Row } from 'reactstrap';
 import PropTypes from 'prop-types';
-import { updateNotificationSettings, verifyTelegram } from '../../actions/profile';
+import { updateNotificationSettings, verifyTelegram, updateInfo } from '../../actions/profile';
 
 class NotificationSettings extends React.Component {
 
   static propTypes = {
     contacts: PropTypes.array.isRequired,
     settings: PropTypes.object.isRequired,
+    info: PropTypes.string,
   }
 
   static defaultProps = {
@@ -30,11 +31,13 @@ class NotificationSettings extends React.Component {
   }
 
   render() {
-    const { settings } = this.props;
+    const { settings, info } = this.props;
     const telegramContact = this.props.contacts.find((c) => c.type === 'telegram');
     return (
       <React.Fragment>
-        <SettingsHeader title="profile.notificationSettings" />
+        <SettingsHeader title="profile.about" />
+        <About info={info} updateInfo={this.props.updateInfo} />
+        <SettingsHeader title="profile.notificationSettings"/>
         <TelegramContact contact={telegramContact} onVerifyClick={this.props.verifyTelegram} />
         <SettingsSwitch
           onToggle={this.onChange}
@@ -49,6 +52,8 @@ class NotificationSettings extends React.Component {
   }
 }
 
+
+
 class SettingsHeader extends React.PureComponent {
   render() {
     const { title } = this.props;
@@ -59,6 +64,59 @@ class SettingsHeader extends React.PureComponent {
           <FormattedMessage id={title} />
         </div>
       </div>
+    );
+  }
+}
+
+class About extends React.Component {
+
+  state = {
+    about: '',
+  }
+
+  static propTypes = {
+
+  }
+
+  onChange = (e) => {
+    const about = e.target.value;
+    if (about.length > 144) {
+      return;
+    }
+    this.setState({about});
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.info !== this.props.info) {
+      this.setState({about: (this.props.info || '')});
+    }
+  }
+
+  onSaveClick = () => {
+    const info = this.state.about;
+    if (info) {
+      this.props.updateInfo(info);
+    }
+  }
+
+  render() {
+    const {about} = this.state;
+    const canSave = about && about !== this.props.info;
+    return (
+      <Row>
+        <textarea value={about} onChange={this.onChange}
+          className='about'
+          placeholder='Enter information about yourself' />
+        {
+          canSave ? (
+            <Col  xs="12">
+              <Row className="justify-content-center">
+                <button className="edit-btn btn btn-secondary" style={{marginBottom: '15px'}} onClick={this.onSaveClick}>Save</button>
+              </Row>
+            </Col>
+          ) : null
+        }
+      </Row>
     );
   }
 }
@@ -176,11 +234,13 @@ SettingsSwitch.propTypes = {
 const mapPropsToState = (state) => ({
   contacts: state.profile.contacts,
   settings: state.profile.notificationSettings,
+  info: state.profile.info,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   updateNotificationSettings: (settings) => dispatch(updateNotificationSettings(settings)),
   verifyTelegram: (value) => dispatch(verifyTelegram(value)),
+  updateInfo: (info) => dispatch(updateInfo(info)),
 });
 
 export default connect(mapPropsToState, mapDispatchToProps)(NotificationSettings);

@@ -36,6 +36,13 @@ class QuickNotification extends React.Component {
               case 'order_closed': {
                 return <OrderNotification event={e} onClick={this.onEventClick} key={e.object._id} />;
               }
+              case 'request_created':
+              case 'request_accepted':
+              case 'request_canceled':
+              case 'request_verified':
+              case 'request_rejected': {
+                return <RequestNotification event={e} onClick={this.onEventClick} key={e.object._id} />;
+              }
               default:
                 return null;
             }
@@ -43,6 +50,41 @@ class QuickNotification extends React.Component {
         })}
       </div>
     );
+  }
+}
+
+function RequestNotification({event, onClick}) {
+  const contract = event.object;
+  return (
+    <Card className="quick-notif" onClick={() => onClick(event)}>
+      <div className="top-block">
+        <span className="time">{formatDate(new Date())}</span>
+        <span className="close-notif" />
+      </div>
+      <div className="title">
+        {requestNotifTitle(event.type)}
+      </div>
+      <div>{contract.contractSettings.sum} {contract.contractSettings.currency}</div>
+    </Card>
+  );
+}
+
+function requestNotifTitle(event) {
+  switch (event) {
+    case 'request_rejected':
+      return 'Contract request rejected';
+    case 'request_created':
+      return 'New contract request';
+    case 'request_canceled':
+      return 'Contract request canceled';
+    case 'request_accepted': {
+      return 'Contract request accepted';
+    }
+    case 'request_verified': {
+      return 'Contract verified';
+    }
+    default:
+      return '';
   }
 }
 
@@ -69,23 +111,6 @@ const mapDispatchToProps = (dispatch) => ({
   removeQuickNotif: (event) => dispatch(removeQuickNotif(event)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(QuickNotification);
-
-function EventNotification({event, onClick}) {
-  const symbol = event.symbol.split('-').reverse().join('/');
-  return(
-    <Card className="quick-notif" onClick={() => onClick(event)}>
-      <div className="top-block">
-        <span className="time">{formatDate(new Date(event.createdAt))}</span>
-        <span className="close-notif" />
-      </div>
-      <div className="title">
-        {`${event.exchange} ${symbol}`}
-      </div>
-      <PriceChange value={event.priceChange} interval={event.timeInterval} />
-      <VolumeChange value={event.volumeChange} interval={event.timeInterval} />
-    </Card>
-  );
-}
 
 function PriceChange({value, interval}) {
   if (value) {

@@ -1564,6 +1564,26 @@ input.profile-settings {
   height: 27px;
   width: 100%;
 }
+textarea {
+  &.about {
+    width: 100%;
+    background-color: transparent;
+    border-radius: 5px;
+    height: 106px;
+    margin: auto;
+    font-size: 1.4em;
+    padding: 10px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    resize: none;
+    border-color: #494d4d;
+    outline: none;
+    color: #6c6c6e;
+    transition-property: color, border-color;
+    transition-duration: 400ms;
+  }
+}
 
 @include media-breakpoint-down(sm) {
 	.profile-item {

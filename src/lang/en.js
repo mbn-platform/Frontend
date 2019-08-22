@@ -191,6 +191,7 @@ const en = {
   'profile.contractDetails' : 'Contract Details',
   'profile.securitySettings' : 'Security settings',
   'profile.notificationSettings' : 'Notifications',
+  'profile.about' : 'About',
   'profile.durationOfContract' : 'Duration of contract',
   'profile.enable2FA' : 'Enable 2FA',
   'profile.durationOfContractInDetails' : 'Duration of contract:',

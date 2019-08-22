@@ -96,6 +96,7 @@ class ProfileInfo extends React.Component {
                   totalInBTC={profile.totalInBTC}
                   totalInUSDT={profile.totalInUSDT}
                 />
+                <About info={profile.info} />
                 <SendRequestBlock profile={profile} />
               </Col>
             </Row>
@@ -103,6 +104,25 @@ class ProfileInfo extends React.Component {
         </Col>
       );
     }
+  }
+}
+
+function About({info}) {
+  if (!info) {
+    return null;
+  } else {
+    return (
+      <Row style={{
+        marginTop: '39px',
+        fontSize: '1.7em',
+        color: '#bfbfc1',
+        textTransform: 'uppercase',
+      }}
+      className="justify-content-center row">
+        <Col xs="12">About</Col>
+        <Col xs="12">{info}</Col>
+      </Row>
+    );
   }
 }
 
