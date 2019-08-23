@@ -13,20 +13,18 @@ class Rating extends React.Component {
 
   componentDidMount() {
     this.props.updateChallenge(0);
+    this.props.updateRatings();
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (!this.state.selectedTrader) {
-      if (this.props.challenge &&
-        this.props.challenge.global &&
-        this.props.challenge.results.length) {
-        this.setState({selectedTrader: this.props.challenge.results[0].name});
+      if (this.props.ratings && this.props.ratings.length) {
+        this.setState({selectedTrader: this.props.ratings[0].name});
       }
     }
 
-    if (prevProps.challenge !== this.props.challenge && this.props.challenge
-      && this.props.challenge.global) {
-      const traders = this.props.challenge.results.map((t) => t.name);
+    if (prevProps.ratings !== this.props.ratings && this.props.ratings) {
+      const traders = this.props.ratings.map((t) => t.name);
       this.setState({traders});
     }
   }
@@ -36,11 +34,7 @@ class Rating extends React.Component {
   }
 
   render() {
-    let results = [];
-    const {challenge} = this.props;
-    if (challenge) {
-      results = challenge.results;
-    }
+    let results = this.props.ratings;
     return (
       <div>
         <Calculator
@@ -65,6 +59,16 @@ class Rating extends React.Component {
 
 class RatingTable extends React.PureComponent {
 
+  state = {
+    nameFilter: '',
+  }
+
+  onNameFilterChange = (e) => {
+    this.setState({nameFilter: e.target.value});
+  }
+
+  onNameFilterClick = (e) => e.stopPropagation();
+
   getColumns = (screenWidth) => {
     return [
       {
@@ -86,6 +90,15 @@ class RatingTable extends React.PureComponent {
               defaultMessage="Name"
             />
           </div>
+          <div>
+            <input ref={this.inputRef}
+              onClick={this.onNameFilterClick}
+              value={this.state.nameFilter}
+              onChange={this.onNameFilterChange}
+              type="text"
+              className="ratings__input-search"
+              placeholder='Search' />
+          </div>
         </div>,
         minWidth: 80,
         className: 'ratings__table-cell',
@@ -98,36 +111,72 @@ class RatingTable extends React.PureComponent {
           className="table__header-wrapper">
           <div className="rating__header-title-wrapper">
             <FormattedMessage
-              id="leaderboard.average"
-              defaultMessage="Average"
+              id="leaderboard.intro"
+              defaultMessage="Introducing"
             />
           </div>
         </div>,
         minWidth: screenWidth === 'lg' ? 80 : 50,
-        Cell: row => row.original.average,
         className: 'ratings__table-cell',
+        accessor: 'info',
       }, {
         Header: <div
           className="table__header-wrapper">
           <div className="rating__header-title-wrapper">
             <FormattedMessage
               id="leaderboard.lastSeven"
-              defaultMessage="Last seven balance, USDT"
+              defaultMessage="Seven days balance, USDT"
             />
           </div>
         </div>,
-        width: 180,
+        minWidth: 180,
         sortable: false,
-        Cell: row => <img src={`/api/static/${row.value}_stat.png`} alt="" />,
+        Cell: row => <img src={`/api/static/${row.value}_stat_usdt.png`} alt="" />,
         className: 'ratings__table-cell',
         accessor: 'name',
+      }, {
+        Header: <div
+          className="table__header-wrapper">
+          <div className="rating__header-title-wrapper">
+            <FormattedMessage
+              id="leaderboard.lastSeven"
+              defaultMessage="Seven days balance, BTC"
+            />
+          </div>
+        </div>,
+        minWidth: 180,
+        sortable: false,
+        Cell: row => <img src={`/api/static/${row.value}_stat_btc.png`} alt="" />,
+        className: 'ratings__table-cell',
+        accessor: 'name',
+      }, {
+        id: 'stat',
+        Header: <div
+          className="table__header-wrapper">
+          <div className="rating__header-title-wrapper">
+            <FormattedMessage
+              id="leaderboard.lastSeven"
+              defaultMessage="Stat"
+            />
+          </div>
+        </div>,
+        minWidth: 180,
+        sortable: false,
+        Cell: row => (
+          <div>
+            <div>Positive: {row.original.positive}</div>
+            <div>Negative: {row.original.negative}</div>
+            <div>Average: {row.original.average}</div>
+          </div>
+        ),
+        className: 'ratings__table-cell',
       }, {
         Header: '',
         id: 'request',
         className: 'ratings__table-cell justify-content-center',
         Cell: row => {
           return (
-            <Link onClick={e => e.stopPropagation()} to={'/' + row.value}>
+            <Link to={'/' + row.value}>
               <button style={{verticalAlign: 'text-top', width: 'unset'}} className="leaderboard__form-submit">INVEST NOW</button>
             </Link>
           );
@@ -139,6 +188,13 @@ class RatingTable extends React.PureComponent {
     ];
   }
 
+  getTrProps = (state, rowInfo) => {
+    const name = rowInfo.original.name;
+    return {
+      onClick: () => this.props.onTraderSelect(name),
+    };
+  }
+
   render() {
     return (
       <ReactTable
@@ -146,12 +202,8 @@ class RatingTable extends React.PureComponent {
         columns={this.getColumns(this.props.screenWidth)}
         data={this.props.data}
         scrollBarHeight={500}
-        getTrProps={(state, rowInfo) => ({
-          onClick: (e) => {
-            const name = rowInfo.original.name;
-            this.props.onTraderSelect(name);
-          },
-        })}
+        filtered={[{id: 'name', value: this.state.nameFilter}]}
+        getTrProps={this.getTrProps}
       />
     );
   }

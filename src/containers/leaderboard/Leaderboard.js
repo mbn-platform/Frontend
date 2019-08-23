@@ -6,6 +6,7 @@ import { Switch, Route, NavLink } from 'react-router-dom';
 import {updateChallenge, getNextInfo, takePart, applyForContract} from '../../actions/challenge';
 import {showConfirmModal} from '../../actions/modal';
 import {calculateTraderProfit} from '../../actions/profile';
+import {updateRatings} from '../../actions/terminal';
 import {connect} from 'react-redux';
 import Leaderboard from './LeaderboardPage';
 import Rating from './Rating';
@@ -48,7 +49,7 @@ class PageWrapper extends React.Component {
 }
 
 export default injectIntl(connect(
-  state => ({challenge: state.challenge, loggedIn: state.auth.loggedIn}),
+  state => ({challenge: state.challenge, loggedIn: state.auth.loggedIn, ratings: state.ratings}),
   dispatch => ({
     showConfirmModal: (text, values, confirmHandler, body) => dispatch(showConfirmModal(text, values, confirmHandler, body)),
     updateChallenge: number => dispatch(updateChallenge(number)),
@@ -56,6 +57,7 @@ export default injectIntl(connect(
     getNextInfo: () => dispatch(getNextInfo()),
     applyForContract: (id) => dispatch(applyForContract(id)),
     calculateTraderProfit: (trader, start, investment) => dispatch(calculateTraderProfit(trader, start, investment)),
+    updateRatings: () => dispatch(updateRatings()),
   }),
 )(PageWrapper));
 
