@@ -30,9 +30,10 @@ class ProfitChart extends React.Component {
     if (segment === 1) {
       data = data.filter((c) => c.state === 'VERIFIED');
     }
-    data.forEach(({_id, points, start, sum}) => {
+    data.forEach(({_id, points, start, sum, c}) => {
       graphIds.push(_id);
       dataProvider.push({
+        c,
         id: _id,
         start,
         sum,
@@ -42,6 +43,7 @@ class ProfitChart extends React.Component {
       });
       points.forEach((p) => {
         dataProvider.push({
+          c,
           id: _id,
           start,
           sum,
@@ -76,14 +78,16 @@ class ProfitChart extends React.Component {
           </div>
           <div className="card-body">
             <div className="container d-flex flex-column profit-card-body">
-              
               <div className="row order-2 justify-content-center amcharts-block">
-                <div className="col-12">
+                <Col xs="12" md="9">
                   <div className="amcharts">
                     {this.renderChart()}
                   </div>
 
-                </div>
+                </Col>
+                <Col xs="12" md="3" style={{paddingTop: '20px'}} className='legend'>
+                  {this.renderStat()}
+                </Col>
 
               </div>
               <div className="row order-1 order-md-3 justify-content-center">
@@ -112,12 +116,64 @@ class ProfitChart extends React.Component {
 
   }
 
+  renderStat() {
+    const stat = this.calculateStat(this.props.stats || []);
+    if (!stat) {
+      return null;
+    }
+    const average = (stat.profit / stat.count).toFixed(2);
+    return (
+      <div className="values">
+        {stat.currentCount > 0 ?
+          <div>Profit per current contracts: {(stat.currentProfit / stat.currentCount).toFixed(2)}%</div>
+          : null
+        }
+        <div>Profit per all contracts in total: {average}%</div>
+        <div>Contracts with positive profit: {stat.positive}</div>
+        <div>Contracts with negative profit: {stat.negative}</div>
+      </div>
+    );
+  }
+
+  calculateStat = memoizeOne((data) => {
+    if (!data.length) {
+      return null;
+    }
+    const stat = {
+      positive: 0,
+      negative: 0,
+      profit: 0,
+      count: 0,
+      currentCount: 0,
+      currentProfit: 0,
+    };
+    data.forEach((d) => {
+      if (d.state === 'VERIFIED') {
+        const lastPoint = d.points[d.points.length - 1];
+        stat.currentProfit += lastPoint.percent;
+        stat.currentCount++;
+        return;
+      }
+      const percent = ((d.finishBalance / 1e8 / d.sum) - 1) * 100;
+      console.log(percent);
+      stat.count++;
+      if (percent >= 0) {
+        stat.positive++;
+      } else {
+        stat.negative++;
+      }
+      stat.profit += percent;
+    });
+    console.log(stat);
+    return stat;
+  })
+
   balloonFunction(graphItem) {
     const data = graphItem.dataContext;
     console.log(graphItem);
     return `<div>
-    <div>Contract Start: ${formatDate(new Date(data.start))}</div>
-    <div>Contract Sum: ${data.sum}</div>
+    <div>Contract starts: ${formatDate(new Date(data.start))}</div>
+    <div>Contract Sum: ${data.sum} ${data.c}</div>
     <div>Profit: ${data.value.toFixed(2)}%</div>
     </div>`;
   }
