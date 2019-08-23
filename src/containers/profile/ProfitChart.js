@@ -5,6 +5,7 @@ import { Desktop, Mobile } from '../../generic/MediaQuery';
 import AmChartsReact from '@amcharts/amcharts3-react';
 import { FormattedMessage } from 'react-intl';
 import { formatDate } from '../../generic/util';
+import { ProfileBlock } from '../../components/ProfileBlock';
 import memoizeOne from 'memoize-one';
 
 class ProfitChart extends React.Component {
@@ -59,58 +60,41 @@ class ProfitChart extends React.Component {
   render() {
     return (
       <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-8 profit-block">
-        <div className="card">
-          <div className="card-header">
-            <div className="container-fuild h-100">
-              <div className="row h-100 align-items-center">
-                <div className="col-auto title-text">
-                  <span className="icon icon-profit icon-005-growth"/>
-                  <FormattedMessage
-                    id="profile.profitChart"
-                    defaultMessage="PROFITABILITY PER CONTRACT UNDER MANAGEMENT"
-                  />
+        <ProfileBlock
+          iconClassName='icon-005-growth'
+          title='profile.profitChart'
+          className='graphic'
+        >
+          <div className="container d-flex flex-column profit-card-body">
+            <div className="row order-2 justify-content-center amcharts-block">
+              <Col xs="12" md="9">
+                <div className="amcharts">
+                  {this.renderChart()}
                 </div>
-                <Col className="d-flex justify-content-end">
-                </Col>
 
-              </div>
+              </Col>
+              <Col xs="12" md="3" style={{paddingTop: '20px'}} className='legend'>
+                {this.renderStat()}
+              </Col>
+
+            </div>
+            <div className="row order-1 order-md-3 justify-content-center">
+              <Desktop>
+                <SegmentedControl
+                  segments={this.segments}
+                  selectedIndex={this.state.selectedInterval}
+                  onChange={this.onSegmentChange} />
+              </Desktop>
+              <Mobile>
+                <SegmentedControl
+                  segments={this.segments}
+                  segmentWidth={50}
+                  selectedIndex={this.state.selectedInterval}
+                  onChange={this.onSegmentChange} />
+              </Mobile>
             </div>
           </div>
-          <div className="card-body">
-            <div className="container d-flex flex-column profit-card-body">
-              <div className="row order-2 justify-content-center amcharts-block">
-                <Col xs="12" md="9">
-                  <div className="amcharts">
-                    {this.renderChart()}
-                  </div>
-
-                </Col>
-                <Col xs="12" md="3" style={{paddingTop: '20px'}} className='legend'>
-                  {this.renderStat()}
-                </Col>
-
-              </div>
-              <div className="row order-1 order-md-3 justify-content-center">
-                <Desktop>
-                  <SegmentedControl
-                    segments={this.segments}
-                    selectedIndex={this.state.selectedInterval}
-                    onChange={this.onSegmentChange}
-                  />
-                </Desktop>
-                <Mobile>
-                  <SegmentedControl
-                    segments={this.segments}
-                    segmentWidth={50}
-                    selectedIndex={this.state.selectedInterval}
-                    onChange={this.onSegmentChange}
-                  />
-                </Mobile>
-              </div>
-            </div>
-          </div>
-
-        </div>
+        </ProfileBlock>
       </div>
     );
 

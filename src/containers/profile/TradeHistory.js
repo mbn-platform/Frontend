@@ -4,7 +4,8 @@ import { Desktop, Mobile } from '../../generic/MediaQuery';
 import Pagination from '../../components/Pagination';
 import ReactTable from '../../components/SelectableReactTable';
 import { formatDate } from '../../generic/util';
-import {FormattedMessage, injectIntl} from 'react-intl';
+import { injectIntl} from 'react-intl';
+import { ProfileBlock } from '../../components/ProfileBlock';
 
 class TradeHistory extends React.Component {
   render() {
@@ -13,27 +14,12 @@ class TradeHistory extends React.Component {
         <Container fluid className="h-100">
           <Row className="h-100">
             <Col className="trade-history">
-              <div className="card">
-                <div className="card-header">
-                  <div className="container-fuild h-100">
-                    <div className="row h-100 align-items-center">
-                      <div className="col-auto title-text">
-                        <span className="icon icon-profit icon-history-clock-button"/>
-                        <FormattedMessage
-                          id="profile.tradeHistory"
-                          defaultMessage="TRADE HISTORY"
-                        />
-                      </div>
-                      <div className="col">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="card-body">
-                  {this.renderTable()}
-                </div>
-
-              </div>
+              <ProfileBlock
+                iconClassName='icon-history-clock-button'
+                title='profile.tradeHistory'
+              >
+                {this.renderTable()}
+              </ProfileBlock>
             </Col>
           </Row>
         </Container>
@@ -91,7 +77,7 @@ class TradeHistory extends React.Component {
         minWidth: 30,
         className: 'table_col_value',
         Cell: rowInfo => rowInfo.original.first ? 
-          (<a className="tx_link" target="_blank" href={rowInfo.value || '/'} />) // eslint-disable-line
+        (<a className="tx_link" target="_blank" href={rowInfo.value || '/'} />) // eslint-disable-line
           : null,
       },
     ];

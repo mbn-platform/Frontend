@@ -71,11 +71,7 @@ class SettingsHeader extends React.PureComponent {
 class About extends React.Component {
 
   state = {
-    about: '',
-  }
-
-  static propTypes = {
-
+    about: this.props.info || '',
   }
 
   onChange = (e) => {
@@ -166,8 +162,8 @@ class TelegramContact extends React.Component {
       }
     }
     return (
-      <Row>
-        <div className="description-text" style={{
+      <Row className='input-telegram'>
+        <div className="description-text telegram" style={{
           margin: '5px 0 5px 0',
           color: '#bfbfc1',
           letterSpacing: '1px',

@@ -114,13 +114,12 @@ function About({info}) {
     return (
       <Row style={{
         marginTop: '39px',
-        fontSize: '1.7em',
         color: '#bfbfc1',
-        textTransform: 'uppercase',
+        textAlign: 'center',
       }}
-      className="justify-content-center row">
-        <Col xs="12">About</Col>
-        <Col xs="12">{info}</Col>
+      className="justify-content-center profile-about">
+        <Col style={{textTransform: 'uppercase', fontSize: '1.7em'}} xs="12">About</Col>
+        <Col style={{fontSize: '1.5em'}} xs="12">{info}</Col>
       </Row>
     );
   }

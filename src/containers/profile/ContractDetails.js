@@ -65,6 +65,9 @@ class ContractDetails extends React.Component {
 }
 
 function InvestNowDescriptionMobile({available}) {
+  if (!available) {
+    return null;
+  }
   return (
     <div className="row justify-content-center d-flex d-md-none">
       <div className="col-auto">
