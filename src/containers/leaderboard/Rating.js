@@ -231,6 +231,18 @@ class RatingTable extends React.PureComponent {
         className: 'ratings__table-cell contract-settings',
         accessor: 'contractSettings',
       }, {
+        Header:<div className="table__header-wrapper">
+          <div title="based on 6 months performance">
+            Average Monthly ROI
+          </div>
+        </div>,
+        minWidth: 100,
+        className: 'ratings__table-cell',
+        Cell: row => {
+          return <div className="name nickname">{row.value.toFixed(2)}%</div>;
+        },
+        accessor: 'contractStat.avg6',
+      }, {
         Header: '',
         className: 'ratings__table-cell justify-content-center',
         filterMethod: (filter, row) => {
