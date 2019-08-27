@@ -113,7 +113,7 @@ const en = {
   'leaderboard.ifHardcapWillReached': 'if hardcap will reached',
   'leaderboard.profitPercent': 'Profit, %',
   'leaderboard.average': 'Average, %',
-  'leaderboard.intro': 'Introducing',
+  'leaderboard.intro': 'Description',
   'leaderboard.nextRound': 'Next round',
   'leaderboard.nextRoundMessage': 'Please confirm trading in the next round',
   'leaderboard.nextRoundHelp': 'If you don\'t confirm trading, you will skip next round',

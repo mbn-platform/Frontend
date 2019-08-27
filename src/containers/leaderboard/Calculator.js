@@ -168,6 +168,8 @@ class Calculator extends React.Component {
             className="calendar"
             maxDate={new Date()}
             onChange={this.onDateChange}
+            onClickMonth={this.onDateChange}
+            minDetail="year"
             value={this.state.date}
           />
         </OutsideClick>

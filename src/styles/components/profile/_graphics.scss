@@ -31,8 +31,11 @@
     .graphs {
       font-size: 24px;
       span {
-        text-decoration: underline;
+        &.unselected {
+          color: grey;
+        }
         cursor: pointer;
+        text-decoration: underline;
       }
     }
     .values {
