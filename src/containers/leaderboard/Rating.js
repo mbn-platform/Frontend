@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import ReactTable from 'react-table';
 import Calculator from './Calculator';
+import PaginationWithPage from '../../components/PaginationWithPage';
+import { PaginationWithPageRight } from '../../components/PaginationWithPage';
 
 class Rating extends React.Component {
 
@@ -10,7 +12,7 @@ class Rating extends React.Component {
     selectedTrader: '',
     traders: [],
     nameFilter: '',
-    showVerified: true,
+    showVerified: false,
   }
 
   componentDidMount() {
@@ -98,6 +100,8 @@ class Rating extends React.Component {
 class RatingTable extends React.PureComponent {
 
   state = {
+    page: 0,
+    pageSize: 10,
     nameFilter: '',
   }
 
@@ -279,14 +283,22 @@ class RatingTable extends React.PureComponent {
         className='rating-table'
         columns={this.getColumns(this.props.screenWidth)}
         data={this.props.data}
-        scrollBarHeight={500}
         filtered={[{id: 'name', value: this.props.nameFilter}, {id: 'verified', value: this.props.showVerified}]}
         getTrProps={this.getTrProps}
-        minRows={20}
+        minRows={this.state.pageSize}
+        page={this.state.page}
         resizable={false}
-        defaultPageSize={20}
-        showPagination={false}
+        pageSize={this.state.pageSize}
         noDataText=""
+        showPagination={true}
+        PaginationComponent={PaginationWithPageRight}
+        paginationPageDispatcher={(p, ps) => {
+          console.log(p, ps);
+          this.setState({pageSize: ps, page: p});
+        }}
+        paginationPageSizeDispatcher={ps => {
+          this.setState({pageSize: ps});
+        }}
       />
     );
   }
