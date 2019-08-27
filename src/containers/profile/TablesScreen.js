@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Row, Container } from 'reactstrap';
+import { Col, Row } from 'reactstrap';
 import ProfitChart from './ProfitChart';
 import BalanceChart from './BalanceChart';
 import TradeHistory from './TradeHistory';
@@ -19,8 +19,10 @@ class TablesScreen extends React.Component {
           <Col xs="12" className="gap-card"/>
         </Row>
         <Row className="table-row">
-          <ProfitChart stats={this.props.profile.stats || [] }
-            tradesAsInvestor={ [] } />
+          <Col xs="12">
+            <ProfitChart stats={this.props.profile.stats || [] }
+              tradesAsInvestor={ [] } />
+          </Col>
         </Row>
         <Row className="d-none d-md-block">
           <Col xs="12" className="gap-card"/>

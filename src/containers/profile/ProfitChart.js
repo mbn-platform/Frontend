@@ -1,9 +1,8 @@
 import React from 'react';
 import SegmentedControl from '../../components/SegmentedControl';
-import { Col } from 'reactstrap';
+import { Col, Row } from 'reactstrap';
 import { Desktop, Mobile } from '../../generic/MediaQuery';
 import AmChartsReact from '@amcharts/amcharts3-react';
-import { FormattedMessage } from 'react-intl';
 import { formatDate } from '../../generic/util';
 import { ProfileBlock } from '../../components/ProfileBlock';
 import memoizeOne from 'memoize-one';
@@ -42,62 +41,72 @@ class ProfitChart extends React.Component {
         date: new Date(start).getTime(),
         value: 0,
       });
+      let lastAdded;
       points.forEach((p) => {
+        if (!lastAdded || segment === 1 ||
+          p.date - lastAdded.date > 86400000) {
+          dataProvider.push({
+            c,
+            id: _id,
+            start,
+            sum,
+            [_id]: p.percent,
+            date: p.date,
+            value: p.percent,
+          });
+          lastAdded = p;
+        }
+      });
+      if (lastAdded && lastAdded !== points[points.length - 1]) {
+        const last = points[points.length - 1];
         dataProvider.push({
           c,
           id: _id,
           start,
           sum,
-          [_id]: p.percent,
-          date: p.date,
-          value: p.percent,
+          [_id]: last.percent,
+          date: last.date,
+          value: last.percent,
         });
-      });
+      }
     });
     return {dataProvider, graphIds};
   }
 
   render() {
     return (
-      <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-8 profit-block">
-        <ProfileBlock
-          iconClassName='icon-005-growth'
-          title='profile.profitChart'
-          className='graphic'
-        >
-          <div className="container d-flex flex-column profit-card-body">
-            <div className="row order-2 justify-content-center amcharts-block">
-              <Col xs="12" md="9">
-                <div className="amcharts">
-                  {this.renderChart()}
-                </div>
-
-              </Col>
-              <Col xs="12" md="3" style={{paddingTop: '20px'}} className='legend'>
-                {this.renderStat()}
-              </Col>
-
+      <ProfileBlock
+        iconClassName='icon-005-growth'
+        title='profile.profitChart'
+        className='graphic'
+      >
+        <Row className="justify-content-center d-flex">
+          <Col xs={{size: 12, order: 2}} md="9">
+            <div className="amcharts">
+              {this.renderChart()}
             </div>
-            <div className="row order-1 order-md-3 justify-content-center">
-              <Desktop>
-                <SegmentedControl
-                  segments={this.segments}
-                  selectedIndex={this.state.selectedInterval}
-                  onChange={this.onSegmentChange} />
-              </Desktop>
-              <Mobile>
-                <SegmentedControl
-                  segments={this.segments}
-                  segmentWidth={50}
-                  selectedIndex={this.state.selectedInterval}
-                  onChange={this.onSegmentChange} />
-              </Mobile>
-            </div>
-          </div>
-        </ProfileBlock>
-      </div>
+          </Col>
+          <Col xs={{size: 12, order: 3}} md="3" className='legend'>
+            {this.renderStat()}
+          </Col>
+          <Col xs={{order: 1}} md={{order: 3}}>
+            <Desktop>
+              <SegmentedControl
+                segments={this.segments}
+                selectedIndex={this.state.selectedInterval}
+                onChange={this.onSegmentChange} />
+            </Desktop>
+            <Mobile>
+              <SegmentedControl
+                segments={this.segments}
+                segmentWidth={50}
+                selectedIndex={this.state.selectedInterval}
+                onChange={this.onSegmentChange} />
+            </Mobile>
+          </Col>
+        </Row>
+      </ProfileBlock>
     );
-
   }
 
   renderStat() {
@@ -105,14 +114,13 @@ class ProfitChart extends React.Component {
     if (!stat) {
       return null;
     }
-    const average = (stat.profit / stat.count).toFixed(2);
     return (
       <div className="values">
         {stat.currentCount > 0 ?
           <div>Profit per current contracts: {(stat.currentProfit / stat.currentCount).toFixed(2)}%</div>
           : null
         }
-        <div>Profit per all contracts in total: {average}%</div>
+        <div>Profit per all contracts in total: {stat.average.toFixed(2)}%</div>
         <div>Contracts with positive profit: {stat.positive}</div>
         <div>Contracts with negative profit: {stat.negative}</div>
       </div>
@@ -120,9 +128,6 @@ class ProfitChart extends React.Component {
   }
 
   calculateStat = memoizeOne((data) => {
-    if (!data.length) {
-      return null;
-    }
     const stat = {
       positive: 0,
       negative: 0,
@@ -130,6 +135,7 @@ class ProfitChart extends React.Component {
       count: 0,
       currentCount: 0,
       currentProfit: 0,
+      average: 0,
     };
     data.forEach((d) => {
       if (d.state === 'VERIFIED') {
@@ -139,7 +145,6 @@ class ProfitChart extends React.Component {
         return;
       }
       const percent = ((d.finishBalance / 1e8 / d.sum) - 1) * 100;
-      console.log(percent);
       stat.count++;
       if (percent >= 0) {
         stat.positive++;
@@ -148,13 +153,14 @@ class ProfitChart extends React.Component {
       }
       stat.profit += percent;
     });
-    console.log(stat);
+    if (stat.count) {
+      stat.average = stat.profit / stat.count;
+    }
     return stat;
   })
 
   balloonFunction(graphItem) {
     const data = graphItem.dataContext;
-    console.log(graphItem);
     return `<div>
     <div>Contract starts: ${formatDate(new Date(data.start))}</div>
     <div>Contract Sum: ${data.sum} ${data.c}</div>
@@ -176,11 +182,11 @@ class ProfitChart extends React.Component {
         bullet: 'round',
         bulletSize: 1,
         bulletAlpha: 0,
+        type: 'step',
       };
     });
     let maximum = dataProvider.reduce((a, b) => a > b.value ? a : b.value, 5);
     const minimum = dataProvider.reduce((a, b) => a < b.value ? a : b.value, -5);
-    console.log(dataProvider, graphIds);
     return {
       'type': 'xy',
       'theme': 'none',
@@ -225,6 +231,8 @@ class ProfitChart extends React.Component {
         'axisAlpha': 1,
         'position': 'bottom',
         'type': 'date',
+        stackType: '3d',
+
       }],
       listeners: [{
         event: 'rendered',
@@ -243,7 +251,6 @@ class ProfitChart extends React.Component {
     if (config.graphs.length === 0) {
       return null;
     }
-    console.log(config);
     return (
       <AmChartsReact.React  style={{height: '100%', width: '100%', backgroundColor: 'transparent',position: 'absolute'}}
         options={config} />

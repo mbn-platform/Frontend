@@ -240,7 +240,7 @@ const en = {
   'profile.profitAsTrader' : 'PROFIT AS TRADER',
   'profile.chooseFunds' : 'choose funds',
   'profile.next' : 'NEXT',
-  'profile.tradeHistory': 'TRADE HISTORY',
+  'profile.tradeHistory': 'TRADE HISTORY: VERIFIED BY PROOF-OF-TRADE',
   'profile.fundName' : 'Fund name',
   'profile.balance' : 'Balance',
   'profile.exchange' : 'Exchange',

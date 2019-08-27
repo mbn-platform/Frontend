@@ -5,6 +5,7 @@ import memoizeOne from 'memoize-one';
 import { ProfileBlock } from '../../components/ProfileBlock';
 import SegmentedControl from '../../components/SegmentedControl';
 import { Desktop, Mobile } from '../../generic/MediaQuery';
+import classNames from 'classnames';
 
 class BalanceChart extends React.PureComponent {
   state = {
@@ -13,23 +14,15 @@ class BalanceChart extends React.PureComponent {
     selectedInterval: 2,
     end: Date.now(),
     start: Date.now() - 86400 * 7 * 1000,
-    chartInited: false,
     loading: false,
   }
 
-  onChartInit = () => {
-    this.setState({chartInited: true});
-  }
-
   onZoom = (item) => {
-    console.log(item);
     const {start: selectedStart, end: selectedEnd} = item;
     this.setState({selectedStart, selectedEnd});
   }
 
   onZoomOut = (item) => {
-    console.log(item.startIndex, item.endIndex);
-    console.log(item.chart.dataProvider);
     this.setState({
       startItem: item.chart.dataProvider[item.startIndex],
       endItem: item.chart.dataProvider[item.endIndex],
@@ -79,23 +72,24 @@ class BalanceChart extends React.PureComponent {
   }
 
   render() {
+    const { selected } = this.state;
     return (
       <ProfileBlock
         iconClassName='icon-005-growth'
-        title='Balance Chart'
+        title='profile.balanceChart'
         className='graphic'
       >
-        <Row className="justify-content-center">
-          <Col xs="12" md="9">
+        <Row className="justify-content-center d-flex">
+          <Col xs={{size: 12, order: 2}} md="9">
             <div className="amcharts">
               <Preloader show={this.state.loading} />
               {this.renderChart()}
             </div>
           </Col>
-          <Col xs="12" md="3" className='legend'>
+          <Col xs={{size: 12, order: 3}} md="3" className='legend'>
             <div className='graphs'>
-              <span className='usdt' onClick={() => this.toggle('USDT')}>USDT</span> / <span
-                className='btc' onClick={() => this.toggle('BTC')}>BTC</span>
+              <span className={classNames('usdt', {unselected: !selected.includes('USDT')})} onClick={() => this.toggle('USDT')}>USDT</span> / <span
+                className={classNames('btc', {unselected: !selected.includes('BTC')})} onClick={() => this.toggle('BTC')}>BTC</span>
             </div>
             {this.renderCurrent()}
             {this.renderChange()}
@@ -223,10 +217,6 @@ class BalanceChart extends React.PureComponent {
           event: 'zoomed',
           method: this.onZoomOut,
         },
-        {
-          event: 'init',
-          method: this.onChartInit,
-        },
       ],
       categoryField: 'date',
       categoryAxis: {
@@ -306,13 +296,11 @@ class BalanceChart extends React.PureComponent {
         id: g.usdtId,
       });
     });
-    console.log(groups);
     const points = groups.reduce((a, g) => a.concat(g.data), []);
     return {dataProvider: points, graphs};
   }
 
   renderChart() {
-    console.log('rendering chart');
     const config = this.getConfig(this.state.data, this.state.selectedInterval, this.state.selected);
     return (
       <AmChartsReact.React style={{height: '100%', width: '100%', backgroundColor: 'transparent',position: 'absolute'}}
@@ -322,7 +310,6 @@ class BalanceChart extends React.PureComponent {
 }
 
 function Preloader({show}) {
-  console.log(show);
   if (!show) {
     return null;
   } else {

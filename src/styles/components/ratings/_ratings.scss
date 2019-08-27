@@ -681,10 +681,32 @@
     }
   }
 }
+.ratings-main__block.rating {
+  padding: 0px !important;
+}
+.ReactTable.rating-table {
 
-.rating-table {
-  .ratings__table-cell {
+  height: 616px;
+  overflow-y: scroll !important;
+  overflow-x: scroll !important;
+  .rt-td.ratings__table-cell {
     height: 90px;
+    &.contract-settings, &.contract-stat, &.balance-stat, &.user-info {
+      line-height: normal;
+      text-align: left;
+    }
+    &.user-info {
+      word-break: break-word;
+      font-size: 12px;
+    }
+    &.balance-stat {
+      .btc {
+        color: #31b993;
+      }
+      .usdt {
+        color: #44b6ff;
+      }
+    }
   }
 }
 
@@ -1050,5 +1072,9 @@
         margin-bottom: 10px;
       }
     }
+  }
+}
+.ReactTable {
+  .rt-td.ratings__table-cell.contract-settings {
   }
 }
