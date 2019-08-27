@@ -103,7 +103,7 @@ class Calculator extends React.Component {
           <div className='calculation'>
             {this.renderCalculationResult()}
           </div>
-          <div className='undertext'>profit calculated by trader’s history based on Membrana’s block</div>
+          <div className='undertext'>Profit is calculated according to trader's history verified by <Link to="/hashlog">Membrana Proof-of-Trade</Link></div>
         </Col>
       </Row>
     );
