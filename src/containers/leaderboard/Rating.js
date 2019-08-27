@@ -3,16 +3,22 @@ import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import ReactTable from 'react-table';
 import Calculator from './Calculator';
-import PaginationWithPage from '../../components/PaginationWithPage';
 import { PaginationWithPageRight } from '../../components/PaginationWithPage';
+import createMqProvider, {ratingSchema} from '../../MediaQuery';
+
+const { MediaQuery, Screen} = createMqProvider(ratingSchema);
+
 
 class Rating extends React.Component {
+
+  Screen = Screen
+  MediaQuery = MediaQuery
 
   state = {
     selectedTrader: '',
     traders: [],
     nameFilter: '',
-    showVerified: false,
+    showVerified: true,
   }
 
   componentDidMount() {
@@ -77,12 +83,17 @@ class Rating extends React.Component {
                 Show only verified traders
             </label>
           </div>
-          <RatingTable
-            nameFilter={this.state.nameFilter}
-            showVerified={this.state.showVerified}
-            data={results}
-            onTraderSelect={this.onTraderSelect}
-          />
+          <this.MediaQuery>
+            <this.Screen on={(size) => (
+              <RatingTable
+                nameFilter={this.state.nameFilter}
+                showVerified={this.state.showVerified}
+                data={results}
+                screenWidth={size}
+                onTraderSelect={this.onTraderSelect}
+              />
+            )} />
+          </this.MediaQuery>
         </div>
       </div>
     );
@@ -106,6 +117,24 @@ class RatingTable extends React.PureComponent {
   }
 
   getColumns = (screenWidth) => {
+    let showInfo = true;
+    let showBTC = true;
+    let showUSDT = true;
+    switch (screenWidth) {
+      case 'md':
+        showInfo = false;
+        break;
+      case 'sm':
+        showInfo = false;
+        showBTC = false;
+        break;
+      case 'xs':
+        showInfo = false;
+        showBTC = false;
+        showUSDT = false;
+      default:
+        break;
+    }
     return [
       {
         Header: null,
@@ -144,8 +173,9 @@ class RatingTable extends React.PureComponent {
           </div>
         </div>,
         sortable: false,
-        minWidth: 360,
+        width: 300,
         className: 'ratings__table-cell user-info',
+        show: showInfo,
         accessor: 'info',
       }, {
         Header: <div
@@ -162,6 +192,7 @@ class RatingTable extends React.PureComponent {
         Cell: row => <img src={`/api/static/${row.value}_stat_usdt.png`} alt="" />,
         className: 'ratings__table-cell',
         accessor: 'name',
+        show: showUSDT,
       }, {
         Header: <div
           className="table__header-wrapper">
@@ -177,6 +208,7 @@ class RatingTable extends React.PureComponent {
         Cell: row => <img src={`/api/static/${row.value}_stat_btc.png`} alt="" />,
         className: 'ratings__table-cell',
         accessor: 'name',
+        show: showBTC,
       }, {
         id: 'balanceStat',
         Header: (
@@ -202,7 +234,7 @@ class RatingTable extends React.PureComponent {
             <div className="rating__header-title-wrapper">Contract Stats</div>
           </div>
         ),
-        minWidth: 180,
+        width: 100,
         sortable: false,
         Cell: ({value}) => (
           <div>
@@ -221,7 +253,7 @@ class RatingTable extends React.PureComponent {
             <div className="rating__header-title-wrapper">Contract settings</div>
           </div>
         ),
-        minWidth: 180,
+        width: 130,
         sortable: false,
         Cell: ({value}) => (
           <div>
@@ -240,7 +272,7 @@ class RatingTable extends React.PureComponent {
             Average Monthly ROI
           </div>
         </div>,
-        minWidth: 100,
+        width: 100,
         className: 'ratings__table-cell',
         Cell: row => {
           return <div className="name nickname">{row.value.toFixed(2)}%</div>;
@@ -293,7 +325,6 @@ class RatingTable extends React.PureComponent {
         showPagination={true}
         PaginationComponent={PaginationWithPageRight}
         paginationPageDispatcher={(p, ps) => {
-          console.log(p, ps);
           this.setState({pageSize: ps, page: p});
         }}
         paginationPageSizeDispatcher={ps => {
