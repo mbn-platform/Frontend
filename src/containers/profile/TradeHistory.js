@@ -4,7 +4,7 @@ import { Desktop, Mobile } from '../../generic/MediaQuery';
 import Pagination from '../../components/Pagination';
 import ReactTable from '../../components/SelectableReactTable';
 import { formatDate } from '../../generic/util';
-import { injectIntl} from 'react-intl';
+import { injectIntl } from 'react-intl';
 import { ProfileBlock } from '../../components/ProfileBlock';
 
 class TradeHistory extends React.Component {
@@ -17,6 +17,7 @@ class TradeHistory extends React.Component {
               <ProfileBlock
                 iconClassName='icon-history-clock-button'
                 title='profile.tradeHistory'
+                tooltip='tradeHistoryHelp'
               >
                 {this.renderTable()}
               </ProfileBlock>
@@ -69,16 +70,6 @@ class TradeHistory extends React.Component {
         minWidth: 50,
         className: 'table_col_value',
         sortable: false,
-      },
-      {
-        Header: SortableHeader(this.props.intl.messages['profile.tx']),
-        accessor: 'tx',
-        sortable: false,
-        minWidth: 30,
-        className: 'table_col_value',
-        Cell: rowInfo => rowInfo.original.first ? 
-        (<a className="tx_link" target="_blank" href={rowInfo.value || '/'} />) // eslint-disable-line
-          : null,
       },
     ];
   }
