@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Row, Col } from 'reactstrap';
 import { UncontrolledTooltip } from 'reactstrap';
 import { FormattedMessage } from 'react-intl';
+import { AssetsUnderManagementHelpTooltip } from '../components/ProfileBlock';
 
 /* eslint no-unused-vars: 0 */
 
@@ -51,6 +52,7 @@ const Stats = ({ traderRating, investorRating, roiInUSD, roiInBTC, totalInBTC, t
                 defaultMessage="money in {br} management:"
                 values={{br: <br/>}}
               />
+              <AssetsUnderManagementHelpTooltip />
             </div>
             <div className="value-text green">
               {(totalInUSDT || 0).toFixed(2)}<span className="currency-value-usd-text">

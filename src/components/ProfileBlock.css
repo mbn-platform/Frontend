@@ -8,14 +8,22 @@
   font-size: 1.8em;
   background-color: #2d3034;
   border-bottom-color: #494d4d;
-  height: 54px;
-  line-height: 54px;
   text-transform: uppercase;
+  display: flex;
+  height: 54px;
+}
+.profile-block .card-header > span {
+    margin: auto 0;
 }
 .profile-block .card-header .icon {
   color: #727274;
   font-size: 0.8em;
   margin-right: 15px;
+}
+
+.help-tooltip {
+  padding-left: 5px;
+  font-size: 0.5rem;
 }
 
 .profile-block.graphic {
@@ -29,6 +37,5 @@
     background-color: transparent;
     border: none;
     height: 81px;
-    line-height: 81px;
   }
 }

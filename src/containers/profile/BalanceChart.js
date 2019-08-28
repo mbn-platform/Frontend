@@ -2,7 +2,7 @@ import React from 'react';
 import AmChartsReact from '@amcharts/amcharts3-react';
 import { Col, Row } from 'reactstrap';
 import memoizeOne from 'memoize-one';
-import { ProfileBlock } from '../../components/ProfileBlock';
+import { ProfileBlock, BalanceChartHelpTooltip } from '../../components/ProfileBlock';
 import SegmentedControl from '../../components/SegmentedControl';
 import { Desktop, Mobile } from '../../generic/MediaQuery';
 import classNames from 'classnames';
@@ -78,6 +78,7 @@ class BalanceChart extends React.PureComponent {
         iconClassName='icon-005-growth'
         title='profile.balanceChart'
         className='graphic'
+        Tooltip={BalanceChartHelpTooltip}
       >
         <Row className="justify-content-center d-flex">
           <Col xs={{size: 12, order: 2}} md="9">

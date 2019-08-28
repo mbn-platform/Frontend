@@ -119,7 +119,7 @@ function About({info}) {
       }}
       className="justify-content-center profile-about">
         <Col style={{textTransform: 'uppercase', fontSize: '1.7em'}} xs="12">About</Col>
-        <Col style={{fontSize: '1.5em'}} xs="12">{info}</Col>
+        <Col style={{fontSize: '1.5em', wordBreak: 'break-word', padding: '0 10px'}} xs="12">{info}</Col>
       </Row>
     );
   }

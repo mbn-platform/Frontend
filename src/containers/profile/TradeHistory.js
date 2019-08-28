@@ -5,7 +5,7 @@ import Pagination from '../../components/Pagination';
 import ReactTable from '../../components/SelectableReactTable';
 import { formatDate } from '../../generic/util';
 import { injectIntl } from 'react-intl';
-import { ProfileBlock } from '../../components/ProfileBlock';
+import { ProfileBlock, TradeHistoryHelpTooltip } from '../../components/ProfileBlock';
 
 class TradeHistory extends React.Component {
   render() {
@@ -17,7 +17,7 @@ class TradeHistory extends React.Component {
               <ProfileBlock
                 iconClassName='icon-history-clock-button'
                 title='profile.tradeHistory'
-                tooltip='tradeHistoryHelp'
+                Tooltip={TradeHistoryHelpTooltip}
               >
                 {this.renderTable()}
               </ProfileBlock>

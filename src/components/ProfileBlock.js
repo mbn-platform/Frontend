@@ -8,13 +8,13 @@ import './ProfileBlock.css';
 
 export class ProfileBlock extends React.PureComponent {
   render() {
-    const { children, title, iconClassName, className, tooltip } = this.props;
+    const { children, title, iconClassName, className, Tooltip } = this.props;
     return (
       <Card className={classNames('profile-block', className)}>
         <CardHeader>
           <span className={classNames('icon', iconClassName)}/>
-          <FormattedMessage id={title} />
-          <Tooltip id={tooltip} />
+          <FormattedMessage className="title" id={title} />
+          {Tooltip ? <Tooltip /> : null}
         </CardHeader>
         <CardBody>
           {children}
@@ -24,19 +24,34 @@ export class ProfileBlock extends React.PureComponent {
   }
 }
 
-function Tooltip({id}) {
-  switch (id) {
-    case 'tradeHistoryHelp':
-      return (
-        <span>
-          <span id={id} className="d-none d-md-inline-block icon icon-help icon-help-web-button" />
-          <UncontrolledTooltip hideArrow={true} trigger='click' target={id} placement="right">
-            All completed trades are stored in the <Link to="/hashlog">Hashlog</Link>
-          </UncontrolledTooltip>
-        </span>
-      );
-    default:
-      return null;
-  }
+export function TradeHistoryHelpTooltip() {
+  return (
+    <span className="help-tooltip d-none d-md-inline-block">
+      <span id='tradeHistoryHelp' className="icon-help-web-button" />
+      <UncontrolledTooltip hideArrow={true} trigger='click' target='tradeHistoryHelp' placement="right">
+          All completed trades are stored in the <Link to="/hashlog">Hashlog</Link>
+      </UncontrolledTooltip>
+    </span>
+  );
+}
+export function AssetsUnderManagementHelpTooltip() {
+  return (
+    <span className="help-tooltip d-none d-md-inline-block">
+      <span id='assetsHelp' className="icon-help-web-button" />
+      <UncontrolledTooltip hideArrow={true} target='assetsHelp' placement="right">
+          Amount of INVESTORS assets
+      </UncontrolledTooltip>
+    </span>
+  );
 }
 
+export function BalanceChartHelpTooltip() {
+  return (
+    <span className="help-tooltip d-none d-md-inline-block">
+      <span id='balanceChartHelp' className="icon-help-web-button" />
+      <UncontrolledTooltip hideArrow={true} target='balanceChartHelp' placement="right">
+          PERSONAL assets summarise with INVESTORS assets
+      </UncontrolledTooltip>
+    </span>
+  );
+}
