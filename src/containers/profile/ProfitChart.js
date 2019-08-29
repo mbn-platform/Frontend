@@ -117,7 +117,7 @@ class ProfitChart extends React.Component {
     return (
       <div className="values">
         {stat.currentCount > 0 ?
-          <div>Profit per current contracts: {(stat.currentProfit / stat.currentCount).toFixed(2)}%</div>
+          <div>Profit per current contract: {stat.currentProfit.map((v) => v.toFixed(2) + '%').join(' / ')}</div>
           : null
         }
         <div>Profit per all contracts in total: {stat.average.toFixed(2)}%</div>
@@ -134,13 +134,13 @@ class ProfitChart extends React.Component {
       profit: 0,
       count: 0,
       currentCount: 0,
-      currentProfit: 0,
+      currentProfit: [],
       average: 0,
     };
     data.forEach((d) => {
       if (d.state === 'VERIFIED') {
         const lastPoint = d.points[d.points.length - 1];
-        stat.currentProfit += lastPoint.percent;
+        stat.currentProfit.push(lastPoint.percent);
         stat.currentCount++;
         return;
       }

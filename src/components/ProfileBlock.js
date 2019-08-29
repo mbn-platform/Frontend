@@ -34,6 +34,16 @@ export function TradeHistoryHelpTooltip() {
     </span>
   );
 }
+export function ShowVerifiedTooltip() {
+  return (
+    <span style={{color: '#6f6f71'}} className="help-tooltip">
+      <span id='tradeHistoryHelp' className="icon-help-web-button" />
+      <UncontrolledTooltip hideArrow={true} target='tradeHistoryHelp' placement="right">
+        Traders, who confirmed account via Telegram. Updates every 30 min
+      </UncontrolledTooltip>
+    </span>
+  );
+}
 export function AssetsUnderManagementHelpTooltip() {
   return (
     <span className="help-tooltip d-none d-md-inline-block">

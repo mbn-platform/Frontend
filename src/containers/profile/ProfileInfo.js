@@ -56,6 +56,7 @@ class ProfileInfo extends React.Component {
                   investorRating={profile.topInvesters}
                   averageCurrent={profile.averageCurrent}
                   roiInBTC={profile.roiInBTC}
+                  currentProfit={profile.currentProfit}
                   roiInUSD={profile.roiInUSD}
                   totalInBTC={profile.totalInBTC}
                   totalInUSDT={profile.totalInUSDT}
@@ -90,6 +91,7 @@ class ProfileInfo extends React.Component {
                   traderRating={profile.topTraders}
                   investorRating={profile.topInvesters}
                   roi={15}
+                  currentProfit={profile.currentProfit}
                   averageCurrent={profile.averageCurrent}
                   roiInBTC={profile.roiInBTC}
                   roiInUSD={profile.roiInUSD}                        

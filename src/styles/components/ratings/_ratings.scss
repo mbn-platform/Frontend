@@ -382,6 +382,7 @@
     }
     .nickname {
       text-transform: uppercase;
+      word-break: break-all;
     }
   }
   &__best {
@@ -666,9 +667,6 @@
   font-weight: 400;
   height: 50px;
 
-  &:first-child {
-    max-width: 20%;
-  }
   &.get_contract {
     overflow: visible !important;
     .get_contract_button {
@@ -691,10 +689,13 @@
   .rt-td.ratings__table-cell {
     height: 90px;
     &.contract-settings, &.contract-stat, &.balance-stat, &.user-info {
+      white-space: nowrap;
+      overflow: visible;
       line-height: normal;
       text-align: left;
     }
     &.user-info {
+      white-space: normal;
       word-break: break-word;
       font-size: 12px;
     }
@@ -757,6 +758,10 @@
 
 }
 
+.pagination-bottom {
+  overflow: hidden;
+}
+
 @media (min-width: 1500px) {
   .ratings__best-item {
     margin-bottom: 0;
@@ -769,9 +774,17 @@
 }
 
 @media (max-width: 768px) {
+  .ReactTable.rating-table {
+    .rt-tr > :first-child {
+      margin-left: 0px !important;
+    }
+  }
   .ratings__table-cell {
     font-size: 10px;
     height: 30px;
+    &.invest-now-button button {
+      font-size: 10px;
+    }
   }
 
   .ratings__input-search {

@@ -18,6 +18,9 @@ export const ordersSchema = {
 };
 
 export const ratingSchema = {
+  small: '(max-width: 639.98px)',
+  mobile: '(max-width: 709.98px)',
+  sm: '(max-width: 767.98px)',
   xs: '(max-width: 1199.98px)',
   sm: '(max-width: 1349.98px)',
   md: '(max-width: 1699.98px)',

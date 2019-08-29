@@ -1,46 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col } from 'reactstrap';
-import { UncontrolledTooltip } from 'reactstrap';
 import { FormattedMessage } from 'react-intl';
 import { AssetsUnderManagementHelpTooltip } from '../components/ProfileBlock';
 
-/* eslint no-unused-vars: 0 */
-
-
-const renderInvestorsRank = () => {
-  return (
-    <div className="row-fuild raiting">
-      <Col xs="auto">
-        <div className="description-text">
-          <FormattedMessage id="rankInInvestorsRating"
-            defaultMessage="Rank in investors rating:"/>
-        </div>
-        <div className="value-text green">
-          <span className="number-value-text">#</span><span className="text-underline">{}<hr/></span>
-        </div>
-      </Col>
-    </div>);
-};
-
-const renderRankInTrades = () => {
-  return (
-    <div className="row-fuild raiting">
-      <Col xs="auto">
-        <div className="description-text">
-          <FormattedMessage id="rankInRating"
-            defaultMessage="Rank in traders rating:"/>
-        </div>
-        <div className="value-text">
-          <span className="number-value-text">#</span><span className="text-underline">{}<hr/></span>
-        </div>
-      </Col>
-    </div>
-  );
-};
-
-
-const Stats = ({ traderRating, investorRating, roiInUSD, roiInBTC, totalInBTC, totalInUSDT, averageCurrent })  => (
+const Stats = ({ traderRating, investorRating, roiInUSD, roiInBTC, totalInBTC, totalInUSDT, currentProfit })  => (
   <Row className="justify-content-between raiting-block">
     <Col xs="6" md="6" className="raiting-left-item">
       <div className="container-fuild">
@@ -68,16 +32,13 @@ const Stats = ({ traderRating, investorRating, roiInUSD, roiInBTC, totalInBTC, t
     </Col>
     <Col xs="auto" md="6" className="raiting-right-item">
       <div className="content-fuild">
-        {renderROI(averageCurrent)}
+        <CurrentContractProfit current={currentProfit} />
       </div>
     </Col>
   </Row>
 );
 
-const renderROI = (averageCurrent) => {
-  if (averageCurrent || averageCurrent === 0) {
-    averageCurrent = averageCurrent.toFixed(2);
-  }
+function CurrentContractProfit({current = []}) {
   return (
     <div className="row-fuild money">
       <Col>
@@ -86,12 +47,16 @@ const renderROI = (averageCurrent) => {
             defaultMessage="Profit per current contract:"/>
         </div>
         <div className="value-text" style={{color: '#cfa925'}} >
-          {averageCurrent}%
+          {
+            current.map((v) => v.toFixed(2) + '%')
+              .join(' / ')
+          }
         </div>
+        ))}
       </Col>
     </div>
   );
-};
+}
 
 Stats.propTypes = {
   traderRating: PropTypes.number,
@@ -100,7 +65,5 @@ Stats.propTypes = {
   roiInBTC: PropTypes.number,
   roiInUSD: PropTypes.number,
 };
-
-//eslint no-unused-vars: 2
 
 export default Stats;

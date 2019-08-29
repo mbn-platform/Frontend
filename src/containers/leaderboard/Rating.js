@@ -5,6 +5,7 @@ import ReactTable from 'react-table';
 import Calculator from './Calculator';
 import { PaginationWithPageRight } from '../../components/PaginationWithPage';
 import createMqProvider, {ratingSchema} from '../../MediaQuery';
+import { ShowVerifiedTooltip } from '../../components/ProfileBlock';
 
 const { MediaQuery, Screen} = createMqProvider(ratingSchema);
 
@@ -82,6 +83,7 @@ class Rating extends React.Component {
               />
                 Show only verified traders
             </label>
+            <ShowVerifiedTooltip />
           </div>
           <this.MediaQuery>
             <this.Screen on={(size) => (
@@ -120,34 +122,39 @@ class RatingTable extends React.PureComponent {
     let showInfo = true;
     let showBTC = true;
     let showUSDT = true;
+    let showStats = true;
+    let showContractStats = true;
     switch (screenWidth) {
+      case 'small':
+        showStats = false;
+        // fallthrough
+      case 'mobile':
+        showContractStats = false;
+        // fallthrough
+      case 'sm':
+        showUSDT = false;
+        // fallthrough
+      case 'xs':
+        showBTC = false;
+        // fallthrough
       case 'md':
         showInfo = false;
+        // fallthrough
         break;
-      case 'sm':
-        showInfo = false;
-        showBTC = false;
-        break;
-      case 'xs':
-        showInfo = false;
-        showBTC = false;
-        showUSDT = false;
       default:
         break;
     }
+    let isSmallFont = false;
+    switch (screenWidth) {
+      case 'sm':
+      case 'small':
+      case 'mobile':
+        isSmallFont = true;
+        break;
+      default: break;
+    }
     return [
       {
-        Header: null,
-        maxWidth: screenWidth === 'lg' ? 80 : 40,
-        className: 'ratings__table-cell',
-        Cell: row =>
-          (
-            <div>
-              {row.viewIndex + 1}
-            </div>
-          ),
-        sortable: false,
-      }, {
         Header:<div className="table__header-wrapper">
           <div>
             <FormattedMessage
@@ -156,7 +163,7 @@ class RatingTable extends React.PureComponent {
             />
           </div>
         </div>,
-        minWidth: 100,
+        minWIdth: 100,
         className: 'ratings__table-cell',
         Cell: row => {
           return <div className="name nickname">@{row.value}</div>;
@@ -227,6 +234,7 @@ class RatingTable extends React.PureComponent {
             <div>Change BTC (7d): <span className='btc'>{value.ltbtc.change.toFixed(2)}%</span></div>
           </div>
         ),
+        show: showStats,
         className: 'ratings__table-cell balance-stat',
       }, {
         Header: (
@@ -234,7 +242,7 @@ class RatingTable extends React.PureComponent {
             <div className="rating__header-title-wrapper">Contract Stats</div>
           </div>
         ),
-        width: 100,
+        minWidth: 100,
         sortable: false,
         Cell: ({value}) => (
           <div>
@@ -245,15 +253,28 @@ class RatingTable extends React.PureComponent {
             <br/>
           </div>
         ),
+        show: showContractStats,
         className: 'ratings__table-cell contract-stat',
         accessor: 'contractStat',
+      }, {
+        Header:<div className="table__header-wrapper">
+          <div title="based on 6 months performance">
+            Average Monthly ROI
+          </div>
+        </div>,
+        minWidth: 50,
+        className: 'ratings__table-cell',
+        Cell: row => {
+          return <div className="name nickname">{row.value.toFixed(2)}%</div>;
+        },
+        accessor: 'contractStat.avg6',
       }, {
         Header: (
           <div className="table__header-wrapper">
             <div className="rating__header-title-wrapper">Contract settings</div>
           </div>
         ),
-        width: 130,
+        minWidth: isSmallFont ? 90 : 110,
         sortable: false,
         Cell: ({value}) => (
           <div>
@@ -262,28 +283,18 @@ class RatingTable extends React.PureComponent {
             <div>Duration: {value.duration} days</div>
             <div>Fee: {value.fee}%</div>
             <div>Currency: {value.currency}</div>
+            <div>Min amount: {value.minAmount}</div>
           </div>
         ),
         className: 'ratings__table-cell contract-settings',
         accessor: 'contractSettings',
       }, {
-        Header:<div className="table__header-wrapper">
-          <div title="based on 6 months performance">
-            Average Monthly ROI
-          </div>
-        </div>,
-        width: 100,
-        className: 'ratings__table-cell',
-        Cell: row => {
-          return <div className="name nickname">{row.value.toFixed(2)}%</div>;
-        },
-        accessor: 'contractStat.avg6',
-      }, {
         Header: '',
-        className: 'ratings__table-cell justify-content-center',
+        className: 'ratings__table-cell justify-content-center invest-now-button',
         filterMethod: (filter, row) => {
           return !filter.value || row.verified;
         },
+        minWidth: 90,
         Cell: row => {
           return (
             <Link to={'/' + row.original.name}>
@@ -291,7 +302,6 @@ class RatingTable extends React.PureComponent {
             </Link>
           );
         },
-        minWidth: 120,
         accessor: 'verified',
         sortable: false,
       }
