@@ -126,7 +126,7 @@ class Calculator extends React.Component {
         : `${percent.toFixed(2)}%`;
       return (
         <div>
-          <div>This profit your could get by investing {this.state.investment} USDT to @{trader.toUpperCase()} at {new Date(start).toLocaleDateString()}.
+          <div>This profit you could get by investing {this.state.investment} USDT to @{trader.toUpperCase()} at {new Date(start).toLocaleDateString()}.
             Today your balance would be:</div>
           <div className='profit'>{resultBalance.toFixed(2)} USDT {' '} {percentValue}</div>
           {this.renderInvestButton(this.props.calculation.trader)}
