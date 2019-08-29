@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import times from 'lodash.times';
 import qs from 'qs';
 import { FormattedMessage } from 'react-intl';
-import { UncontrolledTooltip } from 'reactstrap';
 import RoundSelect from './RoundSelect';
 import PointsInfo from './PointsInfo';
 import ReactTable from '../../components/SelectableReactTable';
@@ -152,7 +151,6 @@ class Leaderboard extends React.Component {
     return (
       <Screen on={screenWidth => (
         <div>
-          {this.renderNextRoundButton()}
           <div className="ratings-main__block">
             <div className="block__top">
               <div className="block__top-switch-wrap">
@@ -173,35 +171,6 @@ class Leaderboard extends React.Component {
         </div>
       )} />
     );
-  }
-
-  renderNextRoundButton() {
-    const { loggedIn, challenge } = this.props;
-    if (!loggedIn) {
-      return null;
-    } else {
-      const canParticipate = challenge && challenge.nextRound !== undefined && !challenge.nextRound;
-      return (
-        <div className="leaderboard__form">
-          <span className="leaderboard__title">
-            <FormattedMessage
-              id="leaderboard.nextRoundMessage"
-            />
-            <div id="help-icon-tx" className="table_header_help_wrapper"/>
-          </span>
-          <button disabled={!canParticipate} type="submit" onClick={this.onTakePartClick} className="leaderboard__form-submit">
-            <FormattedMessage
-              id="leaderboard.nextRoundConfirm"
-            />
-          </button>
-          <UncontrolledTooltip target="help-icon-tx">
-            <FormattedMessage
-              id="leaderboard.nextRoundHelp"
-            />
-          </UncontrolledTooltip>
-        </div>
-      );
-    }
   }
 
   renderBoard(data, roundInfo, isSelectedRoundExists, screenWidth) {
