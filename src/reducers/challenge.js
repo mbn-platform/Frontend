@@ -1,4 +1,5 @@
 import {UPDATE_CHALLENGE, NEXT_STATUS, NEXT_PARTICIPATE} from '../actions/challenge';
+import {PROFIT_CALCULATION} from '../actions/profile';
 
 const challenge = (state = null, action) => {
   switch(action.type) {
@@ -8,6 +9,8 @@ const challenge = (state = null, action) => {
       return {...state, ...action.challenge};
     case NEXT_PARTICIPATE:
       return {...state, nextRound: true};
+    case PROFIT_CALCULATION:
+      return {...state, calculation: action.info};
     default:
       return state;
   }

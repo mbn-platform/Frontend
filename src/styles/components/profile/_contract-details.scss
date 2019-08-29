@@ -45,6 +45,12 @@
 								.attribute {
 									font-size: 14px;
 								}
+                &.btc {
+                  color: #31b993;
+                }
+                &.usdt {
+                  color: #44b6ff;
+                }
 								&.green {
 									color: #31b993;
 								}
@@ -58,7 +64,7 @@
 						}
 					}
 					.btn {
-						margin: 41px 0 142px 0;
+						margin: 41px 0 20px 0;
 						width: 180px;
 						height: 40px;
 						letter-spacing: 1px;
@@ -122,6 +128,7 @@
 					 	}	
 					 	.request-sent-info {
 					 		margin-top: 21px;					
+              margin-bottom: 21px;
 					 		.request-sent-info-item {
 					 			height: 21px;
 					 			margin-top: 19px;

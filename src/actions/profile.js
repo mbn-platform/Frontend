@@ -1,5 +1,6 @@
+import React from 'react';
 import { profileErrorHandler } from '../generic/errorHandlers';
-import { ApiProfile} from '../generic/api';
+import { ApiProfile, ApiContacts} from '../generic/api';
 import { ApiError} from '../generic/apiCall';
 import { showConfirmModal, showInfoModal } from './modal';
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
@@ -12,8 +13,66 @@ export const GET_TR_BLOCK = 'GET_TR_BLOCK';
 export const SET_TR_PAGE_SIZE = 'SET_TR_PAGE_SIZE';
 export const SET_TR_PAGE = 'SET_TR_PAGE';
 export const GET_STAKE_INFO = 'GET_STAKE_INFO';
+export const PROFIT_CALCULATION = 'PROFIT_CALCULATION';
+export const ADD_CONTACT = 'ADD_CONTACT';
 
 const ProfileApi = new ApiProfile();
+const ContactsApi = new ApiContacts();
+
+export function verifyTelegram(value) {
+
+  return async dispatch => {
+    if (!value) {
+      return;
+    }
+    if (value.startsWith('@')) {
+      value = value.substring(1);
+    }
+    const result = await ContactsApi.create('telegram', value);
+    if (!result.verification) {
+      dispatch(showInfoModal('contactVerified'));
+    } else if (result.verification.type === 'code') {
+      const bot = process.env.REACT_APP_BOT_NAME;
+      const botRef = `https://t.me/${bot}`;
+      dispatch(showInfoModal('telegramConfirmCode', {
+        code: result.verification.params.code,
+        link: <a target="__blank" href={botRef}> our bot </a>,
+      }));
+      dispatch({
+        type: ADD_CONTACT,
+        contact: result.contact,
+      });
+    }
+  };
+}
+
+export function updateNotificationSettings(settings) {
+  return (dispatch, getState) => {
+    const name = getState().profile.name;
+    ProfileApi.updateNotificationSettings(name, settings)
+      .then((profile) => dispatch({
+        type: UPDATE_PROFILE,
+        profile,
+      }))
+      .catch(err => {
+        profileErrorHandler(err, dispatch);
+      });
+  };
+}
+
+export function updateInfo(info) {
+  return (dispatch, getState) => {
+    const name = getState().profile.name;
+    ProfileApi.setInfo(name, info)
+      .then((profile) => dispatch({
+        type: UPDATE_PROFILE,
+        profile,
+      }))
+      .catch(err => {
+        profileErrorHandler(err, dispatch);
+      });
+  };
+}
 
 export function updateContractSettings(name, settings) {
   return dispatch => {
@@ -179,6 +238,21 @@ export function getStakeInfo() {
             info: {verified: false},
           });
         }
+      });
+  };
+}
+
+export function calculateTraderProfit(trader, start, investment) {
+  return dispatch => {
+    ProfileApi.calculateTraderProfit(trader, start, investment)
+      .then((info) => {
+        dispatch({
+          type: PROFIT_CALCULATION,
+          info,
+        });
+      })
+      .catch((error) => {
+        console.log('failed to get');
       });
   };
 }

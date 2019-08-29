@@ -343,8 +343,8 @@ class Navigation extends React.Component {
         iconHover: DashboardIconHover
       },
       {
-        name: 'Leaderboard',
-        to: '/leaderboard',
+        name: 'Rating',
+        to: '/rating',
         imgClass: 'leaderboard',
         icon: LeaderboardIcon,
         iconHover: LeaderboardIconHover

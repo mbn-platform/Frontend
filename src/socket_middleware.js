@@ -4,6 +4,9 @@ import { SELECT_MARKET, SELECT_EXCHANGE, EXCHANGE_MARKETS,
 import { LOGGED_OUT, LOGGED_IN } from './actions/auth';
 import {updateKeyBalance} from './actions/apiKeys';
 import {updateOrderBook, updateHistory, updateRates, updateTicker, selectMarket} from './actions/terminal';
+import { UPDATE_ORDER } from './actions/terminal';
+import { addQuickNotif } from './actions/quickNotif';
+import { ACCEPT_OFFER, NEW_OFFER, CANCEL_OFFER, REJECT_OFFER, VERIFY_OFFER } from './actions/offers';
 let socket;
 
 function createSocket(store) {
@@ -13,6 +16,62 @@ function createSocket(store) {
   });
   socket.on('action', action => {
     store.dispatch(action);
+    switch (action.type) {
+      case UPDATE_ORDER: {
+        if (action.order && action.order.state === 'CLOSED') {
+          store.dispatch(addQuickNotif({
+            type: 'order_closed',
+            object: action.order,
+          }));
+        }
+        break;
+      }
+      case NEW_OFFER: {
+        if (isTrader(store, action.offer)) {
+          store.dispatch(addQuickNotif({
+            type: 'request_created',
+            object: action.offer,
+          }));
+        }
+        break;
+      }
+      case REJECT_OFFER: {
+        if (isInvestor(store, action.offer)) {
+          store.dispatch(addQuickNotif({
+            type: 'request_rejected',
+            object: action.offer,
+          }));
+        }
+        break;
+      }
+      case CANCEL_OFFER: {
+        if (isTrader(store, action.offer)) {
+          store.dispatch(addQuickNotif({
+            type: 'request_canceled',
+            object: action.offer,
+          }));
+        }
+        break;
+      }
+      case ACCEPT_OFFER: {
+        if (isInvestor(store, action.offer)) {
+          store.dispatch(addQuickNotif({
+            type: 'request_accepted',
+            object: action.offer,
+          }));
+        }
+        break;
+      }
+      case VERIFY_OFFER: {
+        store.dispatch(addQuickNotif({
+          type: 'request_verified',
+          object: action.offer,
+        }));
+        break;
+      }
+      default:
+        break;
+    }
   });
   socket.on('orders', ({name, content}) => {
     const [exchange,, market] = name.split('.');
@@ -36,6 +95,27 @@ function createSocket(store) {
     store.dispatch(updateKeyBalance(_id, content.balances, totalInBTC, totalInUSDT));
   });
   return socket;
+}
+
+function isTrader(store, contract) {
+  const state = store.getState();
+  if (state.auth &&
+    state.auth.loggedIn && state.auth.profile &&
+    state.auth.profile._id === contract.to._id) {
+    return true;
+  } else {
+    return false;
+  }
+}
+function isInvestor(store, contract) {
+  const state = store.getState();
+  if (state.auth &&
+    state.auth.loggedIn && state.auth.profile &&
+    state.auth.profile._id === contract.from._id) {
+    return true;
+  } else {
+    return false;
+  }
 }
 const socketMiddleware = store => next => action => {
   switch(action.type) {

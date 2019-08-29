@@ -1,5 +1,7 @@
 .main-panel.container-fluid {
     .table-screen {
+      overflow: hidden;
+      height: 100%;
         .profile_table_wrapper {
             height: calc(100% - 54px);
             position: absolute;
@@ -112,7 +114,7 @@
             .raiting-block, .title-setting, .accept-requests, .settings, .date-button .btn, .feedback-item .name, thead, .accept-request-title-text {
                 font-family: 'maven_pro_light300' !important;
             }
-            .feedback-item .date, .feedback-item .text-feedback, .raiting .value-text, .alltime-block .percent, .alltime-block .date {
+            .feedback-item .date, .feedback-item .text-feedback, .raiting .value-text, .percent, .alltime-block .date {
                 font-family: 'maven_pro_light200' !important;
             }
             .table-screen {
@@ -164,9 +166,6 @@
                     }
                 }
                 .card-header {
-                    background-color: #2d3034;
-                    border-bottom-color: #494d4d;
-                    height: 54px;
                     .currency-button {
                         margin-right: 19px;
                     }
@@ -185,7 +184,7 @@
                     }
                 }
                 .card-body {
-                    padding: 25px;
+                    padding-bottom: 25px;
                     overflow-y: hidden;
                     overflow-x: hidden;
                     .ReactTable .rt-thead .rt-tr {
@@ -526,7 +525,7 @@
                             padding: 0;
                             min-height: 300px;
                             .profit-card-body {
-                                padding: 25px;
+                                padding-bottom: 25px;
                                 position: absolute;
                                 flex: 1;
                                 height: calc(100% - 54px);
@@ -544,6 +543,24 @@
                                 }
                             }
                         }
+                    }
+                    .legend {
+                      .usdt {
+                        color: #31b993;
+                      }
+                      .btc {
+                        color: #44b6ff;
+                      }
+                      .graphs {
+                        font-size: 24px;
+                        span {
+                          text-decoration: underline;
+                          cursor: pointer;
+                        }
+                      }
+                      .values {
+                        font-size: 16px;
+                      }
                     }
                 }
             }
@@ -740,12 +757,9 @@
                     letter-spacing: 1px;
                     text-transform: uppercase;
                     margin-top: 33px;
-                    padding: 0px 43px 0 62px;
+                    padding: 0px 20px 0 39px;
                     .raiting-left-item {
                         width: 131px;
-                    }
-                    .raiting-right-item {
-                        width: 145px;
                     }
                     .raiting {
                         .description-text {
@@ -781,7 +795,7 @@
                             margin-top: 10px;
                             font-size: 2em;
                             letter-spacing: .1em;
-                            color: #cfa925;
+                            color: #44b6ff;
                             position: relative;
                             .currency-value-usd-text {
                                 font-size: 14px;
@@ -796,6 +810,7 @@
                         }
                         .btc-text {
                             font-size: 2em;
+                            color: #31b993;
                             .currency-value-btc-text {
                                 font-size: 12px;
                             }
@@ -804,12 +819,24 @@
                 }
             }
             @media only screen and (max-width:992px) {
-                .table-screen {
-                    padding: 0px;
-                }
                 .info-screen {
                     padding: 0 0;
                 }
+            }
+            @include media-breakpoint-down(sm) {
+              .table-screen {
+                padding: 0;
+              }
+              .info-screen {
+                textarea.about {
+                  margin-left: 10px;
+                  margin-right: 10px;
+                }
+                .input-telegram {
+                  padding-left: 10px;
+                  padding-right: 10px;
+                }
+              }
             }
             @include media-breakpoint-down(lg) {
                 .feedback-block {
@@ -905,9 +932,6 @@
                         .raiting-left-item {
                             width: 120px;
                         }
-                        .raiting-right-item {
-                            width: 120px;
-                        }
                         .description-text {
                             font-size: 1.1em !important;
                             line-height: 1.1;
@@ -973,6 +997,9 @@
                             min-width: 254px;
                         }
                     }
+                    .profile-about {
+                      padding-bottom: 20px;
+                    }
                 }
                 .table-screen {
                     background-color: #1b1d1f;
@@ -981,9 +1008,6 @@
                             background-color: #1b1d1f;
                             border: none;
                             .card-header {
-                                min-height: 81px;
-                                border: none;
-                                background: transparent;
                                 // padding: 0 55px;
                                 .title-text {
                                     letter-spacing: 1.5px;
@@ -1146,39 +1170,6 @@
                                         .amcharts {
                                             // min-height: 150px;
                                         }
-                                    }
-                                }
-                                .graphic-fake {
-                                    width: 65px;
-                                    height: 65px;
-                                    background-image: url('../assets/svg/chart_icon-01.svg');
-                                    background-repeat: no-repeat;
-                                    background-position: 0 0;
-                                    background-size: 100% 100%;
-                                    margin-right: 20px;
-                                }
-                                .alltime-block {
-                                    margin-top: 31px;
-                                    margin-bottom: 28px;
-                                    .alltime {
-                                        font-size: 11px;
-                                        text-transform: uppercase;
-                                        line-height: 1em;
-                                        margin-top: 5px;
-                                    }
-                                    .percent {
-                                        font-size: 2.1em;
-                                        color: #44b6ff;
-                                        line-height: 1em;
-                                        letter-spacing: 1px;
-                                        margin-top: 7px;
-                                    }
-                                    .date {
-                                        font-size: 1em;
-                                        line-height: 1em;
-                                        text-transform: none;
-                                        letter-spacing: 1px;
-                                        margin-top: 9px;
                                     }
                                 }
                             }
@@ -1539,6 +1530,38 @@
         }
     }
 }
+input.profile-settings {
+  background-color: #1f2225;
+  width: 109px;
+  color: #727274;
+  line-height: 1;
+  padding: 1px 13px;
+  font-size: 1.6em;
+  border: 1px solid #494d4d;
+  border-radius: 5px;
+  height: 27px;
+  width: 100%;
+}
+textarea {
+  &.about {
+    width: 100%;
+    background-color: transparent;
+    border-radius: 5px;
+    height: 106px;
+    margin: auto;
+    font-size: 1.4em;
+    padding: 10px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    resize: none;
+    border-color: #494d4d;
+    outline: none;
+    color: #6c6c6e;
+    transition-property: color, border-color;
+    transition-duration: 400ms;
+  }
+}
 
 @include media-breakpoint-down(sm) {
 	.profile-item {
@@ -1552,3 +1575,4 @@
 @import './contract-details';
 @import './choose-api';
 @import './contract-sent';
+@import './graphics';

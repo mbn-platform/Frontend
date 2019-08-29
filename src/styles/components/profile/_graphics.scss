@@ -1,0 +1,45 @@
+@include media-breakpoint-down(sm) {
+  .profile-block {
+    .legend {
+      text-align: center;
+    }
+  }
+}
+.profile-block.graphic {
+  .card-body {
+    .amcharts {
+      height: 300px;
+      width: 100%;
+    }
+    .amcharts-block {
+      flex: 1;
+      .amcharts {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+  .legend {
+    padding-top: 10px !important;
+    .usdt {
+      color: #44b6ff;
+    }
+    .btc {
+      color: #31b993;
+    }
+    .graphs {
+      font-size: 24px;
+      span {
+        &.unselected {
+          color: grey;
+        }
+        cursor: pointer;
+        text-decoration: underline;
+      }
+    }
+    .values {
+      font-size: 16px;
+    }
+  }
+}

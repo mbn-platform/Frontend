@@ -77,10 +77,10 @@ class MainContent extends React.Component {
           <ProtectedRoute exact path="/orders" component={Orders} loggedIn={loggedIn}/>
           <ProtectedRoute exact path="/staking" component={Staking} loggedIn={loggedIn}/>
           <Redirect exact from="/ratings" to="/leaderboard"/>
-          <Redirect exact from="/rating" to="/leaderboard"/>
           <Route exact path="/hashlog" component={Hashlog} loggedIn={loggedIn}/>
           <Route exact path="/hashlog/actions/" component={ActionList} loggedIn={loggedIn}/>
           <Route exact path="/leaderboard" component={Leaderboard}/>
+          <Route exact path="/rating" component={Leaderboard}/>
           <Redirect exact from="/profile" to={loggedIn ? `/${profile.name}` : '/login'}/>
           <Route exact path="/:id" component={Profile}/>
           <Redirect exact from="/" to={defaultRoute}/>

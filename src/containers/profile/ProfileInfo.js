@@ -1,6 +1,5 @@
 import React from 'react';
 import { Col, Container, Row } from 'reactstrap';
-import RatingBar from './RatingBar';
 import Stats from '../../components/Stats';
 import ContractSettings from './ContractSettings';
 import SendRequestBlock from './SendRequestBlock';
@@ -46,17 +45,18 @@ class ProfileInfo extends React.Component {
     const contractSettings = profile.contractSettings;
     if(this.props.own) {
       return (
-        <Col xs="12" md="auto" sm="12" className="item-screen info-screen contract-block">
+        <Col xs="12" md="auto" sm="12" className="info-screen contract-block">
           <Container fluid>
             <Row className="justify-content-center">
               <Col xs="12">
                 {this.getHeader()}
                 {this.getHeaderSeparator()}
-                {/*<RatingBar rating={0}/>*/}
                 <Stats
                   traderRating={profile.topTraders}
                   investorRating={profile.topInvesters}
+                  averageCurrent={profile.averageCurrent}
                   roiInBTC={profile.roiInBTC}
+                  currentProfit={profile.currentProfit}
                   roiInUSD={profile.roiInUSD}
                   totalInBTC={profile.totalInBTC}
                   totalInUSDT={profile.totalInUSDT}
@@ -81,22 +81,24 @@ class ProfileInfo extends React.Component {
       );
     } else {
       return (
-        <Col xs="12" md="auto" sm="12" className="item-screen info-screen contract-block">
+        <Col xs="12" md="auto" sm="12" className="info-screen contract-block">
           <Container fluid>
             <Row className="justify-content-center">
               <Col xs="12">
                 {this.getHeader()}
                 {this.getHeaderSeparator()}
-                <RatingBar rating={0}/>
                 <Stats
                   traderRating={profile.topTraders}
                   investorRating={profile.topInvesters}
                   roi={15}
+                  currentProfit={profile.currentProfit}
+                  averageCurrent={profile.averageCurrent}
                   roiInBTC={profile.roiInBTC}
                   roiInUSD={profile.roiInUSD}                        
                   totalInBTC={profile.totalInBTC}
                   totalInUSDT={profile.totalInUSDT}
                 />
+                <About info={profile.info} />
                 <SendRequestBlock profile={profile} />
               </Col>
             </Row>
@@ -104,6 +106,24 @@ class ProfileInfo extends React.Component {
         </Col>
       );
     }
+  }
+}
+
+function About({info}) {
+  if (!info) {
+    return null;
+  } else {
+    return (
+      <Row style={{
+        marginTop: '39px',
+        color: '#bfbfc1',
+        textAlign: 'center',
+      }}
+      className="justify-content-center profile-about">
+        <Col style={{textTransform: 'uppercase', fontSize: '1.7em'}} xs="12">About</Col>
+        <Col style={{fontSize: '1.5em', wordBreak: 'break-word', padding: '0 10px'}} xs="12">{info}</Col>
+      </Row>
+    );
   }
 }
 

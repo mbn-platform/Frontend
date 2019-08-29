@@ -382,6 +382,7 @@
     }
     .nickname {
       text-transform: uppercase;
+      word-break: break-all;
     }
   }
   &__best {
@@ -654,7 +655,6 @@
   }
   &:focus {
     outline: none;
-    width: 100%;
   }
 }
 
@@ -667,9 +667,6 @@
   font-weight: 400;
   height: 50px;
 
-  &:first-child {
-    max-width: 20%;
-  }
   &.get_contract {
     overflow: visible !important;
     .get_contract_button {
@@ -679,6 +676,36 @@
       line-height: 22px;
       border-radius: 8px;
       white-space: nowrap;
+    }
+  }
+}
+.ratings-main__block.rating {
+  padding: 0px !important;
+}
+.ReactTable.rating-table {
+
+  overflow-y: scroll !important;
+  overflow-x: scroll !important;
+  .rt-td.ratings__table-cell {
+    height: 90px;
+    &.contract-settings, &.contract-stat, &.balance-stat, &.user-info {
+      white-space: nowrap;
+      overflow: visible;
+      line-height: normal;
+      text-align: left;
+    }
+    &.user-info {
+      white-space: normal;
+      word-break: break-word;
+      font-size: 12px;
+    }
+    &.balance-stat {
+      .btc {
+        color: #31b993;
+      }
+      .usdt {
+        color: #44b6ff;
+      }
     }
   }
 }
@@ -731,6 +758,10 @@
 
 }
 
+.pagination-bottom {
+  overflow: hidden;
+}
+
 @media (min-width: 1500px) {
   .ratings__best-item {
     margin-bottom: 0;
@@ -743,9 +774,17 @@
 }
 
 @media (max-width: 768px) {
+  .ReactTable.rating-table {
+    .rt-tr > :first-child {
+      margin-left: 0px !important;
+    }
+  }
   .ratings__table-cell {
     font-size: 10px;
     height: 30px;
+    &.invest-now-button button {
+      font-size: 10px;
+    }
   }
 
   .ratings__input-search {
@@ -1045,5 +1084,9 @@
         margin-bottom: 10px;
       }
     }
+  }
+}
+.ReactTable {
+  .rt-td.ratings__table-cell.contract-settings {
   }
 }

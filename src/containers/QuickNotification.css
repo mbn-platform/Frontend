@@ -1,0 +1,36 @@
+.quick-notif {
+  margin-top: 10px;
+  padding: 5px !important;
+  color: #a1a2a3;
+  background-color: #2C2F33;
+  min-width: 300px;
+  border-radius: 0;
+  border: 1px solid #7c7e80;
+}
+
+.quick-notif .title {
+  text-transform: capitalize;
+  font-weight: bold;
+}
+
+.quick-notif .top-block {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-weight: bold;
+}
+
+.quick-notif .time {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.quick-notif .close-notif {
+  cursor: pointer;
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  background: url('../assets/svg/cross.svg') no-repeat;
+  background-position: center top 2px;
+
+  background-size: contain;
+}

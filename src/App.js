@@ -5,6 +5,7 @@ import {apiGet, ApiError} from './generic/apiCall';
 import {loggedIn, loggedOut} from './actions/auth';
 import { Provider } from 'react-redux';
 import MainContent from './MainContentContainer';
+import QuickNotification from './containers/QuickNotification';
 import Navigation from './Navigation';
 import { fetchTime } from './actions/time';
 import { Container, Row } from 'reactstrap';
@@ -74,6 +75,7 @@ const MainRouter = () => (
           <Navigation />
           <MainContent />
         </Row>
+        <QuickNotification />
       </Container>
     </MediaQuery>
   </BrowserRouter>
