@@ -254,7 +254,7 @@ class Leaderboard extends React.Component {
           </div>
         </div>,
         minWidth: screenWidth === 'lg' ? 80 : 50,
-        Cell: row => row.original.average,
+        accessor: 'average',
         className: 'ratings__table-cell',
       }, {
         Header: <div
