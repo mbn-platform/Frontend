@@ -63,6 +63,12 @@ class BalanceChart extends React.PureComponent {
     }
   }
 
+  componentDidMount() {
+    if (this.props.name) {
+      this.fetchData(this.state.start, this.state.end);
+    }
+  }
+
   toggle = (graphId) => {
     if (this.state.selected.includes(graphId)) {
       this.setState({selected: this.state.selected.filter((id) => id !== graphId)});
