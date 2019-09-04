@@ -109,6 +109,10 @@ class ApiKeyInfo extends React.Component {
       <div>
         <Desktop>
           <ReactTable
+            defaultSorted={[{
+              id: 'total',
+              desc: true,
+            }]}
             style={{height: 312, marginRight: -1}}
             data={data}
             columns={this.getColumns()}
@@ -119,6 +123,10 @@ class ApiKeyInfo extends React.Component {
         </Desktop>
         <Mobile>
           <ReactTable
+            defaultSorted={[{
+              id: 'total',
+              desc: true,
+            }]}
             data={data}
             columns={this.getColumns()}
             filtered={this.state.filtered}
