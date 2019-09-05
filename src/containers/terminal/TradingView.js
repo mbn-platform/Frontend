@@ -1,7 +1,6 @@
 import React from 'react';
-import { Col, Row } from 'reactstrap';
+import { Row } from 'reactstrap';
 import { Desktop } from '../../generic/MediaQuery';
-import classNames from 'classnames';
 import {ESCAPE_KEYCODE} from '../../constants';
 
 
@@ -17,7 +16,7 @@ class TradingView extends React.PureComponent {
     this.handleKeyDown = this.handleKeyDown.bind(this);
   }
 
-  componentWillMount(){
+  componentDidMount(){
     window.addEventListener('keydown', this.handleKeyDown);
   }
 
@@ -118,6 +117,12 @@ class TradingViewContainer extends React.Component {
       this.setState({ready: true});
 
     });
+  }
+
+  componentWillUnmount() {
+    if (this.widget) {
+      this.widget._options.datafeed.socket.disconnect();
+    }
   }
 
   render() {
