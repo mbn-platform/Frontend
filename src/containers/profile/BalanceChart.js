@@ -8,13 +8,33 @@ import { Desktop, Mobile } from '../../generic/MediaQuery';
 import classNames from 'classnames';
 
 class BalanceChart extends React.PureComponent {
-  state = {
-    data: [],
-    selected: ['USDT', 'BTC'],
-    selectedInterval: 2,
-    end: Date.now(),
-    start: Date.now() - 86400 * 7 * 1000,
-    loading: false,
+
+  static lsKeySelectedGraphs = 'profile.balanceChart.selected'
+  static lsKeySelectedInterval = 'profile.balanceChart.selectedInterval'
+
+  constructor(props) {
+    super(props);
+    let selectedCharts;
+    const stored = window.localStorage.getItem(BalanceChart.lsKeySelectedGraphs);
+    if (stored) {
+      selectedCharts = JSON.parse(stored);
+    } else {
+      selectedCharts = ['USDT', 'BTC'];
+    }
+    let selectedInterval = JSON.parse(window.localStorage.getItem(
+      BalanceChart.lsKeySelectedInterval
+    ));
+    if (!selectedInterval && selectedInterval !== 0) {
+      selectedInterval = 2;
+    }
+    this.state = {
+      data: [],
+      selected: selectedCharts,
+      selectedInterval,
+      end: Date.now(),
+      start: Date.now() - 86400 * 7 * 1000,
+      loading: false,
+    };
   }
 
   onZoom = (item) => {
@@ -46,6 +66,7 @@ class BalanceChart extends React.PureComponent {
       default:
         start = 0;
     }
+    window.localStorage.setItem(BalanceChart.lsKeySelectedInterval, segment);
     this.setState({selectedInterval: segment});
     this.fetchData(start, Date.now());
   }
@@ -70,11 +91,17 @@ class BalanceChart extends React.PureComponent {
   }
 
   toggle = (graphId) => {
+    let selected;
     if (this.state.selected.includes(graphId)) {
-      this.setState({selected: this.state.selected.filter((id) => id !== graphId)});
+      selected =  this.state.selected.filter((id) => id !== graphId);
     } else {
-      this.setState({selected: [...this.state.selected, graphId]});
+      selected = [...this.state.selected, graphId];
     }
+    selected.sort().reverse();
+    window.localStorage.setItem(BalanceChart.lsKeySelectedGraphs,
+      JSON.stringify(selected),
+    );
+    this.setState({selected});
   }
 
   render() {
@@ -146,10 +173,27 @@ class BalanceChart extends React.PureComponent {
       } else {
         usdtChange = (((usdtLast / usdtFirst) || 0) - 1) * 100;
       }
+      const arrayOfElements = this.state.selected.map((u, index) => {
+        let className;
+        let value;
+        if (u === 'USDT') {
+          className = 'usdt';
+          value = usdtChange.toFixed(2);
+        } else {
+          className = 'btc';
+          value = btcChange.toFixed(2);
+        }
+        return <span className={className} key={className}>{value}%</span>;
+      })
+        .reduce((acc, elem, index, array) => {
+          acc.push(elem);
+          if (index < array.length - 1) {
+            acc.push(' / ');
+          }
+          return acc;
+        }, []);
       return (
-        <div className='values'>Change: <span
-          className='usdt'>{usdtChange.toFixed(2)}%</span> / <span className='btc'
-        >{btcChange.toFixed(2)}%</span></div>
+        <div className='values'>Change: {arrayOfElements}</div>
       );
     }
   }
@@ -159,12 +203,27 @@ class BalanceChart extends React.PureComponent {
     if (!endItem) {
       return null;
     } else {
-      const btc = endItem.btc;
-      const usdt = endItem.usdt;
+      const arrayOfElements = this.state.selected.map((u, index) => {
+        let className;
+        let value;
+        if (u === 'USDT') {
+          className = 'usdt';
+          value = endItem.usdt.toFixed(2);
+        } else {
+          className = 'btc';
+          value = endItem.btc.toFixed(6);
+        }
+        return <span className={className} key={className}>{value}</span>;
+      })
+        .reduce((acc, elem, index, array) => {
+          acc.push(elem);
+          if (index < array.length - 1) {
+            acc.push(' / ');
+          }
+          return acc;
+        }, []);
       return (
-        <div className='values'>Current: <span
-          className='usdt'>{usdt.toFixed(2)}</span> / <span className='btc'
-        >{btc.toFixed(6)}</span></div>
+        <div className='values'>Current: {arrayOfElements}</div>
       );
     }
   }
