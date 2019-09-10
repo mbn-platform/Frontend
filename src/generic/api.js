@@ -1,7 +1,10 @@
-import { apiPost } from '../generic/apiCall';
-import {apiDelete, apiGet, apiPut} from './apiCall';
-import {ABI, CONTRACT_ADDRESS, ETHEREUM_NET} from '../eth/MercatusFactory';
 import qs from 'qs';
+
+import { apiPost } from '../generic/apiCall';
+import { apiDelete, apiGet, apiPut } from './apiCall';
+import { ABI, CONTRACT_ADDRESS, ETHEREUM_NET } from '../eth/MercatusFactory';
+import transferABI from '../eth/transferABI';
+
 const errorHandler = resp => resp;
 const responseSchemaHandler = resp => resp;
 
@@ -140,7 +143,7 @@ export class ApiOffers {
       .then(errorHandler)
       .then(responseSchemaHandler);
 
-  send = offer => 
+  send = offer =>
     apiPost('/contract', null, offer)
       .then(errorHandler)
       .then(responseSchemaHandler);
@@ -437,6 +440,47 @@ export class ApiContacts {
 
   delete = (id) =>
     apiDelete('/contacts/' + id)
+}
+
+export class ApiPayments {
+  constructor(web3) {
+    this.web3 = web3;
+  }
+
+  transferTokens = (destination, amount) => {
+    const { web3 } = this;
+
+    return new Promise((resolve, reject) => {
+      web3.eth.getAccounts((err, accounts) => {
+        const account = accounts[0];
+
+        if (!account) {
+          reject(err);
+        } else {
+          const contractABI = web3.eth.contract(transferABI);
+          const contract = contractABI.at(destination);
+          const data = contract.transfer.getData(destination, amount, { from: account });
+
+          resolve(
+            new Promise((resolve, reject) => {
+              web3.eth.sendTransaction({
+                to: destination,
+                from: account,
+                value: web3.toWei(amount, 'ether'),
+                data,
+              }, (error, result) => {
+                if (!error) {
+                  resolve(result);
+                } else {
+                  reject(error);
+                }
+              });
+            })
+          );
+        };
+      });
+    });
+  };
 }
 
 // async function getProfitStats() {

@@ -198,14 +198,15 @@ class Navigation extends React.Component {
 
   render() {
     const { isExpanded } = this.state;
+
     return (
       <Col xs="12"
         md="auto"
         className={`
-           d-block
-           menu-panel
-           navigation__tab-container
-           ${!isExpanded && 'navigation__tab-container_hidden'}`
+          d-block
+          menu-panel
+          navigation__tab-container
+          ${!isExpanded && 'navigation__tab-container_hidden'}`
         }>
         <Navbar expand="md"  >
           <NavbarBrand className="d-inline-block d-md-none" tag="div">

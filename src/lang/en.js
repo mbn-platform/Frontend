@@ -329,16 +329,26 @@ const en = {
   'terminal.orders.openOrders': 'Open Orders',
   'terminal.orders.closedOrders': 'Closed Orders',
   'terminal.orders.balances': 'Balances',
+
   'modal.error': 'Error',
   'modal.error.useYourAddress': 'You have to use your address associated with your Membrana account',
   'modal.error.deniedContractPay': 'You have rejected transaction, contract is not booked',
   'modal.error.contractNotAvailable': 'This contract is no more available',
   'modal.success': 'Success',
+  'modal.error.transactionDenied': 'User denied transaction signature',
+
   'contactVerified': 'This contact is already added',
   'telegramConfirmCode': 'Your code is {code}. Go to {link} and enter',
   'help-stop-limit-order': 'Stop-limit orders are triggered when pair price reaches stop price. In that case a limit order is placed. Such orders don\'t block your available balance',
   'staking.title': 'Staking',
 
+  'payments.destination': 'Destination',
+  'payments.amount': 'Amount',
+
+  'shared.send': 'Send',
+
+  'placeholders.destination': 'destination',
+  'placeholders.amount': 'amount',
 };
 
 export default en;
