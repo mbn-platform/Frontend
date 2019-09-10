@@ -1,6 +1,6 @@
 import React from 'react';
 import BigNumber from 'bignumber.js';
-import { Col, Button, Row } from 'reactstrap';
+import { Col, Button, Row, Container } from 'reactstrap';
 import ReactTable from '../../components/SelectableReactTable';
 import PaginationWithPage from '../../components/PaginationWithPage';
 import { FormattedDate } from 'react-intl';
@@ -90,6 +90,11 @@ class StakeInfo extends React.Component {
 
   renderInfo() {
     const info = this.props.info;
+    const style = {
+      width: 240,
+      height: '20',
+      fontSize: '11px',
+    };
     return (
       <div className='info'>
         <Row>
@@ -108,9 +113,32 @@ class StakeInfo extends React.Component {
             <div>Balance: {BigNumber(info.balance).div(1e18).toFixed(8)} MBN</div>
             <div>Total Bonus: {BigNumber(info.totalBonus).div(1e18).toFixed(8)} MBN</div>
             <div>Current level: {info.level}. {this.renderLevelInfo(info)}</div>
-            <a href="https://abcc.com/en/active/ieo/mbn" target="_blank" rel="noopener noreferrer">
-              <Button style={{width: 100}}>BUY MBN</Button>
-            </a>
+            <Container>
+              <Row>
+                <Col>
+                  <a href="https://idex.market/eth/mbn" target="_blank" rel="noopener noreferrer">
+                    <Button style={style}>Buy on IDEX MBN/ETH</Button>
+                  </a>
+                </Col>
+                <Col>
+                  <a href="https://abcc.com/markets/mbnbtc" target="_blank" rel="noopener noreferrer">
+                    <Button style={style}>Buy on ABCC MBN/BTC</Button>
+                  </a>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <a href="https://www.probit.com/app/exchange/MBN-BTC" target="_blank" rel="noopener noreferrer">
+                    <Button style={style}>Buy on ProBit MBN/BTC</Button>
+                  </a>
+                </Col>
+                <Col>
+                  <a href="https://coinmarketcap.com/currencies/membrana/" target="_blank" rel="noopener noreferrer">
+                    <Button style={style}>View MBN on CoinMarketCap</Button>
+                  </a>
+                </Col>
+              </Row>
+            </Container>
           </Col>
           {this.renderEmailVerification()}
         </Row>

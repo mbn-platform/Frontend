@@ -1,6 +1,5 @@
 import React from 'react';
-import { Container, Row, Col, Button } from 'reactstrap';
-import { FormattedMessage } from 'react-intl';
+import { Button } from 'reactstrap';
 
 class StakingInfo extends React.Component {
 
