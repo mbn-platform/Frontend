@@ -63,7 +63,7 @@ class FundSelect extends React.Component {
                   defaultMessage="API KEY"/>
               </span><span className="arrow_down"/>
             </div>
-            {funds.slice(0, 5).map(fund => (
+            {funds.map(fund => (
               <div
                 key={fund._id}
                 onClick={e => this.onKeySelect(e, fund)}
