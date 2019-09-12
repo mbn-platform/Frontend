@@ -1,3 +1,4 @@
+import BN from 'bignumber.js';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Card } from 'reactstrap';
@@ -91,6 +92,19 @@ function requestNotifTitle(event) {
 function OrderNotification({event, onClick}) {
   const order = event.object;
   const [main, secondary] = order.symbol.split('-');
+  let message;
+  if (order.canceledAt) {
+    message = 'Order canceled';
+  } else if (order.state === 'CLOSED') {
+    message = 'Order executed';
+  }
+  let price;
+  if (order.filled > 0) {
+    price = new BN(order.price / order.filled).dp(8).toString();
+  } else {
+    price = '0';
+  }
+
   return (
     <Card className="quick-notif" onClick={() => onClick(event)}>
       <div className="top-block">
@@ -98,10 +112,11 @@ function OrderNotification({event, onClick}) {
         <span className="close-notif" />
       </div>
       <div className="title">
-        Order closed
+        {message}
       </div>
       <div>Filled: {order.filled} {secondary}</div>
-      <div>Price: {order.price} {main}</div>
+      <div>Price: {price} {main}</div>
+      <div>Total: {order.price} {main}</div>
     </Card>
   );
 }
