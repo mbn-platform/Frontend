@@ -256,6 +256,9 @@ const en = {
   'profile.amount' : 'Amount',
   'profile.total' : 'Total',
   'profile.tx' : 'TX',
+  'profile.upgradeTo': 'Upgrade to {tariff}',
+  'profile.needToUpgradePlan': 'You need to upgrade your plan to use this feature',
+
   'ratings.bestInvestor' : 'All the time best investor',
   'ratings.toBeDetermined' : 'to be determined',
   'ratings.roiPercent' : 'ROI, %',

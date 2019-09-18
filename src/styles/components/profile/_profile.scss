@@ -42,16 +42,16 @@
             display: block;
             height: 30px;
             margin-left: 0;
-        }      
+        }
         .table_header_wrapper.contract_header_wrapper {
             display: inline;
-        }        
+        }
         .contract_header_wrapper .table_header {
             display: table-cell;
             height: 50px;
             white-space: pre;
-        } 
-               
+        }
+
         .add_keys_field
         {
           border: 1px solid #44464a;
@@ -72,7 +72,7 @@
         .add_keys_field::-webkit-input-placeholder {color:#505153;}
         .add_keys_field::-moz-placeholder          {color:#505153;}/* Firefox 19+ */
         .add_keys_field:-moz-placeholder           {color:#505153;}/* Firefox 18- */
-        .add_keys_field:-ms-input-placeholder      {color:#505153;}      
+        .add_keys_field:-ms-input-placeholder      {color:#505153;}
         &.container-fluid {
             padding: 0;
             div, nav, a {
@@ -178,6 +178,7 @@
                             margin-left: 25px;
                         }
                     }
+
                     .icon-fullscreen {
                         font-size: 1.5em;
                         margin: 0 25px;
@@ -198,7 +199,7 @@
                       vertical-align: middle;
                       text-transform: none;
                       color: white;
-                    }                    
+                    }
                     .profit:first-child {
                         margin-right: 39px;
                     }
@@ -221,7 +222,7 @@
                             color: #626365;
                         }
                     }
-                    .table {                                      
+                    .table {
                         .header-table-block {
                             height: 78px;
                             &.currency-header-block {
@@ -701,6 +702,12 @@
                     margin-top: 30px;
                     letter-spacing: .1em;
                 }
+                .upgrade-to-text {
+                    font-size: 2em;
+                    color: #00FF1C;
+                    margin-top: 20px;
+                    text-decoration: none;
+                }
                 .separate-block, .separate-second-block {
                     padding: 0 37px;
                     .separate-line {
@@ -1037,20 +1044,20 @@
                                 .table_header
                                 {
                                   font-size: 1.2em;
-                                }                  
+                                }
                                 .table_col_value {
                                     font-size: 1.2em;
-                                } 
+                                }
                                 .ReactTable .rt-td {
                                     text-align: center;
                                     overflow: hidden;
                                     -o-text-overflow: ellipsis;
                                     text-overflow: ellipsis;
                                     white-space: nowrap;
-                                } 
+                                }
                                 .ReactTable .rt-tr-group .rt-tr {
                                     border-bottom: 0;
-                                }                                                                                                              
+                                }
                                 .profit {
                                     margin-right: 16px;
                                     .text {
