@@ -1,9 +1,11 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import { Col, Container, Row } from 'reactstrap';
+import { FormattedMessage } from 'react-intl';
+
 import Stats from '../../components/Stats';
 import ContractSettings from './ContractSettings';
 import SendRequestBlock from './SendRequestBlock';
-import { FormattedMessage } from 'react-intl';
 
 class ProfileInfo extends React.Component {
 
@@ -13,6 +15,16 @@ class ProfileInfo extends React.Component {
         <Col xs="12" className="text-center align-middle info-screen-title title-text">
           @{this.props.profile.name}
         </Col>
+        {this.props.own && (
+          <Col xs="12" className="text-center align-middle info-screen-title">
+            <NavLink className="upgrade-to-text" to="/tariffs">
+              <FormattedMessage
+                id="profile.upgradeTo"
+                values={{ tariff: 'premium' }} // TODO: add tariff dynamically
+              />
+            </NavLink>
+          </Col>
+        )}
       </Row>
     );
   }
@@ -73,6 +85,7 @@ class ProfileInfo extends React.Component {
                   fee={contractSettings.fee}
                   availableForOffers={profile.available}
                   roi={contractSettings.roi}
+                  tariff={this.props.billing.tariff}
                 />
               </Col>
             </Row>
@@ -94,7 +107,7 @@ class ProfileInfo extends React.Component {
                   currentProfit={profile.currentProfit}
                   averageCurrent={profile.averageCurrent}
                   roiInBTC={profile.roiInBTC}
-                  roiInUSD={profile.roiInUSD}                        
+                  roiInUSD={profile.roiInUSD}
                   totalInBTC={profile.totalInBTC}
                   totalInUSDT={profile.totalInUSDT}
                 />

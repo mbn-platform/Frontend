@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { addApiKey } from '../../actions/apiKeys';
 import { injectIntl } from 'react-intl';
 import {showInfoModal, showTwoFactorAuthModal} from '../../actions/modal';
+import LockButton from '../../components/LockButton';
 
 class AddApiKey extends React.Component {
   constructor(props) {
@@ -53,6 +54,8 @@ class AddApiKey extends React.Component {
   }
 
   render() {
+    const { billing: { tariff } } = this.props;
+
     return (
       <div className="add_keys_form_wrapper">
         <form className="add_keys_form" onSubmit={this.onSubmit}>
@@ -101,9 +104,15 @@ class AddApiKey extends React.Component {
                 spellCheck="false"
               />
             </div>
-            <div className="keys_submit_wrapper">
-              <input className="keys_submit" type="submit" value="Add key"/>
-            </div>
+              <div className="keys_submit_wrapper">
+                <LockButton
+                  offsetTop="5px"
+                  offsetLeft="-25px"
+                  tariff={tariff}
+                >
+                  <input className="keys_submit" type="submit" value="Add key"/>
+                </LockButton>
+              </div>
           </div>
         </form>
       </div>

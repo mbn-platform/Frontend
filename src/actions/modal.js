@@ -10,7 +10,8 @@ export const SHOW_TWO_FACTOR_AUTH_MODAL = 'SHOW_TWO_FACTOR_AUTH_MODAL';
 export const CLOSE_TWO_FACTOR_AUTH_MODAL = 'CLOSE_TWO_FACTOR_AUTH_MODAL';
 export const SHOW_CODE_INFO_MODAL = 'SHOW_CODE_INFO_MODAL';
 export const CLOSE_CODE_INFO_MODAL = 'CLOSE_CODE_INFO_MODAL';
-
+export const SHOW_UPGRADE_TARIFF_MODAL = 'SHOW_UPGRADE_TARIFF_MODAL';
+export const CLOSE_UPGRADE_TARIFF_MODAL = 'CLOSE_UPGRADE_TARIFF_MODAL';
 
 const Api2FA = new ApiTwoFactorAuth();
 
@@ -91,4 +92,16 @@ export const showTwoFactorAuthModal = (mode, authData={username:'', secret:''}, 
 
 export const closeTwoFactorAuthModal = {
   type: 'CLOSE_TWO_FACTOR_AUTH_MODAL',
+};
+
+export const showUpgradeTariffModal = (textID = 'message', values = {}, confirmCallback = () => {}, body) => ({
+  type: 'SHOW_UPGRADE_TARIFF_MODAL',
+  textID,
+  values,
+  confirmCallback,
+  body,
+});
+
+export const closeUpgradeTariffModal = {
+  type: 'CLOSE_UPGRADE_TARIFF_MODAL',
 };

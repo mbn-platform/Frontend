@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { UncontrolledTooltip } from 'reactstrap';
 import {injectIntl, FormattedMessage} from 'react-intl';
+import LockButton from '../../components/LockButton';
 
 class ContractDetails extends React.Component {
 
@@ -11,6 +12,7 @@ class ContractDetails extends React.Component {
         <div className="container-fluid">
           <InvestNowButton
             available={this.props.availableForOffers}
+            tariff={this.props.billing.tariff}
             onClick={this.props.onOfferSendClick} />
           <InvestNowDescriptionMobile available={this.props.availableForOffers} />
           <div className="row justify-content-start justify-content-md-center request-sent-title">
@@ -33,7 +35,7 @@ class ContractDetails extends React.Component {
                 name={this.props.intl.messages['profile.currencyOfContractInDetails']}
                 value={this.props.currency}
                 color={this.props.currency}
-              />              
+              />
               <ContractDetailRow
                 name={this.props.intl.messages['profile.minContractAmount']}
                 value={this.props.amount}
@@ -81,17 +83,19 @@ function InvestNowDescriptionMobile({available}) {
   );
 }
 
-function InvestNowButton({available, onClick}) {
+function InvestNowButton({ available, tariff, onClick }) {
   if (available) {
     return (
       <div className="row justify-content-center">
         <div className="col-auto">
-          <button onClick={onClick} type="button" className="send-request-btn btn btn-secondary active">
-            <FormattedMessage
-              id="profile.sendRequest"
-              defaultMessage="INVEST NOW" />
-            <span id="help-icon-send-request" className="d-none d-md-inline-block icon icon-help icon-help-web-button" />
-          </button>
+          <LockButton offsetTop="40px" tariff={tariff}>
+            <button onClick={onClick} type="button" className="send-request-btn btn btn-secondary active">
+              <FormattedMessage
+                id="profile.accepted"
+                defaultMessage="INVEST NOW" />
+              <span id="help-icon-send-request" className="d-none d-md-inline-block icon icon-help icon-help-web-button" />
+            </button>
+          </LockButton>
           <UncontrolledTooltip target="help-icon-send-request" placement="right">
             <FormattedMessage
               id="profile.yourRequestWillBe"

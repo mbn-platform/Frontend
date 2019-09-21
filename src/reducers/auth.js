@@ -17,7 +17,7 @@ export default function reducer(auth = {}, action) {
     case GET_PROFILE: {
       const profile = action.profile;
       if(auth.loggedIn && auth.profile._id === profile._id) {
-        const state = {...auth, profile};
+        const state = {...auth, profile: {...auth.profile, ...profile}};
         saveReduxState({auth: state});
         return state;
       }

@@ -7,6 +7,7 @@ import { Desktop, Mobile } from '../../generic/MediaQuery';
 import  SecuritySettings from './SecuritySettings';
 import NotificationSettings from './NotificationSettings';
 import { showInfoModal } from '../../actions/modal';
+import LockButton from '../../components/LockButton';
 
 class ContractSettings extends React.Component {
 
@@ -78,7 +79,14 @@ class ContractSettings extends React.Component {
 
 
   onToggleClick(e) {
-    const { minAmount, fee, maxLoss, duration, roi } = this.props;
+    const {
+      minAmount, fee, maxLoss, duration, roi, tariff,
+    } = this.props;
+
+    if (tariff === 'free') {
+      return;
+    }
+
     if(fee >= 100 || fee <= 0 || minAmount <= 0 || roi <= 0 ||
       duration <= 0 || maxLoss <= 0) {
       this.props.showModalWindow('profile.needEditFirst');
@@ -88,6 +96,8 @@ class ContractSettings extends React.Component {
   }
 
   renderAcceptsRequests() {
+    const { tariff } = this.props;
+
     return (
       <Row className="row accept-requests">
         <Col xs="12" className="align-middle">
@@ -98,24 +108,26 @@ class ContractSettings extends React.Component {
                 defaultMessage="ACCEPT REQUESTS?"
               />
             </Col>
-            <Col xs="auto" className="switch" onClick={this.onToggleClick}>
-              <input className="cmn-toggle cmn-toggle-round-flat" type="checkbox"
-                onChange={this.onToggleClick}
-                checked={this.props.availableForOffers || false}/>
-              <label className="cmn-toggle-background"/>
-              <label className="cmn-text cmn-yes-text">
-                <FormattedMessage
-                  id="yes"
-                  defaultMessage="yes"
-                />
-              </label>
-              <label className="cmn-text cmn-no-text">
-                <FormattedMessage
-                  id="no"
-                  defaultMessage="no"
-                />
-              </label>
-            </Col>
+            <LockButton offsetTop="-10px" tariff={tariff}>
+              <Col xs="auto" className="switch" onClick={this.onToggleClick}>
+                  <input className="cmn-toggle cmn-toggle-round-flat" type="checkbox"
+                    onChange={this.onToggleClick}
+                    checked={this.props.availableForOffers || false}/>
+                <label className="cmn-toggle-background"/>
+                <label className="cmn-text cmn-yes-text">
+                  <FormattedMessage
+                    id="yes"
+                    defaultMessage="yes"
+                  />
+                </label>
+                <label className="cmn-text cmn-no-text">
+                  <FormattedMessage
+                    id="no"
+                    defaultMessage="no"
+                  />
+                </label>
+              </Col>
+            </LockButton>
           </Row>
         </Col>
       </Row>
@@ -163,15 +175,17 @@ class ContractSettings extends React.Component {
           </div>
         ) : (
           <div className="row justify-content-center">
-            <button
-              tabIndex={10}
-              onClick={this.onEditButtonClick} type="button"
-              className={classNames('edit-btn', 'btn', 'btn-secondary', {active: this.state.isEditing})}>
-              <FormattedMessage
-                id="profile.edit"
-                defaultMessage="EDIT"
-              />
-            </button>
+            <LockButton>
+              <button
+                tabIndex={10}
+                onClick={this.onEditButtonClick} type="button"
+                className={classNames('edit-btn', 'btn', 'btn-secondary', {active: this.state.isEditing})}>
+                <FormattedMessage
+                  id="profile.edit"
+                  defaultMessage="EDIT"
+                />
+              </button>
+            </LockButton>
           </div>
         )}
         <SecuritySettings/>
@@ -209,7 +223,7 @@ class ContractSettings extends React.Component {
             editCurrency={this.state.currency}
             onChange={(e) => this.onFieldEdit(e,[0])}
             onCurrencySelected={this.onCurrencySelected}
-          />       
+          />
 
           <div>
             <Desktop>
@@ -222,9 +236,9 @@ class ContractSettings extends React.Component {
                 editValue={this.state.roi}
                 name="roi"
                 onChange={(e) => this.onFieldEdit(e,[1])}
-              />  
-            </Desktop>  
-          </div>          
+              />
+            </Desktop>
+          </div>
         </Col>
         <Col xs="auto" lg="12" xl="12">
           <div>
@@ -238,9 +252,9 @@ class ContractSettings extends React.Component {
                 editValue={this.state.roi}
                 name="roi"
                 onChange={(e) => this.onFieldEdit(e,[1])}
-              />  
-            </Mobile>  
-          </div>              
+              />
+            </Mobile>
+          </div>
           <Setting
             tabIndex={4}
             header={this.props.intl.messages['profile.maxLoss']}
@@ -369,7 +383,7 @@ const CurrencyOfContractButton = ({isEditing, onCurrencySelected, currency, valu
           </span>
         </div>
 
-      ) : (      
+      ) : (
         <SettingEntry
           value={value}
         />)

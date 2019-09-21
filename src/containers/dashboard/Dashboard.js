@@ -92,7 +92,7 @@ class Dashboard extends React.Component {
             onKeyDeleteClick={this.props.onKeyDeleteClick}
             exchanges={this.props.exchanges}
           />
-          <AddApiKey/>
+          <AddApiKey billing={this.props.billing} />
           <ApiKeyInfo
             fund={this.state.selectedOffer || this.state.selectedContract || this.state.selectedApiKey}
           />

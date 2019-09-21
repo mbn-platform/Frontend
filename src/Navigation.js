@@ -195,6 +195,50 @@ class Navigation extends React.Component {
 
   renderTwoFactorAuthModal = () => <TwoFactorAuthModal appName={APP_NAME} appHost={APP_HOST}/>
 
+  renderUpgradeTariffModal = () => {
+    const { modal, closeUpgradeTariffModalWindow } = this.props;
+
+    if (!modal.isUpgradeTariffModalOpen) {
+      return null;
+    }
+
+    return (
+      <ModalWindow
+        modalIsOpen={modal.isUpgradeTariffModalOpen}
+        onClose={closeUpgradeTariffModalWindow}
+        title={
+          <FormattedMessage
+            id={modal.modalText}
+            values={modal.modalProps}
+          />
+        }
+        content={
+          <div>
+            {modal.body ?
+              <div className="modal__body_text">
+                <FormattedMessage
+                  id={modal.body.textId}
+                  values={modal.body.values || {}}
+                />
+              </div>
+              : null}
+            <button className="modal__button btn" onClick={() => {
+              modal.upgradeTariffCallback();
+              closeUpgradeTariffModalWindow();
+            }}>
+              <FormattedMessage id={modal.body.upgradeTariffText} />
+            </button>
+            <button className="modal__button btn" onClick={closeUpgradeTariffModalWindow}>
+              {modal.body && modal.body.cancelText ?
+                <FormattedMessage
+                  id={modal.body.cancelText}
+                /> : this.props.intl.messages['no']}
+            </button>
+          </div>
+        }
+      />
+    );
+  }
 
   render() {
     const { isExpanded } = this.state;
@@ -202,10 +246,10 @@ class Navigation extends React.Component {
       <Col xs="12"
         md="auto"
         className={`
-           d-block
-           menu-panel
-           navigation__tab-container
-           ${!isExpanded && 'navigation__tab-container_hidden'}`
+          d-block
+          menu-panel
+          navigation__tab-container
+          ${!isExpanded && 'navigation__tab-container_hidden'}`
         }>
         <Navbar expand="md"  >
           <NavbarBrand className="d-inline-block d-md-none" tag="div">
@@ -237,6 +281,7 @@ class Navigation extends React.Component {
         {this.renderGlobalInformModel()}
         {this.renderGlobalConfirmModel()}
         {this.renderTwoFactorAuthModal()}
+        {this.renderUpgradeTariffModal()}
         <div
           className="navigation__splitter"
           onClick={() => this.setState({isExpanded: !isExpanded})}>

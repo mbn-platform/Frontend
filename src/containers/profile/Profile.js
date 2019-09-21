@@ -62,6 +62,7 @@ class Profile extends React.Component {
 
   render() {
     const {loggedIn, profile} = this.props.auth;
+
     const rates = this.props.exchangesInfo.binance ? this.props.exchangesInfo.binance.rates : [];
     let own = false;
     if(loggedIn && profile && profile.name === this.props.name) {
@@ -73,6 +74,7 @@ class Profile extends React.Component {
           <ProfileInfo
             own={own}
             profile={this.state.profile}
+            billing={profile.billing}
             onSaveChangesClick={this.onSaveChangesClick}
             onToggleClick={this.onToggleClick}
           />
