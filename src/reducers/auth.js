@@ -37,7 +37,9 @@ export default function reducer(auth = {}, action) {
     }
 
     case UPDATE_PROFILE: {
-     return {...auth, profile: action.profile}
+      const profile = action.profile;
+
+      return { ...auth, profile: { ...auth.profile, ...profile }};
     }
     default:
       return auth;

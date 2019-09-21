@@ -37,7 +37,7 @@ const LockButton = ({
           type="button"
           style={styles.button}
         >
-          Icon
+          Lock
         </button>
       </NavLink>
       <UncontrolledTooltip target="need-to-upgrade-plan">
@@ -56,10 +56,10 @@ const LockButton = ({
 
 LockButton.defaultProps = {
   children: null,
-  offsetTop: '0',
-  offsetBottom: '0',
-  offsetLeft: '0',
-  offsetRight: '0',
+  offsetTop: null,
+  offsetBottom: null,
+  offsetLeft: null,
+  offsetRight: null,
   disabled: true,
 };
 

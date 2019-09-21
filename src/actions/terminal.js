@@ -1,7 +1,8 @@
 import { ApiError } from '../generic/apiCall';
 import { ApiTerminal} from '../generic/api';
-import {showInfoModal} from './modal';
+import { showInfoModal, showUpgradeTariffModal } from './modal';
 import { LOGGED_OUT } from './auth';
+
 export const SELECT_FUND = 'SELECT_FUND';
 export const SELECT_MARKET = 'SELECT_MARKET';
 export const SELECT_EXCHANGE = 'SELECT_EXCHANGE';
@@ -175,7 +176,23 @@ export function placeAlgoOrder(order) {
       .then(res => {
         dispatch(showInfoModal('orderHasBeenPlaced'));
       })
-      .catch((e) => console.log('unhandler error: ' + JSON.stringify(e)));
+      .catch(error => {
+        if(error.apiErrorCode) {
+          switch(error.apiErrorCode) {
+            case ApiError.TARIFF_LIMIT:
+              dispatch(showUpgradeTariffModal('profile.needToUpgradePlan',
+                {},
+                {
+                  upgradeTariffText: 'profile.upgrade',
+                  cancelText: 'profile.cancel',
+                },
+              ));
+              break;
+            default:
+            console.log('unhandler error: ' + JSON.stringify(error));
+          }
+        }
+      });
   };
 }
 
@@ -210,6 +227,15 @@ export function placeOrder(order) {
               break;
             case ApiError.LOCK:
               dispatch(showInfoModal('youCanPlaceOnlyOneOrderAtOnce'));
+              break;
+            case ApiError.TARIFF_LIMIT:
+              dispatch(showUpgradeTariffModal('profile.needToUpgradePlan',
+                {},
+                {
+                  upgradeTariffText: 'profile.upgrade',
+                  cancelText: 'profile.cancel',
+                },
+              ));
               break;
             default:
               dispatch(showInfoModal('failedToPlaceOrder', {order : error.apiErrorCode}));

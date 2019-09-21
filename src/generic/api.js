@@ -140,7 +140,7 @@ export class ApiOffers {
       .then(errorHandler)
       .then(responseSchemaHandler);
 
-  send = offer => 
+  send = offer =>
     apiPost('/contract', null, offer)
       .then(errorHandler)
       .then(responseSchemaHandler);

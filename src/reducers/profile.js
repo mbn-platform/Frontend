@@ -13,7 +13,7 @@ export default function(state = {}, action) {
     case UPDATE_PROFILE_AVAILABLE:
       const {available, contractSettings, currencies} = action.profile;
       return {...state, available, contractSettings, currencies};
-      
+
     case UPDATE_PROFILE:
       return {...state, ...action.profile};
 

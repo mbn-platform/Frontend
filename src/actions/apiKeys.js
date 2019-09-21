@@ -4,7 +4,7 @@ import { LOGGED_OUT } from '../actions/auth';
 import {UPDATE_KEYS} from './dashboard';
 import {SELECT_FUND} from './terminal';
 import { ApiKeys, ApiBotKeys } from '../generic/api';
-import {showCodeModal, showInfoModal} from './modal';
+import { showCodeModal, showInfoModal, showUpgradeTariffModal } from './modal';
 export const DELETE_API_KEY = 'DELETE_API_KEY';
 export const ADD_API_KEY = 'ADD_API_KEY';
 export const UPDATE_API_KEY = 'UPDATE_API_KEY';
@@ -121,39 +121,47 @@ export function deleteApiKey(key, token2FA) {
   };
 }
 
-
 export function addApiKey(key, token2FA) {
   return async (dispatch, getState) => {
-    await KeysApi.add(key, token2FA)
-      .then(json => {
-        dispatch({
-          type: ADD_API_KEY,
-          apiKey: json,
-        });
-        const ownKeys = getState().apiKeys.ownKeys;
-        if (ownKeys.length === 1) {
+    try {
+      await KeysApi.add(key, token2FA)
+        .then(json => {
           dispatch({
-            type: SELECT_FUND,
-            fund: ownKeys[0]
+            type: ADD_API_KEY,
+            apiKey: json,
           });
-        }
-      })
-      .catch(error => {
-        if(error.apiErrorCode) {
-          switch(error.apiErrorCode) {
-            case ApiError.INVALID_PARAMS_SET:
-              dispatch(showInfoModal('invalidKeySecretPair'));
-              throw error;
-            case ApiError.UNIQUE_VIOLATION:
-              dispatch(showInfoModal('thisKeyAlreadyInSystem'));
-              throw error;
-            default:
-              dispatch(showInfoModal('failedToAddApiKey', {key: error.apiErrorCode}));
-              console.error('unhandled api error', error.apiErrorCode);
-              throw error;
+          const ownKeys = getState().apiKeys.ownKeys;
+          if (ownKeys.length === 1) {
+            dispatch({
+              type: SELECT_FUND,
+              fund: ownKeys[0]
+            });
           }
+        });
+    } catch(error) {
+      if (error.apiErrorCode) {
+        switch(error.apiErrorCode) {
+          case ApiError.INVALID_PARAMS_SET:
+            dispatch(showInfoModal('invalidKeySecretPair'));
+            break;
+          case ApiError.UNIQUE_VIOLATION:
+            dispatch(showInfoModal('thisKeyAlreadyInSystem'));
+            break;
+          case ApiError.TARIFF_LIMIT:
+            dispatch(showUpgradeTariffModal('profile.needToUpgradePlan',
+              {},
+              {
+                upgradeTariffText: 'profile.upgrade',
+                cancelText: 'profile.cancel',
+              },
+            ));
+            break;
+          default:
+            dispatch(showInfoModal('failedToAddApiKey', {key: error.apiErrorCode}));
+            console.error('unhandled api error', error.apiErrorCode);
         }
-      });
+      }
+    }
   };
 }
 

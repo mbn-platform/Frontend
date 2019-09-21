@@ -48,6 +48,7 @@ ApiError.TRY_AGAIN_LATER = -513;
 ApiError.MARKET_NOT_ALLOWED = -1000;
 ApiError.THROTTLE_LIMIT = -1001;
 ApiError.LOCK = -1002;
+ApiError.TARIFF_LIMIT = -1003;
 ApiError.IN_PROGRESS = -507;
 
 const API_PREFIX = '/api/v2';

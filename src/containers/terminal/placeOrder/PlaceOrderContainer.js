@@ -180,6 +180,7 @@ class PlaceOrderContainer extends React.Component {
         exchange={this.props.exchange}
         market={this.props.market}
         fund={this.props.fund}
+        billing={this.props.billing}
 
         selectedTab={this.state.selectedTab}
         selectedOrderType={this.state.selectedOrderType}

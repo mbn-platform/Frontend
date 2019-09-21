@@ -45,7 +45,6 @@ export function confirm2FA (currentCode) {
   };
 }
 
-
 export const showInfoModal = (textID='message', values={}, body) => ({
   type: 'SHOW_INFORM_MODAL',
   textID,
@@ -94,11 +93,10 @@ export const closeTwoFactorAuthModal = {
   type: 'CLOSE_TWO_FACTOR_AUTH_MODAL',
 };
 
-export const showUpgradeTariffModal = (textID = 'message', values = {}, confirmCallback = () => {}, body) => ({
+export const showUpgradeTariffModal = (textId = 'message', values = {}, body) => ({
   type: 'SHOW_UPGRADE_TARIFF_MODAL',
-  textID,
+  textId,
   values,
-  confirmCallback,
   body,
 });
 

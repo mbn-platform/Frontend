@@ -1,7 +1,7 @@
 import { ApiError } from '../generic/apiCall';
 import defaultErrorHandler from '../generic/errorHandlers';
 import { ApiOffers } from '../generic/api';
-import {showInfoModal} from './modal';
+import { showInfoModal, showUpgradeTariffModal } from './modal';
 
 export const ACCEPT_OFFER = 'ACCEPT_OFFER';
 export const REJECT_OFFER = 'REJECT_OFFER';
@@ -21,6 +21,23 @@ export function acceptOffer(offer) {
           type: ACCEPT_OFFER,
           offer
         });
+      })
+      .catch(err => {
+        if(err.apiErrorCode) {
+          switch(err.apiErrorCode) {
+            case ApiError.TARIFF_LIMIT:
+              dispatch(showUpgradeTariffModal('profile.needToUpgradePlan',
+                {},
+                {
+                  upgradeTariffText: 'profile.upgrade',
+                  cancelText: 'profile.cancel',
+                },
+              ));
+              break;
+            default:
+              defaultErrorHandler(err, dispatch);
+          }
+        }
       });
   };
 }
@@ -65,6 +82,15 @@ export function sendOffer(offer) {
               break;
             case ApiError.TRADER_NOT_AVAILABLE:
               dispatch(showInfoModal('errorTraderNotAvailable'));
+              break;
+            case ApiError.TARIFF_LIMIT:
+              dispatch(showUpgradeTariffModal('profile.needToUpgradePlan',
+                {},
+                {
+                  upgradeTariffText: 'profile.upgrade',
+                  cancelText: 'profile.cancel',
+                },
+              ));
               break;
             default:
               defaultErrorHandler(err, dispatch);

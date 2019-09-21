@@ -27,7 +27,7 @@ import ModalWindow from './components/Modal';
 import TwoFactorAuthModal from './components/TwoFactorAuthModal';
 import { Container, Row } from 'reactstrap';
 import {injectIntl, FormattedMessage} from 'react-intl';
-import {closeCodeModal, closeConfirmModal, closeInfoModal} from './actions/modal';
+import { closeCodeModal, closeConfirmModal, closeInfoModal, closeUpgradeTariffModal } from './actions/modal';
 import { loggedOut } from './actions/auth';
 
 
@@ -196,15 +196,15 @@ class Navigation extends React.Component {
   renderTwoFactorAuthModal = () => <TwoFactorAuthModal appName={APP_NAME} appHost={APP_HOST}/>
 
   renderUpgradeTariffModal = () => {
-    const { modal, closeUpgradeTariffModalWindow } = this.props;
+    const { modal, closeUpgradeTariffModalWindow, history } = this.props;
 
-    if (!modal.isUpgradeTariffModalOpen) {
+    if (!modal.isUpgradeModalOpen) {
       return null;
     }
 
     return (
       <ModalWindow
-        modalIsOpen={modal.isUpgradeTariffModalOpen}
+        modalIsOpen={modal.isUpgradeModalOpen}
         onClose={closeUpgradeTariffModalWindow}
         title={
           <FormattedMessage
@@ -214,16 +214,8 @@ class Navigation extends React.Component {
         }
         content={
           <div>
-            {modal.body ?
-              <div className="modal__body_text">
-                <FormattedMessage
-                  id={modal.body.textId}
-                  values={modal.body.values || {}}
-                />
-              </div>
-              : null}
             <button className="modal__button btn" onClick={() => {
-              modal.upgradeTariffCallback();
+              history.push('/tariffs');
               closeUpgradeTariffModalWindow();
             }}>
               <FormattedMessage id={modal.body.upgradeTariffText} />
@@ -437,6 +429,7 @@ const mapDispatchToProps = dispatch => {
     closeInfoModalWindow: () => dispatch(closeInfoModal),
     closeConfirmModalWindow: () => dispatch(closeConfirmModal),
     closeCodeModalWindow: () => dispatch(closeCodeModal),
+    closeUpgradeTariffModalWindow: () => dispatch(closeUpgradeTariffModal),
     logOut: () => dispatch(loggedOut()),
   };
 };

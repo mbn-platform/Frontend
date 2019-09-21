@@ -84,6 +84,7 @@ class Terminal extends React.Component {
                       price={this.state.price}
                       type={this.state.type}
                       size={this.state.size}
+                      billing={this.props.auth.profile.billing}
                     />
                     <MediaQuery query="(min-width: 576px)">
                       <MyOrders/>

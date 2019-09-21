@@ -67,14 +67,13 @@ const modal = (
       return {
         ...state,
         isUpgradeModalOpen: true,
-        modalText: action.textID,
+        modalText: action.textId,
         modalProps: action.values,
-        confirmCallback: action.confirmCallback,
         body: action.body,
       };
     }
     case CLOSE_UPGRADE_TARIFF_MODAL: {
-      return {...state,  isUpgradeModalOpen: false, modalComponent: '',  modalProps: {}};
+      return {...state,  isUpgradeModalOpen: false, modalText: '',  modalProps: {}};
     }
     default:
       return state;

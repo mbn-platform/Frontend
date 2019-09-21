@@ -258,6 +258,7 @@ const en = {
   'profile.tx' : 'TX',
   'profile.upgradeTo': 'Upgrade to {tariff}',
   'profile.needToUpgradePlan': 'You need to upgrade your plan to use this feature',
+  'profile.upgrade': 'UPGRADE',
 
   'ratings.bestInvestor' : 'All the time best investor',
   'ratings.toBeDetermined' : 'to be determined',
