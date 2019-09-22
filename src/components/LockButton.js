@@ -11,45 +11,35 @@ const LockButton = ({
   offsetLeft,
   offsetRight,
   disabled,
-  tariff,
+  total,
+  used,
 }) => {
   const styles = {
-    relative: {
-      position: 'relative',
-    },
     button: {
-      color: 'red', // temporary
-      position: 'absolute',
-      width: '40px',
-      height: '40px',
-      borderRadius: '50%',
       top: offsetTop,
       bottom: offsetBottom,
       left: offsetLeft,
       right: offsetRight,
-      zIndex: '1',
     },
   };
-  return tariff === 'free' ? (
-    <div style={styles.relative}>
+  const isButtonLock = used >= total && total !== -1;
+
+  return isButtonLock ? (
+    <div className="relative">
       <NavLink to="/tariffs" id="need-to-upgrade-plan">
-        <button
-          type="button"
+        <div
+          className="lock_button"
           style={styles.button}
-        >
-          Lock
-        </button>
+        />
+        <UncontrolledTooltip target="need-to-upgrade-plan">
+          <FormattedMessage id="profile.needToUpgradePlan" />
+        </UncontrolledTooltip>
       </NavLink>
-      <UncontrolledTooltip target="need-to-upgrade-plan">
-        <FormattedMessage id="profile.needToUpgradePlan" />
-      </UncontrolledTooltip>
-      <div>
-        {React.Children.map(children, child => (
-          React.cloneElement(child, {
-            disabled,
-          })
-        ))}
-      </div>
+      {React.Children.map(children, child => (
+        React.cloneElement(child, {
+          disabled,
+        })
+      ))}
     </div>
   ) : children;
 };
@@ -70,7 +60,8 @@ LockButton.propTypes = {
   offsetLeft: PropTypes.string,
   offsetRight: PropTypes.string,
   disabled: PropTypes.bool,
-  tariff: PropTypes.string.isRequired,
+  used: PropTypes.number.isRequired,
+  total: PropTypes.number.isRequired,
 };
 
 export default LockButton;

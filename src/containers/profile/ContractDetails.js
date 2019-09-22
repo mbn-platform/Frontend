@@ -12,7 +12,7 @@ class ContractDetails extends React.Component {
         <div className="container-fluid">
           <InvestNowButton
             available={this.props.availableForOffers}
-            tariff={this.props.billing.tariff}
+            auth={this.props.auth}
             onClick={this.props.onOfferSendClick} />
           <InvestNowDescriptionMobile available={this.props.availableForOffers} />
           <div className="row justify-content-start justify-content-md-center request-sent-title">
@@ -83,19 +83,31 @@ function InvestNowDescriptionMobile({available}) {
   );
 }
 
-function InvestNowButton({ available, tariff, onClick }) {
+function InvestNowButton({ available, auth, onClick }) {
   if (available) {
     return (
-      <div className="row justify-content-center">
+      <div className="row justify-content-center m-top-40">
         <div className="col-auto">
-          <LockButton offsetTop="40px" tariff={tariff}>
+          {auth.loggedIn ? (
+            <LockButton
+              offsetTop="-2px"
+              {...auth.profile.billing.trustManagement}
+            >
+              <button onClick={onClick} type="button" className="send-request-btn btn btn-secondary active">
+                <FormattedMessage
+                  id="profile.accepted"
+                  defaultMessage="INVEST NOW" />
+                <span id="help-icon-send-request" className="d-none d-md-inline-block icon icon-help icon-help-web-button" />
+              </button>
+            </LockButton>
+          ) : (
             <button onClick={onClick} type="button" className="send-request-btn btn btn-secondary active">
               <FormattedMessage
                 id="profile.accepted"
                 defaultMessage="INVEST NOW" />
               <span id="help-icon-send-request" className="d-none d-md-inline-block icon icon-help icon-help-web-button" />
             </button>
-          </LockButton>
+          )}
           <UncontrolledTooltip target="help-icon-send-request" placement="right">
             <FormattedMessage
               id="profile.yourRequestWillBe"

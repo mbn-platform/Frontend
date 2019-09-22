@@ -230,7 +230,6 @@ class SendRequestBlock extends React.Component {
   render() {
     const profile = this.props.profile;
     const contractSettings = profile.contractSettings;
-    const billing = this.props.auth.profile.billing;
 
     switch(this.state.visibleBlock) {
       case SEND_REQUEST_BLOCK_DETAILS: {
@@ -244,7 +243,7 @@ class SendRequestBlock extends React.Component {
             maxLoss={contractSettings.maxLoss}
             fee={contractSettings.fee}
             roi={contractSettings.roi}
-            billing={billing}
+            auth={this.props.auth}
           />
         );
       }

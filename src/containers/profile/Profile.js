@@ -74,7 +74,7 @@ class Profile extends React.Component {
           <ProfileInfo
             own={own}
             profile={this.state.profile}
-            billing={profile.billing}
+            auth={this.props.auth}
             onSaveChangesClick={this.onSaveChangesClick}
             onToggleClick={this.onToggleClick}
           />

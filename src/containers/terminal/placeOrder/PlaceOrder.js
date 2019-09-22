@@ -32,7 +32,6 @@ export class PlaceOrder extends React.PureComponent {
 
   render() {
     const minTradeSize = this.props.marketInfo ? this.props.marketInfo.minTradeSize : '';
-    const { tariff } = this.props.billing;
     return (
       <Col sm="12" md="12" lg="4">
         <div className="buysell">
@@ -101,11 +100,11 @@ export class PlaceOrder extends React.PureComponent {
           </Row>
           <Row>
             <Col>
-            {this.props.selectedTab === 'sell' ? (
+            {(this.props.selectedTab === 'sell' && this.props.auth.loggedIn) ? (
               <LockButton
                 offsetTop="5px"
                 offsetRight="-10px"
-                tariff={tariff}
+                {...this.props.auth.profile.billing.algoOrders}
               >
                 <PlaceOrderButton
                   onClick={this.props.onPlaceOrderClick}

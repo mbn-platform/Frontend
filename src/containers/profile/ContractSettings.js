@@ -80,10 +80,14 @@ class ContractSettings extends React.Component {
 
   onToggleClick(e) {
     const {
-      minAmount, fee, maxLoss, duration, roi, tariff,
+      minAmount, fee, maxLoss, duration, roi, billing,
     } = this.props;
+    const { trustManagement: { total, used } } = billing;
 
-    if (tariff === 'free') {
+
+    const isButtonLock = used >= total && total !== -1;
+
+    if (isButtonLock) {
       return;
     }
 
@@ -96,7 +100,7 @@ class ContractSettings extends React.Component {
   }
 
   renderAcceptsRequests() {
-    const { tariff } = this.props;
+    const { trustManagement } = this.props.billing;
 
     return (
       <Row className="row accept-requests">
@@ -108,7 +112,7 @@ class ContractSettings extends React.Component {
                 defaultMessage="ACCEPT REQUESTS?"
               />
             </Col>
-            <LockButton offsetTop="-10px" tariff={tariff}>
+            <LockButton offsetTop="-10px" {...trustManagement}>
               <Col xs="auto" className="switch" onClick={this.onToggleClick}>
                   <input className="cmn-toggle cmn-toggle-round-flat" type="checkbox"
                     onChange={this.onToggleClick}
@@ -175,17 +179,15 @@ class ContractSettings extends React.Component {
           </div>
         ) : (
           <div className="row justify-content-center">
-            <LockButton>
-              <button
-                tabIndex={10}
-                onClick={this.onEditButtonClick} type="button"
-                className={classNames('edit-btn', 'btn', 'btn-secondary', {active: this.state.isEditing})}>
-                <FormattedMessage
-                  id="profile.edit"
-                  defaultMessage="EDIT"
-                />
-              </button>
-            </LockButton>
+            <button
+              tabIndex={10}
+              onClick={this.onEditButtonClick} type="button"
+              className={classNames('edit-btn', 'btn', 'btn-secondary', {active: this.state.isEditing})}>
+              <FormattedMessage
+                id="profile.edit"
+                defaultMessage="EDIT"
+              />
+            </button>
           </div>
         )}
         <SecuritySettings/>

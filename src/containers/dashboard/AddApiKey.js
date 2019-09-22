@@ -54,7 +54,7 @@ class AddApiKey extends React.Component {
   }
 
   render() {
-    const { billing: { tariff } } = this.props;
+    const { apiKeys } = this.props.billing;
 
     return (
       <div className="add_keys_form_wrapper">
@@ -108,7 +108,7 @@ class AddApiKey extends React.Component {
                 <LockButton
                   offsetTop="5px"
                   offsetLeft="-25px"
-                  tariff={tariff}
+                  {...apiKeys}
                 >
                   <input className="keys_submit" type="submit" value="Add key"/>
                 </LockButton>

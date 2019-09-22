@@ -40,6 +40,8 @@ $tooltip-arrow-color: #494d4d;
 @import 'styles/components/history/history';
 @import 'styles/components/ratings/ratings';
 @import 'styles/components/navigation';
+@import 'styles/components/lock-button';
+@import 'styles/utils/helpers';
 
 body {
 	min-height: 100vh;
@@ -51,7 +53,7 @@ body {
     // font-family: 'maven_proregular';
     // letter-spacing: 1px;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;    
+    -moz-osx-font-smoothing: grayscale;
 }
 .btn:focus,.btn:active {
 	outline: 0 !important;
@@ -86,7 +88,7 @@ body {
 	    content: '';
 	    border-width: $tooltip-arrow-width - 2;
 	    position: absolute;
-	    border-style: solid;		
+	    border-style: solid;
 	}
 	&.bs-tooltip-right {
 		.arrow::before{
@@ -97,8 +99,8 @@ body {
 			border-left-width: 0;
 		    margin-top: -3px;
 		    margin-left: 3px;
-		}		
-	}	
+		}
+	}
 	&.bs-tooltip-left {
 		 .arrow::before{
 			margin-right: 1px;
@@ -108,8 +110,8 @@ body {
 			border-right-width: 0;
 		    margin-top: -3px;
 		    margin-left: -1px;
-		}				
-	}	
+		}
+	}
 	&.bs-tooltip-bottom {
 		 .arrow::before{
 			margin-top: 1px;
@@ -119,8 +121,8 @@ body {
 			border-top-width: 0;
 		    margin-top: 3px;
 		    margin-left: -3px;
-		}			
-	}		
+		}
+	}
 	&.bs-tooltip-top {
 		 .arrow::before{
 			margin-top: -1px;
@@ -130,8 +132,8 @@ body {
 		    border-bottom-width: 0;
 		    margin-top: -1px;
 		    margin-left: -3px;
-		}					
-	}			
+		}
+	}
 }
 
 .tooltip-inner {
@@ -530,7 +532,7 @@ body {
     .tx_link:hover
     {
       opacity: 1.0;
-    }        	
+    }
 
 	//-------------------------------- selectable react table
 	.ReactTable {
@@ -562,7 +564,7 @@ body {
 	  text-align: left;
 	}
 	.api_key_currencies_table .ReactTable .rt-tr > :first-child {
-	 text-align: center; 
+	 text-align: center;
 	}
 	.rt-resizable-header-content
 	{
@@ -633,7 +635,7 @@ body {
 	.ReactTable .rt-td {
 	  text-align: center;
 	  overflow: hidden;
-	  text-overflow: ellipsis;    
+	  text-overflow: ellipsis;
 	}
 	.table_value_red
 	{
@@ -758,13 +760,13 @@ body {
     {
       background-color: #346255;
       color: white;
-    }    
+    }
 
 	//---------
 		.table_rewind_page {
 		    margin-top: 15px;
 		    margin-bottom: 24px;
-		}	
+		}
       .table_rewind_page {
         width: 100%;
       }
@@ -776,7 +778,7 @@ body {
         display: inline-block;
         border-radius: 2px;
       }
-      .table_rewind_page .table_prev_page.disabled, 
+      .table_rewind_page .table_prev_page.disabled,
       .table_rewind_page .table_next_page.disabled {
         visibility: hidden;
       }
@@ -796,9 +798,9 @@ body {
         width: 100%;
       }
       .table_rewind_page .table_prev_page {
-        margin-right: 16px;   
+        margin-right: 16px;
       }
-     
+
       .table_rewind_page .table_prev_page .table_prev_page--button {
         transform: rotate(180deg);
 
@@ -824,7 +826,7 @@ body {
 	  position: relative;
 	}
 
-	
+
 }
 
 .close-button {

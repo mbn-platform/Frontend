@@ -10,19 +10,17 @@ import SendRequestBlock from './SendRequestBlock';
 class ProfileInfo extends React.Component {
 
   getHeader() {
-    const { tariff } = this.props.billing;
-
     return (
       <Row className="justify-content-center">
         <Col xs="12" className="text-center align-middle info-screen-title title-text">
           @{this.props.profile.name}
         </Col>
-        {(this.props.own && tariff !== 'pro') && (
+        {(this.props.own && this.props.auth.loggedIn && this.props.auth.profile.billing.tariff !== 'pro') && (
           <Col xs="12" className="text-center align-middle info-screen-title">
             <NavLink className="upgrade-to-text" to="/tariffs">
               <FormattedMessage
                 id="profile.upgradeTo"
-                values={{ tariff: tariff === 'premium' ? 'pro' : 'premium' }}
+                values={{ tariff: this.props.auth.profile.billing.tariff === 'premium' ? 'pro' : 'premium' }}
               />
             </NavLink>
           </Col>
@@ -88,7 +86,7 @@ class ProfileInfo extends React.Component {
                   fee={contractSettings.fee}
                   availableForOffers={profile.available}
                   roi={contractSettings.roi}
-                  tariff={this.props.billing.tariff}
+                  billing={this.props.auth.profile.billing}
                 />
               </Col>
             </Row>

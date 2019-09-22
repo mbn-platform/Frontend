@@ -180,7 +180,7 @@ class PlaceOrderContainer extends React.Component {
         exchange={this.props.exchange}
         market={this.props.market}
         fund={this.props.fund}
-        billing={this.props.billing}
+        auth={this.props.auth}
 
         selectedTab={this.state.selectedTab}
         selectedOrderType={this.state.selectedOrderType}
@@ -316,7 +316,12 @@ class PlaceOrderContainer extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const { exchangesInfo, terminal: {market, exchange, ticker, fund}} = state;
+  const {
+    exchangesInfo,
+    terminal: { market, exchange, ticker, fund },
+    auth,
+  } = state;
+
   return {
     key: market + exchange,
     markets: ( exchangesInfo[exchange] || {}).markets || [],
@@ -324,6 +329,7 @@ const mapStateToProps = state => {
     exchange,
     market,
     fund,
+    auth,
   };
 };
 
