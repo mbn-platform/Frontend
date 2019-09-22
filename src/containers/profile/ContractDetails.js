@@ -91,11 +91,12 @@ function InvestNowButton({ available, auth, onClick }) {
           {auth.loggedIn ? (
             <LockButton
               offsetTop="-2px"
+              offsetLeft="-5px"
               {...auth.profile.billing.trustManagement}
             >
               <button onClick={onClick} type="button" className="send-request-btn btn btn-secondary active">
                 <FormattedMessage
-                  id="profile.accepted"
+                  id="profile.sendRequest"
                   defaultMessage="INVEST NOW" />
                 <span id="help-icon-send-request" className="d-none d-md-inline-block icon icon-help icon-help-web-button" />
               </button>
@@ -103,7 +104,7 @@ function InvestNowButton({ available, auth, onClick }) {
           ) : (
             <button onClick={onClick} type="button" className="send-request-btn btn btn-secondary active">
               <FormattedMessage
-                id="profile.accepted"
+                id="profile.sendRequest"
                 defaultMessage="INVEST NOW" />
               <span id="help-icon-send-request" className="d-none d-md-inline-block icon icon-help icon-help-web-button" />
             </button>

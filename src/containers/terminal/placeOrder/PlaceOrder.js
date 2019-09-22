@@ -100,7 +100,7 @@ export class PlaceOrder extends React.PureComponent {
           </Row>
           <Row>
             <Col>
-            {(this.props.selectedTab === 'sell' && this.props.auth.loggedIn) ? (
+            {this.props.selectedOrderType === 'stop-limit' && this.props.auth.loggedIn ? (
               <LockButton
                 offsetTop="5px"
                 offsetRight="-10px"
