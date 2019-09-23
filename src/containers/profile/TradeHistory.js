@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import React from 'react';
 import { Col, Container, Row } from 'reactstrap';
 import { Desktop, Mobile } from '../../generic/MediaQuery';
@@ -42,15 +43,14 @@ class TradeHistory extends React.Component {
         Header: SortableHeader(this.props.intl.messages['profile.type']),
         Cell: TradeTypeCell,
         accessor: 'type',
-        minWidth: 50,
+        minWidth: 30,
         className: 'table_col_value text-capitalize',
         sortable: false,
       },
       {
         Header: SortableHeader(this.props.intl.messages['profile.price']),
-        Cell: row =>  formatFloat(row.value, row.original.mainCurrency) + ' ' + row.original.mainCurrency,
+        Cell: row =>  BigNumber(row.value).dp(8).toFixed() + ' ' + row.original.mainCurrency,
         accessor: 'price',
-        minWidth: 50,
         className: 'table_col_value',
         sortable: false,
       },
@@ -58,16 +58,14 @@ class TradeHistory extends React.Component {
         Header: SortableHeader(this.props.intl.messages['profile.amount']),
         id: 'amount',
         accessor: 'amount',
-        Cell: row =>  formatFloat(row.value, row.original.amountCurrency) + ' ' + row.original.amountCurrency,
-        minWidth: 50,
+        Cell: row =>  BigNumber(row.value).toFixed() + ' ' + row.original.amountCurrency,
         className: 'table_col_value',
         sortable: false,
       },
       {
         Header: SortableHeader(this.props.intl.messages['profile.total']),
-        Cell: row =>  formatFloat(row.value, row.original.mainCurrency) + ' ' + row.original.mainCurrency,
+        Cell: row =>  BigNumber(row.value).dp(8).toFixed() + ' ' + row.original.mainCurrency,
         accessor: 'total',
-        minWidth: 50,
         className: 'table_col_value',
         sortable: false,
       },
@@ -132,14 +130,6 @@ class TradeHistory extends React.Component {
       </div>
     );
 
-  }
-}
-
-function formatFloat(value, currency) {
-  if(currency === 'USDT') {
-    return value.toFixed(2);
-  } else {
-    return value.toFixed(8);
   }
 }
 
