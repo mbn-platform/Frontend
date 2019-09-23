@@ -28,6 +28,7 @@ $tooltip-arrow-color: #494d4d;
 @import 'styles/font/font';
 
 @import 'styles/base';
+@import 'styles/colors';
 @import 'styles/components/login';
 @import 'styles/components/dashboard/dashboard';
 @import 'styles/components/profile/profile';
@@ -42,6 +43,7 @@ $tooltip-arrow-color: #494d4d;
 @import 'styles/components/navigation';
 @import 'styles/components/lock-button';
 @import 'styles/utils/helpers';
+@import 'styles/components/tariffs/header';
 
 body {
 	min-height: 100vh;
