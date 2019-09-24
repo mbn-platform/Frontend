@@ -1,0 +1,93 @@
+.main-panel.container-fluid {
+  .tariffs__container {
+    padding: 25px 300px 50px 30px;
+
+    .ReactTable .rt-td {
+      font-size: 1.4em;
+      color: #6f6f71;
+    }
+
+    .ReactTable .-loading {
+      display: none;
+    }
+
+    .rt-resizable-header-content:first-child {
+      width: 200px;
+      color: white;
+      font-family: 'maven_proregular';
+    }
+
+    .rt-table {
+      max-height: 1500px;
+    }
+
+    .rt-thead {
+      border-bottom: 2px solid #494d4d;
+
+      &:first-child  {
+        border: none;
+      }
+
+      .rt-tr {
+        & > :first-child {
+          width: 200px !important;
+          font-size: 1.5em;
+        }
+
+        .rt-th .rt-resizable-header {
+          display: flex;
+          justify-content: center;
+        }
+      }
+    }
+
+    .rt-tbody {
+      .rt-tr-group {
+        border-bottom: 2px solid #494d4d;
+
+        &:first-child {
+          padding-top: 30px;
+        }
+      }
+
+      .rt-tr-group .rt-tr.-odd {
+        background: #1f2225;
+      }
+
+      .rt-tr-group .rt-tr.-even {
+        background: #1f2225;
+      }
+
+      .rt-resizable-header-content {
+        font-size: 40px;
+      }
+      .rt-tr > :first-child {
+        width: 200px;
+        font-size: 1.5em;
+        color: white;
+      }
+    }
+
+
+    .rt-tr:first-child {
+      text-align: center;
+    }
+
+    .tariffs__container-description {
+      padding: 20px 0 10px;
+      color: #6f6f71;
+      font-size: 1.2em;
+    }
+
+    .tariffs__container-button {
+      display: flex;
+      justify-content: center;
+
+      .active {
+        background: #346255;
+      }
+    }
+  }
+}
+
+

@@ -17,16 +17,16 @@ class Tariffs extends React.PureComponent {
   ];
 
   render = () => (
-    <Container style={{ color: 'white' }}>
+    <div class="tariffs__container">
       <ReactTable
-        style={{ maxHeight: '300px' }}
+        minRows={7}
         data={this.data}
         columns={[
           {
             Header: '',
             columns: [
               {
-                Header: "Monthly price",
+                Header: "MONTHLY PRICE",
                 accessor: "service",
               },
             ]
@@ -62,16 +62,18 @@ class Tariffs extends React.PureComponent {
         ]}
         showPagination={false}
       />
-      <div>
+      <div className="tariffs__container-description">
         Choose a service plan and click "BUY NOW" button.
         The payment is done from your active ERC-20 wallet or thought a direct transaction.
         Choose what is more convenient for you. The service plan fee is paid in MBN tokens,
         based on the market price available at coinmarketcap. After payment, the service plan is activated for 20 days.
       </div>
-      <button onClick={() => {}} type="button" className="send-request-btn btn btn-secondary active">
-        <FormattedMessage id="tariffs.buyNow" />
-      </button>
-    </Container>
+      <div className="tariffs__container-button">
+        <button onClick={() => {}} type="button" className="btn btn-secondary active">
+          <FormattedMessage id="tariffs.buyNow" />
+        </button>
+      </div>
+    </div>
   );
 }
 
