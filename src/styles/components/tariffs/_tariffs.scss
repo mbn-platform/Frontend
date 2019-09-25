@@ -1,93 +1,58 @@
-.main-panel.container-fluid {
-  .tariffs__container {
-    padding: 25px 300px 50px 30px;
+.main-panel.container-fluid .tariffs__container {
+  margin: 0;
+  padding: 25px 300px 50px 30px;
 
-    .ReactTable .rt-td {
-      font-size: 1.4em;
-      color: #6f6f71;
+  .row {
+    border-bottom: 1px solid #494d4d;
+
+    &:first-child {
+      padding-bottom: 30px;
+      border: none;
     }
 
-    .ReactTable .-loading {
-      display: none;
-    }
-
-    .rt-resizable-header-content:first-child {
-      width: 200px;
-      color: white;
-      font-family: 'maven_proregular';
-    }
-
-    .rt-table {
-      max-height: 1500px;
-    }
-
-    .rt-thead {
-      border-bottom: 2px solid #494d4d;
-
-      &:first-child  {
-        border: none;
-      }
-
-      .rt-tr {
-        & > :first-child {
-          width: 200px !important;
-          font-size: 1.5em;
-        }
-
-        .rt-th .rt-resizable-header {
-          display: flex;
-          justify-content: center;
-        }
-      }
-    }
-
-    .rt-tbody {
-      .rt-tr-group {
-        border-bottom: 2px solid #494d4d;
-
-        &:first-child {
-          padding-top: 30px;
-        }
-      }
-
-      .rt-tr-group .rt-tr.-odd {
-        background: #1f2225;
-      }
-
-      .rt-tr-group .rt-tr.-even {
-        background: #1f2225;
-      }
-
-      .rt-resizable-header-content {
-        font-size: 40px;
-      }
-      .rt-tr > :first-child {
-        width: 200px;
-        font-size: 1.5em;
-        color: white;
-      }
-    }
-
-
-    .rt-tr:first-child {
-      text-align: center;
-    }
-
-    .tariffs__container-description {
-      padding: 20px 0 10px;
-      color: #6f6f71;
-      font-size: 1.2em;
-    }
-
-    .tariffs__container-button {
-      display: flex;
-      justify-content: center;
-
-      .active {
-        background: #346255;
-      }
+    &:nth-child(3) {
+      padding-top: 20px;
     }
   }
+
+  .col {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0 3px;
+    font-family: 'maven_proregular';
+    font-size: 1.4em;
+    color: #727274;
+
+    &.active {
+      color: $color-main-green;
+    }
+  }
+
+  .col:first-child {
+    justify-content: flex-start;
+    font-size: 1.4em;
+    font-weight: bold;
+    color: white;
+  }
+
+  .tariffs__container-description {
+    padding: 20px 0 30px;
+    font-size: 1.2em;
+    color: #6f6f71;
+  }
+
+  .tariffs__container-button-wrapper {
+    display: flex;
+    justify-content: center;
+
+    .btn {
+      margin: 0;
+      color: white;
+    }
+  }
+
+  @include media-breakpoint-down(md) {
+    padding: 10px;
+    max-width: 100%;
+  }
 }
-
-
