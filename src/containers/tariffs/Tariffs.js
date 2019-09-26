@@ -6,7 +6,7 @@ import Header from './components/Header';
 
 class Tariffs extends React.PureComponent {
   state = {
-    selectedTariff: 'free', // add current tariff
+    selectedTariff: this.props.auth.profile.billing.tariff,
   }
 
   data = {

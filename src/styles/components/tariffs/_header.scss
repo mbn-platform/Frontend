@@ -22,4 +22,8 @@
   &.active {
     border: 1px solid $color-main-green;
   }
+
+  @include media-breakpoint-down(xs) {
+    font-size: 1.2em;
+  }
 }

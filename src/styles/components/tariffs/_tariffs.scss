@@ -3,11 +3,17 @@
   padding: 25px 300px 50px 30px;
 
   .row {
-    border-bottom: 1px solid #494d4d;
+    border-bottom: 1px solid $color-row-gray;
 
     &:first-child {
       padding-bottom: 30px;
       border: none;
+
+      .col:first-child {
+        @include media-breakpoint-down(xs) {
+          display: none;
+        }
+      }
     }
 
     &:nth-child(3) {
@@ -21,10 +27,16 @@
     padding: 10px 0 3px;
     font-family: 'maven_proregular';
     font-size: 1.4em;
-    color: #727274;
+    color: $color-col-gray;
 
     &.active {
       color: $color-main-green;
+    }
+
+    &:first-child {
+      @include media-breakpoint-down(xs) {
+        font-size: 1em !important;
+      }
     }
   }
 
@@ -32,13 +44,18 @@
     justify-content: flex-start;
     font-size: 1.4em;
     font-weight: bold;
-    color: white;
+    color: $color-white;
   }
 
   .tariffs__container-description {
     padding: 20px 0 30px;
     font-size: 1.2em;
-    color: #6f6f71;
+    color: $color-main-text;
+
+    @include media-breakpoint-down(xs) {
+      font-size: 1em;
+      text-align: center;
+    }
   }
 
   .tariffs__container-button-wrapper {
@@ -46,8 +63,9 @@
     justify-content: center;
 
     .btn {
+      min-width: 160px;
       margin: 0;
-      color: white;
+      color: $color-white;
     }
   }
 
