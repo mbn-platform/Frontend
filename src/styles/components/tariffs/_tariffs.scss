@@ -31,12 +31,31 @@
 
     &.active {
       color: $color-main-green;
+
+      .icon-checkmark, .icon-cross {
+        background-color: $color-main-green;
+      }
     }
 
     &:first-child {
       @include media-breakpoint-down(xs) {
         font-size: 1em !important;
       }
+    }
+
+    .icon-checkmark {
+      width: 20px;
+      height: 20px;
+      background-color: $color-col-gray;
+      -webkit-mask:  url(../assets/svg/icon-check-mark.svg) no-repeat 50% 50%;
+      mask: url(../assets/svg/icon-check-mark.svg) no-repeat 50% 50%;
+    }
+
+    .icon-cross {
+      @extend .icon-checkmark;
+      width: 13px;
+      -webkit-mask:  url(../assets/svg/icon-cross.svg) no-repeat 50% 50%;
+      mask: url(../assets/svg/icon-cross.svg) no-repeat 50% 50%;
     }
   }
 

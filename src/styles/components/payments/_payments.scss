@@ -1,11 +1,75 @@
 .main-panel.container-fluid .payments__container {
   margin: 0;
   padding: 50px 400px 50px 30px;
-  color: $color-white;
-  text-transform: uppercase;
+  color: $color-main-text;
 
-  .payments__container-title {
-    margin-bottom: 30px;
+  .payments__purchase {
+    position: relative;
+    margin-top: 25px;
+
+    &:not(:last-child) {
+      border-bottom: 2px solid $color-row-gray;
+    }
+
+    &.active {
+      color: $color-white;
+    }
+
+    .icon-checkmark {
+      position: absolute;
+      top: -2px;
+      left: -22px;
+      width: 20px;
+      height: 20px;
+      background-color: $color-main-green;
+      -webkit-mask:  url(../assets/svg/icon-check-mark.svg) no-repeat 50% 50%;
+      mask: url(../assets/svg/icon-check-mark.svg) no-repeat 50% 50%;
+    }
+  }
+
+  .payments__title {
     font-size: 2.3em;
+    text-transform: uppercase;
+    color: $color-white;
+  }
+
+  .payments__step-container {
+    margin-bottom: 20px;
+
+    & > div {
+      font-size: 1.1em;
+      font-weight: 500;
+    }
+  }
+
+  .payments__step {
+    font-size: 1.3em;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 0;
+  }
+
+  .payments__subtitle {
+    @extend .payments__step;
+    margin-bottom: 10px;
+  }
+
+  .payments__description {
+    margin-bottom: 25px;
+    font-size: 1.2em;
+    font-weight: 600;
+  }
+
+  .payments-generate-button {
+    color: $color-main-green;
+    margin: 0;
+    padding: 0 5px;
+    border: none;
+    background: transparent;
+  }
+
+  @include media-breakpoint-down(md) {
+    padding: 30px;
+    max-width: 100%;
   }
 }

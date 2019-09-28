@@ -10,96 +10,150 @@ class Tariffs extends React.PureComponent {
   }
 
   data = {
-    tariffs: ['free', 'premium', 'pro'],
-    monthlyPrice: [{ tariff: 'free', value: '0' }, { tariff: 'premium', value: '1000 MBN ($10)' }, { tariff: 'pro', value: '2500 MBN ($25)' }],
-    trading: [{ tariff: 'free', value: 'V' }, { tariff: 'premium', value: 'V' }, { tariff: 'pro', value: 'V' }],
-    apiExchange: [{ tariff: 'free', value: '3' }, { tariff: 'premium', value: '25' }, { tariff: 'pro', value: 'NO LIMITS' }],
-    orders: [{ tariff: 'free', value: '25' }, { tariff: 'premium', value: '100' }, { tariff: 'pro', value: 'NO LIMITS' }],
-    proofOfTrade: [{ tariff: 'free', value: 'V' }, { tariff: 'premium', value: 'V' }, { tariff: 'pro', value: 'V' }],
-    trustManagement: [{ tariff: 'free', value: 'X' }, { tariff: 'premium', value: 'UP TO $5000' }, { tariff: 'pro', value: 'NO LIMITS' }],
-    telegramNotifications: [{ tariff: 'free', value: 'X' }, { tariff: 'premium', value: 'V' }, { tariff: 'pro', value: 'V' }],
-    statusIcon: [{ tariff: 'free', value: 'X' }, { tariff: 'premium', value: 'X' }, { tariff: 'pro', value: 'V' }],
+    trading: [{ _id: 'free', access: true }, { _id: 'premium', access: true }, { _id: 'pro', access: true }],
+    proofOfTrade: [{ _id: 'free', access: true }, { _id: 'premium', access: true }, { _id: 'pro', access: true }],
+    telegramNotifications: [{ _id: 'free', access: false }, { _id: 'premium', access: true }, { _id: 'pro', access: true }],
+    statusIcon: [{ _id: 'free', access: false }, { _id: 'premium', access: false }, { _id: 'pro', access: true }],
+  }
+
+  componentDidMount = () => {
+    this.props.fetchTariffs();
   }
 
   onSelectTariff = (tariff) => () => {
+    this.props.getTariffById(tariff);
     this.setState({ selectedTariff: tariff });
   }
 
-  render = () => (
-    <Container className="tariffs__container">
-      <Row>
-        <Col></Col>
-        {this.data.tariffs.map(tariff => (
-          <Col>
-            <Header
-              label={tariff}
-              active={tariff === this.state.selectedTariff}
-              onClick={this.onSelectTariff(tariff)}
-            />
-          </Col>
-        ))}
-      </Row>
-      <Row>
-        <Col>MONTHLY PRICE</Col>
-        {this.data.monthlyPrice.map(({ tariff, value }) => (
-          <Col className={tariff === this.state.selectedTariff && 'active'}>{value}</Col>
-        ))}
-      </Row>
-      <Row>
-        <Col>TRADING</Col>
-        {this.data.trading.map(({ tariff, value }) => (
-          <Col className={tariff === this.state.selectedTariff && 'active'}>{value}</Col>
-        ))}
-      </Row>
-      <Row>
-        <Col>API exchange</Col>
-        {this.data.apiExchange.map(({ tariff, value }) => (
-          <Col className={tariff === this.state.selectedTariff && 'active'}>{value}</Col>
-        ))}
-      </Row>
-      <Row>
-        <Col>ORDERS: STOP, OCO, NO-LOCK</Col>
-        {this.data.orders.map(({ tariff, value }) => (
-          <Col className={tariff === this.state.selectedTariff && 'active'}>{value}</Col>
-        ))}
-      </Row>
-      <Row>
-        <Col>PROOF-OF-TRADE</Col>
-        {this.data.proofOfTrade.map(({ tariff, value }) => (
-          <Col className={tariff === this.state.selectedTariff && 'active'}>{value}</Col>
-        ))}
-      </Row>
-      <Row>
-        <Col>TRUST MANAGEMENT</Col>
-        {this.data.trustManagement.map(({ tariff, value }) => (
-          <Col className={tariff === this.state.selectedTariff && 'active'}>{value}</Col>
-        ))}
-      </Row>
-      <Row>
-        <Col>TELEGRAM NOTIFICATIONS</Col>
-        {this.data.telegramNotifications.map(({ tariff, value }) => (
-          <Col className={tariff === this.state.selectedTariff && 'active'}>{value}</Col>
-        ))}
-      </Row>
-      <Row>
-        <Col>STATUS ICON</Col>
-        {this.data.statusIcon.map(({ tariff, value }) => (
-          <Col className={tariff === this.state.selectedTariff && 'active'}>{value}</Col>
-        ))}
-      </Row>
-      <div className="tariffs__container-description">
-        Choose a service plan and click "BUY NOW" button.
-        The payment is done from your active ERC-20 wallet or thought a direct transaction.
-        Choose what is more convenient for you. The service plan fee is paid in MBN tokens,
-        based on the market price available at coinmarketcap. After payment, the service plan is activated for 20 days.
-      </div>
-      <div className="tariffs__container-button-wrapper">
-        <button onClick={() => {}} type="button" className="btn active">
-          <FormattedMessage id="tariffs.buyNow" />
-        </button>
-      </div>
-    </Container>
-  );
+  onBuyNow = () => {
+    const { selectedTariff } = this.state;
+    this.props.paymentRequest(selectedTariff);
+  }
+
+  render = () => {
+    const { tariffs } = this.props;
+    const { selectedTariff } = this.state;
+
+    return tariffs.length > 0 ? (
+      <Container className="tariffs__container">
+        <Row>
+          <Col></Col>
+          {tariffs.map(({ _id }) => (
+            <Col key={_id}>
+              <Header
+                label={_id}
+                active={_id === selectedTariff}
+                onClick={this.onSelectTariff(_id)}
+              />
+            </Col>
+          ))}
+        </Row>
+        <Row>
+          <Col>MONTHLY PRICE</Col>
+          {tariffs.map(({ _id, tokenPrice, price }) => (
+            <Col
+              key={_id}
+              className={_id === selectedTariff ? 'active' : ''}
+            >
+              {tokenPrice === 0 ? tokenPrice : `${tokenPrice} MBN ($${price})`}
+            </Col>
+          ))}
+        </Row>
+        <Row>
+          <Col>TRADING</Col>
+          {this.data.trading.map(({ _id, access }) => (
+            <Col
+              key={_id}
+              className={_id === selectedTariff ? 'active' : ''}
+            >
+              {access ? <span className="icon-checkmark" /> : <span className="icon-cross" />}
+            </Col>
+          ))}
+        </Row>
+        <Row>
+          <Col>API exchange</Col>
+          {tariffs.map(({ _id, numberOfApiKeys }) => (
+            <Col
+              key={_id}
+              className={_id === selectedTariff ? 'active' : ''}
+            >
+              {numberOfApiKeys === -1 ? 'NO LIMITS' : numberOfApiKeys}
+            </Col>
+          ))}
+        </Row>
+        <Row>
+          <Col>ORDERS: STOP, OCO, NO-LOCK</Col>
+          {tariffs.map(({ _id, numberOfAlgoOrders }) => (
+            <Col
+              key={_id}
+              className={_id === selectedTariff ? 'active' : ''}
+            >
+              {numberOfAlgoOrders === -1 ? 'NO LIMITS' : numberOfAlgoOrders}
+            </Col>
+          ))}
+        </Row>
+        <Row>
+          <Col>PROOF-OF-TRADE</Col>
+          {this.data.proofOfTrade.map(({ _id, access }) => (
+            <Col
+              key={_id}
+              className={_id === selectedTariff ? 'active' : ''}
+            >
+              {access ? <span className="icon-checkmark" /> : <span className="icon-cross" />}
+            </Col>
+          ))}
+        </Row>
+        <Row>
+          <Col>TRUST MANAGEMENT</Col>
+          {tariffs.map(({ _id, trustManagementSum }) => (
+            <Col
+              key={_id}
+              className={_id === selectedTariff ? 'active' : ''}
+            >
+              {
+                trustManagementSum === 0
+                ? <span className="icon-checkmark" />
+                : trustManagementSum === -1 ? 'NO LIMITS' : `UP TO $${trustManagementSum}`
+              }
+            </Col>
+          ))}
+        </Row>
+        <Row>
+          <Col>TELEGRAM NOTIFICATIONS</Col>
+          {this.data.telegramNotifications.map(({ _id, access }) => (
+            <Col
+              key={_id}
+              className={_id === selectedTariff ? 'active' : ''}
+            >
+              {access ? <span className="icon-checkmark" /> : <span className="icon-cross" />}
+            </Col>
+          ))}
+        </Row>
+        <Row>
+          <Col>STATUS ICON</Col>
+          {this.data.statusIcon.map(({ _id, access }) => (
+            <Col
+              key={_id}
+              className={_id === selectedTariff ? 'active' : ''}
+            >
+              {access ? <span className="icon-checkmark" /> : <span className="icon-cross" />}
+            </Col>
+          ))}
+        </Row>
+        <div className="tariffs__container-description">
+          Choose a service plan and click "BUY NOW" button.
+          The payment is done from your active ERC-20 wallet or thought a direct transaction.
+          Choose what is more convenient for you. The service plan fee is paid in MBN tokens,
+          based on the market price available at coinmarketcap. After payment, the service plan is activated for 20 days.
+        </div>
+        <div className="tariffs__container-button-wrapper">
+          <button onClick={this.onBuyNow} type="button" className="btn active">
+            <FormattedMessage id="tariffs.buyNow" />
+          </button>
+        </div>
+      </Container>
+    ) : null
+  };
 }
 
 export default Tariffs;

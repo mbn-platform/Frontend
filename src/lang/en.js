@@ -344,6 +344,8 @@ const en = {
   'staking.title': 'Staking',
 
   'tariffs.buyNow': 'BUY NOW',
+  'tariffs.errors.unableToBuyFree': 'Unable to buy free tariff',
+  'tariffs.errors.addressNotGenerated': 'Address for payment is not generated',
 };
 
 export default en;

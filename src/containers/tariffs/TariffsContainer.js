@@ -1,9 +1,17 @@
 import { connect } from 'react-redux';
 
+import { fetchTariffs, getTariffById, paymentRequest } from '../../actions/tariffs';
 import Tariffs from './Tariffs';
 
-const mapStateToProps = ({ auth }) => console.log('auth', auth) || ({
+const mapStateToProps = ({ auth, tariffs }) => ({
   auth,
+  tariffs,
 });
 
-export default connect(mapStateToProps)(Tariffs);
+const mapDispatchToProps = {
+  fetchTariffs,
+  paymentRequest,
+  getTariffById,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Tariffs);
