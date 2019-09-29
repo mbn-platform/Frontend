@@ -346,6 +346,9 @@ const en = {
   'tariffs.buyNow': 'BUY NOW',
   'tariffs.errors.unableToBuyFree': 'Unable to buy free tariff',
   'tariffs.errors.addressNotGenerated': 'Address for payment is not generated',
+
+  'payments.errors.addressAlreadyExists': 'Address already exists',
+
 };
 
 export default en;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Col, Row, Container } from 'reactstrap';
 import { FormattedMessage } from 'react-intl';
+import qs from 'qs';
 
 import Header from './components/Header';
 
@@ -12,22 +13,32 @@ class Tariffs extends React.PureComponent {
   data = {
     trading: [{ _id: 'free', access: true }, { _id: 'premium', access: true }, { _id: 'pro', access: true }],
     proofOfTrade: [{ _id: 'free', access: true }, { _id: 'premium', access: true }, { _id: 'pro', access: true }],
+    // add dynamically
     telegramNotifications: [{ _id: 'free', access: false }, { _id: 'premium', access: true }, { _id: 'pro', access: true }],
     statusIcon: [{ _id: 'free', access: false }, { _id: 'premium', access: false }, { _id: 'pro', access: true }],
   }
 
   componentDidMount = () => {
     this.props.fetchTariffs();
+
+    this.timeInterval = setInterval(() => {
+      this.props.fetchTariffs();
+    }, 60000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timeInterval);
   }
 
   onSelectTariff = (tariff) => () => {
-    this.props.getTariffById(tariff);
     this.setState({ selectedTariff: tariff });
   }
 
   onBuyNow = () => {
     const { selectedTariff } = this.state;
-    this.props.paymentRequest(selectedTariff);
+
+    const params = qs.stringify({ tariff: selectedTariff });
+    this.props.history.push(`/payments/?${params}`);
   }
 
   render = () => {

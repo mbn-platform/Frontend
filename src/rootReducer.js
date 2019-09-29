@@ -21,6 +21,7 @@ import stakeInfo from './reducers/stakeInfo';
 import stakeTr from './reducers/stakeTr';
 import quickNotif from './reducers/quickNotif';
 import tariffs from './reducers/tariffs';
+import payments from './reducers/payments';
 
 const combined = combineReducers(
   {
@@ -45,6 +46,7 @@ const combined = combineReducers(
     exchangesInfo,
     quickNotif,
     tariffs,
+    payments,
   });
 
 const root = (state, action) => {

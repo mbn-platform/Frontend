@@ -141,7 +141,7 @@ class ContractSettings extends React.Component {
   render() {
     return (
       <div className="row-fluid contract-setting-block">
-        <NotificationSettings />
+        <NotificationSettings billing={this.props.billing} />
         <div className="row title-setting">
           <div className="col-auto text-center align-middle contract-setting-title title-text">
             <span className="icon icon-settings icon-006-wrench"/>

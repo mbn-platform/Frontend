@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Col, Row } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { updateNotificationSettings, verifyTelegram, updateInfo } from '../../actions/profile';
+import LockButton from '../../components/LockButton';
 
 class NotificationSettings extends React.Component {
 
@@ -31,7 +32,7 @@ class NotificationSettings extends React.Component {
   }
 
   render() {
-    const { settings, info } = this.props;
+    const { settings, info, billing } = this.props;
     const telegramContact = this.props.contacts.find((c) => c.type === 'telegram');
     return (
       <React.Fragment>
@@ -42,10 +43,12 @@ class NotificationSettings extends React.Component {
         <SettingsSwitch
           onToggle={this.onChange}
           title="orders"
+          billing={billing}
           checked={settings.orders} />
         <SettingsSwitch
           onToggle={this.onChange}
           title="info"
+          billing={billing}
           checked={settings.info} />
       </React.Fragment>
     );
@@ -189,6 +192,8 @@ class SettingsSwitch extends React.PureComponent {
   }
 
   render() {
+    const { trustManagement } = this.props.billing; // TODO: add notification billing
+
     return (
       <Row className="row accept-requests">
         <Col xs="12" className="align-middle">
@@ -198,21 +203,23 @@ class SettingsSwitch extends React.PureComponent {
                 id={this.props.title}
                 defaultMessage={this.props.title} />
             </Col>
-            <Col xs="auto" className="switch" onClick={this.onToggle}>
-              <input className="cmn-toggle cmn-toggle-round-flat" type="checkbox"
-                checked={this.props.checked}/>
-              <label className="cmn-toggle-background"/>
-              <label className="cmn-text cmn-yes-text">
-                <FormattedMessage
-                  id="yes"
-                  defaultMessage="yes" />
-              </label>
-              <label className="cmn-text cmn-no-text">
-                <FormattedMessage
-                  id="no"
-                  defaultMessage="no" />
-              </label>
-            </Col>
+            <LockButton offsetTop="-10px" {...trustManagement}>
+              <Col xs="auto" className="switch" onClick={this.onToggle}>
+                <input className="cmn-toggle cmn-toggle-round-flat" type="checkbox"
+                  checked={this.props.checked}/>
+                <label className="cmn-toggle-background"/>
+                <label className="cmn-text cmn-yes-text">
+                  <FormattedMessage
+                    id="yes"
+                    defaultMessage="yes" />
+                </label>
+                <label className="cmn-text cmn-no-text">
+                  <FormattedMessage
+                    id="no"
+                    defaultMessage="no" />
+                </label>
+              </Col>
+            </LockButton>
           </Row>
         </Col>
       </Row>

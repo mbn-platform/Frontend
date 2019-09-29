@@ -12,7 +12,7 @@ import Hashlog from './containers/hashlog/Hashlog';
 import ActionList from './containers/hashlog/ActionList';
 import Staking from './containers/staking/Staking';
 import Tariffs from './containers/tariffs/TariffsContainer';
-import Payments from './containers/payments/Payments';
+import Payments from './containers/payments/PaymentsContainer';
 import './MainContent.css';
 import NotificationBar from './components/NotificationBar';
 import { ApiNotification } from './generic/api';
@@ -80,7 +80,7 @@ class MainContent extends React.Component {
           <ProtectedRoute exact path="/orders" component={Orders} loggedIn={loggedIn}/>
           <ProtectedRoute exact path="/staking" component={Staking} loggedIn={loggedIn}/>
           <ProtectedRoute exact path="/tariffs" component={Tariffs} loggedIn={loggedIn}/>
-          <ProtectedRoute exact path="/payments" component={Payments} loggedIn={loggedIn}/>
+          <ProtectedRoute exact path="/payments/" component={Payments} loggedIn={loggedIn}/>
           <Redirect exact from="/ratings" to="/leaderboard"/>
           <Route exact path="/hashlog" component={Hashlog} loggedIn={loggedIn}/>
           <Route exact path="/hashlog/actions/" component={ActionList} loggedIn={loggedIn}/>

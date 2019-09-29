@@ -2,6 +2,7 @@ import defaultErrorHandler from '../generic/errorHandlers';
 import { ApiTariffs } from '../generic/api';
 import { ApiError } from '../generic/apiCall';
 import { showInfoModal } from './modal';
+import '../eth/MembranaToken';
 
 const TariffsApi = new ApiTariffs();
 
@@ -34,9 +35,16 @@ export function getTariffById(id) {
   };
 }
 
-export function paymentRequest(id) {
+export function paymentRequest(id, to, amount) {
+  const { web3, mbnTransfer } = window;
+
   return dispatch =>
     TariffsApi.paymentRequest(id)
+      .then(json =>
+        mbnTransfer(web3, to, json.amount)
+          .then(res => console.log('res', res))
+          .catch(err => console.log('err', err))
+      )
       .catch(err => {
         if(err.apiErrorCode) {
           switch(err.apiErrorCode) {
