@@ -35,7 +35,7 @@ export function getTariffById(id) {
   };
 }
 
-export function paymentRequest(id, to, amount) {
+export function paymentRequest(id, to) {
   const { web3, mbnTransfer } = window;
 
   return dispatch =>

@@ -85,6 +85,10 @@
       min-width: 160px;
       margin: 0;
       color: $color-white;
+
+      &:disabled {
+        cursor: default;
+      }
     }
   }
 

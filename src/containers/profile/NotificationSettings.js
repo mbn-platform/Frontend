@@ -203,7 +203,7 @@ class SettingsSwitch extends React.PureComponent {
                 id={this.props.title}
                 defaultMessage={this.props.title} />
             </Col>
-            <LockButton offsetTop="-10px" {...trustManagement}>
+            <LockButton offsetTop="-10px" {...trustManagement} id={this.props.title}>
               <Col xs="auto" className="switch" onClick={this.onToggle}>
                 <input className="cmn-toggle cmn-toggle-round-flat" type="checkbox"
                   checked={this.props.checked}/>

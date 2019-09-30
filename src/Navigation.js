@@ -18,6 +18,8 @@ import StakingIcon from './assets/svg/MenuIconStaking.svg';
 import StakingIconHover from './assets/svg/MenuIconStakingHover.svg';
 import SignOut from './assets/svg/SignOut.svg';
 import SignOutHover from './assets/svg/SignOutHover.svg';
+import TariffsIcon from './assets/svg/tariffs.svg';
+import TariffsIconHover from './assets/svg/tariffsHover.svg';
 import { connect } from 'react-redux';
 import {APP_NAME, APP_HOST} from './constants';
 import { withRouter } from 'react-router';
@@ -411,6 +413,12 @@ class Navigation extends React.Component {
         imgClass: 'staking',
         icon: StakingIcon,
         iconHover: StakingIconHover,
+      }, {
+        name: 'Tariffs',
+        to: '/tariffs',
+        imgClass: 'tariffs',
+        icon: TariffsIcon,
+        iconHover: TariffsIconHover,
       },
     ];
   }

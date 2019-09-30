@@ -13,8 +13,6 @@ class Tariffs extends React.PureComponent {
   data = {
     trading: [{ _id: 'free', access: true }, { _id: 'premium', access: true }, { _id: 'pro', access: true }],
     proofOfTrade: [{ _id: 'free', access: true }, { _id: 'premium', access: true }, { _id: 'pro', access: true }],
-    // add dynamically
-    telegramNotifications: [{ _id: 'free', access: false }, { _id: 'premium', access: true }, { _id: 'pro', access: true }],
     statusIcon: [{ _id: 'free', access: false }, { _id: 'premium', access: false }, { _id: 'pro', access: true }],
   }
 
@@ -131,12 +129,12 @@ class Tariffs extends React.PureComponent {
         </Row>
         <Row>
           <Col>TELEGRAM NOTIFICATIONS</Col>
-          {this.data.telegramNotifications.map(({ _id, access }) => (
+          {tariffs.map(({ _id, notifications }) => (
             <Col
               key={_id}
               className={_id === selectedTariff ? 'active' : ''}
             >
-              {access ? <span className="icon-checkmark" /> : <span className="icon-cross" />}
+              {notifications ? <span className="icon-checkmark" /> : <span className="icon-cross" />}
             </Col>
           ))}
         </Row>
@@ -158,7 +156,12 @@ class Tariffs extends React.PureComponent {
           based on the market price available at coinmarketcap. After payment, the service plan is activated for 20 days.
         </div>
         <div className="tariffs__container-button-wrapper">
-          <button onClick={this.onBuyNow} type="button" className="btn active">
+          <button
+            className="btn active"
+            type="button"
+            disabled={selectedTariff === 'free'}
+            onClick={this.onBuyNow}
+          >
             <FormattedMessage id="tariffs.buyNow" />
           </button>
         </div>
