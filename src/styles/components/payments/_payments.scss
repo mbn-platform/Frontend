@@ -1,6 +1,7 @@
 .main-panel.container-fluid .payments__container {
   margin: 0;
-  padding: 50px 400px 50px 30px;
+  width: 1110px;
+  padding: 50px 0 60px 50px;
   color: $color-main-text;
 
   .payments__purchase {
@@ -28,36 +29,65 @@
   }
 
   .payments__title {
-    font-size: 2.3em;
+    font-size: 36px;
+    color: $color-main-text;
+    font-family: 'maven_proregular';
     text-transform: uppercase;
-    color: $color-white;
+
+    @include media-breakpoint-down(xs) {
+      font-size: 18px;
+      text-align: center;
+    }
   }
 
   .payments__step-container {
     margin-bottom: 20px;
 
     & > div {
-      font-size: 1.1em;
-      font-weight: 500;
+      font-size: 18px;
+      color: $color-main-text;
+      font-family: 'maven_proregular';
+
+      @include media-breakpoint-down(xs) {
+        font-size: 12px;
+        text-align: center;
+      }
     }
   }
 
   .payments__step {
-    font-size: 1.3em;
-    font-weight: 600;
+    font-size: 18px;
+    color: $color-main-text;
+    font-family: 'maven_proregular';
     text-transform: uppercase;
     margin-bottom: 0;
+
+    @include media-breakpoint-down(xs) {
+      font-size: 12px;
+      text-align: center;
+    }
   }
 
   .payments__subtitle {
     @extend .payments__step;
     margin-bottom: 10px;
+
+    @include media-breakpoint-down(xs) {
+      font-size: 12px;
+      text-align: center;
+    }
   }
 
   .payments__description {
     margin-bottom: 25px;
-    font-size: 1.2em;
-    font-weight: 600;
+    font-size: 16px;
+    color: $color-white;
+    font-family: 'maven_proregular';
+
+    @include media-breakpoint-down(xs) {
+      font-size: 12px;
+      text-align: center;
+    }
   }
 
   .payments-generate-button {
@@ -68,8 +98,8 @@
     background: transparent;
   }
 
-  @include media-breakpoint-down(md) {
-    padding: 30px;
+  @include media-breakpoint-down(xs) {
+    padding: 20px;
     max-width: 100%;
   }
 }

@@ -1,6 +1,7 @@
 .main-panel.container-fluid .tariffs__container {
   margin: 0;
-  padding: 25px 300px 50px 30px;
+  width: 1110px;
+  padding: 50px 0 60px 50px;
 
   .row {
     border-bottom: 1px solid $color-row-gray;
@@ -26,7 +27,7 @@
     justify-content: center;
     padding: 10px 0 3px;
     font-family: 'maven_proregular';
-    font-size: 1.4em;
+    font-size: 18px;
     color: $color-col-gray;
 
     &.active {
@@ -38,8 +39,11 @@
     }
 
     &:first-child {
+      justify-content: flex-start;
+      color: $color-main-text;
+
       @include media-breakpoint-down(xs) {
-        font-size: 1em !important;
+        font-size: 10px !important;
       }
     }
 
@@ -57,22 +61,20 @@
       -webkit-mask:  url(../assets/svg/icon-cross.svg) no-repeat 50% 50%;
       mask: url(../assets/svg/icon-cross.svg) no-repeat 50% 50%;
     }
-  }
 
-  .col:first-child {
-    justify-content: flex-start;
-    font-size: 1.4em;
-    font-weight: bold;
-    color: $color-white;
+    @include media-breakpoint-down(xs) {
+      font-size: 9px !important;
+    }
   }
 
   .tariffs__container-description {
     padding: 20px 0 30px;
-    font-size: 1.2em;
-    color: $color-main-text;
+    font-size: 16px;
+    color: $color-col-gray;
+    font-family: 'maven_proregular';
 
     @include media-breakpoint-down(xs) {
-      font-size: 1em;
+      font-size: 12px;
       text-align: center;
     }
   }
