@@ -5,7 +5,7 @@ import ProfitLeft from '../../components/ProfitLeft';
 import ProgressBar from '../../components/ProgressBar';
 
 const ContractInfo = ({ contract, time }) => {
-  const startDate = new Date(contract.dt);
+  const startDate = new Date(contract.startDt || contract.dt);
   const expireDate = new Date(startDate.getTime() + contract.contractSettings.duration * 86400000);
   const progress = (expireDate - time) / (expireDate - startDate) * 100;
   const currentBalance = contract.totalInBTC / 100000000;
