@@ -18,11 +18,6 @@ class Payments extends React.Component {
     this.props.createMbnAddress();
   }
 
-  handleSendTokens = tariff => () => {
-    const { address, paymentRequest } = this.props;
-    paymentRequest(tariff, address);
-  };
-
   render = () => {
     const { tariffs, location } = this.props;
     const { tariff } = qs.parse(location.search.slice(1));
@@ -47,7 +42,7 @@ class Payments extends React.Component {
               <p className="payments__step">2 step</p>
               <div>
                 Send {tokenPrice} MBN to
-                <button onClick={this.handleSendTokens(tariff)} className="payments-generate-button">{this.props.address}</button>
+                <button onClick={this.props.mbnTransfer} className="payments-generate-button">{this.props.address}</button>
               </div>
             </div>
           )}

@@ -35,13 +35,19 @@ class Tariffs extends React.PureComponent {
   onBuyNow = () => {
     const { selectedTariff } = this.state;
 
+    this.props.paymentRequest(selectedTariff);
     const params = qs.stringify({ tariff: selectedTariff });
     this.props.history.push(`/payments/?${params}`);
   }
 
   render = () => {
-    const { tariffs } = this.props;
+    const { tariffs, auth: { profile } } = this.props;
+    const { billing: { tariff } } = profile;
     const { selectedTariff } = this.state;
+    const isActivated = tariff === selectedTariff;
+    const isButtonDisabled = isActivated
+      || selectedTariff === 'free'
+      || (tariff === 'pro' && selectedTariff === 'premium');
 
     return tariffs.length > 0 ? (
       <Container className="tariffs__container">
@@ -64,7 +70,7 @@ class Tariffs extends React.PureComponent {
               key={_id}
               className={_id === selectedTariff ? 'active' : ''}
             >
-              {tokenPrice === 0 ? tokenPrice : `${tokenPrice} MBN ($${price})`}
+              {tokenPrice === 0 ? 'FREE' : `${tokenPrice} MBN ($${price})`}
             </Col>
           ))}
         </Row>
@@ -86,7 +92,11 @@ class Tariffs extends React.PureComponent {
               key={_id}
               className={_id === selectedTariff ? 'active' : ''}
             >
-              {numberOfApiKeys === -1 ? 'NO LIMITS' : numberOfApiKeys}
+              {numberOfApiKeys === -1
+                ? 'NO LIMITS'
+                : numberOfApiKeys === 0
+                  ? <span className="icon-cross" />
+                  : numberOfApiKeys}
             </Col>
           ))}
         </Row>
@@ -97,7 +107,11 @@ class Tariffs extends React.PureComponent {
               key={_id}
               className={_id === selectedTariff ? 'active' : ''}
             >
-              {numberOfAlgoOrders === -1 ? 'NO LIMITS' : numberOfAlgoOrders}
+              {numberOfAlgoOrders === -1
+                ? 'NO LIMITS'
+                : numberOfAlgoOrders === 0
+                  ? <span className="icon-cross" />
+                  : numberOfAlgoOrders}
             </Col>
           ))}
         </Row>
@@ -119,11 +133,11 @@ class Tariffs extends React.PureComponent {
               key={_id}
               className={_id === selectedTariff ? 'active' : ''}
             >
-              {
-                trustManagementSum === 0
-                ? <span className="icon-checkmark" />
-                : trustManagementSum === -1 ? 'NO LIMITS' : `UP TO $${trustManagementSum}`
-              }
+              {trustManagementSum === -1
+                ? 'NO LIMITS'
+                : trustManagementSum === 0
+                  ? <span className="icon-cross" />
+                  : `UP TO $${trustManagementSum}`}
             </Col>
           ))}
         </Row>
@@ -159,10 +173,12 @@ class Tariffs extends React.PureComponent {
           <button
             className="btn active"
             type="button"
-            disabled={selectedTariff === 'free'}
+            disabled={isButtonDisabled}
             onClick={this.onBuyNow}
           >
-            <FormattedMessage id="tariffs.buyNow" />
+            {isActivated
+              ? <FormattedMessage id="tariffs.activated" />
+              : <FormattedMessage id="tariffs.buyNow" />}
           </button>
         </div>
       </Container>

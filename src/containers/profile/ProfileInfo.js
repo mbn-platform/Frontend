@@ -10,11 +10,14 @@ import SendRequestBlock from './SendRequestBlock';
 class ProfileInfo extends React.Component {
 
   getHeader() {
+    const { statusIcon } = this.props.profile;
+
     return (
       <Row className="justify-content-center">
         <Col xs="12" className="text-center align-middle info-screen-title title-text">
           @{this.props.profile.name}
         </Col>
+        {statusIcon && <span className="status-icon"/>}
         {(this.props.own && this.props.auth.loggedIn && this.props.auth.profile.billing.tariff !== 'pro') && (
           <Col xs="12" className="text-center align-middle info-screen-title">
             <NavLink className="upgrade-to-text" to="/tariffs">

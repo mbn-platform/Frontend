@@ -14,6 +14,7 @@ const LockButton = ({
   total,
   used,
   id,
+  notifications,
 }) => {
   const styles = {
     button: {
@@ -23,7 +24,7 @@ const LockButton = ({
       right: offsetRight,
     },
   };
-  const isButtonLock = used >= total && total !== -1;
+  const isButtonLock = (used >= total && total !== -1) || !notifications;
 
   return isButtonLock ? (
     <div className="relative">
@@ -53,6 +54,9 @@ LockButton.defaultProps = {
   offsetRight: null,
   disabled: true,
   id: 'lock-button',
+  notifications: true,
+  used: undefined,
+  total: undefined,
 };
 
 LockButton.propTypes = {
@@ -62,8 +66,9 @@ LockButton.propTypes = {
   offsetLeft: PropTypes.string,
   offsetRight: PropTypes.string,
   disabled: PropTypes.bool,
-  used: PropTypes.number.isRequired,
-  total: PropTypes.number.isRequired,
+  notifications: PropTypes.bool,
+  used: PropTypes.number,
+  total: PropTypes.number,
 };
 
 export default LockButton;

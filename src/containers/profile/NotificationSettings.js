@@ -10,7 +10,12 @@ class NotificationSettings extends React.Component {
 
   static propTypes = {
     contacts: PropTypes.array.isRequired,
-    settings: PropTypes.object.isRequired,
+    settings: PropTypes.shape({
+      analyzer: PropTypes.bool,
+      orders: PropTypes.bool,
+      info: PropTypes.bool,
+      contacts: PropTypes.bool,
+    }).isRequired,
     info: PropTypes.string,
   }
 
@@ -19,6 +24,7 @@ class NotificationSettings extends React.Component {
       analyzer: false,
       orders: false,
       info: false,
+      contacts: false,
     },
     contacts: [],
   }
@@ -50,6 +56,11 @@ class NotificationSettings extends React.Component {
           title="info"
           billing={billing}
           checked={settings.info} />
+        <SettingsSwitch
+          onToggle={this.onChange}
+          title="contracts"
+          billing={billing}
+          checked={settings.contracts || false} />
       </React.Fragment>
     );
   }
@@ -192,7 +203,7 @@ class SettingsSwitch extends React.PureComponent {
   }
 
   render() {
-    const { trustManagement } = this.props.billing; // TODO: add notification billing
+    const { notifications } = this.props.billing;
 
     return (
       <Row className="row accept-requests">
@@ -203,7 +214,11 @@ class SettingsSwitch extends React.PureComponent {
                 id={this.props.title}
                 defaultMessage={this.props.title} />
             </Col>
-            <LockButton offsetTop="-10px" {...trustManagement} id={this.props.title}>
+            <LockButton
+              id={this.props.title}
+              offsetTop="-10px"
+              notifications={this.props.title === 'info' ? true : notifications}
+            >
               <Col xs="auto" className="switch" onClick={this.onToggle}>
                 <input className="cmn-toggle cmn-toggle-round-flat" type="checkbox"
                   checked={this.props.checked}/>
@@ -234,16 +249,16 @@ SettingsSwitch.propTypes = {
   onToggle: PropTypes.func.isRequired,
 };
 
-const mapPropsToState = (state) => ({
-  contacts: state.profile.contacts,
-  settings: state.profile.notificationSettings,
-  info: state.profile.info,
+const mapStateToProps = ({ profile }) => ({
+  contacts: profile.contacts,
+  settings: profile.notificationSettings,
+  info: profile.info,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  updateNotificationSettings: (settings) => dispatch(updateNotificationSettings(settings)),
-  verifyTelegram: (value) => dispatch(verifyTelegram(value)),
-  updateInfo: (info) => dispatch(updateInfo(info)),
-});
+const mapDispatchToProps = {
+  updateNotificationSettings,
+  verifyTelegram,
+  updateInfo,
+};
 
-export default connect(mapPropsToState, mapDispatchToProps)(NotificationSettings);
+export default connect(mapStateToProps, mapDispatchToProps)(NotificationSettings);

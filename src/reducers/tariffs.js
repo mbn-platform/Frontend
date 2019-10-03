@@ -1,4 +1,4 @@
-import { UPDATE_TARIFFS, UPDATE_TARIFF_BY_ID } from '../actions/tariffs';
+import { UPDATE_TARIFFS, UPDATE_TARIFF_BY_ID, CREATE_PAYMENT_REQUEST } from '../actions/tariffs';
 
 export default (state = {}, action) => {
   switch (action.type) {
@@ -17,3 +17,5 @@ export default (state = {}, action) => {
       return state;
   }
 }
+
+CREATE_PAYMENT_REQUEST

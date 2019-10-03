@@ -8,6 +8,7 @@ const TariffsApi = new ApiTariffs();
 
 export const UPDATE_TARIFFS = 'UPDATE_TARIFFS';
 export const UPDATE_TARIFF_BY_ID = 'UPDATE_TARIFF_BY_ID';
+export const CREATE_PAYMENT_REQUEST = 'CREATE_PAYMENT_REQUEST';
 
 export function fetchTariffs() {
   return dispatch => {
@@ -35,16 +36,13 @@ export function getTariffById(id) {
   };
 }
 
-export function paymentRequest(id, to) {
-  const { web3, mbnTransfer } = window;
-
+export function paymentRequest(id) {
   return dispatch =>
     TariffsApi.paymentRequest(id)
-      .then(json =>
-        mbnTransfer(web3, to, json.amount)
-          .then(res => console.log('res', res))
-          .catch(err => console.log('err', err))
-      )
+      .then(json => dispatch({
+        type: CREATE_PAYMENT_REQUEST,
+        paymentRequest: json,
+      }))
       .catch(err => {
         if(err.apiErrorCode) {
           switch(err.apiErrorCode) {
@@ -60,4 +58,16 @@ export function paymentRequest(id, to) {
           }
         }
       });
+}
+
+export function mbnTransfer() {
+  return (_, getState) => {
+    const { address, paymentRequest: { amount } } = getState().payments;
+
+    if (address && amount) {
+      window.mbnTransfer(window.web3, address, amount)
+        .then(res => console.log('res', res))
+        .catch(err => console.log('err', err));
+    }
+  };
 }
