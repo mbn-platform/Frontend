@@ -7,8 +7,8 @@ import Header from './components/Header';
 
 class Tariffs extends React.PureComponent {
   state = {
-    selectedTariff: this.props.auth.profile.billing.tariff,
-  }
+    selectedTariff: this.props.tariff,
+  };
 
   data = {
     trading: [{ _id: 'free', access: true }, { _id: 'premium', access: true }, { _id: 'pro', access: true }],
@@ -29,6 +29,11 @@ class Tariffs extends React.PureComponent {
   }
 
   onSelectTariff = (tariff) => () => {
+    const { loggedIn } = this.props;
+    if (!loggedIn) {
+      return;
+    }
+
     this.setState({ selectedTariff: tariff });
   }
 
@@ -40,11 +45,14 @@ class Tariffs extends React.PureComponent {
     this.props.history.push(`/payments/?${params}`);
   }
 
+  onLogIn = () => {
+    this.props.history.push('/login');
+  };
+
   render = () => {
-    const { tariffs, auth: { profile } } = this.props;
-    const { billing: { tariff } } = profile;
+    const { tariffs, tariff, loggedIn } = this.props;
     const { selectedTariff } = this.state;
-    const isActivated = tariff === selectedTariff;
+    const isActivated = tariff === selectedTariff && loggedIn;
     const isButtonDisabled = isActivated
       || selectedTariff === 'free'
       || (tariff === 'pro' && selectedTariff === 'premium');
@@ -57,6 +65,7 @@ class Tariffs extends React.PureComponent {
             <Col key={_id}>
               <Header
                 label={_id}
+                selectable={loggedIn}
                 active={_id === selectedTariff}
                 onClick={this.onSelectTariff(_id)}
               />
@@ -173,8 +182,8 @@ class Tariffs extends React.PureComponent {
           <button
             className="btn active"
             type="button"
-            disabled={isButtonDisabled}
-            onClick={this.onBuyNow}
+            disabled={loggedIn && isButtonDisabled}
+            onClick={loggedIn ? this.onBuyNow : this.onLogIn}
           >
             {isActivated
               ? <FormattedMessage id="tariffs.activated" />

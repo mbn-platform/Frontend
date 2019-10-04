@@ -106,8 +106,8 @@ class AddApiKey extends React.Component {
             </div>
               <div className="keys_submit_wrapper">
                 <LockButton
-                  offsetTop="5px"
-                  offsetLeft="-25px"
+                  offsetTop="7px"
+                  offsetLeft="-30px"
                   {...apiKeys}
                 >
                   <input className="keys_submit" type="submit" value="Add key"/>

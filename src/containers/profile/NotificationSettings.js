@@ -216,7 +216,8 @@ class SettingsSwitch extends React.PureComponent {
             </Col>
             <LockButton
               id={this.props.title}
-              offsetTop="-10px"
+              offsetTop="-5px"
+              offsetLeft="-30px"
               notifications={this.props.title === 'info' ? true : notifications}
             >
               <Col xs="auto" className="switch" onClick={this.onToggle}>

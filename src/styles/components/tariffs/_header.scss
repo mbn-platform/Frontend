@@ -17,10 +17,14 @@
   color: $color-main-text;
   font-size: 36px;
   font-family: 'maven_proregular';
-  cursor: pointer;
+  cursor: default;
 
   &.active {
     border: 1px solid $color-main-green;
+  }
+
+  &.selectable {
+    cursor: pointer;
   }
 
   @include media-breakpoint-down(xs) {

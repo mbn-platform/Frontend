@@ -102,8 +102,9 @@ export class PlaceOrder extends React.PureComponent {
             <Col>
             {this.props.selectedOrderType === 'stop-limit' && this.props.auth.loggedIn ? (
               <LockButton
-                offsetTop="5px"
-                offsetRight="-10px"
+                offsetTop="10px"
+                offsetLeft="-25px"
+                placement="right"
                 {...this.props.auth.profile.billing.algoOrders}
               >
                 <PlaceOrderButton

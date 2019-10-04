@@ -15,6 +15,7 @@ const LockButton = ({
   used,
   id,
   notifications,
+  placement,
 }) => {
   const styles = {
     button: {
@@ -28,12 +29,13 @@ const LockButton = ({
 
   return isButtonLock ? (
     <div className="relative">
-      <NavLink to="/tariffs" id={id}>
+      <NavLink to="/tariffs">
         <div
+          id={id}
           className="lock_button"
           style={styles.button}
         />
-        <UncontrolledTooltip target={id}>
+        <UncontrolledTooltip placement={placement} target={id}>
           <FormattedMessage id="profile.needToUpgradePlan" />
         </UncontrolledTooltip>
       </NavLink>
@@ -57,6 +59,7 @@ LockButton.defaultProps = {
   notifications: true,
   used: undefined,
   total: undefined,
+  placement: 'top',
 };
 
 LockButton.propTypes = {
@@ -69,6 +72,7 @@ LockButton.propTypes = {
   notifications: PropTypes.bool,
   used: PropTypes.number,
   total: PropTypes.number,
+  placement: PropTypes.string,
 };
 
 export default LockButton;

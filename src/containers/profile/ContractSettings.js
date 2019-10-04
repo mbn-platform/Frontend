@@ -112,7 +112,11 @@ class ContractSettings extends React.Component {
                 defaultMessage="ACCEPT REQUESTS?"
               />
             </Col>
-            <LockButton offsetTop="-10px" {...trustManagement} id="accept-requests">
+            <LockButton
+              offsetTop="-5px"
+              offsetLeft="-30px"
+              {...trustManagement}
+              id="accept-requests">
               <Col xs="auto" className="switch" onClick={this.onToggleClick}>
                   <input className="cmn-toggle cmn-toggle-round-flat" type="checkbox"
                     onChange={this.onToggleClick}

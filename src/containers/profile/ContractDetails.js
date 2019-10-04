@@ -90,8 +90,8 @@ function InvestNowButton({ available, auth, onClick }) {
         <div className="col-auto">
           {auth.loggedIn ? (
             <LockButton
-              offsetTop="-2px"
-              offsetLeft="-5px"
+              offsetTop="3px"
+              offsetLeft="-30px"
               {...auth.profile.billing.trustManagement}
             >
               <button onClick={onClick} type="button" className="send-request-btn btn btn-secondary active">
