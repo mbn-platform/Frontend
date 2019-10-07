@@ -79,6 +79,14 @@
     }
   }
 
+  .tariff-expire {
+    border: none;
+    .col {
+      display: inline-block;
+      text-align: center;
+    }
+  }
+
   .tariffs__container-button-wrapper {
     display: flex;
     justify-content: center;

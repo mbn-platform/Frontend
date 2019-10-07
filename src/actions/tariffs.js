@@ -36,7 +36,7 @@ export function getTariffById(id) {
   };
 }
 
-export function paymentRequest(id) {
+export function createPaymentRequest(id) {
   return dispatch =>
     TariffsApi.paymentRequest(id)
       .then(json => dispatch({
@@ -62,8 +62,7 @@ export function paymentRequest(id) {
 
 export function mbnTransfer() {
   return (_, getState) => {
-    const { address, paymentRequest: { amount } } = getState().payments;
-
+    const { paymentRequest: { amount, address }} = getState().payments;
     if (address && amount) {
       window.mbnTransfer(window.web3, address, amount)
         .then(res => console.log('res', res))

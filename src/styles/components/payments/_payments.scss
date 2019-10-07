@@ -59,7 +59,6 @@
     font-size: 18px;
     color: $color-main-text;
     font-family: 'maven_proregular';
-    text-transform: uppercase;
     margin-bottom: 0;
 
     @include media-breakpoint-down(xs) {
@@ -88,6 +87,13 @@
       font-size: 12px;
       text-align: center;
     }
+  }
+
+  .btn {
+    min-width: 160px;
+    color: white;
+    min-height: 40px;
+    height: unset;
   }
 
   .payments-generate-button {

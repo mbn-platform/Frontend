@@ -1,72 +1,99 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import { Container } from 'reactstrap';
-import qs from 'qs';
+import BigNumber from 'bignumber.js';
+import copy from 'copy-to-clipboard';
 
 class Payments extends React.Component {
-  componentDidMount() {
-    const { getMbnAddress, fetchTariffs } = this.props;
 
-    fetchTariffs();
-    getMbnAddress();
-
-    this.timeInterval = setInterval(() => {
-      fetchTariffs();
-    }, 60000);
-  };
+  state = {
+    showPaymentDetails: false,
+  }
 
   handleGenerateAddress = () => {
     this.props.createMbnAddress();
   }
 
+  copyAddress = () => {
+    const { address } = this.props.paymentRequest;
+    copy(address);
+  }
+
+  onDirectTransactionClick = () => {
+    this.setState({showPaymentDetails: !this.state.showPaymentDetails});
+  }
+
   render = () => {
-    const { tariffs, location } = this.props;
-    const { tariff } = qs.parse(location.search.slice(1));
-    const { tokenPrice } = tariffs.length > 0 && tariffs.filter(({ _id }) => _id === tariff)[0];
+    if (!this.props.paymentRequest) {
+      return <Redirect to="/tariffs" />;
+    }
+
+    const { paymentRequest } = this.props;
+    const amount = new BigNumber(paymentRequest.amount).div(1e18).toFixed();
 
     return (
       <Container className="payments__container">
         <h1 className="payments__title">Choose purchase method</h1>
         <div className="payments__purchase active">
-          {/* <span className="icon-checkmark" /> */}
-          <div className="payments__subtitle">Purchase by sending MBN tokens</div>
+          <div className="payments__subtitle">
+            Current rate of <b>{amount}</b> MBN tokens is active for 15 minutes.
+            Choose the payment method and follow the steps provided.
+            <br/>
+            <br/>
+            After payment - the service plan will become active upon confirming on the Ethereum blockchain.
+          </div>
           <div className="payments__step-container">
-            <p className="payments__step">1 step</p>
-            <div>
-              Click
-              <button onClick={this.handleGenerateAddress} className="payments-generate-button">GENERATE</button>
-              for creating individual ERC-20 address
+            <div className="tariffs__container-button-wrapper">
+              <button
+                className="btn active"
+                type="button"
+                onClick={this.props.mbnTransfer}>
+                Wallet
+              </button>
+            </div>
+            <div className="tariffs__container-button-wrapper">
+              <button
+                className="btn active"
+                type="button"
+                onClick={this.onDirectTransactionClick}>
+                Direct Transaction
+              </button>
             </div>
           </div>
-          {this.props.address && (
-            <div className="payments__step-container">
-              <p className="payments__step">2 step</p>
-              <div>
-                Send {tokenPrice} MBN to
-                <button onClick={this.props.mbnTransfer} className="payments-generate-button">{this.props.address}</button>
-              </div>
-            </div>
-          )}
-          <div className="payments__description">
-            Service plan to be activated after 4 confirmation.<br />
-            It takes up to the 20 minutes, depends on Ethereum blockchain.<br />
-            You will get notification via Telegram (if it was added) and in the appearing form.
-          </div>
+          <DirectTransactionDetails
+            show={this.state.showPaymentDetails}
+            address={paymentRequest.address}
+            amount={amount}
+            onCopyClick={this.copyAddress}
+          />
         </div>
-    {/*
-        <div className="payments__purchase">
-          <div className="payments__subtitle">Purchase by buying MBN tokens</div>
-          <div className="payments__step-container">
-            <p className="payments__step">1 step</p>
-            <div>Click BUY NOW for executing purchase via Metamask, Trustwallet or other stuff.</div>
-          </div>
-          <div className="payments__step-container">
-            <p className="payments__step">2 step</p>
-            <div>Buy 1000 MBN. Your exchange ratio is ETH/MBN 0,00065. This price freezed for 60 min.</div>
-          </div>
-        </div> */}
       </Container>
     );
   }
+
 }
+
+const DirectTransactionDetails = ({address, amount, show, onCopyClick}) => {
+  if (show) {
+    return (
+      <div className="payments__description">
+        To pay via direct transaction - send <b>{amount}</b> MBN to <b>{address}</b>
+        <div>
+          <button
+            onClick={onCopyClick}
+            className="btn copy"
+          >
+            Copy Address
+          </button>
+        </div>
+        <div>
+          If wrong amount is transferred, funds will be returned in 24 hours
+        </div>
+      </div>
+    );
+  } else {
+    return null;
+  }
+};
 
 export default Payments;

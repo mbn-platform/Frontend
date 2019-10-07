@@ -414,7 +414,7 @@ class Navigation extends React.Component {
         icon: StakingIcon,
         iconHover: StakingIconHover,
       }, {
-        name: 'Tariffs',
+        name: 'Service Plans',
         to: '/tariffs',
         imgClass: 'tariffs',
         icon: TariffsIcon,

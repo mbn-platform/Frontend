@@ -703,14 +703,14 @@
                     letter-spacing: .1em;
                 }
                 .status-icon {
+                    display: inline-block;
                     width: 24px;
                     height: 18px;
                     background-image: url('../assets/svg/vip.svg');
                 }
                 .upgrade-to-text {
-                    font-size: 2em;
-                    color: #00FF1C;
-                    margin-top: 20px;
+                    font-size: 20px;
+                    color: #31b993;
                     text-decoration: none;
                 }
                 .separate-block, .separate-second-block {

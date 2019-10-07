@@ -1,19 +1,14 @@
 import { connect } from 'react-redux';
 
-import { getMbnAddress, createMbnAddress } from '../../actions/payments';
-import { fetchTariffs, paymentRequest, mbnTransfer } from '../../actions/tariffs';
+import { createPaymentRequest, mbnTransfer } from '../../actions/tariffs';
 import Payments from './Payments';
 
-const mapStateToProps = ({ tariffs, payments: { address } }) => ({
-  tariffs,
-  address,
+const mapStateToProps = ({ tariffs, payments: { address, paymentRequest } }) => ({
+  paymentRequest,
 });
 
 const mapDispatchToProps = {
-  getMbnAddress,
-  createMbnAddress,
-  fetchTariffs,
-  paymentRequest,
+  createPaymentRequest,
   mbnTransfer,
 };
 

@@ -48,14 +48,14 @@ class NotificationSettings extends React.Component {
         <TelegramContact contact={telegramContact} onVerifyClick={this.props.verifyTelegram} />
         <SettingsSwitch
           onToggle={this.onChange}
-          title="orders"
-          billing={billing}
-          checked={settings.orders} />
-        <SettingsSwitch
-          onToggle={this.onChange}
           title="info"
           billing={billing}
           checked={settings.info} />
+        <SettingsSwitch
+          onToggle={this.onChange}
+          title="orders"
+          billing={billing}
+          checked={settings.orders} />
         <SettingsSwitch
           onToggle={this.onChange}
           title="contracts"

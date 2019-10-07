@@ -7,7 +7,7 @@ import Header from './components/Header';
 
 class Tariffs extends React.PureComponent {
   state = {
-    selectedTariff: this.props.tariff,
+    selectedTariff: this.props.billing && this.props.billing.tariff,
   };
 
   data = {
@@ -37,10 +37,10 @@ class Tariffs extends React.PureComponent {
     this.setState({ selectedTariff: tariff });
   }
 
-  onBuyNow = () => {
+  onBuyNow = async () => {
     const { selectedTariff } = this.state;
 
-    this.props.paymentRequest(selectedTariff);
+    await this.props.createPaymentRequest(selectedTariff);
     const params = qs.stringify({ tariff: selectedTariff });
     this.props.history.push(`/payments/?${params}`);
   }
@@ -50,12 +50,11 @@ class Tariffs extends React.PureComponent {
   };
 
   render = () => {
-    const { tariffs, tariff, loggedIn } = this.props;
+    const { tariffs, billing, loggedIn } = this.props;
+    const tariff = billing && billing.tariff;
     const { selectedTariff } = this.state;
     const isActivated = tariff === selectedTariff && loggedIn;
-    const isButtonDisabled = isActivated
-      || selectedTariff === 'free'
-      || (tariff === 'pro' && selectedTariff === 'premium');
+    const isButtonDisabled = (loggedIn && tariff !== 'free');
 
     return tariffs.length > 0 ? (
       <Container className="tariffs__container">
@@ -136,7 +135,7 @@ class Tariffs extends React.PureComponent {
           ))}
         </Row>
         <Row>
-          <Col>TRUST MANAGEMENT</Col>
+          <Col>ASSETS UNDER MANAGEMENT</Col>
           {tariffs.map(({ _id, trustManagementSum }) => (
             <Col
               key={_id}
@@ -174,9 +173,10 @@ class Tariffs extends React.PureComponent {
         </Row>
         <div className="tariffs__container-description">
           Choose a service plan and click "BUY NOW" button.
-          The payment is done from your active ERC-20 wallet or thought a direct transaction.
-          Choose what is more convenient for you. The service plan fee is paid in MBN tokens,
-          based on the market price available at coinmarketcap. After payment, the service plan is activated for 20 days.
+          The payment can be done from your active ERC-20 wallet or thought a direct transaction.
+
+          The service plan fee is paid in MBN tokens, based on the market price.
+          After payment, the service plan is activated for 30 days.
         </div>
         <div className="tariffs__container-button-wrapper">
           <button
@@ -190,9 +190,26 @@ class Tariffs extends React.PureComponent {
               : <FormattedMessage id="tariffs.buyNow" />}
           </button>
         </div>
+        <ExpireInfo billing={billing} />
       </Container>
-    ) : null
+    ) : null;
   };
 }
+
+const ExpireInfo = ({billing}) => {
+  if (!billing || !billing.end) {
+    return null;
+  } else {
+    console.log(billing.end);
+    const now = new Date();
+    const remaining = new Date(billing.end) - now;  
+    const remainingDays = Math.round(remaining / (86400 * 1000));
+    return (
+      <Row className="tariff-expire">
+        <Col>You have activated <b>{billing.tariff}</b> service plan. It will be active for {remainingDays} days</Col>
+      </Row>
+    );
+  }
+};
 
 export default Tariffs;

@@ -257,6 +257,7 @@ const en = {
   'profile.total' : 'Total',
   'profile.tx' : 'TX',
   'profile.upgradeTo': 'Upgrade to {tariff}',
+  'profile.upgradeServicePlan': 'Upgrade service plan',
   'profile.needToUpgradePlan': 'You need to upgrade your plan to use this feature',
   'profile.upgrade': 'UPGRADE',
 
