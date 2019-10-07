@@ -31,7 +31,7 @@
       text-align: left;
     }
     .api_key_currencies_table .ReactTable .rt-tr > :first-child {
-     text-align: center; 
+     text-align: center;
     }
     .rt-resizable-header-content
     {
@@ -101,7 +101,7 @@
     .ReactTable .rt-td {
       text-align: center;
       overflow: hidden;
-      text-overflow: ellipsis;    
+      text-overflow: ellipsis;
     }
     .table_value_red
     {
@@ -304,7 +304,7 @@
 
     }
     .legend_pie_wrapper .trader_legend {
-        overflow: hidden;    
+        overflow: hidden;
       }
 
 
@@ -417,7 +417,7 @@
           background-color: rgba(144, 148, 161, .25);
         }
       }
-      
+
       &:hover {
 
       }
@@ -470,7 +470,7 @@
       display: inline-block;
       vertical-align: middle;
       width: 100%;
-    }    
+    }
 
     .add_keys_select_values_list_wr
     {
@@ -839,7 +839,7 @@
       background: url('../assets/svg/DeleteKey.svg') no-repeat center center;
       width: 30px;
       height: 100%;
-      
+
       vertical-align: middle;
       transition-property: opacity, background-color;
       transition-duration: 400ms;
@@ -849,7 +849,7 @@
     .can_delete_key
     {
       opacity: .4;
-      background-size: 17px;    
+      background-size: 17px;
       display: inline-block;
     }
 
@@ -937,7 +937,7 @@
       text-transform: uppercase;
       background: #2d3034;
       cursor: pointer;
-      transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;  
+      transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
     }
     .send_rate_btn:hover
     {
@@ -1286,7 +1286,7 @@
     }
     .feedback-profile .profile-item.container-fluid .table-screen .table-row .card .card-header .title-text .icon {
         margin-right: 12px;
-        margin-left: 15px;  
+        margin-left: 15px;
     }
 
     .feedback-profile .profile-item.container-fluid .table-screen .table-row .feedback-block .feedback-card .card-header {
@@ -1315,9 +1315,9 @@
         padding-right: 15px;
       }
 
-    }    
+    }
 
-    //---------------------------------------- 
+    //----------------------------------------
   }
   @media only screen and (max-width : 1400px) {
     .dashboard_wrapper {
@@ -1344,7 +1344,7 @@
 
       .profit_left .progress_bar_wrapper {
         margin-bottom: 0px;
-      }      
+      }
     }
 
 
@@ -1358,14 +1358,14 @@
       }
       .api_key_currencies_table {
         background-color: #17191b;
-      }  
+      }
       .add_keys_form .add_keys_field_wr, .add_keys_form .add_keys_double_field_wr {
         background-color: #1f2225;
       }
 
       .contracts_table, .selected_contract_table {
-        background-color: #17191b;    
-      }  
+        background-color: #17191b;
+      }
 
       .requests_table_wrapper {
         max-width: 100%;
@@ -1397,7 +1397,7 @@
         margin-bottom: 20px;
       }
       .api_key_currencies_table  .table_rewind_page {
-       margin-bottom: 24px; 
+       margin-bottom: 24px;
       }
 
       .api_key_currencies_table .table_rewind_page {
@@ -1497,7 +1497,7 @@
         display: none;
       }
       .table_col_value {
-        font-size: 1.2em;    
+        font-size: 1.2em;
       }
       .ReactTable .rt-thead .rt-tr {
         padding-top: 22px;
@@ -1512,8 +1512,8 @@
       .ReactTable .rt-td {
         text-align: center;
         overflow: hidden;
-        text-overflow: ellipsis;  
-        white-space: nowrap;  
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
       .ReactTable .rt-tr-group .rt-tr {
         border-bottom: 0;
@@ -1540,7 +1540,7 @@
       .api_keys_table .ReactTable .rt-tr-group .rt-tr {
         min-height: 30px;
         line-height: 30px;
-      }  
+      }
       .api_key_currencies_table .ReactTable .rt-tr-group .rt-tr {
         min-height: 20px;
         line-height: 20px;
@@ -1549,9 +1549,9 @@
         border-top: 0;
         padding: 0;
         height: 18px;
-        line-height: 18px;    
+        line-height: 18px;
         background: transparent;
-      }  
+      }
       .api_key_currencies_table .table_requests_control_wr .table_requests_control_btns {
         margin-top: -1px;
       }
@@ -1571,12 +1571,12 @@
       }
 
       .sort_icon_wrapper {
-        display: block; 
+        display: block;
         margin-left: 0px;
         margin-top: 8px;
       }
       .sort_icon_wrapper.position_down_icon_wrapper {
-       margin-top: 8px; 
+       margin-top: 8px;
       }
 
       .selected_header .sort_icon_wrapper {
@@ -1661,18 +1661,18 @@
 
       .ReactTable .rt-tr-group .rt-tr:not(.-padRow).-selected {
         background: transparent;
-      }  
+      }
 
       .ReactTable .rt-tr-group .rt-tr.-selected:not(.-padRow):hover {
         background: transparent;
-      }    
+      }
 
       .ReactTable .rt-tr-group .rt-tr:not(.-padRow).-selected .rt-td:first-child {
         background: linear-gradient(90deg, rgba(52, 98, 85, 0), #346255);
       }
       .ReactTable .rt-tr-group .rt-tr:not(.-padRow).-selected .rt-td:last-child {
         background: linear-gradient(90deg, #346255, rgba(52, 98, 85, 0.2))
-      }  
+      }
       .ReactTable .rt-tr-group .rt-tr:not(.-padRow).-selected .rt-td {
         background-color: #346255;
       }
@@ -1680,7 +1680,7 @@
       .contracts_table .table_title {
         background: url('../assets/img/Contracts.png') no-repeat left center;
       }
-      
+
       .contracts_table .ReactTable .rt-tr-group .rt-tr {
         min-height: 25px;
         line-height: 25px;
@@ -1722,7 +1722,7 @@
         margin-left: auto;
         margin-right: auto;
         width: 270px;
-      }  
+      }
       .selected_contract_table  .time_profit_left_border {
         border: 0;
         margin-bottom: 4px;
@@ -1755,7 +1755,7 @@
         width: auto;
         margin-left: 0;
         height: 40px;
-        line-height: 40px;    
+        line-height: 40px;
       }
       .selected_contract_table .time_left_counts_wrapper  .time_left_count_big {
         font-size: 2.2em;
@@ -1778,7 +1778,7 @@
       }
       .selected_contract_table .progress_bar {
         height: 2px;
-      }  
+      }
 
       .selected_contract_table .time_left {
         display: inline-block;
@@ -1813,10 +1813,10 @@
 
       .selected_contract_table .time_left_counts_wrapper .time_left_count_wrapper.hours {
         margin-right: 5px;
-      }  
+      }
       .selected_contract_table .time_left_counts_wrapper .time_left_count_wrapper.dots-second {
         margin-right: 8px;
-      }    
+      }
       .table_title_wrapper {
         margin-top: 14px;
       }
@@ -1825,7 +1825,7 @@
       }
 
       .traders_chart .chart_title_total {
-        margin-top: 7px;  
+        margin-top: 7px;
         border-bottom: 0;
       }
 
@@ -1853,7 +1853,7 @@
         width: 148px;
         border-radius: 2px;
         height: 30px;
-        font-size: 12px;    
+        font-size: 12px;
       }
       .rate_scale_wrapper.rate_scale_form
       {
@@ -1868,7 +1868,7 @@
       .table_wrapper
       {
         width: 100% !important;
-      }      
+      }
     }
   }
   @media only screen and (max-width : 1028px) {
@@ -1929,6 +1929,8 @@
       }
       .keys_submit_wrapper
       {
+        display: flex;
+        justify-content: center;
         text-align: center;
         background: none;
         border: none;
@@ -1975,7 +1977,13 @@
         font-size: 1.6em;
         color: #7c7c7d;
         max-width: 200px;
-      }  
+        width: 200px;
+      }
+
+      .lock_button {
+        top: 4px !important;
+        left: -30px !important;
+      }
 
       .ReactTable .add_keys_field {
         width: 60px;

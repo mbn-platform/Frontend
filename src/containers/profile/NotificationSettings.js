@@ -4,12 +4,18 @@ import { connect } from 'react-redux';
 import { Col, Row } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { updateNotificationSettings, verifyTelegram, updateInfo } from '../../actions/profile';
+import LockButton from '../../components/LockButton';
 
 class NotificationSettings extends React.Component {
 
   static propTypes = {
     contacts: PropTypes.array.isRequired,
-    settings: PropTypes.object.isRequired,
+    settings: PropTypes.shape({
+      analyzer: PropTypes.bool,
+      orders: PropTypes.bool,
+      info: PropTypes.bool,
+      contacts: PropTypes.bool,
+    }).isRequired,
     info: PropTypes.string,
   }
 
@@ -18,6 +24,7 @@ class NotificationSettings extends React.Component {
       analyzer: false,
       orders: false,
       info: false,
+      contacts: false,
     },
     contacts: [],
   }
@@ -31,7 +38,7 @@ class NotificationSettings extends React.Component {
   }
 
   render() {
-    const { settings, info } = this.props;
+    const { settings, info, billing } = this.props;
     const telegramContact = this.props.contacts.find((c) => c.type === 'telegram');
     return (
       <React.Fragment>
@@ -41,12 +48,19 @@ class NotificationSettings extends React.Component {
         <TelegramContact contact={telegramContact} onVerifyClick={this.props.verifyTelegram} />
         <SettingsSwitch
           onToggle={this.onChange}
+          title="info"
+          billing={billing}
+          checked={settings.info} />
+        <SettingsSwitch
+          onToggle={this.onChange}
           title="orders"
+          billing={billing}
           checked={settings.orders} />
         <SettingsSwitch
           onToggle={this.onChange}
-          title="info"
-          checked={settings.info} />
+          title="contracts"
+          billing={billing}
+          checked={settings.contracts || false} />
       </React.Fragment>
     );
   }
@@ -189,6 +203,8 @@ class SettingsSwitch extends React.PureComponent {
   }
 
   render() {
+    const { notifications } = this.props.billing;
+
     return (
       <Row className="row accept-requests">
         <Col xs="12" className="align-middle">
@@ -198,21 +214,28 @@ class SettingsSwitch extends React.PureComponent {
                 id={this.props.title}
                 defaultMessage={this.props.title} />
             </Col>
-            <Col xs="auto" className="switch" onClick={this.onToggle}>
-              <input className="cmn-toggle cmn-toggle-round-flat" type="checkbox"
-                checked={this.props.checked}/>
-              <label className="cmn-toggle-background"/>
-              <label className="cmn-text cmn-yes-text">
-                <FormattedMessage
-                  id="yes"
-                  defaultMessage="yes" />
-              </label>
-              <label className="cmn-text cmn-no-text">
-                <FormattedMessage
-                  id="no"
-                  defaultMessage="no" />
-              </label>
-            </Col>
+            <LockButton
+              id={this.props.title}
+              offsetTop="-5px"
+              offsetLeft="-30px"
+              notifications={this.props.title === 'info' ? true : notifications}
+            >
+              <Col xs="auto" className="switch" onClick={this.onToggle}>
+                <input className="cmn-toggle cmn-toggle-round-flat" type="checkbox"
+                  checked={this.props.checked}/>
+                <label className="cmn-toggle-background"/>
+                <label className="cmn-text cmn-yes-text">
+                  <FormattedMessage
+                    id="yes"
+                    defaultMessage="yes" />
+                </label>
+                <label className="cmn-text cmn-no-text">
+                  <FormattedMessage
+                    id="no"
+                    defaultMessage="no" />
+                </label>
+              </Col>
+            </LockButton>
           </Row>
         </Col>
       </Row>
@@ -227,16 +250,16 @@ SettingsSwitch.propTypes = {
   onToggle: PropTypes.func.isRequired,
 };
 
-const mapPropsToState = (state) => ({
-  contacts: state.profile.contacts,
-  settings: state.profile.notificationSettings,
-  info: state.profile.info,
+const mapStateToProps = ({ profile }) => ({
+  contacts: profile.contacts,
+  settings: profile.notificationSettings,
+  info: profile.info,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  updateNotificationSettings: (settings) => dispatch(updateNotificationSettings(settings)),
-  verifyTelegram: (value) => dispatch(verifyTelegram(value)),
-  updateInfo: (info) => dispatch(updateInfo(info)),
-});
+const mapDispatchToProps = {
+  updateNotificationSettings,
+  verifyTelegram,
+  updateInfo,
+};
 
-export default connect(mapPropsToState, mapDispatchToProps)(NotificationSettings);
+export default connect(mapStateToProps, mapDispatchToProps)(NotificationSettings);

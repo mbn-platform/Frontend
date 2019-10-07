@@ -1,0 +1,34 @@
+.tariffs__header-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.tariffs__header-label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 210px;
+  max-height: 140px;
+  width: 100%;
+  height: 140px;
+  border: 1px solid $color-col-gray;
+  color: $color-main-text;
+  font-size: 36px;
+  font-family: 'maven_proregular';
+  cursor: default;
+
+  &.active {
+    border: 1px solid $color-main-green;
+  }
+
+  &.selectable {
+    cursor: pointer;
+  }
+
+  @include media-breakpoint-down(xs) {
+    font-size: 20px;
+    height: 80px;
+  }
+}

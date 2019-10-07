@@ -1,5 +1,4 @@
-import { apiPost } from '../generic/apiCall';
-import {apiDelete, apiGet, apiPut} from './apiCall';
+import { apiPost, apiDelete, apiGet, apiPut } from './apiCall';
 import {ABI, CONTRACT_ADDRESS, ETHEREUM_NET} from '../eth/MercatusFactory';
 import qs from 'qs';
 const errorHandler = resp => resp;
@@ -140,7 +139,7 @@ export class ApiOffers {
       .then(errorHandler)
       .then(responseSchemaHandler);
 
-  send = offer => 
+  send = offer =>
     apiPost('/contract', null, offer)
       .then(errorHandler)
       .then(responseSchemaHandler);
@@ -437,6 +436,29 @@ export class ApiContacts {
 
   delete = (id) =>
     apiDelete('/contacts/' + id)
+}
+
+export class ApiTariffs {
+  fetch = () =>
+    apiGet('/tariff')
+
+  getTariffById = (id) =>
+    apiGet(`/tariff/${id}`)
+
+  paymentRequest = (id) =>
+    apiPost(`/tariff/${id}/buy`)
+      .then(errorHandler)
+      .then(responseSchemaHandler)
+}
+
+export class ApiPayments {
+  getMbnAddress = (name) =>
+    apiGet(`/profile/${name}/mbnDepositAddress`)
+
+  createMbnAddress = (name) =>
+    apiPost(`/profile/${name}/mbnDepositAddress`)
+      .then(errorHandler)
+      .then(responseSchemaHandler)
 }
 
 // async function getProfitStats() {

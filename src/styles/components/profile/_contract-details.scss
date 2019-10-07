@@ -6,7 +6,7 @@
 					.request-sent-block {
 						display: block;
 					}
-				}		
+				}
 				.request-sent-block {
 					.request-sent-title {
 						.request-sent-title-text {
@@ -24,7 +24,7 @@
 							margin-top: 22px;
 							height: 26px;
 							.left-info {
-								background-image: linear-gradient( 90deg, rgb(35,38,41) 0%, rgb(45,48,52) 100%);						
+								background-image: linear-gradient( 90deg, rgb(35,38,41) 0%, rgb(45,48,52) 100%);
 								font-size: 1.2em;
 								width: 243px;
 								height: 100%;
@@ -56,7 +56,7 @@
 								}
 								&.red {
 									color: #953a3a;
-								}						
+								}
 							}
 						}
 						.request-sent-info-item:first-child {
@@ -64,7 +64,7 @@
 						}
 					}
 					.btn {
-						margin: 41px 0 20px 0;
+						margin: 0 0 20px 0;
 						width: 180px;
 						height: 40px;
 						letter-spacing: 1px;
@@ -85,8 +85,8 @@
 							margin-left: 32px;
 		    				margin-top: -19px;
 						}
-									
-					}			
+
+					}
 				}
 				@include media-breakpoint-down(sm) {
 					.request-sent-block {
@@ -106,9 +106,9 @@
 					 				font-size: .9em;
 					 			}
 					 		}
-					 	} 
+					 	}
 					 	.tooltip-text-block {
-					 		margin-top: 29px;					
+					 		margin-top: 29px;
 					 		.tooltip-mobile-box {
 					 			color: #727274;
 					 		    text-align: center;
@@ -124,10 +124,10 @@
 					 			.red {
 					 				color: #953a3a;
 					 			}
-					 		}					
-					 	}	
+					 		}
+					 	}
 					 	.request-sent-info {
-					 		margin-top: 21px;					
+					 		margin-top: 21px;
               margin-bottom: 21px;
 					 		.request-sent-info-item {
 					 			height: 21px;
@@ -163,16 +163,16 @@
 					 					border-bottom: 1px solid #953a3a;
 					 					border-left: 1px solid #953a3a;
 					 				}
-					 			}						
+					 			}
 					 		}
 					 	}
 					 	.btn{
-					 	    margin: 26px 0 18px 0;
+					 	    margin: 0 0 18px 0;
 					 	    height: 31px;
 					 	    letter-spacing: 1px;
 					 	    border-radius: 3px;
 					 	    border: 0;
-					 	    font-size: 1.2em;					
+					 	    font-size: 1.2em;
 					 		&.send-request-btn {
 					 			width: 148px;
 					 		}
@@ -185,12 +185,12 @@
 					 		letter-spacing: 1.5px;
 					 		text-align: center;
 					 		margin-bottom: 20px;
-					 
+
 					 	}
-					 } 
+					 }
 				}
 			}
 		}
-	}	
+	}
 }
 

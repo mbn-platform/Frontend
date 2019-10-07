@@ -256,6 +256,11 @@ const en = {
   'profile.amount' : 'Amount',
   'profile.total' : 'Total',
   'profile.tx' : 'TX',
+  'profile.upgradeTo': 'Upgrade to {tariff}',
+  'profile.upgradeServicePlan': 'Upgrade service plan',
+  'profile.needToUpgradePlan': 'You need to upgrade your plan to use this feature',
+  'profile.upgrade': 'UPGRADE',
+
   'ratings.bestInvestor' : 'All the time best investor',
   'ratings.toBeDetermined' : 'to be determined',
   'ratings.roiPercent' : 'ROI, %',
@@ -338,6 +343,13 @@ const en = {
   'telegramConfirmCode': 'Your code is {code}. Go to {link} and enter',
   'help-stop-limit-order': 'Stop-limit orders are triggered when pair price reaches stop price. In that case a limit order is placed. Such orders don\'t block your available balance',
   'staking.title': 'Staking',
+
+  'tariffs.buyNow': 'BUY NOW',
+  'tariffs.activated': 'ACTIVATED',
+  'tariffs.errors.unableToBuyFree': 'Unable to buy free tariff',
+  'tariffs.errors.addressNotGenerated': 'Address for payment is not generated',
+
+  'payments.errors.addressAlreadyExists': 'Address already exists',
 
 };
 

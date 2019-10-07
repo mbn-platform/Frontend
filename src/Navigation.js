@@ -18,6 +18,8 @@ import StakingIcon from './assets/svg/MenuIconStaking.svg';
 import StakingIconHover from './assets/svg/MenuIconStakingHover.svg';
 import SignOut from './assets/svg/SignOut.svg';
 import SignOutHover from './assets/svg/SignOutHover.svg';
+import TariffsIcon from './assets/svg/tariffs.svg';
+import TariffsIconHover from './assets/svg/tariffsHover.svg';
 import { connect } from 'react-redux';
 import {APP_NAME, APP_HOST} from './constants';
 import { withRouter } from 'react-router';
@@ -27,7 +29,7 @@ import ModalWindow from './components/Modal';
 import TwoFactorAuthModal from './components/TwoFactorAuthModal';
 import { Container, Row } from 'reactstrap';
 import {injectIntl, FormattedMessage} from 'react-intl';
-import {closeCodeModal, closeConfirmModal, closeInfoModal} from './actions/modal';
+import { closeCodeModal, closeConfirmModal, closeInfoModal, closeUpgradeTariffModal } from './actions/modal';
 import { loggedOut } from './actions/auth';
 
 
@@ -195,6 +197,42 @@ class Navigation extends React.Component {
 
   renderTwoFactorAuthModal = () => <TwoFactorAuthModal appName={APP_NAME} appHost={APP_HOST}/>
 
+  renderUpgradeTariffModal = () => {
+    const { modal, closeUpgradeTariffModalWindow, history } = this.props;
+
+    if (!modal.isUpgradeModalOpen) {
+      return null;
+    }
+
+    return (
+      <ModalWindow
+        modalIsOpen={modal.isUpgradeModalOpen}
+        onClose={closeUpgradeTariffModalWindow}
+        title={
+          <FormattedMessage
+            id={modal.modalText}
+            values={modal.modalProps}
+          />
+        }
+        content={
+          <div>
+            <button className="modal__button btn" onClick={() => {
+              history.push('/tariffs');
+              closeUpgradeTariffModalWindow();
+            }}>
+              <FormattedMessage id={modal.body.upgradeTariffText} />
+            </button>
+            <button className="modal__button btn" onClick={closeUpgradeTariffModalWindow}>
+              {modal.body && modal.body.cancelText ?
+                <FormattedMessage
+                  id={modal.body.cancelText}
+                /> : this.props.intl.messages['no']}
+            </button>
+          </div>
+        }
+      />
+    );
+  }
 
   render() {
     const { isExpanded } = this.state;
@@ -202,10 +240,10 @@ class Navigation extends React.Component {
       <Col xs="12"
         md="auto"
         className={`
-           d-block
-           menu-panel
-           navigation__tab-container
-           ${!isExpanded && 'navigation__tab-container_hidden'}`
+          d-block
+          menu-panel
+          navigation__tab-container
+          ${!isExpanded && 'navigation__tab-container_hidden'}`
         }>
         <Navbar expand="md"  >
           <NavbarBrand className="d-inline-block d-md-none" tag="div">
@@ -237,6 +275,7 @@ class Navigation extends React.Component {
         {this.renderGlobalInformModel()}
         {this.renderGlobalConfirmModel()}
         {this.renderTwoFactorAuthModal()}
+        {this.renderUpgradeTariffModal()}
         <div
           className="navigation__splitter"
           onClick={() => this.setState({isExpanded: !isExpanded})}>
@@ -374,6 +413,12 @@ class Navigation extends React.Component {
         imgClass: 'staking',
         icon: StakingIcon,
         iconHover: StakingIconHover,
+      }, {
+        name: 'Service Plans',
+        to: '/tariffs',
+        imgClass: 'tariffs',
+        icon: TariffsIcon,
+        iconHover: TariffsIconHover,
       },
     ];
   }
@@ -392,6 +437,7 @@ const mapDispatchToProps = dispatch => {
     closeInfoModalWindow: () => dispatch(closeInfoModal),
     closeConfirmModalWindow: () => dispatch(closeConfirmModal),
     closeCodeModalWindow: () => dispatch(closeCodeModal),
+    closeUpgradeTariffModalWindow: () => dispatch(closeUpgradeTariffModal),
     logOut: () => dispatch(loggedOut()),
   };
 };

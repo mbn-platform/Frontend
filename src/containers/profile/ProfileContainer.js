@@ -11,18 +11,18 @@ const mapStateToProps = state => ({
   profile: state.profile,
 });
 
-const mapDispatchToProps = dispatch => ({
-  updateContractSettings: (name, contractSettings) => dispatch(updateContractSettings(name, contractSettings)),
-  toggleAvailable: (name, available) => dispatch(toggleAvailable(name, available)),
-  updateExchanges: () => dispatch(updateExchanges()),
-  getProfilePageInfo: name => dispatch(getProfilePageInfo(name)),
-  getExchangeRates: exchange => dispatch(getExchangeRates(exchange)),
-});
+const mapDispatchToProps = {
+  updateContractSettings,
+  toggleAvailable,
+  updateExchanges,
+  getProfilePageInfo,
+  getExchangeRates,
+};
 
 const ProfileContainer = connect(mapStateToProps, mapDispatchToProps)(Profile);
 
 /**
- * Component for recreating profile component on user change 
+ * Component for recreating profile component on user change
  *
  */
 const ProfileWrapper = ({match}) => (

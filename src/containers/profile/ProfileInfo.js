@@ -1,18 +1,23 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import { Col, Container, Row } from 'reactstrap';
+import { FormattedMessage } from 'react-intl';
+
 import Stats from '../../components/Stats';
 import ContractSettings from './ContractSettings';
 import SendRequestBlock from './SendRequestBlock';
-import { FormattedMessage } from 'react-intl';
 
 class ProfileInfo extends React.Component {
 
   getHeader() {
+    const { tariff } = this.props.profile;
+
     return (
       <Row className="justify-content-center">
         <Col xs="12" className="text-center align-middle info-screen-title title-text">
           @{this.props.profile.name}
         </Col>
+        <TariffHeader tariff={tariff} own={this.props.own} />
       </Row>
     );
   }
@@ -43,6 +48,7 @@ class ProfileInfo extends React.Component {
   render() {
     const profile = this.props.profile;
     const contractSettings = profile.contractSettings;
+
     if(this.props.own) {
       return (
         <Col xs="12" md="auto" sm="12" className="info-screen contract-block">
@@ -73,6 +79,7 @@ class ProfileInfo extends React.Component {
                   fee={contractSettings.fee}
                   availableForOffers={profile.available}
                   roi={contractSettings.roi}
+                  billing={this.props.auth.profile.billing}
                 />
               </Col>
             </Row>
@@ -94,7 +101,7 @@ class ProfileInfo extends React.Component {
                   currentProfit={profile.currentProfit}
                   averageCurrent={profile.averageCurrent}
                   roiInBTC={profile.roiInBTC}
-                  roiInUSD={profile.roiInUSD}                        
+                  roiInUSD={profile.roiInUSD}
                   totalInBTC={profile.totalInBTC}
                   totalInUSDT={profile.totalInUSDT}
                 />
@@ -127,5 +134,67 @@ function About({info}) {
   }
 }
 
+const TariffHeader = ({tariff, own}) => {
+  if (!tariff) {
+    return null;
+  } else if (own) {
+    switch (tariff) {
+      case 'free':
+        return (
+          <Col xs="12" className="text-center align-middle info-screen-title">
+            <NavLink className="upgrade-to-text" to="/tariffs">
+              <FormattedMessage
+                id="profile.upgradeServicePlan"
+              />
+            </NavLink>
+          </Col>
+        );
+      case 'premium':
+        return (
+          <Col xs="12" className="text-center align-middle info-screen-title">
+            <NavLink className="upgrade-to-text" to="/tariffs">
+              Premium
+            </NavLink>
+          </Col>
+        );
+      default:
+        return (
+          <Col xs="12" className="text-center align-middle info-screen-title">
+            <NavLink className="upgrade-to-text" to="/tariffs">
+              <div className="status-icon"/> Pro
+            </NavLink>
+          </Col>
+        );
+    }
+  } else {
+    switch (tariff) {
+      case 'free':
+        return (
+          <Col xs="12" className="text-center align-middle info-screen-title">
+            <div className="upgrade-to-text">
+              Free user
+            </div>
+          </Col>
+        );
+      case 'premium':
+        return (
+          <Col xs="12" className="text-center align-middle info-screen-title">
+            <div className="upgrade-to-text">
+              Premium
+            </div>
+          </Col>
+        );
+
+      default:
+        return (
+          <Col xs="12" className="text-center align-middle info-screen-title">
+            <div className="upgrade-to-text">
+              <div className="status-icon"/> Pro
+            </div>
+          </Col>
+        );
+    }
+  }
+};
 
 export default ProfileInfo;

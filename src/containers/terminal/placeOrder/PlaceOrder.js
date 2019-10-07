@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Col, Row } from 'reactstrap';
+
 import { BuySellSwitch } from './BuySellSwitch';
 import { Balances } from './Balances';
 import { PlaceOrderButton } from './PlaceOrderButton';
 import { AmountPercentSelector } from './AmountPercentSelector';
 import { PlaceOrderInput } from './PlaceOrderInput';
-import { Col, Row } from 'reactstrap';
 import { PlaceOrderHeader } from './PlaceOrderHeader';
+import LockButton from '../../../components/LockButton';
 
 export const ORDER_TYPE_LIMIT = 'limit';
 export const ORDER_TYPE_MARKET = 'market';
@@ -98,6 +100,22 @@ export class PlaceOrder extends React.PureComponent {
           </Row>
           <Row>
             <Col>
+            {this.props.selectedOrderType === 'stop-limit' && this.props.auth.loggedIn ? (
+              <LockButton
+                offsetTop="10px"
+                offsetLeft="-25px"
+                placement="right"
+                {...this.props.auth.profile.billing.algoOrders}
+              >
+                <PlaceOrderButton
+                  onClick={this.props.onPlaceOrderClick}
+                  amount={this.props.amount}
+                  currency={this.state.secondary}
+                  tab={this.props.selectedTab}
+                  price={this.props.price}
+                />
+              </LockButton>
+            ) : (
               <PlaceOrderButton
                 onClick={this.props.onPlaceOrderClick}
                 amount={this.props.amount}
@@ -105,6 +123,7 @@ export class PlaceOrder extends React.PureComponent {
                 tab={this.props.selectedTab}
                 price={this.props.price}
               />
+            )}
             </Col>
           </Row>
         </div>

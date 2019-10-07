@@ -1,0 +1,109 @@
+.main-panel.container-fluid .tariffs__container {
+  margin: 0;
+  width: 1110px;
+  padding: 50px 0 60px 50px;
+
+  .row {
+    border-bottom: 1px solid $color-col-gray;
+
+    &:first-child {
+      padding-bottom: 30px;
+      border: none;
+
+      .col:first-child {
+        @include media-breakpoint-down(xs) {
+          display: none;
+        }
+      }
+    }
+
+    &:nth-child(3) {
+      padding-top: 20px;
+    }
+  }
+
+  .col {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0 3px;
+    font-family: 'maven_proregular';
+    font-size: 18px;
+    color: $color-col-gray;
+
+    &.active {
+      color: $color-main-green;
+
+      .icon-checkmark, .icon-cross {
+        background-color: $color-main-green;
+      }
+    }
+
+    &:first-child {
+      justify-content: flex-start;
+      color: $color-main-text;
+
+      @include media-breakpoint-down(xs) {
+        font-size: 10px !important;
+      }
+    }
+
+    .icon-checkmark {
+      width: 20px;
+      height: 20px;
+      background-color: $color-col-gray;
+      -webkit-mask:  url(../assets/svg/icon-check-mark.svg) no-repeat 50% 50%;
+      mask: url(../assets/svg/icon-check-mark.svg) no-repeat 50% 50%;
+    }
+
+    .icon-cross {
+      @extend .icon-checkmark;
+      width: 13px;
+      -webkit-mask:  url(../assets/svg/icon-cross.svg) no-repeat 50% 50%;
+      mask: url(../assets/svg/icon-cross.svg) no-repeat 50% 50%;
+    }
+
+    @include media-breakpoint-down(xs) {
+      font-size: 9px !important;
+    }
+  }
+
+  .tariffs__container-description {
+    padding: 20px 0 30px;
+    font-size: 16px;
+    color: $color-col-gray;
+    font-family: 'maven_proregular';
+
+    @include media-breakpoint-down(xs) {
+      font-size: 12px;
+      text-align: center;
+    }
+  }
+
+  .tariff-expire {
+    border: none;
+    .col {
+      display: inline-block;
+      text-align: center;
+    }
+  }
+
+  .tariffs__container-button-wrapper {
+    display: flex;
+    justify-content: center;
+
+    .btn {
+      min-width: 160px;
+      margin: 0;
+      color: $color-white;
+
+      &:disabled {
+        cursor: default;
+      }
+    }
+  }
+
+  @include media-breakpoint-down(md) {
+    padding: 10px;
+    max-width: 100%;
+  }
+}

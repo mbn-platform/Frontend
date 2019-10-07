@@ -6,6 +6,7 @@ import Calculator from './Calculator';
 import { PaginationWithPageRight } from '../../components/PaginationWithPage';
 import createMqProvider, {ratingSchema} from '../../MediaQuery';
 import { ShowVerifiedTooltip } from '../../components/ProfileBlock';
+import ProIcon from '../../assets/svg/vip.svg';
 
 const { MediaQuery, Screen} = createMqProvider(ratingSchema);
 
@@ -166,7 +167,9 @@ class RatingTable extends React.PureComponent {
         minWIdth: 100,
         className: 'ratings__table-cell',
         Cell: row => {
-          return <div className="name nickname">@{row.value}</div>;
+          return <div className="name nickname">
+            {row.original.pro &&
+              <img className="status-icon" alt="" src={ProIcon}/>} @{row.value}</div>;
         },
         accessor: 'name',
       }, {

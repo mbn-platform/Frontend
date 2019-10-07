@@ -1,5 +1,7 @@
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
+import { Col } from 'reactstrap';
+
 import Login from './containers/login/LoginContainer';
 import Dashboard from './containers/dashboard/DashboardContainer';
 import Terminal from './containers/terminal/Terminal';
@@ -9,8 +11,9 @@ import Leaderboard from './containers/leaderboard/Leaderboard';
 import Hashlog from './containers/hashlog/Hashlog';
 import ActionList from './containers/hashlog/ActionList';
 import Staking from './containers/staking/Staking';
+import Tariffs from './containers/tariffs/TariffsContainer';
+import Payments from './containers/payments/PaymentsContainer';
 import './MainContent.css';
-import { Col } from 'reactstrap';
 import NotificationBar from './components/NotificationBar';
 import { ApiNotification } from './generic/api';
 
@@ -29,7 +32,7 @@ class MainContent extends React.Component {
       window.scrollTo(0, 0);
     }
   }
-  
+
   getNotificationData = async () => {
     const { showNotificationBar } = this.props;
     try {
@@ -76,6 +79,8 @@ class MainContent extends React.Component {
           <Route exact path="/terminal/:exchange/:market" component={Terminal} loggedIn={loggedIn}/>
           <ProtectedRoute exact path="/orders" component={Orders} loggedIn={loggedIn}/>
           <ProtectedRoute exact path="/staking" component={Staking} loggedIn={loggedIn}/>
+          <Route exact path="/tariffs" component={Tariffs} loggedIn={loggedIn}/>
+          <ProtectedRoute exact path="/payments/" component={Payments} loggedIn={loggedIn}/>
           <Redirect exact from="/ratings" to="/leaderboard"/>
           <Route exact path="/hashlog" component={Hashlog} loggedIn={loggedIn}/>
           <Route exact path="/hashlog/actions/" component={ActionList} loggedIn={loggedIn}/>
