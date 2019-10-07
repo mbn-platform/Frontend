@@ -35,14 +35,18 @@ class Payments extends React.Component {
       <Container className="payments__container">
         <h1 className="payments__title">Choose purchase method</h1>
         <div className="payments__purchase active">
-          <div className="payments__subtitle">
+          <div className="payments__subtitle top">
             Current rate of <b>{amount}</b> MBN tokens is active for 15 minutes.
             Choose the payment method and follow the steps provided.
             <br/>
             <br/>
-            After payment - the service plan will become active upon confirming on the Ethereum blockchain.
+            After the payment service plan will be activated after 4 confirmations.
+            Add your Telegram account in the Profile menu to receive notification when service plan is upgraded.
           </div>
           <div className="payments__step-container">
+            <div className="payments__subtitle">
+              You can pay with your ERC-20 wallet by clicking the "WALLET" button
+            </div>
             <div className="tariffs__container-button-wrapper">
               <button
                 className="btn active"
@@ -51,12 +55,15 @@ class Payments extends React.Component {
                 Wallet
               </button>
             </div>
+            <div className="payments__subtitle">
+              You can pay with direct transaction by clicking the "GENERATE ADDRESS" button and sending MBN tokens to the address provided.
+            </div>
             <div className="tariffs__container-button-wrapper">
               <button
                 className="btn active"
                 type="button"
                 onClick={this.onDirectTransactionClick}>
-                Direct Transaction
+                Generate address
               </button>
             </div>
           </div>
@@ -78,16 +85,13 @@ const DirectTransactionDetails = ({address, amount, show, onCopyClick}) => {
     return (
       <div className="payments__description">
         To pay via direct transaction - send <b>{amount}</b> MBN to <b>{address}</b>
+        <button
+          title="Copy adress"
+          onClick={onCopyClick}
+          className="copy-address"
+        />
         <div>
-          <button
-            onClick={onCopyClick}
-            className="btn copy"
-          >
-            Copy Address
-          </button>
-        </div>
-        <div>
-          If wrong amount is transferred, funds will be returned in 24 hours
+          If wrong amount of tokens is transferred, funds will be returned in 24 hours
         </div>
       </div>
     );

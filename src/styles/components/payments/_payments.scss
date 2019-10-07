@@ -75,6 +75,11 @@
       font-size: 12px;
       text-align: center;
     }
+    &.top {
+      padding-bottom: 15px;
+      margin-bottom: 15px;
+      border-bottom: 1px solid #444444;
+    }
   }
 
   .payments__description {
@@ -94,6 +99,16 @@
     color: white;
     min-height: 40px;
     height: unset;
+  }
+
+  .copy-address {
+    background-image: url('../assets/img/copy.png');
+    background-color: transparent;
+    border: none;
+    background-size: 20px 20px;
+    height: 20px;
+    width: 20px;
+    margin-left: 10px;
   }
 
   .payments-generate-button {
