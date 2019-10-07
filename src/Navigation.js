@@ -375,6 +375,13 @@ class Navigation extends React.Component {
         iconHover: ProfileIconHover
       },
       {
+        name: 'Service Plans',
+        to: '/tariffs',
+        imgClass: 'tariffs',
+        icon: TariffsIcon,
+        iconHover: TariffsIconHover,
+      },
+      {
         name: 'Dashboard',
         to: '/dashboard',
         imgClass: 'dashboard',
@@ -413,12 +420,6 @@ class Navigation extends React.Component {
         imgClass: 'staking',
         icon: StakingIcon,
         iconHover: StakingIconHover,
-      }, {
-        name: 'Service Plans',
-        to: '/tariffs',
-        imgClass: 'tariffs',
-        icon: TariffsIcon,
-        iconHover: TariffsIconHover,
       },
     ];
   }
