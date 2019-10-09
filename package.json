@@ -4,6 +4,11 @@
   "private": true,
   "dependencies": {
     "@amcharts/amcharts3-react": "^3.1.0",
+    "@babel/core": "^7.6.3",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-proposal-object-rest-spread": "^7.6.2",
+    "@babel/preset-env": "^7.6.3",
+    "@babel/preset-react": "^7.6.3",
     "amcharts3": "^3.21.14",
     "bignumber.js": "^7.2.1",
     "bootstrap": "^4.1.1",
@@ -33,6 +38,7 @@
     "reactstrap": "^6.0.1",
     "redux": "^4.0.0",
     "redux-thunk": "^2.2.0",
+    "regenerator-runtime": "^0.13.3",
     "socket.io-client": "^2.1.1"
   },
   "scripts": {
@@ -41,7 +47,9 @@
     "start-js": "react-scripts start",
     "start": "npm-run-all -p watch-css start-js",
     "build": "npm run build-css && react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage --maxWorkers=3",
     "eject": "react-scripts eject",
     "precommit": "lint-staged"
   },
@@ -56,10 +64,45 @@
       "pre-commit": "lint-staged"
     }
   },
+  "jest": {
+    "setupFilesAfterEnv": [
+      "<rootDir>/testConfig.js"
+    ],
+    "collectCoverageFrom": [
+      "**/*.{js,jsx}",
+      "!**/node_modules/**",
+      "!**/coverage/**",
+      "!**/public/**",
+      "!**/src/demoData/**",
+      "!**/src/assets/**",
+      "!**/src/fonts/**"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "statements": 50
+      }
+    },
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ],
+    "modulePathIgnorePatterns": [
+      "<rootDir>/.*/__mocks__",
+      "<rootDir>/src/App.test.js"
+    ],
+    "moduleNameMapper": {
+      "\\.(css|less|scss|png|svg)$": "identity-obj-proxy"
+    }
+  },
   "devDependencies": {
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0",
+    "enzyme-to-json": "^3.4.2",
     "husky": "^1.0.0-rc.14",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^24.9.0",
     "lint-staged": "^7.2.2",
-    "npm-run-all": "^4.1.2"
+    "npm-run-all": "^4.1.2",
+    "redux-mock-store": "^1.5.3"
   },
   "proxy": "https://beta.membrana.io"
 }

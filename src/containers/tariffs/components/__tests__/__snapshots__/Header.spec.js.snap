@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header component matches snapshot with \`active\` and \`selectable\` true 1`] = `
+<div
+  className="tariffs__header-container"
+>
+  <div
+    className="tariffs__header-label active selectable"
+    onClick={[MockFunction]}
+  >
+    TEST LABEL
+  </div>
+</div>
+`;
+
+exports[`Header component matches snapshot with default props 1`] = `
+<div
+  className="tariffs__header-container"
+>
+  <div
+    className="tariffs__header-label"
+    onClick={[MockFunction]}
+  >
+    TEST LABEL
+  </div>
+</div>
+`;
