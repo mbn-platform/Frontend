@@ -48,16 +48,21 @@ class PageWrapper extends React.Component {
   }
 }
 
-export default injectIntl(connect(
-  state => ({challenge: state.challenge, loggedIn: state.auth.loggedIn, ratings: state.ratings}),
-  dispatch => ({
-    showConfirmModal: (text, values, confirmHandler, body) => dispatch(showConfirmModal(text, values, confirmHandler, body)),
-    updateChallenge: number => dispatch(updateChallenge(number)),
-    takePart: () => dispatch(takePart()),
-    getNextInfo: () => dispatch(getNextInfo()),
-    applyForContract: (id) => dispatch(applyForContract(id)),
-    calculateTraderProfit: (trader, start, investment) => dispatch(calculateTraderProfit(trader, start, investment)),
-    updateRatings: () => dispatch(updateRatings()),
-  }),
-)(PageWrapper));
+const mapStateToProps = state => ({
+  challenge: state.challenge,
+  loggedIn: state.auth.loggedIn,
+  ratings: state.ratings,
+});
+
+const mapDispatchToProps = {
+  showConfirmModal,
+  updateChallenge,
+  takePart,
+  getNextInfo,
+  applyForContract,
+  calculateTraderProfit,
+  updateRatings,
+};
+
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(PageWrapper));
 

@@ -91,7 +91,7 @@ class TwoFactorAuthModal extends React.Component {
       this.submitForm();
     }
   }
-  
+
   onPaste = e => {
     const pasteValue = e.clipboardData.getData('Text');
     if ((/^[0-9]{6}$/i).test(pasteValue)) {
@@ -189,12 +189,10 @@ class TwoFactorAuthModal extends React.Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    closeTwoFactorAuthModalWindow: () => dispatch(closeTwoFactorAuthModal),
-    disable2FA: currentCode => dispatch(disable2FA(currentCode)),
-    confirm2FA: currentCode => dispatch(confirm2FA(currentCode)),
-  };
+const mapDispatchToProps = {
+  closeTwoFactorAuthModalWindow: closeTwoFactorAuthModal,
+  disable2FA,
+  confirm2FA,
 };
 
 export default injectIntl(connect(state => state, mapDispatchToProps)(TwoFactorAuthModal));

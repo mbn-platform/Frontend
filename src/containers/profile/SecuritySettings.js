@@ -77,10 +77,10 @@ class SecuritySettings extends React.Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  enable2FA: () => dispatch(enableTwoFactorAuthModal()),
-  disable2FA: () => dispatch(disableTwoFactorAuthModal()),
-});
+const mapDispatchToProps = {
+  enable2FA: enableTwoFactorAuthModal,
+  disable2FA: disableTwoFactorAuthModal,
+};
 
 
 export default connect(state => state, mapDispatchToProps)(SecuritySettings);

@@ -2,13 +2,12 @@ import { ApiError } from '../generic/apiCall';
 import { ApiAuth } from '../generic/api';
 import { showInfoModal } from './modal';
 
-
 export const LOGGED_OUT = 'LOGGED_OUT';
 export const LOGGED_IN = 'LOGGED_IN';
 export const NAME_REQUIRED = 'NAME_REQUIRED';
 
-
 const AuthApi = new ApiAuth(window.web3);
+
 export function logIn() {
   return dispatch => {
     AuthApi.logIn()

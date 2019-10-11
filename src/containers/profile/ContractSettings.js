@@ -118,9 +118,9 @@ class ContractSettings extends React.Component {
               {...trustManagement}
               id="accept-requests">
               <Col xs="auto" className="switch" onClick={this.onToggleClick}>
-                  <input className="cmn-toggle cmn-toggle-round-flat" type="checkbox"
-                    onChange={this.onToggleClick}
-                    checked={this.props.availableForOffers || false}/>
+                <input className="cmn-toggle cmn-toggle-round-flat" type="checkbox"
+                  onChange={this.onToggleClick}
+                  checked={this.props.availableForOffers || false}/>
                 <label className="cmn-toggle-background"/>
                 <label className="cmn-text cmn-yes-text">
                   <FormattedMessage
@@ -418,9 +418,9 @@ const EditSettingsEntry = ({className, placeholder,value, dimension, name, onCha
   </div>
 );
 
-const mapDispatchToProps = dispatch => ({
-  showModalWindow: text => dispatch(showInfoModal(text)),
-});
+const mapDispatchToProps = {
+  showModalWindow: showInfoModal,
+};
 
 export default injectIntl(connect(state => state, mapDispatchToProps)(ContractSettings));
 

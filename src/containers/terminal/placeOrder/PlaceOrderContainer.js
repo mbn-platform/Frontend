@@ -333,12 +333,12 @@ const mapStateToProps = state => {
   };
 };
 
+const mapDispatchToProps = {
+  showModalWindow: showInfoModal,
+  placeOrder,
+  placeAlgoOrder,
+};
 
-const mapDispatchToProps = dispatch => ({
-  showModalWindow: text => dispatch(showInfoModal(text)),
-  placeOrder: order => dispatch(placeOrder(order)),
-  placeAlgoOrder: order => dispatch(placeAlgoOrder(order)),
-});
 function commissionPercent(exchange, orderSide) {
   switch(exchange) {
     case 'bittrex': {

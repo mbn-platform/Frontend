@@ -1,6 +1,6 @@
-import {ApiTime} from '../generic/api';
-export const GET_TIME = 'GET_TIME';
+import { ApiTime } from '../generic/api';
 
+export const GET_TIME = 'GET_TIME';
 
 const TimeApi = new ApiTime();
 

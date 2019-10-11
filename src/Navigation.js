@@ -433,16 +433,19 @@ class Navigation extends React.Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    closeInfoModalWindow: () => dispatch(closeInfoModal),
-    closeConfirmModalWindow: () => dispatch(closeConfirmModal),
-    closeCodeModalWindow: () => dispatch(closeCodeModal),
-    closeUpgradeTariffModalWindow: () => dispatch(closeUpgradeTariffModal),
-    logOut: () => dispatch(loggedOut()),
-  };
+const mapStateToProps = ({ auth, modal }) => ({
+  auth,
+  modal,
+});
+
+const mapDispatchToProps = {
+  closeInfoModalWindow: closeInfoModal,
+  closeConfirmModalWindow: closeConfirmModal,
+  closeCodeModalWindow: closeCodeModal,
+  closeUpgradeTariffModalWindow: closeUpgradeTariffModal,
+  logOut: loggedOut,
 };
 
-const connected = withRouter(connect(state => ({auth: state.auth, modal: state.modal}), mapDispatchToProps)(Navigation));
+const connected = withRouter(connect(mapStateToProps, mapDispatchToProps)(Navigation));
 
 export default injectIntl(connected);

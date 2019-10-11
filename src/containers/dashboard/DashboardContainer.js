@@ -8,21 +8,18 @@ import { getExchangeRates } from '../../actions/terminal';
 import { showInfoModal } from '../../actions/modal';
 import { injectIntl } from 'react-intl';
 
-const mapStateToProps = state => {
-  return {
-    time: state.time,
-    apiKeys: state.apiKeys,
-    offers: state.offers,
-    contracts: state.contracts,
-    userId: state.auth.profile._id,
-    userName: state.auth.profile.name,
-    billing: state.auth.profile.billing,
-    exchanges: state.exchanges,
-    exchangesInfo: state.exchangesInfo,
-    rates: state.rates,
-  };
-};
-
+const mapStateToProps = state => ({
+  time: state.time,
+  apiKeys: state.apiKeys,
+  offers: state.offers,
+  contracts: state.contracts,
+  userId: state.auth.profile._id,
+  userName: state.auth.profile.name,
+  billing: state.auth.profile.billing,
+  exchanges: state.exchanges,
+  exchangesInfo: state.exchangesInfo,
+  rates: state.rates,
+});
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -33,13 +30,13 @@ const mapDispatchToProps = dispatch => {
         await dispatch(deleteApiKey(apiKey, token2FA));
       }
     },
-    updateExchanges: () => dispatch(updateExchanges()),
-    onOfferPay: offer => dispatch(payOffer(offer)),
-    onOfferAccepted: offer => dispatch(acceptOffer(offer)),
-    onOfferRejected: offer => dispatch(rejectOffer(offer)),
-    onOfferCanceled: offer => dispatch(cancelOffer(offer)),
-    onContractRate: (feedback, userName, time) => dispatch(rateContract(feedback, userName, time)),
-    getExchangeRates: exchange => dispatch(getExchangeRates(exchange)),
+    updateExchanges,
+    getExchangeRates,
+    onOfferPay: payOffer,
+    onOfferAccepted: acceptOffer,
+    onOfferRejected: rejectOffer,
+    onOfferCanceled: cancelOffer,
+    onContractRate: rateContract,
   };
 };
 

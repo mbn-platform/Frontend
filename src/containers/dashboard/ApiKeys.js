@@ -204,13 +204,13 @@ Funds.propTypes = {
   selectedApiKey: PropTypes.object
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    showConfirmModal: (text, values, confirmHandler) => dispatch(showConfirmModal(text, values, confirmHandler)),
-    showTwoFactorAuthModal: (mode, authData, onTwoFactorAuthSubmit) => dispatch(showTwoFactorAuthModal(mode, authData, onTwoFactorAuthSubmit)),
-  };
+const mapStateToProps = state => ({
+  is2FAEnable: state.auth.profile.mfaEnabled,
+});
+
+const mapDispatchToProps = {
+  showConfirmModal,
+  showTwoFactorAuthModal,
 };
 
-export default injectIntl(connect(state => ({
-  is2FAEnable: state.auth.profile.mfaEnabled,
-}), mapDispatchToProps)(Funds));
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(Funds));

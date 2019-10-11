@@ -44,11 +44,11 @@ class LeaveComment extends React.Component {
 
   onClick(e) {
     if(this.state.rate === null) {
-      this.props.showModalWindow('dashboard.rateFirst')
+      this.props.showModalWindow('dashboard.rateFirst');
       return;
     }
     if(this.state.comment.length < 10) {
-      this.props.showModalWindow('dashboard.commentMustBeOver')
+      this.props.showModalWindow('dashboard.commentMustBeOver');
       return;
     }
     const feedback = {
@@ -90,8 +90,8 @@ class LeaveComment extends React.Component {
 //   </div>
 // );
 
-const mapDispatchToProps = dispatch => ({
-  showModalWindow: text => dispatch(showInfoModal(text)),
-});
+const mapDispatchToProps = {
+  showModalWindow: showInfoModal,
+};
 
 export default injectIntl(connect(state => state, mapDispatchToProps)(ContractFeedback));

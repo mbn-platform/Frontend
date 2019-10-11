@@ -68,21 +68,22 @@ class AddBotApi extends React.Component {
   }
 }
 
+const mapStateToProps = state => ({
+  userId: state.auth.profile._id,
+  exchanges: state.exchanges,
+  apiKeys: state.apiKeys.ownKeys,
+  is2FAEnabled: state.auth.profile.mfaEnabled,
+});
+
 const mapDispatchToProps = dispatch => {
   return {
     addNewBotKeys: async (label, keys) => {
       dispatch(await addBotKeys(label, keys));
     },
-    showModalWindow: text => dispatch(showInfoModal(text)),
-    showTwoFactorAuthModal: (mode, authData, onTwoFactorAuthSubmit) => dispatch(showTwoFactorAuthModal(mode, authData, onTwoFactorAuthSubmit)),
+    showModalWindow: showInfoModal,
+    showTwoFactorAuthModal,
   };
 };
 
 
-export default injectIntl(
-  connect(state => ({
-    userId: state.auth.profile._id,
-    exchanges: state.exchanges,
-    apiKeys: state.apiKeys.ownKeys,
-    is2FAEnabled: state.auth.profile.mfaEnabled,
-  }), mapDispatchToProps)(AddBotApi));
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(AddBotApi));

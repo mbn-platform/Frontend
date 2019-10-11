@@ -1,8 +1,10 @@
 import React from 'react';
+
 import { profileErrorHandler } from '../generic/errorHandlers';
 import { ApiProfile, ApiContacts} from '../generic/api';
 import { ApiError} from '../generic/apiCall';
 import { showConfirmModal, showInfoModal } from './modal';
+
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
 export const UPDATE_PROFILE_AVAILABLE = 'UPDATE_PROFILE_AVAILABLE';
 export const GET_PROFILE = 'GET_PROFILE';
@@ -20,7 +22,6 @@ const ProfileApi = new ApiProfile();
 const ContactsApi = new ApiContacts();
 
 export function verifyTelegram(value) {
-
   return async dispatch => {
     if (!value) {
       return;

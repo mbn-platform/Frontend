@@ -260,19 +260,19 @@ class BotList extends React.Component {
 BotList.propTypes = {
   onKeySelected: PropTypes.func.isRequired,
   apiKeys: PropTypes.array.isRequired,
-  selectedApiKey: PropTypes.object
+  selectedApiKey: PropTypes.object,
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    getKeys: () => dispatch(fetchBotKeys()),
-    deleteKey: keyId => dispatch(deleteBotKeys(keyId)),
-    showConfirmModal: (text, values, confirmHandler) => dispatch(showConfirmModal(text, values, confirmHandler)),
-    showTwoFactorAuthModal: (mode, authData, onTwoFactorAuthSubmit) => dispatch(showTwoFactorAuthModal(mode, authData, onTwoFactorAuthSubmit)),
-  };
-};
-
-export default injectIntl(connect(state => ({
+const mapStateToProps = state => ({
   is2FAEnable: state.auth.profile.mfaEnabled,
   botKeysList: state.apiKeys.botKeys,
-}), mapDispatchToProps)(BotList));
+});
+
+const mapDispatchToProps = {
+  getKeys: fetchBotKeys,
+  deleteKey: deleteBotKeys,
+  showConfirmModal,
+  showTwoFactorAuthModal,
+};
+
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(BotList));

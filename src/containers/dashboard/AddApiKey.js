@@ -104,15 +104,15 @@ class AddApiKey extends React.Component {
                 spellCheck="false"
               />
             </div>
-              <div className="keys_submit_wrapper">
-                <LockButton
-                  offsetTop="7px"
-                  offsetLeft="-30px"
-                  {...apiKeys}
-                >
-                  <input className="keys_submit" type="submit" value="Add key"/>
-                </LockButton>
-              </div>
+            <div className="keys_submit_wrapper">
+              <LockButton
+                offsetTop="7px"
+                offsetLeft="-30px"
+                {...apiKeys}
+              >
+                <input className="keys_submit" type="submit" value="Add key"/>
+              </LockButton>
+            </div>
           </div>
         </form>
       </div>
@@ -120,18 +120,16 @@ class AddApiKey extends React.Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    onApiKeyCreated: (key, token) => dispatch(addApiKey(key, token)),
-    showModalWindow: text => dispatch(showInfoModal(text)),
-    showTwoFactorAuthModal: (mode, authData, onTwoFactorAuthSubmit) => dispatch(showTwoFactorAuthModal(mode, authData, onTwoFactorAuthSubmit)),
-  };
+const mapStateToProps = state => ({
+  userId: state.auth.profile._id,
+  exchanges: state.exchanges,
+  is2FAEnable: state.auth.profile.mfaEnabled,
+});
+
+const mapDispatchToProps = {
+  onApiKeyCreated: addApiKey,
+  showModalWindow: showInfoModal,
+  showTwoFactorAuthModal,
 };
 
-
-export default injectIntl(
-  connect(state => ({
-    userId: state.auth.profile._id,
-    exchanges: state.exchanges,
-    is2FAEnable: state.auth.profile.mfaEnabled,
-  }), mapDispatchToProps)(AddApiKey));
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(AddApiKey));

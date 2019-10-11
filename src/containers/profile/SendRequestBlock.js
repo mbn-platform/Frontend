@@ -382,11 +382,11 @@ const mapStateToProps = state => ({
   exchangesInfo: state.exchangesInfo
 });
 
-const mapDispatchToProps = dispatch => ({
-  showModalWindow: text => dispatch(showInfoModal(text)),
-  sendOffer: offer => dispatch(sendOffer(offer)),
-  onGotItClick: () => dispatch(clearRequest('sendOffer')),
-  getExchangeCurrencies: exchange => dispatch(getExchangeCurrencies(exchange)),
-});
+const mapDispatchToProps = {
+  showModalWindow: showInfoModal,
+  onGotItClick: clearRequest,
+  getExchangeCurrencies,
+  sendOffer,
+};
 
 export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(SendRequestBlock));
