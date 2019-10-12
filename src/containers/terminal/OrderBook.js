@@ -1,20 +1,20 @@
 import React from 'react';
-import { ReactTableDefaults } from 'react-table';
-import { connect } from 'react-redux';
-import {formatFloat, defaultFormatValue} from '../../generic/util';
-import {Desktop} from '../../generic/MediaQuery';
-import {sortData, onColumnSort, classNameForColumnHeader} from '../../generic/terminalSortFunctions';
-import classNames from 'classnames';
-import {BigNumber} from 'bignumber.js';
-import ReactTable from '../../components/SelectableReactTable';
-import { FormattedMessage } from 'react-intl';
-import createMqProvider, {querySchema} from '../../MediaQuery';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { BigNumber } from 'bignumber.js';
+import { ReactTableDefaults } from 'react-table';
+import { FormattedMessage } from 'react-intl';
+import classNames from 'classnames';
 
-const { Screen} = createMqProvider(querySchema);
+import { formatFloat, defaultFormatValue } from '../../generic/util';
+import { Desktop } from '../../generic/MediaQuery';
+import { sortData, onColumnSort, classNameForColumnHeader } from '../../generic/terminalSortFunctions';
+import ReactTable from '../../components/SelectableReactTable';
+import createMqProvider, { querySchema } from '../../MediaQuery';
+
+const { Screen } = createMqProvider(querySchema);
 
 class OrderBook extends React.Component {
-
   constructor(props) {
     super(props);
     this.sortData = sortData.bind(this);
@@ -24,25 +24,26 @@ class OrderBook extends React.Component {
       price: (a, b) => a.Rate - b.Rate,
       relativeSize: (a, b) => a.Rate * a.Quantity - b.Rate * b.Quantity,
     };
-    this.state = {last: null, sort: {}, scroll: true };
+    this.state = { last: null, sort: {}, scroll: true };
     this.orderTable = React.createRef();
     this.scrollTable = React.createRef();
   }
 
   reset() {
-    this.setState({scroll: true, sort: {}});
+    this.setState({ scroll: true, sort: {} });
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.market !== this.props.market || nextProps.exchange !== this.props.exchange) {
-      this.setState({sort: {}, scroll: true});
+      this.setState({ sort: {}, scroll: true });
     }
   }
 
-  getColumns = (type, screenWidth)  => {
+  getColumns = (type, screenWidth) => {
     const { market, orderBook } = this.props;
     const [main, secondary] = market.split('-');
     const isSellTable = type === 'sell';
+
     return [
       {
         Header: isSellTable ?
@@ -55,9 +56,9 @@ class OrderBook extends React.Component {
         className: `${isSellTable ?
           'terminal__orderbook-table-cell_sell' :
           'terminal__orderbook-table-cell_buy'
-        } 
+        }
         terminal__orderbook-table-cell`,
-        Cell: row => BigNumber(row.original.Rate).toString(10),
+        Cell: ({ original: { Rate } }) => BigNumber(Rate).toString(10),
         headerClassName: 'terminal__orderbook-table-header table__header-wrapper',
       },
       {
@@ -68,8 +69,8 @@ class OrderBook extends React.Component {
           </div> :
           '',
         className: 'terminal__orderbook-table-cell',
-        Cell: row => {
-          const sizeParts = formatFloat(row.original.Quantity).split('.');
+        Cell: ({ original: { Quantity } }) => {
+          const sizeParts = formatFloat(Quantity).split('.');
           return (
             <div><span className="terminal__orderbook-table-cell_color_white">{sizeParts[0]}.</span>
               <span>{sizeParts[1]}</span>
@@ -87,13 +88,11 @@ class OrderBook extends React.Component {
               className={classNameForColumnHeader(this.state, 'relativeSize')}/></div> :
           '',
         headerClassName: 'terminal__orderbook-table-header table__header-wrapper',
-        Cell: row => {
-          return (
-            <div>
-              {defaultFormatValue( row.original.Rate *  row.original.Quantity, main)}
-            </div>
-          );
-        },
+        Cell: ({ original: { Rate, Quantity } }) => (
+          <div>
+            {defaultFormatValue(Rate * Quantity, main)}
+          </div>
+        ),
         className: 'terminal__orderbook-table-cell',
       },
       {

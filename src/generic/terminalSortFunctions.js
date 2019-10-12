@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+
 export function onColumnSort(column) {
   const currentSortDirection = this.state.sort.direction;
   let direction;

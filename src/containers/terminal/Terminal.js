@@ -180,35 +180,32 @@ class Terminal extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  const {
-    auth,
-    terminal: {
-      fund,
-      market,
-      exchange,
-      interval
-    },
-    exchanges
-  } = state;
-  return {
-    auth,
+const mapStateToProps = ({
+  auth,
+  terminal: {
     fund,
     market,
     exchange,
-    interval,
-    exchanges
-  };
-};
-
-const mapDispatchToProps =  dispatch => ({
-  startTradingDataUpdates: () => dispatch(startTradingDataUpdates()),
-  stopTradingDataUpdates: () => dispatch(stopTradingDataUpdates()),
-  selectInterval: interval => dispatch(selectInterval(interval)),
-  selectMarket: market => dispatch(selectMarket(market)),
-  selectExchange: (exchange, restore) => dispatch(selectExchange(exchange, restore)),
-  selectFund: fund => dispatch(selectFund(fund)),
-  getOrders: apiKey => dispatch(getOrders(apiKey)),
+    interval
+  },
+  exchanges,
+}) => ({
+  auth,
+  fund,
+  market,
+  exchange,
+  interval,
+  exchanges
 });
+
+const mapDispatchToProps = {
+  startTradingDataUpdates,
+  stopTradingDataUpdates,
+  selectInterval,
+  selectMarket,
+  selectExchange,
+  selectFund,
+  getOrders,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Terminal);

@@ -85,9 +85,10 @@ export default function(state = {
       return {...state, orderBook };
     }
     case UPDATE_HISTORY: {
-      if(!(action.market === state.market && action.exchange === state.exchange)) {
+      if((action.market !== state.market && action.exchange !== state.exchange)) {
         return state;
       }
+
       const history = action.history
         .sort((t1, t2) => t2[2] - t1[2])
         .map(t => ({
@@ -97,6 +98,7 @@ export default function(state = {
           type: t[3],
           dt: t[2],
         }));
+
       return {...state, history: history.concat(state.history).slice(0, 50)};
     }
     case UPDATE_TICKER: {
