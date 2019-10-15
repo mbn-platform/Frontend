@@ -127,7 +127,12 @@ class Tariffs extends React.PureComponent {
               key={_id}
               className={classNames('text-center', _id === selectedTariff ? 'active' : '')}
             >
-              {tokenPrice === 0 ? 'FREE' : `${tokenPrice} MBN or ${ethPrice} ETH  ($${price})`}
+              {tokenPrice === 0 ? 'FREE' : (
+                <div className="tariffs__container-header-col">
+                  <span>{tokenPrice} MBN or&nbsp;</span>
+                  <span>{ethPrice} ETH &nbsp;(${price})</span>
+                </div>
+              )}
             </Col>
           ))}
         </Row>
@@ -224,7 +229,7 @@ class Tariffs extends React.PureComponent {
         {!loggedIn ? (
           <div className="tariffs__container-button-wrapper">
             <button
-              className="btn active"
+              className="btn active non-logged-in"
               type="button"
               disabled={loggedIn && isButtonDisabled}
               onClick={this.onLogIn}
@@ -262,7 +267,7 @@ const BuyDescription = ({payment, tariff}) => {
         <br/>
         send ${ethAmount} ETH directly to {payment.address}
         <button
-          title="Copy adress"
+          title="Copy address"
           onClick={() => copy(payment.address)}
           className="copy-address"
         />
@@ -271,7 +276,7 @@ const BuyDescription = ({payment, tariff}) => {
         <br/>
         send ${mbnAmount} MBN directly to {payment.address}
         <button
-          title="Copy adress"
+          title="Copy address"
           onClick={() => copy(payment.address)}
           className="copy-address"
         />
@@ -288,28 +293,22 @@ const BuyButtons = ({ loggedIn, tariff, payment, billing, onBuyWithMbn, onBuyWit
     && payment) {
     return (
       <Row>
-        <Col>
-          <div className="tariffs__container-button-wrapper">
-            <button
-              className="btn active"
-              type="button"
-              onClick={onBuyWithMbn}
-            >
-            BUY WITH MBN
-            </button>
-          </div>
-        </Col>
-        <Col>
-          <div className="tariffs__container-button-wrapper">
-            <button
-              className="btn active"
-              type="button"
-              onClick={onBuyWithEth}
-            >
-            BUY WITH ETH
-            </button>
-          </div>
-        </Col>
+        <div className="tariffs__container-button-wrapper space-evenly">
+          <button
+            className="btn active"
+            type="button"
+            onClick={onBuyWithMbn}
+          >
+          BUY WITH MBN
+          </button>
+          <button
+            className="btn active"
+            type="button"
+            onClick={onBuyWithEth}
+          >
+          BUY WITH ETH
+          </button>
+        </div>
       </Row>
     );
   } else {

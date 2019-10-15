@@ -27,7 +27,7 @@
     justify-content: center;
     padding: 10px 0 3px;
     font-family: 'maven_proregular';
-    font-size: 18px;
+    font-size: 17px;
     color: $color-col-gray;
 
     &.active {
@@ -63,7 +63,7 @@
     }
 
     @include media-breakpoint-down(xs) {
-      font-size: 9px !important;
+      font-size: 8px !important;
     }
   }
 
@@ -91,6 +91,12 @@
     display: flex;
     justify-content: center;
 
+    &.space-evenly {
+      width: 100%;
+      justify-content: space-evenly;
+      margin-bottom: 5px;
+    }
+
     .btn {
       min-width: 160px;
       margin: 0;
@@ -99,6 +105,26 @@
       &:disabled {
         cursor: default;
       }
+
+      @include media-breakpoint-down(xs) {
+        padding: 10px;
+        min-width: 140px;
+        font-size: 0.9rem;
+      }
+    }
+
+    .non-logged-in {
+      margin-top: 30px;
+    }
+  }
+
+  .tariffs__container-header-col {
+    display: flex;
+    flex-direction: row;
+
+    @include media-breakpoint-down(md) {
+      flex-direction: column;
+      align-items: flex-start;
     }
   }
 
