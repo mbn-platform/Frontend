@@ -1,13 +1,17 @@
+import classNames from 'classnames';
 import React from 'react';
 import { Col, Row, Container } from 'reactstrap';
 import { FormattedMessage } from 'react-intl';
 import qs from 'qs';
+import BigNumber from 'bignumber.js';
+import copy from 'copy-to-clipboard';
 
 import Header from './components/Header';
 
 class Tariffs extends React.PureComponent {
   state = {
-    selectedTariff: this.props.billing && this.props.billing.tariff,
+    selectedTariff: 'pro',
+    payment: null
   };
 
   data = {
@@ -16,12 +20,46 @@ class Tariffs extends React.PureComponent {
     statusIcon: [{ _id: 'free', access: false }, { _id: 'premium', access: false }, { _id: 'pro', access: true }],
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.paymentRequest !== this.props.paymentRequest) {
+      this.setState({payment: this.props.paymentRequest});
+    }
+  }
+
   componentDidMount = () => {
+    const search = this.props.location.search;
+    if (search) {
+      const { tariff } = qs.parse(search.slice(1));
+      if (tariff && (tariff === 'free' || tariff === 'premium' || tariff === 'pro')) {
+        this.props.history.replace({
+          pathname: '/tariffs',
+          search: `tariff=${tariff}`,
+        });
+        this.setState({selectedTariff: tariff});
+      }
+    } else {
+      this.props.history.replace({
+        pathname: '/tariffs',
+        search: 'tariff=pro',
+      });
+    }
     this.props.fetchTariffs();
+    this.createPaymentRequest(this.state.selectedTariff);
 
     this.timeInterval = setInterval(() => {
       this.props.fetchTariffs();
+      this.createPaymentRequest(this.state.selectedTariff);
     }, 60000);
+  }
+
+  createPaymentRequest = (tariff) => {
+    const { loggedIn, billing } = this.props;
+    if (!loggedIn || tariff === 'free'
+      || tariff === billing.tariff
+      || billing.tariff === 'pro') {
+      return;
+    }
+    this.props.createPaymentRequest(tariff);
   }
 
   componentWillUnmount() {
@@ -29,31 +67,42 @@ class Tariffs extends React.PureComponent {
   }
 
   onSelectTariff = (tariff) => () => {
-    const { loggedIn } = this.props;
-    if (!loggedIn) {
-      return;
-    }
-
+    this.props.history.replace({
+      pathname: '/tariffs',
+      search: `tariff=${tariff}`,
+    });
     this.setState({ selectedTariff: tariff });
+    this.createPaymentRequest(tariff);
   }
 
-  onBuyNow = async () => {
-    const { selectedTariff } = this.state;
+  onBuyWithEth = async () => {
+    const { payment } = this.state;
+    if (!payment) {
+      return;
+    }
+    window.ethTransfer(payment.address, payment.amountETH)();
+  }
 
-    await this.props.createPaymentRequest(selectedTariff);
-    const params = qs.stringify({ tariff: selectedTariff });
-    this.props.history.push(`/payments/?${params}`);
+  onBuyWithMbn = async () => {
+    const { payment } = this.state;
+    if (!payment) {
+      return;
+    }
+    window.mbnTransfer(payment.address, payment.amountMBN);
   }
 
   onLogIn = () => {
-    this.props.history.push('/login');
+    const redirectTo = this.props.location.pathname + this.props.location.search;
+    const query = {
+      redirectTo,
+    };
+    this.props.history.push('/login?' + qs.stringify(query));
   };
 
   render = () => {
     const { tariffs, billing, loggedIn } = this.props;
     const tariff = billing && billing.tariff;
     const { selectedTariff } = this.state;
-    const isActivated = tariff === selectedTariff && loggedIn;
     const isButtonDisabled = (loggedIn && tariff !== 'free');
 
     return tariffs.length > 0 ? (
@@ -73,12 +122,12 @@ class Tariffs extends React.PureComponent {
         </Row>
         <Row>
           <Col>MONTHLY PRICE</Col>
-          {tariffs.map(({ _id, tokenPrice, price }) => (
+          {tariffs.map(({ _id, tokenPrice, price, ethPrice }) => (
             <Col
               key={_id}
-              className={_id === selectedTariff ? 'active' : ''}
+              className={classNames('text-center', _id === selectedTariff ? 'active' : '')}
             >
-              {tokenPrice === 0 ? 'FREE' : `${tokenPrice} MBN ($${price})`}
+              {tokenPrice === 0 ? 'FREE' : `${tokenPrice} MBN or ${ethPrice} ETH  ($${price})`}
             </Col>
           ))}
         </Row>
@@ -171,38 +220,109 @@ class Tariffs extends React.PureComponent {
             </Col>
           ))}
         </Row>
-        <div className="tariffs__container-description">
-          Choose a service plan and click "BUY NOW" button.
-          The payment can be done from your active ERC-20 wallet or thought a direct transaction.
+        <BuyDescription payment={this.state.payment} tariff={selectedTariff} />
+        {!loggedIn ? (
+          <div className="tariffs__container-button-wrapper">
+            <button
+              className="btn active"
+              type="button"
+              disabled={loggedIn && isButtonDisabled}
+              onClick={this.onLogIn}
+            >
+              <FormattedMessage id="tariffs.buyNow" />
+            </button>
+          </div>
 
-          The service plan fee is paid in MBN tokens, based on the market price.
-          After payment, the service plan is activated for 30 days.
-        </div>
-        <div className="tariffs__container-button-wrapper">
-          <button
-            className="btn active"
-            type="button"
-            disabled={loggedIn && isButtonDisabled}
-            onClick={loggedIn ? this.onBuyNow : this.onLogIn}
-          >
-            {isActivated
-              ? <FormattedMessage id="tariffs.activated" />
-              : <FormattedMessage id="tariffs.buyNow" />}
-          </button>
-        </div>
+        ) : null}
+        <BuyButtons
+          payment={this.state.payment}
+          loggedIn={loggedIn}
+          billing={billing}
+          tariff={selectedTariff}
+          onBuyWithEth={this.onBuyWithEth}
+          onBuyWithMbn={this.onBuyWithMbn}
+        />
         <ExpireInfo billing={billing} />
       </Container>
     ) : null;
   };
 }
 
+const BuyDescription = ({payment, tariff}) => {
+  if (!payment || tariff === 'free') {
+    return null;
+  } else {
+    const ethAmount = BigNumber(payment.amountETH).div(1e18).toFixed();
+    const mbnAmount = BigNumber(payment.amountMBN).div(1e18).toFixed();
+    return (
+      <div className="tariffs__container-description">
+        Choose a service plan and click "BUY NOW" button.
+        <br/>
+          The payment can be done from your active ERC-20 wallet or thought a direct transaction:
+        <br/>
+        send ${ethAmount} ETH directly to {payment.address}
+        <button
+          title="Copy adress"
+          onClick={() => copy(payment.address)}
+          className="copy-address"
+        />
+        <br/>
+        or
+        <br/>
+        send ${mbnAmount} MBN directly to {payment.address}
+        <button
+          title="Copy adress"
+          onClick={() => copy(payment.address)}
+          className="copy-address"
+        />
+        <br/>
+        The service plan fee based on the current market price. After payment, the service plan is activated for 30 days
+      </div>
+    );
+  }
+};
+
+const BuyButtons = ({ loggedIn, tariff, payment, billing, onBuyWithMbn, onBuyWithEth}) => {
+  if (loggedIn && tariff !== billing.tariff
+    && tariff !== 'free' && billing.tariff !== 'pro'
+    && payment) {
+    return (
+      <Row>
+        <Col>
+          <div className="tariffs__container-button-wrapper">
+            <button
+              className="btn active"
+              type="button"
+              onClick={onBuyWithMbn}
+            >
+            BUY WITH MBN
+            </button>
+          </div>
+        </Col>
+        <Col>
+          <div className="tariffs__container-button-wrapper">
+            <button
+              className="btn active"
+              type="button"
+              onClick={onBuyWithEth}
+            >
+            BUY WITH ETH
+            </button>
+          </div>
+        </Col>
+      </Row>
+    );
+  } else {
+    return null;
+  }
+};
+
 const ExpireInfo = ({billing}) => {
   if (!billing || !billing.end) {
     return null;
   } else {
-    console.log(billing.end);
     const now = new Date();
-    const remaining = new Date(billing.end) - now;  
+    const remaining = new Date(billing.end) - now;
     const remainingDays = Math.round(remaining / (86400 * 1000));
     return (
       <Row className="tariff-expire">

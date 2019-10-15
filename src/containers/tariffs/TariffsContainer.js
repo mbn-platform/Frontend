@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { fetchTariffs, createPaymentRequest } from '../../actions/tariffs';
 import Tariffs from './Tariffs';
 
-const mapStateToProps = ({ auth, tariffs }) => {
+const mapStateToProps = ({ auth, tariffs, payments: { paymentRequest }}) => {
   let billing;
   const loggedIn = auth.loggedIn;
 
@@ -15,6 +15,7 @@ const mapStateToProps = ({ auth, tariffs }) => {
     loggedIn,
     billing,
     tariffs,
+    paymentRequest,
   };
 };
 

@@ -70,3 +70,21 @@ export function mbnTransfer() {
     }
   };
 }
+
+export function ethTransfer(to, amount) {
+  return (dispatch) => {
+    return new Promise((res, rej) => {
+      window.web3.eth.sendTransaction({
+        to,
+        value: amount,
+      }, (err, tx) => {
+        if (err) {
+          rej(err);
+        } else {
+          res(tx);
+        }
+      });
+    });
+  };
+}
+window.ethTransfer = ethTransfer;

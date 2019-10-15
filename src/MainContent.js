@@ -1,6 +1,7 @@
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { Col } from 'reactstrap';
+import qs from 'qs';
 
 import Login from './containers/login/LoginContainer';
 import Dashboard from './containers/dashboard/DashboardContainer';
@@ -97,7 +98,10 @@ class MainContent extends React.Component {
 
 const LoginRoute = ({ loggedIn, ...props }) => {
   if(loggedIn) {
-    return (<Redirect to={defaultRoute} />);
+    const { location } = props;
+    const { redirectTo } = qs.parse(location.search.slice(1));
+    const route = redirectTo || defaultRoute;
+    return (<Redirect to={route} />);
   } else {
     return (<Route  {...props} component={Login} />);
   }
