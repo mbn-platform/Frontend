@@ -5,6 +5,9 @@
 
   .row {
     border-bottom: 1px solid $color-col-gray;
+    &.buy-buttons {
+      border-bottom: none;
+    }
 
     &:first-child {
       padding-bottom: 30px;

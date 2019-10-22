@@ -265,16 +265,7 @@ const BuyDescription = ({payment, tariff}) => {
         <br/>
           The payment can be done from your active ERC-20 wallet or thought a direct transaction:
         <br/>
-        send ${ethAmount} ETH directly to {payment.address}
-        <button
-          title="Copy address"
-          onClick={() => copy(payment.address)}
-          className="copy-address"
-        />
-        <br/>
-        or
-        <br/>
-        send ${mbnAmount} MBN directly to {payment.address}
+        send {ethAmount} ETH or {mbnAmount} MBN directly to {payment.address}
         <button
           title="Copy address"
           onClick={() => copy(payment.address)}
@@ -292,7 +283,7 @@ const BuyButtons = ({ loggedIn, tariff, payment, billing, onBuyWithMbn, onBuyWit
     && tariff !== 'free' && billing.tariff !== 'pro'
     && payment) {
     return (
-      <Row>
+      <Row className="buy-buttons">
         <div className="tariffs__container-button-wrapper space-evenly">
           <button
             className="btn active"
