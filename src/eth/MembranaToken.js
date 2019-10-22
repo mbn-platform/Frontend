@@ -61,9 +61,9 @@ window.mbnTransfer = transfer;
 
 export const ADDRESS = process.env.REACT_APP_MBN_TOKEN_ADDRESS;
 
-export function transfer(web3, to, amount) {
+export function transfer(to, amount) {
   return new Promise((res, rej) => {
-    const contract = web3.eth.contract(ABI).at(ADDRESS);
+    const contract = window.web3.eth.contract(ABI).at(ADDRESS);
     contract.transfer(to, amount, (err, tx) => {
       if (err) {
         rej(err);
