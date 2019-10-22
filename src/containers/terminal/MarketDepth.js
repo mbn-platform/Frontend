@@ -1,34 +1,30 @@
 import React from 'react';
-import { Col, Row } from 'reactstrap';
-import { FormattedMessage } from 'react-intl';
-import {connect} from 'react-redux';
+import { Row } from 'reactstrap';
+import { connect } from 'react-redux';
 import AmChartsReact from '@amcharts/amcharts3-react';
+
 import { formatFloat, defaultFormatValue } from '../../generic/util';
 import { Desktop } from '../../generic/MediaQuery';
-import debounceRender from 'react-debounce-render';
+import withThrottledRender from '../../generic/withThrottledRender';
 
-class MarketDepth extends React.Component {
-
+class MarketDepth extends React.PureComponent {
   constructor(props) {
     super(props);
-    const isDesktop = window.innerWidth > 768;
-    const data = this.getData(props);
-    this.state = {selectedCurrency: 0, selectedInterval: 0, isDesktop, data};
-    this.formatNumber = this.formatNumber.bind(this);
-    this.balloon = this.balloon.bind(this);
-    this.onResize = this.onResize.bind(this);
+    this.state = {
+      selectedCurrency: 0,
+      selectedInterval: 0,
+      isDesktop: window.innerWidth > 768,
+      data: this.getData(props),
+    };
   }
 
-  formatNumber(val, graphChart, precision) {
-    return window.AmCharts.formatNumber(
-      val,
-      {
-        precision: -1,
-        decimalSeparator: graphChart.decimalSeparator,
-        thousandsSeparator: ' '
-      }
-    );
-  }
+  formatNumber = (val, graphChart) => window.AmCharts.formatNumber(
+    val, {
+      precision: -1,
+      decimalSeparator: graphChart.decimalSeparator,
+      thousandsSeparator: ' ',
+    }
+  );
 
   componentDidMount() {
     window.addEventListener('resize', this.onResize);
@@ -38,26 +34,19 @@ class MarketDepth extends React.Component {
     window.removeEventListener('resize', this.onResize);
   }
 
-  onResize() {
-    const isDesktop = window.innerWidth > 768;
-    if(this.state.isDesktop !== isDesktop) {
-      this.setState({isDesktop});
-    }
+  onResize = ({ target: { innerWidth } }) => {
+    this.setState((prevState) => {
+      const isDesktop = innerWidth > 768;
+      return prevState.isDesktop === isDesktop ? null : { isDesktop };
+    });
   }
 
-  componentWillReceiveProps(nextProps) {
-    if(nextProps.buy && nextProps.sell &&
-      (nextProps.buy !== this.props.buy || nextProps.sell !== this.props.sell)) {
-      const data = this.getData(nextProps);
-      this.setState({data});
-    }
-  }
+  componentDidUpdate = (prevProps) => {
+    const { buy, sell } = this.props;
 
-  shouldComponentUpdate(nextProps, nextState) {
-    if(nextState === this.state) {
-      return false;
-    } else {
-      return true;
+    if (buy && sell && (buy !== prevProps.buy || sell !== prevProps.sell)) {
+      const data = this.getData(this.props);
+      this.setState({ data });
     }
   }
 
@@ -75,14 +64,13 @@ class MarketDepth extends React.Component {
       // Sort list just in case
       list.sort((a, b) => a.value - b.value);
 
-      // Calculate cummulative volume
+      // Calculate cumulative volume
       if (desc) {
         for(let i = list.length - 1; i >= 0; i--) {
           if (i < (list.length - 1)) {
             list[i].totalvolume = list[i+1].totalvolume + list[i].volume;
             list[i].amount = list[i+1].amount + list[i].volume * list[i].value;
-          }
-          else {
+          } else {
             list[i].totalvolume = list[i].volume;
             list[i].amount = list[i].volume * list[i].value;
           }
@@ -94,14 +82,12 @@ class MarketDepth extends React.Component {
           dp[type + 'amount'] = list[i].amount;
           res.unshift(dp);
         }
-      }
-      else {
+      } else {
         for(let i = 0; i < list.length; i++) {
           if (i > 0) {
             list[i].totalvolume = list[i-1].totalvolume + list[i].volume;
             list[i].amount = list[i-1].amount + list[i].volume * list[i].value;
-          }
-          else {
+          } else {
             list[i].totalvolume = list[i].volume;
             list[i].amount = list[i].volume * list[i].value;
           }
@@ -114,8 +100,8 @@ class MarketDepth extends React.Component {
           res.push(dp);
         }
       }
-
     }
+
     let res = [];
     processData(props.buy, props.minBuy, props.maxBuy, 'buy', true, (props.ticker || {}).l);
     processData(props.sell, props.minSell, props.maxSell ,'sell', false, (props.ticker || {}).l);
@@ -123,7 +109,8 @@ class MarketDepth extends React.Component {
     return res;
   }
 
-  addGuides(data, isDesktop) {
+  addGuides(data) {
+    const { isDesktop } = this.state;
     let isBTC = true;
     let type = ['sell', 'buy'],
       asks = [],
@@ -144,26 +131,26 @@ class MarketDepth extends React.Component {
     let minItemUpDiffAsks = asks.reduce(function(diff, current, i, arr) {
       let diffCurrent = 0;
 
-      if(arr[i + 1]) {
+      if (arr[i + 1]) {
         diffCurrent = current.sellamount - arr[i + 1].sellamount;
       }
-      if(diff === 0) {
+      if (diff === 0) {
         diff = diffCurrent;
       }
-      if(diff < diffCurrent) {
+      if (diff < diffCurrent) {
         diff = diffCurrent;
       }
       return diff;
     }, 0);
     let minItemUpDiffBids = bids.reduce(function(diff, current, i, arr) {
       let diffCurrent = 0;
-      if(arr[i + 1]) {
+      if (arr[i + 1]) {
         diffCurrent = arr[i + 1].buyamount - current.buyamount;
       }
-      if(diff === 0) {
+      if (diff === 0) {
         diff = diffCurrent;
       }
-      if(diff < diffCurrent) {
+      if (diff < diffCurrent) {
         diff = diffCurrent;
       }
       return diff;
@@ -181,14 +168,14 @@ class MarketDepth extends React.Component {
       const gap = isDesktop ? 15 : 4;
       let lastValues = [];
       for(let i = 0; i < arr.length; i++) {
-        if(i > 0) {
+        if (i > 0) {
           let valid = true;
           for(let j = 0; j < lastValues.length; j++) {
-            if(Math.abs(lastValues[j] - arr[i].value) < (maxValue - minValue) / gap) {
+            if (Math.abs(lastValues[j] - arr[i].value) < (maxValue - minValue) / gap) {
               valid = false;
             }
           }
-          if(!valid) {
+          if (!valid) {
             continue;
           }
         }
@@ -208,7 +195,7 @@ class MarketDepth extends React.Component {
           'dashLength': isDesktop ? 3 : 0
         } );
         countGuides++;
-        if(countGuides === 3) {
+        if (countGuides === 3) {
           break;
         }
       }
@@ -243,15 +230,14 @@ class MarketDepth extends React.Component {
     return guides;
   }
 
-  balloon(item, graph) {
+  balloon = (item, graph) => {
     const [main, second] = this.props.market.split('-');
     let txt = '';
     if (graph.id === 'sell' && item.dataContext.sellamount) {
       txt = '<FormattedMessage id="terminal.price" defaultMessage="Price:"/> <strong>' + defaultFormatValue(item.dataContext.value, main) + '</strong><br />'
         + '<FormattedMessage id="terminal.totalVolume" defaultMessage="Total volume:"/> ('+ second +'): <strong>' + defaultFormatValue(item.dataContext.selltotalvolume, second) + '</strong><br />'
         + '<FormattedMessage id="terminal.amount" defaultMessage="Amount"/> ('+ main +'): <strong>' + defaultFormatValue(item.dataContext.sellamount, main) + '</strong>';
-    }
-    else if(graph.id === 'buy' && item.dataContext.buyamount) {
+    } else if (graph.id === 'buy' && item.dataContext.buyamount) {
       txt = '<FormattedMessage id="terminal.price" defaultMessage="Price:"/> <strong>' + defaultFormatValue(item.dataContext.value, main) + '</strong><br />'
         + '<FormattedMessage id="terminal.totalVolume" defaultMessage="Total volume:"/> ('+ second +'): <strong>' + defaultFormatValue(item.dataContext.buytotalvolume, second) + '</strong><br />'
         + '<FormattedMessage id="terminal.amount" defaultMessage="Amount"/> ('+ main +'): <strong>' + defaultFormatValue(item.dataContext.buyamount, main) + '</strong>';
@@ -259,7 +245,8 @@ class MarketDepth extends React.Component {
     return txt;
   }
 
-  makeConfig(data,guides) {
+  makeConfig = () => {
+    const { data } = this.state;
     const main = this.props.market.split('-')[0];
     return {
       'type': 'serial',
@@ -302,12 +289,10 @@ class MarketDepth extends React.Component {
       'valueAxes': [{
         'position': 'left'
       }],
-      guides: this.addGuides(data, this.state.isDesktop),
+      guides: this.addGuides(data),
       'categoryAxis': {
         'minHorizontalGap': 100,
         'startOnAxis': true,
-        // "showFirstLabel": false,
-        // "showLastLabel": false,
         'labelFunction': function(valueText) {
           return valueText ? defaultFormatValue(parseFloat(valueText), main) : valueText;
         }
@@ -317,43 +302,33 @@ class MarketDepth extends React.Component {
       },
       'listeners': [{
         'event': 'dataUpdated',
-        'method': (e) => {
-        }
+        'method': () => {},
       }],
-      'dataProvider': data
+      'dataProvider': data,
+      zoomOutOnDataUpdate: false,
     };
   }
 
-  renderChart() {
-    const config = this.makeConfig(this.state.data);
-    return (
-      <AmChartsReact.React  style={{height: '100%', width: '100%', backgroundColor: 'transparent',position: 'absolute'}}
-        options={config}
-      />
-    );
-  }
-
-  render() {
-    return (
-      <React.Fragment>
-        <Row className="chart__top justify-content-between">
-          <Desktop>
-            <div className="chart-controls align-items-center justify-content-between row">
-            </div>
-          </Desktop>
-        </Row>
-        <div className="marketdepth-chart__graph row col-12" id='chartdiv' >
-          {this.renderChart()}
-        </div>
-        <div className="marketdepth-chart__item" id='chartitem' >
-        </div>
-      </React.Fragment>
-    );
-  }
+  render = () => (
+    <React.Fragment>
+      <Row className="chart__top justify-content-between">
+        <Desktop>
+          <div className="chart-controls align-items-center justify-content-between row" />
+        </Desktop>
+      </Row>
+      <div className="marketdepth-chart__graph row col-12" id='chartdiv'>
+        <AmChartsReact.React
+          style={{height: '100%', width: '100%', backgroundColor: 'transparent',position: 'absolute'}}
+          options={this.makeConfig()}
+        />
+      </div>
+      <div className="marketdepth-chart__item" id='chartitem' />
+    </React.Fragment>
+  );
 }
 
 const mapStateToProps = state => {
-  const { market, exchange, ticker, orderBook} = state.terminal;
+  const { market, exchange, ticker, orderBook } = state.terminal;
   return {
     exchange,
     ticker,
@@ -362,9 +337,10 @@ const mapStateToProps = state => {
   };
 };
 
-
 function relativeSize(minSize, maxSize, size) {
   return (size - minSize) / (maxSize - minSize);
 }
 
-export default debounceRender(connect(mapStateToProps)(MarketDepth), 2000, {maxWait: 2000}) ;
+const throttled = withThrottledRender(MarketDepth, 5000);
+
+export default connect(mapStateToProps)(throttled);
