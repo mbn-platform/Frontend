@@ -122,15 +122,15 @@ class Tariffs extends React.PureComponent {
         </Row>
         <Row>
           <Col>MONTHLY PRICE</Col>
-          {tariffs.map(({ _id, tokenPrice, price, ethPrice }) => (
+          {tariffs.map(({ _id, tokenPrice, price, ethPrice, priceForEth }) => (
             <Col
               key={_id}
               className={classNames('text-center', _id === selectedTariff ? 'active' : '')}
             >
               {tokenPrice === 0 ? 'FREE' : (
                 <div className="tariffs__container-header-col">
-                  <span>{tokenPrice} MBN or&nbsp;</span>
-                  <span>{ethPrice} ETH &nbsp;(${price})</span>
+                  <span>{tokenPrice} MBN (${price}) or&nbsp;</span>
+                  <span>{ethPrice} ETH (${priceForEth})</span>
                 </div>
               )}
             </Col>
