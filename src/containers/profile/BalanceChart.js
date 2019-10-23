@@ -291,6 +291,13 @@ class BalanceChart extends React.PureComponent {
         parseDates: true,
       },
       dataProvider,
+      'zoomOutOnDataUpdate': false,
+      'pathToImages': 'http://cdn.amcharts.com/lib/3/images/',
+      'zoomOutText': 'Zoom out',
+      'zoomOutButtonAlpha': 0,
+      'zoomOutButtonColor': '#fff',
+      'zoomOutButtonImage': 'lensWhite',
+      'zoomOutButtonRollOverAlpha': 0.1,
     };
     return config;
   })

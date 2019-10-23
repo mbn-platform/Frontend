@@ -243,6 +243,13 @@ class ProfitChart extends React.Component {
       'allLabels': [],
       'titles': [],
       'dataProvider': dataProvider,
+      'zoomOutOnDataUpdate': false,
+      'pathToImages': 'http://cdn.amcharts.com/lib/3/images/',
+      'zoomOutText': 'Zoom out',
+      'zoomOutButtonAlpha': 0,
+      'zoomOutButtonColor': '#fff',
+      'zoomOutButtonImage': 'lensWhite',
+      'zoomOutButtonRollOverAlpha': 0.1,
     };
   })
 
