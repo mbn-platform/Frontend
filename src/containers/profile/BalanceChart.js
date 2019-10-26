@@ -291,7 +291,6 @@ class BalanceChart extends React.PureComponent {
         parseDates: true,
       },
       dataProvider,
-      'zoomOutOnDataUpdate': false,
       'pathToImages': 'http://cdn.amcharts.com/lib/3/images/',
       'zoomOutText': 'Zoom out',
       'zoomOutButtonAlpha': 0,
@@ -375,6 +374,7 @@ class BalanceChart extends React.PureComponent {
 
   renderChart() {
     const config = this.getConfig(this.state.data, this.state.selectedInterval, this.state.selected);
+    console.log(config);
     return (
       <AmChartsReact.React style={{height: '100%', width: '100%', backgroundColor: 'transparent',position: 'absolute'}}
         options={config} />
