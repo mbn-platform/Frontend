@@ -1,10 +1,12 @@
 import React from 'react';
+
 import Funds from './ApiKeys';
 import BotList from './ApiBot';
 import AddApiKey from './AddApiKey';
 import AddBotApi from './AddBotApi';
 import ApiKeyInfo from './ApiKeyInfo';
 import Contracts from './Contracts';
+import GroupAsset from './GroupAsset';
 import Offers from './Offers';
 import SelectedContractInfo from './SelectedContractInfo';
 import FundsChart from './FundsChart';
@@ -106,6 +108,9 @@ class Dashboard extends React.Component {
             net={ETHEREUM_NET}
             exchangesInfo={this.props.exchangesInfo}
           />
+        </div>
+        <div className="table_wrapper group_asset_wrapper">
+          <GroupAsset />
         </div>
         <div className="table_wrapper selected_contract_table">
           <SelectedContractInfo

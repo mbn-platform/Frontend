@@ -23,6 +23,7 @@ import quickNotif from './reducers/quickNotif';
 import tariffs from './reducers/tariffs';
 import payments from './reducers/payments';
 import selection from './reducers/selection';
+import assetGroups from './reducers/assetGroups';
 
 const combined = combineReducers(
   {
@@ -49,6 +50,7 @@ const combined = combineReducers(
     tariffs,
     payments,
     selection,
+    assetGroups,
   });
 
 const root = (state, action) => {

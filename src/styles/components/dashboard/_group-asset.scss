@@ -1,0 +1,199 @@
+.group_asset_wrapper {
+  display: flex;
+  width: 100%;
+
+  .group-asset-block-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    .group-asset-table-wrapper {
+      display: flex;
+    }
+
+    .group-asset-form-wrapper {
+      display: flex;
+
+      .add_contract_form_wrapper {
+        width: 45%;
+        border: 1px solid #494d4d;
+        border-radius: 0 0 4px 0;
+
+        .add_contract_form_title {
+          display: flex;
+          background: #2d3034;
+          border-bottom: 1px solid #494d4d;
+          padding: 15px;
+          box-sizing: border-box;
+        }
+      }
+
+      .create_group_form_wrapper {
+        width: 55%;
+        border: 1px solid #494d4d;
+        border-right: 0;
+        border-radius: 0 0 0 4px;
+
+        .create_group_form_title {
+          display: flex;
+          background: #2d3034;
+          border-bottom: 1px solid #494d4d;
+          padding: 15px;
+          box-sizing: border-box;
+        }
+      }
+
+      .create_group_form_wrapper,
+      .add_contract_form_wrapper {
+        background-color: #232629;
+        line-height: 52px;
+        border-top: 0;
+        box-sizing: border-box;
+
+        .create_group_container {
+          display: flex;
+          justify-content: space-between;
+
+          .create_group_fields_wrapper {
+            display: flex;
+            width: 100%;
+          }
+
+          .create_group_field {
+            width: 70%;
+            height: 100%;
+            margin: auto 15px;
+
+            .create_group_input {
+              border: 1px solid #44464a;
+              border-radius: 3px;
+              padding-left: 17px;
+              text-align: left;
+              color: #7c7c7d;
+              height: 26px;
+              box-sizing: border-box;
+              line-height: 16px;
+              font-size: 1.3em;
+              background-color: inherit;
+              width: 100%;
+              vertical-align: middle;
+              transition-property: color, border-color;
+              transition-duration: 400ms;
+            }
+          }
+
+          .create_group_field_select {
+            width: 50%;
+            margin-right: 15px;
+          }
+
+          .create_group_submit_wrapper {
+            .create_group_submit {
+              border: 0;
+              min-width: 60px;
+              height: 100%;
+              border-left: 1px solid #44464a;
+              background-color: #2d3034;
+              color: #7c7c7d;
+              transition-property: color, background-color;
+              transition-duration: 400ms;
+              transition: color 400ms, background-color 400ms;
+              text-transform: uppercase;
+              line-height: 26px;
+              font-size: 1.3em;
+              border-radius: 0 0 4px 0;
+
+              &:hover {
+                background-color: #346255;
+                color: white;
+              }
+
+              &:disabled {
+                opacity: .3;
+
+                &:hover {
+                  background-color: #2d3034;
+                  color: #7c7c7d;
+                  cursor: default;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .details-contracts-table-wrapper,
+    .created-groups-table-wrapper {
+      .ReactTable {
+        .rt-table {
+          .rt-thead {
+            display: none;
+          }
+        }
+
+        .rt-tr > :first-child {
+          margin-left: 0;
+        }
+
+        .rt-tr.-even {
+          background: inherit;
+        }
+
+        .asset_group_row {
+          display: flex;
+          justify-content: space-between;
+          padding: 0 15px;
+
+          &:hover {
+            color: white;
+          }
+
+          .asset_group_row_title {
+            font-size: 1.3em;
+          }
+
+          .asset_group_row_delete {
+            text-transform: lowercase;
+            color: #D74C4C;
+            opacity: .6;
+
+            &:hover {
+              opacity: 1;
+            }
+          }
+        }
+      }
+    }
+
+    .created-groups-table-wrapper {
+      width: 55%;
+      border-right: 0;
+      border-radius: 4px 0 0 0;
+
+      .table_title_wrapper {
+        display: flex;
+        border-radius: 4px 0 0 0;
+      }
+    }
+
+    .details-contracts-table-wrapper {
+      width: 45%;
+      border-radius: 0 4px 0 0;
+
+      .table_title_wrapper {
+        display: flex;
+        border-radius: 0 4px 0 0;
+      }
+
+      .details-contracts-empty {
+        height: 90%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #7c7c7d;
+        font-size: 2em;
+      }
+    }
+  }
+}

@@ -1,9 +1,10 @@
 import merge from 'lodash.merge';
 
 export class ApiError extends Error {
-  constructor(code) {
+  constructor(code, reason = undefined) {
     super();
     this.apiErrorCode = code;
+    this.reason = reason;
   }
 }
 
@@ -57,8 +58,11 @@ function jsonRequest(url, params) {
   params.headers['X-Network'] = 'mainnet';
   return window.fetch(API_PREFIX + url, params).then(res => res.json())
     .then(json => {
-      const error = json.error;
-      if(error) {
+      const { error, reason } = json;
+
+      if (error && reason) {
+        throw new ApiError(error, reason);
+      } else if (json.error) {
         throw new ApiError(error);
       } else {
         return json;

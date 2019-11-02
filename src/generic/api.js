@@ -482,3 +482,23 @@ export class ApiSelection {
       .then(errorHandler)
       .then(responseSchemaHandler);
 }
+
+export class ApiAssetGroup {
+  fetch = () =>
+    apiGet('/assetgroup')
+      .then(errorHandler)
+      .then(responseSchemaHandler)
+
+  create = (name, exchange, contracts = []) =>
+    apiPost('/assetgroup', null, { name, exchange, contracts })
+      .then(errorHandler)
+      .then(responseSchemaHandler)
+
+  update = (id, contracts) =>
+    apiPut(`/assetgroup/${id}`, null, { contracts })
+      .then(errorHandler)
+      .then(responseSchemaHandler)
+
+  delete = (id) =>
+    apiDelete(`/assetgroup/${id}`)
+}
