@@ -23,6 +23,7 @@ export const UPDATE_HISTORY = 'UPDATE_HISTORY';
 export const UPDATE_MARKET_SUMMARIES = 'UPDATE_MARKET_SUMMARIES';
 export const TRADING_DATA_START = 'TRADING_DATA_START';
 export const TRADING_DATA_STOP = 'TRADING_DATA_STOP';
+export const SELECT_ASSET_GROUP = 'SELECT_ASSET_GROUP';
 
 const TerminalApi = new ApiTerminal();
 
@@ -338,3 +339,11 @@ export function updateTicker(exchange, market, ticker) {
     exchange, market, ticker,
   };
 }
+
+export const selectAssetGroup = groupName => {
+  localStorage.setItem('terminal.selectedGroup', groupName);
+  return {
+    type: SELECT_ASSET_GROUP,
+    groupName,
+  };
+};

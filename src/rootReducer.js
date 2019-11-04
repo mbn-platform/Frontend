@@ -95,6 +95,7 @@ function clearAppState() {
   localStorage.removeItem('terminal.selectedTime');
   localStorage.removeItem('terminal.selectedExchange');
   localStorage.removeItem('terminal.selectedInterval');
+  localStorage.removeItem('terminal.selectedGroup');
 }
 
 export default root;

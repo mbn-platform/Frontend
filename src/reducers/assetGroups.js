@@ -19,6 +19,12 @@ export default (state = [], action) => {
       return state.map(item => item._id === assetGroup._id ? assetGroup : item);
 
     case DELETE_ASSET_GROUP:
+      const selectedGroup = localStorage.getItem('terminal.selectedGroup');
+
+      if (selectedGroup === action.name) {
+        localStorage.removeItem('terminal.selectedGroup');
+      }
+
       return state.filter(item => item._id !== action.id);
 
     default:

@@ -1,13 +1,14 @@
 import {
   SELECT_FUND, SELECT_EXCHANGE, SELECT_MARKET,
-  SELECT_INTERVAL, GET_MY_ORDERS, CANCEL_ORDER, PLACE_ORDER, UPDATE_ORDER
+  SELECT_INTERVAL, GET_MY_ORDERS, CANCEL_ORDER, PLACE_ORDER, UPDATE_ORDER,
+  UPDATE_ORDER_BOOK, UPDATE_HISTORY, UPDATE_TICKER, SELECT_ASSET_GROUP,
 } from '../actions/terminal';
-import {UPDATE_ORDER_BOOK, UPDATE_HISTORY, UPDATE_TICKER} from '../actions/terminal';
-import {UPDATE_KEYS} from '../actions/dashboard';
-import {FETCH_CONTRACTS} from '../actions/contracts';
+import { UPDATE_KEYS } from '../actions/dashboard';
+import { FETCH_CONTRACTS } from '../actions/contracts';
 
 export default function(state = {
   fund: null,
+  assetGroup: localStorage.getItem('terminal.selectedGroup') || 'asset groups',
   exchange: localStorage.getItem('terminal.selectedExchange') || 'binance',
   market: localStorage.getItem('terminal.selectedMarket') || 'USDT-BTC',
   interval: localStorage.getItem('terminal.selectedInterval') || '30 MIN',
@@ -192,6 +193,12 @@ export default function(state = {
       }
       break;
     }
+
+    case SELECT_ASSET_GROUP:
+      return action.groupName === state.selectedGroup
+        ? state
+        : { ...state, assetGroup: action.groupName };
+
     default:
       return state;
   }

@@ -186,7 +186,7 @@ input[type=number]::-webkit-outer-spin-button {
 			text-transform: none;
 			min-width: 106px;
 		}
-		&.roi, &.time,&.exchange,&.keys,&.trader_select{
+		&.roi, &.time,&.exchange,&.asset-groups,&.keys,&.trader_select{
 			padding: 0 !important;
 			.dropdown{
 				&__name{
@@ -211,6 +211,11 @@ input[type=number]::-webkit-outer-spin-button {
 			width: 100px;
 			text-transform: uppercase;
 		}
+
+		&.asset-groups {
+			width: 100%;
+		}
+
 		&.search{
 			min-width: 600px;
 			.dropdown{

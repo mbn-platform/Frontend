@@ -60,12 +60,13 @@ export const updateAssetGroup = (id, contracts) => {
   };
 };
 
-export const deleteAssetGroup = (id) => {
+export const deleteAssetGroup = (id, name) => {
   return dispatch => {
     AssetGroupApi.delete(id)
       .then(() => dispatch({
         type: DELETE_ASSET_GROUP,
         id,
+        name,
       }))
       .catch(err => {
         defaultErrorHandler(err, dispatch);

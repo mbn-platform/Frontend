@@ -1,14 +1,21 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import classNames from 'classnames';
+
 import FundSelect from '../../components/FundSelect';
 import DropdownSelect from '../../components/DropdownSelect';
 import MarketSelect from './MarketSelect';
-import classNames from 'classnames';
-import {connect} from 'react-redux';
-import { selectExchange, selectFund, selectInterval} from '../../actions/terminal';
+import {
+  selectExchange,
+  selectFund,
+  selectInterval,
+  selectAssetGroup,
+} from '../../actions/terminal';
+import { getAssetGroups,  } from '../../actions/assetGroup';
+
 const TIME_RANGE_OPTIONS = ['1 MIN', '5 MIN', '30 MIN', '1 H', '4 H', '12 H', '1 D', '1 W'];
 
 class Controls extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -16,10 +23,34 @@ class Controls extends React.Component {
     };
   }
 
+  componentDidMount = () => {
+    this.props.getAssetGroups();
+  };
+
+  handleGroupSelect = (item) => {
+    const { assetGroups } = this.props;
+    const { exchange } = assetGroups.find(({ name }) => name === item);
+    this.props.selectAssetGroup(item);
+    this.props.onExchangeSelect(exchange);
+  };
+
   render() {
     const funds = this.props.apiKeys.concat(this.props.contracts.filter(contract => contract.to._id === this.props.userId));
+    const { assetGroup, assetGroups } = this.props;
+    const assetGroupsNames = assetGroups.map(({ name }) => name);
+
     return (
       <div className={classNames('row', 'dropdowns', {'controls-fullscreen-mode': this.props.isFullScreenEnabled})}>
+        {assetGroups && assetGroups.length > 0 && (
+          <DropdownSelect
+            selected={assetGroup}
+            items={assetGroupsNames}
+            targetId="asset_groups_select"
+            elementClassName="exchange__switch"
+            dropdownClassName="asset-groups"
+            onItemSelect={this.handleGroupSelect}
+          />
+        )}
         <FundSelect
           container=".terminal.container-fluid"
           exchange={this.props.exchange}
@@ -64,7 +95,8 @@ const mapStateToProps = state => {
       exchange,
       ticker,
       fund,
-      interval
+      interval,
+      assetGroup,
     },
     apiKeys: {
       ownKeys: apiKeys,
@@ -72,6 +104,7 @@ const mapStateToProps = state => {
     contracts: {
       current: contracts,
     },
+    assetGroups,
   } = state;
   return {
     userId: auth && auth.profile ? auth.profile._id : undefined,
@@ -83,14 +116,18 @@ const mapStateToProps = state => {
     ticker,
     market,
     interval,
+    assetGroups: auth && auth.loggedIn ? assetGroups : null,
+    assetGroup,
   };
 };
 
-const mapDispatchToProps =  dispatch => ({
-  onIntervalSelected: interval => dispatch(selectInterval(interval)),
-  onExchangeSelect: (exchange, restore) => dispatch(selectExchange(exchange, restore)),
-  onApiKeySelect: fund => dispatch(selectFund(fund)),
-});
+const mapDispatchToProps = {
+  onIntervalSelected: selectInterval,
+  onExchangeSelect: selectExchange,
+  onApiKeySelect: selectFund,
+  getAssetGroups,
+  selectAssetGroup,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Controls);
 

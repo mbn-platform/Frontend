@@ -24,7 +24,7 @@ class CreatedGroups extends React.Component {
         <GroupRow
           value={value}
           onSelect={this.onGroupSelect(original)}
-          onDelete={this.onGroupDelete(original._id)}
+          onDelete={this.onGroupDelete(original._id, original.name)}
         />
       ),
     },
@@ -38,9 +38,9 @@ class CreatedGroups extends React.Component {
     this.props.selectAssetGroup(group);
   };
 
-  onGroupDelete = (id) => (event) => {
+  onGroupDelete = (id, name) => (event) => {
     event.stopPropagation();
-    this.props.deleteAssetGroup(id);
+    this.props.deleteAssetGroup(id, name);
   };
 
   render = () => (
