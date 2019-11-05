@@ -2,9 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
-import ReactTable from 'react-table';
 
 import { getAssetGroups, deleteAssetGroup } from '../../../actions/assetGroup';
+import { showConfirmModal } from '../../../actions/modal';
+import ReactTable from '../../../components/SelectableReactTable';
 import GroupRow from './GroupRow';
 
 class CreatedGroups extends React.Component {
@@ -15,6 +16,8 @@ class CreatedGroups extends React.Component {
     deleteAssetGroup: PropTypes.func.isRequired,
   };
 
+  state = { selectedGroup: null };
+
   columns = [
     {
       id: 'name',
@@ -24,7 +27,7 @@ class CreatedGroups extends React.Component {
         <GroupRow
           value={value}
           onSelect={this.onGroupSelect(original)}
-          onDelete={this.onGroupDelete(original._id, original.name)}
+          onDelete={this.confirmDeleteGroup(original._id, original.name)}
         />
       ),
     },
@@ -36,11 +39,20 @@ class CreatedGroups extends React.Component {
 
   onGroupSelect = (group) => () => {
     this.props.selectAssetGroup(group);
+    this.setState({ selectedGroup: group });
   };
 
-  onGroupDelete = (id, name) => (event) => {
-    event.stopPropagation();
+  onGroupDelete = (id, name) => () => {
     this.props.deleteAssetGroup(id, name);
+  };
+
+  confirmDeleteGroup = (id, name) => event => {
+    event.stopPropagation();
+    this.props.showConfirmModal(
+      'dashboard.deleteGroupConfirm',
+      {},
+      this.onGroupDelete(id, name)
+    );
   };
 
   render = () => (
@@ -54,6 +66,9 @@ class CreatedGroups extends React.Component {
         style={{ height: 310 }}
         columns={this.columns}
         data={this.props.assetGroups}
+        selectedItem={this.state.selectedGroup}
+        onItemSelected={this.onGroupSelect}
+        scrollBarHeight={310}
       />
     </div>
   );
@@ -62,6 +77,7 @@ class CreatedGroups extends React.Component {
 const mapDispatchToProps = {
   getAssetGroups,
   deleteAssetGroup,
+  showConfirmModal,
 };
 
 export default connect(null, mapDispatchToProps)(CreatedGroups);

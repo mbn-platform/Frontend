@@ -14,9 +14,15 @@ class ContractsSelect extends React.Component {
     itemClass: '',
   };
 
-  formatContractString = ({ from, contractSettings }) => (
-    `${from.name} ${contractSettings.sum} ${contractSettings.currency}`
-  );
+  formatContractString = ({ from, contractSettings, startDt }) => {
+    const startDate = new Date(startDt);
+    const endDate = new Date(startDate.getTime() + contractSettings.duration * 86400000);
+    const [yyyy, mm, dd] = endDate.toISOString().substr(0,10).split('-');
+
+    return (
+      `${from.name} ${contractSettings.sum} ${contractSettings.currency} ${dd}.${mm}.${yyyy}`
+    );
+  };
 
   render = () => {
     const {
@@ -29,7 +35,7 @@ class ContractsSelect extends React.Component {
           {contract ? this.formatContractString(contract) : defaultPlaceholder}
           <div className="add_keys_select_value_bg" />
         </div>
-        <div className="add_keys_select_values_list_wr">
+        <div className="add_keys_select_values_list_wr overflow_y_auto">
           <ul className="add_keys_select_ul">
             {showAllOption && (
               <li

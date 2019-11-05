@@ -38,10 +38,11 @@ class AddContract extends React.Component {
 
     if (!selectedGroup) { return []; }
 
-    return allContracts.current.filter(({ to, exchange, _id }) => (
+    return allContracts.current.filter(({ to, exchange, _id, state }) => (
       to.name === user
       && selectedGroup.exchange === exchange
       && !selectedGroup.contracts.includes(_id)
+      && state === 'VERIFIED'
     ));
   };
 
@@ -61,7 +62,6 @@ class AddContract extends React.Component {
             <div className="create_group_field">
               <ContractsSelect
                 contracts={this.filterContracts()}
-                showAllOption
                 contract={selectedContract}
                 onChange={this.onSelectContract}
                 defaultPlaceholder="Contracts"

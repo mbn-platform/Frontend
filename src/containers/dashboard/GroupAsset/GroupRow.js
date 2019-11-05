@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
 
 const GroupRow = ({
-  value, amount, onSelect, onDelete,
+  value, amount, expireDate, onSelect, onDelete,
 }) => (
   <div
     className="asset_group_row"
@@ -11,22 +10,23 @@ const GroupRow = ({
   >
     <span className="asset_group_row_title">{value}</span>
     {amount && <span>{amount}</span>}
+    {expireDate && <span>{expireDate}</span>}
     <div
-      className="asset_group_row_delete"
+      className="delete_key_button"
       onClick={onDelete}
-    >
-      <FormattedMessage id="dashboard.delete" />
-    </div>
+    />
   </div>
 );
 
 GroupRow.defaultProps = {
   amount: null,
+  expireDate: null,
   onSelect: () => {},
 };
 
 GroupRow.propTypes = {
   amount: PropTypes.string,
+  expireDate: PropTypes.string,
   onSelect: PropTypes.func,
   value: PropTypes.string.isRequired,
   onDelete: PropTypes.func.isRequired,

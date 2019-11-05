@@ -6,6 +6,7 @@ import Contracts from './Contracts';
 import CreateGroup from './CreateGroup';
 import AddContract from './AddContract';
 import { updateAssetGroup } from '../../../actions/assetGroup';
+import { showConfirmModal } from '../../../actions/modal';
 
 class GroupAsset extends React.Component {
   state = {
@@ -34,12 +35,20 @@ class GroupAsset extends React.Component {
     this.setState({ contracts: group.contracts, selectedGroup: group });
   };
 
-  onContractDelete = (id) => (event) => {
-    event.stopPropagation();
+  onContractDelete = (id) => () => {
     const { selectedGroup: { _id, contracts } } = this.state;
     const contractsToUpdate = contracts.filter(contract => contract !== id);
 
     this.props.updateAssetGroup(_id, contractsToUpdate);
+  };
+
+  confirmDeleteContract = (id) => event => {
+    event.stopPropagation();
+    this.props.showConfirmModal(
+      'dashboard.deleteContractConfirm',
+      {},
+      this.onContractDelete(id)
+    );
   };
 
   render = () => (
@@ -51,7 +60,7 @@ class GroupAsset extends React.Component {
         />
         <Contracts
           contracts={this.state.contracts}
-          onContractDelete={this.onContractDelete}
+          onContractDelete={this.confirmDeleteContract}
         />
       </div>
       <div className="group-asset-form-wrapper">
@@ -73,6 +82,7 @@ const mapStateToProps = ({ assetGroups, contracts }) => ({
 
 const mapDispatchToProps = {
   updateAssetGroup,
+  showConfirmModal,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupAsset);

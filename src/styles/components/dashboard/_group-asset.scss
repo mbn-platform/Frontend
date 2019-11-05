@@ -136,6 +136,10 @@
           margin-left: 0;
         }
 
+        .rt-tr-group .rt-tr:not(.-padRow).-selected {
+          background: #346255;
+        }
+
         .rt-tr.-even {
           background: inherit;
         }
@@ -153,14 +157,15 @@
             font-size: 1.3em;
           }
 
-          .asset_group_row_delete {
-            text-transform: lowercase;
-            color: #D74C4C;
-            opacity: .6;
-
-            &:hover {
-              opacity: 1;
-            }
+          .delete_key_button {
+            display: inline-block;
+            background: url('../assets/svg/DeleteKey.svg') no-repeat center center;
+            height: auto;
+            transition-property: opacity, background-color;
+            transition-duration: 400ms;
+            cursor: pointer;
+            opacity: .4;
+            background-size: 17px;
           }
         }
       }

@@ -37,14 +37,13 @@ class Controls extends React.Component {
   render() {
     const funds = this.props.apiKeys.concat(this.props.contracts.filter(contract => contract.to._id === this.props.userId));
     const { assetGroup, assetGroups } = this.props;
-    const assetGroupsNames = assetGroups.map(({ name }) => name);
 
     return (
       <div className={classNames('row', 'dropdowns', {'controls-fullscreen-mode': this.props.isFullScreenEnabled})}>
         {assetGroups && assetGroups.length > 0 && (
           <DropdownSelect
             selected={assetGroup}
-            items={assetGroupsNames}
+            items={assetGroups.map(({ name }) => name)}
             targetId="asset_groups_select"
             elementClassName="exchange__switch"
             dropdownClassName="asset-groups"

@@ -410,6 +410,10 @@
             box-sizing: border-box;
             border: 1px solid #7c7c7d !important;
           }
+          .overflow_y_auto {
+            overflow-y: auto;
+            height: 100px;
+          }
         }
 
         &:disabled {
@@ -505,6 +509,11 @@
       opacity: 1;
       color: #7c7c7d;
       border: 1px solid #7c7c7d;
+
+      &.overflow_y_auto {
+        max-height: 110px;
+        overflow-y: auto;
+      }
     }
     .add_keys_select_ul
     {
