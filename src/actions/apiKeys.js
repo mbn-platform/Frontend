@@ -72,6 +72,10 @@ export function addBotKeys(label, keyId) {
 
 export function deleteApiKey(key, token2FA) {
   return async (dispatch, getState) => {
+    if (key.inUse) {
+      dispatch(showInfoModal(this.props.intl.messages['dashboard.cannotDeleteKey']));
+      return;
+    }
     await KeysApi.delete(key, token2FA)
       .then(() => {
         const selectedKey = getState().terminal.fund;

@@ -257,7 +257,7 @@ class SendRequestBlock extends React.Component {
             currency={contractSettings.currency}
             selectedFund={this.state.selectedFund}
             onCancelClick={() => this.setState({visibleBlock:SEND_REQUEST_BLOCK_DETAILS})}
-            onNextClick={() => this.setState({visibleBlock:SEND_REQUEST_BLOCK_ENTER_AMOUNT})}
+            onNextClick={() => this.setState({visibleBlock:SEND_REQUEST_BLOCK_ENTER_AMOUNT, contractAmount: contractSettings.minAmount})}
             onFundSelected={this.onFundSelected}
           />
         );
@@ -384,7 +384,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   showModalWindow: showInfoModal,
-  onGotItClick: clearRequest,
+  onGotItClick: clearRequest('sendOffer'),
   getExchangeCurrencies,
   sendOffer,
 };

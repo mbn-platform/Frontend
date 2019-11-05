@@ -21,23 +21,15 @@ const mapStateToProps = state => ({
   rates: state.rates,
 });
 
-const mapDispatchToProps = dispatch => {
-  return {
-    onKeyDeleteClick: async (apiKey, token2FA) => {
-      if(apiKey.inUse) {
-        dispatch(showInfoModal(this.props.intl.messages['dashboard.cannotDeleteKey']));
-      } else {
-        await dispatch(deleteApiKey(apiKey, token2FA));
-      }
-    },
-    updateExchanges,
-    getExchangeRates,
-    onOfferPay: payOffer,
-    onOfferAccepted: acceptOffer,
-    onOfferRejected: rejectOffer,
-    onOfferCanceled: cancelOffer,
-    onContractRate: rateContract,
-  };
+const mapDispatchToProps = {
+  onKeyDeleteClick: deleteApiKey,
+  updateExchanges,
+  getExchangeRates,
+  onOfferPay: payOffer,
+  onOfferAccepted: acceptOffer,
+  onOfferRejected: rejectOffer,
+  onOfferCanceled: cancelOffer,
+  onContractRate: rateContract,
 };
 
 export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(Dashboard));
