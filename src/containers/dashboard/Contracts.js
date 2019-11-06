@@ -1,62 +1,46 @@
 import React from 'react';
-import classNames from 'classnames';
 import { Link } from 'react-router-dom';
+import classNames from 'classnames';
+import { Row, Container, Col, UncontrolledTooltip } from 'reactstrap';
+import { FormattedMessage, injectIntl } from 'react-intl';
+
+import {
+  CONTRACT_STATE_FINISHED,
+  CONTRACT_STATE_VERIFIED,
+  CONTRACT_STATE_HALTED,
+} from '../../constants';
 import SegmentedControl from '../../components/SegmentedControl';
 import ReactTable from '../../components/SelectableReactTable';
 import SearchHeaderWithoutSort from '../../components/SearchHeaderWithoutSort';
 import { Desktop, Mobile } from '../../generic/MediaQuery';
 import Pagination from '../../components/Pagination';
-import { UncontrolledTooltip } from 'reactstrap';
-import { CONTRACT_STATE_FINISHED, CONTRACT_STATE_VERIFIED, CONTRACT_STATE_HALTED } from '../../constants';
-import { Row, Container, Col } from 'reactstrap';
-import {FormattedMessage, injectIntl} from 'react-intl';
-
-
 
 class Contracts extends React.Component {
+  static TAB_CURRENT = 0;
+  static TAB_FINISHED = 1;
 
-  static TAB_CURRENT = 0
-  static TAB_FINISHED = 1
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedTab: Contracts.TAB_CURRENT,
-      selectedApiKeyId: null,
-      filtered: [{id: 'contractor', value: ''}],
-    };
-    this.onTabClick = this.onTabClick.bind(this);
-  }
-
+  state = {
+    selectedTab: Contracts.TAB_CURRENT,
+    selectedApiKeyId: null,
+    filtered: [{ id: 'contractor', value: '' }],
+  };
 
   static getDerivedStateFromProps(props, state) {
     if(props.selectedApiKey && props.selectedApiKey._id !== state.selectedApiKeyId) {
-      return {selectedApiKeyId: props.selectedApiKey._id, selectedTab: Contracts.TAB_CURRENT};
-    } else if(!props.selectedApiKey) {
-      return {selectedApiKeyId: null};
+      return { selectedApiKeyId: props.selectedApiKey._id, selectedTab: Contracts.TAB_CURRENT };
+    } else if (!props.selectedApiKey) {
+      return { selectedApiKeyId: null };
     }
     return null;
   }
 
-  onTabClick(index) {
-    this.setState({selectedTab: index});
+  onTabClick = (index) => {
+    this.setState({ selectedTab: index });
   }
 
   renderContent() {
-    let data;
-    switch(this.state.selectedTab) {
-      case Contracts.TAB_CURRENT:
-        data = this.props.contracts.current;
-        if(this.props.selectedApiKey) {
-          data = data.filter(c => c.keyId === this.props.selectedApiKey._id);
-        }
-        break;
-      case Contracts.TAB_FINISHED:
-        data = this.props.contracts.finished;
-        break;
-      default:
-        break;
-    }
+    const data = this.props.contracts.current.filter(c => c.keyId === this.props.selectedApiKey._id);
+
     return (
       <div>
         <Desktop>
@@ -86,6 +70,7 @@ class Contracts extends React.Component {
       </div>
     );
   }
+
   render() {
     return (
       <div className="table contracts_table">
@@ -117,14 +102,15 @@ class Contracts extends React.Component {
   }
 
   getExpireDateColumn() {
-    const header = this.state.completedTabIndex ?
-      this.props.intl.messages['dashboard.finishedAt'] :
-      this.props.intl.messages['dashboard.expireDate'];
+    const header = this.state.completedTabIndex
+      ? this.props.intl.messages['dashboard.finishedAt']
+      : this.props.intl.messages['dashboard.expireDate'];
+
     return {
       Header: ContractTableHeader(header),
       id: 'date',
       accessor: c => {
-        if(c.state === CONTRACT_STATE_FINISHED) {
+        if (c.state === CONTRACT_STATE_FINISHED) {
           const date = c.finishDt ? new Date(c.finishDt) : new Date();
           return date;
         } else {
@@ -133,9 +119,7 @@ class Contracts extends React.Component {
           return date;
         }
       },
-      Cell: row => {
-        return formatDate(row.value);
-      },
+      Cell: ({ value }) => formatDate(value),
       minWidth: 80,
       className: 'table_col_value',
       headerClassName: 'expire_date',
@@ -143,15 +127,17 @@ class Contracts extends React.Component {
   }
 
   onFilter = e => {
-    const value = e.target.value;
+    const { value } = e.target;
+
     this.setState(state => {
-      const filtered = state.filtered.map(i => i.id === 'contractor' ? {id: 'contractor', value} : i);
-      return {filtered};
+      const filtered = state.filtered.map(i => i.id === 'contractor' ? { id: 'contractor', value } : i);
+      return { filtered };
     });
   }
 
   getTableColumns() {
     const nameFilter = this.state.filtered.find(f => f.id === 'contractor').value;
+
     return [{
       id: 'contractor',
       Header: SearchHeaderWithoutSort(this.props.intl.messages['dashboard.contractor'], nameFilter, this.onFilter),
@@ -159,7 +145,7 @@ class Contracts extends React.Component {
       className: 'table_col_value',
       accessor: c => c.to.name,
       minWidth: 70,
-      Cell: row => (<div className="contractor_link">@<Link className="table_col_value_a" to={'/' + row.value}>{row.value}</Link></div>),
+      Cell: ({ value }) => (<div className="contractor_link">@<Link className="table_col_value_a" to={'/' + value}>{value}</Link></div>),
     }, this.getExpireDateColumn(), {
       Header: ContractTableHeader(this.props.intl.messages['dashboard.currentProfitPercent']),
       id: 'currentProfit',
@@ -183,9 +169,7 @@ class Contracts extends React.Component {
       },
       minWidth: 55,
       Cell: NegativeValuesCell,
-      sortMethod: (a,b, desc) => {
-        return parseFloat(a) - parseFloat(b);
-      }
+      sortMethod: (a,b) => parseFloat(a) - parseFloat(b),
     }, {
       Header: ContractTableHeader(this.props.intl.messages['dashboard.maxLossPercent']),
       className: 'table_col_value',
@@ -199,9 +183,7 @@ class Contracts extends React.Component {
       Header: ContractTableHeader(this.props.intl.messages['dashboard.startBalance']),
       minWidth: 110,
       accessor: c => `${c.contractSettings.sum} ${c.contractSettings.currency}`,
-      sortMethod: (a,b, desc) => {
-        return parseFloat(a) - parseFloat(b);
-      }
+      sortMethod: (a,b) => parseFloat(a) - parseFloat(b),
     }, {
       id: 'currentBalance',
       headerClassName: 'current_balance',
@@ -221,11 +203,9 @@ class Contracts extends React.Component {
           default:
             console.log('invalid contract state');
         }
-        return formatBalance(balance, c.contractSettings.currency) + ' ' + c.contractSettings.currency;
+        return `${formatBalance(balance, c.contractSettings.currency)} ${c.contractSettings.currency}`;
       },
-      sortMethod: (a,b, desc) => {
-        return parseFloat(a) - parseFloat(b);
-      }
+      sortMethod: (a,b) => parseFloat(a) - parseFloat(b),
     }, {
       id: 'left',
       Header: ContractTableHeader(this.props.intl.messages['dashboard.targetBalance']),
@@ -233,15 +213,13 @@ class Contracts extends React.Component {
       className: 'table_col_value',
       minWidth: 110,
       accessor: c => `${formatBalance(c.contractSettings.sum * (c.contractSettings.roi / 100 + 1), c.contractSettings.currency)} ${c.contractSettings.currency}`,
-      sortMethod: (a,b) => {
-        return parseFloat(a) - parseFloat(b);
-      }
+      sortMethod: (a,b) => parseFloat(a) - parseFloat(b),
     }, {
       Header: ContractTableHeader(this.props.intl.messages['dashboard.feePercent']),
       minWidth: 50,
       headerClassName: 'fee_column',
       className: 'table_col_value',
-      accessor: 'contractSettings.fee'
+      accessor: 'contractSettings.fee',
     }, {
       Header: <TXHeader />,
       Cell: TXCell(this.props.net),
@@ -249,13 +227,13 @@ class Contracts extends React.Component {
       sortable: false,
       accessor: 'tx',
       headerClassName: 'tx_column',
-      className: 'tx_column'
+      className: 'tx_column',
     }, {
       Header: HelpHeader(this.props.intl.messages['dashboard.status']),
       accessor: 'state',
       minWidth: 50,
       Cell: StatusCell,
-      headerClassName: 'status_column'
+      headerClassName: 'status_column',
     }];
   }
 
@@ -267,7 +245,7 @@ class Contracts extends React.Component {
       className: 'table_col_value',
       accessor: c => c.to.name,
       minWidth: 84,
-      Cell: row => (<div className="contractor_link">@<Link className="table_col_value_a" to={'/' + row.value}>{row.value}</Link></div>),
+      Cell: ({ value }) => (<div className="contractor_link">@<Link className="table_col_value_a" to={'/' + value}>{value}</Link></div>),
     }, {
       id: 'currentBalance',
       headerClassName: 'current_balance',
@@ -287,23 +265,21 @@ class Contracts extends React.Component {
           default:
             console.log('invalid contract state');
         }
-        return formatBalance(balance, c.contractSettings.currency) + ' ' + c.contractSettings.currency;
+        return `${formatBalance(balance, c.contractSettings.currency)} ${c.contractSettings.currency}`;
       },
-      sortMethod: (a,b) => {
-        return parseFloat(a) - parseFloat(b);
-      }
+      sortMethod: (a,b) => parseFloat(a) - parseFloat(b),
     }, {
       Header: ContractTableHeader(this.props.intl.messages['dashboard.feePercent']),
       headerClassName: 'fee_column',
       className: 'table_col_value',
       minWidth: 63,
-      accessor: 'contractSettings.fee'
+      accessor: 'contractSettings.fee',
     }, {
       Header: HelpHeader(this.props.intl.messages['dashboard.status']),
       accessor: 'state',
       Cell: StatusCell,
       minWidth: 44,
-      headerClassName: 'status_column'
+      headerClassName: 'status_column',
     }, {
       Header: <TXHeader />,
       Cell: TXCell(this.props.net),
@@ -311,29 +287,27 @@ class Contracts extends React.Component {
       sortable: false,
       minWidth: 45,
       headerClassName: 'tx_column',
-      className: 'tx_column'
+      className: 'tx_column',
     }];
 
   }
 }
 
-const HelpHeader = header => {
-  return (
-    <div className="table_header_wrapper contract_header_wrapper">
-      <div className="table_header">{header}</div>
-      <ContractStatusHelp />
-      <div className="sort_icon_wrapper">
-        <div className="green_arrow"/>
-      </div>
+const HelpHeader = header => (
+  <div className="table_header_wrapper contract_header_wrapper">
+    <div className="table_header">{header}</div>
+    <ContractStatusHelp />
+    <div className="sort_icon_wrapper">
+      <div className="green_arrow" />
     </div>
-  );
-};
+  </div>
+);
 
 const ContractStatusHelp = () => (
-  <div id="help-icon-contract-status" className="table_header_help_wrapper" style={{paddingTop: 22}}>
+  <div id="help-icon-contract-status" className="table_header_help_wrapper" style={{ paddingTop: 22 }}>
     <UncontrolledTooltip target="help-icon-contract-status" placement="auto-start">
       <div className="status_desc_item">
-        <div className="status_desc_item_cyrcle green"/>
+        <div className="status_desc_item_cyrcle green" />
         <div className="status_desc_item_text">
           <FormattedMessage
             id="dashboard.completed"
@@ -342,7 +316,7 @@ const ContractStatusHelp = () => (
         </div>
       </div>
       <div className="status_desc_item">
-        <div className="status_desc_item_cyrcle yellow"/>
+        <div className="status_desc_item_cyrcle yellow" />
         <div className="status_desc_item_text">
           <FormattedMessage
             id="dashboard.inProgress"
@@ -351,7 +325,7 @@ const ContractStatusHelp = () => (
         </div>
       </div>
       <div className="status_desc_item">
-        <div className="status_desc_item_cyrcle red"/>
+        <div className="status_desc_item_cyrcle red" />
         <div className="status_desc_item_text">
           <FormattedMessage
             id="dashboard.failed"
@@ -371,7 +345,7 @@ const TXHeader = () => (
         defaultMessage="TX"
       />
     </div>
-    <div id="help-icon-tx" className="table_header_help_wrapper" style={{paddingTop: 22}}/>
+    <div id="help-icon-tx" className="table_header_help_wrapper" style={{ paddingTop: 22 }}/>
     <UncontrolledTooltip target="help-icon-tx">
       <FormattedMessage
         id="dashboard.linkToEtherscanTooltip"
@@ -389,11 +363,12 @@ const ContractTableHeader = header => (
     </div>
   </div>
 );
-const NegativeValuesCell = row => (
-  <div className={parseFloat(row.value) < 0 ? 'table_value_red' : 'table_value_green'}>{row.value}</div>
+
+const NegativeValuesCell = ({ value }) => (
+  <div className={parseFloat(value) < 0 ? 'table_value_red' : 'table_value_green'}>{value}</div>
 );
 
-const TXCell = net => ({value}) => (
+const TXCell = net => ({ value }) => (
   <a className="tx_link" target="_blank" href={etherscanLink(net, value)} //eslint-disable-line
   />
 );
@@ -414,11 +389,12 @@ function etherscanLink(net, tx) {
   return url + tx;
 }
 
-const StatusCell = ({value, original}) => {
+const StatusCell = ({ value, original }) => {
   let colorClassName;
-  switch(value) {
+
+  switch (value) {
     case CONTRACT_STATE_FINISHED:
-      switch(original.finishReason) {
+      switch (original.finishReason) {
         case 'TARGET_PROFIT':
           colorClassName = 'green';
           break;
@@ -435,8 +411,9 @@ const StatusCell = ({value, original}) => {
     default:
       break;
   }
+
   return (
-    <div className={classNames('status_circle', colorClassName)}/>
+    <div className={classNames('status_circle', colorClassName)} />
   );
 };
 
@@ -445,19 +422,19 @@ export default injectIntl(Contracts);
 function formatDate(date) {
   const year = date.getFullYear();
   let month = date.getMonth() + 1;
-  if(month < 10) {
+  if (month < 10) {
     month = '0' + month;
   }
   let day = date.getDate();
-  if(day < 10) {
+  if (day < 10) {
     day = '0' + day;
   }
-  return day + '.' + month + '.' + year;
+  return `${day}.${month}.${year}`;
 }
 function formatBalance(value, name) {
-  if(name === 'USDT') {
+  if (name === 'USDT') {
     return (value || 0).toFixed(2);
   } else {
     return (value || 0).toFixed(8);
   }
-}
+};
