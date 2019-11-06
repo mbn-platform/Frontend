@@ -17,6 +17,7 @@ export const SET_TR_PAGE = 'SET_TR_PAGE';
 export const GET_STAKE_INFO = 'GET_STAKE_INFO';
 export const PROFIT_CALCULATION = 'PROFIT_CALCULATION';
 export const ADD_CONTACT = 'ADD_CONTACT';
+export const STAKE_RATING = 'STAKE_RATING';
 
 const ProfileApi = new ApiProfile();
 const ContactsApi = new ApiContacts();
@@ -44,6 +45,16 @@ export function verifyTelegram(value) {
         contact: result.contact,
       });
     }
+  };
+}
+
+export function getStakeRating() {
+  return async dispatch => {
+    const rating = await ProfileApi.getStakeRating();
+    dispatch({
+      type: STAKE_RATING,
+      rating,
+    });
   };
 }
 

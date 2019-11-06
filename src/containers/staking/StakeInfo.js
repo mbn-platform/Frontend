@@ -7,25 +7,10 @@ import { FormattedDate } from 'react-intl';
 
 class StakeInfo extends React.Component {
 
-  state = {
-    email: '',
-  }
-
-  onEmailInput = (e) => {
-    this.setState({email: e.target.value});
-  }
-
-  onVerifyEmailClick = () => {
-    const email = this.state.email;
-    if (!email) {
-      return;
-    }
-    this.props.verifyEmail(email);
-  }
-
   componentDidMount() {
-    const {getPage, trs : {page, pageSize}} = this.props;
+    const {getPage, trs : {page, pageSize}, getStakeRating} = this.props;
     getPage(page, pageSize);
+    getStakeRating();
   }
 
   renderTable() {
@@ -110,8 +95,8 @@ class StakeInfo extends React.Component {
             />
             </div>
             <div style={{wordBreak: 'break-word'}}>Address: {info.address}</div>
-            <div>Balance: {BigNumber(info.balance).div(1e18).toFixed(8)} MBN</div>
-            <div>Total Bonus: {BigNumber(info.totalBonus).div(1e18).toFixed(8)} MBN</div>
+            <div>Balance: {BigNumber(info.balance).div(1e18).toFixed(0, BigNumber.ROUND_FLOOR)} MBN</div>
+            <div>Total Bonus: {BigNumber(info.totalBonus).div(1e18).toFixed(0, BigNumber.ROUND_CEIL)} MBN</div>
             <div>Current level: {info.level}. {this.renderLevelInfo(info)}</div>
             <Container>
               <Row>
@@ -140,39 +125,20 @@ class StakeInfo extends React.Component {
               </Row>
             </Container>
           </Col>
-          {this.renderEmailVerification()}
+          {this.renderStakingRating()}
         </Row>
       </div>
     );
   }
 
-  renderEmailVerification() {
-    if (!this.props.email) {
-      const style = {
-        marginTop: '10px',
-        backgroundColor: 'inherit',
-        border: '1px solid #44464a',
-        borderRadius: '3px',
-        paddingLeft: '17px',
-        textAlign: 'left',
-        color: '#7c7c7d',
-        height: '26px',
-      };
-      return (
-        <Col xs="12" md="6">
-          <div>Only for pre-sale participants</div>
-          <div>
-            <input placeholder="example@mail.com" style={style} type="email" name="email"
-              value={this.state.email}
-              onChange={this.onEmailInput} />
-          </div>
-          <Button onClick={this.onVerifyEmailClick}>OK</Button>
-          <div>Fill in email from your dashboard <a href="https://sale.membrana.io">sale.membrana.io</a> to receive staking.</div>
-        </Col>
-      );
-    } else {
-      return null;
-    }
+  renderStakingRating() {
+    const rating = this.props.rating;
+    return (
+      <Col xs="12" md="6">
+        <div>Staking rating</div>
+        <StakingRating rating={rating} info={this.props.info} />
+      </Col>
+    );
   }
 
   getNextLevelRequired(info) {
@@ -195,7 +161,7 @@ class StakeInfo extends React.Component {
       case 1:
       case 0:
         return (
-          <span style={{color: '#346255'}}>You need {this.getNextLevelRequired(info)} MBN to level {info.level + 1}</span>
+          <span style={{color: '#346255'}}>You need {Math.ceil(this.getNextLevelRequired(info))}* MBN to level {info.level + 1} (*special price)</span>
         );
       default:
         throw new Error();
@@ -215,5 +181,30 @@ class StakeInfo extends React.Component {
     );
   }
 }
+
+const StakingRating = ({ info, rating }) => {
+  const top = rating.slice(0, 3);
+  return (
+    <div className='staking-rating'>
+      {top.map((r, i) =>
+        <div
+          className={info && info.address === r.address ? 'own' : null}
+          key={i}>
+          {r.place} {r.address} {Math.ceil(r.total)} (MBN)
+        </div>
+      )}
+      {
+        rating.length > 3 ? (
+          <div key={4}>...</div>
+        ) : null
+      }
+      {
+        rating.length > 3 ? (
+          <div className='own' key={5}>{rating[3].place} {rating[3].address} {Math.ceil(rating[3].total)} (MBN)</div>
+        ) : null
+      }
+    </div>
+  );
+};
 
 export default StakeInfo;

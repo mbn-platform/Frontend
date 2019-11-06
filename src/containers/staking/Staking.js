@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { verifyStakeAddress, getStakeInfo, getStakeTransactions,
-  setTrListPage, setTrListPageSize, verifyEmail } from '../../actions/profile';
+import { verifyStakeAddress, getStakeInfo, getStakeTransactions, getStakeRating,
+  setTrListPage, setTrListPageSize } from '../../actions/profile';
 import { Container, Row, Col } from 'reactstrap';
 import { FormattedMessage } from 'react-intl';
 import StakingInfo from './StakingInfo';
@@ -15,18 +15,20 @@ class StakingContainer extends React.Component {
 
   renderComponent() {
     const {info} = this.props;
-    if (info.address) {
+    if (info.info.address) {
       return (
-        <StakeInfo info={info}
+        <StakeInfo
+          info={info.info}
+          rating={info.rating}
           email={this.props.email}
           getPage={this.props.getPage}
           setPage={this.props.setPage}
           setPageSize={this.props.setPageSize}
           trs={this.props.trs}
-          verifyEmail={this.props.verifyEmail}
+          getStakeRating={this.props.getStakeRating}
         />
       );
-    } else if (info.verified === false) {
+    } else if (info.info.verified === false) {
       return <StakingInfo verifyStakeAddress={this.props.verifyStakeAddress}/>;
     } else {
       return null;
@@ -62,11 +64,11 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  verifyEmail: (email) => dispatch(verifyEmail(email)),
   verifyStakeAddress: () => dispatch(verifyStakeAddress()),
   getStakeInfo: () => dispatch(getStakeInfo()),
   getPage: (pages, size) => dispatch(getStakeTransactions(pages, size)),
   setPage: page => dispatch(setTrListPage(page)),
   setPageSize: pageSize => dispatch(setTrListPageSize(pageSize)),
+  getStakeRating: () => dispatch(getStakeRating()),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(StakingContainer);

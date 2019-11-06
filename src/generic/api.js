@@ -278,6 +278,10 @@ export class ApiProfile {
     apiGet('/staking')
       .then(errorHandler)
       .then(responseSchemaHandler);
+  getStakeRating = () =>
+    apiGet('/staking/rating')
+      .then(errorHandler)
+      .then(responseSchemaHandler);
   setInfo = (name, info) =>
     apiPost(`/profile/${name}/info`, null, {info})
       .then(errorHandler)

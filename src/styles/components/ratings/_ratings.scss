@@ -23,6 +23,27 @@
     }
   }
 
+  .info {
+    tr {
+      &.stale {
+        color: gray;
+      }
+      &.active {
+        color: $membrana-green;
+      }
+      &:hover {
+        background-color: unset;
+        cursor: unset;
+      }
+    }
+  }
+
+  .staking-rating {
+    .own {
+      color: $membrana-green;
+    }
+  }
+
   .ratings-empty-data {
     display: flex;
     justify-content: center;
