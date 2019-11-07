@@ -1,0 +1,69 @@
+.contracts_table_wrapper {
+  display: flex;
+  width: 100%;
+
+  .contracts-block-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    .contracts-wrapper {
+      display: flex;
+
+      .provided-contracts-table-wrapper,
+      .received-contracts-table-wrapper {
+        width: 55%;
+        border-right: 0;
+
+        .table_title_wrapper {
+          display: flex;
+          border-radius: 4px 0 0 0;
+        }
+      }
+
+      .received-contracts-table-wrapper {
+        border-radius: 4px 0 0 0;
+
+        .table_title_wrapper {
+          border-radius: 4px 0 0 0;
+        }
+      }
+
+      .provided-contracts-table-wrapper {
+        border-radius: 0 0 0 4px;
+        border-top: none;
+
+        .table_title_wrapper {
+          border-radius: 0;
+        }
+      }
+
+      .received-balances-table-wrapper,
+      .provided-balances-table-wrapper {
+        width: 45%;
+
+        .table_title_wrapper {
+          display: flex;
+          border-radius: 0 4px 0 0;
+        }
+      }
+
+      .received-balances-table-wrapper {
+        border-radius: 0 4px 0 0;
+
+        .table_title_wrapper {
+          border-radius: 0 4px 0 0;
+        }
+      }
+
+      .provided-balances-table-wrapper {
+        border-radius: 0 0 4px 0;
+        border-top: none;
+
+        .table_title_wrapper {
+          border-radius: 0;
+        }
+      }
+    }
+  }
+}

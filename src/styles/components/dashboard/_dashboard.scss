@@ -248,11 +248,8 @@
     }
 
     @import 'styles/components/dashboard/group-asset';
+    @import 'styles/components/dashboard/contracts';
 
-    .contracts_table_wrapper
-    {
-      width: 100%;
-    }
     .selected_contract_table
     {
       width: 46%;

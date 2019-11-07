@@ -148,7 +148,8 @@ const en = {
   'dashboard.exchange': 'Exchange',
   'dashboard.rateTheContract': 'Rate the contract',
   'dashboard.showAll': 'Show all',
-  'dashboard.contracts': 'Contracts',
+  'dashboard.receivedContracts': 'Received contracts',
+  'dashboard.providedContracts': 'Provided contracts',
   'dashboard.finishedAt': 'Finished at',
   'dashboard.expireDate': 'Expire date',
   'dashboard.contractor': 'Contractor',
@@ -193,6 +194,7 @@ const en = {
   'dashboard.errors.contractNotFound': 'Contract not found',
   'dashboard.deleteGroupConfirm': 'Do you want to delete this group?',
   'dashboard.deleteContractConfirm': 'Do you want to delete this contract?',
+  'dashboard.balances': 'Balances',
 
   'orders.orders' : 'Orders',
   'orders.openOrders' : 'Open Orders',
