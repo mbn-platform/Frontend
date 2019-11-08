@@ -12,7 +12,6 @@ import SelectedContractInfo from './SelectedContractInfo';
 import FundsChart from './FundsChart';
 import SelectedContractChart from './SelectedContractChart';
 import { CONTRACT_STATE_VERIFIED } from '../../constants';
-import { ETHEREUM_NET } from '../../eth/MercatusFactory';
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -22,13 +21,6 @@ class Dashboard extends React.Component {
     this.onOfferSelected = this.onOfferSelected.bind(this);
     this.onContractSelected = this.onContractSelected.bind(this);
     this.onContractRate = this.onContractRate.bind(this);
-    this.reset = this.reset.bind(this);
-  }
-
-  reset() {
-    this.setState({
-      selectedContract: null, selectedApiKey: null,
-    });
   }
 
   componentDidMount() {
@@ -60,7 +52,7 @@ class Dashboard extends React.Component {
     if(this.props.contracts !== nextProps.contracts) {
       if(this.state.selectedContract) {
         const findFunction = c => c._id === this.state.selectedContract._id;
-        const contract = nextProps.contracts.current.find(findFunction) || nextProps.contracts.finished.find(findFunction);
+        const contract = nextProps.contracts.current.find(findFunction);
         this.setState({selectedContract: contract});
       }
     }
@@ -104,9 +96,6 @@ class Dashboard extends React.Component {
             selectedContract={this.state.selectedContract}
             selectedApiKey={this.state.selectedApiKey}
             onContractSelected={this.onContractSelected}
-            onShowAllClicked={this.reset}
-            net={ETHEREUM_NET}
-            exchangesInfo={this.props.exchangesInfo}
           />
         </div>
         <div className="table_wrapper group_asset_wrapper">

@@ -195,6 +195,7 @@ const en = {
   'dashboard.deleteGroupConfirm': 'Do you want to delete this group?',
   'dashboard.deleteContractConfirm': 'Do you want to delete this contract?',
   'dashboard.balances': 'Balances',
+  'dashboard.groups': 'Groups',
 
   'orders.orders' : 'Orders',
   'orders.openOrders' : 'Open Orders',

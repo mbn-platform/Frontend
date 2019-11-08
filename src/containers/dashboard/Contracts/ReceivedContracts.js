@@ -3,7 +3,9 @@ import { FormattedMessage } from 'react-intl';
 
 import ReactTable from '../../../components/SelectableReactTable';
 
-const ReceivedContracts = ({ contracts, getColumns }) => (
+const ReceivedContracts = ({
+  contracts, getColumns, selectedItem, onItemSelected,
+}) => (
   <div className="received-contracts-table-wrapper table table-wrapper">
     <div className="table_title_wrapper">
       <div className="table_title">
@@ -14,8 +16,8 @@ const ReceivedContracts = ({ contracts, getColumns }) => (
       style={{ height: 310 }}
       columns={getColumns()}
       data={contracts}
-      // selectedItem={}
-      // onItemSelected={}
+      selectedItem={selectedItem}
+      onItemSelected={onItemSelected}
       scrollBarHeight={310}
     />
   </div>

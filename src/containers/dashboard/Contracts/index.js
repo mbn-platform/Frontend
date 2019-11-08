@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Row, Container, Col } from 'reactstrap';
 import { FormattedMessage } from 'react-intl';
 
 import {
@@ -9,13 +8,11 @@ import {
   CONTRACT_STATE_VERIFIED,
   CONTRACT_STATE_HALTED,
 } from '../../../constants';
-import ReactTable from '../../../components/SelectableReactTable';
-import { Desktop, Mobile } from '../../../generic/MediaQuery';
-import Pagination from '../../../components/Pagination';
 import ReceivedContracts from './ReceivedContracts';
 import ReceivedDetails from './ReceivedDetails';
 import ProvidedContracts from './ProvidedContracts';
 import ProvidedDetails from './ProvidedDetails';
+import Groups from './Groups';
 
 const ContractTableHeader = header => (
   <div className="table_header_wrapper contract_header_wrapper">
@@ -77,7 +74,9 @@ class Contracts extends React.Component {
   // }
 
   render() {
-    const { contracts, userName } = this.props;
+    const {
+      contracts, userName, selectedContract, selectedApiKey, onContractSelected,
+    } = this.props;
     const receivedContracts = contracts.current.filter(({ to }) => to.name === userName);
     const providedContracts = contracts.current.filter(({ to }) => to.name !== userName);
 
@@ -87,15 +86,26 @@ class Contracts extends React.Component {
           <ReceivedContracts
             contracts={receivedContracts}
             getColumns={this.getTableColumns}
+            selectedItem={selectedContract}
+            onItemSelected={onContractSelected}
           />
-          <ReceivedDetails />
+          <div className="balances-groups-wrapper">
+            <ReceivedDetails
+              contract={selectedContract}
+            />
+            <Groups />
+          </div>
         </div>
         <div className="contracts-wrapper">
           <ProvidedContracts
             contracts={providedContracts}
             getColumns={this.getTableColumns}
+            selectedItem={selectedContract}
+            onItemSelected={onContractSelected}
           />
-          <ProvidedDetails />
+          <ProvidedDetails
+            contract={selectedContract}
+          />
         </div>
       </div>
     );
