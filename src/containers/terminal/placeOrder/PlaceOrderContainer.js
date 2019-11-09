@@ -37,7 +37,7 @@ class PlaceOrderContainer extends React.Component {
     if ((this.props.price && this.props.price !== prevProps.price) ||
       (this.props.size && this.props.size !== prevProps.size)) {
       let price = this.props.price || this.state.price;
-      let amount = this.props.size || this.state.amount;
+      // let amount = this.props.size || this.state.amount;
       this.setPrice(price);
     }
   }

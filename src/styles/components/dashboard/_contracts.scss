@@ -50,6 +50,51 @@
             display: flex;
             border-radius: 0 4px 0 0;
           }
+
+          .groups_btn_wrapper {
+            .create_group_btn,
+            .add_contract_btn {
+              border: 0;
+              width: 50%;
+              height: 100%;
+              border-left: 1px solid #44464a;
+              background-color: #2d3034;
+              color: #7c7c7d;
+              transition-property: color, background-color;
+              transition-duration: 400ms;
+              transition: color 400ms, background-color 400ms;
+              text-transform: uppercase;
+              line-height: 26px;
+              font-size: 1.3em;
+
+              &:hover {
+                background-color: #346255;
+                color: white;
+              }
+
+              &:disabled {
+                opacity: .3;
+
+                &:hover {
+                  background-color: #2d3034;
+                  color: #7c7c7d;
+                  cursor: default;
+                }
+              }
+            }
+
+            .create_group_btn {
+              border-left: none;
+            }
+          }
+
+          .ReactTable {
+            .rt-table {
+              .rt-thead {
+                display: none;
+              }
+            }
+          }
         }
       }
 

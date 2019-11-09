@@ -489,7 +489,7 @@ export class ApiAssetGroup {
       .then(errorHandler)
       .then(responseSchemaHandler)
 
-  create = (name, exchange, contracts = []) =>
+  create = (name, exchange, contracts) =>
     apiPost('/assetgroup', null, { name, exchange, contracts })
       .then(errorHandler)
       .then(responseSchemaHandler)

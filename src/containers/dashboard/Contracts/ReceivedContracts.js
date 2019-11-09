@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
 import ReactTable from '../../../components/SelectableReactTable';
@@ -22,5 +23,17 @@ const ReceivedContracts = ({
     />
   </div>
 );
+
+ReceivedContracts.propTypes = {
+  contracts: PropTypes.arrayOf(PropTypes.shape()),
+  selectedItem: PropTypes.shape(),
+  getColumns: PropTypes.func.isRequired,
+  onItemSelected: PropTypes.func.isRequired,
+};
+
+ReceivedContracts.defaultProps = {
+  contracts: [],
+  selectedItem: null,
+};
 
 export default ReceivedContracts;

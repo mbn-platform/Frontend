@@ -392,6 +392,16 @@
       transition: color 400ms, border 400ms;
     }
 
+    .group_select_wr {
+      height: 40px;
+      line-height: 40px;
+      font-size: 1.6em;
+
+      .add_keys_select_values_list_wr {
+        top: 38px;
+      }
+    }
+
     .mode_select_wrapper {
       width: 135px;
       margin-top: 15px;

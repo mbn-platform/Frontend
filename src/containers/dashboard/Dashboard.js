@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import Funds from './ApiKeys';
 import BotList from './ApiBot';
@@ -11,12 +12,16 @@ import Offers from './Offers';
 import SelectedContractInfo from './SelectedContractInfo';
 import FundsChart from './FundsChart';
 import SelectedContractChart from './SelectedContractChart';
-import { CONTRACT_STATE_VERIFIED } from '../../constants';
 
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {selectedContract: null, selectedApiKey: null, selectedOffer: null};
+    this.state = {
+      selectedReceivedContract: null,
+      selectedProvidedContract: null,
+      selectedApiKey: null,
+      selectedOffer: null,
+    };
     this.onKeySelected = this.onKeySelected.bind(this);
     this.onOfferSelected = this.onOfferSelected.bind(this);
     this.onContractSelected = this.onContractSelected.bind(this);
@@ -49,11 +54,18 @@ class Dashboard extends React.Component {
         this.setState({selectedOffer: offer});
       }
     }
-    if(this.props.contracts !== nextProps.contracts) {
-      if(this.state.selectedContract) {
+
+    if (this.props.contracts !== nextProps.contracts) {
+      if (this.state.selectedReceivedContract) {
         const findFunction = c => c._id === this.state.selectedContract._id;
         const contract = nextProps.contracts.current.find(findFunction);
-        this.setState({selectedContract: contract});
+        this.setState({ selectedReceivedContract: contract });
+      }
+
+      if (this.state.selectedProvidedContract) {
+        const findFunction = c => c._id === this.state.selectedContract._id;
+        const contract = nextProps.contracts.current.find(findFunction);
+        this.setState({ selectedProvidedContract: contract });
       }
     }
 
@@ -87,13 +99,19 @@ class Dashboard extends React.Component {
           />
           <AddApiKey billing={this.props.billing} />
           <ApiKeyInfo
-            fund={this.state.selectedOffer || this.state.selectedContract || this.state.selectedApiKey}
+            fund={
+              this.state.selectedOffer
+              || this.state.selectedReceivedContract
+              || this.state.selectedProvidedContract
+              || this.state.selectedApiKey
+            }
           />
         </div>
         <div className="table_wrapper contracts_table_wrapper">
           <Contracts
             contracts={this.props.contracts}
-            selectedContract={this.state.selectedContract}
+            selectedReceivedContract={this.state.selectedReceivedContract}
+            selectedProvidedContract={this.state.selectedProvidedContract}
             selectedApiKey={this.state.selectedApiKey}
             onContractSelected={this.onContractSelected}
           />
@@ -106,13 +124,16 @@ class Dashboard extends React.Component {
             userId={this.props.userId}
             time={this.props.time}
             onContractRate={this.onContractRate}
-            contract={this.state.selectedContract} />
+            contract={this.state.selectedReceivedContract || this.state.selectedProvidedContract} />
         </div>
         <div className="table_wrapper traders_chart">
           <FundsChart userId={this.props.userId} apiKeys={this.props.apiKeys.ownKeys || []} exchangesInfo={this.props.exchangesInfo} contracts={this.props.contracts.current}/>
         </div>
         <div className="table_wrapper contracts_chart">
-          <SelectedContractChart contract={this.state.selectedContract} exchangesInfo={this.props.exchangesInfo}/>
+          <SelectedContractChart
+            contract={this.state.selectedReceivedContract || this.state.selectedProvidedContract}
+            exchangesInfo={this.props.exchangesInfo}
+          />
         </div>
         <div className="keys_tables_wrapper table_wrapper">
           <BotList
@@ -127,7 +148,12 @@ class Dashboard extends React.Component {
   }
 
   onKeySelected(apiKey) {
-    this.setState({selectedApiKey: apiKey, selectedContract: null, selectedOffer: null});
+    this.setState({
+      selectedApiKey: apiKey,
+      selectedOffer: null,
+      selectedReceivedContract: null,
+      selectedProvidedContract: null,
+    });
   }
 
   onOfferSelected(offer) {
@@ -135,18 +161,29 @@ class Dashboard extends React.Component {
       this.setState({
         selectedOffer: offer,
         selectedApiKey: null,
-        selectedContract: null
+        selectedReceivedContract: null,
+        selectedProvidedContract: null,
       });
     }
   }
 
   onContractSelected(contract) {
-    if(contract.state === CONTRACT_STATE_VERIFIED) {
-      this.setState({selectedContract: contract, selectedOffer: null});
-    } else {
-      this.setState({selectedApiKey: null, selectedContract: contract, selectedOffer: null});
-    }
+    contract.to.name === this.props.userName
+      ? this.setState({
+        selectedReceivedContract: contract,
+        selectedProvidedContract: null,
+        selectedOffer: null
+      })
+      : this.setState({
+        selectedReceivedContract: null,
+        selectedProvidedContract: contract,
+        selectedOffer: null }
+      );
   }
 }
 
-export default Dashboard;
+const mapStateToProps = ({ auth: { profile } }) => ({
+  userName: profile.name,
+});
+
+export default connect(mapStateToProps)(Dashboard);

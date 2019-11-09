@@ -22,14 +22,15 @@ GroupRow.defaultProps = {
   amount: null,
   expireDate: null,
   onSelect: () => {},
+  onDelete: () => {},
 };
 
 GroupRow.propTypes = {
   amount: PropTypes.string,
   expireDate: PropTypes.string,
   onSelect: PropTypes.func,
+  onDelete: PropTypes.func,
   value: PropTypes.string.isRequired,
-  onDelete: PropTypes.func.isRequired,
 };
 
 export default GroupRow;

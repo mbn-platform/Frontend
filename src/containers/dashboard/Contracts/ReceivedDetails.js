@@ -1,9 +1,18 @@
 import React from 'react';
+import { PropTypes } from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
 import ReactTable from '../../../components/SelectableReactTable';
 
 class ReceivedDetails extends React.Component {
+  static defaultProps = {
+    contract: null,
+  };
+
+  static propTypes = {
+    contract: PropTypes.shape(),
+  };
+
   getColumns = () => {
     return [
       {

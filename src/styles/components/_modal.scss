@@ -96,6 +96,52 @@
             }
         }
     }
+
+    .create_group_form {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+
+        .create_group_container {
+            .create_group_field {
+                min-width: 250px;
+
+                .create_group_input {
+                    border: 1px solid #44464a;
+                    border-radius: 3px;
+                    padding-left: 17px;
+                    text-align: left;
+                    color: #7c7c7d;
+                    width: 100%;
+                    height: 40px;
+                    box-sizing: border-box;
+                    font-size: 1.6em;
+                    background-color: inherit;
+                    vertical-align: middle;
+                    transition-property: color, border-color;
+                    transition-duration: 400ms;
+                }
+            }
+        }
+
+        .group_select_wr {
+            height: 40px;
+            line-height: 40px;
+            font-size: 1.6em;
+
+            .add_keys_select_values_list_wr {
+                top: 38px;
+            }
+
+            .add_keys_select_value {
+                padding-right: 20px;
+
+                .add_keys_select_value_bg {
+                    margin-top: 10px;
+                }
+            }
+        }
+    }
 }
 
 .modal__input {

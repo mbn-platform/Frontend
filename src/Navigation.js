@@ -28,21 +28,25 @@ import { Desktop, Mobile } from './generic/MediaQuery';
 import ModalWindow from './components/Modal';
 import TwoFactorAuthModal from './components/TwoFactorAuthModal';
 import { Container, Row } from 'reactstrap';
-import {injectIntl, FormattedMessage} from 'react-intl';
+import { injectIntl, FormattedMessage } from 'react-intl';
 import {
-  closeCodeModal, closeConfirmModal, closeInfoModal,
+  closeCodeModal,
+  closeConfirmModal,
+  closeInfoModal,
   closeUpgradeTariffModal,
+  closeCreateGroupModal,
+  closeAddContractToGroupModal,
 } from './actions/modal';
 import { loggedOut } from './actions/auth';
 import CommitTokensModal from './containers/staking/CommitTokensModal';
+import CreateGroupModal from './containers/dashboard/Contracts/CreateGroupModal';
+import AddContractModal from './containers/dashboard/Contracts/AddContractModal';
 
 class Navigation extends React.Component {
-
-
   constructor(props) {
     super(props);
     this.toggle = this.toggle.bind(this);
-    this.state = {isOpen: false};
+    this.state = { isOpen: false };
   }
 
   toggle() {
@@ -247,6 +251,28 @@ class Navigation extends React.Component {
     ) : null;
   }
 
+  renderCreateGroupModal = () => {
+    const { modal, closeCreateGroupModalWindow } = this.props;
+
+    return modal.isCreateGroupModalOpen ? (
+      <CreateGroupModal
+        modal={modal}
+        closeCreateGroupModal={closeCreateGroupModalWindow}
+      />
+    ) : null;
+  }
+
+  renderAddContractModal = () => {
+    const { modal, closeAddContractToGroupModalWindow } = this.props;
+
+    return modal.isAddContractModalOpen ? (
+      <AddContractModal
+        modal={modal}
+        closeAddContractToGroupModal={closeAddContractToGroupModalWindow}
+      />
+    ) : null;
+  }
+
   render() {
     const { isExpanded } = this.state;
     return (
@@ -290,6 +316,8 @@ class Navigation extends React.Component {
         {this.renderTwoFactorAuthModal()}
         {this.renderUpgradeTariffModal()}
         {this.renderCommitTokensModal()}
+        {this.renderCreateGroupModal()}
+        {this.renderAddContractModal()}
         <div
           className="navigation__splitter"
           onClick={() => this.setState({isExpanded: !isExpanded})}>
@@ -457,6 +485,8 @@ const mapDispatchToProps = {
   closeConfirmModalWindow: closeConfirmModal,
   closeCodeModalWindow: closeCodeModal,
   closeUpgradeTariffModalWindow: closeUpgradeTariffModal,
+  closeCreateGroupModalWindow: closeCreateGroupModal,
+  closeAddContractToGroupModalWindow: closeAddContractToGroupModal,
   logOut: loggedOut,
 };
 

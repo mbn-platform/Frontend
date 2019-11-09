@@ -1,4 +1,5 @@
 import React from 'react';
+import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
@@ -42,40 +43,26 @@ const formatBalance = (value = 0, name) => (
 );
 
 class Contracts extends React.Component {
-  // renderContent() {
+  static propTypes = {
+    userName: PropTypes.string.isRequired,
+    contracts: PropTypes.arrayOf(PropTypes.shape()),
+    assetGroups: PropTypes.arrayOf(PropTypes.shape()),
+    selectedReceivedContract: PropTypes.shape(),
+    selectedProvidedContract: PropTypes.shape(),
+    onContractSelected: PropTypes.func.isRequired,
+  };
 
-
-  //   return (
-  //     <div>
-  //       <Desktop>
-  //         <ReactTable
-  //           style={{ 'height': 345 }}
-  //           columns={this.getTableColumns()}
-  //           data={receivedContracts}
-  //           selectedItem={this.props.selectedContract}
-  //           onItemSelected={this.props.onContractSelected}
-  //           scrollBarHeight={257}
-  //         />
-  //       </Desktop>
-  //       <Mobile>
-  //         <ReactTable
-  //           columns={this.getTableMobileColumns()}
-  //           data={receivedContracts}
-  //           selectedItem={this.props.selectedContract}
-  //           onItemSelected={this.props.onContractSelected}
-  //           minRows={5}
-  //           showPagination={true}
-  //           defaultPageSize={5}
-  //           PaginationComponent={Pagination}
-  //         />
-  //       </Mobile>
-  //     </div>
-  //   );
-  // }
+  static defaultProps = {
+    contracts: [],
+    assetGroups: [],
+    selectedReceivedContract: null,
+    selectedProvidedContract: null,
+  };
 
   render() {
     const {
-      contracts, userName, selectedContract, selectedApiKey, onContractSelected,
+      contracts, userName, selectedReceivedContract,
+      assetGroups, selectedProvidedContract, onContractSelected,
     } = this.props;
     const receivedContracts = contracts.current.filter(({ to }) => to.name === userName);
     const providedContracts = contracts.current.filter(({ to }) => to.name !== userName);
@@ -86,25 +73,28 @@ class Contracts extends React.Component {
           <ReceivedContracts
             contracts={receivedContracts}
             getColumns={this.getTableColumns}
-            selectedItem={selectedContract}
+            selectedItem={selectedReceivedContract}
             onItemSelected={onContractSelected}
           />
           <div className="balances-groups-wrapper">
             <ReceivedDetails
-              contract={selectedContract}
+              contract={selectedReceivedContract}
             />
-            <Groups />
+            <Groups
+              assetGroups={assetGroups}
+              selectedContract={selectedReceivedContract}
+            />
           </div>
         </div>
         <div className="contracts-wrapper">
           <ProvidedContracts
             contracts={providedContracts}
             getColumns={this.getTableColumns}
-            selectedItem={selectedContract}
+            selectedItem={selectedProvidedContract}
             onItemSelected={onContractSelected}
           />
           <ProvidedDetails
-            contract={selectedContract}
+            contract={selectedProvidedContract}
           />
         </div>
       </div>
@@ -298,8 +288,9 @@ class Contracts extends React.Component {
   };
 }
 
-const mapStateToProps = ({ auth }) => ({
+const mapStateToProps = ({ auth, assetGroups }) => ({
   userName: auth.profile.name,
+  assetGroups,
 });
 
 export default connect(mapStateToProps)(Contracts);

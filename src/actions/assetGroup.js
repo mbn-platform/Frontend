@@ -26,9 +26,9 @@ export const getAssetGroups = () => {
   };
 };
 
-export const createAssetGroup = (name, exchange) => {
+export const createAssetGroup = (name, exchange, contracts = []) => {
   return dispatch => {
-    AssetGroupApi.create(name, exchange)
+    AssetGroupApi.create(name, exchange, contracts)
       .then(assetGroup => {
         dispatch({
           type: SET_ASSET_GROUP,

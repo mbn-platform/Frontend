@@ -131,13 +131,13 @@ const mapDispatchToProps = (dispatch) => ({
 });
 export default connect(mapStateToProps, mapDispatchToProps)(QuickNotification);
 
-function PriceChange({value, interval}) {
-  if (value) {
-    return <span>Price change: <b>{formatPercentValueWithSign(value.percent)} / {formatTimeInterval(interval)}</b></span>;
-  } else {
-    return null;
-  }
-}
+// function PriceChange({value, interval}) {
+//   if (value) {
+//     return <span>Price change: <b>{formatPercentValueWithSign(value.percent)} / {formatTimeInterval(interval)}</b></span>;
+//   } else {
+//     return null;
+//   }
+// }
 function formatDate(date) {
   const hours = date.getHours();
   const minutes = date.getMinutes();
@@ -148,40 +148,40 @@ function formatDate(date) {
 function padTime(value) {
   return value < 10 ? '0' + value : value;
 }
-function VolumeChange({value, interval}) {
-  if (value) {
-    return <span>Volume change: <b>{formatPercentValueWithSign(value.percent)} / {formatTimeInterval(interval)}</b></span>;
-  } else {
-    return null;
-  }
-}
+// function VolumeChange({value, interval}) {
+//   if (value) {
+//     return <span>Volume change: <b>{formatPercentValueWithSign(value.percent)} / {formatTimeInterval(interval)}</b></span>;
+//   } else {
+//     return null;
+//   }
+// }
 
-function formatPercentValueWithSign(value) {
-  const sign = value >= 0 ? '+' : '';
-  return `${sign}${value.toFixed(2)}%`;
-}
+// function formatPercentValueWithSign(value) {
+//   const sign = value >= 0 ? '+' : '';
+//   return `${sign}${value.toFixed(2)}%`;
+// }
 
-function formatTimeInterval(interval) {
-  switch (interval) {
-    case 5:
-    case 15:
-      return `${interval} min`;
-    case 60:
-      return '1 h';
-    case 120:
-      return '2 h';
-    case 240:
-      return '4 h';
-    case 1440:
-      return '1 d';
-    case 3 * 1440:
-      return '3 d';
-    case 7 * 1440:
-      return '7 d';
-    case 30 * 1440:
-      return '1 month';
-    default:
-      return `${interval}`;
-  }
-}
+// function formatTimeInterval(interval) {
+//   switch (interval) {
+//     case 5:
+//     case 15:
+//       return `${interval} min`;
+//     case 60:
+//       return '1 h';
+//     case 120:
+//       return '2 h';
+//     case 240:
+//       return '4 h';
+//     case 1440:
+//       return '1 d';
+//     case 3 * 1440:
+//       return '3 d';
+//     case 7 * 1440:
+//       return '7 d';
+//     case 30 * 1440:
+//       return '1 month';
+//     default:
+//       return `${interval}`;
+//   }
+// }
 
