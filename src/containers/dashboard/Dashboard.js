@@ -99,17 +99,12 @@ class Dashboard extends React.Component {
           />
           <AddApiKey billing={this.props.billing} />
           <ApiKeyInfo
-            fund={
-              this.state.selectedOffer
-              || this.state.selectedReceivedContract
-              || this.state.selectedProvidedContract
-              || this.state.selectedApiKey
-            }
+            fund={this.state.selectedOffer || this.state.selectedApiKey}
           />
         </div>
         <div className="table_wrapper contracts_table_wrapper">
           <Contracts
-            contracts={this.props.contracts}
+            contracts={this.props.contracts.current}
             selectedReceivedContract={this.state.selectedReceivedContract}
             selectedProvidedContract={this.state.selectedProvidedContract}
             selectedApiKey={this.state.selectedApiKey}

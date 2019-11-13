@@ -64,8 +64,8 @@ class Contracts extends React.Component {
       contracts, userName, selectedReceivedContract,
       assetGroups, selectedProvidedContract, onContractSelected,
     } = this.props;
-    const receivedContracts = contracts.current.filter(({ to }) => to.name === userName);
-    const providedContracts = contracts.current.filter(({ to }) => to.name !== userName);
+    const receivedContracts = contracts.filter(({ to }) => to.name === userName);
+    const providedContracts = contracts.filter(({ to }) => to.name !== userName);
 
     return (
       <div className="contracts-block-wrapper">

@@ -9,10 +9,14 @@ import GroupRow from '../GroupAsset/GroupRow';
 
 class Groups extends React.Component {
   static propTypes = {
-    selectedContract: PropTypes.shape().isRequired,
+    selectedContract: PropTypes.shape(),
     assetGroups: PropTypes.arrayOf(PropTypes.shape()).isRequired,
     showCreateGroupModal: PropTypes.func.isRequired,
     showAddContractToGroupModal: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    selectedContract: null,
   };
 
   columns = [
