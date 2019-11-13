@@ -3,7 +3,7 @@ export const makeId = length => {
   let text = '';
   let possible = 'abcdef0123456789';
   for (let i = 0; i < 24; i++)
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  {text += possible.charAt(Math.floor(Math.random() * possible.length));}
   return text;
 };
 
@@ -157,10 +157,15 @@ export function calculateKeyBalance(key, currency, rates) {
 export function isContract(fund) {
   return typeof fund.from !== 'undefined';
 }
+export function isAssetGroup(fund) {
+  return Array.isArray(fund.contracts);
+}
 
 export function setFundId(payload, fund) {
   if (isContract(fund)) {
     payload.contractId = fund._id;
+  } else if (isAssetGroup(fund)) {
+    payload.groupId = fund._id;
   } else {
     payload.keyId = fund._id;
   }

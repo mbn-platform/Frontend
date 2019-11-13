@@ -128,7 +128,7 @@ export function getOrders(params) {
       .then(res => dispatch({
         type: GET_MY_ORDERS,
         orders: res,
-        fundId: params.keyId || params.contractId,
+        fundId: params.groupId || params.contractId || params.keyId,
       }))
       .catch(err => {
         console.error(err);

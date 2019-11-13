@@ -149,6 +149,9 @@ export default function(state = {
       }
     }
     case UPDATE_ORDER: {
+      if (!(state.fund && state.fund._id === action.fundId)) {
+        return state;
+      }
       let { open, closed } = state.orders;
       const order = action.order;
       switch (order.state) {
@@ -195,7 +198,7 @@ export default function(state = {
     }
 
     case SELECT_ASSET_GROUP:
-      return action.groupName === state.selectedGroup
+      return action.groupName === state.assetGroup
         ? state
         : { ...state, assetGroup: action.groupName };
 
