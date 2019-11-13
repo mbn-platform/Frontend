@@ -11,7 +11,7 @@ import {
   selectInterval,
   selectAssetGroup,
 } from '../../actions/terminal';
-import { getAssetGroups,  } from '../../actions/assetGroup';
+import { getAssetGroups } from '../../actions/assetGroup';
 
 const TIME_RANGE_OPTIONS = ['1 MIN', '5 MIN', '30 MIN', '1 H', '4 H', '12 H', '1 D', '1 W'];
 

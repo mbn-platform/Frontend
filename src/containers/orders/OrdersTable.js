@@ -5,30 +5,50 @@ import {sortData, onColumnSort, classNameForColumnHeader}  from '../../generic/t
 import { FormattedMessage } from 'react-intl';
 import createMqProvider, {querySchema} from '../../MediaQuery';
 
-const { Screen} = createMqProvider(querySchema);
+const { Screen } = createMqProvider(querySchema);
 
 const TAB_OPEN_ORDERS = 0;
 const TAB_COMPLETED_ORDERS = 1;
-class OrdersTable extends React.Component {
 
+class OrdersTable extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {tab: TAB_OPEN_ORDERS, sort: {}};
-    this.onTabClick = this.onTabClick.bind(this);
+    this.state = {
+      tab: TAB_OPEN_ORDERS,
+      sort: {},
+      expanded: {},
+    };
     this.sortData = sortData.bind(this);
     this.onColumnSort = onColumnSort.bind(this);
     this.sortFunctions = {};
   }
 
-  onTabClick(tab) {
-    if(this.state.tab !== tab) {
-      this.setState({tab});
+  onTabClick = tab => () => {
+    if (this.state.tab !== tab) {
+      this.setState({ tab });
     }
   };
 
+  onRowClick = (_, { original, index }) => ({
+    onClick: () => {
+      this.expandRow(index);
+      this.props.getGroupOrder(original._id);
+    },
+  });
+
+  expandRow = index => {
+    let expanded = { ...this.state.expanded };
+
+    if (expanded[index]) {
+      expanded[index] = !expanded[index];
+    } else {
+      expanded[index] = true;
+    }
+
+    this.setState({ expanded });
+  };
 
   getColumns = (isOpenOrder, screenWidth) => {
-
     const ordersColumn = [
       {
         Header: <div onClick={() => this.onColumnSort('type')}
@@ -127,10 +147,11 @@ class OrdersTable extends React.Component {
           /> <span className={classNameForColumnHeader(this.state, 'price')}/>
         </div>,
         minWidth: screenWidth === 'lg' ? 80 : 40,
-        Cell: row => {
-          return  row.original.price;
-        },
+        Cell: row => row.original.price,
         className: 'ellipsis-cell orders__table_cell',
+      }, {
+        expander: true,
+        show: false,
       }];
 
     return [...ordersColumn,
@@ -147,32 +168,30 @@ class OrdersTable extends React.Component {
   };
 
   formatDate = date => {
-
     const padDate = number => number < 10 ? '0' + number : number;
-
     const year = padDate(date.getFullYear()),
       month = padDate(date.getMonth() + 1),
       day = padDate(date.getDate());
+
     return day + '.' + month + '.' + year;
   }
 
-
-
-  renderOrderTable = (sortedData, screenWidth, isOpenOrder) => {
-    return <ReactTable
+  renderOrderTable = (sortedData, screenWidth, isOpenOrder) => (
+    <ReactTable
       columns={this.getColumns(isOpenOrder, screenWidth)}
-      getTrProps={() => ({
-        onClick: () => null,
-      })}
+      getTrProps={this.onRowClick}
       data={sortedData}
       scrollBarHeight={300}
-    />;
-  }
+      expanded={this.state.expanded}
+      SubComponent={row => <div />}
+    />
+  )
 
   render() {
     const isOpenOrder = this.state.tab === TAB_OPEN_ORDERS;
     const data = isOpenOrder ? this.props.orders.open : this.props.orders.closed;
     const sortedData = this.sortData(data);
+
     return (
       <div className="orders-main__block">
         <Screen on={screenWidth => (
@@ -180,7 +199,7 @@ class OrdersTable extends React.Component {
             <div className="block__top">
               <div className="block__top-switch-wrap">
                 <span
-                  onClick={() => this.onTabClick(TAB_OPEN_ORDERS)}
+                  onClick={this.onTabClick(TAB_OPEN_ORDERS)}
                   className={classNames('block__top-switch', 'orders-open', {active: isOpenOrder})}>
                   <FormattedMessage
                     id="orders.openOrders"
@@ -188,7 +207,7 @@ class OrdersTable extends React.Component {
                   />
                 </span>
                 <span
-                  onClick={() => this.onTabClick(TAB_COMPLETED_ORDERS)}
+                  onClick={this.onTabClick(TAB_COMPLETED_ORDERS)}
                   className={classNames('block__top-switch', 'orders-completed', {active: !isOpenOrder})}>
                   <FormattedMessage
                     id="orders.completedOrders"

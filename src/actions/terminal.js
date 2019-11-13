@@ -15,6 +15,7 @@ export const PLACE_ORDER = 'PLACE_ORDER';
 export const PLACE_ALGO_ORDER = 'PLACE_ALGO_ORDER';
 export const UPDATE_ORDER = 'UPDATE_ORDER';
 export const GET_MY_ORDERS = 'GET_MY_ORDERS';
+export const GET_GROUP_ORDER = 'GET_GROUP_ORDER';
 export const UPDATE_EXCHANGE_RATES = 'UPDATE_EXCHANGE_RATES';
 export const UPDATE_RATINGS = 'UPDATE_RATINGS';
 export const UPDATE_TICKER = 'UPDATE_TICKER';
@@ -135,6 +136,19 @@ export function getOrders(params) {
       });
   };
 }
+
+export const getGroupOrder = (id) => (
+  dispatch => {
+    TerminalApi.getGroupOrder(id)
+      .then(order => dispatch({
+        type: GET_GROUP_ORDER,
+        order,
+      }))
+      .catch(err => {
+        console.error(err);
+      });
+  }
+);
 
 export function cancelOrder(order) {
   return dispatch => {

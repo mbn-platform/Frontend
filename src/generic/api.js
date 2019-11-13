@@ -327,6 +327,13 @@ export class ApiTerminal {
       .then(errorHandler)
       .then(responseSchemaHandler);
   };
+
+  getGroupOrder = id => {
+    return apiGet(`/order/${id}?type=group`)
+      .then(errorHandler)
+      .then(responseSchemaHandler);
+  };
+
   cancelOrder = order =>
     apiDelete('/order/' + order._id)
       .then(errorHandler)

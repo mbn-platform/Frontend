@@ -1,6 +1,6 @@
 import {
-  SELECT_FUND, SELECT_EXCHANGE, SELECT_MARKET,
-  SELECT_INTERVAL, GET_MY_ORDERS, CANCEL_ORDER, PLACE_ORDER, UPDATE_ORDER,
+  SELECT_FUND, SELECT_EXCHANGE, SELECT_MARKET, SELECT_INTERVAL,
+  GET_MY_ORDERS, GET_GROUP_ORDER, CANCEL_ORDER, PLACE_ORDER, UPDATE_ORDER,
   UPDATE_ORDER_BOOK, UPDATE_HISTORY, UPDATE_TICKER, SELECT_ASSET_GROUP,
 } from '../actions/terminal';
 import { UPDATE_KEYS } from '../actions/dashboard';
@@ -129,6 +129,30 @@ export default function(state = {
       }
       break;
     }
+
+    case GET_GROUP_ORDER: {
+      const { open, closed } = state.orders;
+      const order = open.find(order => order._id === action.order._id);
+
+      if (order) {
+        return {
+          ...state,
+          orders: {
+            open: open.map(item => item._id === order._id ? action.order : item),
+            closed,
+          },
+        };
+      } else {
+        return {
+          ...state,
+          orders: {
+            open,
+            closed: closed.map(item => item._id === order._id ? action.order : item),
+          },
+        };
+      }
+    }
+
     case PLACE_ORDER: {
       const order = state.orders.open.find(o => o._id === action.order._id);
       if(!order) {

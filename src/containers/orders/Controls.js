@@ -1,12 +1,42 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
+import {
+  selectExchange,
+  selectFund,
+  selectAssetGroup,
+} from '../../actions/terminal';
+import { getAssetGroups } from '../../actions/assetGroup';
 import FundSelect from '../../components/FundSelect';
 import DropdownSelect from '../../components/DropdownSelect';
 
 class Controls extends React.Component {
+  componentDidMount = () => {
+    this.props.getAssetGroups();
+  };
+
+  handleGroupSelect = item => {
+    const { assetGroups } = this.props;
+    const group = assetGroups.find((group) => group.name === item);
+    this.props.selectAssetGroup(item);
+    this.props.selectExchange(group.exchange);
+    this.props.selectFund(group);
+  };
+
   render() {
-    const funds = this.props.apiKeys.concat(this.props.contracts.filter(contract => contract.to._id === this.props.userId))
+    const { apiKeys, contracts, userId } = this.props;
+    const funds = apiKeys.concat(contracts.filter(contract => contract.to._id === userId));
+
     return (
       <div className="row dropdowns pt-2">
+        <DropdownSelect
+          selected={this.props.assetGroup}
+          items={this.props.assetGroups.map(({ name }) => name)}
+          targetId="asset_groups_select"
+          elementClassName="exchange__switch"
+          dropdownClassName="asset-groups"
+          onItemSelect={this.handleGroupSelect}
+        />
         <FundSelect
           container=".orders.container-fluid"
           exchange={this.props.exchange}
@@ -28,4 +58,16 @@ class Controls extends React.Component {
   }
 }
 
-export default Controls;
+const mapStateToProps = ({ assetGroups, terminal }) => ({
+  assetGroup: terminal.assetGroup,
+  assetGroups,
+});
+
+const mapDispatchToProps = {
+  selectExchange,
+  selectFund,
+  getAssetGroups,
+  selectAssetGroup,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Controls);
