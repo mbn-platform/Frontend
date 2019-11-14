@@ -23,14 +23,22 @@ class OrdersTable extends React.Component {
     this.sortFunctions = {};
   }
 
+  componentDidUpdate = (prevProps) => {
+    if (prevProps.fund !== this.props.fund) {
+      this.setState({ expanded: {} });
+    }
+  }
+
   onTabClick = tab => () => {
     if (this.state.tab !== tab) {
-      this.setState({ tab });
+      this.setState({ tab, expanded: {} });
     }
   };
 
   onRowClick = (_, { original, index }) => ({
     onClick: () => {
+      if (!this.props.isGroupSelected) { return; }
+
       this.expandRow(index);
       this.props.getGroupOrder(original._id);
     },
@@ -48,22 +56,24 @@ class OrdersTable extends React.Component {
     this.setState({ expanded });
   };
 
-  getColumns = (isOpenOrder, screenWidth) => {
+  getColumns = (isOpenOrder, screenWidth, isNested = false) => {
     const ordersColumn = [
       {
-        Header: <div onClick={() => this.onColumnSort('type')}
+        Header: isNested ? '' : <div onClick={() => this.onColumnSort('type')}
           className="table__header-wrapper orders__table-header-wrapper">
           <span className={classNameForColumnHeader(this.state, 'type')}/>
         </div>,
         minWidth: screenWidth === 'lg' ? 40 : 8,
         className: ' orders__table_cell',
-        Cell: row => {
-          return <div>
-            <span className={`orders__table_round ${row.original.type}`}/>
-          </div>;
-        }
+        Cell: row => (
+          isNested ? null : (
+            <div>
+              <span className={`orders__table_round ${row.original.type}`}/>
+            </div>
+          )
+        ),
       }, {
-        Header:<div onClick={() => this.onColumnSort('dt')}
+        Header: isNested ? '' : <div onClick={() => this.onColumnSort('dt')}
           className="table__header-wrapper orders__table-header-wrapper">
           <FormattedMessage
             id="orders.openDate"
@@ -76,7 +86,7 @@ class OrdersTable extends React.Component {
           return this.formatDate(new Date(row.original.dt));
         },
       }, {
-        Header: <div onClick={() => this.onColumnSort('market')}
+        Header: isNested ? '' : <div onClick={() => this.onColumnSort('market')}
           className="table__header-wrapper orders__table-header-wrapper">
           <FormattedMessage
             id="orders.market"
@@ -92,7 +102,7 @@ class OrdersTable extends React.Component {
         className: ' orders__table_cell',
       },
       {
-        Header: <div onClick={() => this.onColumnSort('limit')}
+        Header: isNested ? '' : <div onClick={() => this.onColumnSort('limit')}
           className="table__header-wrapper orders__table-header-wrapper">
           <FormattedMessage
             id="orders.price"
@@ -104,7 +114,7 @@ class OrdersTable extends React.Component {
         className: ' orders__table_cell',
       },
       {
-        Header: <div onClick={() => this.onColumnSort('filled')}
+        Header: isNested ? '' : <div onClick={() => this.onColumnSort('filled')}
           className="table__header-wrapper orders__table-header-wrapper">
           <FormattedMessage
             id="orders.unitsFilled"
@@ -116,7 +126,7 @@ class OrdersTable extends React.Component {
         className: ' orders__table_cell',
       },
       {
-        Header: <div onClick={() => this.onColumnSort('amount')}
+        Header: isNested ? '' : <div onClick={() => this.onColumnSort('amount')}
           className="table__header-wrapper orders__table-header-wrapper">
           <FormattedMessage
             id="orders.unitsTotal"
@@ -128,7 +138,7 @@ class OrdersTable extends React.Component {
         className: ' orders__table_cell',
       },
       {
-        Header: <div onClick={() => this.onColumnSort('price')}
+        Header: isNested ? '' : <div onClick={() => this.onColumnSort('price')}
           className="table__header-wrapper orders__table-header-wrapper">
           <span className="hide-mobile">
             <FormattedMessage
@@ -159,9 +169,15 @@ class OrdersTable extends React.Component {
         [{
           Header: '',
           minWidth: screenWidth === 'lg' ? 80 : 10,
-          Cell: row => <div onClick={() => this.props.cancelOrder(row.original)}>
-            <span className="orders__table-remove"/>
-          </div>,
+          Cell: ({ original }) =>
+            original.state === 'NEW' || original.state === 'CANCELING'
+              ? (
+                <div className="orders__table-spinner" />
+              ) : (
+                <div onClick={() => this.props.cancelOrder(original)}>
+                  <span className="orders__table-remove" />
+                </div>
+              ),
           className: ' orders__table_cell',
         }] : [])
     ];
@@ -183,7 +199,20 @@ class OrdersTable extends React.Component {
       data={sortedData}
       scrollBarHeight={300}
       expanded={this.state.expanded}
-      SubComponent={row => <div />}
+      SubComponent={({ original }) => (
+        this.props.isGroupSelected && original.orders && original.orders.length > 0 ? (
+          this.renderNestedOrdersTable(original.orders, isOpenOrder, screenWidth)
+        ) : null
+      )}
+    />
+  )
+
+  renderNestedOrdersTable = (orders, isOpenOrder, screenWidth) => (
+    <ReactTable
+      columns={this.getColumns(isOpenOrder, screenWidth, true)}
+      data={this.sortData(orders)}
+      scrollBarHeight={100}
+      sortable={false}
     />
   )
 

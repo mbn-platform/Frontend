@@ -30,6 +30,7 @@ class Controls extends React.Component {
   handleGroupSelect = (item) => {
     const { assetGroups } = this.props;
     const group = assetGroups.find((group) => group.name === item);
+    this.props.selectAssetGroup(item);
     this.props.onExchangeSelect(group.exchange);
     this.props.onApiKeySelect(group);
   };

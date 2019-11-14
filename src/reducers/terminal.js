@@ -147,7 +147,7 @@ export default function(state = {
           ...state,
           orders: {
             open,
-            closed: closed.map(item => item._id === order._id ? action.order : item),
+            closed: closed.map(item => item._id === action.order._id ? action.order : item),
           },
         };
       }

@@ -42,7 +42,7 @@ class Orders extends React.Component {
 
   render() {
     const apiKeys = this.props.apiKeys.ownKeys;
-    const { contracts, exchangeInfo } = this.props;
+    const { contracts, exchangeInfo, fund, assetGroup } = this.props;
 
     return (
       <Container fluid className="orders">
@@ -74,6 +74,8 @@ class Orders extends React.Component {
                 orders={this.props.orders}
                 cancelOrder={this.props.cancelOrder}
                 getGroupOrder={this.props.getGroupOrder}
+                isGroupSelected={fund && fund.name && fund.name === assetGroup}
+                fund={fund}
               />
             </div>
           </Col>
@@ -88,6 +90,7 @@ const mapStateToProps = state => ({
   userId: state.auth.profile._id,
   contracts: state.contracts.current,
   fund: state.terminal.fund,
+  assetGroup: state.terminal.assetGroup,
   orders: state.terminal.orders,
   market: state.terminal.market,
   exchange: state.terminal.exchange,
