@@ -2028,3 +2028,31 @@
 
 }
 
+$color-dashboard-block-title: #727272;
+$color-dashboard-border: #494d4d;
+.dashboard.page {
+  .block {
+    // generic
+    border: 1px solid $color-dashboard-border;
+    border-radius: 4px;
+    .title {
+      color: $color-dashboard-block-title;
+      text-transform: uppercase;
+      padding: 15px;
+      border-radius: 4px 0 0 0;
+      background: #2d3034;
+      max-height: 50px;
+      border-bottom: 1px solid $color-dashboard-border;
+      font-size: 18px;
+
+
+      // icons
+      .icon-key {
+        padding-left: 24px;
+        background: url('../assets/img/ApiKeysIcon.png') no-repeat left center;
+      }
+    }
+    .body {
+    }
+  }
+}

@@ -1,10 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
 
 import Funds from './ApiKeys';
-import BotList from './ApiBot';
 import AddApiKey from './AddApiKey';
-import AddBotApi from './AddBotApi';
 import ApiKeyInfo from './ApiKeyInfo';
 import Contracts from './Contracts';
 import GroupAsset from './GroupAsset';
@@ -130,14 +127,6 @@ class Dashboard extends React.Component {
             exchangesInfo={this.props.exchangesInfo}
           />
         </div>
-        <div className="keys_tables_wrapper table_wrapper">
-          <BotList
-            apiKeys={this.props.apiKeys.ownKeys}
-            selectedApiKey={this.state.selectedApiKey}
-            onKeySelected={this.onKeySelected}
-          />
-          <AddBotApi/>
-        </div>
       </div>
     );
   }
@@ -177,8 +166,4 @@ class Dashboard extends React.Component {
   }
 }
 
-const mapStateToProps = ({ auth: { profile } }) => ({
-  userName: profile.name,
-});
-
-export default connect(mapStateToProps)(Dashboard);
+export default Dashboard;

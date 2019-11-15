@@ -683,3 +683,21 @@ input[type=number]::-webkit-outer-spin-button {
   background-position: center;
   background-repeat: no-repeat;
 }
+
+.page {
+  .page-tab {
+    font-size: 22px;
+    font-weight: 500;
+    a {
+      color: $color-page-tab;
+      margin-left: 10px;
+      &:first-child {
+        margin-left: 0px
+      }
+
+      &.active {
+        color: $color-page-tab-active;
+      }
+    }
+  }
+}
