@@ -1,4 +1,5 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import Funds from './ApiKeys';
 import AddApiKey from './AddApiKey';
@@ -84,6 +85,14 @@ class Dashboard extends React.Component {
             onOfferSelected={this.onOfferSelected}
           />
         </div>
+        <div style={{
+          color: 'white',
+        }}>
+          <FormattedMessage
+            id="dashboard.apiKeyManagement"
+            defaultMessage="API KEYS Management"
+          />
+        </div>
         <div className="keys_tables_wrapper table_wrapper">
           <Funds
             exchangesInfo={this.props.exchangesInfo}
@@ -99,6 +108,14 @@ class Dashboard extends React.Component {
             fund={this.state.selectedOffer || this.state.selectedApiKey}
           />
         </div>
+        <div style={{
+          color: 'white',
+        }}>
+          <FormattedMessage
+            id="dashboard.contractManagement"
+            defaultMessage="CONTRACTS MANAGEMENT"
+          />
+        </div>
         <div className="table_wrapper contracts_table_wrapper">
           <Contracts
             contracts={this.props.contracts.current}
@@ -106,6 +123,14 @@ class Dashboard extends React.Component {
             selectedProvidedContract={this.state.selectedProvidedContract}
             selectedApiKey={this.state.selectedApiKey}
             onContractSelected={this.onContractSelected}
+          />
+        </div>
+        <div style={{
+          color: 'white',
+        }}>
+          <FormattedMessage
+            id="dashboard.groupManagement"
+            defaultMessage="GROUPS MANAGEMENT"
           />
         </div>
         <div className="table_wrapper group_asset_wrapper">

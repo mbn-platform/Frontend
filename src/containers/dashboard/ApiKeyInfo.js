@@ -159,16 +159,7 @@ class ApiKeyInfo extends React.Component {
   }
 
   getTitle(fund) {
-    if(!fund || !fund.contractSettings) {
-      return this.props.intl.messages['dashboard.apiKeyCurrencies'];
-    } else {
-      if(fund.state === CONTRACT_STATE_ACCEPTED || fund.state === CONTRACT_STATE_INIT) {
-        return this.props.intl.messages['dashboard.availableCurrencies'];
-      } else {
-        return this.props.intl.messages['dashboard.contractCurrencies'];
-      }
-    }
-  
+    return this.props.intl.messages['dashboard.apiKeyCurrencies'];
   }
 }
 
