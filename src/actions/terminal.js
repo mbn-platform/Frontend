@@ -1,6 +1,9 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+
 import { ApiError } from '../generic/apiCall';
 import { ApiTerminal} from '../generic/api';
-import { showInfoModal, showUpgradeTariffModal } from './modal';
+import { showInfoModal, closeInfoModal, showUpgradeTariffModal } from './modal';
 import { LOGGED_OUT } from './auth';
 
 export const SELECT_FUND = 'SELECT_FUND';
@@ -29,6 +32,7 @@ export const SELECT_ASSET_GROUP = 'SELECT_ASSET_GROUP';
 const TerminalApi = new ApiTerminal();
 
 export function selectFund(fund) {
+  console.log('call select fund');
   localStorage.setItem('terminal.selectedFund', JSON.stringify(fund));
   return {
     type: SELECT_FUND,
@@ -60,7 +64,8 @@ export function selectExchange(exchange, restore) {
     const contracts = state.contracts.current
       .filter(c => c.exchange === exchange && c.to._id === state.auth.profile._id);
     const selectedFund = apiKeys[0] || contracts[0] || null;
-    dispatch(selectFund(selectedFund));
+    // TODO: make fund selection automatic
+    // dispatch(selectFund(selectedFund));
     dispatch({
       type: SELECT_EXCHANGE,
       exchange,
@@ -217,6 +222,17 @@ export function placeAlgoOrder(order) {
           }
         }
       });
+  };
+}
+
+
+export function showNoFundsModal() {
+  return dispatch => {
+    dispatch(showInfoModal('noAssetGroups', {
+      link: <Link to="/dashboard">
+        <span onClick={() => dispatch(closeInfoModal())}>Dashboard</span>
+      </Link>,
+    }));
   };
 }
 

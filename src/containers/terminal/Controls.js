@@ -10,10 +10,10 @@ import {
   selectFund,
   selectInterval,
   selectAssetGroup,
+  showNoFundsModal
 } from '../../actions/terminal';
 import { getAssetGroups } from '../../actions/assetGroup';
 import { Checkbox } from './OrdersHeader';
-import { showInfoModal } from '../../actions/modal';
 
 const TIME_RANGE_OPTIONS = ['1 MIN', '5 MIN', '30 MIN', '1 H', '4 H', '12 H', '1 D', '1 W'];
 
@@ -28,8 +28,7 @@ class Controls extends React.Component {
 
   onAssetGroupToggle = (checked) => {
     if (checked && this.props.assetGroups.length === 0) {
-      this.props.showInfoModal('noAssetGroups');
-      console.log('no groups to select, go to dashboard');
+      this.props.showNoFundsModal();
     } else {
       this.setState({assetGroupEnabled: checked});
       if (checked) {
@@ -154,7 +153,7 @@ const mapDispatchToProps = {
   onApiKeySelect: selectFund,
   getAssetGroups,
   selectAssetGroup,
-  showInfoModal,
+  showNoFundsModal,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Controls);

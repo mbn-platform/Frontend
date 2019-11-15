@@ -366,6 +366,7 @@ const en = {
   'modal.success': 'Success',
   'contactVerified': 'This contact is already added',
   'telegramConfirmCode': 'Your code is {code}. Go to {link} and enter',
+  'noAssetGroups': 'You have no asset groups. Go to {link} to create one',
   'help-stop-limit-order': 'Stop-limit orders are triggered when pair price reaches stop price. In that case a limit order is placed. Such orders don\'t block your available balance',
 
   'staking.title': 'STAKING',
