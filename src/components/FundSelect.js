@@ -81,7 +81,7 @@ class FundSelect extends React.Component {
 
     return (
       <span className="dropdown-link">
-        <FormattedMessage id="apiKey"
+        <FormattedMessage id={this.props.title}
           defaultMessage="API KEY"/>
         {this.props.selectedFund ? ': ' : ''}
         {this.renderFundName(this.props.selectedFund)} <span className="arrow_down"/>

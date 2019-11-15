@@ -57,7 +57,7 @@ OrdersHeader.propTypes = {
   onSmallAssetsFilterChange: PropTypes.func.isRequired,
 };
 
-class Checkbox extends React.PureComponent {o
+export class Checkbox extends React.PureComponent {o
 
   onChange = (e) => {
     this.props.onToggle(!this.props.checked);

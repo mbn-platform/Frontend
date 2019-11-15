@@ -354,10 +354,9 @@ export function updateTicker(exchange, market, ticker) {
   };
 }
 
-export const selectAssetGroup = groupName => {
-  localStorage.setItem('terminal.selectedGroup', groupName);
+export const selectAssetGroup = group => {
   return {
     type: SELECT_ASSET_GROUP,
-    groupName,
+    group,
   };
 };

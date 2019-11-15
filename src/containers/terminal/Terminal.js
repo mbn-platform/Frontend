@@ -44,11 +44,12 @@ class Terminal extends React.Component {
   // }
 
   componentDidUpdate(prevProps) {
-    if(this.props.fund && (prevProps.market !== this.props.market ||
-      (!prevProps.fund || prevProps.fund._id !== this.props.fund._id))) {
+    const fund = this.props.fund || this.props.assetGroup;
+    if(fund && (prevProps.market !== this.props.market ||
+      (!prevProps.fund || prevProps.fund._id !== fund._id))) {
       const payload = {
       };
-      setFundId(payload, this.props.fund);
+      setFundId(payload, fund);
       this.props.getOrders(payload);
     }
     const {
@@ -186,10 +187,12 @@ const mapStateToProps = ({
     fund,
     market,
     exchange,
-    interval
+    interval,
+    assetGroup,
   },
   exchanges,
 }) => ({
+  assetGroup,
   auth,
   fund,
   market,

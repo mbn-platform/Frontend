@@ -3,6 +3,7 @@ import {
   SET_ASSET_GROUP,
   UPDATE_ASSET_GROUP,
   DELETE_ASSET_GROUP,
+  UPDATE_GROUP_BALANCE,
 } from '../actions/assetGroup';
 
 export default (state = [], action) => {
@@ -12,6 +13,11 @@ export default (state = [], action) => {
 
     case SET_ASSET_GROUP:
       return [...state, action.assetGroup];
+
+    case UPDATE_GROUP_BALANCE: {
+      state = state.map((item) => item._id === action._id ? {...item, balances: action.balances} : item);
+      return state;
+    }
 
     case UPDATE_ASSET_GROUP:
       const { assetGroup } = action;

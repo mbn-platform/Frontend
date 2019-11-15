@@ -73,6 +73,13 @@ const root = (state, action) => {
       }
       return newState;
     }
+    case 'UPDATE_GROUP_BALANCE': {
+      const activeGroup = state.terminal.assetGroup;
+      if (activeGroup && activeGroup._id === action._id) {
+        newState = {...newState, terminal: {...newState.terminal, assetGroup: {...activeGroup, balances: action.balances}}};
+      }
+      return newState;
+    }
     case 'UPDATE_CONTRACT_BALANCE': {
       if(state.terminal.fund && state.terminal.fund._id === action._id) {
         const fund = newState.contracts.current.find(c => c._id === action._id);

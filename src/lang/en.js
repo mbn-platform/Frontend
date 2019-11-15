@@ -310,6 +310,7 @@ const en = {
   'ratings.amountOfFinishedContracts' : 'The amount of successfully finished contracts',
   'ratings.paidExcess' : 'Paid excess{br}profit',
   'ratings.amountOfPaid' : 'Amount of paid invoices',
+  'terminal.contracts': 'Contract',
   'terminal.placeOrder.limit': 'Limit',
   'terminal.placeOrder.stop-limit': 'Stop-limit',
   'terminal.placeOrder.price': 'Price:',

@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Switch, Route, NavLink } from 'react-router-dom';
+import { Switch, Route, NavLink, Redirect } from 'react-router-dom';
 import DashboardContainer from './DashboardContainer';
 import { External } from './External';
 
@@ -13,6 +13,7 @@ class DashboardWrapper extends React.Component {
         <Switch>
           <Route exact path="/dashboard/inner" component={DashboardContainer} />
           <Route exact path="/dashboard/external" component={External}/>
+          <Redirect to="/dashboard/inner"/>
         </Switch>
       </div>
     );

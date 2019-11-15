@@ -8,7 +8,7 @@ import { FETCH_CONTRACTS } from '../actions/contracts';
 
 export default function(state = {
   fund: null,
-  assetGroup: localStorage.getItem('terminal.selectedGroup') || 'asset groups',
+  assetGroup: null,
   exchange: localStorage.getItem('terminal.selectedExchange') || 'binance',
   market: localStorage.getItem('terminal.selectedMarket') || 'USDT-BTC',
   interval: localStorage.getItem('terminal.selectedInterval') || '30 MIN',
@@ -27,6 +27,13 @@ export default function(state = {
       } else {
         return {...state, market: action.market, orderBook: {sell: [], buy: [], smap: {}, bmap: {}}, history: [], ticker: null};
       }
+    }
+    case SELECT_ASSET_GROUP: {
+      return {
+        ...state,
+        assetGroup: action.group,
+        fund: null,
+      };
     }
     case SELECT_EXCHANGE: {
       if(action.exchange === state.exchange) {
@@ -124,7 +131,8 @@ export default function(state = {
       break;
     }
     case GET_MY_ORDERS: {
-      if(state.fund && state.fund._id === action.fundId) {
+      const fund = state.fund || state.assetGroup;
+      if(fund && fund._id === action.fundId) {
         return {...state, orders: action.orders};
       }
       break;
@@ -220,11 +228,6 @@ export default function(state = {
       }
       break;
     }
-
-    case SELECT_ASSET_GROUP:
-      return action.groupName === state.assetGroup
-        ? state
-        : { ...state, assetGroup: action.groupName };
 
     default:
       return state;

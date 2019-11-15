@@ -318,7 +318,7 @@ class PlaceOrderContainer extends React.Component {
 const mapStateToProps = state => {
   const {
     exchangesInfo,
-    terminal: { market, exchange, ticker, fund },
+    terminal: { market, exchange, ticker, fund, assetGroup },
     auth,
   } = state;
 
@@ -328,7 +328,7 @@ const mapStateToProps = state => {
     ticker,
     exchange,
     market,
-    fund,
+    fund: fund || assetGroup,
     auth,
   };
 };

@@ -12,6 +12,8 @@ import {
   selectAssetGroup,
 } from '../../actions/terminal';
 import { getAssetGroups } from '../../actions/assetGroup';
+import { Checkbox } from './OrdersHeader';
+import { showInfoModal } from '../../actions/modal';
 
 const TIME_RANGE_OPTIONS = ['1 MIN', '5 MIN', '30 MIN', '1 H', '4 H', '12 H', '1 D', '1 W'];
 
@@ -20,39 +22,64 @@ class Controls extends React.Component {
     super(props);
     this.state = {
       selectedTime: localStorage.getItem('terminal.selectedTime') || '1 H',
+      assetGroupEnabled: false,
     };
   }
+
+  onAssetGroupToggle = (checked) => {
+    if (checked && this.props.assetGroups.length === 0) {
+      this.props.showInfoModal('noAssetGroups');
+      console.log('no groups to select, go to dashboard');
+    } else {
+      this.setState({assetGroupEnabled: checked});
+      if (checked) {
+        this.handleGroupSelect(this.props.assetGroups[0].name);
+      } else {
+        this.props.selectAssetGroup(null);
+      }
+    }
+  };
 
   componentDidMount = () => {
     this.props.getAssetGroups();
   };
 
-  handleGroupSelect = (item) => {
-    const { assetGroups } = this.props;
-    const group = assetGroups.find((group) => group.name === item);
-    this.props.selectAssetGroup(item);
-    this.props.onExchangeSelect(group.exchange);
-    this.props.onApiKeySelect(group);
+  handleGroupSelect = (groupName) => {
+    const group = this.props.assetGroups.find((g) => g.name === groupName);
+    if (group) {
+      this.props.selectAssetGroup(group);
+      this.props.onExchangeSelect(group.exchange);
+    }
   };
 
   render() {
-    const funds = this.props.apiKeys.concat(this.props.contracts.filter(contract => contract.to._id === this.props.userId));
     const { assetGroup, assetGroups } = this.props;
+    let funds;
+    if (assetGroup) {
+      funds = this.props.contracts.filter((c) => assetGroup.contracts.includes(c._id));
+    } else {
+      funds = this.props.apiKeys.concat(this.props.contracts.filter(contract => contract.to._id === this.props.userId));
+    }
 
     return (
       <div className={classNames('row', 'dropdowns', {'controls-fullscreen-mode': this.props.isFullScreenEnabled})}>
-        {assetGroups && assetGroups.length > 0 && (
+        <Checkbox
+          checked={this.state.assetGroupEnabled}
+          title="Asset Group"
+          onToggle={this.onAssetGroupToggle}
+        />
+        {this.state.assetGroupEnabled && assetGroup && (
           <DropdownSelect
-            selected={assetGroup}
-            items={assetGroups.map(({ name }) => name)}
-            targetId="asset_groups_select"
+            selected={assetGroup.name}
+            items={assetGroups.map((g) => g.name)}
+            targetId="group_select"
             elementClassName="exchange__switch"
-            dropdownClassName="asset-groups"
+            dropdownClassName="exchange"
             onItemSelect={this.handleGroupSelect}
           />
         )}
         <FundSelect
-          container=".terminal.container-fluid"
+          title={assetGroup ? 'terminal.contracts': 'apiKey'}
           exchange={this.props.exchange}
           funds={funds}
           selectedFund={this.props.fund}
@@ -127,6 +154,7 @@ const mapDispatchToProps = {
   onApiKeySelect: selectFund,
   getAssetGroups,
   selectAssetGroup,
+  showInfoModal,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Controls);
