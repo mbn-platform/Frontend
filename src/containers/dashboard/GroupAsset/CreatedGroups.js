@@ -20,20 +20,20 @@ class CreatedGroups extends React.Component {
 
   columns = [
     {
-      Header: TableHeader({ id: 'dashboard.groupName' }),
+      Header: <TableHeader header={{ id: 'dashboard.groupName' }} />,
       id: 'name',
       className: 'table_col_value',
       accessor: c => c.name,
     },
     {
-      Header:  TableHeader({ id: 'dashboard.total' }),
+      Header: <TableHeader header={{ id: 'dashboard.total' }} />,
       id: 'totalInUSDT',
       className: 'table_col_value',
       accessor: c => c.totalInUSDT,
       Cell: ({ value }) => <div>{value} USDT</div>,
     },
     {
-      Header: TableHeader({ id: 'simpleValue', values: { value: '#' } }),
+      Header: <TableHeader header={{ id: 'simpleValue', values: { value: '#' } }} />,
       id: 'contractsQuantity',
       className: 'table_col_value',
       accessor: c => c.contracts.length,

@@ -8,7 +8,7 @@ import TableHeader from './TableHeader';
 const Contracts = ({ contracts, allContracts, onContractDelete }) => {
   const columns = [
     {
-      Header: TableHeader({ id: 'dashboard.contractor' }),
+      Header: <TableHeader header={{ id: 'dashboard.contractor' }} />,
       id: 'name',
       className: 'table_col_value',
       accessor: c => c,
@@ -19,7 +19,7 @@ const Contracts = ({ contracts, allContracts, onContractDelete }) => {
       },
     },
     {
-      Header:  TableHeader({ id: 'dashboard.total' }),
+      Header: <TableHeader header={{ id: 'dashboard.total' }} />,
       id: 'total',
       className: 'table_col_value',
       accessor: c => c,
@@ -30,7 +30,7 @@ const Contracts = ({ contracts, allContracts, onContractDelete }) => {
       },
     },
     {
-      Header: TableHeader({ id: 'dashboard.expireDate' }),
+      Header: <TableHeader header={{ id: 'dashboard.expireDate' }} />,
       id: 'contractsQuantity',
       className: 'table_col_value',
       accessor: c => c,
