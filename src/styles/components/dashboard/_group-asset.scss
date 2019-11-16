@@ -128,12 +128,21 @@
       .ReactTable {
         .rt-table {
           .rt-thead {
-            display: none;
+            .groups_header_wrapper {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              height: 60px;
+            }
+
+            .rt-tr {
+              padding-top: 0;
+            }
           }
         }
 
         .rt-tr > :first-child {
-          margin-left: 0;
+          margin-left: 10px;
         }
 
         .rt-tr-group .rt-tr:not(.-padRow).-selected {
@@ -142,31 +151,6 @@
 
         .rt-tr.-even {
           background: inherit;
-        }
-
-        .asset_group_row {
-          display: flex;
-          justify-content: space-between;
-          padding: 0 15px;
-
-          &:hover {
-            color: white;
-          }
-
-          .asset_group_row_title {
-            font-size: 1.3em;
-          }
-
-          .delete_key_button {
-            display: inline-block;
-            background: url('../assets/svg/DeleteKey.svg') no-repeat center center;
-            height: auto;
-            transition-property: opacity, background-color;
-            transition-duration: 400ms;
-            cursor: pointer;
-            opacity: .4;
-            background-size: 17px;
-          }
         }
       }
     }

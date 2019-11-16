@@ -1,9 +1,6 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-
 import { ApiError } from '../generic/apiCall';
 import { ApiTerminal} from '../generic/api';
-import { showInfoModal, closeInfoModal, showUpgradeTariffModal } from './modal';
+import { showInfoModal, showUpgradeTariffModal } from './modal';
 import { LOGGED_OUT } from './auth';
 
 export const SELECT_FUND = 'SELECT_FUND';
@@ -222,17 +219,6 @@ export function placeAlgoOrder(order) {
           }
         }
       });
-  };
-}
-
-
-export function showNoFundsModal() {
-  return dispatch => {
-    dispatch(showInfoModal('noAssetGroups', {
-      link: <Link to="/dashboard">
-        <span onClick={() => dispatch(closeInfoModal())}>Dashboard</span>
-      </Link>,
-    }));
   };
 }
 

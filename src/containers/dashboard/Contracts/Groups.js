@@ -5,7 +5,6 @@ import { FormattedMessage } from 'react-intl';
 
 import { showCreateGroupModal, showAddContractToGroupModal } from '../../../actions/modal';
 import ReactTable from '../../../components/SelectableReactTable';
-import GroupRow from '../GroupAsset/GroupRow';
 
 class Groups extends React.Component {
   static propTypes = {
@@ -24,7 +23,6 @@ class Groups extends React.Component {
       id: 'name',
       className: 'table_col_value',
       accessor: ({ name }) => name,
-      Cell: ({ value }) => <GroupRow value={value} />,
     },
   ];
 

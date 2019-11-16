@@ -6,7 +6,7 @@ import { FormattedMessage } from 'react-intl';
 import { getAssetGroups, deleteAssetGroup } from '../../../actions/assetGroup';
 import { showConfirmModal } from '../../../actions/modal';
 import ReactTable from '../../../components/SelectableReactTable';
-import GroupRow from './GroupRow';
+import TableHeader from './TableHeader';
 
 class CreatedGroups extends React.Component {
   static propTypes = {
@@ -20,14 +20,32 @@ class CreatedGroups extends React.Component {
 
   columns = [
     {
+      Header: TableHeader({ id: 'dashboard.groupName' }),
       id: 'name',
       className: 'table_col_value',
       accessor: c => c.name,
-      Cell: ({ value, original }) => (
-        <GroupRow
-          value={value}
-          onSelect={this.onGroupSelect(original)}
-          onDelete={this.confirmDeleteGroup(original._id, original.name)}
+    },
+    {
+      Header:  TableHeader({ id: 'dashboard.total' }),
+      id: 'totalInUSDT',
+      className: 'table_col_value',
+      accessor: c => c.totalInUSDT,
+      Cell: ({ value }) => <div>{value} USDT</div>,
+    },
+    {
+      Header: TableHeader({ id: 'simpleValue', values: { value: '#' } }),
+      id: 'contractsQuantity',
+      className: 'table_col_value',
+      accessor: c => c.contracts.length,
+    },
+    {
+      Header: '',
+      minWidth: 24,
+      className: 'table_col_delete',
+      Cell: ({ original: { _id, name } }) => (
+        <div
+          className="delete_key_button can_delete_key"
+          onClick={this.confirmDeleteGroup(_id, name)}
         />
       ),
     },
@@ -37,7 +55,7 @@ class CreatedGroups extends React.Component {
     this.props.getAssetGroups();
   };
 
-  onGroupSelect = (group) => () => {
+  onGroupSelect = group => {
     this.props.selectAssetGroup(group);
     this.setState({ selectedGroup: group });
   };
@@ -55,6 +73,12 @@ class CreatedGroups extends React.Component {
     );
   };
 
+  onRowClick = (_, { original }) => ({
+    onClick: () => {
+      this.onGroupSelect(original);
+    },
+  });
+
   render = () => (
     <div className="created-groups-table-wrapper table table-wrapper">
       <div className="table_title_wrapper">
@@ -68,6 +92,7 @@ class CreatedGroups extends React.Component {
         data={this.props.assetGroups}
         selectedItem={this.state.selectedGroup}
         onItemSelected={this.onGroupSelect}
+        getTrProps={this.onRowClick}
         scrollBarHeight={310}
       />
     </div>

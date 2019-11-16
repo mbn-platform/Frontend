@@ -71,7 +71,7 @@ class Dashboard extends React.Component {
 
   render() {
     return (
-      <div className="dashboard_wrapper clearfix" >
+      <div className="dashboard_wrapper clearfix">
         <div className="table_wrapper requests_table_wrapper" style={{display: (this.props.offers.outgoing.length === 0 && this.props.offers.incoming.length === 0) ? 'none':'block'}}>
           <Offers
             time={this.props.time}
@@ -85,9 +85,7 @@ class Dashboard extends React.Component {
             onOfferSelected={this.onOfferSelected}
           />
         </div>
-        <div style={{
-          color: 'white',
-        }}>
+        <div className="dashboard_block_header_title">
           <FormattedMessage
             id="dashboard.apiKeyManagement"
             defaultMessage="API KEYS Management"
@@ -108,9 +106,7 @@ class Dashboard extends React.Component {
             fund={this.state.selectedOffer || this.state.selectedApiKey}
           />
         </div>
-        <div style={{
-          color: 'white',
-        }}>
+        <div className="dashboard_block_header_title">
           <FormattedMessage
             id="dashboard.contractManagement"
             defaultMessage="CONTRACTS MANAGEMENT"
@@ -125,9 +121,7 @@ class Dashboard extends React.Component {
             onContractSelected={this.onContractSelected}
           />
         </div>
-        <div style={{
-          color: 'white',
-        }}>
+        <div className="dashboard_block_header_title">
           <FormattedMessage
             id="dashboard.groupManagement"
             defaultMessage="GROUPS MANAGEMENT"

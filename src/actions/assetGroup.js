@@ -8,7 +8,7 @@ export const GET_ASSET_GROUP = 'GET_ASSET_GROUP';
 export const SET_ASSET_GROUP = 'SET_ASSET_GROUP';
 export const UPDATE_ASSET_GROUP = 'UPDATE_ASSET_GROUP';
 export const DELETE_ASSET_GROUP = 'DELETE_ASSET_GROUP';
-export const UPDATE_GROUP_BALANCE = 'DELETE_ASSET_GROUP';
+export const UPDATE_GROUP_BALANCE = 'UPDATE_GROUP_BALANCE';
 
 export const getAssetGroups = () => {
   return dispatch => {

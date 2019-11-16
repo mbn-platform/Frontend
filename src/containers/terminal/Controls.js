@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 
@@ -10,10 +11,12 @@ import {
   selectFund,
   selectInterval,
   selectAssetGroup,
-  showNoFundsModal
 } from '../../actions/terminal';
+import { showInfoModal, closeInfoModal } from '../../actions/modal';
+
 import { getAssetGroups } from '../../actions/assetGroup';
 import { Checkbox } from './OrdersHeader';
+import { FormattedMessage } from 'react-intl';
 
 const TIME_RANGE_OPTIONS = ['1 MIN', '5 MIN', '30 MIN', '1 H', '4 H', '12 H', '1 D', '1 W'];
 
@@ -27,8 +30,10 @@ class Controls extends React.Component {
   }
 
   onAssetGroupToggle = (checked) => {
+    if (!this.props.loggedIn) { return; }
+
     if (checked && this.props.assetGroups.length === 0) {
-      this.props.showNoFundsModal();
+      this.showNoFundsModal();
     } else {
       this.setState({assetGroupEnabled: checked});
       if (checked) {
@@ -49,6 +54,21 @@ class Controls extends React.Component {
       this.props.selectAssetGroup(group);
       this.props.onExchangeSelect(group.exchange);
     }
+  };
+
+  showNoFundsModal = () => {
+    this.props.showInfoModal('noAssetGroups', {
+      link: (
+        <div className="dashboard_link" onClick={this.navigateToDashboard}>
+          <FormattedMessage id="dashboard.dashboard" />
+        </div>
+      ),
+    });
+  };
+
+  navigateToDashboard = () => {
+    this.props.closeInfoModal();
+    this.props.history.push('/dashboard/inner');
   };
 
   render() {
@@ -144,6 +164,7 @@ const mapStateToProps = state => {
     interval,
     assetGroups: auth && auth.loggedIn ? assetGroups : null,
     assetGroup,
+    loggedIn: auth.loggedIn,
   };
 };
 
@@ -153,8 +174,9 @@ const mapDispatchToProps = {
   onApiKeySelect: selectFund,
   getAssetGroups,
   selectAssetGroup,
-  showNoFundsModal,
+  showInfoModal,
+  closeInfoModal,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Controls);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Controls));
 

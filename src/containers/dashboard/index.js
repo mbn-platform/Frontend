@@ -21,17 +21,19 @@ class DashboardWrapper extends React.Component {
 
   renderNavigation() {
     return (
-      <div className="page-tab">
-        <NavLink to="/dashboard/inner">
-          <FormattedMessage
-            id="dashboard.inner.title"
-            defaultMessage="INNER API" />
-        </NavLink>
-        <NavLink to="/dashboard/external">
-          <FormattedMessage
-            id="dashboard.external.title"
-            defaultMessage="EXTERNAL API (BOTS)" />
-        </NavLink>
+      <div className="dashboard_wrapper clearfix">
+        <div className="page-tab">
+          <NavLink to="/dashboard/inner">
+            <FormattedMessage
+              id="dashboard.inner.title"
+              defaultMessage="INNER API" />
+          </NavLink>
+          <NavLink to="/dashboard/external">
+            <FormattedMessage
+              id="dashboard.external.title"
+              defaultMessage="EXTERNAL API (BOTS)" />
+          </NavLink>
+        </div>
       </div>
     );
   }
