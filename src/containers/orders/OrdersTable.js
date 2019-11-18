@@ -24,7 +24,7 @@ class OrdersTable extends React.Component {
   }
 
   componentDidUpdate = (prevProps) => {
-    if (prevProps.fund !== this.props.fund) {
+    if (prevProps.assetGroup !== this.props.assetGroup) {
       this.setState({ expanded: {} });
     }
   }
@@ -37,7 +37,9 @@ class OrdersTable extends React.Component {
 
   onRowClick = (_, { original, index }) => ({
     onClick: () => {
-      if (!this.props.isGroupSelected) { return; }
+      const { assetGroup, fund } = this.props;
+
+      if (!assetGroup || (assetGroup && fund)) { return; }
 
       this.expandRow(index);
       this.props.getGroupOrder(original._id);
@@ -200,7 +202,7 @@ class OrdersTable extends React.Component {
       scrollBarHeight={300}
       expanded={this.state.expanded}
       SubComponent={({ original }) => (
-        this.props.isGroupSelected && original.orders && original.orders.length > 0 ? (
+        this.props.assetGroup && original.orders && original.orders.length > 0 ? (
           this.renderNestedOrdersTable(original.orders, isOpenOrder, screenWidth)
         ) : null
       )}

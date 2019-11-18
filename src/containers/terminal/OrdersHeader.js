@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Col, Row } from 'reactstrap';
+import { Row } from 'reactstrap';
+
 import { Tab } from './Tab';
+import Checkbox from '../../components/Checkbox';
 
 export class OrdersHeader extends React.PureComponent {
 
@@ -55,29 +57,4 @@ OrdersHeader.propTypes = {
   onClick: PropTypes.func.isRequired,
   onPairFilterChange: PropTypes.func.isRequired,
   onSmallAssetsFilterChange: PropTypes.func.isRequired,
-};
-
-export class Checkbox extends React.PureComponent {o
-
-  onChange = (e) => {
-    this.props.onToggle(!this.props.checked);
-  }
-
-  render() {
-    return (
-      <Col className='checkbox' xs='auto'>
-        <label>
-          <input type="checkbox" checked={this.props.checked} onChange={this.onChange}/>
-          {this.props.title}
-        </label>
-      </Col>
-    );
-  }
-
-}
-
-Checkbox.propTypes = {
-  checked: PropTypes.bool.isRequired,
-  title: PropTypes.string.isRequired,
-  onToggle: PropTypes.func.isRequired,
 };

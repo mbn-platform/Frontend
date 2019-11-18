@@ -74,7 +74,7 @@ class Orders extends React.Component {
                 orders={this.props.orders}
                 cancelOrder={this.props.cancelOrder}
                 getGroupOrder={this.props.getGroupOrder}
-                isGroupSelected={fund && fund.name && fund.name === assetGroup}
+                assetGroup={assetGroup}
                 fund={fund}
               />
             </div>

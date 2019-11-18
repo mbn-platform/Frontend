@@ -15,8 +15,7 @@ export default (state = [], action) => {
       return [...state, action.assetGroup];
 
     case UPDATE_GROUP_BALANCE: {
-      state = state.map((item) => item._id === action._id ? {...item, balances: action.balances} : item);
-      return state;
+      return state.map((item) => item._id === action._id ? {...item, balances: action.balances} : item);
     }
 
     case UPDATE_ASSET_GROUP:
