@@ -6,12 +6,14 @@ class ContractsSelect extends React.Component {
     defaultPlaceholder: PropTypes.string,
     titleClass: PropTypes.string,
     itemClass: PropTypes.string,
+    className: PropTypes.string,
   };
 
   static defaultProps = {
     defaultPlaceholder: '',
     titleClass: '',
     itemClass: '',
+    className: '',
   };
 
   formatContractString = ({ from, contractSettings, startDt }) => {
@@ -26,11 +28,12 @@ class ContractsSelect extends React.Component {
 
   render = () => {
     const {
-      titleClass, contract, defaultPlaceholder, showAllOption,
+      titleClass, contract, className,
+      defaultPlaceholder, showAllOption,
     } = this.props;
 
     return (
-      <div className="add_keys_select_wr">
+      <div className={`add_keys_select_wr ${className}`}>
         <div className={`add_keys_select_value upper upper ${titleClass}`}>
           {contract ? this.formatContractString(contract) : defaultPlaceholder}
           <div className="add_keys_select_value_bg" />

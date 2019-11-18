@@ -118,18 +118,18 @@ export const closeCommitTokensModal = () => ({
   type: CLOSE_COMMIT_TOKENS_MODAL,
 });
 
-export const showCreateGroupModal = contract => ({
+export const showCreateGroupModal = () => ({
   type: 'SHOW_CREATE_GROUP_MODAL',
-  contract,
 });
 
 export const closeCreateGroupModal = () => ({
   type: 'CLOSE_CREATE_GROUP_MODAL',
 });
 
-export const showAddContractToGroupModal = contract => ({
+export const showAddContractToGroupModal = (group, contracts) => ({
   type: 'SHOW_ADD_CONTRACT_TO_GROUP_MODAL',
-  contract,
+  group,
+  contracts,
 });
 
 export const closeAddContractToGroupModal = () => ({

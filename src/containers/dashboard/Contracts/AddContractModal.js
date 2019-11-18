@@ -5,20 +5,19 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 
 import { updateAssetGroup } from '../../../actions/assetGroup';
 import ModalWindow from '../../../components/Modal';
-import GroupsSelect from './GroupsSelect';
+import ContractSelect from '../GroupAsset/ContractSelect';
 
 class AddContractModal extends React.Component {
   static propTypes = {
     modal: PropTypes.shape({
-      contract: PropTypes.shape().isRequired,
+      group: PropTypes.shape().isRequired,
     }).isRequired,
-    assetGroups: PropTypes.arrayOf(PropTypes.shape()).isRequired,
     intl: PropTypes.shape().isRequired,
     closeAddContractToGroupModal: PropTypes.func.isRequired,
   };
 
   state = {
-    selectedGroup: null,
+    selectedContract: null,
   };
 
   handleChange = (event) => {
@@ -26,29 +25,26 @@ class AddContractModal extends React.Component {
     this.setState({ [name]: value });
   }
 
-  handleSubmit = (event) => {
+  handleAddContract = (event) => {
     event.preventDefault();
-    const { selectedGroup } = this.state;
-    const { modal, closeAddContractToGroupModal } = this.props;
-    const contractsToUpdate = selectedGroup.contracts.concat(modal.contract._id);
+    const { modal: { group }, closeAddContractToGroupModal } = this.props;
+    const { selectedContract } = this.state;
 
-    this.props.updateAssetGroup(selectedGroup._id, contractsToUpdate);
+    if (!selectedContract) { return; }
+
+    const contractsToUpdate = group.contracts.concat(selectedContract._id);
+
+    this.props.updateAssetGroup(group._id, contractsToUpdate);
     closeAddContractToGroupModal();
   }
 
-  onSelectGroup = group => () => {
-    this.setState({ selectedGroup: group });
+  onSelectContract = contract => () => {
+    this.setState({ selectedContract: contract });
   }
-
-  filterGroups = () => {
-    const { modal: { contract }, assetGroups } = this.props;
-
-    return assetGroups.filter(({ exchange }) => exchange === contract.exchange);
-  };
 
   render = () => {
     const { modal, closeAddContractToGroupModal } = this.props;
-    const { selectedGroup } = this.state;
+    const { selectedContract } = this.state;
 
     return (
       <ModalWindow
@@ -58,15 +54,16 @@ class AddContractModal extends React.Component {
           <FormattedMessage id="dashboard.addContractToGroup" />
         }
         content={
-          <form className="create_group_form" onSubmit={this.handleSubmit}>
+          <form className="create_group_form" onSubmit={this.handleAddContract}>
             <div className="create_group_container">
               <div className="create_group_fields_wrapper">
                 <div className="create_group_field">
-                  <GroupsSelect
-                    groups={this.filterGroups()}
-                    group={selectedGroup}
-                    onChange={this.onSelectGroup}
-                    defaultPlaceholder="Groups"
+                  <ContractSelect
+                    contracts={modal.contracts}
+                    contract={selectedContract}
+                    onChange={this.onSelectContract}
+                    defaultPlaceholder="Contracts"
+                    className="group_select_wr"
                   />
                 </div>
               </div>
@@ -84,12 +81,8 @@ class AddContractModal extends React.Component {
   }
 };
 
-const mapStateToProps = ({ assetGroups }) => ({
-  assetGroups,
-});
-
 const mapDispatchToProps = {
   updateAssetGroup,
 };
 
-export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(AddContractModal));
+export default injectIntl(connect(null, mapDispatchToProps)(AddContractModal));

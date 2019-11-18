@@ -25,7 +25,9 @@ class CreateGroup extends React.Component {
     this.setState({ [name]: value });
   }
 
-  handleExchangeChange = (exchange) => this.setState({ exchange });
+  handleExchangeChange = exchange => {
+    this.setState({ exchange });
+  };
 
   render = () => (
     <div className="create_group_form_wrapper">

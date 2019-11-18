@@ -697,17 +697,25 @@ input[type=number]::-webkit-outer-spin-button {
 
 .page {
   .page-tab {
+		padding-left: 10px !important;
+		padding-top: 10px !important;
     font-size: 22px;
-    font-weight: 500;
+		font-weight: 500;
+		letter-spacing: 1px;
+		font-family: "SF-UI" !important;
+		-webkit-font-smoothing: auto;
+		-moz-osx-font-smoothing: auto;
+
     a {
       color: $color-page-tab;
-      margin-left: 10px;
-      &:first-child {
-        margin-left: 0px
+
+      &:last-child {
+        margin-left: 10px;
       }
 
       &.active {
-        color: $color-page-tab-active;
+				color: $color-page-tab-active;
+				text-decoration: underline;
       }
     }
   }

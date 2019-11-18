@@ -34,7 +34,8 @@ class AddContract extends React.Component {
   }
 
   filterContracts = () => {
-    const { selectedGroup, allContracts, user } = this.props;
+    const { selectedGroup, allContracts, user, assetGroups } = this.props;
+    const contractsInGroups = assetGroups.map(group => group.contracts).flat();
 
     if (!selectedGroup) { return []; }
 
@@ -43,6 +44,7 @@ class AddContract extends React.Component {
       && selectedGroup.exchange === exchange
       && !selectedGroup.contracts.includes(_id)
       && state === 'VERIFIED'
+      && !contractsInGroups.includes(_id)
     ));
   };
 
@@ -85,9 +87,11 @@ class AddContract extends React.Component {
 
 const mapStateToProps = ({
   contracts,
+  assetGroups,
   auth: { profile: { name } },
 }) => ({
   allContracts: contracts,
+  assetGroups,
   user: name,
 });
 

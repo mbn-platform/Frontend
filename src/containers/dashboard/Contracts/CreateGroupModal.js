@@ -5,6 +5,7 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 
 import { createAssetGroup } from '../../../actions/assetGroup';
 import ModalWindow from '../../../components/Modal';
+import ExchangeSelect from '../../../components/ExchangeSelect';
 
 class CreateGroupModal extends React.Component {
   static propTypes = {
@@ -13,7 +14,10 @@ class CreateGroupModal extends React.Component {
     closeCreateGroupModal: PropTypes.func.isRequired,
   };
 
-  state = { name: '' };
+  state = {
+    name: '',
+    exchange: '',
+  };
 
   handleChange = (event) => {
     const { name, value } = event.target;
@@ -22,16 +26,16 @@ class CreateGroupModal extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const { name } = this.state;
-    const { modal, closeCreateGroupModal } = this.props;
+    const { name, exchange } = this.state;
+    const { closeCreateGroupModal } = this.props;
 
-    this.props.createAssetGroup(
-      name,
-      modal.contract.exchange,
-      [modal.contract._id],
-    );
+    this.props.createAssetGroup(name, exchange);
     closeCreateGroupModal();
   }
+
+  handleExchangeChange = exchange => {
+    this.setState({ exchange });
+  };
 
   render = () => {
     const { modal, closeCreateGroupModal } = this.props;
@@ -43,7 +47,7 @@ class CreateGroupModal extends React.Component {
           <FormattedMessage id="dashboard.createNewGroup" />
         }
         content={
-          <form className="create_group_form" onSubmit={this.handleSubmit}>
+          <form className="create_group_form m-h-200" onSubmit={this.handleSubmit}>
             <div className="create_group_container">
               <div className="create_group_fields_wrapper">
                 <div className="create_group_field">
@@ -57,6 +61,14 @@ class CreateGroupModal extends React.Component {
                     autoCorrect="off"
                     autoComplete="off"
                     spellCheck="false"
+                  />
+                </div>
+                <div className="create_group_field_select">
+                  <ExchangeSelect
+                    defaultPlaceholder={this.props.intl.messages['dashboard.exchange']}
+                    exchanges={this.props.exchanges}
+                    onChange={this.handleExchangeChange}
+                    exchange={this.state.exchange}
                   />
                 </div>
               </div>
@@ -74,8 +86,12 @@ class CreateGroupModal extends React.Component {
   }
 };
 
+const mapStateToProps = ({ exchanges }) => ({
+  exchanges,
+});
+
 const mapDispatchToProps = {
   createAssetGroup,
 };
 
-export default injectIntl(connect(null, mapDispatchToProps)(CreateGroupModal));
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(CreateGroupModal));

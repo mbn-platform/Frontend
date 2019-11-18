@@ -91,24 +91,19 @@ const modal = (
       return {...state,  isCommitTokensModalOpen: false };
     }
     case SHOW_CREATE_GROUP_MODAL: {
-      const { contract } = action;
-
-      return {
-        ...state,
-        contract,
-        isCreateGroupModalOpen: true,
-      };
+      return { ...state, isCreateGroupModalOpen: true };
     }
     case CLOSE_CREATE_GROUP_MODAL: {
       return { ...state, isCreateGroupModalOpen: false };
     }
 
     case SHOW_ADD_CONTRACT_TO_GROUP_MODAL: {
-      const { contract } = action;
+      const { group, contracts } = action;
 
       return {
         ...state,
-        contract,
+        group,
+        contracts,
         isAddContractModalOpen: true,
       };
     }

@@ -18,6 +18,10 @@ class Groups extends React.Component {
     selectedContract: null,
   };
 
+  state = {
+    selectedGroup: null,
+  };
+
   columns = [
     {
       id: 'name',
@@ -31,15 +35,30 @@ class Groups extends React.Component {
   };
 
   handleAddContract = () => {
-    this.props.showAddContractToGroupModal(this.props.selectedContract);
+    this.props.showAddContractToGroupModal(
+      this.state.selectedGroup,
+      this.filterContracts(),
+    );
   };
 
-  filterGroups = () => {
-    const { selectedContract, assetGroups } = this.props;
+  onGroupSelect = group => {
+    this.setState({ selectedGroup: group });
+  };
 
-    return selectedContract
-      ? assetGroups.filter(({ exchange }) => exchange === selectedContract.exchange)
-      : assetGroups;
+  filterContracts = () => {
+    const { allContracts, user, assetGroups } = this.props;
+    const { selectedGroup } = this.state;
+    const contractsInGroups = assetGroups.map(group => group.contracts).flat();
+
+    if (!selectedGroup) { return []; }
+
+    return allContracts.filter(({ to, exchange, _id, state }) => (
+      to.name === user
+      && selectedGroup.exchange === exchange
+      && !selectedGroup.contracts.includes(_id)
+      && state === 'VERIFIED'
+      && !contractsInGroups.includes(_id)
+    ));
   };
 
   render = () => (
@@ -52,14 +71,15 @@ class Groups extends React.Component {
       <ReactTable
         style={{ height: 280 }}
         columns={this.columns}
-        data={this.filterGroups()}
+        data={this.props.assetGroups}
         scrollBarHeight={280}
+        onItemSelected={this.onGroupSelect}
+        selectedItem={this.state.selectedGroup}
       />
       <div className="groups_btn_wrapper">
         <button
           type="button"
           className="create_group_btn"
-          disabled={!this.props.selectedContract}
           onClick={this.handleCreateGroup}
         >
           <FormattedMessage id="dashboard.create" />
@@ -67,7 +87,11 @@ class Groups extends React.Component {
         <button
           type="button"
           className="add_contract_btn"
-          disabled={!this.props.selectedContract || this.filterGroups().length === 0}
+          disabled={
+            !this.state.selectedGroup
+            || this.filterContracts().length === 0
+            || this.props.assetGroups.length === 0
+          }
           onClick={this.handleAddContract}
         >
           <FormattedMessage id="dashboard.add" />
@@ -77,9 +101,19 @@ class Groups extends React.Component {
   );
 }
 
+const mapStateToProps = ({
+  contracts,
+  auth: { profile: { name } },
+  assetGroups,
+}) => ({
+  allContracts: contracts.current,
+  user: name,
+  assetGroups,
+});
+
 const mapDispatchToProps = {
   showCreateGroupModal,
   showAddContractToGroupModal,
 };
 
-export default connect(null, mapDispatchToProps)(Groups);
+export default connect(mapStateToProps, mapDispatchToProps)(Groups);

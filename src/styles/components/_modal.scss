@@ -129,6 +129,28 @@
                     transition-duration: 400ms;
                 }
             }
+
+            .create_group_field_select {
+                margin-top: 20px;
+
+                .add_keys_select_wr {
+                    height: 40px;
+                    line-height: 40px;
+                    font-size: 1.6em;
+
+                    .add_keys_select_values_list_wr {
+                        top: 38px;
+                    }
+
+                    .add_keys_select_value {
+                        padding-right: 20px;
+
+                        .add_keys_select_value_bg {
+                            margin-top: 10px;
+                        }
+                    }
+                }
+            }
         }
 
         .group_select_wr {
