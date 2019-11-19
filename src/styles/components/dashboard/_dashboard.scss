@@ -1905,7 +1905,28 @@
     {
       padding: 0px;
     }
+    .dashboard.page {
+      .block {
+        margin-top: 20px;
+        border: 0;
+        background: #1f2225;
+
+        .title {
+          border-bottom: none;
+          background: inherit;
+        }
+      }
+    }
   }
+
+  @media only screen and (max-width: 425px) {
+    .dashboard.page {
+      .page-tab {
+        font-size: 18px;
+      }
+    }
+  }
+
   @media only screen and (max-width : 1028px) {
     .dashboard_wrapper {
       .table_wrapper

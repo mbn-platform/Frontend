@@ -3,7 +3,6 @@ import BotList from './ApiBot';
 import AddBotApi from './AddBotApi';
 
 export class External extends React.Component {
-
   render() {
     return (
       <div className="dashboard_wrapper clearfix">
