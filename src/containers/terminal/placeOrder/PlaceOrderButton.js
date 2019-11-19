@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'reactstrap';
@@ -24,7 +25,7 @@ export class PlaceOrderButton extends React.PureComponent {
         onClick={onClick}
         disabled={disabled}
       >
-        {tab} {currency} {amount} @ {price}
+        {tab} {currency} {amount} @ {price && BigNumber(price).toFixed()}
       </Button>
     );
   }
