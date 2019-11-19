@@ -109,7 +109,7 @@ class Dashboard extends React.Component {
         <div className="dashboard_block_header_title">
           <FormattedMessage
             id="dashboard.contractManagement"
-            defaultMessage="CONTRACTS MANAGEMENT"
+            defaultMessage="Contracts Management"
           />
         </div>
         <div className="table_wrapper contracts_table_wrapper">
@@ -124,7 +124,7 @@ class Dashboard extends React.Component {
         <div className="dashboard_block_header_title">
           <FormattedMessage
             id="dashboard.groupManagement"
-            defaultMessage="GROUPS MANAGEMENT"
+            defaultMessage="Groups Management"
           />
         </div>
         <div className="table_wrapper group_asset_wrapper">

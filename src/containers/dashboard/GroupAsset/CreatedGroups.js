@@ -33,6 +33,12 @@ class CreatedGroups extends React.Component {
       Cell: ({ value }) => <div>{value} USDT</div>,
     },
     {
+      Header: <TableHeader header={{ id: 'dashboard.profit' }} />,
+      id: 'profit',
+      className: 'table_col_value',
+      accessor: c => c.profit,
+    },
+    {
       Header: <TableHeader header={{ id: 'simpleValue', values: { value: '#' } }} />,
       id: 'contractsQuantity',
       className: 'table_col_value',
@@ -73,12 +79,6 @@ class CreatedGroups extends React.Component {
     );
   };
 
-  onRowClick = (_, { original }) => ({
-    onClick: () => {
-      this.onGroupSelect(original);
-    },
-  });
-
   render = () => (
     <div className="created-groups-table-wrapper table table-wrapper">
       <div className="table_title_wrapper">
@@ -92,7 +92,6 @@ class CreatedGroups extends React.Component {
         data={this.props.assetGroups}
         selectedItem={this.state.selectedGroup}
         onItemSelected={this.onGroupSelect}
-        getTrProps={this.onRowClick}
         scrollBarHeight={310}
       />
     </div>
