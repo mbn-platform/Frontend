@@ -73,21 +73,23 @@ class Controls extends React.Component {
 
     return (
       <div className="row dropdowns pt-2">
-        <Checkbox
-          checked={this.state.assetGroupEnabled}
-          title="Asset Group"
-          onToggle={this.onAssetGroupToggle}
-        />
-        {this.state.assetGroupEnabled && assetGroup && (
-          <DropdownSelect
-            selected={assetGroup.name}
-            items={assetGroups.map((g) => g.name)}
-            targetId="asset_groups_select"
-            elementClassName="exchange__switch"
-            dropdownClassName="exchange"
-            onItemSelect={this.handleGroupSelect}
+        <div className="asset_groups_checkbox_wr">
+          <Checkbox
+            checked={this.state.assetGroupEnabled}
+            title="Asset Group"
+            onToggle={this.onAssetGroupToggle}
           />
-        )}
+          {this.state.assetGroupEnabled && assetGroup && (
+            <DropdownSelect
+              selected={assetGroup.name}
+              items={assetGroups.map((g) => g.name)}
+              targetId="asset_groups_select"
+              elementClassName="exchange__switch"
+              dropdownClassName="exchange"
+              onItemSelect={this.handleGroupSelect}
+            />
+          )}
+        </div>
         <FundSelect
           title={assetGroup ? 'terminal.contracts': 'apiKey'}
           exchange={this.props.exchange}

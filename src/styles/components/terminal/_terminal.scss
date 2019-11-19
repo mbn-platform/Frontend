@@ -173,6 +173,15 @@
         }
       }
       .buysell {
+        background-color: #2b2f33;
+        padding: 20px;
+        color: #c0c0c1;
+        margin-top: 7px;
+
+        &.active {
+          outline: 2px solid #E2DCCC !important;
+        }
+
         .orders-header {
             margin: -20px -20px 15px -20px;
             background-color: #232629;
@@ -202,10 +211,7 @@
         .btn {
           text-transform: capitalize;
         }
-        background-color: #2b2f33;
-        padding: 20px;
-        color: #c0c0c1;
-        margin-top: 7px;
+
         &__switch {
           border-radius: 2px;
           margin: 0 0 15px 0;

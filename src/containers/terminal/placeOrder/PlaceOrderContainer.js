@@ -181,6 +181,7 @@ class PlaceOrderContainer extends React.Component {
         market={this.props.market}
         fund={this.props.fund}
         auth={this.props.auth}
+        assetGroup={this.props.assetGroup}
 
         selectedTab={this.state.selectedTab}
         selectedOrderType={this.state.selectedOrderType}
@@ -330,6 +331,7 @@ const mapStateToProps = state => {
     market,
     fund: fund || assetGroup,
     auth,
+    assetGroup,
   };
 };
 

@@ -45,6 +45,7 @@ class Controls extends React.Component {
 
   componentDidMount = () => {
     this.props.getAssetGroups();
+    this.props.selectAssetGroup(null);
   };
 
   handleGroupSelect = (groupName) => {
@@ -81,21 +82,23 @@ class Controls extends React.Component {
 
     return (
       <div className={classNames('row', 'dropdowns', {'controls-fullscreen-mode': this.props.isFullScreenEnabled})}>
-        <Checkbox
-          checked={this.state.assetGroupEnabled}
-          title="Asset Group"
-          onToggle={this.onAssetGroupToggle}
-        />
-        {this.state.assetGroupEnabled && assetGroup && (
-          <DropdownSelect
-            selected={assetGroup.name}
-            items={assetGroups.map((g) => g.name)}
-            targetId="group_select"
-            elementClassName="exchange__switch"
-            dropdownClassName="exchange"
-            onItemSelect={this.handleGroupSelect}
+        <div className={classNames('asset_groups_checkbox_wr', { 'active': this.state.assetGroupEnabled })}>
+          <Checkbox
+            checked={this.state.assetGroupEnabled}
+            title="Asset Group"
+            onToggle={this.onAssetGroupToggle}
           />
-        )}
+          {this.state.assetGroupEnabled && assetGroup && (
+            <DropdownSelect
+              selected={assetGroup.name}
+              items={assetGroups.map((g) => g.name)}
+              targetId="group_select"
+              elementClassName="exchange__switch"
+              dropdownClassName="exchange"
+              onItemSelect={this.handleGroupSelect}
+            />
+          )}
+        </div>
         <FundSelect
           title={assetGroup ? 'terminal.contracts': 'apiKey'}
           exchange={this.props.exchange}
