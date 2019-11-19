@@ -40,8 +40,9 @@ class OrdersTable extends React.Component {
       const { assetGroup, fund } = this.props;
 
       if (!assetGroup || (assetGroup && fund)) { return; }
-
       this.expandRow(index);
+
+      if (this.state.expanded[index]) { return; }
       this.props.getGroupOrder(original._id);
     },
   });
@@ -176,7 +177,10 @@ class OrdersTable extends React.Component {
               ? (
                 <div className="orders__table-spinner" />
               ) : (
-                <div onClick={() => this.props.cancelOrder(original)}>
+                <div onClick={(event) => {
+                  event.stopPropagation();
+                  this.props.cancelOrder(original);
+                }}>
                   <span className="orders__table-remove" />
                 </div>
               ),
