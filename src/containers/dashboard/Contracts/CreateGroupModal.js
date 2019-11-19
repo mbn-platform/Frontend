@@ -39,6 +39,7 @@ class CreateGroupModal extends React.Component {
 
   render = () => {
     const { modal, closeCreateGroupModal } = this.props;
+
     return (
       <ModalWindow
         modalIsOpen={modal.isCreateGroupModalOpen}

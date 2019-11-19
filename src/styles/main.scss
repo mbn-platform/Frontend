@@ -270,6 +270,7 @@ body {
 	transition: height 400ms, border 400ms, max-height 400ms;
 	overflow: hidden;
 }
+
 .add_keys_select_wr:hover .add_keys_select_values_list_wr
 {
 	height: auto;
@@ -277,6 +278,11 @@ body {
 	opacity: 1;
 	color: #7c7c7d;
 	border: 1px solid #7c7c7d;
+
+	&.overflow_y_auto {
+		max-height: 110px;
+		overflow-y: auto;
+	}
 }
 
 .add_keys_field_wr.select_wr
