@@ -22,15 +22,15 @@ export const Balances = ({fund, main, secondary, onMainClick, onSecondaryClick})
         Balance:
       </Col>
       <Col className="text-right" xs="auto">
-        <Balance onClick={onMainClick} name={main} value={value1} />
-        <Balance onClick={onSecondaryClick} name={secondary} value={value2}/>
+        <Balance onClick={onMainClick} name={main} value={value1} fund={fund} />
+        <Balance onClick={onSecondaryClick} name={secondary} value={value2} fund={fund}/>
       </Col>
     </Row>
   );
 };
 
-const Balance = ({name, value, onClick}) => (
+const Balance = ({name, value, onClick, fund}) => (
   <div>
-    {value} {name}
+    {value} {name} {fund && fund.contracts ? `x${fund.contracts.length}` : null}
   </div>
 );
