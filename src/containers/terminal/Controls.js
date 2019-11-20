@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { FormattedMessage } from 'react-intl';
 
-import FundSelect from '../../components/FundSelect';
+import FundSelect, { GroupContractSelect } from '../../components/FundSelect';
 import DropdownSelect from '../../components/DropdownSelect';
 import Checkbox from '../../components/Checkbox';
 import MarketSelect from './MarketSelect';
@@ -99,14 +99,24 @@ class Controls extends React.Component {
             />
           )}
         </div>
-        <FundSelect
-          title={assetGroup ? 'terminal.contracts': 'apiKey'}
-          exchange={this.props.exchange}
-          funds={funds}
-          selectedFund={this.props.fund}
-          userId={this.props.userId}
-          onApiKeySelect={this.props.onApiKeySelect}
-        />
+        {this.state.assetGroupEnabled && assetGroup ? (
+          <GroupContractSelect
+            contracts={funds}
+            group={assetGroup}
+            selectedFund={this.props.fund}
+            onContractSelect={this.props.onApiKeySelect}
+            onAllSelected={this.handleGroupSelect}
+          />
+        ) : (
+          <FundSelect
+            title={assetGroup ? 'terminal.contracts': 'apiKey'}
+            exchange={this.props.exchange}
+            funds={funds}
+            selectedFund={this.props.fund}
+            userId={this.props.userId}
+            onApiKeySelect={this.props.onApiKeySelect}
+          />
+        )}
         <DropdownSelect
           selected={this.props.exchange}
           items={this.props.exchanges || []}

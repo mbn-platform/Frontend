@@ -24,9 +24,10 @@ class Orders extends React.Component {
     }
   }
 
-  componentWillReceiveProps(props) {
-    if (props.fund && (!this.props.fund || this.props.fund._id !== props.fund._id)) {
-      const payload = setFundId({}, props.fund);
+  componentDidUpdate(prevProps) {
+    const fund = this.props.fund || this.props.assetGroup;
+    if (fund && (!prevProps.fund || prevProps.fund._id !== fund._id)) {
+      const payload = setFundId({}, fund);
       this.props.getOrders(payload);
     }
   }

@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -10,7 +11,7 @@ import {
 } from '../../actions/terminal';
 import { showInfoModal, closeInfoModal } from '../../actions/modal';
 import { getAssetGroups } from '../../actions/assetGroup';
-import FundSelect from '../../components/FundSelect';
+import FundSelect, { GroupContractSelect } from '../../components/FundSelect';
 import DropdownSelect from '../../components/DropdownSelect';
 import Checkbox from '../../components/Checkbox';
 
@@ -37,6 +38,7 @@ class Controls extends React.Component {
   };
 
   handleGroupSelect = groupName => {
+    console.log('handleGroupSelect', groupName);
     const { assetGroups } = this.props;
     const group = assetGroups.find(group => group.name === groupName);
 
@@ -73,7 +75,7 @@ class Controls extends React.Component {
 
     return (
       <div className="row dropdowns pt-2">
-        <div className="asset_groups_checkbox_wr">
+        <div className={classNames('asset_groups_checkbox_wr', { 'active': this.state.assetGroupEnabled })}>
           <Checkbox
             checked={this.state.assetGroupEnabled}
             title="Asset Group"
@@ -83,21 +85,31 @@ class Controls extends React.Component {
             <DropdownSelect
               selected={assetGroup.name}
               items={assetGroups.map((g) => g.name)}
-              targetId="asset_groups_select"
+              targetId="group_select"
               elementClassName="exchange__switch"
               dropdownClassName="exchange"
               onItemSelect={this.handleGroupSelect}
             />
           )}
         </div>
-        <FundSelect
-          title={assetGroup ? 'terminal.contracts': 'apiKey'}
-          exchange={this.props.exchange}
-          funds={funds}
-          selectedFund={this.props.fund}
-          userId={this.props.userId}
-          onApiKeySelect={this.props.onApiKeySelect}
-        />
+        {this.state.assetGroupEnabled && assetGroup ? (
+          <GroupContractSelect
+            contracts={funds}
+            group={assetGroup}
+            selectedFund={this.props.fund}
+            onContractSelect={this.props.onApiKeySelect}
+            onAllSelected={this.handleGroupSelect}
+          />
+        ) : (
+          <FundSelect
+            title={assetGroup ? 'terminal.contracts': 'apiKey'}
+            exchange={this.props.exchange}
+            funds={funds}
+            selectedFund={this.props.fund}
+            userId={this.props.userId}
+            onApiKeySelect={this.props.onApiKeySelect}
+          />
+        )}
         <DropdownSelect
           selected={this.props.exchange}
           items={this.props.exchanges}
