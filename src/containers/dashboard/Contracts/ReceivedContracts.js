@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
+import { Desktop, Mobile } from '../../../generic/MediaQuery';
+import Pagination from '../../../components/Pagination';
 import ReactTable from '../../../components/SelectableReactTable';
 
 const ReceivedContracts = ({
@@ -13,14 +15,28 @@ const ReceivedContracts = ({
         <FormattedMessage id="dashboard.receivedContracts" />
       </div>
     </div>
-    <ReactTable
-      style={{ height: 310 }}
-      columns={getColumns()}
-      data={contracts}
-      selectedItem={selectedItem}
-      onItemSelected={onItemSelected}
-      scrollBarHeight={310}
-    />
+    <Desktop>
+      <ReactTable
+        style={{ height: 310 }}
+        columns={getColumns()}
+        data={contracts}
+        selectedItem={selectedItem}
+        onItemSelected={onItemSelected}
+        scrollBarHeight={310}
+      />
+    </Desktop>
+    <Mobile>
+      <ReactTable
+        columns={getColumns()}
+        data={contracts}
+        selectedItem={selectedItem}
+        onItemSelected={onItemSelected}
+        minRows={5}
+        showPagination={true}
+        defaultPageSize={5}
+        PaginationComponent={Pagination}
+      />
+    </Mobile>
   </div>
 );
 

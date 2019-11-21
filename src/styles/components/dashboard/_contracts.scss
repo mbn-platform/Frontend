@@ -138,3 +138,53 @@
     }
   }
 }
+
+@media (max-width: 1027px) {
+  .contracts_table_wrapper {
+    .contracts-block-wrapper {
+      .contracts-wrapper {
+        flex-direction: column;
+
+        .received-contracts-table-wrapper {
+          width: 100%
+        }
+
+        .received-balances-table-wrapper,
+        .groups-table-wrapper {
+          background-color: #17191b;
+        }
+
+        .balances-groups-wrapper {
+          width: 100%;
+        }
+
+        .provided-contracts-table-wrapper {
+          width: 100%;
+        }
+
+        .provided-balances-table-wrapper {
+          width: 100%;
+          min-height: 150px;
+          background-color: #17191b;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .contracts_table_wrapper {
+    .contracts-block-wrapper {
+      .contracts-wrapper {
+        .balances-groups-wrapper {
+          flex-direction: column;
+
+          .received-balances-table-wrapper {
+            min-height: 150px;
+            background-color: #17191b;
+          }
+        }
+      }
+    }
+  }
+}
