@@ -55,13 +55,13 @@ class Dashboard extends React.Component {
 
     if (this.props.contracts !== nextProps.contracts) {
       if (this.state.selectedReceivedContract) {
-        const findFunction = c => c._id === this.state.selectedContract._id;
+        const findFunction = c => c._id === this.state.selectedReceivedContract._id;
         const contract = nextProps.contracts.current.find(findFunction);
         this.setState({ selectedReceivedContract: contract });
       }
 
       if (this.state.selectedProvidedContract) {
-        const findFunction = c => c._id === this.state.selectedContract._id;
+        const findFunction = c => c._id === this.state.selectedProvidedContract._id;
         const contract = nextProps.contracts.current.find(findFunction);
         this.setState({ selectedProvidedContract: contract });
       }
