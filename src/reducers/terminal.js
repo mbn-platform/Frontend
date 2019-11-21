@@ -32,6 +32,7 @@ export default function(state = {
       return {
         ...state,
         assetGroup: action.group,
+        orders: action.group ? state.orders : { open: [], closed: [] },
         fund: null,
       };
     }
@@ -228,7 +229,6 @@ export default function(state = {
       }
       break;
     }
-
     default:
       return state;
   }

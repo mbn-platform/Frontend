@@ -26,7 +26,8 @@ class Orders extends React.Component {
 
   componentDidUpdate(prevProps) {
     const fund = this.props.fund || this.props.assetGroup;
-    if (fund && (!prevProps.fund || prevProps.fund._id !== fund._id)) {
+
+    if (fund && (this.props.fund !== prevProps.fund || this.props.assetGroup !== prevProps.assetGroup)) {
       const payload = setFundId({}, fund);
       this.props.getOrders(payload);
     }

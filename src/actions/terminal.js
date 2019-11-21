@@ -356,9 +356,7 @@ export function updateTicker(exchange, market, ticker) {
   };
 }
 
-export const selectAssetGroup = group => {
-  return {
-    type: SELECT_ASSET_GROUP,
-    group,
-  };
-};
+export const selectAssetGroup = group => ({
+  type: SELECT_ASSET_GROUP,
+  group,
+});
