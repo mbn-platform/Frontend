@@ -7,7 +7,7 @@ import Pagination from '../../../components/Pagination';
 import ReactTable from '../../../components/SelectableReactTable';
 
 const ReceivedContracts = ({
-  contracts, getColumns, selectedItem, onItemSelected,
+  contracts, getColumns, getMobileColumns, selectedItem, onItemSelected,
 }) => (
   <div className="received-contracts-table-wrapper table table-wrapper">
     <div className="table_title_wrapper">
@@ -27,7 +27,7 @@ const ReceivedContracts = ({
     </Desktop>
     <Mobile>
       <ReactTable
-        columns={getColumns()}
+        columns={getMobileColumns()}
         data={contracts}
         selectedItem={selectedItem}
         onItemSelected={onItemSelected}

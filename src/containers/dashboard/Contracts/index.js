@@ -73,6 +73,7 @@ class Contracts extends React.Component {
           <ReceivedContracts
             contracts={receivedContracts}
             getColumns={this.getTableColumns}
+            getMobileColumns={this.getTableMobileColumns}
             selectedItem={selectedReceivedContract}
             onItemSelected={onContractSelected}
           />
@@ -90,6 +91,7 @@ class Contracts extends React.Component {
           <ProvidedContracts
             contracts={providedContracts}
             getColumns={this.getTableColumns}
+            getMobileColumns={this.getTableMobileColumns}
             selectedItem={selectedProvidedContract}
             onItemSelected={onContractSelected}
           />
