@@ -182,6 +182,108 @@
         align-items: center;
         color: #7c7c7d;
         font-size: 2em;
+
+        span {
+          text-align: center;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1028px) {
+  .group_asset_wrapper {
+    .group-asset-block-wrapper {
+      .group-asset-table-wrapper {
+        flex-direction: column;
+      }
+
+      .created-groups-table-wrapper {
+        width: 100%;
+
+        .ReactTable {
+          .rt-table {
+            .groups_header_wrapper {
+              display: inline-block !important;
+              margin-top: 22px !important;
+            }
+          }
+        }
+      }
+
+      .details-contracts-table-wrapper {
+        width: 100%;
+        min-height: 200px;
+        background: #17191b;
+
+        .table_title_wrapper {
+          margin-bottom: 22px;
+        }
+      }
+
+      .group-asset-form-wrapper {
+        flex-direction: column;
+
+        .create_group_form_wrapper,
+        .add_contract_form_wrapper {
+          width: 100%;
+          border: none;
+        }
+
+        .create_group_form_wrapper {
+          .create_group_container {
+            flex-direction: column;
+
+            .create_group_fields_wrapper {
+              flex-direction: column;
+
+              .create_group_field {
+                width: auto;
+              }
+
+              .create_group_field_select {
+                width: auto;
+                margin: auto 15px;
+              }
+            }
+
+            .create_group_submit_wrapper {
+              display: flex;
+              justify-content: center;
+              margin-bottom: 15px;
+
+              .create_group_submit {
+                border: 1px solid #44464a;
+                border-radius: 0;
+                min-width: 200px;
+                padding: 6px 0;
+              }
+            }
+          }
+        }
+
+        .add_contract_form_wrapper {
+          .create_group_container {
+            flex-direction: column;
+
+            .create_group_field {
+              width: auto;
+            }
+
+            .create_group_submit_wrapper {
+              display: flex;
+              justify-content: center;
+              margin-bottom: 15px;
+
+              .create_group_submit {
+                border: 1px solid #44464a;
+                border-radius: 0;
+                min-width: 200px;
+                padding: 6px 0;
+              }
+            }
+          }
+        }
       }
     }
   }

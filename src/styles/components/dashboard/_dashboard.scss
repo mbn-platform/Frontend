@@ -1926,6 +1926,9 @@
       .page-tab {
         font-size: 18px;
       }
+      .dashboard_block_header_title {
+        justify-content: center;
+      }
     }
   }
 
@@ -2002,7 +2005,7 @@
           margin-left: 15px !important;
 
           .table_bot_header_icon {
-            text-align: left;
+            text-align: center;
             margin-left: 15px;
           }
         }
