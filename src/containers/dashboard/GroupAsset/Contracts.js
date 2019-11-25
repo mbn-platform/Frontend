@@ -2,7 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 
+import { Desktop, Mobile } from '../../../generic/MediaQuery';
 import ReactTable from '../../../components/SelectableReactTable';
+import Pagination from '../../../components/Pagination';
 import TableHeader from './TableHeader';
 
 const Contracts = ({ contracts, allContracts, onContractDelete }) => {
@@ -69,12 +71,27 @@ const Contracts = ({ contracts, allContracts, onContractDelete }) => {
         </div>
       )}
       {contracts && contracts.length > 0 && (
-        <ReactTable
-          style={{ height: 310 }}
-          columns={columns}
-          data={contracts}
-          scrollBarHeight={310}
-        />)}
+        <React.Fragment>
+          <Desktop>
+            <ReactTable
+              style={{ height: 310 }}
+              columns={columns}
+              data={contracts}
+              scrollBarHeight={310}
+            />
+          </Desktop>
+          <Mobile>
+            <ReactTable
+              columns={columns}
+              data={contracts}
+              minRows={5}
+              showPagination={true}
+              defaultPageSize={5}
+              PaginationComponent={Pagination}
+            />
+          </Mobile>
+        </React.Fragment>
+      )}
       {contracts && contracts.length === 0 && (
         <div className="details-contracts-empty">
           <FormattedMessage id="dashboard.groupHasNoContracts" />

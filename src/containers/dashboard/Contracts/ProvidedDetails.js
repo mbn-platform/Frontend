@@ -2,7 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
+import { Desktop, Mobile } from '../../../generic/MediaQuery';
 import ReactTable from '../../../components/SelectableReactTable';
+import Pagination from '../../../components/Pagination';
 
 class ProvidedDetails extends React.Component {
   static defaultProps = {
@@ -73,16 +75,30 @@ class ProvidedDetails extends React.Component {
         </div>
       </div>
       {this.props.contract && (
-        <ReactTable
-          defaultSorted={[{
-            id: 'total',
-            desc: true,
-          }]}
-          style={{ height: 310 }}
-          data={this.props.contract.balances}
-          columns={this.getColumns()}
-          scrollBarHeight={310}
-        />
+        <React.Fragment>
+          <Desktop>
+            <ReactTable
+              defaultSorted={[{
+                id: 'total',
+                desc: true,
+              }]}
+              style={{ height: 310 }}
+              data={this.props.contract.balances}
+              columns={this.getColumns()}
+              scrollBarHeight={310}
+            />
+          </Desktop>
+          <Mobile>
+            <ReactTable
+              data={this.props.contract.balances}
+              columns={this.getColumns()}
+              minRows={5}
+              showPagination={true}
+              defaultPageSize={5}
+              PaginationComponent={Pagination}
+            />
+          </Mobile>
+        </React.Fragment>
       )}
     </div>
   );

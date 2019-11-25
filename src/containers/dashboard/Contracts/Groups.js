@@ -4,7 +4,9 @@ import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 
 import { showCreateGroupModal, showAddContractToGroupModal } from '../../../actions/modal';
+import { Desktop, Mobile } from '../../../generic/MediaQuery';
 import ReactTable from '../../../components/SelectableReactTable';
+import Pagination from '../../../components/Pagination';
 
 class Groups extends React.Component {
   static propTypes = {
@@ -68,14 +70,28 @@ class Groups extends React.Component {
           <FormattedMessage id="dashboard.groups" />
         </div>
       </div>
-      <ReactTable
-        style={{ height: 280 }}
-        columns={this.columns}
-        data={this.props.assetGroups}
-        scrollBarHeight={280}
-        onItemSelected={this.onGroupSelect}
-        selectedItem={this.state.selectedGroup}
-      />
+      <Desktop>
+        <ReactTable
+          style={{ height: 280 }}
+          columns={this.columns}
+          data={this.props.assetGroups}
+          scrollBarHeight={280}
+          onItemSelected={this.onGroupSelect}
+          selectedItem={this.state.selectedGroup}
+        />
+      </Desktop>
+      <Mobile>
+        <ReactTable
+          columns={this.columns}
+          data={this.props.assetGroups}
+          selectedItem={this.state.selectedGroup}
+          onItemSelected={this.onGroupSelect}
+          minRows={5}
+          showPagination={true}
+          defaultPageSize={5}
+          PaginationComponent={Pagination}
+        />
+      </Mobile>
       <div className="groups_btn_wrapper">
         <button
           type="button"
