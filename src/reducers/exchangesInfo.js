@@ -1,8 +1,8 @@
-import { EXCHANGE_MARKETS, EXCHANGE_RATES, UPDATE_MARKET_SUMMARIES } from '../actions/terminal';
+import { EXCHANGE_MARKETS, EXCHANGE_RATES, UPDATE_MARKET_SUMMARIES, EXCHANGE_RATES_ALL } from '../actions/terminal';
 import { UPDATE_EXCHANGES } from '../actions/exchanges';
 export const EXCHANGE_BITTREX = 'bittrex';
 export const EXCHANGE_CURRENCIES = 'EXCHANGE_CURRENCIES';
-export default function(exchangesInfo = {}, action) {
+export default function reducer(exchangesInfo = {}, action) {
   switch(action.type) {
     case EXCHANGE_CURRENCIES: {
       const currencies = action.currencies;
@@ -26,6 +26,17 @@ export default function(exchangesInfo = {}, action) {
         rates[r[0]] = r[1];
       });
       return {...exchangesInfo, [action.exchange]: {...exchangesInfo[action.exchange], rates}};
+    }
+    case EXCHANGE_RATES_ALL: {
+      const exchanges = Object.keys(action.rates);
+      for (const ex of exchanges) {
+        exchangesInfo = reducer(exchangesInfo, {
+          type: EXCHANGE_RATES,
+          exchange: ex,
+          rates: action.rates[ex],
+        });
+      }
+      return {...exchangesInfo, exchanges};
     }
     case UPDATE_EXCHANGES: {
       return {...exchangesInfo, exchanges: action.exchanges};

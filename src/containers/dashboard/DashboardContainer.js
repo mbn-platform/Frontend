@@ -4,8 +4,7 @@ import { deleteApiKey } from '../../actions/apiKeys';
 import { acceptOffer, cancelOffer, rejectOffer, payOffer } from '../../actions/offers';
 import { updateExchanges } from '../../actions/exchanges';
 import { rateContract } from '../../actions/contracts';
-import { getExchangeRates } from '../../actions/terminal';
-import { showInfoModal } from '../../actions/modal';
+import { getAllRates } from '../../actions/terminal';
 import { injectIntl } from 'react-intl';
 
 const mapStateToProps = state => ({
@@ -24,7 +23,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   onKeyDeleteClick: deleteApiKey,
   updateExchanges,
-  getExchangeRates,
+  getAllRates,
   onOfferPay: payOffer,
   onOfferAccepted: acceptOffer,
   onOfferRejected: rejectOffer,

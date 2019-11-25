@@ -1,3 +1,4 @@
+import memoizeOne from 'memoize-one';
 import React from 'react';
 import 'amcharts3/amcharts/amcharts';
 import 'amcharts3/amcharts/xy';
@@ -19,14 +20,27 @@ class FundsChart extends React.Component {
     if (currencyName === 'BTC') {
       return currencyValue;
     }
-    const rates = this.props.exchangesInfo['binance'] ? this.props.exchangesInfo['binance'].rates || [] : [];
-    let marketName;
-    if (currencyName === 'USDT') {
-      return parseFloat((currencyValue / rates['USDT-BTC']).toFixed(8));
-    } else {
-      marketName = `BTC-${currencyName}`;
+    if (!this.props.exchangesInfo.exchanges) {
+      return 0;
     }
-    return parseFloat((currencyValue * (rates[marketName] || 0)).toFixed(8));
+    let rate;
+    for (const ex of (this.props.exchangesInfo.exchanges || [])) {
+      let marketName = `BTC-${currencyName}`;
+      const rates = (this.props.exchangesInfo[ex] && this.props.exchangesInfo[ex].rates) || {};
+      rate = rates[marketName] || 0;
+      if (rate) {
+        return parseFloat((currencyValue * rate).toFixed(8));
+      } else {
+        marketName = `${currencyName}-BTC`;
+        rate = rates[marketName] || 0;
+        if (!rate) {
+          continue;
+        } else {
+          return parseFloat((currencyValue / rate).toFixed(8));
+        }
+      }
+    }
+    return 0;
   }
 
   formatData(apiKeys) {
@@ -51,10 +65,54 @@ class FundsChart extends React.Component {
     return formated;
   }
 
-  componentWillReceiveProps(nextProps) {
-    const funds = nextProps.apiKeys.concat(nextProps.contracts.filter(c => c.to._id === nextProps.userId));
-    this.setState({data: this.formatData(funds)});
-  }
+  getConfig = memoizeOne((exchangesInfo, apiKeys, contracts) => {
+    const funds = apiKeys.concat(contracts.filter(c => c.to._id === this.props.userId));
+    const data = this.formatData(funds);
+    return {
+      'type': 'pie',
+      'fontFamily': 'maven_probold',
+      'letterSpacing': '1px',
+      'hideCredits': true,
+      'colors': [
+        '#6c6c6e',
+        '#dcb049',
+        '#c94546',
+        '#ce802c',
+        '#c5c5c5',
+        '#465666'
+      ],
+      'balloonText': '[[title]]<br><span style=\'font-size:14px\'><b>[[description]]</b> ([[percents]]%)</span>',
+      'innerRadius': '70%',
+      'labelsEnabled': false,
+      'startDuration': 0,
+      'titleField': 'category',
+      'valueField': 'column-2',
+      'allLabels': [],
+      'balloon': {},
+      'descriptionField': 'column-1',
+      'legend': {
+        'enabled': true,
+        'marginLeft': 0,
+        'fontSize': 12,
+        'markerSize': 0,
+        'switchable': false,
+        'equalWidths': false,
+        'maxColumns': 1,
+        'textClickEnabled': true,
+        'divId': 'funds_legend',
+        'rollOverColor': '#FFFFFF',
+        'labelText': '',
+        'valueAlign': 'left',
+        'align': 'left',
+        'valueText': '[[description]] [[title]]',
+        'useMarkerColorForLabels': true,
+        'useMarkerColorForValues': true
+      },
+      'titles': [],
+      'dataProvider': data
+    };
+  });
+
 
 
   render() {
@@ -71,49 +129,7 @@ class FundsChart extends React.Component {
         <div className="charts">
           <div className="chart_pie">
             <AmChartsReact.React   style={{height: '100%', width: '100%', backgroundColor: 'transparent',position: 'absolute'}}
-              options={{
-                'type': 'pie',
-                'fontFamily': 'maven_probold',
-                'letterSpacing': '1px',
-                'hideCredits': true,
-                'colors': [
-                  '#6c6c6e',
-                  '#dcb049',
-                  '#c94546',
-                  '#ce802c',
-                  '#c5c5c5',
-                  '#465666'
-                ],
-                'balloonText': '[[title]]<br><span style=\'font-size:14px\'><b>[[description]]</b> ([[percents]]%)</span>',
-                'innerRadius': '70%',
-                'labelsEnabled': false,
-                'startDuration': 0,
-                'titleField': 'category',
-                'valueField': 'column-2',
-                'allLabels': [],
-                'balloon': {},
-                'descriptionField': 'column-1',
-                'legend': {
-                  'enabled': true,
-                  'marginLeft': 0,
-                  'fontSize': 12,
-                  'markerSize': 0,
-                  'switchable': false,
-                  'equalWidths': false,
-                  'maxColumns': 1,
-                  'textClickEnabled': true,
-                  'divId': 'funds_legend',
-                  'rollOverColor': '#FFFFFF',
-                  'labelText': '',
-                  'valueAlign': 'left',
-                  'align': 'left',
-                  'valueText': '[[description]] [[title]]',
-                  'useMarkerColorForLabels': true,
-                  'useMarkerColorForValues': true
-                },
-                'titles': [],
-                'dataProvider': this.state.data
-              }} />
+              options={this.getConfig(this.props.exchangesInfo, this.props.apiKeys, this.props.contracts)} />
           </div>
           <div className="legend_pie_wrapper">
             <div id="funds_legend" className="legend_pie">

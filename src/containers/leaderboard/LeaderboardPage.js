@@ -274,23 +274,14 @@ class Leaderboard extends React.Component {
           className="table__header-wrapper">
           <div className="rating__header-title-wrapper">
             <FormattedMessage
-              id="leaderboard.nextRound"
-              defaultMessage="Next round"
+              id="leaderboard.tradeVolume"
+              defaultMessage="Volume (USDT)"
             />
           </div>
         </div>,
         minWidth: screenWidth === 'lg' ? 80 : 50,
-        Cell: row => row.value ? (
-          <FormattedMessage
-            id="yes"
-            defaultMessage="yes"
-          />) : (
-          <FormattedMessage
-            id="no"
-            defaultMessage="no"
-          />),
         className: 'ratings__table-cell',
-        accessor: 'next',
+        accessor: 'volume',
       },
     ];
   }

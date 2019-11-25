@@ -114,6 +114,7 @@ const en = {
   'leaderboard.profitPercent': 'Profit, %',
   'leaderboard.average': 'Average, %',
   'leaderboard.intro': 'Description',
+  'leaderboard.tradeVolume': 'Volume (USDT)',
   'leaderboard.nextRound': 'Next round',
   'leaderboard.nextRoundMessage': 'Please confirm trading in the next round',
   'leaderboard.nextRoundHelp': 'If you don\'t confirm trading, you will skip next round',

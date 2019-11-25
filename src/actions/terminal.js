@@ -9,6 +9,7 @@ export const SELECT_EXCHANGE = 'SELECT_EXCHANGE';
 export const SELECT_INTERVAL = 'SELECT_INTERVAL';
 export const EXCHANGE_MARKETS = 'EXCHANGE_MARKETS';
 export const EXCHANGE_RATES = 'EXCHANGE_RATES';
+export const EXCHANGE_RATES_ALL = 'EXCHANGE_RATES_ALL';
 export const CANCEL_ORDER = 'CANCEL_ORDER';
 export const PLACE_ORDER = 'PLACE_ORDER';
 export const PLACE_ALGO_ORDER = 'PLACE_ALGO_ORDER';
@@ -99,6 +100,13 @@ export function getExchangeRates(exchange) {
   };
 }
 
+export function getAllRates() {
+  return dispatch => {
+    TerminalApi.getExchangeRates()
+      .then(res => dispatch(updateAllRates(res)));
+  };
+}
+
 
 export function getMyOrders(key) {
   return dispatch => {
@@ -171,7 +179,8 @@ export function cancelOrder(order) {
 }
 
 export function placeAlgoOrder(order) {
-  return dispatch => {
+  return (dispatch, store) => {
+    console.log(store);
     TerminalApi.placeAlgoOrder(order)
       .then(res => {
         dispatch(showInfoModal('orderHasBeenPlaced'));
@@ -189,7 +198,7 @@ export function placeAlgoOrder(order) {
               ));
               break;
             default:
-            console.log('unhandler error: ' + JSON.stringify(error));
+              console.log('unhandler error: ' + JSON.stringify(error));
           }
         }
       });
@@ -306,6 +315,12 @@ export function updateHistory(exchange, market, history) {
     history,
     market,
     exchange,
+  };
+}
+export function updateAllRates(rates) {
+  return {
+    type: EXCHANGE_RATES_ALL,
+    rates,
   };
 }
 
