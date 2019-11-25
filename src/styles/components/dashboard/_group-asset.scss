@@ -4,51 +4,33 @@
 
   .group-asset-block-wrapper {
     display: flex;
-    flex-direction: column;
     width: 100%;
 
+    .group-asset-form-wrapper,
     .group-asset-table-wrapper {
       display: flex;
-    }
+      flex-direction: column;
+      width: 55%;
 
-    .group-asset-form-wrapper {
-      display: flex;
-
-      .add_contract_form_wrapper {
-        width: 45%;
-        border: 1px solid #494d4d;
-        border-radius: 0 0 4px 0;
-
-        .add_contract_form_title {
-          display: flex;
-          background: #2d3034;
-          border-bottom: 1px solid #494d4d;
-          padding: 15px;
-          box-sizing: border-box;
-        }
-      }
-
+      .add_contract_form_wrapper,
       .create_group_form_wrapper {
-        width: 55%;
         border: 1px solid #494d4d;
         border-right: 0;
         border-radius: 0 0 0 4px;
-
-        .create_group_form_title {
-          display: flex;
-          background: #2d3034;
-          border-bottom: 1px solid #494d4d;
-          padding: 15px;
-          box-sizing: border-box;
-        }
-      }
-
-      .create_group_form_wrapper,
-      .add_contract_form_wrapper {
         background-color: #232629;
         line-height: 52px;
-        border-top: 0;
         box-sizing: border-box;
+
+        .add_contract_form_title,
+        .create_group_form_title {
+          display: flex;
+          padding: 15px;
+          border-bottom: 1px solid #494d4d;
+          border-top: 0;
+          background: #2d3034;
+          line-height: 52px;
+          box-sizing: border-box;
+        }
 
         .create_group_container {
           display: flex;
@@ -123,6 +105,29 @@
       }
     }
 
+    .group-asset-form-wrapper {
+      display: flex;
+      flex-direction: column;
+      width: 45%;
+
+      .add_contract_form_wrapper {
+        border: 1px solid #494d4d;
+        border-radius: 0 0 4px 0;
+        background-color: #232629;
+        line-height: 52px;
+        border-top: 0;
+        box-sizing: border-box;
+
+        .add_contract_form_title {
+          display: flex;
+          background: #2d3034;
+          border-bottom: 1px solid #494d4d;
+          padding: 15px;
+          box-sizing: border-box;
+        }
+      }
+    }
+
     .details-contracts-table-wrapper,
     .created-groups-table-wrapper {
       .ReactTable {
@@ -156,8 +161,8 @@
     }
 
     .created-groups-table-wrapper {
-      width: 55%;
       border-right: 0;
+      border-bottom: 0;
       border-radius: 4px 0 0 0;
 
       .table_title_wrapper {
@@ -167,7 +172,6 @@
     }
 
     .details-contracts-table-wrapper {
-      width: 45%;
       border-radius: 0 4px 0 0;
 
       .table_title_wrapper {
@@ -176,7 +180,7 @@
       }
 
       .details-contracts-empty {
-        height: 90%;
+        height: 310px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -194,57 +198,50 @@
 @media (max-width: 1028px) {
   .group_asset_wrapper {
     .group-asset-block-wrapper {
-      .group-asset-table-wrapper {
-        flex-direction: column;
-      }
+      flex-direction: column;
 
-      .created-groups-table-wrapper {
+      .group-asset-form-wrapper,
+      .group-asset-table-wrapper {
         width: 100%;
 
-        .ReactTable {
-          .rt-table {
-            .groups_header_wrapper {
-              display: inline-block !important;
-              margin-top: 22px !important;
+        .created-groups-table-wrapper {
+          width: 100%;
+
+          .ReactTable {
+            .rt-table {
+              .groups_header_wrapper {
+                display: inline-block !important;
+                margin-top: 22px !important;
+              }
+            }
+
+            .rt-tr-group {
+              .rt-tr.-odd {
+                background: #232629;
+              }
             }
           }
         }
-      }
-
-      .details-contracts-table-wrapper {
-        width: 100%;
-        min-height: 200px;
-        background: #17191b;
-
-        .table_title_wrapper {
-          margin-bottom: 22px;
-        }
-      }
-
-      .group-asset-form-wrapper {
-        flex-direction: column;
 
         .create_group_form_wrapper,
         .add_contract_form_wrapper {
           width: 100%;
           border: none;
-        }
 
-        .create_group_form_wrapper {
           .create_group_container {
             flex-direction: column;
 
             .create_group_fields_wrapper {
               flex-direction: column;
+            }
 
-              .create_group_field {
-                width: auto;
-              }
+            .create_group_field {
+              width: auto;
+            }
 
-              .create_group_field_select {
-                width: auto;
-                margin: auto 15px;
-              }
+            .create_group_field_select {
+              width: auto;
+              margin: auto 15px;
             }
 
             .create_group_submit_wrapper {
@@ -262,26 +259,17 @@
           }
         }
 
-        .add_contract_form_wrapper {
-          .create_group_container {
-            flex-direction: column;
+        .details-contracts-table-wrapper {
+          width: 100%;
+          min-height: 200px;
+          background: #17191b;
 
-            .create_group_field {
-              width: auto;
-            }
+          .details-contracts-empty {
+            height: 100px;
+          }
 
-            .create_group_submit_wrapper {
-              display: flex;
-              justify-content: center;
-              margin-bottom: 15px;
-
-              .create_group_submit {
-                border: 1px solid #44464a;
-                border-radius: 0;
-                min-width: 200px;
-                padding: 6px 0;
-              }
-            }
+          .table_title_wrapper {
+            margin-bottom: 22px;
           }
         }
       }

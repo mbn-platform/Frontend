@@ -58,13 +58,13 @@ class GroupAsset extends React.Component {
           assetGroups={this.props.assetGroups}
           selectAssetGroup={this.handleGroupSelect}
         />
+        <CreateGroup />
+      </div>
+      <div className="group-asset-form-wrapper">
         <Contracts
           contracts={this.state.contracts}
           onContractDelete={this.confirmDeleteContract}
         />
-      </div>
-      <div className="group-asset-form-wrapper">
-        <CreateGroup />
         <AddContract
           selectedGroup={this.state.selectedGroup}
           selectedContracts={this.state.contracts}
