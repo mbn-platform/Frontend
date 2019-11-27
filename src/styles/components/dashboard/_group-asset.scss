@@ -271,6 +271,20 @@
           .table_title_wrapper {
             margin-bottom: 22px;
           }
+
+          .ReactTable {
+            .rt-table {
+              .groups_header_wrapper {
+                flex-direction: column;
+              }
+            }
+
+            .rt-tr-group {
+              .rt-tr.-odd {
+                background: #232629;
+              }
+            }
+          }
         }
       }
     }
