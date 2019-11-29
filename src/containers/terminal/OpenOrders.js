@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import ReactTable from '../../components/SelectableReactTable';
+import { OrderProgress } from '../../components/OrderProgress';
 
 export class OpenOrders extends React.Component {
   constructor(props) {
@@ -112,7 +113,7 @@ export class OpenOrders extends React.Component {
         Cell: ({ original }) =>
           original.state === 'NEW' || original.state === 'CANCELING'
             ? (
-              <div className="orders__table-spinner" />
+              <OrderProgress progress={original.progress} />
             ) : (
               <CancelOrderCell
                 showSmall={changeCancel}

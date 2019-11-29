@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import ReactTable from '../../components/SelectableReactTable';
+import { OrderProgress } from '../../components/OrderProgress';
 import {sortData, onColumnSort, classNameForColumnHeader}  from '../../generic/terminalSortFunctions';
 import { FormattedMessage } from 'react-intl';
 import createMqProvider, {querySchema} from '../../MediaQuery';
@@ -179,7 +180,7 @@ class OrdersTable extends React.Component {
 
             return  original.state === 'NEW' || original.state === 'CANCELING'
               ? (
-                <div className="orders__table-spinner" />
+                <OrderProgress progress={original.progress}/>
               ) : (
                 <div onClick={(event) => {
                   event.stopPropagation();
