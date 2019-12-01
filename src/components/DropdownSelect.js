@@ -5,13 +5,12 @@ import PropTypes from 'prop-types';
 import OutsideClick from './OutsideClick';
 
 class DropdownSelect extends React.Component {
-
   state = {
     filter: '',
     isOpen: false,
   }
 
-  onItemSelect = (e, item) => {
+  onItemSelect = (_, item) => {
     this.setState({isOpen: false});
     this.props.onItemSelect(item);
   }
@@ -91,9 +90,9 @@ class DropdownSelect extends React.Component {
               <div className="dropdown__name" onClick={this.close}>
                 <span>{header}</span><span className="arrow_down"/>
               </div>
-              {items.map(item => (
+              {items.map((item, index) => (
                 <div
-                  key={item}
+                  key={index}
                   onClick={e => this.onItemSelect(e, item)}
                   className={classNames(elementClassName, {active: item === selected})}
                 >
@@ -108,6 +107,10 @@ class DropdownSelect extends React.Component {
   }
 }
 
+DropdownSelect.defaultProps = {
+  filterable: false,
+};
+
 DropdownSelect.propTypes = {
   selected: PropTypes.string.isRequired,
   targetId: PropTypes.string.isRequired,
@@ -119,12 +122,4 @@ DropdownSelect.propTypes = {
   switcherClassName: PropTypes.string,
 };
 
-DropdownSelect.defaultProps = {
-  filterable: false,
-};
-
-
-
 export default DropdownSelect;
-
-

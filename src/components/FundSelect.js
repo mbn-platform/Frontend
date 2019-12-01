@@ -106,8 +106,6 @@ class FundSelect extends React.Component {
 }
 
 export class GroupContractSelect extends React.Component {
-
-
   constructor(props) {
     super(props);
     this.state = {isOpen: false};
@@ -141,7 +139,7 @@ export class GroupContractSelect extends React.Component {
   }
 
   render() {
-    const contracts = this.props.contracts;
+    const { contracts } = this.props;
     return (
       <div onClick={() => this.setState({isOpen: !this.state.isOpen})} id="popover1" className="dropdown-link-wrap">
         {this.renderSelectedFund()}

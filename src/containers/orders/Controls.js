@@ -3,6 +3,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
+import isNull from 'lodash/isNull';
 
 import {
   selectExchange,
@@ -16,9 +17,12 @@ import DropdownSelect from '../../components/DropdownSelect';
 import Checkbox from '../../components/Checkbox';
 
 class Controls extends React.Component {
-  state = {
-    assetGroupEnabled: false,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      assetGroupEnabled: !isNull(props.assetGroup),
+    };
+  }
 
   componentDidMount = () => {
     this.props.getAssetGroups();
@@ -31,6 +35,7 @@ class Controls extends React.Component {
       this.setState({ assetGroupEnabled: checked });
       if (checked) {
         this.handleGroupSelect(this.props.assetGroups[0].name);
+        this.props.onApiKeySelect(null);
       } else {
         this.props.selectAssetGroup(null);
       }
@@ -38,7 +43,6 @@ class Controls extends React.Component {
   };
 
   handleGroupSelect = groupName => {
-    console.log('handleGroupSelect', groupName);
     const { assetGroups } = this.props;
     const group = assetGroups.find(group => group.name === groupName);
 

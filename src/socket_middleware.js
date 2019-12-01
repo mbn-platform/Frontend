@@ -139,8 +139,8 @@ const socketMiddleware = store => next => action => {
       if(socket) {
         const state = store.getState();
         const {exchange} = state.terminal;
-        const symbol = action.market;
-        socket.emit('market', {exchange, symbol});
+
+        socket.emit('market', {exchange});
         socket.emit('rates', {exchange});
       }
       return;
