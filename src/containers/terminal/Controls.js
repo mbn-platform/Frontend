@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { FormattedMessage } from 'react-intl';
+import isNull from 'lodash/isNull';
 
 import FundSelect, { GroupContractSelect } from '../../components/FundSelect';
 import DropdownSelect from '../../components/DropdownSelect';
@@ -23,8 +24,7 @@ class Controls extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedTime: localStorage.getItem('terminal.selectedTime') || '1 H',
-      assetGroupEnabled: false,
+      assetGroupEnabled: !isNull(props.assetGroup),
     };
   }
 
@@ -37,6 +37,7 @@ class Controls extends React.Component {
       this.setState({assetGroupEnabled: checked});
       if (checked) {
         this.handleGroupSelect(this.props.assetGroups[0].name);
+        this.props.onApiKeySelect(null);
       } else {
         this.props.selectAssetGroup(null);
       }
@@ -45,7 +46,12 @@ class Controls extends React.Component {
 
   componentDidMount = () => {
     this.props.getAssetGroups();
-    this.props.selectAssetGroup(null);
+  };
+
+  componentDidUpdate = (prevProps) => {
+    if (this.props.loggedIn !== prevProps.loggedIn) {
+      this.setState({ assetGroupEnabled: false });
+    }
   };
 
   handleGroupSelect = (groupName) => {
@@ -109,7 +115,7 @@ class Controls extends React.Component {
           />
         ) : (
           <FundSelect
-            title={assetGroup ? 'terminal.contracts': 'apiKey'}
+            title="apiKey"
             exchange={this.props.exchange}
             funds={funds}
             selectedFund={this.props.fund}

@@ -79,10 +79,7 @@ export function deleteApiKey(key, token2FA) {
     await KeysApi.delete(key, token2FA)
       .then(() => {
         const selectedKey = getState().terminal.fund;
-        const storageKey = JSON.parse(localStorage.getItem('terminal.selectedFund'));
-        if (storageKey && storageKey._id === key._id) {
-          localStorage.removeItem('terminal.selectedFund');
-        }
+
         if (selectedKey && selectedKey._id === key._id) {
           const exchange = getState().terminal.exchange;
           const ownKeys = getState().apiKeys.ownKeys.filter(key => key.exchange === exchange);

@@ -29,8 +29,6 @@ export const SELECT_ASSET_GROUP = 'SELECT_ASSET_GROUP';
 const TerminalApi = new ApiTerminal();
 
 export function selectFund(fund) {
-  console.log('call select fund');
-  localStorage.setItem('terminal.selectedFund', JSON.stringify(fund));
   return {
     type: SELECT_FUND,
     fund
@@ -46,7 +44,6 @@ export function stopTradingDataUpdates() {
 }
 
 export function selectMarket(market) {
-  localStorage.setItem('terminal.selectedMarket', market);
   return {
     type: SELECT_MARKET,
     market,
@@ -54,7 +51,6 @@ export function selectMarket(market) {
 }
 
 export function selectExchange(exchange, restore) {
-  localStorage.setItem('terminal.selectedExchange', exchange);
   return (dispatch, getState) => {
     const state = getState();
     const apiKeys = state.apiKeys.ownKeys.filter(k => k.exchange === exchange);
@@ -72,7 +68,6 @@ export function selectExchange(exchange, restore) {
 }
 
 export function selectInterval(interval) {
-  localStorage.setItem('terminal.selectedInterval', interval);
   return {
     type: SELECT_INTERVAL,
     interval,

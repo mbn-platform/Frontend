@@ -1,24 +1,20 @@
 import { LOGGED_IN, NAME_REQUIRED } from '../actions/auth';
 import { UPDATE_PROFILE, UPDATE_PROFILE_AVAILABLE, GET_PROFILE } from '../actions/profile';
-import {saveReduxState} from '../rootReducer';
 
 export default function reducer(auth = {}, action) {
   switch(action.type) {
     case LOGGED_IN: {
       const state = {...auth, loggedIn: true, profile: action.data};
-      saveReduxState({auth: state});
       return state;
     }
     case NAME_REQUIRED: {
       const state = {...auth, nameRequired: true, loggedIn: false};
-      saveReduxState({auth: state});
       return state;
     }
     case GET_PROFILE: {
       const profile = action.profile;
       if(auth.loggedIn && auth.profile._id === profile._id) {
         const state = {...auth, profile: {...auth.profile, ...profile}};
-        saveReduxState({auth: state});
         return state;
       }
       return auth;
@@ -32,7 +28,6 @@ export default function reducer(auth = {}, action) {
       const update = {...currentProfile, available, contractSettings, currencies
       };
       const state = {...auth, profile: update};
-      saveReduxState({auth: state});
       return state;
     }
 
