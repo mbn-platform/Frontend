@@ -172,8 +172,12 @@ class OrdersTable extends React.Component {
         [{
           Header: '',
           minWidth: screenWidth === 'lg' ? 80 : 10,
-          Cell: ({ original }) =>
-            original.state === 'NEW' || original.state === 'CANCELING'
+          Cell: ({ original }) => {
+            if (original.state === 'CLOSED') {
+              return <div />;
+            }
+
+            return  original.state === 'NEW' || original.state === 'CANCELING'
               ? (
                 <div className="orders__table-spinner" />
               ) : (
@@ -183,7 +187,8 @@ class OrdersTable extends React.Component {
                 }}>
                   <span className="orders__table-remove" />
                 </div>
-              ),
+              );
+          },
           className: ' orders__table_cell',
         }] : [])
     ];
@@ -220,7 +225,7 @@ class OrdersTable extends React.Component {
       scrollBarHeight={100}
       sortable={false}
     />
-  )
+  );
 
   render() {
     const isOpenOrder = this.state.tab === TAB_OPEN_ORDERS;
