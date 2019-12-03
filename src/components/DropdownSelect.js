@@ -2,6 +2,7 @@ import React from 'react';
 import { Popover } from 'reactstrap';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+
 import OutsideClick from './OutsideClick';
 
 class DropdownSelect extends React.Component {

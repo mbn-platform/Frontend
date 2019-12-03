@@ -5,7 +5,9 @@ import classNames from 'classnames';
 import { FormattedMessage } from 'react-intl';
 import isNull from 'lodash/isNull';
 
-import FundSelect, { GroupContractSelect } from '../../components/FundSelect';
+import FundSelect from '../../components/FundSelect';
+import GroupContractSelect from '../../components/GroupContractSelect';
+import GroupSelect from '../../components/GroupSelect';
 import DropdownSelect from '../../components/DropdownSelect';
 import Checkbox from '../../components/Checkbox';
 import MarketSelect from './MarketSelect';
@@ -36,7 +38,7 @@ class Controls extends React.Component {
     } else {
       this.setState({assetGroupEnabled: checked});
       if (checked) {
-        this.handleGroupSelect(this.props.assetGroups[0].name);
+        this.handleGroupSelect(this.props.assetGroups[0]._id);
         this.props.onApiKeySelect(null);
       } else {
         this.props.selectAssetGroup(null);
@@ -54,8 +56,8 @@ class Controls extends React.Component {
     }
   };
 
-  handleGroupSelect = (groupName) => {
-    const group = this.props.assetGroups.find((g) => g.name === groupName);
+  handleGroupSelect = groupId => {
+    const group = this.props.assetGroups.find(group => group._id === groupId);
     if (group) {
       this.props.selectAssetGroup(group);
       this.props.onExchangeSelect(group.exchange);
@@ -95,9 +97,9 @@ class Controls extends React.Component {
             onToggle={this.onAssetGroupToggle}
           />
           {this.state.assetGroupEnabled && assetGroup && (
-            <DropdownSelect
-              selected={assetGroup.name}
-              items={assetGroups.map((g) => g.name)}
+            <GroupSelect
+              selectedGroup={assetGroup}
+              assetGroups={assetGroups}
               targetId="group_select"
               elementClassName="exchange__switch"
               dropdownClassName="exchange"

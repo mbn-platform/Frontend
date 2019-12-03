@@ -12,7 +12,10 @@ import {
 } from '../../actions/terminal';
 import { showInfoModal, closeInfoModal } from '../../actions/modal';
 import { getAssetGroups } from '../../actions/assetGroup';
-import FundSelect, { GroupContractSelect } from '../../components/FundSelect';
+import FundSelect from '../../components/FundSelect';
+import GroupContractSelect from '../../components/GroupContractSelect';
+import GroupSelect from '../../components/GroupSelect';
+
 import DropdownSelect from '../../components/DropdownSelect';
 import Checkbox from '../../components/Checkbox';
 
@@ -34,7 +37,7 @@ class Controls extends React.Component {
     } else {
       this.setState({ assetGroupEnabled: checked });
       if (checked) {
-        this.handleGroupSelect(this.props.assetGroups[0].name);
+        this.handleGroupSelect(this.props.assetGroups[0]._id);
         this.props.onApiKeySelect(null);
       } else {
         this.props.selectAssetGroup(null);
@@ -42,9 +45,9 @@ class Controls extends React.Component {
     }
   };
 
-  handleGroupSelect = groupName => {
+  handleGroupSelect = groupId => {
     const { assetGroups } = this.props;
-    const group = assetGroups.find(group => group.name === groupName);
+    const group = assetGroups.find(group => group._id === groupId);
 
     if (group) {
       this.props.selectAssetGroup(group);
@@ -86,9 +89,9 @@ class Controls extends React.Component {
             onToggle={this.onAssetGroupToggle}
           />
           {this.state.assetGroupEnabled && assetGroup && (
-            <DropdownSelect
-              selected={assetGroup.name}
-              items={assetGroups.map((g) => g.name)}
+            <GroupSelect
+              selectedGroup={assetGroup}
+              assetGroups={assetGroups}
               targetId="group_select"
               elementClassName="exchange__switch"
               dropdownClassName="exchange"
