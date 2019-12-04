@@ -22,6 +22,7 @@ import stakeTr from './reducers/stakeTr';
 import quickNotif from './reducers/quickNotif';
 import tariffs from './reducers/tariffs';
 import payments from './reducers/payments';
+import selection from './reducers/selection';
 
 const combined = combineReducers(
   {
@@ -47,6 +48,7 @@ const combined = combineReducers(
     quickNotif,
     tariffs,
     payments,
+    selection,
   });
 
 const root = (state, action) => {

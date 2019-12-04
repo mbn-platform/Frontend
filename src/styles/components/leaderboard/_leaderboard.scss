@@ -19,6 +19,8 @@
 }
 
 .ratings-main {
+  @import './selection';
+
   .rating-navigation {
     font-size: 22px;
     font-weight: 500;
@@ -218,11 +220,11 @@
     transition-property: background, color;
     transition-duration: 400ms;
     transition: background 400ms, color 400ms;
-    
+
     &.active {
         background-color: rgba(144, 148, 161, 0.25);
     }
-    
+
     &:hover {
         text-decoration: none;
         color: #fff;

@@ -10,6 +10,7 @@ import {updateRatings} from '../../actions/terminal';
 import {connect} from 'react-redux';
 import Leaderboard from './LeaderboardPage';
 import Rating from './Rating';
+import Selection from './Selection';
 
 class PageWrapper extends React.Component {
   render() {
@@ -22,6 +23,7 @@ class PageWrapper extends React.Component {
               <Switch>
                 <Route exact path="/leaderboard" render={() => <Leaderboard {...this.props} />} />
                 <Route exact path="/rating" render={() => <Rating {...this.props} />} />
+                <Route exact path="/selection" render={() => <Selection {...this.props} />} />
               </Switch>
             </div>
           </Col>
@@ -36,12 +38,20 @@ class PageWrapper extends React.Component {
         <NavLink to="/rating">
           <FormattedMessage
             id="rating.title"
-            defaultMessage="RATING" />
+            defaultMessage="RATING"
+          />
         </NavLink>
         <NavLink to="/leaderboard">
           <FormattedMessage
             id="leaderboard.title"
-            defaultMessage="RATING" />
+            defaultMessage="RATING"
+          />
+        </NavLink>
+        <NavLink to="/selection">
+          <FormattedMessage
+            id="selection.title"
+            defaultMessage="SELECTION"
+          />
         </NavLink>
       </div>
     );

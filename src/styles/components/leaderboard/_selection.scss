@@ -1,0 +1,29 @@
+.selection-main__title {
+  margin-bottom: 20px;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.selection-main__block {
+  margin-top: 20px;
+  padding: 15px !important;
+  display: flex;
+  flex-direction: column;
+  background-color: #2D3034;
+  margin-right: 5px !important;
+}
+
+.selection-main__submit {
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .selection-main__block {
+    margin-right: 0 !important;
+  }
+
+  .btn {
+    width: auto;
+  }
+}

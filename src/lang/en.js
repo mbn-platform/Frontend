@@ -351,6 +351,11 @@ const en = {
 
   'payments.errors.addressAlreadyExists': 'Address already exists',
 
+  'selection.title': 'SELECTION',
+  'selection.name': 'Name',
+  'selection.profitPercent': 'Profit, %',
+  'selection.confirmationStatus': 'Confirmation status',
+  'selection.confirm': 'Confirm',
 };
 
 export default en;
