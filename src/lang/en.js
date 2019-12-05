@@ -351,7 +351,7 @@ const en = {
 
   'payments.errors.addressAlreadyExists': 'Address already exists',
 
-  'selection.title': 'SELECTION',
+  'selection.title': 'SELECTION COMPETITION',
   'selection.name': 'Name',
   'selection.profitPercent': 'Profit, %',
   'selection.confirmationStatus': 'Confirmation status',

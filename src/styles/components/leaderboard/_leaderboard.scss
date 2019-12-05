@@ -34,6 +34,19 @@
         margin-left: 10px;
       }
     }
+    &.round {
+      span {
+        cursor: pointer;
+        &:first-child {
+          margin-right: 10px;
+        }
+        color: grey;
+        &.active {
+          text-decoration: underline;
+          color: white;
+        }
+      }
+    }
   }
   .row.calculator {
     margin-top: 10px;

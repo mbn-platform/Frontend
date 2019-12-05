@@ -7,7 +7,7 @@ import { PaginationWithPageRight } from '../../../components/PaginationWithPage'
 class SelectionTable extends React.PureComponent {
   state = {
     page: 0,
-    pageSize: 5,
+    pageSize: 20,
   }
 
   columns = [
@@ -17,7 +17,7 @@ class SelectionTable extends React.PureComponent {
           <FormattedMessage id="selection.name" />
         </div>
       ),
-      className: 'ratings__table-cell',
+      className: 'ratings__table-cell selection',
       Cell: ({ value }) => (
         <div className="name nickname">
           @{value}
@@ -30,7 +30,7 @@ class SelectionTable extends React.PureComponent {
           <FormattedMessage id="selection.profitPercent" />
         </div>
       ),
-      className: 'ratings__table-cell',
+      className: 'ratings__table-cell selection',
       accessor: 'profit',
     }, {
       Header: (
@@ -38,8 +38,9 @@ class SelectionTable extends React.PureComponent {
           <FormattedMessage id="selection.confirmationStatus" />
         </div>
       ),
-      className: 'ratings__table-cell',
-      accessor: 'status',
+      Cell: ({value}) => value ? 'Yes' : 'No',
+      className: 'ratings__table-cell selection',
+      accessor: 'confirmed',
     },
   ];
 

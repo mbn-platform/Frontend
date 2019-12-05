@@ -18,3 +18,17 @@ export function fetchSelection() {
       });
   };
 }
+
+export function confirmRound(round) {
+  return dispatch => {
+    SelectionApi.confirmRound(round)
+      .then((json) => dispatch({
+        type: UPDATE_SELECTION,
+        selection: json,
+      }))
+      .catch((err) => {
+        console.log(err);
+        defaultErrorHandler(err, dispatch);
+      });
+  };
+}
