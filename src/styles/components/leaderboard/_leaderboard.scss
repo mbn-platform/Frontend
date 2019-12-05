@@ -22,6 +22,8 @@
   @import './selection';
 
   .rating-navigation {
+    display: flex;
+    flex-wrap: wrap;
     font-size: 22px;
     font-weight: 500;
     a {
@@ -292,11 +294,18 @@
 }
 
 @media (max-width: 768px) {
-    .leaderboard__select-wrapper {
-        padding: 0 !important;
-        overflow: scroll;
-        max-height: 50vh;
+  .leaderboard__select-wrapper {
+      padding: 0 !important;
+      overflow: scroll;
+      max-height: 50vh;
+  }
+
+  .rating-navigation {
+    a {
+      margin-left: 0 !important;
+      margin-right: 10px !important;
     }
+  }
 }
 
 
