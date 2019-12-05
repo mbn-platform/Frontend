@@ -5,6 +5,7 @@ import {
 } from '../actions/terminal';
 import { UPDATE_KEYS } from '../actions/dashboard';
 import { FETCH_CONTRACTS } from '../actions/contracts';
+import { DELETE_ASSET_GROUP } from '../actions/assetGroup';
 
 export default function(state = {
   fund: null,
@@ -35,6 +36,9 @@ export default function(state = {
         orders: action.group ? state.orders : { open: [], closed: [] },
         fund: null,
       };
+    }
+    case DELETE_ASSET_GROUP: {
+      return { ...state, assetGroup: null };
     }
     case SELECT_EXCHANGE: {
       if(action.exchange === state.exchange) {
