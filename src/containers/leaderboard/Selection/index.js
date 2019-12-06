@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Container, Row, Col } from 'reactstrap';
 import { FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
+import { Link } from 'react-router-dom';
 
 import { fetchSelection, confirmRound } from '../../../actions/selection';
 import SelectionTable from './SelectionTable';
@@ -48,6 +49,7 @@ class Selection extends React.Component {
         <Navigation selectedRound={this.state.selectedRound} onSelect={this.selectTab} />
         <Row>
           <Col md="6" sm="12">
+            <RedirectToDashboard selectedRound={this.state.selectedRound} show={round && (!round.canConfirm && !round.confirmed)} />
             <ConfirmButton
               visible={round && round.canConfirm}
               onClick={this.onConfirmButtonClick}
@@ -66,6 +68,18 @@ class Selection extends React.Component {
   }
 }
 
+const RedirectToDashboard = ({show, selectedRound}) => {
+  if (!show) {
+    return null;
+  }
+  if (selectedRound === 2) {
+    return null;
+  }
+  return (
+    <span className="selection-main__submit-title">You need an API key on binance with net worth of 100$ to participate. <Link to="/dashboard">Add</Link></span>
+  );
+};
+
 const Navigation = ({selectedRound, onSelect}) => {
   return (
     <div className="rating-navigation round">
@@ -76,12 +90,12 @@ const Navigation = ({selectedRound, onSelect}) => {
 };
 
 const ConfirmButton = ({visible, title, onClick, round}) => {
-  // if (round === 2) {
-  // return null;
-  // }
-  // if (!visible) {
-  // return null;
-  // }
+  if (round === 2) {
+    return null;
+  }
+  if (!visible) {
+    return null;
+  }
   return (
     <div>
       <div className="selection-main__submit">

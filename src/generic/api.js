@@ -30,6 +30,8 @@ export class ApiAuth {
     });
   };
 
+  logout = () => apiDelete('/auth')
+
   auth = (address, signature) =>
     apiPost('/auth', null, {addr: address, sgn: signature})
       .then(errorHandler)
