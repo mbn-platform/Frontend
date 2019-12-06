@@ -61,6 +61,7 @@ function nameRequiredAction() {
 }
 
 export function loggedOut() {
+  AuthApi.logout();
   return {
     type: LOGGED_OUT,
   };

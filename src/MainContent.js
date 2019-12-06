@@ -87,6 +87,7 @@ class MainContent extends React.Component {
           <Route exact path="/hashlog/actions/" component={ActionList} loggedIn={loggedIn}/>
           <Route exact path="/leaderboard" component={Leaderboard}/>
           <Route exact path="/rating" component={Leaderboard}/>
+          <Route exact path="/selection" component={Leaderboard}/>
           <Redirect exact from="/profile" to={loggedIn ? `/${profile.name}` : '/login'}/>
           <Route exact path="/:id" component={Profile}/>
           <Redirect exact from="/" to={defaultRoute}/>

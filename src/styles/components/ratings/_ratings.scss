@@ -738,6 +738,9 @@
         color: #44b6ff;
       }
     }
+    &.selection {
+      height: unset;
+    }
   }
 }
 
