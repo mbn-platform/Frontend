@@ -13,9 +13,11 @@ import Checkbox from '../../components/Checkbox';
 import MarketSelect from './MarketSelect';
 import {
   selectExchange,
+  selectMarket,
   selectFund,
   selectInterval,
   selectAssetGroup,
+  getExchangeMarkets,
 } from '../../actions/terminal';
 import { showInfoModal, closeInfoModal } from '../../actions/modal';
 import { getAssetGroups } from '../../actions/assetGroup';
@@ -60,9 +62,15 @@ class Controls extends React.Component {
     const group = this.props.assetGroups.find(group => group._id === groupId);
     if (group) {
       this.props.selectAssetGroup(group);
-      this.props.onExchangeSelect(group.exchange);
+      this.handleExchangeSelect(group.exchange);
     }
   };
+
+  handleExchangeSelect = (exchange) => {
+    this.props.onExchangeSelect(exchange);
+    this.props.getExchangeMarkets(exchange);
+    this.props.selectMarket(this.props.market);
+  }
 
   showNoFundsModal = () => {
     this.props.showInfoModal('noAssetGroups', {
@@ -118,7 +126,6 @@ class Controls extends React.Component {
         ) : (
           <FundSelect
             title="apiKey"
-            exchange={this.props.exchange}
             funds={funds}
             selectedFund={this.props.fund}
             userId={this.props.userId}
@@ -127,11 +134,11 @@ class Controls extends React.Component {
         )}
         <DropdownSelect
           selected={this.props.exchange}
-          items={this.props.exchanges || []}
+          items={this.props.exchanges}
           targetId="exchange_select"
           elementClassName="exchange__switch"
           dropdownClassName="exchange"
-          onItemSelect={this.props.onExchangeSelect}
+          onItemSelect={this.handleExchangeSelect}
         />
         <MarketSelect
           market={this.props.market}
@@ -192,10 +199,12 @@ const mapDispatchToProps = {
   onIntervalSelected: selectInterval,
   onExchangeSelect: selectExchange,
   onApiKeySelect: selectFund,
+  selectMarket,
   getAssetGroups,
   selectAssetGroup,
   showInfoModal,
   closeInfoModal,
+  getExchangeMarkets,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Controls));

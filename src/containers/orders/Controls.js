@@ -7,6 +7,8 @@ import isNull from 'lodash/isNull';
 
 import {
   selectExchange,
+  getExchangeMarkets,
+  selectMarket,
   selectFund,
   selectAssetGroup,
 } from '../../actions/terminal';
@@ -51,9 +53,15 @@ class Controls extends React.Component {
 
     if (group) {
       this.props.selectAssetGroup(group);
-      this.props.selectExchange(group.exchange);
+      this.handleExchangeSelect(group.exchange);
     }
   };
+
+  handleExchangeSelect = (exchange) => {
+    this.props.selectExchange(exchange);
+    this.props.getExchangeMarkets(exchange);
+    this.props.selectMarket(this.props.market);
+  }
 
   showNoFundsModal = () => {
     this.props.showInfoModal('noAssetGroups', {
@@ -110,7 +118,6 @@ class Controls extends React.Component {
         ) : (
           <FundSelect
             title={assetGroup ? 'terminal.contracts': 'apiKey'}
-            exchange={this.props.exchange}
             funds={funds}
             selectedFund={this.props.fund}
             userId={this.props.userId}
@@ -137,6 +144,8 @@ const mapStateToProps = ({ assetGroups, terminal }) => ({
 
 const mapDispatchToProps = {
   selectExchange,
+  getExchangeMarkets,
+  selectMarket,
   selectFund,
   getAssetGroups,
   selectAssetGroup,

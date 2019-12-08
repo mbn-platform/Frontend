@@ -9,14 +9,13 @@ import OrdersTable from './OrdersTable';
 import {
   cancelOrder, getOrders, getGroupOrder,
   selectExchange, selectFund, getExchangeMarkets,
-  startTradingDataUpdates, stopTradingDataUpdates,
+  stopTradingDataUpdates, selectMarket,
 } from '../../actions/terminal';
 import { setFundId } from '../../generic/util';
 
 class Orders extends React.Component {
   componentDidMount() {
-    this.props.startTradingDataUpdates();
-    this.onExchangeSelect(this.props.exchange);
+    this.handleExchangeSelect(this.props.exchange);
 
     if (this.props.fund) {
       const payload = setFundId({}, this.props.fund);
@@ -37,10 +36,11 @@ class Orders extends React.Component {
     this.props.stopTradingDataUpdates();
   }
 
-  onExchangeSelect = (exchange) => {
+  handleExchangeSelect = (exchange) => {
     this.props.selectExchange(exchange);
     this.props.getExchangeMarkets(exchange);
-  };
+    this.props.selectMarket(this.props.market);
+  }
 
   render() {
     const apiKeys = this.props.apiKeys.ownKeys;
@@ -69,7 +69,7 @@ class Orders extends React.Component {
                   onApiKeySelect={this.props.selectFund}
                   exchange={this.props.exchange}
                   exchanges={this.props.exchanges}
-                  onExchangeSelect={this.onExchangeSelect}
+                  onExchangeSelect={this.handleExchangeSelect}
                 />
               </div>
               <OrdersTable
@@ -101,7 +101,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  startTradingDataUpdates,
   stopTradingDataUpdates,
   getOrders,
   getGroupOrder,
@@ -109,6 +108,7 @@ const mapDispatchToProps = {
   selectExchange,
   getExchangeMarkets,
   selectFund,
+  selectMarket,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Orders);
