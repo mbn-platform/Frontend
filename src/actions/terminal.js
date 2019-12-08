@@ -22,7 +22,6 @@ export const UPDATE_TICKER = 'UPDATE_TICKER';
 export const UPDATE_ORDER_BOOK = 'UPDATE_ORDER_BOOK';
 export const UPDATE_HISTORY = 'UPDATE_HISTORY';
 export const UPDATE_MARKET_SUMMARIES = 'UPDATE_MARKET_SUMMARIES';
-export const TRADING_DATA_START = 'TRADING_DATA_START';
 export const TRADING_DATA_STOP = 'TRADING_DATA_STOP';
 export const SELECT_ASSET_GROUP = 'SELECT_ASSET_GROUP';
 
@@ -33,10 +32,6 @@ export function selectFund(fund) {
     type: SELECT_FUND,
     fund
   };
-}
-
-export function startTradingDataUpdates() {
-  return {type: TRADING_DATA_START};
 }
 
 export function stopTradingDataUpdates() {
@@ -50,20 +45,60 @@ export function selectMarket(market) {
   };
 }
 
-export function selectExchange(exchange, restore) {
+export function selectExchange(exchange) {
   return (dispatch, getState) => {
     const state = getState();
     const apiKeys = state.apiKeys.ownKeys.filter(k => k.exchange === exchange);
     const contracts = state.contracts.current
       .filter(c => c.exchange === exchange && c.to._id === state.auth.profile._id);
     const selectedFund = apiKeys[0] || contracts[0] || null;
-    // TODO: make fund selection automatic
     // dispatch(selectFund(selectedFund));
     dispatch({
       type: SELECT_EXCHANGE,
       exchange,
-      restore,
     });
+  };
+}
+
+export const checkUrlParams = ({ exchange, market }, history) => {
+  return (dispatch, getState) => {
+    const { exchanges, terminal } = getState();
+
+    if (exchanges.includes(exchange)) {
+      dispatch(selectExchange(exchange));
+      dispatch(getExchangeMarkets(exchange, market, history));
+    } else {
+      dispatch(selectExchange(terminal.exchange));
+      dispatch(getExchangeMarkets(terminal.exchange, terminal.market, history));
+    }
+  };
+};
+
+export function getExchangeMarkets(exchange, market = null, history = null) {
+  return dispatch => {
+    TerminalApi.getExchangeMarkets(exchange)
+      .then(({ markets }) => {
+        dispatch({
+          type: EXCHANGE_MARKETS,
+          exchange,
+          markets,
+        });
+
+        if (market && history) {
+          const hasMarket = markets.find(m => m.symbol === market);
+
+          if (hasMarket) {
+            dispatch(selectMarket(market));
+            history.replace(`/terminal/${exchange}/${market}`);
+          } else {
+            dispatch(selectMarket('USDT-BTC'));
+            history.replace(`/terminal/${exchange}/USDT-BTC`);
+          }
+        }
+      })
+      .catch(e => {
+        console.error('failed to get exchange info', e);
+      });
   };
 }
 
@@ -71,22 +106,6 @@ export function selectInterval(interval) {
   return {
     type: SELECT_INTERVAL,
     interval,
-  };
-}
-
-export function getExchangeMarkets(exchange) {
-  return dispatch => {
-    TerminalApi.getExchangeMarkets(exchange)
-      .then(res => {
-        dispatch({
-          type: EXCHANGE_MARKETS,
-          exchange,
-          markets: res.markets,
-        });
-      })
-      .catch(e => {
-        console.error('failed to get exchange info', e);
-      });
   };
 }
 
