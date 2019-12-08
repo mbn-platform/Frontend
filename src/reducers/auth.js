@@ -1,7 +1,7 @@
 import { LOGGED_IN, NAME_REQUIRED } from '../actions/auth';
 import { UPDATE_PROFILE, UPDATE_PROFILE_AVAILABLE, GET_PROFILE } from '../actions/profile';
 
-export default function reducer(auth = {}, action) {
+export default function reducer(auth = { loggedIn: false }, action) {
   switch(action.type) {
     case LOGGED_IN: {
       const state = {...auth, loggedIn: true, profile: action.data};
