@@ -408,6 +408,8 @@ class Navigation extends React.Component {
   }
 
   getLinks() {
+    const { terminal: { exchange, market } } = this.props;
+
     return [
       {
         name: 'Profile',
@@ -439,7 +441,7 @@ class Navigation extends React.Component {
       },
       {
         name: 'Terminal',
-        to: '/terminal',
+        to: `/terminal/${exchange}/${market}`,
         imgClass: 'terminal',
         icon: TermianlIcon,
         iconHover: TermianlIconHover
@@ -475,9 +477,10 @@ class Navigation extends React.Component {
   }
 }
 
-const mapStateToProps = ({ auth, modal }) => ({
+const mapStateToProps = ({ auth, modal, terminal }) => ({
   auth,
   modal,
+  terminal,
 });
 
 const mapDispatchToProps = {
