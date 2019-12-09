@@ -1,23 +1,60 @@
 import React from 'react';
 import { Button } from 'reactstrap';
+import { Col, Row } from 'reactstrap';
 
 class StakingInfo extends React.Component {
 
   renderInfo() {
+    const style = {
+      width: 240,
+      height: '20',
+      fontSize: '11px',
+    };
     return (
       <div className="info">
         <h3>Staking structure</h3>
-        <div>User can receive rewards for staking MBN tokens.</div>
-        <br/>
-        {this.renderLevelsTable()}
-        <br/>
+        <Row>
+          <Col xs="12" md="6">
+            <div>User can receive rewards for staking MBN tokens.</div>
+            <br/>
+            {this.renderLevelsTable()}
+            <br/>
+          </Col>
+          <Col xs="12" md="6" className="align-self-center">
+
+            <Row>
+              <Col>
+                <a href="https://idex.market/eth/mbn" target="_blank" rel="noopener noreferrer">
+                  <Button style={style}>Buy on IDEX MBN/ETH</Button>
+                </a>
+              </Col>
+              <Col>
+                <a href="https://abcc.com/markets/mbnbtc" target="_blank" rel="noopener noreferrer">
+                  <Button style={style}>Buy on ABCC MBN/BTC</Button>
+                </a>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <a href="https://www.probit.com/app/exchange/MBN-BTC" target="_blank" rel="noopener noreferrer">
+                  <Button style={style}>Buy on ProBit MBN/BTC</Button>
+                </a>
+              </Col>
+              <Col>
+                <a href="https://coinmarketcap.com/currencies/membrana/" target="_blank" rel="noopener noreferrer">
+                  <Button style={style}>View MBN on CoinMarketCap</Button>
+                </a>
+              </Col>
+            </Row>
+          </Col>
+        </Row>
         <div><b>The reward is calculated as a:</b></div>
         <div>Personal reward = Total reward / Personal share in staking pool</div>
-        <div>BTC payment comes from COF operation profit. 10% of COF profit will be distributed for users, who apply for staking level 2.</div>
+        <div>ETH payment comes from COF operation profit. 10% of COF profit will be distributed for users, who apply for staking level 2.</div>
         <div>Rewards are sended to users every week, on monday.
           Size of stacking rewards have a schedule, based on timeline.</div>
         <br/>
-        <h5>Schedule of stacking rewards in MBN and BTC:</h5>
+        <h5>Schedule of stacking rewards in MBN and ETH:</h5>
         <br/>
         {this.renderTable()}
         <br/>
@@ -33,18 +70,18 @@ class StakingInfo extends React.Component {
         <table>
           <thead>
             <tr>
-              <th />
-              <th style={{width: '140px', whiteSpace: 'unset'}}>Minimum stack required</th>
               <th style={{width: '140px'}}>Timeline</th>
-              <th>Token reward (MBN)</th>
-              <th>Token reward (MBN)</th>
+              <th>daily</th>
+              <th>monthly</th>
+              <th>annually</th>
               <th style={{width: '140px', whiteSpace: 'unset'}}>COF profit reward (BTC,only Lv2)</th>
             </tr>
           </thead>
           <tbody>
             {this.stackingData.map((d, i) => {
               let className;
-              const until = d[6] || 0;
+
+              const until = d[6];
               if ((now - until) > 0) {
                 className = 'stale';
               } else if (now - d[5] > 0) {
@@ -54,13 +91,29 @@ class StakingInfo extends React.Component {
                 <tr className={className} key={i}>
                   <td>{d[0]}</td>
                   <td>
-                    <div>Lvl 1 - {i <= 1 ? '150$': '500$'}</div>
-                    <div>Lvl 2 - 6000$</div>
+                    <div>Lvl 1 - {d[1][0]}%</div>
+                    <div>Lvl 2 - {d[1][1]}%</div>
+                    <div>Lvl 3 - {d[1][2]}%</div>
+                    <div>Lvl 4 - {d[1][3]}%</div>
                   </td>
-                  <td>{d[1]}</td>
-                  <td>{d[2]}</td>
-                  <td>{d[3]}</td>
-                  <td>{d[4]}</td>
+                  <td>
+                    <div>Lvl 1 - {d[2][0]}%</div>
+                    <div>Lvl 2 - {d[2][1]}%</div>
+                    <div>Lvl 3 - {d[2][2]}%</div>
+                    <div>Lvl 4 - {d[2][3]}%</div>
+                  </td>
+                  <td>
+                    <div>Lvl 1 - {d[3][0]}%</div>
+                    <div>Lvl 2 - {d[3][1]}%</div>
+                    <div>Lvl 3 - {d[3][2]}%</div>
+                    <div>Lvl 4 - {d[3][3]}%</div>
+                  </td>
+                  <td>
+                    <div>Lvl 1 - {d[4][0]}%</div>
+                    <div>Lvl 2 - {d[4][1]}%</div>
+                    <div>Lvl 3 - {d[4][2]}%</div>
+                    <div>Lvl 4 - {d[4][3]}%</div>
+                  </td>
                 </tr>
               );
             })}
@@ -81,20 +134,25 @@ class StakingInfo extends React.Component {
         <thead>
           <tr>
             <th>Level</th>
-            <th>Rewards</th>
             <th>Requirements (MBN)</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>Lv1</td>
-            <td>Tokens</td>
-            <td>$150/$500 worth</td>
+            <td>Lvl1</td>
+            <td>100,000</td>
           </tr>
           <tr>
-            <td>Lv2</td>
-            <td>Super-user status,tokens and <b>BTC payment</b></td>
-            <td>$6000 worth</td>
+            <td>Lvl2</td>
+            <td>300,000</td>
+          </tr>
+          <tr>
+            <td>Lvl3</td>
+            <td>1,000,000</td>
+          </tr>
+          <tr>
+            <td>Lvl4</td>
+            <td>3,000,000</td>
           </tr>
         </tbody>
       </table>
@@ -102,13 +160,8 @@ class StakingInfo extends React.Component {
   }
 
   stackingData = [
-    ['Stage 1', 'dec18’-feb19’', '0.3% daily', '9% monthly', '-'],
-    ['Stage 2', 'mar19’-may19’', '0.25% daily', '7.5% monthly', '-'],
-    ['Stage 3', 'june19’-aug19’', '0.2% daily', '6% monthly', '10%'],
-    ['Stage 4', 'sep19’-nov19’', '0.1% daily', '3% monthly', '10%', new Date('2019-09-01'), new Date('2019-12-01')],
-    ['Stage 5', 'dec19’-feb20’', '0.05% daily', '1.5% monthly', '10%', new Date('2019-12-01'), new Date('2020-03-01')],
-    ['Stage 6', 'mar20’-may20’', '0.033% daily', '1% monthly', '10%', new Date('2020-03-01'), new Date('2020-06-01')],
-    ['Stage 7+', 'june20’ and further', '0.016% daily', '0.5% monthly', '10%', new Date('2020-06-01'), new Date('2030-06-01')],
+    ['dec19’-nov20’', [0.05, 0.05, 0.066, 0.1], [1.5, 1.5, 2, 3], [20, 20, 27, 43], [10, 10, 10, 15], new Date('2019-12-01'), new Date('2020-12-01')],
+    ['dec20’-nov21’', [0.033, 0.033, 0.05, 0.066], [1, 1, 1.5, 2], [13, 13, 20, 27], [10, 10, 10, 15], new Date('2020-12-01'), new Date('2021-12-01')],
   ]
 
 
