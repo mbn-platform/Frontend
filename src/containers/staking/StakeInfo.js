@@ -144,11 +144,21 @@ class StakeInfo extends React.Component {
   getNextLevelRequired(info) {
     const currentValue = BigNumber(info.balance).div(1e18);
     let required;
-    if (info.level === 0) {
-      required = BigNumber(500).div(info.tokenPrice).toFixed();
-    }
-    if (info.level === 1) {
-      required = BigNumber(6000).div(info.tokenPrice).toFixed();
+    switch (info.level) {
+      case 0:
+        required = 100000;
+        break;
+      case 1:
+        required = 300000;
+        break;
+      case 2:
+        required = 1000000;
+        break;
+      case 3:
+        required = 3000000;
+        break;
+      default:
+        break;
     }
     const toNextLevel = BigNumber(required).minus(currentValue).toFixed(8);
     return toNextLevel;
@@ -156,15 +166,12 @@ class StakeInfo extends React.Component {
 
   renderLevelInfo(info) {
     switch (info.level) {
-      case 2:
+      case 4:
         return null;
-      case 1:
-      case 0:
-        return (
-          <span style={{color: '#346255'}}>You need {Math.ceil(this.getNextLevelRequired(info))}* MBN to level {info.level + 1} (*special price)</span>
-        );
       default:
-        throw new Error();
+        return (
+          <span style={{color: '#346255'}}>You need {Math.ceil(this.getNextLevelRequired(info))} MBN to level {info.level + 1}</span>
+        );
     }
   }
 

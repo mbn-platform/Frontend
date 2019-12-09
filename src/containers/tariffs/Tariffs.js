@@ -308,18 +308,22 @@ const BuyButtons = ({ loggedIn, tariff, payment, billing, onBuyWithMbn, onBuyWit
 };
 
 const ExpireInfo = ({billing}) => {
-  if (!billing || !billing.end) {
+  if (!billing) {
     return null;
   } else {
-    const now = new Date();
-    const remaining = new Date(billing.end) - now;
-    const remainingDays = Math.round(remaining / (86400 * 1000));
     return (
       <Row className="tariff-expire">
-        <Col>You have activated <b>{billing.tariff}</b> service plan. It will be active for {remainingDays} days</Col>
+        <Col>You have activated <b>{billing.tariff}</b> service plan.{ billing.end && ` It will be active for ${remainingDays(new Date(billing.end))} days`}</Col>
       </Row>
     );
   }
 };
+
+function remainingDays(billingEnd) {
+  const now = new Date();
+  const remaining = billingEnd - now;
+  const remainingDays = Math.round(remaining / (86400 * 1000));
+  return remainingDays;
+}
 
 export default Tariffs;
