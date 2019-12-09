@@ -145,7 +145,7 @@ function CancelOrderCell(props) {
   };
   if (props.showSmall) {
     return (
-      <span className="orders__table-remove"/>
+      <span onClick={onClick} className="orders__table-remove"/>
     );
   }
   return (
