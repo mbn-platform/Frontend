@@ -27,38 +27,53 @@ export const SELECT_ASSET_GROUP = 'SELECT_ASSET_GROUP';
 
 const TerminalApi = new ApiTerminal();
 
-export function selectFund(fund) {
-  return {
-    type: SELECT_FUND,
-    fund
-  };
-}
+export const selectFund = fund => ({
+  type: SELECT_FUND,
+  fund,
+});
 
-export function stopTradingDataUpdates() {
-  return {type: TRADING_DATA_STOP};
-}
+export const stopTradingDataUpdates = () => ({
+  type: TRADING_DATA_STOP,
+});
 
-export function selectMarket(market) {
-  return {
-    type: SELECT_MARKET,
-    market,
-  };
-}
+export const selectMarket = market => ({
+  type: SELECT_MARKET,
+  market,
+});
 
-export function selectExchange(exchange) {
-  return (dispatch, getState) => {
-    const state = getState();
-    const apiKeys = state.apiKeys.ownKeys.filter(k => k.exchange === exchange);
-    const contracts = state.contracts.current
-      .filter(c => c.exchange === exchange && c.to._id === state.auth.profile._id);
-    const selectedFund = apiKeys[0] || contracts[0] || null;
-    // dispatch(selectFund(selectedFund));
-    dispatch({
-      type: SELECT_EXCHANGE,
-      exchange,
-    });
+export const selectExchange = exchange => ({
+  type: SELECT_EXCHANGE,
+  exchange,
+});
+
+export const selectControlsByExchange = exchange => {
+  return(dispatch, getState) => {
+    dispatch(selectExchange(exchange));
+
+    const {
+      terminal: { assetGroup },
+      apiKeys: { ownKeys },
+      contracts: { current },
+      auth: { profile },
+      assetGroups,
+    } = getState();
+
+    const funds = ownKeys.concat(current.filter(c => c.to._id === profile._id));
+    const fund = funds.find(k => k.exchange === exchange);
+    const groupExists = assetGroups.find(g => g.exchange === exchange);
+
+    if (assetGroup) {
+      if (groupExists) {
+        dispatch(selectAssetGroup(groupExists));
+      } else {
+        dispatch(selectAssetGroup(null));
+        dispatch(fund ? selectFund(fund) : selectFund(null));
+      }
+    } else {
+      dispatch(fund ? selectFund(fund) : selectFund(null));
+    }
   };
-}
+};
 
 export const checkUrlParams = ({ exchange, market }, history) => {
   return (dispatch, getState) => {
@@ -317,58 +332,43 @@ export function placeOrder(order) {
   //};
 }
 
-
-export function updateRatings() {
+export const updateRatings = () => {
   return dispatch => {
     TerminalApi.updateRatings()
-      .then(data => {
+      .then(({ rating }) => {
         dispatch({
           type: UPDATE_RATINGS,
-          rating: data.rating,
+          rating,
         });
       })
       .catch(e => console.error('error'));
   };
-}
+};
 
-export function updateOrderBook(exchange, market, orderBook) {
-  return {
-    type: UPDATE_ORDER_BOOK,
-    exchange,
-    market,
-    orderBook,
-  };
-}
+export const updateOrderBook = (exchange, market, orderBook) => ({
+  type: UPDATE_ORDER_BOOK,
+  exchange, market, orderBook,
+});
 
-export function updateHistory(exchange, market, history) {
-  return {
-    type: UPDATE_HISTORY,
-    history,
-    market,
-    exchange,
-  };
-}
-export function updateAllRates(rates) {
-  return {
-    type: EXCHANGE_RATES_ALL,
-    rates,
-  };
-}
+export const updateHistory = (exchange, market, history) => ({
+  type: UPDATE_HISTORY,
+  history, market, exchange,
+});
 
-export function updateRates(exchange, rates) {
-  return {
-    type: EXCHANGE_RATES,
-    exchange,
-    rates,
-  };
-}
+export const updateRates = (exchange, rates) => ({
+  type: EXCHANGE_RATES,
+  exchange, rates,
+});
 
-export function updateTicker(exchange, market, ticker) {
-  return {
-    type: UPDATE_TICKER,
-    exchange, market, ticker,
-  };
-}
+export const updateAllRates = (rates) => ({
+  type: EXCHANGE_RATES_ALL,
+  rates,
+});
+
+export const updateTicker = (exchange, market, ticker) => ({
+  type: UPDATE_TICKER,
+  exchange, market, ticker,
+});
 
 export const selectAssetGroup = group => ({
   type: SELECT_ASSET_GROUP,

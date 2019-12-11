@@ -18,6 +18,7 @@ import {
   selectInterval,
   selectAssetGroup,
   getExchangeMarkets,
+  selectControlsByExchange,
 } from '../../actions/terminal';
 import { showInfoModal, closeInfoModal } from '../../actions/modal';
 import { getAssetGroups } from '../../actions/assetGroup';
@@ -41,7 +42,7 @@ class Controls extends React.Component {
       this.setState({assetGroupEnabled: checked});
       if (checked) {
         this.handleGroupSelect(this.props.assetGroups[0]._id);
-        this.props.onApiKeySelect(null);
+        this.props.selectFund(null);
       } else {
         this.props.selectAssetGroup(null);
       }
@@ -56,6 +57,10 @@ class Controls extends React.Component {
     if (this.props.loggedIn !== prevProps.loggedIn) {
       this.setState({ assetGroupEnabled: false });
     }
+
+    if (prevProps.assetGroup && prevProps.assetGroup !== this.props.assetGroup) {
+      this.setState({ assetGroupEnabled: !isNull(this.props.assetGroup) });
+    }
   };
 
   handleGroupSelect = groupId => {
@@ -66,11 +71,18 @@ class Controls extends React.Component {
     }
   };
 
-  handleExchangeSelect = (exchange) => {
-    this.props.onExchangeSelect(exchange);
+  handleExchangeSelect = exchange => {
+    this.props.selectControlsByExchange(exchange);
     this.props.getExchangeMarkets(exchange);
     this.props.selectMarket(this.props.market);
   }
+
+  handleFundSelect = fund => {
+    this.props.selectFund(fund);
+    this.props.selectExchange(fund.exchange);
+    this.props.getExchangeMarkets(fund.exchange);
+    this.props.selectMarket(this.props.market);
+  };
 
   showNoFundsModal = () => {
     this.props.showInfoModal('noAssetGroups', {
@@ -120,7 +132,7 @@ class Controls extends React.Component {
             contracts={funds}
             group={assetGroup}
             selectedFund={this.props.fund}
-            onContractSelect={this.props.onApiKeySelect}
+            onContractSelect={this.props.selectFund}
             onAllSelected={this.handleGroupSelect}
           />
         ) : (
@@ -129,7 +141,7 @@ class Controls extends React.Component {
             funds={funds}
             selectedFund={this.props.fund}
             userId={this.props.userId}
-            onApiKeySelect={this.props.onApiKeySelect}
+            onApiKeySelect={this.handleFundSelect}
           />
         )}
         <DropdownSelect
@@ -150,7 +162,7 @@ class Controls extends React.Component {
           targetId="time_select"
           elementClassName="time__switch"
           dropdownClassName="time"
-          onItemSelect={this.props.onIntervalSelected}
+          onItemSelect={this.props.selectInterval}
         />
       </div>
     );
@@ -196,9 +208,10 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-  onIntervalSelected: selectInterval,
-  onExchangeSelect: selectExchange,
-  onApiKeySelect: selectFund,
+  selectInterval,
+  selectFund,
+  selectExchange,
+  selectControlsByExchange,
   selectMarket,
   getAssetGroups,
   selectAssetGroup,

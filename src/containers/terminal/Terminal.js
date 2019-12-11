@@ -54,7 +54,8 @@ class Terminal extends React.Component {
     const fund = this.props.fund || this.props.assetGroup;
     if (
       fund && (prevProps.market !== this.props.market
-      || (!prevProps.fund || prevProps.fund._id !== fund._id))
+      || this.props.fund !== prevProps.fund
+      || this.props.assetGroup !== prevProps.assetGroup)
     ) {
       const payload = setFundId({}, fund);
       this.props.getOrders(payload);

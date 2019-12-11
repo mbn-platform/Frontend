@@ -11,6 +11,7 @@ import {
   selectMarket,
   selectFund,
   selectAssetGroup,
+  selectControlsByExchange,
 } from '../../actions/terminal';
 import { showInfoModal, closeInfoModal } from '../../actions/modal';
 import { getAssetGroups } from '../../actions/assetGroup';
@@ -31,6 +32,12 @@ class Controls extends React.Component {
 
   componentDidMount = () => {
     this.props.getAssetGroups();
+  };
+
+  componentDidUpdate = (prevProps) => {
+    if (prevProps.assetGroup && prevProps.assetGroup !== this.props.assetGroup) {
+      this.setState({ assetGroupEnabled: !isNull(this.props.assetGroup) });
+    }
   };
 
   onAssetGroupToggle = checked => {
@@ -57,11 +64,18 @@ class Controls extends React.Component {
     }
   };
 
-  handleExchangeSelect = (exchange) => {
-    this.props.selectExchange(exchange);
+  handleExchangeSelect = exchange => {
+    this.props.selectControlsByExchange(exchange);
     this.props.getExchangeMarkets(exchange);
     this.props.selectMarket(this.props.market);
   }
+
+  handleFundSelect = fund => {
+    this.props.selectFund(fund);
+    this.props.selectExchange(fund.exchange);
+    this.props.getExchangeMarkets(fund.exchange);
+    this.props.selectMarket(this.props.market);
+  };
 
   showNoFundsModal = () => {
     this.props.showInfoModal('noAssetGroups', {
@@ -117,11 +131,11 @@ class Controls extends React.Component {
           />
         ) : (
           <FundSelect
-            title={assetGroup ? 'terminal.contracts': 'apiKey'}
+            title="apiKey"
             funds={funds}
             selectedFund={this.props.fund}
             userId={this.props.userId}
-            onApiKeySelect={this.props.onApiKeySelect}
+            onApiKeySelect={this.handleFundSelect}
           />
         )}
         <DropdownSelect
@@ -130,7 +144,7 @@ class Controls extends React.Component {
           targetId="exchange_select"
           elementClassName="exchange__switch"
           dropdownClassName="exchange"
-          onItemSelect={this.props.onExchangeSelect}
+          onItemSelect={this.handleExchangeSelect}
         />
       </div>
     );
@@ -151,6 +165,7 @@ const mapDispatchToProps = {
   selectAssetGroup,
   showInfoModal,
   closeInfoModal,
+  selectControlsByExchange,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Controls));

@@ -102,7 +102,7 @@ const rootReducer = (state, action) => {
 const rootPersistConfig = {
   key: 'root',
   storage,
-  whitelist: ['auth'],
+  whitelist: ['auth', 'assetGroups'],
 };
 
 export default persistReducer(rootPersistConfig, rootReducer);
