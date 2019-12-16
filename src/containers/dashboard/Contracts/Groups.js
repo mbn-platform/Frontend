@@ -10,14 +10,9 @@ import Pagination from '../../../components/Pagination';
 
 class Groups extends React.Component {
   static propTypes = {
-    selectedContract: PropTypes.shape(),
     assetGroups: PropTypes.arrayOf(PropTypes.shape()).isRequired,
     showCreateGroupModal: PropTypes.func.isRequired,
     showAddContractToGroupModal: PropTypes.func.isRequired,
-  };
-
-  static defaultProps = {
-    selectedContract: null,
   };
 
   state = {
@@ -33,7 +28,7 @@ class Groups extends React.Component {
   ];
 
   handleCreateGroup = () => {
-    this.props.showCreateGroupModal(this.props.selectedContract);
+    this.props.showCreateGroupModal();
   };
 
   handleAddContract = () => {
@@ -44,6 +39,11 @@ class Groups extends React.Component {
   };
 
   onGroupSelect = group => {
+    const { selectedGroup } = this.state;
+    if (selectedGroup && selectedGroup._id === group._id) {
+      this.setState({ selectedGroup: null });
+      return;
+    }
     this.setState({ selectedGroup: group });
   };
 

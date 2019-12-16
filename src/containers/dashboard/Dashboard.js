@@ -171,6 +171,18 @@ class Dashboard extends React.Component {
   }
 
   onContractSelected(contract) {
+    const { selectedReceivedContract, selectedProvidedContract} = this.state;
+
+    if (selectedReceivedContract && selectedReceivedContract._id === contract._id) {
+      this.setState({ selectedReceivedContract: null });
+      return;
+    }
+
+    if (selectedProvidedContract && selectedProvidedContract._id === contract._id) {
+      this.setState({ selectedProvidedContract: null });
+      return;
+    }
+
     contract.to.name === this.props.userName
       ? this.setState({
         selectedReceivedContract: contract,
@@ -180,8 +192,8 @@ class Dashboard extends React.Component {
       : this.setState({
         selectedReceivedContract: null,
         selectedProvidedContract: contract,
-        selectedOffer: null }
-      );
+        selectedOffer: null,
+      });
   }
 }
 

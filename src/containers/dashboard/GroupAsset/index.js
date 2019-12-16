@@ -32,6 +32,12 @@ class GroupAsset extends React.Component {
   };
 
   handleGroupSelect = (group) => {
+    const { selectedGroup } = this.state;
+
+    if (selectedGroup && selectedGroup._id === group._id) {
+      this.setState({ contracts: null, selectedGroup: undefined });
+      return;
+    }
     this.setState({ contracts: group.contracts, selectedGroup: group });
   };
 

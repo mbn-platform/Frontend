@@ -72,7 +72,15 @@ class CreatedGroups extends React.Component {
   };
 
   onGroupSelect = group => {
+    const { selectedGroup } = this.state;
+
     this.props.selectAssetGroup(group);
+
+    if (selectedGroup && selectedGroup._id === group._id) {
+      this.setState({ selectedGroup: null });
+      return;
+    }
+
     this.setState({ selectedGroup: group });
   };
 
