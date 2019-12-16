@@ -133,7 +133,6 @@ class Controls extends React.Component {
             group={assetGroup}
             selectedFund={this.props.fund}
             onContractSelect={this.props.selectFund}
-            onAllSelected={this.handleGroupSelect}
           />
         ) : (
           <FundSelect

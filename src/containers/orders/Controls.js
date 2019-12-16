@@ -23,12 +23,9 @@ import DropdownSelect from '../../components/DropdownSelect';
 import Checkbox from '../../components/Checkbox';
 
 class Controls extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      assetGroupEnabled: !isNull(props.assetGroup),
-    };
-  }
+  state = {
+    assetGroupEnabled: !isNull(this.props.assetGroup),
+  };
 
   componentDidMount = () => {
     this.props.getAssetGroups();
@@ -127,7 +124,6 @@ class Controls extends React.Component {
             group={assetGroup}
             selectedFund={this.props.fund}
             onContractSelect={this.props.onApiKeySelect}
-            onAllSelected={this.handleGroupSelect}
           />
         ) : (
           <FundSelect

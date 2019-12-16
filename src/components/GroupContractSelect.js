@@ -30,10 +30,7 @@ class GroupContractSelect extends React.Component {
   onContractSelect = contract => event => {
     event.stopPropagation();
     this.setState({ isOpen: false });
-
-    contract
-      ? this.props.onContractSelect(contract)
-      : this.props.onAllSelected(this.props.group.name);
+    this.props.onContractSelect(contract);
   }
 
   stopPropagation = (event) => {
