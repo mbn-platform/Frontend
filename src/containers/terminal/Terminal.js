@@ -15,7 +15,8 @@ import {setFundId} from '../../generic/util';
 import {
   getOrders,
   stopTradingDataUpdates,
-  checkUrlParams,
+  selectExchange,
+  getExchangeMarkets,
 } from '../../actions/terminal';
 
 class Terminal extends React.Component {
@@ -25,7 +26,7 @@ class Terminal extends React.Component {
   }
 
   componentDidMount() {
-    const { fund, getOrders, auth, history, match } = this.props;
+    const { fund, getOrders, auth } = this.props;
 
     if (fund) {
       const payload = {};
@@ -34,7 +35,7 @@ class Terminal extends React.Component {
     }
 
     if (!auth.loggedIn) {
-      this.props.checkUrlParams(match.params, history);
+      this.checkUrlParams();
     }
   }
 
@@ -61,16 +62,30 @@ class Terminal extends React.Component {
       this.props.getOrders(payload);
     }
 
-    const { market, exchange, exchanges, match: { params }, history } = this.props;
+    const { market, exchange, exchanges, auth } = this.props;
 
-    if (prevProps.exchanges !== exchanges) {
-      this.props.checkUrlParams(params, history);
+    if (auth.loggedIn && prevProps.exchanges !== exchanges) {
+      this.checkUrlParams();
     }
 
     if (prevProps.market !== market || prevProps.exchange !== exchange) {
       this.props.history.replace(`/terminal/${exchange}/${market}`);
     }
   }
+
+  checkUrlParams = () => {
+    const {
+      market, exchange, exchanges, match: { params }, history,
+    } = this.props;
+
+    if (exchanges.includes(params.exchange)) {
+      this.props.selectExchange(params.exchange);
+      this.props.getExchangeMarkets(params.exchange, params.market, history);
+    } else {
+      this.props.selectExchange(exchange);
+      this.props.getExchangeMarkets(exchange, market, history);
+    }
+  };
 
   render = () => (
     <Container fluid className="terminal">
@@ -143,7 +158,8 @@ const mapStateToProps = ({
 const mapDispatchToProps = {
   stopTradingDataUpdates,
   getOrders,
-  checkUrlParams,
+  selectExchange,
+  getExchangeMarkets,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Terminal);

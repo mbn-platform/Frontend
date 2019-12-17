@@ -75,20 +75,6 @@ export const selectControlsByExchange = exchange => {
   };
 };
 
-export const checkUrlParams = ({ exchange, market }, history) => {
-  return (dispatch, getState) => {
-    const { exchanges, terminal } = getState();
-
-    if (exchanges.includes(exchange)) {
-      dispatch(selectExchange(exchange));
-      dispatch(getExchangeMarkets(exchange, market, history));
-    } else {
-      dispatch(selectExchange(terminal.exchange));
-      dispatch(getExchangeMarkets(terminal.exchange, terminal.market, history));
-    }
-  };
-};
-
 export function getExchangeMarkets(exchange, market = null, history = null) {
   return dispatch => {
     TerminalApi.getExchangeMarkets(exchange)
