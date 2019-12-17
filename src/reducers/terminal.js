@@ -3,8 +3,6 @@ import {
   GET_MY_ORDERS, GET_GROUP_ORDER, CANCEL_ORDER, PLACE_ORDER, UPDATE_ORDER,
   UPDATE_ORDER_BOOK, UPDATE_HISTORY, UPDATE_TICKER, SELECT_ASSET_GROUP,
 } from '../actions/terminal';
-import { UPDATE_KEYS } from '../actions/dashboard';
-import { FETCH_CONTRACTS } from '../actions/contracts';
 import { DELETE_ASSET_GROUP } from '../actions/assetGroup';
 
 export default function(state = {

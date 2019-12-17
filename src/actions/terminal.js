@@ -47,7 +47,7 @@ export const selectExchange = exchange => ({
 });
 
 export const selectControlsByExchange = exchange => {
-  return(dispatch, getState) => {
+  return (dispatch, getState) => {
     dispatch(selectExchange(exchange));
 
     const {
