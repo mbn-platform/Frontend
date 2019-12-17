@@ -151,6 +151,13 @@ class Dashboard extends React.Component {
   }
 
   onKeySelected(apiKey) {
+    const { selectedApiKey } = this.state;
+
+    if (selectedApiKey === apiKey) {
+      this.setState({ selectedApiKey: null });
+      return;
+    }
+
     this.setState({
       selectedApiKey: apiKey,
       selectedOffer: null,
