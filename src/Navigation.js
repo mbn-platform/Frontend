@@ -441,7 +441,10 @@ class Navigation extends React.Component {
       },
       {
         name: 'Terminal',
-        to: `/terminal/${exchange}/${market}`,
+        to: {
+          pathname: `/terminal/${exchange}/${market}`,
+          state: { fromNav: true },
+        },
         imgClass: 'terminal',
         icon: TermianlIcon,
         iconHover: TermianlIconHover

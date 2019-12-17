@@ -26,7 +26,7 @@ class Terminal extends React.Component {
   }
 
   componentDidMount() {
-    const { fund, getOrders, auth } = this.props;
+    const { fund, getOrders, auth, location } = this.props;
 
     if (fund) {
       const payload = {};
@@ -34,7 +34,7 @@ class Terminal extends React.Component {
       getOrders(payload);
     }
 
-    if (!auth.loggedIn) {
+    if (!auth.loggedIn || (location.state && location.state.fromNav)) {
       this.checkUrlParams();
     }
   }
