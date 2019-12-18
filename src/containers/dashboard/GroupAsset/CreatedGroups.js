@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
+import { UncontrolledTooltip } from 'reactstrap';
 
 import { getAssetGroups, deleteAssetGroup } from '../../../actions/assetGroup';
 import { showConfirmModal } from '../../../actions/modal';
@@ -30,12 +31,28 @@ class CreatedGroups extends React.Component {
         accessor: c => c.name,
       },
       {
+        Header: <TableHeader header={{ id: 'dashboard.exchange' }} />,
+        id: 'exchange',
+        className: 'table_col_value',
+        minWidth: 80,
+        accessor: c => c.exchange,
+      },
+      {
         Header: <TableHeader header={{ id: 'dashboard.total' }} />,
         id: 'totalInUSDT',
         className: 'table_col_value',
         minWidth: 80,
         accessor: c => c.totalInUSDT,
         Cell: ({ value }) => <div>{value} USDT</div>,
+        // accessor: c => c,
+        // Cell: ({ value: { totalInUSDT }, index }) => (
+        //   <div id={`totalInUSDT${index}`}>
+        //     <UncontrolledTooltip placement="right" target={`totalInUSDT${index}`}>
+        //       <FormattedMessage id="dashboard.profitNotCalculated" />
+        //     </UncontrolledTooltip>
+        //     {totalInUSDT} USDT
+        //   </div>
+        // ),
       },
       {
         Header: <TableHeader header={{ id: 'dashboard.profit' }} />,
@@ -45,7 +62,7 @@ class CreatedGroups extends React.Component {
         accessor: c => c.profit,
       },
       {
-        Header: <TableHeader header={{ id: 'simpleValue', values: { value: '#' } }} />,
+        Header: <TableHeader header={{ id: 'dashboard.numberOfContracts' }} />,
         id: 'quantity',
         className: 'table_col_value',
         accessor: c => c.contracts.length,

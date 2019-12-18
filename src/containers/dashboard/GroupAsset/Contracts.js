@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 
@@ -15,14 +16,20 @@ const Contracts = ({ contracts, allContracts, onContractDelete }) => {
       className: 'table_col_value',
       accessor: c => c,
       Cell: ({ value }) => {
-        const { from } = allContracts.current.find(item => item._id === value);
+        const { from: { name } } = allContracts.current.find(item => item._id === value);
 
-        return from.name;
+        return (
+          <div className="contractor_link">
+            @<Link className="table_col_value_a" to={'/' + name}>
+              {name}
+            </Link>
+          </div>
+        );
       },
     },
     {
-      Header: <TableHeader header={{ id: 'dashboard.total' }} />,
-      id: 'total',
+      Header: <TableHeader header={{ id: 'dashboard.startBalance' }} />,
+      id: 'startBalance',
       className: 'table_col_value',
       accessor: c => c,
       Cell: ({ value }) => {

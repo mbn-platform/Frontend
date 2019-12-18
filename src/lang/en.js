@@ -151,6 +151,7 @@ const en = {
   'dashboard.trustedToMe': '{name} trusted to me',
   'dashboard.balance': 'Balance',
   'dashboard.exchange': 'Exchange',
+  'dashboard.numberOfContracts': 'Number of Contracts',
   'dashboard.rateTheContract': 'Rate the contract',
   'dashboard.showAll': 'Show all',
   'dashboard.receivedContracts': 'Received contracts',
@@ -202,6 +203,7 @@ const en = {
   'dashboard.groups': 'Groups',
   'dashboard.groupName': 'Group name',
   'dashboard.addContractToGroup': 'Add contract to group',
+  'dashboard.profitNotCalculated': 'Profit cannot be calculated for group consisting contracts with different currencies',
 
   'orders.orders' : 'Orders',
   'orders.openOrders' : 'Open Orders',
