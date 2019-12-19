@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 
-import { showCreateGroupModal, showAddContractToGroupModal } from '../../../actions/modal';
+import { showCreateGroupModal, showConfirmModal, showAddContractToGroupModal } from '../../../actions/modal';
+import { deleteAssetGroup } from '../../../actions/assetGroup';
 import { Desktop, Mobile } from '../../../generic/MediaQuery';
 import ReactTable from '../../../components/SelectableReactTable';
 import Pagination from '../../../components/Pagination';
@@ -13,6 +14,8 @@ class Groups extends React.Component {
     assetGroups: PropTypes.arrayOf(PropTypes.shape()).isRequired,
     showCreateGroupModal: PropTypes.func.isRequired,
     showAddContractToGroupModal: PropTypes.func.isRequired,
+    showConfirmModal: PropTypes.func.isRequired,
+    deleteAssetGroup:PropTypes.func.isRequired
   };
 
   state = {
@@ -25,10 +28,34 @@ class Groups extends React.Component {
       className: 'table_col_value',
       accessor: ({ name }) => name,
     },
+    {
+      Header: '',
+      minWidth: 24,
+      className: 'table_col_delete',
+      Cell: ({ original: { _id, name } }) => (
+        <div
+          className="delete_key_button can_delete_key"
+          onClick={this.confirmDeleteGroup(_id, name)}
+        />
+      ),
+    },
   ];
 
   handleCreateGroup = () => {
     this.props.showCreateGroupModal();
+  };
+
+  confirmDeleteGroup = (id, name) => event => {
+    event.stopPropagation();
+    this.props.showConfirmModal(
+      'dashboard.deleteGroupConfirm',
+      {},
+      this.onGroupDelete(id, name)
+    );
+  };
+
+  onGroupDelete = (id, name) => () => {
+    this.props.deleteAssetGroup(id, name);
   };
 
   handleAddContract = () => {
@@ -128,6 +155,8 @@ const mapStateToProps = ({
 });
 
 const mapDispatchToProps = {
+  deleteAssetGroup,
+  showConfirmModal,
   showCreateGroupModal,
   showAddContractToGroupModal,
 };
