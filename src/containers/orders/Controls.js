@@ -57,7 +57,9 @@ class Controls extends React.Component {
 
     if (group) {
       this.props.selectAssetGroup(group);
-      this.handleExchangeSelect(group.exchange);
+      this.props.selectExchange(group.exchange);
+      this.props.getExchangeMarkets(group.exchange);
+      this.props.selectMarket(this.props.market);
     }
   };
 
