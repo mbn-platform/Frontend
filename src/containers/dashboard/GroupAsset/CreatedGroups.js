@@ -44,15 +44,6 @@ class CreatedGroups extends React.Component {
         minWidth: 80,
         accessor: c => c.totalInUSDT,
         Cell: ({ value }) => <div>{value} USDT</div>,
-        // accessor: c => c,
-        // Cell: ({ value: { totalInUSDT }, index }) => (
-        //   <div id={`totalInUSDT${index}`}>
-        //     <UncontrolledTooltip placement="right" target={`totalInUSDT${index}`}>
-        //       <FormattedMessage id="dashboard.profitNotCalculated" />
-        //     </UncontrolledTooltip>
-        //     {totalInUSDT} USDT
-        //   </div>
-        // ),
       },
       {
         Header: <TableHeader header={{ id: 'dashboard.profit' }} />,
