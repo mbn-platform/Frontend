@@ -84,7 +84,7 @@ class Feedback extends React.Component {
                       <div className="feedback-message">
                         {this.props.name ?
                           <FormattedMessage id="userDontGetFeedbacks"
-                            defaultMessage="This user did not get any feedbacks yet."/>
+                            defaultMessage="This user did not get any feedbacks yet"/>
                           :
                           null}
                       </div>
