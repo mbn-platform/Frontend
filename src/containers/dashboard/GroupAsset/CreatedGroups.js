@@ -59,6 +59,24 @@ class CreatedGroups extends React.Component {
         id: 'profit',
         className: 'table_col_value',
         minWidth: 80,
+        Cell: ({ value, index }, ) => {
+          if (value !== undefined) {
+            return value;
+          } else {
+            return (
+              <div>
+                X
+                <span className="help-tooltip d-none d-md-inline-block">
+                  <span id={`profit${index}`} className="icon-help-web-button" />
+                  <UncontrolledTooltip placement="top" target={`profit${index}`}>
+                    <FormattedMessage id="dashboard.profitNotCalculated" />
+                  </UncontrolledTooltip>
+                </span>
+
+              </div>
+            );
+          }
+        },
         accessor: c => c.profit,
       },
       {
