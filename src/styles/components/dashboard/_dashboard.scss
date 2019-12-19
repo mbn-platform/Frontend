@@ -1190,7 +1190,7 @@
 
     .table_header_wrapper.contract_header_wrapper
     {
-      display: inline;
+      display: table-cell;
     }
 
     .contract_header_wrapper .table_header
@@ -1688,6 +1688,12 @@
 
       .contract_header_wrapper .table_header {
         height: auto;
+      }
+
+      .table_header_wrapper.contract_header_wrapper
+      {
+        display: inline;
+
       }
 
       .ReactTable .rt-tr-group .rt-tr:not(.-padRow).-selected {
