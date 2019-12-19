@@ -45,6 +45,9 @@ class QuickNotification extends React.Component {
               case 'request_rejected': {
                 return <RequestNotification event={e} onClick={this.onEventClick} key={e.object._id} />;
               }
+              case 'group_contract_order_not_placed': {
+                return <OrderNotPlaced key={e.object._id + 'order_not_placed'} onClick={this.onEventClick} event={e} />;
+              }
               default:
                 return null;
             }
@@ -53,6 +56,23 @@ class QuickNotification extends React.Component {
       </div>
     );
   }
+}
+
+function OrderNotPlaced({event, onClick}) {
+  const contract = event.object;
+  return (
+    <Card className="quick-notif" onClick={() => onClick(event)}>
+      <div className="top-block">
+        <span className="time">{formatDate(new Date())}</span>
+        <span className="close-notif" />
+      </div>
+      <div className="title">
+        {requestNotifTitle(event.type)}
+      </div>
+      <div>Contract from {contract.from} {contract.sum} {contract.currency}</div>
+      <div>Order was not placed due to minimal order size requirement</div>
+    </Card>
+  );
 }
 
 function RequestNotification({event, onClick}) {
@@ -87,6 +107,9 @@ function requestNotifTitle(event) {
     }
     case 'request_timed_out': {
       return 'Contract request expired';
+    }
+    case 'group_contract_order_not_placed': {
+      return 'Order could not be placed';
     }
     default:
       return '';

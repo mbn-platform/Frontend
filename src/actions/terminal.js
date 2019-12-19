@@ -2,6 +2,7 @@ import { ApiError } from '../generic/apiCall';
 import { ApiTerminal} from '../generic/api';
 import { showInfoModal, showUpgradeTariffModal } from './modal';
 import { LOGGED_OUT } from './auth';
+import { addQuickNotif } from './quickNotif';
 
 export const SELECT_FUND = 'SELECT_FUND';
 export const SELECT_MARKET = 'SELECT_MARKET';
@@ -241,6 +242,14 @@ export function placeOrder(order) {
   return dispatch => {
     TerminalApi.placeOrder(order)
       .then(res => {
+        if (order.groupId) {
+          if (res.noOrderContracts && res.noOrderContracts.length > 0) {
+            dispatch(addQuickNotif(res.noOrderContracts.map((c) => ({
+              type: 'group_contract_order_not_placed',
+              object: c,
+            }))));
+          }
+        }
         dispatch(showInfoModal('orderHasBeenPlaced'));
       })
       .catch(error => {
