@@ -5,6 +5,7 @@ import { FormattedMessage } from 'react-intl';
 import { Desktop, Mobile } from '../../../generic/MediaQuery';
 import ReactTable from '../../../components/SelectableReactTable';
 import Pagination from '../../../components/Pagination';
+import { BalanceCell } from './BalanceCell';
 
 class ReceivedDetails extends React.Component {
   static defaultProps = {
@@ -46,6 +47,7 @@ class ReceivedDetails extends React.Component {
           </div>
         ),
         className: 'table_col_value',
+        Cell: BalanceCell,
         minWidth: 100,
         accessor: 'total',
       },
@@ -61,6 +63,7 @@ class ReceivedDetails extends React.Component {
           </div>
         ),
         className: 'table_col_value',
+        Cell: BalanceCell,
         minWidth: 100,
         accessor: 'available',
       },

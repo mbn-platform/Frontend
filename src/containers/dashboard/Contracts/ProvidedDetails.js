@@ -5,6 +5,7 @@ import { FormattedMessage } from 'react-intl';
 import { Desktop, Mobile } from '../../../generic/MediaQuery';
 import ReactTable from '../../../components/SelectableReactTable';
 import Pagination from '../../../components/Pagination';
+import { BalanceCell } from './BalanceCell';
 
 class ProvidedDetails extends React.Component {
   static defaultProps = {
@@ -47,6 +48,7 @@ class ProvidedDetails extends React.Component {
         ),
         className: 'table_col_value',
         minWidth: 100,
+        Cell: BalanceCell,
         accessor: 'total',
       },
       {
@@ -60,6 +62,7 @@ class ProvidedDetails extends React.Component {
             </div>
           </div>
         ),
+        Cell: BalanceCell,
         className: 'table_col_value',
         minWidth: 100,
         accessor: 'available',
