@@ -70,7 +70,6 @@ function createSocket(store) {
         break;
       }
       case TIMEOUT_OFFER: {
-        console.log(action);
         store.dispatch(addQuickNotif({
           type: 'request_timed_out',
           object: action.offer,
