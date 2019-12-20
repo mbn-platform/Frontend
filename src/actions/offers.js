@@ -10,6 +10,7 @@ export const SEND_OFFER = 'SEND_OFFER';
 export const VERIFY_OFFER = 'VERIFY_OFFER';
 export const PAY_OFFER = 'PAY_OFFER';
 export const NEW_OFFER = 'NEW_OFFER';
+export const TIMEOUT_OFFER = 'TIMEOUT_OFFER';
 
 const OffersApi = new ApiOffers(window.web3);
 

@@ -37,6 +37,7 @@ class QuickNotification extends React.Component {
               case 'order_closed': {
                 return <OrderNotification event={e} onClick={this.onEventClick} key={e.object._id} />;
               }
+              case 'request_timed_out':
               case 'request_created':
               case 'request_accepted':
               case 'request_canceled':
@@ -83,6 +84,9 @@ function requestNotifTitle(event) {
     }
     case 'request_verified': {
       return 'Contract verified';
+    }
+    case 'request_timed_out': {
+      return 'Contract request expired';
     }
     default:
       return '';

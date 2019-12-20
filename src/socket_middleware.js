@@ -6,7 +6,7 @@ import {updateKeyBalance} from './actions/apiKeys';
 import {updateOrderBook, updateHistory, updateRates, updateTicker, selectMarket} from './actions/terminal';
 import { UPDATE_ORDER } from './actions/terminal';
 import { addQuickNotif } from './actions/quickNotif';
-import { ACCEPT_OFFER, NEW_OFFER, CANCEL_OFFER, REJECT_OFFER, VERIFY_OFFER } from './actions/offers';
+import { ACCEPT_OFFER, NEW_OFFER, CANCEL_OFFER, REJECT_OFFER, VERIFY_OFFER, TIMEOUT_OFFER } from './actions/offers';
 let socket;
 
 function createSocket(store) {
@@ -65,6 +65,14 @@ function createSocket(store) {
       case VERIFY_OFFER: {
         store.dispatch(addQuickNotif({
           type: 'request_verified',
+          object: action.offer,
+        }));
+        break;
+      }
+      case TIMEOUT_OFFER: {
+        console.log(action);
+        store.dispatch(addQuickNotif({
+          type: 'request_timed_out',
           object: action.offer,
         }));
         break;

@@ -5,7 +5,8 @@ import {
   SEND_OFFER,
   PAY_OFFER,
   NEW_OFFER,
-  VERIFY_OFFER
+  VERIFY_OFFER,
+  TIMEOUT_OFFER,
 } from '../actions/offers';
 import { FETCH_CONTRACTS } from '../actions/contracts';
 import { combineReducers } from 'redux';
@@ -32,8 +33,12 @@ function incoming(state = [], action) {
     case NEW_OFFER:
       const offer = action.offer;
       return state.concat(offer);
+    case TIMEOUT_OFFER: {
+      const offer = action.offer;
+      return state.filter((o) => o._id !== offer._id);
+    }
     case VERIFY_OFFER:
-      return state.filter(offer => offer._id !== action.offer._id)
+      return state.filter(offer => offer._id !== action.offer._id);
     default:
       return state;
   }
@@ -61,8 +66,12 @@ function outgoing(state = [], action) {
     case SEND_OFFER:
       const offer = action.offer;
       return state.concat(offer);
+    case TIMEOUT_OFFER: {
+      const offer = action.offer;
+      return state.filter((o) => o._id !== offer._id);
+    }
     case VERIFY_OFFER:
-      return state.filter(offer => offer._id !== action.offer._id)
+      return state.filter(offer => offer._id !== action.offer._id);
     case PAY_OFFER:
       return state.filter(offer => offer._id !== action.offer._id);
     default:
