@@ -36,7 +36,11 @@ export default function(state = {
       };
     }
     case DELETE_ASSET_GROUP: {
-      return { ...state, assetGroup: null };
+      return {
+        ...state,
+        assetGroup: null,
+        orders: state.assetGroup ? { open: [], closed: [] } : state.orders,
+      };
     }
     case UPDATE_ASSET_GROUP: {
       const { assetGroup } = state;
