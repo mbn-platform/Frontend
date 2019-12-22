@@ -26,11 +26,10 @@ class Terminal extends React.Component {
   }
 
   componentDidMount() {
-    const { fund, getOrders, auth, location } = this.props;
+    const { fund, assetGroup, getOrders, auth, location } = this.props;
 
-    if (fund) {
-      const payload = {};
-      setFundId(payload, fund);
+    if (fund || assetGroup) {
+      const payload = setFundId({}, fund || assetGroup);
       getOrders(payload);
     }
 
