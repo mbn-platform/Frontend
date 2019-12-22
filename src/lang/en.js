@@ -215,6 +215,10 @@ const en = {
   'orders.estimated' : 'Estimated ',
   'orders.est' : 'Est.',
   'orders.total' : 'Total',
+  'orders.type' : 'Type',
+  'orders.value' : 'Value',
+  'orders.name' : 'Name',
+
   'profile.contractDetails' : 'Contract Details',
   'profile.securitySettings' : 'Security settings',
   'profile.notificationSettings' : 'Notifications',

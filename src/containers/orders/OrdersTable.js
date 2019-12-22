@@ -65,7 +65,9 @@ class OrdersTable extends React.Component {
       {
         Header: isNested ? '' : <div onClick={() => this.onColumnSort('type')}
           className="table__header-wrapper orders__table-header-wrapper">
-          <span className={classNameForColumnHeader(this.state, 'type')}/>
+          <FormattedMessage
+            id="orders.type"
+          /> <span className={classNameForColumnHeader(this.state, 'type')}/>
         </div>,
         minWidth: screenWidth === 'lg' ? 40 : 8,
         className: ' orders__table_cell',
@@ -76,6 +78,25 @@ class OrdersTable extends React.Component {
             </div>
           )
         ),
+      }, {
+        Header: isNested ? '' : <div onClick={() => this.onColumnSort('name')}
+          className="table__header-wrapper orders__table-header-wrapper">
+          <FormattedMessage
+            id="orders.name"
+          /> <span className={classNameForColumnHeader(this.state, 'name')}/>
+        </div>,
+        minWidth: screenWidth === 'lg' ? 80 : 30,
+        className: ' orders__table_cell',
+        Cell: () => {
+          const { assetGroup, fund } = this.props;
+
+          return (fund && fund.name) || (fund && fund.from && (
+            <FormattedMessage id="userTrustToMe"
+              defaultMessage="{name} trusted to me"
+              values={{ name: fund.from.name }}
+            />
+          )) || assetGroup.name;
+        },
       }, {
         Header: isNested ? '' : <div onClick={() => this.onColumnSort('dt')}
           className="table__header-wrapper orders__table-header-wrapper">
@@ -156,8 +177,8 @@ class OrdersTable extends React.Component {
             />
           </span>
           <FormattedMessage
-            id="orders.total"
-            defaultMessage="Total"
+            id="orders.value"
+            defaultMessage="Value"
           /> <span className={classNameForColumnHeader(this.state, 'price')}/>
         </div>,
         minWidth: screenWidth === 'lg' ? 80 : 40,
@@ -223,7 +244,6 @@ class OrdersTable extends React.Component {
     <ReactTable
       columns={this.getColumns(isOpenOrder, screenWidth, true)}
       data={this.sortData(orders)}
-      scrollBarHeight={100}
       sortable={false}
     />
   );
