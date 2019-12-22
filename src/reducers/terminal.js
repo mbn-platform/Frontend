@@ -3,7 +3,7 @@ import {
   GET_MY_ORDERS, GET_GROUP_ORDER, CANCEL_ORDER, PLACE_ORDER, UPDATE_ORDER,
   UPDATE_ORDER_BOOK, UPDATE_HISTORY, UPDATE_TICKER, SELECT_ASSET_GROUP,
 } from '../actions/terminal';
-import { DELETE_ASSET_GROUP } from '../actions/assetGroup';
+import { UPDATE_ASSET_GROUP, DELETE_ASSET_GROUP } from '../actions/assetGroup';
 
 export default function(state = {
   fund: null,
@@ -37,6 +37,11 @@ export default function(state = {
     }
     case DELETE_ASSET_GROUP: {
       return { ...state, assetGroup: null };
+    }
+    case UPDATE_ASSET_GROUP: {
+      const { assetGroup } = state;
+
+      return { ...state, assetGroup: assetGroup ? action.assetGroup : null };
     }
     case SELECT_EXCHANGE: {
       if(action.exchange === state.exchange) {
