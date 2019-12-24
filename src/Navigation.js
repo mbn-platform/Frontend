@@ -1,6 +1,5 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import Logo from './assets/svg/MainLogo.svg';
 import LogoMobile from './assets/svg/HeaderLogoBigMobile.svg';
 import DashboardIcon from './assets/svg/MenuIconDashboard.svg';
 import DashboardIconHover from './assets/svg/MenuIconDashboardHover.svg';
@@ -16,8 +15,6 @@ import HashlogIcon from './assets/svg/MenuIconHashlog.svg';
 import HashlogIconHover from './assets/svg/MenuIconHashlogHover.svg';
 import StakingIcon from './assets/svg/MenuIconStaking.svg';
 import StakingIconHover from './assets/svg/MenuIconStakingHover.svg';
-import SignOut from './assets/svg/SignOut.svg';
-import SignOutHover from './assets/svg/SignOutHover.svg';
 import TariffsIcon from './assets/svg/tariffs.svg';
 import TariffsIconHover from './assets/svg/tariffsHover.svg';
 import { connect } from 'react-redux';
@@ -41,32 +38,40 @@ import { loggedOut } from './actions/auth';
 import CommitTokensModal from './containers/staking/CommitTokensModal';
 import CreateGroupModal from './containers/dashboard/Contracts/CreateGroupModal';
 import AddContractModal from './containers/dashboard/Contracts/AddContractModal';
+import {ESCAPE_KEYCODE} from './constants';
+import { SignOutButton } from './components/navigation/SignOutButton';
+import { PlatformLogo } from './components/navigation/PlatformLogo';
 
 class Navigation extends React.Component {
-  constructor(props) {
-    super(props);
-    this.toggle = this.toggle.bind(this);
-    this.state = { isOpen: false };
+
+  state = {
+    isOpen: false,
+    isExpanded: false,
   }
 
-  toggle() {
-    this.setState({isOpen: !this.state.isOpen});
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.handleKeydown);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if(this.props.auth.loggedIn && !nextProps.auth.loggedIn) {
-      nextProps.history.push('/login');
+  componentDidUpdate(prevProps) {
+    if (prevProps.auth.loggedIn && !this.props.auth.loggedIn) {
+      this.props.history.push('/login');
     }
   }
 
-  brand() {
-    return (
-      <div className="left_col_logo_wrapper">
-        <NavLink className="left_col_logo_a" to="/">
-          <img className="left_col_logo" src={Logo} alt="" />
-        </NavLink>
-      </div>
-    );
+  toggle = () => {
+    const isOpen = !this.state.isOpen;
+    this.setState({ isOpen });
+    if (isOpen) {
+      window.addEventListener('keydown', this.handleKeydown);
+    }
+  }
+
+  handleKeydown = (event) => {
+    if (this.state.isOpen && event.keyCode === ESCAPE_KEYCODE) {
+      this.setState({isOpen: false});
+      window.removeEventListener('keydown', this.handleKeydown);
+    }
   }
 
   renderGlobalConfirmModel = () => {
@@ -294,18 +299,18 @@ class Navigation extends React.Component {
           <Desktop>
             <Collapse isOpen={this.state.isOpen} className="ml-auto ml-md-0 navigation__tab-wrapper" navbar>
               <Nav pills className="flex-column w-100 align-middle" tag="div">
-                {this.getLogo()}
+                <PlatformLogo />
                 {this.getLinks().map(this.getBar)}
-                {this.signOutButton()}
+                <SignOutButton logOut={this.props.logOut} {...this.props.auth} />
               </Nav>
             </Collapse>
           </Desktop>
           <Mobile>
             <Collapse isOpen={this.state.isOpen} className="ml-auto ml-md-0" navbar onClick={this.toggle}>
               <Nav pills className="flex-column w-100 align-middle" tag="div">
-                {this.getLogo()}
+                <PlatformLogo />
                 {this.getLinks().map(this.getBar)}
-                {this.signOutButton()}
+                <SignOutButton logOut={this.props.logOut} {...this.props.auth} />
               </Nav>
             </Collapse>
           </Mobile>
@@ -324,40 +329,6 @@ class Navigation extends React.Component {
           <div className="navigation__splitter-arrow"/>
         </div>
       </Col>
-    );
-  }
-
-  signOutButton() {
-    if(!this.props.auth.loggedIn && !this.props.auth.nameRequired) {
-      return null;
-    }
-    const onClick = e => {
-      e.preventDefault();
-      this.props.logOut();
-    };
-    return (
-      <a onClick={onClick} href="/" className="nav-link">
-        <Container className="h-100" fluid >
-          <Row className="h-100">
-            <Col xs="12" className="align-self-center">
-              <Container fluid className="align-middle">
-                <Row>
-                  <Col xs="3" md="12" className="d-flex justify-content-end justify-content-md-center">
-                    <img className='image_menu image' src={SignOut} alt=""/>
-                    <img className='image_menu_hover image' src={SignOutHover} alt=""/>
-                  </Col>
-                  <Col xs="auto" className="d-flex d-md-none">
-                    <div className="gap"/>
-                  </Col>
-                  <Col xs="3" md="12" className="d-flex justify-content-start justify-content-md-center">
-                    <div className="menu-text">Sign out</div>
-                  </Col>
-                </Row>
-              </Container>
-            </Col>
-          </Row>
-        </Container>
-      </a>
     );
   }
 
@@ -386,24 +357,6 @@ class Navigation extends React.Component {
           </Row>
         </Container>
       </NavLink>
-    );
-  }
-
-  getLogo() {
-    return (
-      <a target="_blank" href="https://membrana.io" rel='noopener noreferrer' className="nav-link d-none d-md-flex">
-        <Container fluid className="h-100">
-          <Row className="h-100">
-            <Col xs="12" className="align-self-center">
-              <Container fluid className="align-middle">
-                <Row className="d-flex justify-content-center">
-                  <img className="cursor-pointer" src={Logo} width="36" height="36" alt="" />
-                </Row>
-              </Container>
-            </Col>
-          </Row>
-        </Container>
-      </a>
     );
   }
 
@@ -471,13 +424,6 @@ class Navigation extends React.Component {
     ];
   }
 
-  renderLinks() {
-    return this.getLinks().map((link, index) => (
-      <li key={link.name} className={`left_col_menu_li left_col_menu_li_${index + 1}`}>
-        <NavLink className="left_col_menu_a" to={link.to} exact>{link.name}</NavLink>
-      </li>
-    ));
-  }
 }
 
 const mapStateToProps = ({ auth, modal, terminal }) => ({
