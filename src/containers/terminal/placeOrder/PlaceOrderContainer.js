@@ -102,6 +102,9 @@ class PlaceOrderContainer extends React.Component {
       this.props.showModalWindow('terminal.selectFund');
       return;
     }
+    if (!this.state.amount || !this.state.price) {
+      return;
+    }
     const params = {
       symbol: this.props.market,
       amount: parseFloat(this.state.amount),
