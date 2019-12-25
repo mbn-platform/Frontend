@@ -100,9 +100,17 @@ class MainContent extends React.Component {
 const LoginRoute = ({ loggedIn, ...props }) => {
   if(loggedIn) {
     const { location } = props;
-    const { redirectTo } = qs.parse(location.search.slice(1));
+    const { redirectTo, step } = qs.parse(location.search.slice(1));
     const route = redirectTo || defaultRoute;
-    return (<Redirect to={route} />);
+
+    return step ? (
+      <Redirect
+        to={{
+          pathname: route,
+          state: { step },
+        }}
+      />
+    ) : <Redirect to={route} />;
   } else {
     return (<Route  {...props} component={Login} />);
   }

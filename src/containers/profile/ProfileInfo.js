@@ -8,7 +8,6 @@ import ContractSettings from './ContractSettings';
 import SendRequestBlock from './SendRequestBlock';
 
 class ProfileInfo extends React.Component {
-
   getHeader() {
     const { tariff } = this.props.profile;
 
@@ -46,8 +45,8 @@ class ProfileInfo extends React.Component {
   }
 
   render() {
-    const profile = this.props.profile;
-    const contractSettings = profile.contractSettings;
+    const { profile } = this.props;
+    const { contractSettings } = profile;
 
     if(this.props.own) {
       return (
@@ -57,16 +56,7 @@ class ProfileInfo extends React.Component {
               <Col xs="12">
                 {this.getHeader()}
                 {this.getHeaderSeparator()}
-                <Stats
-                  traderRating={profile.topTraders}
-                  investorRating={profile.topInvesters}
-                  averageCurrent={profile.averageCurrent}
-                  roiInBTC={profile.roiInBTC}
-                  currentProfit={profile.currentProfit}
-                  roiInUSD={profile.roiInUSD}
-                  totalInBTC={profile.totalInBTC}
-                  totalInUSDT={profile.totalInUSDT}
-                />
+                <Stats {...profile} />
                 <ContractSettings
                   onSaveChangesClick={this.props.onSaveChangesClick}
                   onToggleClick={this.props.onToggleClick}
@@ -94,17 +84,7 @@ class ProfileInfo extends React.Component {
               <Col xs="12">
                 {this.getHeader()}
                 {this.getHeaderSeparator()}
-                <Stats
-                  traderRating={profile.topTraders}
-                  investorRating={profile.topInvesters}
-                  roi={15}
-                  currentProfit={profile.currentProfit}
-                  averageCurrent={profile.averageCurrent}
-                  roiInBTC={profile.roiInBTC}
-                  roiInUSD={profile.roiInUSD}
-                  totalInBTC={profile.totalInBTC}
-                  totalInUSDT={profile.totalInUSDT}
-                />
+                <Stats {...profile} />
                 <About info={profile.info} />
                 <SendRequestBlock profile={profile} />
               </Col>

@@ -1,21 +1,26 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
+import { compose } from 'redux';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import qs from 'qs';
+import { FormattedMessage, injectIntl } from 'react-intl';
+import get from 'lodash/get';
+
+import { sendOffer } from '../../actions/offers';
+import { showInfoModal } from '../../actions/modal';
+import { clearRequest } from '../../actions/request';
+import { getExchangeCurrencies } from '../../actions/exchanges';
+import { Desktop, Mobile } from '../../generic/MediaQuery';
+import SearchHeader from '../../components/SearchHeader';
+import Pagination from '../../components/Pagination';
+import ReactTable from '../../components/SelectableReactTable';
+import { StatusHeader, StatusCell } from '../../components/StatusComponents';
 import ContractDetails from './ContractDetails';
 import SelectFund from './SelectFund';
 import ContractSent from './ContractSent';
-import { connect } from 'react-redux';
-import { sendOffer } from '../../actions/offers';
-import { clearRequest } from '../../actions/request';
-import { Redirect } from 'react-router-dom';
-import {EditAmountEntry} from './ContractSettings';
-import SearchHeader from '../../components/SearchHeader';
-import { StatusHeader, StatusCell } from '../../components/StatusComponents';
-import Pagination from '../../components/Pagination';
-import ReactTable from '../../components/SelectableReactTable';
-import { Desktop, Mobile } from '../../generic/MediaQuery';
-import {getExchangeCurrencies} from '../../actions/exchanges';
-import {FormattedMessage, injectIntl} from 'react-intl';
-import { showInfoModal } from '../../actions/modal';
+import { EditAmountEntry } from './ContractSettings';
 
 const SEND_REQUEST_BLOCK_DETAILS = 0;
 const SEND_REQUEST_BLOCK_SELECT_API = 1;
@@ -26,11 +31,11 @@ const REDIRECT_TO_DASHBOARD = 5;
 export const REQUIRED_CURRENCIES = ['USDT', 'ETH', 'BTC'];
 
 class SendRequestBlock extends React.Component {
-
   constructor(props) {
     super(props);
+    const step = get(props, 'location.state.step', SEND_REQUEST_BLOCK_DETAILS);
     this.state = {
-      visibleBlock: SEND_REQUEST_BLOCK_DETAILS,
+      visibleBlock: Number(step),
       selectedFund: null,
       contractAmount: '',
       filtered: [{id: 'currency', value: ''},],
@@ -220,16 +225,22 @@ class SendRequestBlock extends React.Component {
   }
 
   onOfferSendClick = () => {
-    if (!this.props.auth.loggedIn) {
-      window.location = '/login';
-    } else {
-      this.setState({visibleBlock: SEND_REQUEST_BLOCK_SELECT_API});
-    }
+    !this.props.auth.loggedIn
+      ? this.onLogIn()
+      : this.setState({ visibleBlock: SEND_REQUEST_BLOCK_SELECT_API });
   }
 
+  onLogIn = () => {
+    const { location: { pathname }, history } = this.props;
+    history.push('/login?' + qs.stringify({
+      redirectTo: pathname,
+      step: SEND_REQUEST_BLOCK_SELECT_API,
+    }));
+  };
+
   render() {
-    const profile = this.props.profile;
-    const contractSettings = profile.contractSettings;
+    const { profile } = this.props;
+    const { contractSettings } = profile;
 
     switch(this.state.visibleBlock) {
       case SEND_REQUEST_BLOCK_DETAILS: {
@@ -389,4 +400,9 @@ const mapDispatchToProps = {
   sendOffer,
 };
 
-export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(SendRequestBlock));
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  injectIntl,
+  withRouter,
+)(SendRequestBlock);
+
