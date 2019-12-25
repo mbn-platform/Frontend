@@ -20,6 +20,7 @@ import { StatusHeader, StatusCell } from '../../components/StatusComponents';
 import ContractDetails from './ContractDetails';
 import SelectFund from './SelectFund';
 import ContractSent from './ContractSent';
+import StepTitle from './StepTitle';
 import { EditAmountEntry } from './ContractSettings';
 
 const SEND_REQUEST_BLOCK_DETAILS = 0;
@@ -241,131 +242,144 @@ class SendRequestBlock extends React.Component {
   render() {
     const { profile } = this.props;
     const { contractSettings } = profile;
+    const { visibleBlock } = this.state;
 
-    switch(this.state.visibleBlock) {
-      case SEND_REQUEST_BLOCK_DETAILS: {
-        return (
-          <ContractDetails
-            onOfferSendClick={this.onOfferSendClick}
-            availableForOffers={profile.available}
-            duration={contractSettings.duration}
-            amount={contractSettings.minAmount}
-            currency={contractSettings.currency}
-            maxLoss={contractSettings.maxLoss}
-            fee={contractSettings.fee}
-            roi={contractSettings.roi}
-            auth={this.props.auth}
-          />
-        );
-      }
-      case SEND_REQUEST_BLOCK_SELECT_API: {
-        return (
-          <SelectFund
-            onOfferSendClick={this.onOfferSendClick}
-            exchanges={this.props.exchanges}
-            apiKeys={this.props.apiKeys}
-            rates={this.props.rates}
-            currency={contractSettings.currency}
-            selectedFund={this.state.selectedFund}
-            onCancelClick={() => this.setState({visibleBlock:SEND_REQUEST_BLOCK_DETAILS})}
-            onNextClick={() => this.setState({visibleBlock:SEND_REQUEST_BLOCK_ENTER_AMOUNT, contractAmount: contractSettings.minAmount})}
-            onFundSelected={this.onFundSelected}
-          />
-        );
-      }
-      case SEND_REQUEST_BLOCK_ENTER_AMOUNT: {
-        const currentKeyBalance = this.state.selectedFund.balances.find(balance => balance.name === this.props.profile.contractSettings.currency);
-        return (
-          <div className="row-fluid choose-api-block">
-            <div className="row justify-content-center choose-title">
-              <div className="col-auto text-center align-middle choose-setting-title title-text">
-                <FormattedMessage
-                  id="profile.enterContractAmount"
-                  defaultMessage="ENTER CONTRACT AMOUNT"
+    return (
+      <React.Fragment>
+        {(() => {
+          switch(visibleBlock) {
+            case SEND_REQUEST_BLOCK_DETAILS: {
+              return (
+                <ContractDetails
+                  onOfferSendClick={this.onOfferSendClick}
+                  availableForOffers={profile.available}
+                  duration={contractSettings.duration}
+                  amount={contractSettings.minAmount}
+                  currency={contractSettings.currency}
+                  maxLoss={contractSettings.maxLoss}
+                  fee={contractSettings.fee}
+                  roi={contractSettings.roi}
+                  auth={this.props.auth}
                 />
-              </div>
-              <div className="col-md-12 col-lg-12 col-xl-12 separate-second-block">
-                <div className="separate-line d-none d-md-block"/>
-              </div>
-              <EditAmountEntry
-                dimension={this.props.profile.contractSettings.currency}
-                tabIndex={0}
-                onChange={e => this.setState({contractAmount: e.target.value})}
-                value={this.state.contractAmount}
-                placeholder={this.props.profile.contractSettings.minAmount}
-              />
-              <div className="col-12 d-flex align-items-center justify-content-between choose-btn-group">
-                <button onClick={() => this.setState({visibleBlock:SEND_REQUEST_BLOCK_SELECT_API})} type="button" className="cancel-btn btn btn-secondary">
-                  <FormattedMessage
-                    id="profile.back"
-                    defaultMessage="BACK"
-                  />
-                </button>
-                <button disabled={
-                  this.state.contractAmount !== ''
-                  && (parseFloat(this.state.contractAmount) < parseFloat(this.props.profile.contractSettings.minAmount)
-                  || parseFloat(this.state.contractAmount) > parseFloat(currentKeyBalance ? currentKeyBalance.available : '0'))
-                } onClick={() => {
-                  if (this.state.contractAmount === '') {
-                    this.setState({contractAmount: this.props.profile.contractSettings.minAmount});
-                  }
-                  this.setState({visibleBlock:SEND_REQUEST_BLOCK_SELECT_CURRENCIES});
-                }} type="button" className="send-request-btn btn btn-secondary active">
-                  <FormattedMessage
-                    id="profile.next"
-                    defaultMessage="NEXT"
-                  />
-                </button>
-              </div>
-            </div>
-          </div>
-        );
-      }
-      case SEND_REQUEST_BLOCK_SELECT_CURRENCIES: {
-        const currencies = this.props.exchangesInfo[this.state.selectedFund.exchange] && this.props.exchangesInfo[this.state.selectedFund.exchange].currencies ? this.props.exchangesInfo[this.state.selectedFund.exchange].currencies : [];
-        return (
-          <div className="row-fluid choose-api-block">
-            <div className="row justify-content-center choose-title">
-              <div className="col-auto text-center align-middle choose-setting-title title-text">
-                <FormattedMessage
-                  id="profile.selectTradingCurrencies"
-                  defaultMessage="SELECT TRADING CURRENCIES"
+              );
+            }
+            case SEND_REQUEST_BLOCK_SELECT_API: {
+              return (
+                <SelectFund
+                  onOfferSendClick={this.onOfferSendClick}
+                  exchanges={this.props.exchanges}
+                  apiKeys={this.props.apiKeys}
+                  rates={this.props.rates}
+                  currency={contractSettings.currency}
+                  selectedFund={this.state.selectedFund}
+                  onCancelClick={() => this.setState({visibleBlock:SEND_REQUEST_BLOCK_DETAILS})}
+                  onNextClick={() => this.setState({visibleBlock:SEND_REQUEST_BLOCK_ENTER_AMOUNT, contractAmount: contractSettings.minAmount})}
+                  onFundSelected={this.onFundSelected}
                 />
-              </div>
-              <div className="col-md-12 col-lg-12 col-xl-12 separate-second-block">
-                <div className="separate-line d-none d-md-block"/>
-              </div>
-              {this.renderCurrencyTable(currencies)}
-              <div className="col-12 d-flex align-items-center justify-content-between choose-btn-group">
-                <button onClick={() => this.setState({visibleBlock:SEND_REQUEST_BLOCK_ENTER_AMOUNT})} type="button" className="cancel-btn btn btn-secondary">
-                  <FormattedMessage
-                    id="profile.back"
-                    defaultMessage="BACK"
-                  />
-                </button>
-                <button onClick={() => this.onSendOfferClick()} type="button" className="send-request-btn btn btn-secondary active">
-                  <FormattedMessage
-                    id="profile.send"
-                    defaultMessage="SEND"
-                  />
-                </button>
-              </div>
-            </div>
-          </div>
-        );
-      }
-      case SEND_REQUEST_BLOCK_SENT: {
-        return (
-          <ContractSent
-            onButtonClick={this.props.onGotItClick}
+              );
+            }
+            case SEND_REQUEST_BLOCK_ENTER_AMOUNT: {
+              const currentKeyBalance = this.state.selectedFund.balances.find(balance => balance.name === this.props.profile.contractSettings.currency);
+              return (
+                <div className="row-fluid choose-api-block">
+                  <div className="row justify-content-center choose-title">
+                    <div className="col-auto text-center align-middle choose-setting-title title-text">
+                      <FormattedMessage
+                        id="profile.enterContractAmount"
+                        defaultMessage="ENTER CONTRACT AMOUNT"
+                      />
+                    </div>
+                    <div className="col-md-12 col-lg-12 col-xl-12 separate-second-block">
+                      <div className="separate-line d-none d-md-block"/>
+                    </div>
+                    <EditAmountEntry
+                      dimension={this.props.profile.contractSettings.currency}
+                      tabIndex={0}
+                      onChange={e => this.setState({contractAmount: e.target.value})}
+                      value={this.state.contractAmount}
+                      placeholder={this.props.profile.contractSettings.minAmount}
+                    />
+                    <div className="col-12 d-flex align-items-center justify-content-between choose-btn-group">
+                      <button onClick={() => this.setState({visibleBlock:SEND_REQUEST_BLOCK_SELECT_API})} type="button" className="cancel-btn btn btn-secondary">
+                        <FormattedMessage
+                          id="profile.back"
+                          defaultMessage="BACK"
+                        />
+                      </button>
+                      <button disabled={
+                        this.state.contractAmount !== ''
+                        && (parseFloat(this.state.contractAmount) < parseFloat(this.props.profile.contractSettings.minAmount)
+                        || parseFloat(this.state.contractAmount) > parseFloat(currentKeyBalance ? currentKeyBalance.available : '0'))
+                      } onClick={() => {
+                        if (this.state.contractAmount === '') {
+                          this.setState({contractAmount: this.props.profile.contractSettings.minAmount});
+                        }
+                        this.setState({visibleBlock:SEND_REQUEST_BLOCK_SELECT_CURRENCIES});
+                      }} type="button" className="send-request-btn btn btn-secondary active">
+                        <FormattedMessage
+                          id="profile.next"
+                          defaultMessage="NEXT"
+                        />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            }
+            case SEND_REQUEST_BLOCK_SELECT_CURRENCIES: {
+              const currencies = this.props.exchangesInfo[this.state.selectedFund.exchange] && this.props.exchangesInfo[this.state.selectedFund.exchange].currencies ? this.props.exchangesInfo[this.state.selectedFund.exchange].currencies : [];
+              return (
+                <div className="row-fluid choose-api-block">
+                  <div className="row justify-content-center choose-title">
+                    <div className="col-auto text-center align-middle choose-setting-title title-text">
+                      <FormattedMessage
+                        id="profile.selectTradingCurrencies"
+                        defaultMessage="SELECT TRADING CURRENCIES"
+                      />
+                    </div>
+                    <div className="col-md-12 col-lg-12 col-xl-12 separate-second-block">
+                      <div className="separate-line d-none d-md-block"/>
+                    </div>
+                    {this.renderCurrencyTable(currencies)}
+                    <div className="col-12 d-flex align-items-center justify-content-between choose-btn-group">
+                      <button onClick={() => this.setState({visibleBlock:SEND_REQUEST_BLOCK_ENTER_AMOUNT})} type="button" className="cancel-btn btn btn-secondary">
+                        <FormattedMessage
+                          id="profile.back"
+                          defaultMessage="BACK"
+                        />
+                      </button>
+                      <button onClick={() => this.onSendOfferClick()} type="button" className="send-request-btn btn btn-secondary active">
+                        <FormattedMessage
+                          id="profile.send"
+                          defaultMessage="SEND"
+                        />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            }
+            case SEND_REQUEST_BLOCK_SENT: {
+              return (
+                <ContractSent
+                  onButtonClick={this.props.onGotItClick}
+                />
+              );
+            }
+            case REDIRECT_TO_DASHBOARD:
+              return <Redirect to="/dashboard" />;
+            default:
+              return null;
+          }
+        })()}
+        {visibleBlock >= SEND_REQUEST_BLOCK_SELECT_API && (
+          <StepTitle
+            step={visibleBlock}
+            count={REDIRECT_TO_DASHBOARD}
           />
-        );
-      }
-      case REDIRECT_TO_DASHBOARD:
-        return <Redirect to="/dashboard" />;
-      default:
-        return null;
-    }
+        )}
+      </React.Fragment>
+    );
   }
 
   componentWillUnmount() {
