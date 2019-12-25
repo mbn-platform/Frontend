@@ -262,6 +262,8 @@ const en = {
   'profile.needToUpgradePlan': 'You need to upgrade your plan to use this feature',
   'profile.upgrade': 'UPGRADE',
   'profile.steps': 'Step {step} of {count}',
+  'profile.noApiKeys': 'You have no API keys',
+  'profile.goToDashboard': 'Go to Dashboard',
 
   'ratings.bestInvestor' : 'All the time best investor',
   'ratings.toBeDetermined' : 'to be determined',

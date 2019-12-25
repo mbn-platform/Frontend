@@ -1,14 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { FormattedMessage, injectIntl } from 'react-intl';
+import isEmpty from 'lodash/isEmpty';
+
 import ReactTable from '../../components/SelectableReactTable';
 import SearchHeader from '../../components/SearchHeader';
 import { Desktop, Mobile } from '../../generic/MediaQuery';
 import Pagination from '../../components/Pagination';
 import ExchangeSelect from '../../components/ExchangeSelect';
-import {FormattedMessage, injectIntl} from 'react-intl';
+import ApiKeysEmpty from './ApiKeysEmpty';
 
 class SelectFund extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -33,6 +35,7 @@ class SelectFund extends React.Component {
     });
   }
   render() {
+    const { apiKeys } = this.props;
     return (
       <div className="row-fluid choose-api-block">
         <div className="row justify-content-center choose-title">
@@ -45,21 +48,27 @@ class SelectFund extends React.Component {
           <div className="col-md-12 col-lg-12 col-xl-12 separate-second-block">
             <div className="separate-line d-none d-md-block"/>
           </div>
-          {this.renderTable()}
-          <div className="col-12 d-flex align-items-center justify-content-between choose-btn-group">
-            <button onClick={this.props.onCancelClick} type="button" className="cancel-btn btn btn-secondary">
-              <FormattedMessage
-                id="profile.cancel"
-                defaultMessage="CANCEL"
-              />
-            </button>
-            <button onClick={this.props.onNextClick} type="button" disabled={!this.props.selectedFund} className="send-request-btn btn btn-secondary active">
-              <FormattedMessage
-                id="profile.next"
-                defaultMessage="NEXT"
-              />
-            </button>
-          </div>
+          {!isEmpty(apiKeys) ? (
+            <React.Fragment>
+              {this.renderTable()}
+              <div className="col-12 d-flex align-items-center justify-content-between choose-btn-group">
+                <button onClick={this.props.onCancelClick} type="button" className="cancel-btn btn btn-secondary">
+                  <FormattedMessage
+                    id="profile.cancel"
+                    defaultMessage="CANCEL"
+                  />
+                </button>
+                <button onClick={this.props.onNextClick} type="button" disabled={!this.props.selectedFund} className="send-request-btn btn btn-secondary active">
+                  <FormattedMessage
+                    id="profile.next"
+                    defaultMessage="NEXT"
+                  />
+                </button>
+              </div>
+            </React.Fragment>
+          ) : (
+            <ApiKeysEmpty />
+          )}
         </div>
       </div>
     );
@@ -103,18 +112,18 @@ class SelectFund extends React.Component {
           return balance ? balance.available + ' ' + this.props.currency : '–';
         }
       }
-    ];    
+    ];
   }
 
-  renderTable() {
-    const data = this.props.apiKeys;
+  renderTable = () => {
+    const { apiKeys } = this.props;
     return (
       <div style={{width: '100%'}}>
-        <Desktop>          
+        <Desktop>
           <ReactTable
             style={{height: 245, width: '100%'}}
             columns={this.getColumns()}
-            data={data}
+            data={apiKeys}
             filtered={this.state.filtered}
             selectedItem={this.props.selectedFund}
             onItemSelected={fund => this.props.onFundSelected(fund)}
@@ -124,15 +133,15 @@ class SelectFund extends React.Component {
         <Mobile>
           <ReactTable
             columns={this.getColumns()}
-            data={data}
+            data={apiKeys}
             filtered={this.state.filtered}
             selectedItem={this.props.selectedFund}
             onItemSelected={fund => this.props.onFundSelected(fund)}
             minRows={5}
             showPagination={true}
             defaultPageSize={5}
-            PaginationComponent={Pagination}                
-          />        
+            PaginationComponent={Pagination}
+          />
         </Mobile>
       </div>
     );
