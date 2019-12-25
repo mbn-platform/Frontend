@@ -12,7 +12,7 @@ export function logIn() {
   return dispatch => {
     AuthApi.logIn()
       .then((profile) => {
-        if (! profile.name) {
+        if (!profile.name) {
           dispatch(nameRequiredAction());
         } else {
           dispatch(loggedIn(profile));
