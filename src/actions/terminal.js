@@ -170,7 +170,7 @@ export const getGroupOrder = (id) => (
 
 export function cancelOrder(order) {
   return dispatch => {
-    (order.isAlgo ?
+    (order.isAlgo && !order.fullAmount ?
       TerminalApi.cancelAlgoOrder(order) :
       TerminalApi.cancelOrder(order)
     )
