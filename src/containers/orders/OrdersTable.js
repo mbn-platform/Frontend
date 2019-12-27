@@ -6,7 +6,7 @@ import {sortData, onColumnSort, classNameForColumnHeader}  from '../../generic/t
 import { FormattedMessage } from 'react-intl';
 import createMqProvider, {querySchema} from '../../MediaQuery';
 
-const { Screen } = createMqProvider(querySchema);
+const { Screen, MediaQuery } = createMqProvider(querySchema);
 
 const TAB_OPEN_ORDERS = 0;
 const TAB_COMPLETED_ORDERS = 1;
@@ -69,15 +69,9 @@ class OrdersTable extends React.Component {
             id="orders.type"
           /> <span className={classNameForColumnHeader(this.state, 'type')}/>
         </div>,
-        minWidth: screenWidth === 'lg' ? 40 : 8,
+        width: screenWidth === 'lg' ? 70 : 40,
         className: ' orders__table_cell',
-        Cell: row => (
-          isNested ? null : (
-            <div>
-              <span className={`orders__table_round ${row.original.type}`}/>
-            </div>
-          )
-        ),
+        Cell: OrderType,
       }, {
         Header: isNested ? '' : <div onClick={() => this.onColumnSort('name')}
           className="table__header-wrapper orders__table-header-wrapper">
@@ -255,40 +249,53 @@ class OrdersTable extends React.Component {
 
     return (
       <div className="orders-main__block">
-        <Screen on={screenWidth => (
-          <React.Fragment>
-            <div className="block__top">
-              <div className="block__top-switch-wrap">
-                <span
-                  onClick={this.onTabClick(TAB_OPEN_ORDERS)}
-                  className={classNames('block__top-switch', 'orders-open', {active: isOpenOrder})}>
-                  <FormattedMessage
-                    id="orders.openOrders"
-                    defaultMessage="Open Orders"
-                  />
-                </span>
-                <span
-                  onClick={this.onTabClick(TAB_COMPLETED_ORDERS)}
-                  className={classNames('block__top-switch', 'orders-completed', {active: !isOpenOrder})}>
-                  <FormattedMessage
-                    id="orders.completedOrders"
-                    defaultMessage="Completed orders"
-                  />
-                </span>
-              </div>
-            </div>
-            <div className="orders-tabs">
-              <div className="orders-tab orders-open active">
-                <div className="orders__table-wraper">
-                  {this.renderOrderTable(sortedData, screenWidth, isOpenOrder)}
+        <MediaQuery>
+          <Screen on={screenWidth => (
+            <React.Fragment>
+              <div className="block__top">
+                <div className="block__top-switch-wrap">
+                  <span
+                    onClick={this.onTabClick(TAB_OPEN_ORDERS)}
+                    className={classNames('block__top-switch', 'orders-open', {active: isOpenOrder})}>
+                    <FormattedMessage
+                      id="orders.openOrders"
+                      defaultMessage="Open Orders"
+                    />
+                  </span>
+                  <span
+                    onClick={this.onTabClick(TAB_COMPLETED_ORDERS)}
+                    className={classNames('block__top-switch', 'orders-completed', {active: !isOpenOrder})}>
+                    <FormattedMessage
+                      id="orders.completedOrders"
+                      defaultMessage="Completed orders"
+                    />
+                  </span>
                 </div>
               </div>
-            </div>
-          </React.Fragment>
-        )} />
+              <div className="orders-tabs">
+                <div className="orders-tab orders-open active">
+                  <div className="orders__table-wraper">
+                    {this.renderOrderTable(sortedData, screenWidth, isOpenOrder)}
+                  </div>
+                </div>
+              </div>
+            </React.Fragment>
+          )} />
+        </MediaQuery>
       </div>
     );
   }
+}
+
+function OrderType(row) {
+  const side = row.original.type;
+  const type = row.original.orderType || 'limit';
+  return (
+    <div className={classNames('orders__table_type', side)}>
+      <div className='side' >{side}</div>
+      <div className='type'>{type || 'limit'}</div>
+    </div>
+  );
 }
 
 export default OrdersTable;

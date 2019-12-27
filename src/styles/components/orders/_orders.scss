@@ -56,12 +56,12 @@
 			margin-right: 20px;
 		}
 		&__block{
-			padding: 15px!important;
 			background-color: #2D3034;
 			display: flex;
 			flex-direction: column;
 			flex: 1 1 auto;
 			.block__top{
+				padding: 15px 15px 0 15px !important;
 				&-switch{
 					cursor: pointer;
 					font-size: 14px;
@@ -178,6 +178,22 @@
 	}
 }
 
+.orders__table_type {
+	line-height: 20px;
+	&.buy{
+		color: #32B994;
+	}
+	&.sell{
+		color: #D74C4C;
+	}
+	.side {
+		text-transform: uppercase;
+	}
+	.type {
+		text-transform: capitalize;
+	}
+}
+
 
 .orders__table_cell {
 	display: flex;
@@ -259,7 +275,6 @@
 			height: auto !important;
 
 			&__block {
-				padding: 5px !important;
 				border-radius: 2px;
 				letter-spacing: 0.1px;
 
