@@ -296,6 +296,8 @@ const en = {
   'profile.steps': 'Step {step} of {count}',
   'profile.noApiKeys': 'You have no API keys',
   'profile.goToDashboard': 'Go to Dashboard',
+  'profile.noContracts': 'No contracts',
+  'profile.traderHasNoContract': '@{name} has no current contract',
 
   'ratings.bestInvestor' : 'All the time best investor',
   'ratings.toBeDetermined' : 'to be determined',
