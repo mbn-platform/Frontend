@@ -282,7 +282,7 @@ class SendRequestBlock extends React.Component {
               const currentKeyBalance = this.state.selectedFund.balances.find(balance => balance.name === this.props.profile.contractSettings.currency);
               return (
                 <div className="row-fluid choose-api-block">
-                  <div className="row justify-content-center choose-title">
+                  <div className="row justify-content-center flex-column align-items-center choose-title">
                     <div className="col-auto text-center align-middle choose-setting-title title-text">
                       <FormattedMessage
                         id="profile.enterContractAmount"
@@ -292,6 +292,7 @@ class SendRequestBlock extends React.Component {
                     <div className="col-md-12 col-lg-12 col-xl-12 separate-second-block">
                       <div className="separate-line d-none d-md-block"/>
                     </div>
+                    <StepTitle step={2} count={3} />
                     <EditAmountEntry
                       dimension={this.props.profile.contractSettings.currency}
                       tabIndex={0}
@@ -340,6 +341,7 @@ class SendRequestBlock extends React.Component {
                     <div className="col-md-12 col-lg-12 col-xl-12 separate-second-block">
                       <div className="separate-line d-none d-md-block"/>
                     </div>
+                    <StepTitle step={3} count={3} />
                     {this.renderCurrencyTable(currencies)}
                     <div className="col-12 d-flex align-items-center justify-content-between choose-btn-group">
                       <button onClick={() => this.setState({visibleBlock:SEND_REQUEST_BLOCK_ENTER_AMOUNT})} type="button" className="cancel-btn btn btn-secondary">
@@ -372,12 +374,6 @@ class SendRequestBlock extends React.Component {
               return null;
           }
         })()}
-        {visibleBlock >= SEND_REQUEST_BLOCK_SELECT_API && (
-          <StepTitle
-            step={visibleBlock}
-            count={REDIRECT_TO_DASHBOARD}
-          />
-        )}
       </React.Fragment>
     );
   }

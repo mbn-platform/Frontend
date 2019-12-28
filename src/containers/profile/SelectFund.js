@@ -9,6 +9,7 @@ import { Desktop, Mobile } from '../../generic/MediaQuery';
 import Pagination from '../../components/Pagination';
 import ExchangeSelect from '../../components/ExchangeSelect';
 import ApiKeysEmpty from './ApiKeysEmpty';
+import StepTitle from './StepTitle';
 
 class SelectFund extends React.Component {
   constructor(props) {
@@ -48,6 +49,7 @@ class SelectFund extends React.Component {
           <div className="col-md-12 col-lg-12 col-xl-12 separate-second-block">
             <div className="separate-line d-none d-md-block"/>
           </div>
+          <StepTitle step={1} count={3} />
           {!isEmpty(apiKeys) ? (
             <React.Fragment>
               {this.renderTable()}
