@@ -119,6 +119,7 @@ const en = {
   'leaderboard.nextRoundMessage': 'Please confirm trading in the next round',
   'leaderboard.nextRoundHelp': 'If you don\'t confirm trading, you will skip next round',
   'leaderboard.nextRoundConfirm': 'Confirm',
+
   'dashboard.dashboard': 'Dashboard',
   'dashboard.namePlaceholder': 'Name',
   'dashboard.secretPlaceholder': 'Secret',
@@ -204,6 +205,7 @@ const en = {
   'dashboard.groupName': 'Group name',
   'dashboard.addContractToGroup': 'Add contract to group',
   'dashboard.profitNotCalculated': 'Profit cannot be calculated for group consisting contracts with different currencies',
+  'dashboard.contractRequests': 'Contract Requests',
 
   'orders.orders' : 'Orders',
   'orders.openOrders' : 'Open Orders',

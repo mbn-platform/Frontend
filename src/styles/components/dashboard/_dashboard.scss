@@ -249,10 +249,12 @@
     .keys_tables_wrapper .ReactTable .key_name_text_td {
       text-transform: none;
     }
-    .requests_table_wrapper
-    {
-      width: 100%;
-      max-width: 600px;
+    .requests_table_wrapper {
+      max-width: 100%;
+
+      .requests_table {
+        max-width: 600px;
+      }
     }
 
     @import 'styles/components/dashboard/group-asset';

@@ -12,7 +12,7 @@ class DashboardWrapper extends React.Component {
         {this.renderNavigation()}
         <Switch>
           <Route exact path="/dashboard/inner" component={DashboardContainer} />
-          <Route exact path="/dashboard/external" component={External}/>
+          <Route exact path="/dashboard/external" component={External} />
           <Redirect to="/dashboard/inner"/>
         </Switch>
       </div>
