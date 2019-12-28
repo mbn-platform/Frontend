@@ -1,16 +1,29 @@
 import React from 'react';
-import SegmentedControl from '../../components/SegmentedControl';
+import PropTypes from 'prop-types';
 import { Col, Row } from 'reactstrap';
-import { Desktop, Mobile } from '../../generic/MediaQuery';
 import AmChartsReact from '@amcharts/amcharts3-react';
-import { formatDate } from '../../generic/util';
-import { ProfileBlock } from '../../components/ProfileBlock';
 import memoizeOne from 'memoize-one';
+import { FormattedMessage } from 'react-intl';
+import isEmpty from 'lodash/isEmpty';
+
+import { formatDate } from '../../generic/util';
+import { Desktop, Mobile } from '../../generic/MediaQuery';
+import { ProfileBlock } from '../../components/ProfileBlock';
+import SegmentedControl from '../../components/SegmentedControl';
 
 class ProfitChart extends React.Component {
+  static defaultProps = {
+    stats: [],
+    contacts: [],
+  };
+
+  static propTypes = {
+    stats: PropTypes.arrayOf(PropTypes.shape()),
+    contacts: PropTypes.arrayOf(PropTypes.shape()),
+  };
 
   state = {
-    selectedInterval: 1,
+    selectedSegment: 1,
     maximum: 0,
     minimum: 0,
     dataProvider: [],
@@ -19,12 +32,12 @@ class ProfitChart extends React.Component {
 
   segments = ['ALL', 'CURRENT']
 
-  onSegmentChange = (segment) => {
-    this.setState({selectedInterval: segment});
+  onSegmentChange = (selectedSegment) => {
+    this.setState({ selectedSegment });
   }
 
   computeState(segment) {
-    let data = this.props.stats || [];
+    let data = this.props.stats;
     const graphIds = [];
     const dataProvider = [];
     if (segment === 1) {
@@ -73,7 +86,10 @@ class ProfitChart extends React.Component {
     return {dataProvider, graphIds};
   }
 
-  render() {
+  render = () => {
+    const { contacts, name } = this.props;
+    const { selectedSegment } = this.state;
+
     return (
       <ProfileBlock
         iconClassName='icon-005-growth'
@@ -81,40 +97,54 @@ class ProfitChart extends React.Component {
         className='graphic'
       >
         <Row className="justify-content-center d-flex">
-          <Col xs={{size: 12, order: 2}} md="9">
-            <div className="amcharts">
-              {this.renderChart()}
-            </div>
-          </Col>
-          <Col xs={{size: 12, order: 3}} md="3" className='legend'>
-            {this.renderStat()}
-          </Col>
+          {isEmpty(contacts) && selectedSegment === 1 ? (
+            <Col
+              xs="12"
+              className="d-flex justify-content-center align-items-center chart-contracts-empty"
+            >
+              {name && (
+                <FormattedMessage
+                  id="profile.traderHasNoContract"
+                  values={{ name: name.toUpperCase() }}
+                />
+              )}
+            </Col>
+          ) : (
+            <React.Fragment>
+              <Col xs={{size: 12, order: 2}} md="9">
+                <div className="amcharts">
+                  {this.renderChart()}
+                </div>
+              </Col>
+              <Col xs={{size: 12, order: 3}} md="3" className='legend'>
+                {this.renderStat()}
+              </Col>
+            </React.Fragment>
+          )}
           <Col xs={{order: 1}} md={{order: 3}}>
             <Desktop>
               <SegmentedControl
                 segments={this.segments}
-                selectedIndex={this.state.selectedInterval}
+                selectedIndex={selectedSegment}
                 onChange={this.onSegmentChange} />
             </Desktop>
             <Mobile>
               <SegmentedControl
                 segments={this.segments}
                 segmentWidth={50}
-                selectedIndex={this.state.selectedInterval}
+                selectedIndex={selectedSegment}
                 onChange={this.onSegmentChange} />
             </Mobile>
           </Col>
         </Row>
       </ProfileBlock>
     );
-  }
+  };
 
   renderStat() {
-    const stat = this.calculateStat(this.props.stats || []);
-    if (!stat) {
-      return null;
-    }
-    return (
+    const stat = this.calculateStat(this.props.stats);
+
+    return stat ? (
       <div className="values">
         {stat.currentCount > 0 ?
           <div>Profit per current contract: {stat.currentProfit.map((v) => v.toFixed(2) + '%').join(' / ')}</div>
@@ -124,7 +154,7 @@ class ProfitChart extends React.Component {
         <div>Contracts with positive profit: {stat.positive}</div>
         <div>Contracts with negative profit: {stat.negative}</div>
       </div>
-    );
+    ) : null;
   }
 
   calculateStat = memoizeOne((data) => {
@@ -168,8 +198,8 @@ class ProfitChart extends React.Component {
     </div>`;
   }
 
-  makeConfig = memoizeOne((data, selectedInterval) => {
-    const {dataProvider, graphIds } = this.computeState(selectedInterval);
+  makeConfig = memoizeOne((data, selectedSegment) => {
+    const {dataProvider, graphIds } = this.computeState(selectedSegment);
     const graphs = graphIds.map((id) => {
       return {
         id: id,
@@ -254,14 +284,19 @@ class ProfitChart extends React.Component {
   })
 
   renderChart() {
-    const config = this.makeConfig(this.props.stats, this.state.selectedInterval);
-    if (config.graphs.length === 0) {
-      return null;
-    }
-    return (
-      <AmChartsReact.React  style={{height: '100%', width: '100%', backgroundColor: 'transparent',position: 'absolute'}}
-        options={config} />
-    );
+    const config = this.makeConfig(this.props.stats, this.state.selectedSegment);
+
+    return config.graphs.length > 0 ? (
+      <AmChartsReact.React
+        style={{
+          height: '100%',
+          width: '100%',
+          backgroundColor: 'transparent',
+          position: 'absolute',
+        }}
+        options={config}
+      />
+    ) : null;
   }
 }
 

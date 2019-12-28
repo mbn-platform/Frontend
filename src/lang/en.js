@@ -189,6 +189,7 @@ const en = {
   'orders.estimated' : 'Estimated ',
   'orders.est' : 'Est.',
   'orders.total' : 'Total',
+
   'profile.contractDetails' : 'Contract Details',
   'profile.securitySettings' : 'Security settings',
   'profile.notificationSettings' : 'Notifications',
@@ -264,6 +265,8 @@ const en = {
   'profile.steps': 'Step {step} of {count}',
   'profile.noApiKeys': 'You have no API keys',
   'profile.goToDashboard': 'Go to Dashboard',
+  'profile.noContracts': 'No contracts',
+  'profile.traderHasNoContract': '@{name} has no current contract',
 
   'ratings.bestInvestor' : 'All the time best investor',
   'ratings.toBeDetermined' : 'to be determined',

@@ -271,6 +271,15 @@
                             }
                         }
                     }
+
+                    .chart-contracts-empty {
+                        height: 300px;
+
+                        & > span {
+                            font-size: 1.7em;
+                            color: #bfbfc1;
+                        }
+                    }
                 }
             }
             .feedback-block {
