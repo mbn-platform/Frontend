@@ -69,9 +69,9 @@ class OrdersTable extends React.Component {
             id="orders.type"
           /> <span className={classNameForColumnHeader(this.state, 'type')}/>
         </div>,
-        width: screenWidth === 'lg' ? 70 : 40,
+        width: screenWidth === 'lg' ? 70 : 50,
         className: ' orders__table_cell',
-        Cell: OrderType,
+        Cell: isNested ? null : OrderType,
       }, {
         Header: isNested ? '' : <div onClick={() => this.onColumnSort('name')}
           className="table__header-wrapper orders__table-header-wrapper">
@@ -287,15 +287,13 @@ class OrdersTable extends React.Component {
   }
 }
 
-function OrderType(row) {
-  const side = row.original.type;
-  const type = row.original.orderType || 'limit';
+const OrderType = ({ original }) => {
+  const { type, orderType } = original;
   return (
-    <div className={classNames('orders__table_type', side)}>
-      <div className='side' >{side}</div>
-      <div className='type'>{type || 'limit'}</div>
+    <div className={classNames('orders__table_type', type)}>
+      <div className='type'>{orderType || 'limit'}</div>
     </div>
   );
-}
+};
 
 export default OrdersTable;
