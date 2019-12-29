@@ -14,12 +14,12 @@ import SegmentedControl from '../../components/SegmentedControl';
 class ProfitChart extends React.Component {
   static defaultProps = {
     stats: [],
-    contacts: [],
+    currentProfit: [],
   };
 
   static propTypes = {
     stats: PropTypes.arrayOf(PropTypes.shape()),
-    contacts: PropTypes.arrayOf(PropTypes.shape()),
+    currentProfit: PropTypes.arrayOf(PropTypes.shape()),
   };
 
   state = {
@@ -87,7 +87,7 @@ class ProfitChart extends React.Component {
   }
 
   render = () => {
-    const { contacts, name } = this.props;
+    const { currentProfit, name } = this.props;
     const { selectedSegment } = this.state;
 
     return (
@@ -97,7 +97,7 @@ class ProfitChart extends React.Component {
         className='graphic'
       >
         <Row className="justify-content-center d-flex">
-          {isEmpty(contacts) && selectedSegment === 1 ? (
+          {isEmpty(currentProfit) && selectedSegment === 1 ? (
             <Col
               xs="12"
               className="d-flex justify-content-center align-items-center chart-contracts-empty"
