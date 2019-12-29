@@ -5,9 +5,10 @@ import { FormattedMessage } from 'react-intl';
 import isEmpty from 'lodash/isEmpty';
 
 import { AssetsUnderManagementHelpTooltip } from '../components/ProfileBlock';
+import CurrentContractProfit from './CurrentContractProfit';
 
 const Stats = ({
-  totalInBTC, totalInUSDT, contacts, currentProfit,
+  totalInBTC, totalInUSDT, currentProfit,
 })  => (
   <Row className="justify-content-between raiting-block">
     <Col xs="6" md="6" className="raiting-left-item">
@@ -23,7 +24,7 @@ const Stats = ({
               <AssetsUnderManagementHelpTooltip />
             </div>
             <div className="value-text green">
-              {(totalInUSDT).toFixed(2)}<span className="currency-value-usd-text">
+              {totalInUSDT.toFixed(2)}<span className="currency-value-usd-text">
                 &nbsp;usd
               </span>
             </div>
@@ -36,42 +37,21 @@ const Stats = ({
     </Col>
     <Col xs="auto" md="6" className="raiting-right-item">
       <div className="content-fuild">
-        <CurrentContractProfit
-          contacts={contacts}
-          currentProfit={currentProfit}
-        />
+        {!isEmpty(currentProfit) ? (
+          <CurrentContractProfit currentProfit={currentProfit} />
+        ) : (
+          <div className="row-fuild money">
+            <div className="description-text">
+              <FormattedMessage id="profile.noContracts" />
+            </div>
+          </div>
+        )}
       </div>
     </Col>
   </Row>
 );
 
-const CurrentContractProfit = ({ contacts, currentProfit }) => (
-  <div className="row-fuild money">
-    {!isEmpty(contacts) ? (
-      <Col>
-        <div className="description-text">
-          <FormattedMessage
-            id="profile.contractCurrentProfit"
-            defaultMessage="Profit per current contract:"
-          />
-        </div>
-        <div className="value-text" style={{color: '#cfa925'}}>
-          {/* {
-            current.map((v) => v.toFixed(2) + '%')
-              .join(' / ')
-          } */}
-        </div>
-      </Col>
-    ) : (
-      <div className="description-text">
-        <FormattedMessage id="profile.noContracts" />
-      </div>
-    )}
-  </div>
-);
-
 Stats.defaultProps = {
-  contacts: [],
   currentProfit: [],
   totalInBTC: 0,
   totalInUSDT: 0,
@@ -80,7 +60,6 @@ Stats.defaultProps = {
 Stats.propTypes = {
   totalInBTC: PropTypes.number,
   totalInUSDT: PropTypes.number,
-  contacts: PropTypes.arrayOf(PropTypes.shape()),
   currentProfit: PropTypes.arrayOf(PropTypes.shape()),
 };
 
