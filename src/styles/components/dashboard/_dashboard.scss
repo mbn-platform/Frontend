@@ -250,7 +250,7 @@
       text-transform: none;
     }
     .requests_table_wrapper {
-      max-width: 100%;
+      width: 100%;
 
       .requests_table {
         max-width: 600px;
@@ -1353,9 +1353,17 @@
   }
   @media only screen and (max-width : 1400px) {
     .dashboard_wrapper {
-			padding: 30px;
+      padding: 30px;
+
+      .requests_table_wrapper {
+        width: 100%;
+
+        .requests_table {
+          max-width: 600px;
+        }
+      }
+
       .keys_tables_wrapper,
-      .requests_table_wrapper,
       .selected_contract_table
       {
         width: 100%;
@@ -1400,9 +1408,12 @@
       }
 
       .requests_table_wrapper {
-        max-width: 100%;
+        .requests_table {
+          max-width: 100%;
+        }
+
         .ReactTable {
-           margin-bottom: 12px;
+          margin-bottom: 12px;
         }
       }
       .contracts_table .table_title_wrapper {
