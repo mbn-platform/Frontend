@@ -18,6 +18,7 @@ import {
   selectExchange,
   getExchangeMarkets,
 } from '../../actions/terminal';
+import { updateExchanges } from '../../actions/exchanges';
 
 class Terminal extends React.Component {
   state = {
@@ -34,6 +35,7 @@ class Terminal extends React.Component {
     }
 
     if (!auth.loggedIn || (location.state && location.state.fromNav)) {
+      this.props.updateExchanges();
       this.checkUrlParams();
     }
   }
@@ -159,6 +161,7 @@ const mapDispatchToProps = {
   getOrders,
   selectExchange,
   getExchangeMarkets,
+  updateExchanges,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Terminal);
