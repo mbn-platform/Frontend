@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Container, Row, Col } from 'reactstrap';
 import MediaQuery from 'react-responsive';
+import isEmpty from 'lodash/isEmpty';
 
 import HeaderStatus from '../../components/HeaderStatus';
 import Controls from './Controls';
@@ -16,9 +17,10 @@ import {
   getOrders,
   stopTradingDataUpdates,
   selectExchange,
+  selectMarket,
   getExchangeMarkets,
+  validateUrlParams,
 } from '../../actions/terminal';
-import { updateExchanges } from '../../actions/exchanges';
 
 class Terminal extends React.Component {
   state = {
@@ -27,16 +29,21 @@ class Terminal extends React.Component {
   }
 
   componentDidMount() {
-    const { fund, assetGroup, getOrders, auth, location } = this.props;
+    const {
+      exchange, market, fund, assetGroup, getOrders, match: { params },
+    } = this.props;
 
     if (fund || assetGroup) {
       const payload = setFundId({}, fund || assetGroup);
       getOrders(payload);
     }
 
-    if (!auth.loggedIn || (location.state && location.state.fromNav)) {
-      this.props.updateExchanges();
-      this.checkUrlParams();
+    if (isEmpty(params)) {
+      this.props.selectExchange(exchange);
+      this.props.selectMarket(market);
+      this.props.history.replace(`/terminal/${exchange}/${market}`);
+    } else {
+      this.props.validateUrlParams(params);
     }
   }
 
@@ -63,30 +70,16 @@ class Terminal extends React.Component {
       this.props.getOrders(payload);
     }
 
-    const { market, exchange, exchanges, auth } = this.props;
+    const { market, exchange, isValidUrl } = this.props;
 
-    if (auth.loggedIn && prevProps.exchanges !== exchanges) {
-      this.checkUrlParams();
+    if (prevProps.isValidUrl !== isValidUrl && isValidUrl) {
+      this.props.history.replace(`/terminal/${exchange}/${market}`);
     }
 
     if (prevProps.market !== market || prevProps.exchange !== exchange) {
       this.props.history.replace(`/terminal/${exchange}/${market}`);
     }
   }
-
-  checkUrlParams = () => {
-    const {
-      market, exchange, exchanges, match: { params }, history,
-    } = this.props;
-
-    if (exchanges.includes(params.exchange)) {
-      this.props.selectExchange(params.exchange);
-      this.props.getExchangeMarkets(params.exchange, params.market, history);
-    } else {
-      this.props.selectExchange(exchange);
-      this.props.getExchangeMarkets(exchange, market, history);
-    }
-  };
 
   render = () => (
     <Container fluid className="terminal">
@@ -143,6 +136,7 @@ const mapStateToProps = ({
     market,
     exchange,
     assetGroup,
+    isValidUrl,
   },
   exchanges,
   exchangesInfo,
@@ -154,14 +148,16 @@ const mapStateToProps = ({
   exchange,
   exchanges,
   exchangesInfo,
+  isValidUrl,
 });
 
 const mapDispatchToProps = {
   stopTradingDataUpdates,
   getOrders,
   selectExchange,
+  selectMarket,
   getExchangeMarkets,
-  updateExchanges,
+  validateUrlParams,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Terminal);

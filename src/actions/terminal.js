@@ -1,7 +1,9 @@
 import { ApiError } from '../generic/apiCall';
-import { ApiTerminal} from '../generic/api';
+import { ApiTerminal } from '../generic/api';
+import { ApiExchange } from '../generic/api';
 import { showInfoModal, showUpgradeTariffModal } from './modal';
 import { LOGGED_OUT } from './auth';
+import { UPDATE_EXCHANGES } from './exchanges';
 import { addQuickNotif } from './quickNotif';
 
 export const SELECT_FUND = 'SELECT_FUND';
@@ -25,8 +27,10 @@ export const UPDATE_HISTORY = 'UPDATE_HISTORY';
 export const UPDATE_MARKET_SUMMARIES = 'UPDATE_MARKET_SUMMARIES';
 export const TRADING_DATA_STOP = 'TRADING_DATA_STOP';
 export const SELECT_ASSET_GROUP = 'SELECT_ASSET_GROUP';
+export const CHECK_URL_VALIDITY = 'CHECK_URL_VALIDITY';
 
 const TerminalApi = new ApiTerminal();
+const ExchangeApi = new ApiExchange();
 
 export const selectFund = fund => ({
   type: SELECT_FUND,
@@ -76,7 +80,7 @@ export const selectControlsByExchange = exchange => {
   };
 };
 
-export function getExchangeMarkets(exchange, market = null, history = null) {
+export function getExchangeMarkets(exchange) {
   return dispatch => {
     TerminalApi.getExchangeMarkets(exchange)
       .then(({ markets }) => {
@@ -85,24 +89,57 @@ export function getExchangeMarkets(exchange, market = null, history = null) {
           exchange,
           markets,
         });
-
-        if (market && history) {
-          const hasMarket = markets.find(m => m.symbol === market);
-
-          if (hasMarket) {
-            dispatch(selectMarket(market));
-            history.replace(`/terminal/${exchange}/${market}`);
-          } else {
-            dispatch(selectMarket('USDT-BTC'));
-            history.replace(`/terminal/${exchange}/USDT-BTC`);
-          }
-        }
       })
       .catch(e => {
         console.error('failed to get exchange info', e);
       });
   };
 }
+
+export const validateUrlParams = ({ exchange, market }) => {
+  return dispatch => {
+    ExchangeApi.update()
+      .then(({ exchanges }) => {
+        const hasExchange = exchanges.includes(exchange);
+
+        if (hasExchange) {
+          TerminalApi.getExchangeMarkets(exchange)
+            .then(({ markets }) => {
+              const hasMarket = markets.find(m => m.symbol === market);
+
+              if (hasMarket) {
+                dispatch(selectExchange(exchange));
+                dispatch(selectMarket(market));
+                dispatch({
+                  type: UPDATE_EXCHANGES,
+                  exchanges,
+                });
+                dispatch({
+                  type: EXCHANGE_MARKETS,
+                  exchange,
+                  markets,
+                });
+                dispatch(checkUrlValidity(true));
+              } else {
+                dispatch(selectExchange('binance'));
+                dispatch(selectMarket('USDT-BTC'));
+                dispatch(checkUrlValidity(false));
+              }
+            })
+            .catch(() => console.error('error'));
+        } else {
+          dispatch(selectExchange('binance'));
+          dispatch(selectMarket('USDT-BTC'));
+          dispatch(checkUrlValidity(false));
+        }
+      });
+  };
+};
+
+export const checkUrlValidity = isValidUrl => ({
+  type: CHECK_URL_VALIDITY,
+  isValidUrl,
+});
 
 export function selectInterval(interval) {
   return {

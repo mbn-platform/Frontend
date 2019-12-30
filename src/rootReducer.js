@@ -31,7 +31,7 @@ import assetGroups from './reducers/assetGroups';
 const terminalPersistConfig = {
   key: 'terminal',
   storage,
-  blacklist: ['orderBook', 'history', 'ticker'],
+  blacklist: ['orderBook', 'history', 'ticker', 'isValidUrl'],
 };
 
 const combined = combineReducers({

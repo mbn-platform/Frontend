@@ -1,5 +1,5 @@
 import {
-  SELECT_FUND, SELECT_EXCHANGE, SELECT_MARKET, SELECT_INTERVAL,
+  SELECT_FUND, SELECT_EXCHANGE, SELECT_MARKET, SELECT_INTERVAL, CHECK_URL_VALIDITY,
   GET_MY_ORDERS, GET_GROUP_ORDER, CANCEL_ORDER, PLACE_ORDER, UPDATE_ORDER,
   UPDATE_ORDER_BOOK, UPDATE_HISTORY, UPDATE_TICKER, SELECT_ASSET_GROUP,
 } from '../actions/terminal';
@@ -15,6 +15,7 @@ export default function(state = {
   history: [],
   ticker: {},
   orders: {open: [], closed: []},
+  isValidUrl: undefined,
 }, action) {
   switch(action.type) {
     case SELECT_FUND: {
@@ -224,6 +225,11 @@ export default function(state = {
         return {...state, orders};
       }
       break;
+    }
+
+    case CHECK_URL_VALIDITY: {
+      const { isValidUrl } = action;
+      return { ...state, isValidUrl };
     }
     default:
       return state;

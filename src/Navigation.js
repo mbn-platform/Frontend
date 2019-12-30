@@ -361,8 +361,6 @@ class Navigation extends React.Component {
   }
 
   getLinks() {
-    const { terminal: { exchange, market } } = this.props;
-
     return [
       {
         name: 'Profile',
@@ -394,10 +392,7 @@ class Navigation extends React.Component {
       },
       {
         name: 'Terminal',
-        to: {
-          pathname: `/terminal/${exchange}/${market}`,
-          state: { fromNav: true },
-        },
+        to: '/terminal',
         imgClass: 'terminal',
         icon: TermianlIcon,
         iconHover: TermianlIconHover
