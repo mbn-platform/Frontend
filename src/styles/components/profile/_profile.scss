@@ -271,6 +271,15 @@
                             }
                         }
                     }
+
+                    .chart-contracts-empty {
+                        height: 300px;
+
+                        & > span {
+                            font-size: 1.7em;
+                            color: #bfbfc1;
+                        }
+                    }
                 }
             }
             .feedback-block {
@@ -1539,6 +1548,13 @@
                     }
                 }
             }
+        }
+
+        .profile-step-title {
+            padding-top: 10px !important;
+            font-size: 1.7em;
+            color: #727274;
+            letter-spacing: 1px;
         }
     }
 }
