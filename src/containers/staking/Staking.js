@@ -1,17 +1,31 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { verifyStakeAddress, getStakeInfo, getStakeTransactions, getStakeRating,
-  setTrListPage, setTrListPageSize } from '../../actions/profile';
 import { Container, Row, Col } from 'reactstrap';
 import { FormattedMessage } from 'react-intl';
+import qs from 'qs';
+
+import {
+  verifyStakeAddress, getStakeInfo, getStakeTransactions,
+  getStakeRating, setTrListPage, setTrListPageSize,
+} from '../../actions/profile';
 import StakingInfo from './StakingInfo';
 import StakeInfo from './StakeInfo';
 
 class StakingContainer extends React.Component {
-
   componentDidMount() {
     this.props.getStakeInfo();
   }
+
+  verifyStakeAddress = () => {
+    const { loggedIn, location: { pathname }, history } = this.props;
+
+    if (loggedIn) {
+      this.props.verifyStakeAddress();
+      return;
+    }
+
+    history.push('/login?' + qs.stringify({ redirectTo: pathname }));
+  };
 
   renderComponent() {
     const {info} = this.props;
@@ -20,7 +34,6 @@ class StakingContainer extends React.Component {
         <StakeInfo
           info={info.info}
           rating={info.rating}
-          email={this.props.email}
           getPage={this.props.getPage}
           setPage={this.props.setPage}
           setPageSize={this.props.setPageSize}
@@ -29,7 +42,7 @@ class StakingContainer extends React.Component {
         />
       );
     } else if (info.info.verified === false) {
-      return <StakingInfo verifyStakeAddress={this.props.verifyStakeAddress}/>;
+      return <StakingInfo verifyStakeAddress={this.verifyStakeAddress}/>;
     } else {
       return null;
     }
@@ -60,15 +73,16 @@ class StakingContainer extends React.Component {
 const mapStateToProps = (state) => ({
   info: state.stakeInfo,
   trs: state.stakeTr,
-  email: state.auth.profile.email,
+  loggedIn: state.auth.loggedIn,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  verifyStakeAddress: () => dispatch(verifyStakeAddress()),
-  getStakeInfo: () => dispatch(getStakeInfo()),
-  getPage: (pages, size) => dispatch(getStakeTransactions(pages, size)),
-  setPage: page => dispatch(setTrListPage(page)),
-  setPageSize: pageSize => dispatch(setTrListPageSize(pageSize)),
-  getStakeRating: () => dispatch(getStakeRating()),
-});
+const mapDispatchToProps = {
+  verifyStakeAddress,
+  getStakeInfo,
+  getStakeRating,
+  getPage: getStakeTransactions,
+  setPage: setTrListPage,
+  setPageSize: setTrListPageSize,
+};
+
 export default connect(mapStateToProps, mapDispatchToProps)(StakingContainer);

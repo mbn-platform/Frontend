@@ -1,4 +1,5 @@
 import React from 'react';
+import get from 'lodash/get';
 
 import { profileErrorHandler } from '../generic/errorHandlers';
 import { ApiProfile, ApiContacts} from '../generic/api';
@@ -244,7 +245,8 @@ export function getStakeInfo() {
         });
       })
       .catch((error) => {
-        if (error && error.apiErrorCode === ApiError.NOT_FOUND) {
+        const code = get(error, 'apiErrorCode');
+        if (code === ApiError.NOT_FOUND || code === ApiError.FORBIDDEN) {
           dispatch({
             type: GET_STAKE_INFO,
             info: {verified: false},

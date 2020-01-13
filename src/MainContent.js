@@ -79,7 +79,7 @@ class MainContent extends React.Component {
           <Route exact path="/terminal/:exchange" component={Terminal} loggedIn={loggedIn}/>
           <Route exact path="/terminal/:exchange/:market" component={Terminal} loggedIn={loggedIn}/>
           <ProtectedRoute exact path="/orders" component={Orders} loggedIn={loggedIn}/>
-          <ProtectedRoute exact path="/staking" component={Staking} loggedIn={loggedIn}/>
+          <Route exact path="/staking" component={Staking} loggedIn={loggedIn}/>
           <Route exact path="/tariffs" component={Tariffs} loggedIn={loggedIn}/>
           <ProtectedRoute exact path="/payments/" component={Payments} loggedIn={loggedIn}/>
           <Redirect exact from="/ratings" to="/leaderboard"/>
