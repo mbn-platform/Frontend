@@ -56,14 +56,18 @@ class StakingInfo extends React.Component {
         <br/>
         <h5>Schedule of stacking rewards in MBN and ETH:</h5>
         <br/>
-        {this.renderTable()}
+        <h6>Early Investors pool</h6>
+        {this.renderEarlyTable()}
         <br/>
+        <h6>General pool</h6>
+        {this.renderGeneralTable()}
+        <br />
         <div><b>Example:</b> User has bought 100000 MBN on IDEX. He bought  200000 MBN more to have Level 2 staking reward. By staking it, he receives 4500 MBN as the reward each month during stage 3, part of COF profits (total of 10%).</div>
       </div>
     );
   }
 
-  renderTable() {
+  renderEarlyTable() {
     const now = Date.now();
     return (
       <div style={{overflowX: 'auto'}}>
@@ -71,10 +75,10 @@ class StakingInfo extends React.Component {
           <thead>
             <tr>
               <th style={{width: '140px'}}>Timeline</th>
-              <th>daily</th>
+              <th>weekly</th>
               <th>monthly</th>
               <th>annually</th>
-              <th style={{width: '140px', whiteSpace: 'unset'}}>COF profit reward (BTC,only Lv2)</th>
+              <th style={{width: '140px', whiteSpace: 'unset'}}>COF profit reward (ETH payments)</th>
             </tr>
           </thead>
           <tbody>
@@ -118,6 +122,25 @@ class StakingInfo extends React.Component {
               );
             })}
           </tbody>
+        </table>
+      </div>
+    );
+  }
+
+  renderGeneralTable() {
+    return (
+      <div style={{overflowX: 'auto'}}>
+        <table>
+          <thead>
+            <tr>
+              <th style={{width: '140px'}}>Timeline</th>
+              <th>weekly</th>
+              <th>monthly</th>
+              <th>annually</th>
+              <th style={{width: '140px', whiteSpace: 'unset'}}>COF profit reward (ETH payments)</th>
+            </tr>
+          </thead>
+          <tbody />
         </table>
       </div>
     );
