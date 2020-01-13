@@ -3,10 +3,9 @@ import BigNumber from 'bignumber.js';
 import { Col, Button, Row, Container } from 'reactstrap';
 import ReactTable from '../../components/SelectableReactTable';
 import PaginationWithPage from '../../components/PaginationWithPage';
-import { FormattedDate } from 'react-intl';
+import { FormattedDate, FormattedMessage } from 'react-intl';
 
-class StakeInfo extends React.Component {
-
+class PersonalInfo extends React.Component {
   componentDidMount() {
     const {getPage, trs : {page, pageSize}, getStakeRating} = this.props;
     getPage(page, pageSize);
@@ -184,6 +183,11 @@ class StakeInfo extends React.Component {
         <Col xs="12" md="6">
           {this.renderTable()}
         </Col>
+        <Col>
+          <Button onClick={this.props.setRenderItem('info')}>
+            <FormattedMessage id="staking.viewInfo" />
+          </Button>
+        </Col>
       </div>
     );
   }
@@ -214,4 +218,4 @@ const StakingRating = ({ info, rating }) => {
   );
 };
 
-export default StakeInfo;
+export default PersonalInfo;

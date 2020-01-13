@@ -1,9 +1,9 @@
 import React from 'react';
-import { Button } from 'reactstrap';
-import { Col, Row } from 'reactstrap';
+import { Col, Row, Button } from 'reactstrap';
+import get from 'lodash/get';
+import { FormattedMessage } from 'react-intl';
 
 class StakingInfo extends React.Component {
-
   renderInfo() {
     const style = {
       width: 240,
@@ -166,10 +166,15 @@ class StakingInfo extends React.Component {
 
 
   render() {
+    const { setRenderItem, verifyStakeAddress } = this.props;
+    const address = get(this.props, 'info.address');
+
     return (
       <div>
         {this.renderInfo()}
-        <Button onClick={this.props.verifyStakeAddress}>Start</Button>
+        <Button onClick={address ? setRenderItem('personal') : verifyStakeAddress}>
+          <FormattedMessage id={address ? 'staking.viewStats' : 'staking.start'} />
+        </Button>
       </div>
     );
   }

@@ -343,7 +343,11 @@ const en = {
   'contactVerified': 'This contact is already added',
   'telegramConfirmCode': 'Your code is {code}. Go to {link} and enter',
   'help-stop-limit-order': 'Stop-limit orders are triggered when pair price reaches stop price. In that case a limit order is placed. Such orders don\'t block your available balance',
+
   'staking.title': 'Staking',
+  'staking.start': 'Start',
+  'staking.viewStats': 'View Stats',
+  'staking.viewInfo': 'View Info',
 
   'tariffs.buyNow': 'BUY NOW',
   'tariffs.activated': 'ACTIVATED',

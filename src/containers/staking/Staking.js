@@ -3,18 +3,34 @@ import { connect } from 'react-redux';
 import { Container, Row, Col } from 'reactstrap';
 import { FormattedMessage } from 'react-intl';
 import qs from 'qs';
+import get from 'lodash/get';
 
 import {
   verifyStakeAddress, getStakeInfo, getStakeTransactions,
   getStakeRating, setTrListPage, setTrListPageSize,
 } from '../../actions/profile';
 import StakingInfo from './StakingInfo';
-import StakeInfo from './StakeInfo';
+import PersonalInfo from './PersonalInfo';
 
 class StakingContainer extends React.Component {
+  state = {
+    renderItem: null,
+  };
+
   componentDidMount() {
     this.props.getStakeInfo();
   }
+
+  componentDidUpdate(prevProps) {
+    const verified = get(this.props, 'info.info.verified');
+    if (prevProps.info.info !== this.props.info.info) {
+      this.setState({ renderItem: verified === false ? 'info' : 'personal' });
+    }
+  }
+
+  setRenderItem = renderItem => () => {
+    this.setState({ renderItem });
+  };
 
   verifyStakeAddress = () => {
     const { loggedIn, location: { pathname }, history } = this.props;
@@ -24,30 +40,13 @@ class StakingContainer extends React.Component {
       return;
     }
 
-    history.push('/login?' + qs.stringify({ redirectTo: pathname }));
+    history.push(`/login?${qs.stringify({ redirectTo: pathname })}`);
   };
 
-  renderComponent() {
-    const {info} = this.props;
-    if (info.info.address) {
-      return (
-        <StakeInfo
-          info={info.info}
-          rating={info.rating}
-          getPage={this.props.getPage}
-          setPage={this.props.setPage}
-          setPageSize={this.props.setPageSize}
-          trs={this.props.trs}
-          getStakeRating={this.props.getStakeRating}
-        />
-      );
-    } else if (info.info.verified === false) {
-      return <StakingInfo verifyStakeAddress={this.verifyStakeAddress}/>;
-    } else {
-      return null;
-    }
-  }
   render() {
+    const { info } = this.props;
+    const { renderItem } = this.state;
+
     return (
       <Container fluid className="ratings staking">
         <Row>
@@ -60,7 +59,25 @@ class StakingContainer extends React.Component {
                 />
               </div>
               <div className="hashlog__main-board">
-                {this.renderComponent()}
+                {renderItem === 'personal' && (
+                  <PersonalInfo
+                    info={info.info}
+                    rating={info.rating}
+                    getPage={this.props.getPage}
+                    setPage={this.props.setPage}
+                    setPageSize={this.props.setPageSize}
+                    trs={this.props.trs}
+                    getStakeRating={this.props.getStakeRating}
+                    setRenderItem={this.setRenderItem}
+                  />
+                )}
+                {renderItem === 'info' && (
+                  <StakingInfo
+                    info={info.info}
+                    verifyStakeAddress={this.verifyStakeAddress}
+                    setRenderItem={this.setRenderItem}
+                  />
+                )}
               </div>
             </div>
           </Col>
