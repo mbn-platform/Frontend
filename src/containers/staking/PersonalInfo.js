@@ -1,9 +1,12 @@
 import React from 'react';
 import BigNumber from 'bignumber.js';
 import { Col, Button, Row, Container } from 'reactstrap';
+import { FormattedDate, FormattedMessage } from 'react-intl';
+import get from 'lodash/get';
+
 import ReactTable from '../../components/SelectableReactTable';
 import PaginationWithPage from '../../components/PaginationWithPage';
-import { FormattedDate, FormattedMessage } from 'react-intl';
+import ProgressBar from '../../components/ProgressBar';
 
 class PersonalInfo extends React.Component {
   componentDidMount() {
@@ -70,10 +73,22 @@ class PersonalInfo extends React.Component {
       Cell: row => BigNumber(row.value).div(1e18).toFixed(2),
       accessor: 'amount',
     },
+    {
+      Header: 'Pool',
+      className: 'table_col_value hashlog__table-cell hashlog__table-cell_hash-value pair',
+      headerClassName: 'hashlog__table-header-title',
+      Cell: ({ value }) => value,
+      accessor: 'pool',
+    },
   ]
 
   renderInfo() {
-    const info = this.props.info;
+    const { info: { earlyPool, earlyPoolStat, globalPoolStat } } = this.props;
+    const stat = get(earlyPoolStat, 'stat');
+    const isTimeRestriction = new Date() > new Date(earlyPool.endJoin);
+    const canJoin = !isTimeRestriction && !earlyPoolStat.executed;
+    const limit = BigNumber(earlyPool.limit).div(1e18).toFixed(0, BigNumber.ROUND_FLOOR) / 1000000;
+    const progress = (earlyPool.total * limit) / 100;
     const style = {
       width: 240,
       height: '20',
@@ -84,19 +99,52 @@ class PersonalInfo extends React.Component {
         <Row>
           <Col xs="12" md="6">
             <div>Staking is on</div>
-            <div>Started: <FormattedDate
-              value={new Date(info.createdAt)}
-              year='numeric'
-              month='2-digit'
-              day='2-digit'
-              hour="numeric"
-              minute="numeric"
-            />
+            <div style={{wordBreak: 'break-word'}}>Address: 0x674b4f4402963c38c1b51754879ea11e4c577812</div>
+            <h4>Early Pool Info</h4>
+            <div>{earlyPool.total} of {limit}M</div>
+            <ProgressBar progress={progress} />
+            {stat ? (
+              <React.Fragment>
+                <div>Tokens committed: {stat.tokens} MBN</div>
+                <div>Level: {stat.level}</div>
+                <div>
+                  Maturation status:
+                  {' '}
+                  <FormattedDate
+                    value={new Date(stat.maturationEnd)}
+                    year='numeric'
+                    month='2-digit'
+                    day='2-digit'
+                    hour="numeric"
+                    minute="numeric"
+                  />
+                </div>
+                <div>Total bonus: {stat.bonus} MBN</div>
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                {canJoin && <Button onClick={this.props.showModal}>Confirm</Button>}
+                {earlyPoolStat.executed && <div>You have been excluded from Early Pool</div>}
+                {isTimeRestriction && <div>Early Pool is closed</div>}
+              </React.Fragment>
+            )}
+            <h4>General Pool Info</h4>
+            <div>Tokens committed: {globalPoolStat.tokens} MBN</div>
+            <div>Level: {globalPoolStat.level}</div>
+            <div>
+              Maturation status:
+              {' '}
+              <FormattedDate
+                value={new Date(globalPoolStat.maturationEnd)}
+                year='numeric'
+                month='2-digit'
+                day='2-digit'
+                hour="numeric"
+                minute="numeric"
+              />
             </div>
-            <div style={{wordBreak: 'break-word'}}>Address: {info.address}</div>
-            <div>Balance: {BigNumber(info.balance).div(1e18).toFixed(0, BigNumber.ROUND_FLOOR)} MBN</div>
-            <div>Total Bonus: {BigNumber(info.totalBonus).div(1e18).toFixed(0, BigNumber.ROUND_CEIL)} MBN</div>
-            <div>Current level: {info.level}. {this.renderLevelInfo(info)}</div>
+            <div>Total bonus: {globalPoolStat.bonus} MBN</div>
+
             <Container>
               <Row>
                 <Col>

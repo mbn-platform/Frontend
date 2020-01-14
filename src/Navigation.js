@@ -29,9 +29,12 @@ import ModalWindow from './components/Modal';
 import TwoFactorAuthModal from './components/TwoFactorAuthModal';
 import { Container, Row } from 'reactstrap';
 import {injectIntl, FormattedMessage} from 'react-intl';
-import { closeCodeModal, closeConfirmModal, closeInfoModal, closeUpgradeTariffModal } from './actions/modal';
+import {
+  closeCodeModal, closeConfirmModal, closeInfoModal,
+  closeUpgradeTariffModal, closeCommitTokensModal,
+} from './actions/modal';
 import { loggedOut } from './actions/auth';
-
+import CommitTokensModal from './containers/staking/CommitTokensModal';
 
 class Navigation extends React.Component {
 
@@ -234,6 +237,17 @@ class Navigation extends React.Component {
     );
   }
 
+  renderCommitTokensModal = () => {
+    const { modal, closeCommitTokensModalWindow } = this.props;
+
+    return modal.isCommitTokensModalOpen ? (
+      <CommitTokensModal
+        modal={modal}
+        closeCommitTokensModal={closeCommitTokensModalWindow}
+      />
+    ) : null;
+  }
+
   render() {
     const { isExpanded } = this.state;
     return (
@@ -276,6 +290,7 @@ class Navigation extends React.Component {
         {this.renderGlobalConfirmModel()}
         {this.renderTwoFactorAuthModal()}
         {this.renderUpgradeTariffModal()}
+        {this.renderCommitTokensModal()}
         <div
           className="navigation__splitter"
           onClick={() => this.setState({isExpanded: !isExpanded})}>
@@ -443,6 +458,7 @@ const mapDispatchToProps = {
   closeConfirmModalWindow: closeConfirmModal,
   closeCodeModalWindow: closeCodeModal,
   closeUpgradeTariffModalWindow: closeUpgradeTariffModal,
+  closeCommitTokensModalWindow: closeCommitTokensModal,
   logOut: loggedOut,
 };
 

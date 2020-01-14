@@ -190,13 +190,13 @@ class StakingInfo extends React.Component {
 
   render() {
     const { setRenderItem, verifyStakeAddress } = this.props;
-    const address = get(this.props, 'info.address');
+    const pool = get(this.props, 'info.earlyPool');
 
     return (
       <div>
         {this.renderInfo()}
-        <Button onClick={address ? setRenderItem('personal') : verifyStakeAddress}>
-          <FormattedMessage id={address ? 'staking.viewStats' : 'staking.start'} />
+        <Button onClick={pool ? setRenderItem('personal') : verifyStakeAddress}>
+          <FormattedMessage id={pool ? 'staking.viewStats' : 'staking.start'} />
         </Button>
       </div>
     );

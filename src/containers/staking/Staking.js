@@ -9,6 +9,7 @@ import {
   verifyStakeAddress, getStakeInfo, getStakeTransactions,
   getStakeRating, setTrListPage, setTrListPageSize,
 } from '../../actions/profile';
+import { showCommitTokensModal } from '../../actions/modal';
 import StakingInfo from './StakingInfo';
 import PersonalInfo from './PersonalInfo';
 
@@ -43,6 +44,10 @@ class StakingContainer extends React.Component {
     history.push(`/login?${qs.stringify({ redirectTo: pathname })}`);
   };
 
+  showCommitTokensModal = () => {
+    this.props.showCommitTokensModal();
+  };
+
   render() {
     const { info } = this.props;
     const { renderItem } = this.state;
@@ -69,6 +74,7 @@ class StakingContainer extends React.Component {
                     trs={this.props.trs}
                     getStakeRating={this.props.getStakeRating}
                     setRenderItem={this.setRenderItem}
+                    showModal={this.showCommitTokensModal}
                   />
                 )}
                 {renderItem === 'info' && (
@@ -97,6 +103,7 @@ const mapDispatchToProps = {
   verifyStakeAddress,
   getStakeInfo,
   getStakeRating,
+  showCommitTokensModal,
   getPage: getStakeTransactions,
   setPage: setTrListPage,
   setPageSize: setTrListPageSize,
