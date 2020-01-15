@@ -1,19 +1,22 @@
+import { connect } from 'react-redux';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Col } from 'reactstrap';
 import { FormattedMessage, injectIntl } from 'react-intl';
+import { closeCommitTokensModal } from '../../actions/modal';
+import { commitToEarlyPool } from '../../actions/profile';
 
 import ModalWindow from '../../components/Modal';
 
 class CommitTokensModal extends React.Component {
   static propTypes = {
     modal: PropTypes.shape().isRequired,
-    intl: PropTypes.shape().isRequired,
-    closeCommitTokensModal: PropTypes.func.isRequired,
+    close: PropTypes.func.isRequired,
+    commit: PropTypes.func.isRequired,
   };
 
   state = {
-    commits: '',
+    commits: '100000',
   };
 
   handleChange = (event) => {
@@ -21,19 +24,26 @@ class CommitTokensModal extends React.Component {
     this.setState({ [name]: value });
   }
 
-  handleSubmit = (event) => {
+  handleSubmit = async (event) => {
     event.preventDefault();
-    console.log('submit');
-    this.props.closeCommitTokensModal();
+    const amount = parseInt(this.state.commits, 10);
+    if (Number.isFinite(amount)) {
+      if (amount < 100000) {
+        alert('min is 100000');
+      } else {
+        await this.props.commit(amount);
+        await this.props.close();
+      }
+    }
   };
 
   render = () => {
-    const { modal, closeCommitTokensModal } = this.props;
+    const { modal, close } = this.props;
 
     return (
       <ModalWindow
         modalIsOpen={modal.isCommitTokensModalOpen}
-        onClose={closeCommitTokensModal}
+        onClose={close}
         title={
           <FormattedMessage id="staking.tokenToCommit" />
         }
@@ -56,4 +66,9 @@ class CommitTokensModal extends React.Component {
   }
 };
 
-export default injectIntl(CommitTokensModal);
+const mapDispatchToProps = {
+  close: closeCommitTokensModal,
+  commit: commitToEarlyPool,
+};
+
+export default connect(null, mapDispatchToProps)(CommitTokensModal);

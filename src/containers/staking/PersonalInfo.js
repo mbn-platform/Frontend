@@ -83,12 +83,13 @@ class PersonalInfo extends React.Component {
   ]
 
   renderInfo() {
-    const { info: { earlyPool, earlyPoolStat, globalPoolStat } } = this.props;
+    const { info: { earlyPool, earlyPoolStat, globalPoolStat, address } } = this.props;
     const stat = get(earlyPoolStat, 'stat');
     const isTimeRestriction = new Date() > new Date(earlyPool.endJoin);
     const canJoin = !isTimeRestriction && !earlyPoolStat.executed;
-    const limit = BigNumber(earlyPool.limit).div(1e18).toFixed(0, BigNumber.ROUND_FLOOR) / 1000000;
-    const progress = (earlyPool.total * limit) / 100;
+    const limit = new BigNumber(earlyPool.limit);
+    const total = new BigNumber(earlyPool.total);
+    const progress = new BigNumber(total).div(limit).times(100);
     const style = {
       width: 240,
       height: '20',
@@ -99,16 +100,16 @@ class PersonalInfo extends React.Component {
         <Row>
           <Col xs="12" md="6">
             <div>Staking is on</div>
-            <div style={{wordBreak: 'break-word'}}>Address: 0x674b4f4402963c38c1b51754879ea11e4c577812</div>
+            <div style={{wordBreak: 'break-word'}}>Address: {address}</div>
             <h4>Early Pool Info</h4>
-            <div>{earlyPool.total} of {limit}M</div>
-            <ProgressBar progress={progress} />
+            <div>{total.div(1e18).toFixed(0)} of {limit.div(1e24).toFixed()}M</div>
+            <ProgressBar progress={progress.toNumber()} />
             {stat ? (
               <React.Fragment>
-                <div>Tokens committed: {stat.tokens} MBN</div>
+                <div>Tokens committed: {new BigNumber(stat.tokens).div(1e18).toFixed()} MBN</div>
                 <div>Level: {stat.level}</div>
                 <div>
-                  Maturation status:
+                  Maturation end:
                   {' '}
                   <FormattedDate
                     value={new Date(stat.maturationEnd)}
@@ -124,15 +125,15 @@ class PersonalInfo extends React.Component {
             ) : (
               <React.Fragment>
                 {canJoin && <Button onClick={this.props.showModal}>Confirm</Button>}
-                {earlyPoolStat.executed && <div>You have been excluded from Early Pool</div>}
+                {earlyPoolStat.excluded && <div>You have been excluded from Early Pool</div>}
                 {isTimeRestriction && <div>Early Pool is closed</div>}
               </React.Fragment>
             )}
             <h4>General Pool Info</h4>
-            <div>Tokens committed: {globalPoolStat.tokens} MBN</div>
-            <div>Level: {globalPoolStat.level}</div>
+            <div>Tokens committed: {new BigNumber(globalPoolStat.tokens).div(1e18).toFixed(0)} MBN</div>
+            <div>Level: {globalPoolStat.level} {this.renderLevelInfo(globalPoolStat)}</div>
             <div>
-              Maturation status:
+              Maturation end:
               {' '}
               <FormattedDate
                 value={new Date(globalPoolStat.maturationEnd)}
@@ -189,7 +190,7 @@ class PersonalInfo extends React.Component {
   }
 
   getNextLevelRequired(info) {
-    const currentValue = BigNumber(info.balance).div(1e18);
+    const currentValue = BigNumber(info.tokens).div(1e18);
     let required;
     switch (info.level) {
       case 0:

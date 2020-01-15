@@ -238,12 +238,11 @@ class Navigation extends React.Component {
   }
 
   renderCommitTokensModal = () => {
-    const { modal, closeCommitTokensModalWindow } = this.props;
+    const { modal } = this.props;
 
     return modal.isCommitTokensModalOpen ? (
       <CommitTokensModal
         modal={modal}
-        closeCommitTokensModal={closeCommitTokensModalWindow}
       />
     ) : null;
   }
@@ -458,7 +457,6 @@ const mapDispatchToProps = {
   closeConfirmModalWindow: closeConfirmModal,
   closeCodeModalWindow: closeCodeModal,
   closeUpgradeTariffModalWindow: closeUpgradeTariffModal,
-  closeCommitTokensModalWindow: closeCommitTokensModal,
   logOut: loggedOut,
 };
 
