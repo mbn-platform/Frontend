@@ -1,8 +1,7 @@
 import React from 'react';
-import BigNumber from 'bignumber.js';
 import { Col, Row, Button } from 'reactstrap';
 import { FormattedMessage } from 'react-intl';
-import ProgressBar from '../../components/ProgressBar';
+import { EarlyPoolProgress } from './EarlyPoolProgress';
 
 class StakingInfo extends React.Component {
   renderInfo() {
@@ -12,9 +11,6 @@ class StakingInfo extends React.Component {
       fontSize: '11px',
     };
     const { info: { earlyPool } } = this.props;
-    const limit = new BigNumber(earlyPool.limit);
-    const total = new BigNumber(earlyPool.total);
-    const progress = new BigNumber(total).div(limit).times(100);
     return (
       <div className="info">
         <h3>Staking structure</h3>
@@ -64,8 +60,9 @@ class StakingInfo extends React.Component {
         <h5>Schedule of stacking rewards in MBN and ETH:</h5>
         <br/>
         <h6>Early Investors pool</h6>
-        <div>{total.div(1e18).toFixed(0)} of {limit.div(1e24).toFixed()}M</div>
-        <ProgressBar progress={progress.toNumber()} />
+        <div style={{maxWidth: '550px'}}>
+          <EarlyPoolProgress {...earlyPool} />
+        </div>
         {this.renderEarlyTable()}
         <br/>
         <h6>Global pool</h6>

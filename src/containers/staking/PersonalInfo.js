@@ -6,7 +6,7 @@ import get from 'lodash/get';
 
 import ReactTable from '../../components/SelectableReactTable';
 import PaginationWithPage from '../../components/PaginationWithPage';
-import ProgressBar from '../../components/ProgressBar';
+import { EarlyPoolProgress } from './EarlyPoolProgress';
 
 class PersonalInfo extends React.Component {
   componentDidMount() {
@@ -101,9 +101,8 @@ class PersonalInfo extends React.Component {
           <Col xs="12" md="6">
             <div>Staking is on</div>
             <div style={{wordBreak: 'break-word'}}>Address: {address}</div>
+            <br/>
             <h4>Early Pool Info</h4>
-            <div>{total.div(1e18).toFixed(0)} of {limit.div(1e24).toFixed()}M</div>
-            <ProgressBar progress={progress.toNumber()} />
             {stat ? (
               <React.Fragment>
                 <div>Tokens committed: {new BigNumber(stat.tokens).div(1e18).toFixed()} MBN</div>
@@ -124,11 +123,12 @@ class PersonalInfo extends React.Component {
               </React.Fragment>
             ) : (
               <React.Fragment>
-                {canJoin && <Button onClick={this.props.showModal}>Confirm</Button>}
+                {canJoin && <Button className='early-pool' onClick={this.props.showModal}>Commit tokens to the early pool</Button>}
                 {earlyPoolStat.excluded && <div>You have been excluded from Early Pool</div>}
                 {isTimeRestriction && <div>Early Pool is closed</div>}
               </React.Fragment>
             )}
+            <br/>
             <h4>General Pool Info</h4>
             <div>Tokens committed: {new BigNumber(globalPoolStat.tokens).div(1e18).toFixed(0)} MBN</div>
             <div>Level: {globalPoolStat.level} {this.renderLevelInfo(globalPoolStat)}</div>
@@ -173,18 +173,19 @@ class PersonalInfo extends React.Component {
               </Row>
             </Container>
           </Col>
-          {this.renderStakingRating()}
+          {this.renderStakingRating(earlyPool)}
         </Row>
       </div>
     );
   }
 
-  renderStakingRating() {
+  renderStakingRating(earlyPool) {
     const rating = this.props.rating;
     return (
       <Col xs="12" md="6">
         <div>Staking rating</div>
         <StakingRating rating={rating} info={this.props.info} />
+        <EarlyPoolProgress {...earlyPool}/>
       </Col>
     );
   }
@@ -241,6 +242,7 @@ class PersonalInfo extends React.Component {
     );
   }
 }
+
 
 const StakingRating = ({ info, rating }) => {
   const top = rating.slice(0, 3);
