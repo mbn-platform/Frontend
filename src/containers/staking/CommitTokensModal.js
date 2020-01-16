@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Col } from 'reactstrap';
-import { FormattedMessage, injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { closeCommitTokensModal } from '../../actions/modal';
 import { commitToEarlyPool } from '../../actions/profile';
 

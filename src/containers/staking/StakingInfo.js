@@ -51,13 +51,12 @@ class StakingInfo extends React.Component {
         </Row>
         <div><b>The reward is calculated as a:</b></div>
         <div>Personal reward = Total reward / Personal share in staking pool</div>
-        <div>ETH payment comes from COF operation profit. 10% of COF profit will be distributed for users, who apply for staking level 2.</div>
-        <div>Rewards are sended to users every week, on monday.
-          Size of stacking rewards have a schedule, based on timeline.</div>
+        <div>ETH payment comes from COF operation profit. 10% of COF profit will be distributed for users, who apply for staking Level 2, Level 3 and 15% of COF profit for Level 4.</div>
+        <div>Rewards are sended to users every week, on monday. Size of staking rewards have a schedule, based on pools.</div>
         <br/>
         <div>To receive staking rewards you apply the pool and have a 1-month long reward maturation period. Withdrawing tokens from the wallet will restart the reward maturation.</div>
         <br/>
-        <h5>Schedule of stacking rewards in MBN and ETH:</h5>
+        <h5>Schedule of staking rewards in MBN and ETH:</h5>
         <br/>
         <h6>Early Investors pool</h6>
         <div style={{maxWidth: '550px'}}>
@@ -67,10 +66,12 @@ class StakingInfo extends React.Component {
         <br/>
         <h6>General pool</h6>
         {this.renderGeneralTable()}
-        <br />
-        <div><b>Example 1:</b> User has 200,000 MBN and commits 150,000 MBN to Early Investors Pool. If balance of the user at the moment of reward calculation is lower than 150,000 MBN, the user will not receive rewards and will be excluded from Early Investors Pool</div>
-        <div><b>Example 2:</b> User has 200,000 MBN on his address. That conforms with the Level 2. If during 4 weeks User's MBN balance doesn't descrease, the user will start to receive staking rewards every week according to the Global Pool percentage table</div>
-        <div><b>Example 3:</b> User has 150,000 MBN on his address and completed maturation period. If at the moment of reward calculations user's balance decreases relative to the last week, but does not drops below 100,000 MBN, the maturation perdiod will start anew</div>
+        <br/>
+        <div><b>Example 1:</b> John has 3,450,000 MBN. He can commit 3,000,000 MBN to the Early adopters pool and get maximum rate for the rewards. He can not sell this stake. If he do – all of 3,000,000 goes to the General pool. Also, he loses his reward for the current week and other investors from Early pool share it. The remaining 450,000 MBN he has commited to the General pool. He can sell rewards or full stake amount from this pool.</div>
+        <br/>
+        <div><b>Example 2:</b> John has 450,000 MBN in the General pool. If he sells rewards, he loses rewards for the current week from the General pool. The remaining balance goes to the maturation period for 1 month without rewards.</div>
+        <br/>
+        <div><b>Example 3:</b> Alice has 1,300,000 MBN. She has committed 1,000,000 MBN in the Early adopter's pool and 300,000 MBN in the General pool. She gains rewards from the Early pool and from the General pool at the same time. She can sell rewards paid out from the General pool. It means,  if her balance drop below 1,000,000 MBN + amount of paid rewards from the Early pool, she excludes from the Early pool.</div>
       </div>
     );
   }

@@ -182,7 +182,9 @@ class PersonalInfo extends React.Component {
       <Col xs="12" md="6">
         <div>Staking rating</div>
         <StakingRating rating={rating} info={this.props.info} />
-        <EarlyPoolProgress {...earlyPool}/>
+        <div style={{maxWidth: '550px'}}>
+          <EarlyPoolProgress {...earlyPool}/>
+        </div>
       </Col>
     );
   }

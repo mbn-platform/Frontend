@@ -15,27 +15,37 @@ import { Switch, Route, NavLink, Redirect } from 'react-router-dom';
 
 class NewStaking extends React.Component {
 
+  state = {
+    loaded: false,
+  }
+
   verifyStakeAddress = () => {
-    const { loggedIn, location: { pathname }, history } = this.props;
+    const { loggedIn, history } = this.props;
 
     if (loggedIn) {
       this.props.verifyStakeAddress();
       return;
     }
 
-    history.push(`/login?${qs.stringify({ redirectTo: pathname })}`);
+    history.push(`/login?${qs.stringify({ redirectTo: '/staking' })}`);
   };
 
   showCommitTokensModal = () => {
     this.props.showCommitTokensModal();
   };
 
+  componentDidUpdate(prevProps) {
+    if (this.props.info.info !== prevProps.info.info) {
+      this.setState({loaded: true});
+    }
+  }
+
   componentDidMount() {
     this.props.getStakeInfo();
   }
 
   render() {
-    const info = this.props.info;
+    const { info } = this.props;
     return (
       <Container fluid className="ratings leaderboard staking">
         <Row>
@@ -51,7 +61,7 @@ class NewStaking extends React.Component {
                     />
                   </Route>
                   <Route exact path='/staking' render={() => {
-                    if (!info.info.earlyPool) {
+                    if (!this.state.loaded) {
                       return null;
                     } else if (!info.info.verified) {
                       return <Redirect to='/staking/info' />;

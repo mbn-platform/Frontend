@@ -31,7 +31,7 @@ import { Container, Row } from 'reactstrap';
 import {injectIntl, FormattedMessage} from 'react-intl';
 import {
   closeCodeModal, closeConfirmModal, closeInfoModal,
-  closeUpgradeTariffModal, closeCommitTokensModal,
+  closeUpgradeTariffModal,
 } from './actions/modal';
 import { loggedOut } from './actions/auth';
 import CommitTokensModal from './containers/staking/CommitTokensModal';

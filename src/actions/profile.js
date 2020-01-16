@@ -4,7 +4,7 @@ import get from 'lodash/get';
 import { profileErrorHandler } from '../generic/errorHandlers';
 import { ApiProfile, ApiContacts} from '../generic/api';
 import { ApiError} from '../generic/apiCall';
-import { showConfirmModal, showInfoModal, closeCommitTokensModal } from './modal';
+import { showConfirmModal, showInfoModal } from './modal';
 
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
 export const UPDATE_PROFILE_AVAILABLE = 'UPDATE_PROFILE_AVAILABLE';
@@ -183,7 +183,7 @@ export function getTradesForUser(name) {
 export function commitToEarlyPool(amount) {
   return async (dispatch) => {
     try {
-      const res = await ProfileApi.commitToEarlyPool(amount);
+      await ProfileApi.commitToEarlyPool(amount);
       dispatch(getStakeInfo());
     } catch (err) {
       console.log(err);
