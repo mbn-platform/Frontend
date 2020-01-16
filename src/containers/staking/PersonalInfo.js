@@ -1,7 +1,7 @@
 import React from 'react';
 import BigNumber from 'bignumber.js';
 import { Col, Button, Row, Container } from 'reactstrap';
-import { FormattedDate, FormattedMessage } from 'react-intl';
+import { FormattedDate } from 'react-intl';
 import get from 'lodash/get';
 
 import ReactTable from '../../components/SelectableReactTable';
@@ -87,9 +87,6 @@ class PersonalInfo extends React.Component {
     const stat = get(earlyPoolStat, 'stat');
     const isTimeRestriction = new Date() > new Date(earlyPool.endJoin);
     const canJoin = !isTimeRestriction && !earlyPoolStat.executed;
-    const limit = new BigNumber(earlyPool.limit);
-    const total = new BigNumber(earlyPool.total);
-    const progress = new BigNumber(total).div(limit).times(100);
     const style = {
       width: 240,
       height: '20',
@@ -232,11 +229,6 @@ class PersonalInfo extends React.Component {
         <h6>Staking Rewards</h6>
         <Col xs="12" md="6">
           {this.renderTable()}
-        </Col>
-        <Col>
-          <Button onClick={this.props.setRenderItem('info')}>
-            <FormattedMessage id="staking.viewInfo" />
-          </Button>
         </Col>
       </div>
     );

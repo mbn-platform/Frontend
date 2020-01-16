@@ -65,7 +65,7 @@ class StakingInfo extends React.Component {
         </div>
         {this.renderEarlyTable()}
         <br/>
-        <h6>Global pool</h6>
+        <h6>General pool</h6>
         {this.renderGeneralTable()}
         <br />
         <div><b>Example 1:</b> User has 200,000 MBN and commits 150,000 MBN to Early Investors Pool. If balance of the user at the moment of reward calculation is lower than 150,000 MBN, the user will not receive rewards and will be excluded from Early Investors Pool</div>
@@ -241,15 +241,16 @@ class StakingInfo extends React.Component {
 
 
   render() {
-    const { setRenderItem, verifyStakeAddress } = this.props;
+    const { verifyStakeAddress } = this.props;
     const isVerified = this.props.info.verified;
-
     return (
       <div>
         {this.renderInfo()}
-        <Button onClick={isVerified ? setRenderItem('personal') : verifyStakeAddress}>
-          <FormattedMessage id={isVerified ? 'staking.viewStats' : 'staking.start'} />
-        </Button>
+        {isVerified ? null :
+          <Button onClick={verifyStakeAddress}>
+            <FormattedMessage id='staking.start' />
+          </Button>
+        }
       </div>
     );
   }

@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Container, Row, Col } from 'reactstrap';
 import { FormattedMessage } from 'react-intl';
 import qs from 'qs';
-import get from 'lodash/get';
 
 import {
   verifyStakeAddress, getStakeInfo, getStakeTransactions,
@@ -12,26 +11,9 @@ import {
 import { showCommitTokensModal } from '../../actions/modal';
 import StakingInfo from './StakingInfo';
 import PersonalInfo from './PersonalInfo';
+import { Switch, Route, NavLink, Redirect } from 'react-router-dom';
 
-class StakingContainer extends React.Component {
-  state = {
-    renderItem: null,
-  };
-
-  componentDidMount() {
-    this.props.getStakeInfo();
-  }
-
-  componentDidUpdate(prevProps) {
-    const verified = get(this.props, 'info.info.verified');
-    if (prevProps.info.info !== this.props.info.info) {
-      this.setState({ renderItem: verified === false ? 'info' : 'personal' });
-    }
-  }
-
-  setRenderItem = renderItem => () => {
-    this.setState({ renderItem });
-  };
+class NewStaking extends React.Component {
 
   verifyStakeAddress = () => {
     const { loggedIn, location: { pathname }, history } = this.props;
@@ -48,42 +30,48 @@ class StakingContainer extends React.Component {
     this.props.showCommitTokensModal();
   };
 
-  render() {
-    const { info } = this.props;
-    const { renderItem } = this.state;
+  componentDidMount() {
+    this.props.getStakeInfo();
+  }
 
+  render() {
+    const info = this.props.info;
     return (
-      <Container fluid className="ratings staking">
+      <Container fluid className="ratings leaderboard staking">
         <Row>
           <Col xs="12" sm="12" md="12" lg="12">
-            <div className="hashlog__main">
-              <div className="hashlog__main-title">
-                <FormattedMessage
-                  id="staking.title"
-                  defaultMessage="Staking"
-                />
-              </div>
+            <div className="ratings-main">
+              {this.renderNavigation()}
               <div className="hashlog__main-board">
-                {renderItem === 'personal' && (
-                  <PersonalInfo
-                    info={info.info}
-                    rating={info.rating}
-                    getPage={this.props.getPage}
-                    setPage={this.props.setPage}
-                    setPageSize={this.props.setPageSize}
-                    trs={this.props.trs}
-                    getStakeRating={this.props.getStakeRating}
-                    setRenderItem={this.setRenderItem}
-                    showModal={this.showCommitTokensModal}
-                  />
-                )}
-                {renderItem === 'info' && (
-                  <StakingInfo
-                    info={info.info}
-                    verifyStakeAddress={this.verifyStakeAddress}
-                    setRenderItem={this.setRenderItem}
-                  />
-                )}
+                <Switch>
+                  <Route exact path="/staking/info">
+                    <StakingInfo
+                      info={info.info}
+                      verifyStakeAddress={this.verifyStakeAddress}
+                    />
+                  </Route>
+                  <Route exact path='/staking' render={() => {
+                    if (!info.info.earlyPool) {
+                      return null;
+                    } else if (!info.info.verified) {
+                      return <Redirect to='/staking/info' />;
+                    } else {
+                      return (
+                        <PersonalInfo
+                          info={info.info}
+                          rating={info.rating}
+                          getPage={this.props.getPage}
+                          setPage={this.props.setPage}
+                          setPageSize={this.props.setPageSize}
+                          trs={this.props.trs}
+                          getStakeRating={this.props.getStakeRating}
+                          showModal={this.showCommitTokensModal}
+                        />
+                      );
+                    }
+                  }}/>
+                  <Redirect to="/staking" />
+                </Switch>
               </div>
             </div>
           </Col>
@@ -91,6 +79,26 @@ class StakingContainer extends React.Component {
       </Container>
     );
   }
+
+  renderNavigation() {
+    return (
+      <div className="rating-navigation">
+        <NavLink exact to="/staking">
+          <FormattedMessage
+            id="staking.title"
+            defaultMessage="STAKING"
+          />
+        </NavLink>
+        <NavLink exact to="/staking/info">
+          <FormattedMessage
+            id="staking.info.title"
+            defaultMessage="INFO"
+          />
+        </NavLink>
+      </div>
+    );
+  }
+
 }
 
 const mapStateToProps = (state) => ({
@@ -109,4 +117,5 @@ const mapDispatchToProps = {
   setPageSize: setTrListPageSize,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(StakingContainer);
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewStaking);
