@@ -38,6 +38,44 @@
     }
   }
 
+  .progress_bar_wrapper {
+    width: 100%;
+    height: 5px;
+    text-align: center;
+    margin-bottom: 15px;
+    margin-top: 5px;
+    background-color: #2d3034;
+    border-radius: 2px;
+  }
+
+  .btn.early-pool {
+    max-width: unset;
+    width: auto;
+    background-color: #CB353C;
+  }
+
+  .progress_bar {
+    height: 5px;
+    float: left;
+    border-radius: 2px;
+
+    &.green
+    {
+      background: #52e069;
+      box-shadow: 0px 0px 26px -1px rgba(82,224,105,1);
+    }
+    &.yellow
+    {
+      background: #dcb14a;
+      box-shadow: 0px 0px 26px -1px rgba(220,177,74,1);
+    }
+    &.red
+    {
+      background: #dc4337;
+      box-shadow: 0px 0px 26px 1px rgba(220,67,55,0.86);
+    }
+  }
+
   .staking-rating {
     .own {
       color: $membrana-green;
@@ -559,7 +597,7 @@
 				background-repeat: no-repeat;
 				background-position: center;
 				margin-left: auto;
-				margin-right: auto;				
+				margin-right: auto;
 			}
 			&.best_alltime{
 				color: #0290E5;
@@ -868,6 +906,11 @@
         }
       }
     }
+  }
+
+  .btn {
+    width: 100%;
+    max-width: 250px;
   }
 }
 

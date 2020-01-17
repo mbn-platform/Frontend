@@ -1,4 +1,5 @@
 import React from 'react';
+import get from 'lodash/get';
 
 import { profileErrorHandler } from '../generic/errorHandlers';
 import { ApiProfile, ApiContacts} from '../generic/api';
@@ -179,6 +180,17 @@ export function getTradesForUser(name) {
   };
 }
 
+export function commitToEarlyPool(amount) {
+  return async (dispatch) => {
+    try {
+      await ProfileApi.commitToEarlyPool(amount);
+      dispatch(getStakeInfo());
+    } catch (err) {
+      console.log(err);
+    }
+  };
+}
+
 export function verifyStakeAddress(address) {
   return dispatch => {
     const web3 = window.web3;
@@ -244,7 +256,8 @@ export function getStakeInfo() {
         });
       })
       .catch((error) => {
-        if (error && error.apiErrorCode === ApiError.NOT_FOUND) {
+        const code = get(error, 'apiErrorCode');
+        if (code === ApiError.NOT_FOUND || code === ApiError.FORBIDDEN) {
           dispatch({
             type: GET_STAKE_INFO,
             info: {verified: false},

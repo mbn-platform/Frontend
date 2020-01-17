@@ -12,6 +12,8 @@ export const SHOW_CODE_INFO_MODAL = 'SHOW_CODE_INFO_MODAL';
 export const CLOSE_CODE_INFO_MODAL = 'CLOSE_CODE_INFO_MODAL';
 export const SHOW_UPGRADE_TARIFF_MODAL = 'SHOW_UPGRADE_TARIFF_MODAL';
 export const CLOSE_UPGRADE_TARIFF_MODAL = 'CLOSE_UPGRADE_TARIFF_MODAL';
+export const SHOW_COMMIT_TOKENS_MODAL = 'SHOW_COMMIT_TOKENS_MODAL';
+export const CLOSE_COMMIT_TOKENS_MODAL = 'CLOSE_COMMIT_TOKENS_MODAL';
 
 const Api2FA = new ApiTwoFactorAuth();
 
@@ -103,3 +105,12 @@ export const showUpgradeTariffModal = (textId = 'message', values = {}, body) =>
 export const closeUpgradeTariffModal = () => ({
   type: 'CLOSE_UPGRADE_TARIFF_MODAL',
 });
+
+export const showCommitTokensModal = () => ({
+  type: SHOW_COMMIT_TOKENS_MODAL,
+});
+
+export const closeCommitTokensModal = () => ({
+  type: CLOSE_COMMIT_TOKENS_MODAL,
+});
+

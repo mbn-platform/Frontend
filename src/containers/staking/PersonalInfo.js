@@ -1,12 +1,14 @@
 import React from 'react';
 import BigNumber from 'bignumber.js';
 import { Col, Button, Row, Container } from 'reactstrap';
+import { FormattedDate } from 'react-intl';
+import get from 'lodash/get';
+
 import ReactTable from '../../components/SelectableReactTable';
 import PaginationWithPage from '../../components/PaginationWithPage';
-import { FormattedDate } from 'react-intl';
+import { EarlyPoolProgress } from './EarlyPoolProgress';
 
-class StakeInfo extends React.Component {
-
+class PersonalInfo extends React.Component {
   componentDidMount() {
     const {getPage, trs : {page, pageSize}, getStakeRating} = this.props;
     getPage(page, pageSize);
@@ -71,10 +73,29 @@ class StakeInfo extends React.Component {
       Cell: row => BigNumber(row.value).div(1e18).toFixed(2),
       accessor: 'amount',
     },
+    {
+      Header: 'Pool',
+      className: 'table_col_value hashlog__table-cell hashlog__table-cell_hash-value pair',
+      headerClassName: 'hashlog__table-header-title',
+      Cell: ({ value }) => {
+        switch (value) {
+          case 'early_adopters':
+            return 'Early Adopters';
+          case 'global':
+            return 'Global';
+          default:
+            return '';
+        }
+      },
+      accessor: 'pool',
+    },
   ]
 
   renderInfo() {
-    const info = this.props.info;
+    const { info: { earlyPool, earlyPoolStat, globalPoolStat, address } } = this.props;
+    const stat = get(earlyPoolStat, 'stat');
+    const isTimeRestriction = new Date() > new Date(earlyPool.endJoin);
+    const canJoin = !isTimeRestriction && !earlyPoolStat.executed;
     const style = {
       width: 240,
       height: '20',
@@ -85,19 +106,30 @@ class StakeInfo extends React.Component {
         <Row>
           <Col xs="12" md="6">
             <div>Staking is on</div>
-            <div>Started: <FormattedDate
-              value={new Date(info.createdAt)}
-              year='numeric'
-              month='2-digit'
-              day='2-digit'
-              hour="numeric"
-              minute="numeric"
-            />
-            </div>
-            <div style={{wordBreak: 'break-word'}}>Address: {info.address}</div>
-            <div>Balance: {BigNumber(info.balance).div(1e18).toFixed(0, BigNumber.ROUND_FLOOR)} MBN</div>
-            <div>Total Bonus: {BigNumber(info.totalBonus).div(1e18).toFixed(0, BigNumber.ROUND_CEIL)} MBN</div>
-            <div>Current level: {info.level}. {this.renderLevelInfo(info)}</div>
+            <div style={{wordBreak: 'break-word'}}>Address: {address}</div>
+            <br/>
+            <h4>Early Pool Info</h4>
+            {stat ? (
+              <React.Fragment>
+                <div>Tokens committed: {new BigNumber(stat.tokens).div(1e18).toFixed()} MBN</div>
+                <div>Level: {stat.level}</div>
+                <MaturationEnd date={stat.maturationEnd} />
+                <div>Total bonus: {new BigNumber(stat.bonus).div(1e18).dp(2).toFixed()} MBN</div>
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                {canJoin && <Button className='early-pool' onClick={this.props.showModal}>Commit tokens to the early pool</Button>}
+                {earlyPoolStat.excluded && <div>You have been excluded from Early Pool</div>}
+                {isTimeRestriction && <div>Early Pool is closed</div>}
+              </React.Fragment>
+            )}
+            <br/>
+            <h4>General Pool Info</h4>
+            <div>Tokens committed: {new BigNumber(globalPoolStat.tokens).div(1e18).toFixed(0)} MBN</div>
+            <div>Level: {globalPoolStat.level} {this.renderLevelInfo(globalPoolStat)}</div>
+            <MaturationEnd date={globalPoolStat.maturationEnd} level={globalPoolStat.level} />
+            <div>Total bonus: {new BigNumber(globalPoolStat.bonus).div(1e18).dp(2).toFixed()} MBN</div>
+
             <Container>
               <Row>
                 <Col>
@@ -125,24 +157,28 @@ class StakeInfo extends React.Component {
               </Row>
             </Container>
           </Col>
-          {this.renderStakingRating()}
+          {this.renderStakingRating(earlyPool)}
         </Row>
       </div>
     );
   }
 
-  renderStakingRating() {
+  renderStakingRating(earlyPool) {
     const rating = this.props.rating;
     return (
       <Col xs="12" md="6">
         <div>Staking rating</div>
         <StakingRating rating={rating} info={this.props.info} />
+        <br/>
+        <div style={{maxWidth: '550px'}}>
+          <EarlyPoolProgress {...earlyPool}/>
+        </div>
       </Col>
     );
   }
 
   getNextLevelRequired(info) {
-    const currentValue = BigNumber(info.balance).div(1e18);
+    const currentValue = BigNumber(info.tokens).div(1e18);
     let required;
     switch (info.level) {
       case 0:
@@ -189,6 +225,31 @@ class StakeInfo extends React.Component {
   }
 }
 
+const MaturationEnd = ({ date, level }) => {
+  if (level === 0) {
+    return null;
+  }
+  if (!date) {
+    return null;
+  } else {
+    return (
+      <div>
+        Maturation ends:
+        {' '}
+        <FormattedDate
+          value={new Date(date)}
+          year='numeric'
+          month='2-digit'
+          day='2-digit'
+          hour="numeric"
+          minute="numeric"
+        />
+      </div>
+    );
+  }
+};
+
+
 const StakingRating = ({ info, rating }) => {
   const top = rating.slice(0, 3);
   return (
@@ -214,4 +275,4 @@ const StakingRating = ({ info, rating }) => {
   );
 };
 
-export default StakeInfo;
+export default PersonalInfo;

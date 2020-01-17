@@ -9,6 +9,8 @@ import {
   CLOSE_CODE_INFO_MODAL,
   SHOW_UPGRADE_TARIFF_MODAL,
   CLOSE_UPGRADE_TARIFF_MODAL,
+  SHOW_COMMIT_TOKENS_MODAL,
+  CLOSE_COMMIT_TOKENS_MODAL,
 } from '../actions/modal';
 
 const modal = (
@@ -74,6 +76,15 @@ const modal = (
     }
     case CLOSE_UPGRADE_TARIFF_MODAL: {
       return {...state,  isUpgradeModalOpen: false, modalText: '',  modalProps: {}};
+    }
+    case SHOW_COMMIT_TOKENS_MODAL: {
+      return {
+        ...state,
+        isCommitTokensModalOpen: true,
+      };
+    }
+    case CLOSE_COMMIT_TOKENS_MODAL: {
+      return {...state,  isCommitTokensModalOpen: false };
     }
     default:
       return state;

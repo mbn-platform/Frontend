@@ -272,6 +272,10 @@ export class ApiProfile {
     apiPost('/staking/verify', null, {address, sign})
       .then(errorHandler)
       .then(responseSchemaHandler);
+  commitToEarlyPool = (amount) =>
+    apiPost('/staking/commitEarly', null, {amount})
+      .then(errorHandler)
+      .then(responseSchemaHandler);
   getStakeTransactions = () =>
     apiGet('/staking/transaction')
       .then(errorHandler)
