@@ -349,7 +349,7 @@ const en = {
   'staking.start': 'Start',
   'staking.viewStats': 'View Stats',
   'staking.viewInfo': 'View Info',
-  'staking.tokenToCommit': 'Enter how many tokens you wish to commit to early pool',
+  'staking.tokenToCommit': 'Enter how many tokens you wish to commit to Early Adopters pool',
 
   'tariffs.buyNow': 'BUY NOW',
   'tariffs.activated': 'ACTIVATED',

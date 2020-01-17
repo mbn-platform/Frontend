@@ -77,7 +77,16 @@ class PersonalInfo extends React.Component {
       Header: 'Pool',
       className: 'table_col_value hashlog__table-cell hashlog__table-cell_hash-value pair',
       headerClassName: 'hashlog__table-header-title',
-      Cell: ({ value }) => value,
+      Cell: ({ value }) => {
+        switch (value) {
+          case 'early_adopters':
+            return 'Early Adopters';
+          case 'global':
+            return 'Global';
+          default:
+            return '';
+        }
+      },
       accessor: 'pool',
     },
   ]
@@ -104,19 +113,8 @@ class PersonalInfo extends React.Component {
               <React.Fragment>
                 <div>Tokens committed: {new BigNumber(stat.tokens).div(1e18).toFixed()} MBN</div>
                 <div>Level: {stat.level}</div>
-                <div>
-                  Maturation end:
-                  {' '}
-                  <FormattedDate
-                    value={new Date(stat.maturationEnd)}
-                    year='numeric'
-                    month='2-digit'
-                    day='2-digit'
-                    hour="numeric"
-                    minute="numeric"
-                  />
-                </div>
-                <div>Total bonus: {stat.bonus} MBN</div>
+                <MaturationEnd date={stat.maturationEnd} />
+                <div>Total bonus: {new BigNumber(stat.bonus).div(1e18).dp(2).toFixed()} MBN</div>
               </React.Fragment>
             ) : (
               <React.Fragment>
@@ -129,19 +127,8 @@ class PersonalInfo extends React.Component {
             <h4>General Pool Info</h4>
             <div>Tokens committed: {new BigNumber(globalPoolStat.tokens).div(1e18).toFixed(0)} MBN</div>
             <div>Level: {globalPoolStat.level} {this.renderLevelInfo(globalPoolStat)}</div>
-            <div>
-              Maturation end:
-              {' '}
-              <FormattedDate
-                value={new Date(globalPoolStat.maturationEnd)}
-                year='numeric'
-                month='2-digit'
-                day='2-digit'
-                hour="numeric"
-                minute="numeric"
-              />
-            </div>
-            <div>Total bonus: {globalPoolStat.bonus} MBN</div>
+            <MaturationEnd date={globalPoolStat.maturationEnd} level={globalPoolStat.level} />
+            <div>Total bonus: {new BigNumber(globalPoolStat.bonus).div(1e18).dp(2).toFixed()} MBN</div>
 
             <Container>
               <Row>
@@ -182,6 +169,7 @@ class PersonalInfo extends React.Component {
       <Col xs="12" md="6">
         <div>Staking rating</div>
         <StakingRating rating={rating} info={this.props.info} />
+        <br/>
         <div style={{maxWidth: '550px'}}>
           <EarlyPoolProgress {...earlyPool}/>
         </div>
@@ -236,6 +224,30 @@ class PersonalInfo extends React.Component {
     );
   }
 }
+
+const MaturationEnd = ({ date, level }) => {
+  if (level === 0) {
+    return null;
+  }
+  if (!date) {
+    return null;
+  } else {
+    return (
+      <div>
+        Maturation ends:
+        {' '}
+        <FormattedDate
+          value={new Date(date)}
+          year='numeric'
+          month='2-digit'
+          day='2-digit'
+          hour="numeric"
+          minute="numeric"
+        />
+      </div>
+    );
+  }
+};
 
 
 const StakingRating = ({ info, rating }) => {

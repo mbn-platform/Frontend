@@ -58,7 +58,7 @@ class StakingInfo extends React.Component {
         <br/>
         <h5>Schedule of staking rewards in MBN and ETH:</h5>
         <br/>
-        <h6>Early Investors pool</h6>
+        <h6>Early Adopters pool</h6>
         <div style={{maxWidth: '550px'}}>
           <EarlyPoolProgress {...earlyPool} />
         </div>

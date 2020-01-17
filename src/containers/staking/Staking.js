@@ -13,7 +13,7 @@ import StakingInfo from './StakingInfo';
 import PersonalInfo from './PersonalInfo';
 import { Switch, Route, NavLink, Redirect } from 'react-router-dom';
 
-class NewStaking extends React.Component {
+class Staking extends React.Component {
 
   state = {
     loaded: false,
@@ -93,16 +93,16 @@ class NewStaking extends React.Component {
   renderNavigation() {
     return (
       <div className="rating-navigation">
-        <NavLink exact to="/staking">
-          <FormattedMessage
-            id="staking.title"
-            defaultMessage="STAKING"
-          />
-        </NavLink>
         <NavLink exact to="/staking/info">
           <FormattedMessage
             id="staking.info.title"
             defaultMessage="INFO"
+          />
+        </NavLink>
+        <NavLink exact to="/staking">
+          <FormattedMessage
+            id="staking.title"
+            defaultMessage="STAKING"
           />
         </NavLink>
       </div>
@@ -128,4 +128,4 @@ const mapDispatchToProps = {
 };
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewStaking);
+export default connect(mapStateToProps, mapDispatchToProps)(Staking);
