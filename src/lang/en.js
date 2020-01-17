@@ -347,8 +347,6 @@ const en = {
   'staking.title': 'STAKING',
   'staking.info.title': 'INFO',
   'staking.start': 'Start',
-  'staking.viewStats': 'View Stats',
-  'staking.viewInfo': 'View Info',
   'staking.tokenToCommit': 'Enter how many tokens you wish to commit to Early Adopters pool',
 
   'tariffs.buyNow': 'BUY NOW',
