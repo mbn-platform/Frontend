@@ -16,7 +16,7 @@ class CommitTokensModal extends React.Component {
   };
 
   state = {
-    commits: '100000',
+    commits: '',
   };
 
   handleChange = (event) => {

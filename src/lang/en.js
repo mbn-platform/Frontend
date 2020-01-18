@@ -347,7 +347,7 @@ const en = {
   'staking.title': 'STAKING',
   'staking.info.title': 'INFO',
   'staking.start': 'Start',
-  'staking.tokenToCommit': 'Enter how many tokens you wish to commit to Early Adopters pool',
+  'staking.tokenToCommit': 'Enter how many tokens you wish to commit to Early Adopters pool. This action can not be canceled',
 
   'tariffs.buyNow': 'BUY NOW',
   'tariffs.activated': 'ACTIVATED',
