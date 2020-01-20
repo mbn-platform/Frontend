@@ -157,14 +157,6 @@ export function getExchangeRates(exchange) {
   };
 }
 
-export function getAllRates() {
-  return dispatch => {
-    TerminalApi.getExchangeRates()
-      .then(res => dispatch(updateAllRates(res)));
-  };
-}
-
-
 export function getMyOrders(key) {
   return dispatch => {
     TerminalApi.getMyOrders(key)
@@ -390,11 +382,6 @@ export const updateHistory = (exchange, market, history) => ({
 export const updateRates = (exchange, rates) => ({
   type: EXCHANGE_RATES,
   exchange, rates,
-});
-
-export const updateAllRates = (rates) => ({
-  type: EXCHANGE_RATES_ALL,
-  rates,
 });
 
 export const updateTicker = (exchange, market, ticker) => ({

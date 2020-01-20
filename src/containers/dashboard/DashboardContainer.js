@@ -1,11 +1,13 @@
-import Dashboard from './Dashboard';
 import { connect } from 'react-redux';
+import { injectIntl } from 'react-intl';
+
+import Dashboard from './Dashboard';
 import { deleteApiKey } from '../../actions/apiKeys';
 import { acceptOffer, cancelOffer, rejectOffer, payOffer } from '../../actions/offers';
 import { updateExchanges } from '../../actions/exchanges';
 import { rateContract } from '../../actions/contracts';
-import { getAllRates } from '../../actions/terminal';
-import { injectIntl } from 'react-intl';
+import { getExchangeRates } from '../../actions/terminal';
+import { showInfoModal } from '../../actions/modal';
 
 const mapStateToProps = state => ({
   time: state.time,
