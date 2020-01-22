@@ -40,6 +40,7 @@ class Terminal extends React.Component {
 
     if (isEmpty(params)) {
       this.props.selectExchange(exchange);
+      this.props.getExchangeMarkets(exchange);
       this.props.selectMarket(market);
       this.props.history.replace(`/terminal/${exchange}/${market}`);
     } else {

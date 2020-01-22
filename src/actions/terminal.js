@@ -108,6 +108,7 @@ export const validateUrlParams = ({ exchange, market }) => {
               const hasMarket = markets.find(m => m.symbol === market);
 
               if (hasMarket) {
+                dispatch(selectControlsByExchange(exchange));
                 dispatch(selectExchange(exchange));
                 dispatch(selectMarket(market));
                 dispatch({
@@ -242,7 +243,6 @@ export function cancelOrder(order) {
 
 export function placeAlgoOrder(order) {
   return (dispatch, store) => {
-    console.log(store);
     TerminalApi.placeAlgoOrder(order)
       .then(res => {
         dispatch(showInfoModal('orderHasBeenPlaced'));

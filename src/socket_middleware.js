@@ -154,7 +154,6 @@ const socketMiddleware = store => next => action => {
         const {exchange} = state.terminal;
         const symbol = action.market;
 
-
         socket.emit('market', {exchange, symbol});
       }
       break;
