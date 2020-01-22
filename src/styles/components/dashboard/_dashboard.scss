@@ -1192,7 +1192,10 @@
 
     .table_header_wrapper.contract_header_wrapper
     {
-      display: table-cell;
+      display: flex;
+      justify-content: center;
+      align-self: center;
+      flex-direction: column;
     }
 
     .contract_header_wrapper .table_header
