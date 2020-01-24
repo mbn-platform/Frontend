@@ -10,7 +10,7 @@ class Calculator extends React.Component {
 
   state = {
     isCalendarOpen: false,
-    date: new Date('2019-01-01'),
+    date: new Date('2020-01-01'),
     investment: '1000',
   }
 

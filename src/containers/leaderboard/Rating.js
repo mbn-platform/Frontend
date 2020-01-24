@@ -261,8 +261,8 @@ class RatingTable extends React.PureComponent {
         accessor: 'contractStat',
       }, {
         Header:<div className="table__header-wrapper">
-          <div title="based on 6 months performance">
-            Average Monthly ROI
+          <div>
+            Average Contract ROI
           </div>
         </div>,
         minWidth: 50,
