@@ -110,7 +110,7 @@ class ProfitChart extends React.Component {
   }
 
   renderStat() {
-    const stat = this.calculateStat(this.props.stats || []);
+    const stat = this.calculateStat(this.props.stats || [], this.props.summary || {});
     if (!stat) {
       return null;
     }
@@ -127,15 +127,14 @@ class ProfitChart extends React.Component {
     );
   }
 
-  calculateStat = memoizeOne((data) => {
+  calculateStat = memoizeOne((data, summary) => {
+    console.log(summary);
     const stat = {
-      positive: 0,
-      negative: 0,
-      profit: 0,
-      count: 0,
+      positive: summary.positive || 0,
+      negative: summary.negative || 0,
       currentCount: 0,
       currentProfit: [],
-      average: 0,
+      average: summary.avg6 || 0,
     };
     data.forEach((d) => {
       if (d.state === 'VERIFIED') {
@@ -144,18 +143,7 @@ class ProfitChart extends React.Component {
         stat.currentCount++;
         return;
       }
-      const percent = ((d.finishBalance / 1e8 / d.sum) - 1) * 100;
-      stat.count++;
-      if (percent >= 0) {
-        stat.positive++;
-      } else {
-        stat.negative++;
-      }
-      stat.profit += percent;
     });
-    if (stat.count) {
-      stat.average = stat.profit / stat.count;
-    }
     return stat;
   })
 

@@ -27,7 +27,7 @@ export default function(state = {}, action) {
     }
     case STATS_FOR_USER: {
       if (action.name === state.name) {
-        return {...state, stats: action.stats};
+        return {...state, stats: action.stats, summary: action.summary};
       } else {
         return state;
       }

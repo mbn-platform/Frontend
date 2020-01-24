@@ -156,10 +156,11 @@ export function getFeedbacks(name) {
 export function getStatsForUser(name) {
   return dispatch => {
     ProfileApi.getStatsForUser(name)
-      .then(({stats}) =>
+      .then(({stats, summary}) =>
         dispatch({
           type: STATS_FOR_USER,
           stats,
+          summary,
           name,
         }));
   };

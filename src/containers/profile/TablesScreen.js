@@ -20,8 +20,10 @@ class TablesScreen extends React.Component {
         </Row>
         <Row className="table-row">
           <Col xs="12">
-            <ProfitChart stats={this.props.profile.stats || [] }
-              tradesAsInvestor={ [] } />
+            <ProfitChart
+              stats={this.props.profile.stats || [] }
+              summary={this.props.profile.summary}
+            />
           </Col>
         </Row>
         <Row className="d-none d-md-block">
