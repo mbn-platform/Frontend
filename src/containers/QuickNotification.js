@@ -1,95 +1,129 @@
 import BN from 'bignumber.js';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Card } from 'reactstrap';
-import { removeQuickNotif } from '../actions/quickNotif';
-import './QuickNotification.css';
+import delay from 'lodash/delay';
 
-class QuickNotification extends React.Component {
+import { removeQuickNotif } from '../actions/quickNotif';
+
+const NOTIFICATION_LIFETIME = 30000;
+
+class QuickNotification extends React.PureComponent {
+  static propTypes = {
+    maxCount: PropTypes.number,
+    events: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+    removeQuickNotif: PropTypes.func.isRequired,
+  }
 
   static defaultProps = {
     maxCount: 2,
   }
 
-  onEventClick = (event) => {
+  onEventClick = (event) => () => {
     this.props.removeQuickNotif(event);
   }
 
   render() {
-    if (this.props.events.length === 0) {
-      return null;
-    }
-    const style = {
-      fontSize: '14px',
-      position: 'fixed',
-      bottom: 0,
-      right: 0,
-      padding: '20px',
-      maxWidth: '100%',
-    };
-    return (
-      <div style={style}>
-        {this.props.events.map((e, i) => {
-          if (i >= this.props.maxCount) {
-            return null;
-          } else {
-            switch (e.type) {
-              case 'order_closed': {
-                return <OrderNotification event={e} onClick={this.onEventClick} key={e.object._id} />;
-              }
-              case 'request_timed_out':
-              case 'request_created':
-              case 'request_accepted':
-              case 'request_canceled':
-              case 'request_verified':
-              case 'request_rejected': {
-                return <RequestNotification event={e} onClick={this.onEventClick} key={e.object._id} />;
-              }
-              case 'group_contract_order_not_placed': {
-                return <OrderNotPlaced key={e.object._id + 'order_not_placed'} onClick={this.onEventClick} event={e} />;
-              }
-              default:
-                return null;
+    const { events, maxCount } = this.props;
+
+    return events.length > 0 ? (
+      <div className="quick-notif-wrapper">
+        {events.slice(0, maxCount).map(event => {
+          switch (event.type) {
+            case 'order_closed': {
+              const { object } = event;
+              const [main, secondary] = object.symbol.split('-');
+              const message = object.canceledAt ? 'Order canceled' : 'Order executed';
+              const price = object.filled > 0 ? new BN(object.price / object.filled).dp(8).toString() : '0';
+
+              return (
+                <Notification
+                  key={event.object._id}
+                  event={event}
+                  time={formatDate(new Date(object.dtClose))}
+                  message={message}
+                  content={
+                    <React.Fragment>
+                      <div>Filled: {object.filled} {secondary}</div>
+                      <div>Price: {price} {main}</div>
+                      <div>Total: {object.price} {main}</div>
+                    </React.Fragment>
+                  }
+                  onClick={this.onEventClick}
+                />
+              );
             }
+            case 'request_timed_out':
+            case 'request_created':
+            case 'request_accepted':
+            case 'request_canceled':
+            case 'request_verified':
+            case 'request_rejected': {
+              const { object: { _id, contractSettings }, type } = event;
+
+              return (
+                <Notification
+                  key={_id}
+                  event={event}
+                  time={formatDate(new Date())}
+                  message={requestNotifTitle(type)}
+                  content={<div>{contractSettings.sum} {contractSettings.currency}</div>}
+                  onClick={this.onEventClick}
+                />
+              );
+            }
+            case 'group_contract_order_not_placed': {
+              const { object: { _id, from, sum, currency }, type } = event;
+
+              return (
+                <Notification
+                  key={`${_id}order_not_placed`}
+                  event={event}
+                  time={formatDate(new Date())}
+                  message={requestNotifTitle(type)}
+                  content={
+                    <React.Fragment>
+                      <div>Contract from {from} {sum} {currency}</div>
+                      <div>Order was not placed due to minimal order size requirement</div>
+                    </React.Fragment>
+                  }
+                  onClick={this.onEventClick}
+                />
+              );
+            }
+            default:
+              return null;
           }
         })}
       </div>
-    );
+    ) : null;
   }
 }
 
-function OrderNotPlaced({event, onClick}) {
-  const contract = event.object;
-  return (
-    <Card className="quick-notif" onClick={() => onClick(event)}>
-      <div className="top-block">
-        <span className="time">{formatDate(new Date())}</span>
-        <span className="close-notif" />
-      </div>
-      <div className="title">
-        {requestNotifTitle(event.type)}
-      </div>
-      <div>Contract from {contract.from} {contract.sum} {contract.currency}</div>
-      <div>Order was not placed due to minimal order size requirement</div>
-    </Card>
-  );
-}
+class Notification extends React.Component {
+  componentDidMount = () => {
+    const { event, onClick } = this.props;
+    delay(onClick(event), NOTIFICATION_LIFETIME);
+  };
 
-function RequestNotification({event, onClick}) {
-  const contract = event.object;
-  return (
-    <Card className="quick-notif" onClick={() => onClick(event)}>
-      <div className="top-block">
-        <span className="time">{formatDate(new Date())}</span>
-        <span className="close-notif" />
-      </div>
-      <div className="title">
-        {requestNotifTitle(event.type)}
-      </div>
-      <div>{contract.contractSettings.sum} {contract.contractSettings.currency}</div>
-    </Card>
-  );
-}
+  render = () => {
+    const { event, time, message, content, onClick } = this.props;
+
+    return (
+      <Card className="quick-notif" onClick={onClick(event)}>
+        <div className="top-block">
+          <span className="time">{time}</span>
+          <span className="close-notif" />
+        </div>
+        <div className="title">
+          {message}
+        </div>
+        {content}
+      </Card>
+    );
+  };
+};
 
 function requestNotifTitle(event) {
   switch (event) {
@@ -116,36 +150,15 @@ function requestNotifTitle(event) {
   }
 }
 
-function OrderNotification({event, onClick}) {
-  const order = event.object;
-  const [main, secondary] = order.symbol.split('-');
-  let message;
-  if (order.canceledAt) {
-    message = 'Order canceled';
-  } else if (order.state === 'CLOSED') {
-    message = 'Order executed';
-  }
-  let price;
-  if (order.filled > 0) {
-    price = new BN(order.price / order.filled).dp(8).toString();
-  } else {
-    price = '0';
-  }
+function formatDate(date) {
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const seconds = date.getSeconds();
+  return `${padTime(hours)}:${padTime(minutes)}:${padTime(seconds)}`;
+}
 
-  return (
-    <Card className="quick-notif" onClick={() => onClick(event)}>
-      <div className="top-block">
-        <span className="time">{formatDate(new Date(order.dtClose))}</span>
-        <span className="close-notif" />
-      </div>
-      <div className="title">
-        {message}
-      </div>
-      <div>Filled: {order.filled} {secondary}</div>
-      <div>Price: {price} {main}</div>
-      <div>Total: {order.price} {main}</div>
-    </Card>
-  );
+function padTime(value) {
+  return value < 10 ? '0' + value : value;
 }
 
 const mapStateToProps = (state) => ({events: state.quickNotif});
@@ -161,16 +174,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(QuickNotification);
 //     return null;
 //   }
 // }
-function formatDate(date) {
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-  const seconds = date.getSeconds();
-  return `${padTime(hours)}:${padTime(minutes)}:${padTime(seconds)}`;
-}
 
-function padTime(value) {
-  return value < 10 ? '0' + value : value;
-}
 // function VolumeChange({value, interval}) {
 //   if (value) {
 //     return <span>Volume change: <b>{formatPercentValueWithSign(value.percent)} / {formatTimeInterval(interval)}</b></span>;
