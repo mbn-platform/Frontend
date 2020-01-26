@@ -1,4 +1,5 @@
 import React from 'react';
+import qs from 'qs';
 import EnterNickname from './EnterNickname';
 import './Login.css';
 import './LoginStep.css';
@@ -53,10 +54,13 @@ class Login extends React.Component {
     } else if(this.props.nameRequired) {
       return (<EnterNickname onNicknameSet={this.props.onNicknameSet} />);
     } else {
+      const { search } = this.props.location;
+      const params = qs.parse(search.slice(1));
       return (
         this.state.hasActiveAccount || this.state.modern ? (
           <LoginForm
             onClick={this.onLoginClick}
+            autoLogin={!!params.autoLogin}
           />
         ) : (
           <MetamaskClosed />
