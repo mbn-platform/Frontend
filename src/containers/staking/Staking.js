@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Container, Row, Col } from 'reactstrap';
 import { FormattedMessage } from 'react-intl';
 import qs from 'qs';
+import { Switch, Route, NavLink, Redirect } from 'react-router-dom';
 
 import {
   verifyStakeAddress, getStakeInfo, getStakeTransactions,
@@ -11,10 +12,9 @@ import {
 import { showCommitTokensModal } from '../../actions/modal';
 import StakingInfo from './StakingInfo';
 import PersonalInfo from './PersonalInfo';
-import { Switch, Route, NavLink, Redirect } from 'react-router-dom';
+import Rules from './Rules';
 
 class Staking extends React.Component {
-
   state = {
     loaded: false,
   }
@@ -80,6 +80,9 @@ class Staking extends React.Component {
                       );
                     }
                   }}/>
+                  <Route exact path="/staking/rules">
+                    <Rules />
+                  </Route>
                   <Redirect to="/staking" />
                 </Switch>
               </div>
@@ -103,6 +106,12 @@ class Staking extends React.Component {
           <FormattedMessage
             id="staking.title"
             defaultMessage="STAKING"
+          />
+        </NavLink>
+        <NavLink exact to="/staking/rules">
+          <FormattedMessage
+            id="staking.rules"
+            defaultMessage="RULES"
           />
         </NavLink>
       </div>
