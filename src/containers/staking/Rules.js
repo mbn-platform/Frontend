@@ -5,6 +5,7 @@ import PercentTable from './PercentTable';
 
 const Rules = () => (
   <div className="info">
+    <h3>Rules of Staking</h3>
     <Row>
       <Col xs="12" md="8">
         <br />
