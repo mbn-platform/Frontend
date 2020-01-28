@@ -29,11 +29,11 @@ class CurrencySettings extends React.Component {
     setTimeout(() => {
       this.calcHeight();
     }, 1);
-  }  
+  }
 
   calcHeight() {
     this.setState({containerHeight: this.divRef.clientHeight});
-  }  
+  }
 
   render() {
     return (

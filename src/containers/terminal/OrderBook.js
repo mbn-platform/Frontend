@@ -165,7 +165,7 @@ class OrderBook extends React.Component {
               <div className="chart-name">
                 <FormattedMessage id="terminal.orderBook" defaultMessage="Order Book"/>
               </div>
-              <a role="button" className="reset-button text-muted" onClick={this.reset}>
+              <a href="# " role="button" className="reset-button text-muted" onClick={this.reset}>
                 <FormattedMessage id="terminal.resetSort" defaultMessage="Reset sort"/>
               </a>
               <Desktop>

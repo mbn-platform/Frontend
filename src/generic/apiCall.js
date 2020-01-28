@@ -1,4 +1,4 @@
-import merge from 'lodash.merge';
+import merge from 'lodash/merge';
 
 export class ApiError extends Error {
   constructor(code, reason = undefined) {
