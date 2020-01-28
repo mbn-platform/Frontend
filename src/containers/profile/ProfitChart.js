@@ -2,47 +2,195 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Col, Row } from 'reactstrap';
 import AmChartsReact from '@amcharts/amcharts3-react';
-import memoizeOne from 'memoize-one';
 import { FormattedMessage } from 'react-intl';
-import isEmpty from 'lodash/isEmpty';
 
-import { formatDate } from '../../generic/util';
 import { Desktop, Mobile } from '../../generic/MediaQuery';
 import { ProfileBlock } from '../../components/ProfileBlock';
 import SegmentedControl from '../../components/SegmentedControl';
+import ProfitSelect from './ProfitSelect';
 
 class ProfitChart extends React.Component {
-  static defaultProps = {
-    stats: [],
-    currentProfit: [],
-  };
 
   static propTypes = {
-    stats: PropTypes.arrayOf(PropTypes.shape()),
-    currentProfit: PropTypes.arrayOf(PropTypes.shape()),
-  };
+    currentProfit: PropTypes.array.isRequired,
+    stats: PropTypes.array.isRequired,
+    summary: PropTypes.shape.isRequired,
+  }
 
   state = {
     selectedSegment: 1,
-    maximum: 0,
-    minimum: 0,
-    dataProvider: [],
-    graphIds: [],
+    selectedCurrentContract: undefined,
   }
 
-  segments = ['ALL', 'CURRENT']
+  onCurrentContractSelect = (contract) => {
+    this.setState({selectedCurrentContract: contract});
+  }
 
   onSegmentChange = (selectedSegment) => {
     this.setState({ selectedSegment });
   }
 
-  computeState(segment) {
-    let data = this.props.stats;
+  componentDidUpdate() {
+    if (!this.state.selectedCurrentContract && this.props.currentProfit && this.props.currentProfit.length !== 0) {
+      this.setState({selectedCurrentContract: this.props.currentProfit[0]});
+    }
+  }
+
+  segments = ['ALL', 'CURRENT']
+
+  render() {
+    const currentProfit = this.props.currentProfit || [];
+    const {name } = this.props;
+    const { selectedSegment, selectedCurrentContract } = this.state;
+    const stats = this.props.stats || [];
+    let data;
+    let current;
+    if (selectedSegment === 1) {
+      current = true;
+      const contractDataIndex = currentProfit.indexOf(selectedCurrentContract);
+      if (contractDataIndex !== -1) {
+        const contractData = stats[contractDataIndex];
+        if (contractData) {
+          data = [contractData];
+        } else {
+          data = [];
+        }
+      } else {
+        data = [];
+      }
+    } else {
+      current = false;
+      data = stats;
+    }
+    const { negative, positive, avg6: average } = (this.props.summary || {});
+    return (
+      <ProfileBlock
+        iconClassName='icon-005-growth'
+        title='profile.profitChart'
+        className='graphic'
+        titleComponent={<ProfitChartTitle
+          current={current}
+          selectedProfit={selectedCurrentContract}
+          onCurrentProfitSelect={this.onCurrentContractSelect}
+          currentProfit={currentProfit || []} />}
+      >
+        <Row className="justify-content-center d-flex">
+          {currentProfit.length === 0 && selectedSegment === 1 ? (
+            <Col xs="12" md="9"
+              className="d-flex justify-content-center align-items-center chart-contracts-empty"
+            >
+              {name && (
+                <FormattedMessage
+                  id="profile.traderHasNoContract"
+                  values={{ name: name.toUpperCase() }}
+                />
+              )}
+            </Col>
+          ) : (
+
+            <Col xs={{size: 12, order: 2}} md="9">
+              <div className="amcharts">
+                <ProfitGraphicContainer data={data} />
+              </div>
+            </Col>
+          )}
+          <Col xs={{size: 12, order: 3}} md="3" className='legend'>
+            <ProfitChartStat
+              average={average || 0}
+              negative={negative || 0}
+              positive={positive || 0}
+              currentProfit={currentProfit || []}
+            />
+          </Col>
+          <Col xs={{order: 1}} md={{order: 3}}>
+            <Desktop>
+              <SegmentedControl
+                segments={this.segments}
+                selectedIndex={selectedSegment}
+                onChange={this.onSegmentChange} />
+            </Desktop>
+            <Mobile>
+              <SegmentedControl
+                segments={this.segments}
+                segmentWidth={50}
+                selectedIndex={selectedSegment}
+                onChange={this.onSegmentChange} />
+            </Mobile>
+          </Col>
+        </Row>
+      </ProfileBlock>
+    );
+  }
+}
+
+class ProfitChartTitle extends React.Component {
+  static propTypes = {
+    current: PropTypes.bool.isRequired,
+    currentProfit: PropTypes.array.isRequired,
+    onCurrentProfitSelect: PropTypes.func.isRequired,
+    selectedProfit: PropTypes.object,
+  }
+
+  render() {
+    if (this.props.current) {
+      if (this.props.currentProfit.length === 0 || !this.props.selectedProfit) {
+        return <FormattedMessage className="title" id="profile.noContracts" />;
+      } else {
+        return (
+          <React.Fragment>
+            <FormattedMessage className="title" id="profile.profitChartCurrent" values={{
+              name:          <ProfitSelect
+                targetId="profit-select-chart"
+                profits={this.props.currentProfit}
+                selectedProfit={this.props.selectedProfit}
+                onItemSelect={this.props.onCurrentProfitSelect}
+              />,
+            }}/>
+          </React.Fragment>
+        );
+      }
+    } else {
+      return <FormattedMessage className="title" id="profile.profitChart"/>;
+    }
+  }
+}
+
+
+class ProfitChartStat extends React.PureComponent {
+
+  static propTypes = {
+    average: PropTypes.number.isRequired,
+    positive: PropTypes.number.isRequired,
+    negative: PropTypes.number.isRequired,
+    currentProfit: PropTypes.array.isRequired,
+  }
+  render() {
+    const { average, positive, negative, currentProfit } = this.props;
+    const currentCount = currentProfit.length;
+    return (
+      <div className="values">
+        {currentCount > 0 ?
+          <div>Profit per current contract: {currentProfit.map((v) => v.percent.toFixed(2) + '%').join(' / ')}</div>
+          : null
+        }
+        <div>Profit per all contracts in total: {average.toFixed(2)}%</div>
+        <div>Contracts with positive profit: {positive}</div>
+        <div>Contracts with negative profit: {negative}</div>
+      </div>
+    );
+  }
+}
+
+class ProfitGraphicContainer extends React.PureComponent {
+
+  static propTypes = {
+    data: PropTypes.array.isRequired,
+  }
+
+  createConfig() {
+    const data = this.props.data;
     const graphIds = [];
     const dataProvider = [];
-    if (segment === 1) {
-      data = data.filter((c) => c.state === 'VERIFIED');
-    }
     data.forEach(({_id, points, start, sum, c}) => {
       graphIds.push(_id);
       dataProvider.push({
@@ -56,7 +204,7 @@ class ProfitChart extends React.Component {
       });
       let lastAdded;
       points.forEach((p) => {
-        if (!lastAdded || segment === 1 ||
+        if (!lastAdded || true ||
           p.date - lastAdded.date > 86400000) {
           dataProvider.push({
             c,
@@ -83,111 +231,6 @@ class ProfitChart extends React.Component {
         });
       }
     });
-    return {dataProvider, graphIds};
-  }
-
-  render = () => {
-    const { currentProfit, name } = this.props;
-    const { selectedSegment } = this.state;
-
-    return (
-      <ProfileBlock
-        iconClassName='icon-005-growth'
-        title='profile.profitChart'
-        className='graphic'
-      >
-        <Row className="justify-content-center d-flex">
-          {isEmpty(currentProfit) && selectedSegment === 1 ? (
-            <Col
-              xs="12"
-              className="d-flex justify-content-center align-items-center chart-contracts-empty"
-            >
-              {name && (
-                <FormattedMessage
-                  id="profile.traderHasNoContract"
-                  values={{ name: name.toUpperCase() }}
-                />
-              )}
-            </Col>
-          ) : (
-            <React.Fragment>
-              <Col xs={{size: 12, order: 2}} md="9">
-                <div className="amcharts">
-                  {this.renderChart()}
-                </div>
-              </Col>
-              <Col xs={{size: 12, order: 3}} md="3" className='legend'>
-                {this.renderStat()}
-              </Col>
-            </React.Fragment>
-          )}
-          <Col xs={{order: 1}} md={{order: 3}}>
-            <Desktop>
-              <SegmentedControl
-                segments={this.segments}
-                selectedIndex={selectedSegment}
-                onChange={this.onSegmentChange} />
-            </Desktop>
-            <Mobile>
-              <SegmentedControl
-                segments={this.segments}
-                segmentWidth={50}
-                selectedIndex={selectedSegment}
-                onChange={this.onSegmentChange} />
-            </Mobile>
-          </Col>
-        </Row>
-      </ProfileBlock>
-    );
-  };
-
-  renderStat() {
-    const stat = this.calculateStat(this.props.stats);
-
-    return stat ? (
-      <div className="values">
-        {stat.currentCount > 0 ?
-          <div>Profit per current contract: {stat.currentProfit.map((v) => v.toFixed(2) + '%').join(' / ')}</div>
-          : null
-        }
-        <div>Profit per all contracts in total: {stat.average.toFixed(2)}%</div>
-        <div>Contracts with positive profit: {stat.positive}</div>
-        <div>Contracts with negative profit: {stat.negative}</div>
-      </div>
-    ) : null;
-  }
-
-  calculateStat = memoizeOne((data, summary) => {
-    console.log(summary);
-    const stat = {
-      positive: summary.positive || 0,
-      negative: summary.negative || 0,
-      currentCount: 0,
-      currentProfit: [],
-      average: summary.avg6 || 0,
-    };
-    data.forEach((d) => {
-      if (d.state === 'VERIFIED') {
-        const lastPoint = d.points[d.points.length - 1];
-        stat.currentProfit.push(lastPoint.percent);
-        stat.currentCount++;
-        return;
-      }
-    });
-    return stat;
-  })
-
-  balloonFunction(graphItem) {
-    const data = graphItem.dataContext;
-    return `<div>
-    <div>Contract starts: ${formatDate(new Date(data.start))}</div>
-    <div>Contract Sum: ${data.sum} ${data.c}</div>
-    <div>Profit: ${data.value.toFixed(2)}%</div>
-    </div>`;
-  }
-
-  makeConfig = memoizeOne((data, selectedSegment) => {
-    const {dataProvider, graphIds } = this.computeState(selectedSegment);
     const graphs = graphIds.map((id) => {
       return {
         id: id,
@@ -206,49 +249,41 @@ class ProfitChart extends React.Component {
     let maximum = dataProvider.reduce((a, b) => a > b.value ? a : b.value, 5);
     const minimum = dataProvider.reduce((a, b) => a < b.value ? a : b.value, -5);
     return {
-      'type': 'xy',
-      'theme': 'none',
-      'color': '#6f6f71',
+      type: 'xy',
+      theme: 'none',
+      color: '#6f6f71',
       hideCredits: true,
-      'fontFamily': 'maven_proregular',
-      'marginRight': 80,
-      'dataDateFormat': 'YYYY-MM-DD',
-      'startDuration': 0,
-      'trendLines': [],
-      'balloon': {
-        'adjustBorderColor': false,
-        'shadowAlpha': 0,
-        'fixedPosition':true
+      fontFamily: 'maven_proregular',
+      marginRight: 80,
+      dataDateFormat: 'YYYY-MM-DD',
+      startDuration: 0,
+      trendLines: [],
+      balloon: {
+        adjustBorderColor: false,
+        shadowAlpha: 0,
+        fixedPosition:true
       },
-      'chartCursor': {
+      chartCursor: {
         cursorColor: '#c74949',
         showBalloon: true,
-        'valueLineBalloonEnabled': true,
-        'valueLineEnabled': true,
+        valueLineBalloonEnabled: true,
+        valueLineEnabled: true,
         listeners: [
-          // {
-          // event: 'changed',
-          // method: function() { console.log(arguments) },
-          // },
-          // {
-          // event: 'moved',
-          // method: function() { console.log(arguments) },
-          // },
         ],
       },
-      'graphs': graphs,
-      'valueAxes': [{
-        'id': 'ValueAxis-1',
-        'title': 'Contract profit, %',
-        'position': 'right',
+      graphs,
+      valueAxes: [{
+        id: 'ValueAxis-1',
+        title: 'Contract profit, %',
+        position: 'right',
         maximum,
         minimum,
-        'axisAlpha': 0
+        axisAlpha: 0
       }, {
-        'id': 'ValueAxis-2',
-        'axisAlpha': 1,
-        'position': 'bottom',
-        'type': 'date',
+        id: 'ValueAxis-2',
+        axisAlpha: 1,
+        position: 'bottom',
+        type: 'date',
         stackType: '3d',
 
       }],
@@ -258,23 +293,21 @@ class ProfitChart extends React.Component {
           chart.zoomOut();
         },
       }],
-      'allLabels': [],
-      'titles': [],
-      'dataProvider': dataProvider,
-      'zoomOutOnDataUpdate': false,
-      'pathToImages': 'http://cdn.amcharts.com/lib/3/images/',
-      'zoomOutText': 'Zoom out',
-      'zoomOutButtonAlpha': 0,
-      'zoomOutButtonColor': '#fff',
-      'zoomOutButtonImage': 'lensWhite',
-      'zoomOutButtonRollOverAlpha': 0.1,
+      allLabels: [],
+      titles: [],
+      dataProvider,
+      zoomOutOnDataUpdate: false,
+      pathToImages: 'http://cdn.amcharts.com/lib/3/images/',
+      zoomOutText: 'Zoom out',
+      zoomOutButtonAlpha: 0,
+      zoomOutButtonColor: '#fff',
+      zoomOutButtonImage: 'lensWhite',
+      zoomOutButtonRollOverAlpha: 0.1,
     };
-  })
+  }
 
-  renderChart() {
-    const config = this.makeConfig(this.props.stats, this.state.selectedSegment);
-
-    return config.graphs.length > 0 ? (
+  render() {
+    return (
       <AmChartsReact.React
         style={{
           height: '100%',
@@ -282,9 +315,9 @@ class ProfitChart extends React.Component {
           backgroundColor: 'transparent',
           position: 'absolute',
         }}
-        options={config}
+        options={this.createConfig()}
       />
-    ) : null;
+    );
   }
 }
 

@@ -1570,6 +1570,13 @@ input.profile-settings {
   height: 27px;
   width: 100%;
 }
+
+#profit-select {
+  cursor: pointer;
+}
+#profit-select-chart {
+  display: inline-flex;
+}
 textarea {
   &.about {
     width: 100%;

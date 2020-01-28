@@ -270,6 +270,7 @@ const en = {
   'profile.acceptingRequests' : 'accepting requests',
   'profile.notAcceptingRequests' : 'not Accepting requests',
   'profile.profitChart' : 'PROFITABILITY PER CONTRACT UNDER MANAGEMENT',
+  'profile.profitChartCurrent' : 'PROFIT FOR {name} contract',
   'profile.balanceChart' : 'TOTAL ASSETS UNDER MANAGEMENT',
   'profile.profitAsTrader' : 'PROFIT AS TRADER',
   'profile.chooseFunds' : 'choose funds',
