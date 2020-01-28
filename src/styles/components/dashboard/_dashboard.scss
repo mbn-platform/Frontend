@@ -1,6 +1,14 @@
 .main-panel.container-fluid {
   .dashboard_wrapper, .choose-api-block{
-    padding: 55px;
+    padding: 10px;
+
+    .dashboard_block_header_title {
+      font-size: 22px;
+      font-weight: 500;
+      display: flex;
+      padding: 15px 10px;
+      color: white;
+    }
 
     .ReactTable {
       overflow: hidden;
@@ -214,7 +222,7 @@
     .table_wrapper
     {
       float: left;
-      padding: 15px;
+      padding: 10px;
       box-sizing: border-box;
     }
 
@@ -241,16 +249,17 @@
     .keys_tables_wrapper .ReactTable .key_name_text_td {
       text-transform: none;
     }
-    .requests_table_wrapper
-    {
+    .requests_table_wrapper {
       width: 100%;
-      max-width: 600px;
+
+      .requests_table {
+        max-width: 600px;
+      }
     }
 
-    .contracts_table_wrapper
-    {
-      width: 100%;
-    }
+    @import 'styles/components/dashboard/group-asset';
+    @import 'styles/components/dashboard/contracts';
+
     .selected_contract_table
     {
       width: 46%;
@@ -393,6 +402,16 @@
       transition: color 400ms, border 400ms;
     }
 
+    .group_select_wr {
+      height: 40px;
+      line-height: 40px;
+      font-size: 1.6em;
+
+      .add_keys_select_values_list_wr {
+        top: 38px;
+      }
+    }
+
     .mode_select_wrapper {
       width: 135px;
       margin-top: 15px;
@@ -408,6 +427,14 @@
             box-sizing: border-box;
             border: 1px solid #7c7c7d !important;
           }
+          .overflow_y_auto {
+            overflow-y: auto;
+            height: 100px;
+          }
+        }
+
+        &:disabled {
+          pointer-events: none;
         }
       }
 
@@ -499,6 +526,11 @@
       opacity: 1;
       color: #7c7c7d;
       border: 1px solid #7c7c7d;
+
+      &.overflow_y_auto {
+        max-height: 110px;
+        overflow-y: auto;
+      }
     }
     .add_keys_select_ul
     {
@@ -1160,7 +1192,10 @@
 
     .table_header_wrapper.contract_header_wrapper
     {
-      display: inline;
+      display: flex;
+      justify-content: center;
+      align-self: center;
+      flex-direction: column;
     }
 
     .contract_header_wrapper .table_header
@@ -1321,9 +1356,17 @@
   }
   @media only screen and (max-width : 1400px) {
     .dashboard_wrapper {
-			padding: 30px;
+      padding: 30px;
+
+      .requests_table_wrapper {
+        width: 100%;
+
+        .requests_table {
+          max-width: 600px;
+        }
+      }
+
       .keys_tables_wrapper,
-      .requests_table_wrapper,
       .selected_contract_table
       {
         width: 100%;
@@ -1368,9 +1411,12 @@
       }
 
       .requests_table_wrapper {
-        max-width: 100%;
+        .requests_table {
+          max-width: 100%;
+        }
+
         .ReactTable {
-           margin-bottom: 12px;
+          margin-bottom: 12px;
         }
       }
       .contracts_table .table_title_wrapper {
@@ -1508,6 +1554,7 @@
       }
       .ReactTable .rt-tr > :first-child {
         margin-left: 0px;
+        text-align: center;
       }
       .ReactTable .rt-td {
         text-align: center;
@@ -1657,6 +1704,12 @@
 
       .contract_header_wrapper .table_header {
         height: auto;
+      }
+
+      .table_header_wrapper.contract_header_wrapper
+      {
+        display: inline;
+
       }
 
       .ReactTable .rt-tr-group .rt-tr:not(.-padRow).-selected {
@@ -1876,7 +1929,31 @@
     {
       padding: 0px;
     }
+    .dashboard.page {
+      .block {
+        margin-top: 20px;
+        border: 0;
+        background: #1f2225;
+
+        .title {
+          border-bottom: none;
+          background: inherit;
+        }
+      }
+    }
   }
+
+  @media only screen and (max-width: 425px) {
+    .dashboard.page {
+      .page-tab {
+        font-size: 18px;
+      }
+      .dashboard_block_header_title {
+        justify-content: center;
+      }
+    }
+  }
+
   @media only screen and (max-width : 1028px) {
     .dashboard_wrapper {
       .table_wrapper
@@ -1950,7 +2027,7 @@
           margin-left: 15px !important;
 
           .table_bot_header_icon {
-            text-align: left;
+            text-align: center;
             margin-left: 15px;
           }
         }
@@ -2006,3 +2083,31 @@
 
 }
 
+$color-dashboard-block-title: #727272;
+$color-dashboard-border: #494d4d;
+.dashboard.page {
+  .block {
+    // generic
+    border: 1px solid $color-dashboard-border;
+    border-radius: 4px;
+    .title {
+      color: $color-dashboard-block-title;
+      text-transform: uppercase;
+      padding: 15px;
+      border-radius: 4px 0 0 0;
+      background: #2d3034;
+      max-height: 50px;
+      border-bottom: 1px solid $color-dashboard-border;
+      font-size: 18px;
+
+
+      // icons
+      .icon-key {
+        padding-left: 24px;
+        background: url('../assets/img/ApiKeysIcon.png') no-repeat left center;
+      }
+    }
+    .body {
+    }
+  }
+}

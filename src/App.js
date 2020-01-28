@@ -1,20 +1,24 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import store from './store';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import { Container, Row } from 'reactstrap';
+
+import configureStore from './store';
 import {apiGet, ApiError} from './generic/apiCall';
 import {loggedIn, loggedOut} from './actions/auth';
-import { Provider } from 'react-redux';
 import MainContent from './MainContentContainer';
 import QuickNotification from './containers/QuickNotification';
 import Navigation from './Navigation';
 import { fetchTime } from './actions/time';
-import { Container, Row } from 'reactstrap';
 import createMqProvider, {querySchema} from './MediaQuery';
 import './App.css';
 require('bootstrap');
 require('malihu-custom-scrollbar-plugin');
 
 const {MediaQuery} = createMqProvider(querySchema);
+
+const { store, persistor } = configureStore();
 
 class App extends React.Component {
 
@@ -60,7 +64,9 @@ class App extends React.Component {
   render() {
     return (
       <Provider store={store}>
-        {this.state.loading ? <div/> : (<MainRouter />)}
+        <PersistGate persistor={persistor}>
+          {this.state.loading ? <div/> : (<MainRouter />)}
+        </PersistGate>
       </Provider>
     );
   }

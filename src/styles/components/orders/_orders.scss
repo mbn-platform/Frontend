@@ -6,7 +6,7 @@
 	color: #fff;
 	height: 100%;
     -webkit-font-smoothing: auto;
-    -moz-osx-font-smoothing: auto;	
+    -moz-osx-font-smoothing: auto;
 	&>.row{
 		height: 100%;
 		&>div{
@@ -56,12 +56,12 @@
 			margin-right: 20px;
 		}
 		&__block{
-			padding: 15px!important;
 			background-color: #2D3034;
 			display: flex;
 			flex-direction: column;
 			flex: 1 1 auto;
 			.block__top{
+				padding: 15px 15px 0 15px !important;
 				&-switch{
 					cursor: pointer;
 					font-size: 14px;
@@ -178,6 +178,22 @@
 	}
 }
 
+.orders__table_type {
+	line-height: 20px;
+	&.buy{
+		color: #32B994;
+	}
+	&.sell{
+		color: #D74C4C;
+	}
+	.side {
+		text-transform: uppercase;
+	}
+	.type {
+		text-transform: capitalize;
+	}
+}
+
 
 .orders__table_cell {
 	display: flex;
@@ -204,6 +220,12 @@
 	}
 }
 
+.orders__table-spinner {
+	background: url('../assets/gif/spinner.gif') no-repeat center center;
+	background-size: 14px;
+  width: 100%;
+  height: 100%;
+}
 
 @media (max-width: 768px){
 	.orders__table-wraper {
@@ -253,7 +275,6 @@
 			height: auto !important;
 
 			&__block {
-				padding: 5px !important;
 				border-radius: 2px;
 				letter-spacing: 0.1px;
 

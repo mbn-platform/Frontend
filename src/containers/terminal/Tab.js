@@ -11,7 +11,7 @@ export class Tab extends React.PureComponent {
       <Col onClick={onClick} xs="auto" className={classNames('tab', {selected})}>
         <FormattedMessage
           id={title}
-          defaulMessage={title}
+          defaultMessage={title}
         />
         {this.renderTooltip()}
       </Col>

@@ -1,22 +1,17 @@
 import {LOGGED_IN} from './actions/auth';
 import {fetchKeys} from './actions/apiKeys';
 import {fetchContracts, FETCH_CONTRACTS} from './actions/contracts';
-import {SELECT_EXCHANGE, getExchangeMarkets } from './actions/terminal';
 import { CONTRACT_STATE_INIT, CONTRACT_STATE_ACCEPTED,
   CONTRACT_STATE_VERIFIED, CONTRACT_STATE_FINISHED,
   CONTRACT_STATE_HALTED } from './constants';
 import {ACCEPT_OFFER, REJECT_OFFER, CANCEL_OFFER, SEND_OFFER} from './actions/offers';
 import {updateExchanges} from './actions/exchanges';
-const socketMiddleware = store => next => action => {
+const apiMiddleware = store => next => action => {
   switch(action.type) {
     case LOGGED_IN: {
       store.dispatch(fetchKeys());
       store.dispatch(fetchContracts());
       store.dispatch(updateExchanges());
-      break;
-    }
-    case SELECT_EXCHANGE: {
-      store.dispatch(getExchangeMarkets(action.exchange));
       break;
     }
     case FETCH_CONTRACTS: {
@@ -73,4 +68,4 @@ const socketMiddleware = store => next => action => {
   next(action);
 };
 
-export default socketMiddleware;
+export default apiMiddleware;

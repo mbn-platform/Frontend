@@ -1,3 +1,6 @@
+import { persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+
 import apiKeys from './reducers/apiKeys';
 import contracts from './reducers/contracts';
 import offers from './reducers/offers';
@@ -23,39 +26,45 @@ import quickNotif from './reducers/quickNotif';
 import tariffs from './reducers/tariffs';
 import payments from './reducers/payments';
 import selection from './reducers/selection';
+import assetGroups from './reducers/assetGroups';
 
-const combined = combineReducers(
-  {
-    apiKeys,
-    notification,
-    actionList,
-    contracts,
-    ratings,
-    modal,
-    offers,
-    auth,
-    hashlog,
-    exchanges,
-    time,
-    request,
-    challenge,
-    terminal,
-    rates,
-    profile,
-    stakeInfo,
-    stakeTr,
-    exchangesInfo,
-    quickNotif,
-    tariffs,
-    payments,
-    selection,
-  });
+const terminalPersistConfig = {
+  key: 'terminal',
+  storage,
+  blacklist: ['orderBook', 'history', 'ticker', 'isValidUrl'],
+};
 
-const root = (state, action) => {
+const combined = combineReducers({
+  apiKeys,
+  notification,
+  actionList,
+  contracts,
+  ratings,
+  modal,
+  offers,
+  auth,
+  hashlog,
+  exchanges,
+  time,
+  request,
+  challenge,
+  terminal: persistReducer(terminalPersistConfig, terminal),
+  rates,
+  profile,
+  stakeInfo,
+  stakeTr,
+  exchangesInfo,
+  quickNotif,
+  tariffs,
+  payments,
+  selection,
+  assetGroups,
+});
+
+const rootReducer = (state, action) => {
   switch(action.type) {
     case LOGGED_OUT: {
-      saveReduxState({auth: {loggedIn: false}});
-      clearAppState();
+      localStorage.clear();
       state = undefined;
       break;
     }
@@ -71,6 +80,13 @@ const root = (state, action) => {
       }
       return newState;
     }
+    case 'UPDATE_GROUP_BALANCE': {
+      const activeGroup = state.terminal.assetGroup;
+      if (activeGroup && activeGroup._id === action._id) {
+        newState = {...newState, terminal: {...newState.terminal, assetGroup: {...activeGroup, balances: action.balances}}};
+      }
+      return newState;
+    }
     case 'UPDATE_CONTRACT_BALANCE': {
       if(state.terminal.fund && state.terminal.fund._id === action._id) {
         const fund = newState.contracts.current.find(c => c._id === action._id);
@@ -83,16 +99,10 @@ const root = (state, action) => {
   }
 };
 
-export function saveReduxState(state) {
-  localStorage.setItem('reduxState', JSON.stringify(state));
-}
+const rootPersistConfig = {
+  key: 'root',
+  storage,
+  whitelist: ['auth', 'assetGroups'],
+};
 
-function clearAppState() {
-  localStorage.removeItem('terminal.selectedMarket');
-  localStorage.removeItem('terminal.selectedFund');
-  localStorage.removeItem('terminal.selectedTime');
-  localStorage.removeItem('terminal.selectedExchange');
-  localStorage.removeItem('terminal.selectedInterval');
-}
-
-export default root;
+export default persistReducer(rootPersistConfig, rootReducer);

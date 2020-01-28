@@ -11,6 +11,10 @@ import {
   CLOSE_UPGRADE_TARIFF_MODAL,
   SHOW_COMMIT_TOKENS_MODAL,
   CLOSE_COMMIT_TOKENS_MODAL,
+  SHOW_CREATE_GROUP_MODAL,
+  CLOSE_CREATE_GROUP_MODAL,
+  SHOW_ADD_CONTRACT_TO_GROUP_MODAL,
+  CLOSE_ADD_CONTRACT_TO_GROUP_MODAL,
 } from '../actions/modal';
 
 const modal = (
@@ -86,6 +90,27 @@ const modal = (
     case CLOSE_COMMIT_TOKENS_MODAL: {
       return {...state,  isCommitTokensModalOpen: false };
     }
+    case SHOW_CREATE_GROUP_MODAL: {
+      return { ...state, isCreateGroupModalOpen: true };
+    }
+    case CLOSE_CREATE_GROUP_MODAL: {
+      return { ...state, isCreateGroupModalOpen: false };
+    }
+
+    case SHOW_ADD_CONTRACT_TO_GROUP_MODAL: {
+      const { group, contracts } = action;
+
+      return {
+        ...state,
+        group,
+        contracts,
+        isAddContractModalOpen: true,
+      };
+    }
+    case CLOSE_ADD_CONTRACT_TO_GROUP_MODAL: {
+      return { ...state, isAddContractModalOpen: false };
+    }
+
     default:
       return state;
   }

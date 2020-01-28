@@ -1,6 +1,9 @@
 import React from 'react';
-import { Container, Row, Col } from 'reactstrap';
 import { connect } from 'react-redux';
+import { Container, Row, Col } from 'reactstrap';
+import MediaQuery from 'react-responsive';
+import isEmpty from 'lodash/isEmpty';
+
 import HeaderStatus from '../../components/HeaderStatus';
 import Controls from './Controls';
 import Charts from './Charts';
@@ -9,175 +12,122 @@ import MyOrders from './MyOrders';
 import TopBanner from '../login/TopBanner';
 import RecentTrades from './RecentTrades';
 import OrderBook from './OrderBook';
-import MediaQuery from 'react-responsive';
 import {setFundId} from '../../generic/util';
 import {
   getOrders,
+  stopTradingDataUpdates,
   selectExchange,
-  selectFund, selectInterval, selectMarket,
-  startTradingDataUpdates,
-  stopTradingDataUpdates
+  selectMarket,
+  getExchangeMarkets,
+  validateUrlParams,
 } from '../../actions/terminal';
 
 class Terminal extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {fullScreenEnabled: false, selectedInterval: '30 M', type: 'buy'};
-  }
-
-  onOrderSelect = (price, size) => {
-    this.setState({price: price || '', size: size || ''});
-  }
-
-  onFullScreenChange = value => {
-    this.setState({fullScreenEnabled: value});
-  }
-
-  // allowedApiKeys(apiKeys, contracts) {
-  //   const allowedOwnKeys = apiKeys.ownKeys.filter(k => k.state === 'FREE');
-  //   const allowedReceivedKeys = apiKeys.receivedKeys.filter(k => {
-  //     const contract = contracts.find(c => c.keyId === k._id);
-  //     return !!contract;
-  //   });
-  //   return allowedOwnKeys.concat(allowedReceivedKeys);
-  // }
-
-  componentDidUpdate(prevProps) {
-    if(this.props.fund && (prevProps.market !== this.props.market ||
-      (!prevProps.fund || prevProps.fund._id !== this.props.fund._id))) {
-      const payload = {
-      };
-      setFundId(payload, this.props.fund);
-      this.props.getOrders(payload);
-    }
-    const {
-      market,
-      exchange
-    } = this.props;
-    const {
-      exchangeParam,
-      marketParam
-    } = this.state;
-
-    if (marketParam !== market ||  exchangeParam !== exchange) {
-      this.updateUrlParams();
-    }
-  }
-
-  render() {
-    return (
-      <Container fluid className="terminal">
-        <TopBanner auth={this.props.auth} />
-        <Row>
-          <Col xs="12" sm="12" md="12" lg="12" className="terminal-container">
-            <HeaderStatus />
-            <div className="terminal-main">
-              <Controls
-                isFullScreenEnabled={this.state.fullScreenEnabled}
-              />
-              <Row className="charts">
-                <Col xs="12" sm="12" md="6" lg="8" className="charts__left">
-                  <Charts fullScreen={this.state.fullScreenEnabled} onFullScreenChange={this.onFullScreenChange} />
-                  <Row className="justify-content-between">
-                    <PlaceOrder
-                      price={this.state.price}
-                      type={this.state.type}
-                      size={this.state.size}
-                    />
-                    <MediaQuery query="(min-width: 576px)">
-                      <MyOrders/>
-                    </MediaQuery>
-                    <MediaQuery query="(max-width: 575px)">
-                      <OrderBook onOrderSelect={this.onOrderSelect} />
-                    </MediaQuery>
-                  </Row>
-                </Col>
-                <Col xs="12" sm="12" md="6" lg="4"  className="charts__right">
-                  <Row>
-                    <MediaQuery query="(min-width: 576px)">
-                      <OrderBook
-                        onOrderSelect={this.onOrderSelect}
-                      />
-                    </MediaQuery>
-                    <MediaQuery query="(max-width: 575px)">
-                      <MyOrders />
-                    </MediaQuery>
-                    <RecentTrades />
-                  </Row>
-                </Col>
-              </Row>
-            </div>
-          </Col>
-        </Row>
-      </Container>
-    );
+  state = {
+    fullScreenEnabled: false,
+    type: 'buy',
   }
 
   componentDidMount() {
     const {
-      startTradingDataUpdates,
-      selectExchange,
-      selectFund,
-      selectMarket,
-      fund,
-      market,
-      getOrders,
-      exchange,
-      match,
-      history,
-      exchanges
+      exchange, market, fund, assetGroup, getOrders, match: { params },
     } = this.props;
-    startTradingDataUpdates();
-    const savedFund = localStorage.getItem('terminal.selectedFund');
-    if (savedFund) {
-      selectFund(JSON.parse(savedFund));
-    }
-    if (fund) {
-      const payload = {
-      };
-      setFundId(payload, fund);
+
+    if (fund || assetGroup) {
+      const payload = setFundId({}, fund || assetGroup);
       getOrders(payload);
     }
-    const { exchangeParam, marketParam } = match.params;
-    if (marketParam) {
-      if (exchanges.indexOf(exchangeParam) !== -1) {
-        this.setState({
-          exchangeParam,
-          marketParam
-        });
-        selectExchange(exchangeParam, true);
-        selectMarket(marketParam);
-      } else {
-        this.setState({
-          exchangeParam: exchange,
-          marketParam
-        });
-        selectExchange(exchange|| exchanges[0], true);
-      }
+
+    if (isEmpty(params)) {
+      this.props.selectExchange(exchange);
+      this.props.getExchangeMarkets(exchange);
+      this.props.selectMarket(market);
+      this.props.history.replace(`/terminal/${exchange}/${market}`);
     } else {
-      selectExchange(exchange || exchanges[0], true);
-      history.replace(`/terminal/${exchange}/${market}`);
+      this.props.validateUrlParams(params);
     }
   }
-
 
   componentWillUnmount() {
     this.props.stopTradingDataUpdates();
   }
 
-  updateUrlParams = () => {
-    const {
-      exchange,
-      market
-    } = this.props;
-    this.setState({
-      exchangeParam: exchange,
-      marketParam: market,
-    });
-    const currentSearchParams = `/${exchange}/${market}`;
-    this.props.history.replace(`/terminal${currentSearchParams}`);
+  onOrderSelect = (price = '', size = '') => {
+    this.setState({ price , size });
   }
+
+  onFullScreenChange = value => {
+    this.setState({ fullScreenEnabled: value });
+  }
+
+  componentDidUpdate(prevProps) {
+    const fund = this.props.fund || this.props.assetGroup;
+    if (
+      fund && (prevProps.market !== this.props.market
+      || this.props.fund !== prevProps.fund
+      || this.props.assetGroup !== prevProps.assetGroup)
+    ) {
+      const payload = setFundId({}, fund);
+      this.props.getOrders(payload);
+    }
+
+    const { market, exchange, isValidUrl } = this.props;
+
+    if (prevProps.isValidUrl !== isValidUrl && isValidUrl) {
+      this.props.history.replace(`/terminal/${exchange}/${market}`);
+    }
+
+    if (prevProps.market !== market || prevProps.exchange !== exchange) {
+      this.props.history.replace(`/terminal/${exchange}/${market}`);
+    }
+  }
+
+  render = () => (
+    <Container fluid className="terminal">
+      <TopBanner auth={this.props.auth} />
+      <Row>
+        <Col xs="12" sm="12" md="12" lg="12" className="terminal-container">
+          <HeaderStatus />
+          <div className="terminal-main">
+            <Controls
+              isFullScreenEnabled={this.state.fullScreenEnabled}
+            />
+            <Row className="charts">
+              <Col xs="12" sm="12" md="6" lg="8" className="charts__left">
+                <Charts fullScreen={this.state.fullScreenEnabled} onFullScreenChange={this.onFullScreenChange} />
+                <Row className="justify-content-between">
+                  <PlaceOrder
+                    price={this.state.price}
+                    type={this.state.type}
+                    size={this.state.size}
+                  />
+                  <MediaQuery query="(min-width: 576px)">
+                    <MyOrders />
+                  </MediaQuery>
+                  <MediaQuery query="(max-width: 575px)">
+                    <OrderBook onOrderSelect={this.onOrderSelect} />
+                  </MediaQuery>
+                </Row>
+              </Col>
+              <Col xs="12" sm="12" md="6" lg="4"  className="charts__right">
+                <Row>
+                  <MediaQuery query="(min-width: 576px)">
+                    <OrderBook
+                      onOrderSelect={this.onOrderSelect}
+                    />
+                  </MediaQuery>
+                  <MediaQuery query="(max-width: 575px)">
+                    <MyOrders />
+                  </MediaQuery>
+                  <RecentTrades />
+                </Row>
+              </Col>
+            </Row>
+          </div>
+        </Col>
+      </Row>
+    </Container>
+  );
 }
 
 const mapStateToProps = ({
@@ -186,26 +136,29 @@ const mapStateToProps = ({
     fund,
     market,
     exchange,
-    interval
+    assetGroup,
+    isValidUrl,
   },
   exchanges,
+  exchangesInfo,
 }) => ({
   auth,
+  assetGroup,
   fund,
   market,
   exchange,
-  interval,
-  exchanges
+  exchanges,
+  exchangesInfo,
+  isValidUrl,
 });
 
 const mapDispatchToProps = {
-  startTradingDataUpdates,
   stopTradingDataUpdates,
-  selectInterval,
-  selectMarket,
-  selectExchange,
-  selectFund,
   getOrders,
+  selectExchange,
+  selectMarket,
+  getExchangeMarkets,
+  validateUrlParams,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Terminal);

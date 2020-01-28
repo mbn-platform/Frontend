@@ -1,36 +1,34 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
+
 import Funds from './ApiKeys';
-import BotList from './ApiBot';
 import AddApiKey from './AddApiKey';
-import AddBotApi from './AddBotApi';
 import ApiKeyInfo from './ApiKeyInfo';
 import Contracts from './Contracts';
+import GroupAsset from './GroupAsset';
 import Offers from './Offers';
 import SelectedContractInfo from './SelectedContractInfo';
 import FundsChart from './FundsChart';
 import SelectedContractChart from './SelectedContractChart';
-import { CONTRACT_STATE_VERIFIED } from '../../constants';
-import { ETHEREUM_NET } from '../../eth/MercatusFactory';
 
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {selectedContract: null, selectedApiKey: null, selectedOffer: null};
+    this.state = {
+      selectedReceivedContract: null,
+      selectedProvidedContract: null,
+      selectedApiKey: null,
+      selectedOffer: null,
+    };
     this.onKeySelected = this.onKeySelected.bind(this);
     this.onOfferSelected = this.onOfferSelected.bind(this);
     this.onContractSelected = this.onContractSelected.bind(this);
     this.onContractRate = this.onContractRate.bind(this);
-    this.reset = this.reset.bind(this);
-  }
-
-  reset() {
-    this.setState({
-      selectedContract: null, selectedApiKey: null,
-    });
   }
 
   componentDidMount() {
-    this.props.getAllRates();
+    this.props.updateExchanges();
+    this.props.getExchangeRates('binance');
   }
 
   componentWillUnmount() {
@@ -55,30 +53,51 @@ class Dashboard extends React.Component {
         this.setState({selectedOffer: offer});
       }
     }
-    if(this.props.contracts !== nextProps.contracts) {
-      if(this.state.selectedContract) {
-        const findFunction = c => c._id === this.state.selectedContract._id;
-        const contract = nextProps.contracts.current.find(findFunction) || nextProps.contracts.finished.find(findFunction);
-        this.setState({selectedContract: contract});
+
+    if (this.props.contracts !== nextProps.contracts) {
+      if (this.state.selectedReceivedContract) {
+        const findFunction = c => c._id === this.state.selectedReceivedContract._id;
+        const contract = nextProps.contracts.current.find(findFunction);
+        this.setState({ selectedReceivedContract: contract });
+      }
+
+      if (this.state.selectedProvidedContract) {
+        const findFunction = c => c._id === this.state.selectedProvidedContract._id;
+        const contract = nextProps.contracts.current.find(findFunction);
+        this.setState({ selectedProvidedContract: contract });
       }
     }
-
   }
 
   render() {
-    return (
-      <div className="dashboard_wrapper clearfix" >
-        <div className="table_wrapper requests_table_wrapper" style={{display: (this.props.offers.outgoing.length === 0 && this.props.offers.incoming.length === 0) ? 'none':'block'}}>
-          <Offers
-            time={this.props.time}
-            onOfferCanceled={this.props.onOfferCanceled}
-            onOfferRejected={this.props.onOfferRejected}
-            onOfferAccepted={this.props.onOfferAccepted}
-            onOfferPay={this.props.onOfferPay}
+    const isOffersHide = this.props.offers.outgoing.length === 0 && this.props.offers.incoming.length === 0;
 
-            offers={this.props.offers}
-            selectedOffer={this.state.selectedOffer}
-            onOfferSelected={this.onOfferSelected}
+    return (
+      <div className="dashboard_wrapper clearfix">
+        {!isOffersHide && (
+          <React.Fragment>
+            <div className="dashboard_block_header_title">
+              <FormattedMessage id="dashboard.contractRequests" />
+            </div>
+            <div className="table_wrapper requests_table_wrapper">
+              <Offers
+                time={this.props.time}
+                onOfferCanceled={this.props.onOfferCanceled}
+                onOfferRejected={this.props.onOfferRejected}
+                onOfferAccepted={this.props.onOfferAccepted}
+                onOfferPay={this.props.onOfferPay}
+
+                offers={this.props.offers}
+                selectedOffer={this.state.selectedOffer}
+                onOfferSelected={this.onOfferSelected}
+              />
+            </div>
+          </React.Fragment>
+        )}
+        <div className="dashboard_block_header_title">
+          <FormattedMessage
+            id="dashboard.apiKeyManagement"
+            defaultMessage="API KEYS Management"
           />
         </div>
         <div className="keys_tables_wrapper table_wrapper">
@@ -93,47 +112,67 @@ class Dashboard extends React.Component {
           />
           <AddApiKey billing={this.props.billing} />
           <ApiKeyInfo
-            fund={this.state.selectedOffer || this.state.selectedContract || this.state.selectedApiKey}
+            fund={this.state.selectedOffer || this.state.selectedApiKey}
+          />
+        </div>
+        <div className="dashboard_block_header_title">
+          <FormattedMessage
+            id="dashboard.contractManagement"
+            defaultMessage="Contracts Management"
           />
         </div>
         <div className="table_wrapper contracts_table_wrapper">
           <Contracts
-            contracts={this.props.contracts}
-            selectedContract={this.state.selectedContract}
+            contracts={this.props.contracts.current}
+            selectedReceivedContract={this.state.selectedReceivedContract}
+            selectedProvidedContract={this.state.selectedProvidedContract}
             selectedApiKey={this.state.selectedApiKey}
             onContractSelected={this.onContractSelected}
-            onShowAllClicked={this.reset}
-            net={ETHEREUM_NET}
-            exchangesInfo={this.props.exchangesInfo}
           />
+        </div>
+        <div className="dashboard_block_header_title">
+          <FormattedMessage
+            id="dashboard.groupManagement"
+            defaultMessage="Groups Management"
+          />
+        </div>
+        <div className="table_wrapper group_asset_wrapper">
+          <GroupAsset />
         </div>
         <div className="table_wrapper selected_contract_table">
           <SelectedContractInfo
             userId={this.props.userId}
             time={this.props.time}
             onContractRate={this.onContractRate}
-            contract={this.state.selectedContract} />
+            contract={this.state.selectedReceivedContract || this.state.selectedProvidedContract} />
         </div>
         <div className="table_wrapper traders_chart">
           <FundsChart userId={this.props.userId} apiKeys={this.props.apiKeys.ownKeys || []} exchangesInfo={this.props.exchangesInfo} contracts={this.props.contracts.current}/>
         </div>
         <div className="table_wrapper contracts_chart">
-          <SelectedContractChart contract={this.state.selectedContract} exchangesInfo={this.props.exchangesInfo}/>
-        </div>
-        <div className="keys_tables_wrapper table_wrapper">
-          <BotList
-            apiKeys={this.props.apiKeys.ownKeys}
-            selectedApiKey={this.state.selectedApiKey}
-            onKeySelected={this.onKeySelected}
+          <SelectedContractChart
+            contract={this.state.selectedReceivedContract || this.state.selectedProvidedContract}
+            exchangesInfo={this.props.exchangesInfo}
           />
-          <AddBotApi/>
         </div>
       </div>
     );
   }
 
   onKeySelected(apiKey) {
-    this.setState({selectedApiKey: apiKey, selectedContract: null, selectedOffer: null});
+    const { selectedApiKey } = this.state;
+
+    if (selectedApiKey === apiKey) {
+      this.setState({ selectedApiKey: null });
+      return;
+    }
+
+    this.setState({
+      selectedApiKey: apiKey,
+      selectedOffer: null,
+      selectedReceivedContract: null,
+      selectedProvidedContract: null,
+    });
   }
 
   onOfferSelected(offer) {
@@ -141,17 +180,36 @@ class Dashboard extends React.Component {
       this.setState({
         selectedOffer: offer,
         selectedApiKey: null,
-        selectedContract: null
+        selectedReceivedContract: null,
+        selectedProvidedContract: null,
       });
     }
   }
 
   onContractSelected(contract) {
-    if(contract.state === CONTRACT_STATE_VERIFIED) {
-      this.setState({selectedContract: contract, selectedOffer: null});
-    } else {
-      this.setState({selectedApiKey: null, selectedContract: contract, selectedOffer: null});
+    const { selectedReceivedContract, selectedProvidedContract} = this.state;
+
+    if (selectedReceivedContract && selectedReceivedContract._id === contract._id) {
+      this.setState({ selectedReceivedContract: null });
+      return;
     }
+
+    if (selectedProvidedContract && selectedProvidedContract._id === contract._id) {
+      this.setState({ selectedProvidedContract: null });
+      return;
+    }
+
+    contract.to.name === this.props.userName
+      ? this.setState({
+        selectedReceivedContract: contract,
+        selectedProvidedContract: null,
+        selectedOffer: null
+      })
+      : this.setState({
+        selectedReceivedContract: null,
+        selectedProvidedContract: contract,
+        selectedOffer: null,
+      });
   }
 }
 

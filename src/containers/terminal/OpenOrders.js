@@ -1,10 +1,11 @@
-import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
+
 import ReactTable from '../../components/SelectableReactTable';
+import { OrderProgress } from '../../components/OrderProgress';
 
 export class OpenOrders extends React.Component {
-
   constructor(props) {
     super(props);
     this.columns = this.createColumns(props.size);
@@ -104,13 +105,22 @@ export class OpenOrders extends React.Component {
         Cell: (row) => <OpenOrdersCell title={row.value.toLocaleTimeString()} subtitle={formatDate(row.value)} />,
         accessor: (info) => new Date(info.dt),
         width: 80,
-        show: showTime 
+        show: showTime,
       },
       {
         id: 'cancel',
         Header: changeCancel ? '' : 'Cancel',
-        Cell: (row) => (<CancelOrderCell showSmall={changeCancel}
-          onClick={this.props.onOrderCancel} order={row.original} />),
+        Cell: ({ original }) =>
+          original.state === 'NEW' || original.state === 'CANCELING'
+            ? (
+              <OrderProgress progress={original.progress} />
+            ) : (
+              <CancelOrderCell
+                showSmall={changeCancel}
+                onClick={this.props.onOrderCancel}
+                order={original}
+              />
+            ),
         minWidth: 40,
       },
     ];

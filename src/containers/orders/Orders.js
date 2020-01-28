@@ -1,25 +1,56 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Container, Row, Col } from 'reactstrap';
+import { FormattedMessage } from 'react-intl';
+
 import HeaderStatus from '../../components/HeaderStatus';
 import Controls from './Controls';
 import OrdersTable from './OrdersTable';
-import { connect } from 'react-redux';
-import { cancelOrder, getOrders, selectExchange, selectFund, getExchangeMarkets, startTradingDataUpdates, stopTradingDataUpdates } from '../../actions/terminal';
+import {
+  cancelOrder, getOrders, getGroupOrder,
+  selectExchange, selectFund, getExchangeMarkets,
+  stopTradingDataUpdates, selectMarket,
+} from '../../actions/terminal';
 import { setFundId } from '../../generic/util';
-import { FormattedMessage } from 'react-intl';
 
 class Orders extends React.Component {
+  componentDidMount() {
+    this.handleExchangeSelect(this.props.exchange);
+
+    if (this.props.fund) {
+      const payload = setFundId({}, this.props.fund);
+      this.props.getOrders(payload);
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const fund = this.props.fund || this.props.assetGroup;
+
+    if (fund && (this.props.fund !== prevProps.fund || this.props.assetGroup !== prevProps.assetGroup)) {
+      const payload = setFundId({}, fund);
+      this.props.getOrders(payload);
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.stopTradingDataUpdates();
+  }
+
+  handleExchangeSelect = (exchange) => {
+    this.props.selectExchange(exchange);
+    this.props.getExchangeMarkets(exchange);
+    this.props.selectMarket(this.props.market);
+  }
 
   render() {
     const apiKeys = this.props.apiKeys.ownKeys;
-    const contracts = this.props.contracts;
+    const { contracts, exchangeInfo, fund, assetGroup } = this.props;
+
     return (
       <Container fluid className="orders">
         <Row>
           <Col xs="12" sm="12" md="12" lg="12">
-            <HeaderStatus
-              {...this.props.exchangeInfo}
-            />
+            <HeaderStatus {...exchangeInfo} />
             <div className="orders-main">
               <div className="orders-main__top">
                 <div className="row  align-items-center">
@@ -38,12 +69,15 @@ class Orders extends React.Component {
                   onApiKeySelect={this.props.selectFund}
                   exchange={this.props.exchange}
                   exchanges={this.props.exchanges}
-                  onExchangeSelect={this.props.selectExchange}
+                  onExchangeSelect={this.handleExchangeSelect}
                 />
               </div>
               <OrdersTable
                 orders={this.props.orders}
                 cancelOrder={this.props.cancelOrder}
+                getGroupOrder={this.props.getGroupOrder}
+                assetGroup={assetGroup}
+                fund={fund}
               />
             </div>
           </Col>
@@ -51,48 +85,30 @@ class Orders extends React.Component {
       </Container>
     );
   }
-  componentDidMount() {
-    this.props.startTradingDataUpdates();
-    this.props.selectExchange(this.props.exchange);
-    if(this.props.fund) {
-      let payload = setFundId({}, this.props.fund);
-      this.props.getOrders(payload);
-    }
-  }
-
-  componentWillReceiveProps(props) {
-    if(props.fund && (!this.props.fund || this.props.fund._id !== props.fund._id)) {
-      let payload = setFundId({}, props.fund);
-      this.props.getOrders(payload);
-    }
-  }
-
-  componentWillUnmount() {
-    this.props.stopTradingDataUpdates();
-  }
 }
 
-const OrdersContainer = connect(state => ({
+const mapStateToProps = state => ({
   apiKeys: state.apiKeys,
   userId: state.auth.profile._id,
   contracts: state.contracts.current,
   fund: state.terminal.fund,
+  assetGroup: state.terminal.assetGroup,
   orders: state.terminal.orders,
   market: state.terminal.market,
   exchange: state.terminal.exchange,
   exchanges: state.exchangesInfo.exchanges || [],
   exchangeInfo: state.exchangesInfo[state.terminal.exchange],
-}), dispatch => ({
-  startTradingDataUpdates: () => dispatch(startTradingDataUpdates()),
-  stopTradingDataUpdates: () => dispatch(stopTradingDataUpdates()),
-  getOrders: params => dispatch(getOrders(params)),
-  cancelOrder: order => dispatch(cancelOrder(order)),
-  selectExchange: exchange => {
-    dispatch(selectExchange(exchange));
-    dispatch(getExchangeMarkets(exchange));
-  },
-  selectFund: fund => dispatch(selectFund(fund)),
-  getExchangeMarkets: exchange => dispatch(getExchangeMarkets(exchange)),
-}))(Orders);
+});
 
-export default OrdersContainer;
+const mapDispatchToProps = {
+  stopTradingDataUpdates,
+  getOrders,
+  getGroupOrder,
+  cancelOrder,
+  selectExchange,
+  getExchangeMarkets,
+  selectFund,
+  selectMarket,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Orders);

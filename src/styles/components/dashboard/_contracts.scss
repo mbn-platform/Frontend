@@ -1,0 +1,191 @@
+.contracts_table_wrapper {
+  display: flex;
+  width: 100%;
+
+  .contracts-block-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    .contracts-wrapper {
+      display: flex;
+
+      .received-contracts-table-wrapper {
+        width: 55%;
+        border-right: 0;
+        border-radius: 4px 0 0 0;
+
+        .ReactTable {
+          .rt-table {
+            .rt-thead {
+              font-size: 9px;
+            }
+          }
+        }
+
+        .table_title_wrapper {
+          display: flex;
+          border-radius: 4px 0 0 0;
+        }
+      }
+
+      .balances-groups-wrapper {
+        width: 45%;
+        display: flex;
+
+        .received-balances-table-wrapper {
+          border-radius: 0;
+          border-right: none;
+
+          .table_title_wrapper {
+            display: flex;
+            border-radius: 0;
+          }
+        }
+
+        .groups-table-wrapper {
+          border-radius: 0 4px 0 0;
+
+          .table_title_wrapper {
+            display: flex;
+            border-radius: 0 4px 0 0;
+          }
+
+          .groups_btn_wrapper {
+            .create_group_btn,
+            .add_contract_btn {
+              border: 0;
+              width: 50%;
+              height: 100%;
+              border-left: 1px solid #44464a;
+              background-color: #2d3034;
+              color: #7c7c7d;
+              transition-property: color, background-color;
+              transition-duration: 400ms;
+              transition: color 400ms, background-color 400ms;
+              text-transform: uppercase;
+              line-height: 26px;
+              font-size: 1.3em;
+
+              &:hover {
+                background-color: #346255;
+                color: white;
+              }
+
+              &:disabled {
+                opacity: .3;
+
+                &:hover {
+                  background-color: #2d3034;
+                  color: #7c7c7d;
+                  cursor: default;
+                }
+              }
+            }
+
+            .create_group_btn {
+              border-left: none;
+            }
+          }
+
+          .ReactTable {
+            .rt-table {
+              .rt-thead {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+
+      .provided-contracts-table-wrapper {
+        width: 55%;
+        border-top: none;
+        border-right: 0;
+        border-radius: 0 0 0 4px;
+
+        .ReactTable {
+          .rt-table {
+            .rt-thead {
+              font-size: 9px;
+            }
+          }
+        }
+
+        .table_title_wrapper {
+          display: flex;
+          border-radius: 0;
+        }
+      }
+
+      .provided-balances-table-wrapper {
+        width: 45%;
+
+        .table_title_wrapper {
+          display: flex;
+          border-radius: 0 4px 0 0;
+        }
+      }
+
+      .provided-balances-table-wrapper {
+        border-radius: 0 0 4px 0;
+        border-top: none;
+
+        .table_title_wrapper {
+          border-radius: 0;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1027px) {
+  .contracts_table_wrapper {
+    .contracts-block-wrapper {
+      .contracts-wrapper {
+        flex-direction: column;
+
+        .received-contracts-table-wrapper {
+          width: 100%
+        }
+
+        .received-balances-table-wrapper,
+        .groups-table-wrapper {
+          border-right: 1px solid #44464a !important;
+          background-color: #17191b;
+        }
+
+        .balances-groups-wrapper {
+          width: 100%;
+        }
+
+        .provided-contracts-table-wrapper {
+          width: 100%;
+        }
+
+        .provided-balances-table-wrapper {
+          width: 100%;
+          min-height: 150px;
+          background-color: #17191b;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .contracts_table_wrapper {
+    .contracts-block-wrapper {
+      .contracts-wrapper {
+        .balances-groups-wrapper {
+          flex-direction: column;
+
+          .received-balances-table-wrapper {
+            min-height: 150px;
+            background-color: #17191b;
+          }
+        }
+      }
+    }
+  }
+}

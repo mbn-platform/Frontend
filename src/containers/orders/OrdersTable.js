@@ -1,49 +1,98 @@
 import React from 'react';
 import classNames from 'classnames';
 import ReactTable from '../../components/SelectableReactTable';
+import { OrderProgress } from '../../components/OrderProgress';
 import {sortData, onColumnSort, classNameForColumnHeader}  from '../../generic/terminalSortFunctions';
 import { FormattedMessage } from 'react-intl';
 import createMqProvider, {querySchema} from '../../MediaQuery';
 
-const { Screen} = createMqProvider(querySchema);
+const { Screen, MediaQuery } = createMqProvider(querySchema);
 
 const TAB_OPEN_ORDERS = 0;
 const TAB_COMPLETED_ORDERS = 1;
-class OrdersTable extends React.Component {
 
+class OrdersTable extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {tab: TAB_OPEN_ORDERS, sort: {}};
-    this.onTabClick = this.onTabClick.bind(this);
+    this.state = {
+      tab: TAB_OPEN_ORDERS,
+      sort: {},
+      expanded: {},
+    };
     this.sortData = sortData.bind(this);
     this.onColumnSort = onColumnSort.bind(this);
     this.sortFunctions = {};
   }
 
-  onTabClick(tab) {
-    if(this.state.tab !== tab) {
-      this.setState({tab});
+  componentDidUpdate = (prevProps) => {
+    if (prevProps.assetGroup !== this.props.assetGroup) {
+      this.setState({ expanded: {} });
+    }
+  }
+
+  onTabClick = tab => () => {
+    if (this.state.tab !== tab) {
+      this.setState({ tab, expanded: {} });
     }
   };
 
+  onRowClick = (_, { original, index }) => ({
+    onClick: () => {
+      const { assetGroup, fund } = this.props;
 
-  getColumns = (isOpenOrder, screenWidth) => {
+      if (!assetGroup || (assetGroup && fund)) { return; }
+      this.expandRow(index);
 
+      if (this.state.expanded[index]) { return; }
+      this.props.getGroupOrder(original._id);
+    },
+  });
+
+  expandRow = index => {
+    let expanded = { ...this.state.expanded };
+
+    if (expanded[index]) {
+      expanded[index] = !expanded[index];
+    } else {
+      expanded[index] = true;
+    }
+
+    this.setState({ expanded });
+  };
+
+  getColumns = (isOpenOrder, screenWidth, isNested = false) => {
     const ordersColumn = [
       {
-        Header: <div onClick={() => this.onColumnSort('type')}
+        Header: isNested ? '' : <div onClick={() => this.onColumnSort('type')}
           className="table__header-wrapper orders__table-header-wrapper">
-          <span className={classNameForColumnHeader(this.state, 'type')}/>
+          <FormattedMessage
+            id="orders.type"
+          /> <span className={classNameForColumnHeader(this.state, 'type')}/>
         </div>,
-        minWidth: screenWidth === 'lg' ? 40 : 8,
+        width: screenWidth === 'lg' ? 70 : 50,
         className: ' orders__table_cell',
-        Cell: row => {
-          return <div>
-            <span className={`orders__table_round ${row.original.type}`}/>
-          </div>;
-        }
+        Cell: isNested ? null : OrderType,
       }, {
-        Header:<div onClick={() => this.onColumnSort('dt')}
+        Header: isNested ? '' : <div onClick={() => this.onColumnSort('name')}
+          className="table__header-wrapper orders__table-header-wrapper">
+          <FormattedMessage
+            id="orders.name"
+          /> <span className={classNameForColumnHeader(this.state, 'name')}/>
+        </div>,
+        minWidth: screenWidth === 'lg' ? 80 : 30,
+        className: ' orders__table_cell',
+        Cell: () => {
+          const { assetGroup, fund } = this.props;
+
+          return (fund && fund.name) || (fund && fund.from && (
+            <FormattedMessage id="userTrustToMe"
+              defaultMessage="{name} trusted to me"
+              values={{ name: fund.from.name }}
+            />
+          )) || assetGroup.name;
+        },
+      }, {
+        Header: isNested ? '' : <div onClick={() => this.onColumnSort('dt')}
           className="table__header-wrapper orders__table-header-wrapper">
           <FormattedMessage
             id="orders.openDate"
@@ -56,7 +105,7 @@ class OrdersTable extends React.Component {
           return this.formatDate(new Date(row.original.dt));
         },
       }, {
-        Header: <div onClick={() => this.onColumnSort('market')}
+        Header: isNested ? '' : <div onClick={() => this.onColumnSort('market')}
           className="table__header-wrapper orders__table-header-wrapper">
           <FormattedMessage
             id="orders.market"
@@ -72,7 +121,7 @@ class OrdersTable extends React.Component {
         className: ' orders__table_cell',
       },
       {
-        Header: <div onClick={() => this.onColumnSort('limit')}
+        Header: isNested ? '' : <div onClick={() => this.onColumnSort('limit')}
           className="table__header-wrapper orders__table-header-wrapper">
           <FormattedMessage
             id="orders.price"
@@ -84,7 +133,7 @@ class OrdersTable extends React.Component {
         className: ' orders__table_cell',
       },
       {
-        Header: <div onClick={() => this.onColumnSort('filled')}
+        Header: isNested ? '' : <div onClick={() => this.onColumnSort('filled')}
           className="table__header-wrapper orders__table-header-wrapper">
           <FormattedMessage
             id="orders.unitsFilled"
@@ -96,7 +145,7 @@ class OrdersTable extends React.Component {
         className: ' orders__table_cell',
       },
       {
-        Header: <div onClick={() => this.onColumnSort('amount')}
+        Header: isNested ? '' : <div onClick={() => this.onColumnSort('amount')}
           className="table__header-wrapper orders__table-header-wrapper">
           <FormattedMessage
             id="orders.unitsTotal"
@@ -108,7 +157,7 @@ class OrdersTable extends React.Component {
         className: ' orders__table_cell',
       },
       {
-        Header: <div onClick={() => this.onColumnSort('price')}
+        Header: isNested ? '' : <div onClick={() => this.onColumnSort('price')}
           className="table__header-wrapper orders__table-header-wrapper">
           <span className="hide-mobile">
             <FormattedMessage
@@ -122,15 +171,16 @@ class OrdersTable extends React.Component {
             />
           </span>
           <FormattedMessage
-            id="orders.total"
-            defaultMessage="Total"
+            id="orders.value"
+            defaultMessage="Value"
           /> <span className={classNameForColumnHeader(this.state, 'price')}/>
         </div>,
         minWidth: screenWidth === 'lg' ? 80 : 40,
-        Cell: row => {
-          return  row.original.price;
-        },
+        Cell: row => row.original.price,
         className: 'ellipsis-cell orders__table_cell',
+      }, {
+        expander: true,
+        show: false,
       }];
 
     return [...ordersColumn,
@@ -138,77 +188,112 @@ class OrdersTable extends React.Component {
         [{
           Header: '',
           minWidth: screenWidth === 'lg' ? 80 : 10,
-          Cell: row => <div onClick={() => this.props.cancelOrder(row.original)}>
-            <span className="orders__table-remove"/>
-          </div>,
+          Cell: ({ original }) => {
+            if (original.state === 'CLOSED') {
+              return <div />;
+            }
+
+            return  original.state === 'NEW' || original.state === 'CANCELING'
+              ? (
+                <OrderProgress progress={original.progress}/>
+              ) : (
+                <div onClick={(event) => {
+                  event.stopPropagation();
+                  this.props.cancelOrder(original);
+                }}>
+                  <span className="orders__table-remove" />
+                </div>
+              );
+          },
           className: ' orders__table_cell',
         }] : [])
     ];
   };
 
   formatDate = date => {
-
     const padDate = number => number < 10 ? '0' + number : number;
-
     const year = padDate(date.getFullYear()),
       month = padDate(date.getMonth() + 1),
       day = padDate(date.getDate());
+
     return day + '.' + month + '.' + year;
   }
 
-
-
-  renderOrderTable = (sortedData, screenWidth, isOpenOrder) => {
-    return <ReactTable
+  renderOrderTable = (sortedData, screenWidth, isOpenOrder) => (
+    <ReactTable
       columns={this.getColumns(isOpenOrder, screenWidth)}
-      getTrProps={() => ({
-        onClick: () => null,
-      })}
+      getTrProps={this.onRowClick}
       data={sortedData}
       scrollBarHeight={300}
-    />;
-  }
+      expanded={this.state.expanded}
+      SubComponent={({ original }) => (
+        this.props.assetGroup && original.orders && original.orders.length > 0 ? (
+          this.renderNestedOrdersTable(original.orders, isOpenOrder, screenWidth)
+        ) : null
+      )}
+    />
+  )
+
+  renderNestedOrdersTable = (orders, isOpenOrder, screenWidth) => (
+    <ReactTable
+      columns={this.getColumns(isOpenOrder, screenWidth, true)}
+      data={this.sortData(orders)}
+      sortable={false}
+    />
+  );
 
   render() {
     const isOpenOrder = this.state.tab === TAB_OPEN_ORDERS;
     const data = isOpenOrder ? this.props.orders.open : this.props.orders.closed;
     const sortedData = this.sortData(data);
+
     return (
       <div className="orders-main__block">
-        <Screen on={screenWidth => (
-          <React.Fragment>
-            <div className="block__top">
-              <div className="block__top-switch-wrap">
-                <span
-                  onClick={() => this.onTabClick(TAB_OPEN_ORDERS)}
-                  className={classNames('block__top-switch', 'orders-open', {active: isOpenOrder})}>
-                  <FormattedMessage
-                    id="orders.openOrders"
-                    defaultMessage="Open Orders"
-                  />
-                </span>
-                <span
-                  onClick={() => this.onTabClick(TAB_COMPLETED_ORDERS)}
-                  className={classNames('block__top-switch', 'orders-completed', {active: !isOpenOrder})}>
-                  <FormattedMessage
-                    id="orders.completedOrders"
-                    defaultMessage="Completed orders"
-                  />
-                </span>
-              </div>
-            </div>
-            <div className="orders-tabs">
-              <div className="orders-tab orders-open active">
-                <div className="orders__table-wraper">
-                  {this.renderOrderTable(sortedData, screenWidth, isOpenOrder)}
+        <MediaQuery>
+          <Screen on={screenWidth => (
+            <React.Fragment>
+              <div className="block__top">
+                <div className="block__top-switch-wrap">
+                  <span
+                    onClick={this.onTabClick(TAB_OPEN_ORDERS)}
+                    className={classNames('block__top-switch', 'orders-open', {active: isOpenOrder})}>
+                    <FormattedMessage
+                      id="orders.openOrders"
+                      defaultMessage="Open Orders"
+                    />
+                  </span>
+                  <span
+                    onClick={this.onTabClick(TAB_COMPLETED_ORDERS)}
+                    className={classNames('block__top-switch', 'orders-completed', {active: !isOpenOrder})}>
+                    <FormattedMessage
+                      id="orders.completedOrders"
+                      defaultMessage="Completed orders"
+                    />
+                  </span>
                 </div>
               </div>
-            </div>
-          </React.Fragment>
-        )} />
+              <div className="orders-tabs">
+                <div className="orders-tab orders-open active">
+                  <div className="orders__table-wraper">
+                    {this.renderOrderTable(sortedData, screenWidth, isOpenOrder)}
+                  </div>
+                </div>
+              </div>
+            </React.Fragment>
+          )} />
+        </MediaQuery>
       </div>
     );
   }
 }
+
+const OrderType = ({ original }) => {
+  const { type, orderType } = original;
+  return (
+    <div className={classNames('orders__table_type', type)}>
+      <div className='type'>{orderType || 'limit'}</div>
+    </div>
+  );
+};
 
 export default OrdersTable;

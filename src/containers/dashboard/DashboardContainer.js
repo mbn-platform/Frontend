@@ -1,11 +1,13 @@
-import Dashboard from './Dashboard';
 import { connect } from 'react-redux';
+import { injectIntl } from 'react-intl';
+
+import Dashboard from './Dashboard';
 import { deleteApiKey } from '../../actions/apiKeys';
 import { acceptOffer, cancelOffer, rejectOffer, payOffer } from '../../actions/offers';
 import { updateExchanges } from '../../actions/exchanges';
 import { rateContract } from '../../actions/contracts';
-import { getAllRates } from '../../actions/terminal';
-import { injectIntl } from 'react-intl';
+import { getExchangeRates } from '../../actions/terminal';
+import { showInfoModal } from '../../actions/modal';
 
 const mapStateToProps = state => ({
   time: state.time,
@@ -20,15 +22,23 @@ const mapStateToProps = state => ({
   rates: state.rates,
 });
 
-const mapDispatchToProps = {
-  onKeyDeleteClick: deleteApiKey,
-  updateExchanges,
-  getAllRates,
-  onOfferPay: payOffer,
-  onOfferAccepted: acceptOffer,
-  onOfferRejected: rejectOffer,
-  onOfferCanceled: cancelOffer,
-  onContractRate: rateContract,
+const mapDispatchToProps = dispatch => {
+  return {
+    onKeyDeleteClick: async (apiKey, token2FA) => {
+      if(apiKey.inUse) {
+        dispatch(showInfoModal(this.props.intl.messages['dashboard.cannotDeleteKey']));
+      } else {
+        await dispatch(deleteApiKey(apiKey, token2FA));
+      }
+    },
+    updateExchanges: () => dispatch(updateExchanges()),
+    onOfferPay: offer => dispatch(payOffer(offer)),
+    onOfferAccepted: offer => dispatch(acceptOffer(offer)),
+    onOfferRejected: offer => dispatch(rejectOffer(offer)),
+    onOfferCanceled: offer => dispatch(cancelOffer(offer)),
+    onContractRate: (feedback, userName, time) => dispatch(rateContract(feedback, userName, time)),
+    getExchangeRates: exchange => dispatch(getExchangeRates(exchange)),
+  };
 };
 
 export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(Dashboard));

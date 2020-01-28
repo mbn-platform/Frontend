@@ -27,7 +27,7 @@ class ExchangeSelect extends React.Component {
         }
         <div className="add_keys_select_value_bg" />
         </div>
-        <div className="add_keys_select_values_list_wr">
+        <div className="add_keys_select_values_list_wr overflow_y_auto">
           <ul className="add_keys_select_ul">
             {this.renderExchanges()}
             {this.renderAllOption()}

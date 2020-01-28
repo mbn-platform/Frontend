@@ -54,7 +54,7 @@ class Funds extends React.Component {
           <div className="table_title">
             <FormattedMessage
               id="dashboard.exchangeAccounts"
-              defaultMessage="Exchange accounts"
+              defaultMessage="Connected API"
             />
           </div>
         </div>

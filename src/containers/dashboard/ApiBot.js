@@ -33,7 +33,12 @@ class BotList extends React.Component {
   state = {
     currentMode: ACTIVE_KEYS.value,
     keysList: this.props.botKeysList,
+    selectedApiKey: null,
   };
+
+  onKeySelected = (key) => {
+    this.setState({selectedApiKey: key});
+  }
 
   static getDerivedStateFromProps(nextProps, ) {
     return {
@@ -48,9 +53,9 @@ class BotList extends React.Component {
 
   render() {
     return (
-      <div className="api_keys_table table api_keys_table_width_100">
-        <div className="table_title_wrapper clearfix">
-          <div className="table_title">
+      <div className="block">
+        <div className="title">
+          <div className="icon-key">
             <FormattedMessage
               id="dashboard.apiBotKeys"
               defaultMessage="Api Bot Keys"
@@ -234,16 +239,16 @@ class BotList extends React.Component {
                 style={{height: 312}}
                 columns={this.getColumns()}
                 data={currentData}
-                selectedItem={this.props.selectedApiKey}
-                onItemSelected={key => this.props.onKeySelected(key)}
+                selectedItem={this.state.selectedApiKey}
+                onItemSelected={this.onKeySelected}
                 scrollBarHeight={217}
               />);
             case 'sm': return (
               <ReactTable
                 columns={this.getColumns()}
                 data={currentData}
-                selectedItem={this.props.selectedApiKey}
-                onItemSelected={key => this.props.onKeySelected(key)}
+                selectedItem={this.state.selectedApiKey}
+                onItemSelected={this.onKeySelected}
                 minRows={5}
                 showPagination={true}
                 defaultPageSize={5}
@@ -264,6 +269,7 @@ BotList.propTypes = {
 };
 
 const mapStateToProps = state => ({
+  apiKeys: state.apiKeys.own || [],
   is2FAEnable: state.auth.profile.mfaEnabled,
   botKeysList: state.apiKeys.botKeys,
 });

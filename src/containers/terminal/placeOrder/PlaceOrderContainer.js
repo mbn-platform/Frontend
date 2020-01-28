@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import React from 'react';
 import { injectIntl} from 'react-intl';
 import { connect } from 'react-redux';
@@ -37,7 +38,7 @@ class PlaceOrderContainer extends React.Component {
     if ((this.props.price && this.props.price !== prevProps.price) ||
       (this.props.size && this.props.size !== prevProps.size)) {
       let price = this.props.price || this.state.price;
-      let amount = this.props.size || this.state.amount;
+      // let amount = this.props.size || this.state.amount;
       this.setPrice(price);
     }
   }
@@ -100,6 +101,9 @@ class PlaceOrderContainer extends React.Component {
     e.preventDefault();
     if(!this.props.fund) {;
       this.props.showModalWindow('terminal.selectFund');
+      return;
+    }
+    if (!this.state.amount || !this.state.price) {
       return;
     }
     const params = {
@@ -181,6 +185,7 @@ class PlaceOrderContainer extends React.Component {
         market={this.props.market}
         fund={this.props.fund}
         auth={this.props.auth}
+        assetGroup={this.props.assetGroup}
 
         selectedTab={this.state.selectedTab}
         selectedOrderType={this.state.selectedOrderType}
@@ -254,7 +259,7 @@ class PlaceOrderContainer extends React.Component {
           const rounded = floorBinance(maxOrderSize.toString(), minTradeSize);
           newState.amount = rounded;
           if (minimize) {
-            newState.total = (price * parseFloat(rounded)).toString();
+            newState.total = new BigNumber(price).times(rounded).toFixed();
           } else {
             newState.total = total;
           }
@@ -318,7 +323,7 @@ class PlaceOrderContainer extends React.Component {
 const mapStateToProps = state => {
   const {
     exchangesInfo,
-    terminal: { market, exchange, ticker, fund },
+    terminal: { market, exchange, ticker, fund, assetGroup },
     auth,
   } = state;
 
@@ -328,8 +333,9 @@ const mapStateToProps = state => {
     ticker,
     exchange,
     market,
-    fund,
+    fund: fund || assetGroup,
     auth,
+    assetGroup,
   };
 };
 

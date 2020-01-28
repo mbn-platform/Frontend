@@ -327,6 +327,13 @@ export class ApiTerminal {
       .then(errorHandler)
       .then(responseSchemaHandler);
   };
+
+  getGroupOrder = id => {
+    return apiGet(`/order/${id}?type=group`)
+      .then(errorHandler)
+      .then(responseSchemaHandler);
+  };
+
   cancelOrder = order =>
     apiDelete('/order/' + order._id)
       .then(errorHandler)
@@ -481,4 +488,24 @@ export class ApiSelection {
     apiPost(`/selection/${round}/confirm`)
       .then(errorHandler)
       .then(responseSchemaHandler);
+}
+
+export class ApiAssetGroup {
+  fetch = () =>
+    apiGet('/assetgroup')
+      .then(errorHandler)
+      .then(responseSchemaHandler)
+
+  create = (name, exchange, contracts) =>
+    apiPost('/assetgroup', null, { name, exchange, contracts })
+      .then(errorHandler)
+      .then(responseSchemaHandler)
+
+  update = (id, contracts) =>
+    apiPut(`/assetgroup/${id}`, null, { contracts })
+      .then(errorHandler)
+      .then(responseSchemaHandler)
+
+  delete = (id) =>
+    apiDelete(`/assetgroup/${id}`)
 }

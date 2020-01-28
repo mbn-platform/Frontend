@@ -14,6 +14,10 @@ export const SHOW_UPGRADE_TARIFF_MODAL = 'SHOW_UPGRADE_TARIFF_MODAL';
 export const CLOSE_UPGRADE_TARIFF_MODAL = 'CLOSE_UPGRADE_TARIFF_MODAL';
 export const SHOW_COMMIT_TOKENS_MODAL = 'SHOW_COMMIT_TOKENS_MODAL';
 export const CLOSE_COMMIT_TOKENS_MODAL = 'CLOSE_COMMIT_TOKENS_MODAL';
+export const SHOW_CREATE_GROUP_MODAL = 'SHOW_CREATE_GROUP_MODAL';
+export const CLOSE_CREATE_GROUP_MODAL = 'CLOSE_CREATE_GROUP_MODAL';
+export const SHOW_ADD_CONTRACT_TO_GROUP_MODAL = 'SHOW_ADD_CONTRACT_TO_GROUP_MODAL';
+export const CLOSE_ADD_CONTRACT_TO_GROUP_MODAL = 'CLOSE_ADD_CONTRACT_TO_GROUP_MODAL';
 
 const Api2FA = new ApiTwoFactorAuth();
 
@@ -114,3 +118,20 @@ export const closeCommitTokensModal = () => ({
   type: CLOSE_COMMIT_TOKENS_MODAL,
 });
 
+export const showCreateGroupModal = () => ({
+  type: 'SHOW_CREATE_GROUP_MODAL',
+});
+
+export const closeCreateGroupModal = () => ({
+  type: 'CLOSE_CREATE_GROUP_MODAL',
+});
+
+export const showAddContractToGroupModal = (group, contracts) => ({
+  type: 'SHOW_ADD_CONTRACT_TO_GROUP_MODAL',
+  group,
+  contracts,
+});
+
+export const closeAddContractToGroupModal = () => ({
+  type: 'CLOSE_ADD_CONTRACT_TO_GROUP_MODAL',
+});

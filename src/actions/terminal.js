@@ -1,7 +1,10 @@
 import { ApiError } from '../generic/apiCall';
-import { ApiTerminal} from '../generic/api';
+import { ApiTerminal } from '../generic/api';
+import { ApiExchange } from '../generic/api';
 import { showInfoModal, showUpgradeTariffModal } from './modal';
 import { LOGGED_OUT } from './auth';
+import { UPDATE_EXCHANGES } from './exchanges';
+import { addQuickNotif } from './quickNotif';
 
 export const SELECT_FUND = 'SELECT_FUND';
 export const SELECT_MARKET = 'SELECT_MARKET';
@@ -15,79 +18,134 @@ export const PLACE_ORDER = 'PLACE_ORDER';
 export const PLACE_ALGO_ORDER = 'PLACE_ALGO_ORDER';
 export const UPDATE_ORDER = 'UPDATE_ORDER';
 export const GET_MY_ORDERS = 'GET_MY_ORDERS';
+export const GET_GROUP_ORDER = 'GET_GROUP_ORDER';
 export const UPDATE_EXCHANGE_RATES = 'UPDATE_EXCHANGE_RATES';
 export const UPDATE_RATINGS = 'UPDATE_RATINGS';
 export const UPDATE_TICKER = 'UPDATE_TICKER';
 export const UPDATE_ORDER_BOOK = 'UPDATE_ORDER_BOOK';
 export const UPDATE_HISTORY = 'UPDATE_HISTORY';
 export const UPDATE_MARKET_SUMMARIES = 'UPDATE_MARKET_SUMMARIES';
-export const TRADING_DATA_START = 'TRADING_DATA_START';
 export const TRADING_DATA_STOP = 'TRADING_DATA_STOP';
+export const SELECT_ASSET_GROUP = 'SELECT_ASSET_GROUP';
+export const CHECK_URL_VALIDITY = 'CHECK_URL_VALIDITY';
 
 const TerminalApi = new ApiTerminal();
+const ExchangeApi = new ApiExchange();
 
-export function selectFund(fund) {
-  localStorage.setItem('terminal.selectedFund', JSON.stringify(fund));
-  return {
-    type: SELECT_FUND,
-    fund
-  };
-}
+export const selectFund = fund => ({
+  type: SELECT_FUND,
+  fund,
+});
 
-export function startTradingDataUpdates() {
-  return {type: TRADING_DATA_START};
-}
+export const stopTradingDataUpdates = () => ({
+  type: TRADING_DATA_STOP,
+});
 
-export function stopTradingDataUpdates() {
-  return {type: TRADING_DATA_STOP};
-}
+export const selectMarket = market => ({
+  type: SELECT_MARKET,
+  market,
+});
 
-export function selectMarket(market) {
-  localStorage.setItem('terminal.selectedMarket', market);
-  return {
-    type: SELECT_MARKET,
-    market,
-  };
-}
+export const selectExchange = exchange => ({
+  type: SELECT_EXCHANGE,
+  exchange,
+});
 
-export function selectExchange(exchange, restore) {
-  localStorage.setItem('terminal.selectedExchange', exchange);
+export const selectControlsByExchange = exchange => {
   return (dispatch, getState) => {
-    const state = getState();
-    const apiKeys = state.apiKeys.ownKeys.filter(k => k.exchange === exchange);
-    const contracts = state.contracts.current
-      .filter(c => c.exchange === exchange && c.to._id === state.auth.profile._id);
-    const selectedFund = apiKeys[0] || contracts[0] || null;
-    dispatch(selectFund(selectedFund));
-    dispatch({
-      type: SELECT_EXCHANGE,
-      exchange,
-      restore,
-    });
-  };
-}
+    dispatch(selectExchange(exchange));
 
-export function selectInterval(interval) {
-  localStorage.setItem('terminal.selectedInterval', interval);
-  return {
-    type: SELECT_INTERVAL,
-    interval,
+    const {
+      terminal: { assetGroup },
+      apiKeys: { ownKeys },
+      contracts: { current },
+      auth: { profile },
+      assetGroups,
+    } = getState();
+
+    const funds = ownKeys.concat(current.filter(c => c.to._id === profile._id));
+    const fund = funds.find(k => k.exchange === exchange);
+    const groupExists = assetGroups.find(g => g.exchange === exchange);
+
+    if (assetGroup) {
+      if (groupExists) {
+        dispatch(selectAssetGroup(groupExists));
+      } else {
+        dispatch(selectAssetGroup(null));
+        dispatch(fund ? selectFund(fund) : selectFund(null));
+      }
+    } else {
+      dispatch(fund ? selectFund(fund) : selectFund(null));
+    }
   };
-}
+};
 
 export function getExchangeMarkets(exchange) {
   return dispatch => {
     TerminalApi.getExchangeMarkets(exchange)
-      .then(res => {
+      .then(({ markets }) => {
         dispatch({
           type: EXCHANGE_MARKETS,
           exchange,
-          markets: res.markets,
+          markets,
         });
       })
       .catch(e => {
         console.error('failed to get exchange info', e);
       });
+  };
+}
+
+export const validateUrlParams = ({ exchange, market }) => {
+  return dispatch => {
+    ExchangeApi.update()
+      .then(({ exchanges }) => {
+        const hasExchange = exchanges.includes(exchange);
+
+        if (hasExchange) {
+          TerminalApi.getExchangeMarkets(exchange)
+            .then(({ markets }) => {
+              const hasMarket = markets.find(m => m.symbol === market);
+
+              if (hasMarket) {
+                dispatch(selectControlsByExchange(exchange));
+                dispatch(selectExchange(exchange));
+                dispatch(selectMarket(market));
+                dispatch({
+                  type: UPDATE_EXCHANGES,
+                  exchanges,
+                });
+                dispatch({
+                  type: EXCHANGE_MARKETS,
+                  exchange,
+                  markets,
+                });
+                dispatch(checkUrlValidity(true));
+              } else {
+                dispatch(selectExchange('binance'));
+                dispatch(selectMarket('USDT-BTC'));
+                dispatch(checkUrlValidity(false));
+              }
+            })
+            .catch(() => console.error('error'));
+        } else {
+          dispatch(selectExchange('binance'));
+          dispatch(selectMarket('USDT-BTC'));
+          dispatch(checkUrlValidity(false));
+        }
+      });
+  };
+};
+
+export const checkUrlValidity = isValidUrl => ({
+  type: CHECK_URL_VALIDITY,
+  isValidUrl,
+});
+
+export function selectInterval(interval) {
+  return {
+    type: SELECT_INTERVAL,
+    interval,
   };
 }
 
@@ -99,14 +157,6 @@ export function getExchangeRates(exchange) {
       });
   };
 }
-
-export function getAllRates() {
-  return dispatch => {
-    TerminalApi.getExchangeRates()
-      .then(res => dispatch(updateAllRates(res)));
-  };
-}
-
 
 export function getMyOrders(key) {
   return dispatch => {
@@ -127,7 +177,7 @@ export function getOrders(params) {
       .then(res => dispatch({
         type: GET_MY_ORDERS,
         orders: res,
-        fundId: params.keyId || params.contractId,
+        fundId: params.groupId || params.contractId || params.keyId,
       }))
       .catch(err => {
         console.error(err);
@@ -135,9 +185,22 @@ export function getOrders(params) {
   };
 }
 
+export const getGroupOrder = (id) => (
+  dispatch => {
+    TerminalApi.getGroupOrder(id)
+      .then(order => dispatch({
+        type: GET_GROUP_ORDER,
+        order,
+      }))
+      .catch(err => {
+        console.error(err);
+      });
+  }
+);
+
 export function cancelOrder(order) {
   return dispatch => {
-    (order.isAlgo ?
+    (order.isAlgo && !order.fullAmount ?
       TerminalApi.cancelAlgoOrder(order) :
       TerminalApi.cancelOrder(order)
     )
@@ -180,7 +243,6 @@ export function cancelOrder(order) {
 
 export function placeAlgoOrder(order) {
   return (dispatch, store) => {
-    console.log(store);
     TerminalApi.placeAlgoOrder(order)
       .then(res => {
         dispatch(showInfoModal('orderHasBeenPlaced'));
@@ -209,6 +271,14 @@ export function placeOrder(order) {
   return dispatch => {
     TerminalApi.placeOrder(order)
       .then(res => {
+        if (order.groupId) {
+          if (res.noOrderContracts && res.noOrderContracts.length > 0) {
+            dispatch(addQuickNotif(res.noOrderContracts.map((c) => ({
+              type: 'group_contract_order_not_placed',
+              object: c,
+            }))));
+          }
+        }
         dispatch(showInfoModal('orderHasBeenPlaced'));
       })
       .catch(error => {
@@ -286,55 +356,40 @@ export function placeOrder(order) {
   //};
 }
 
-
-export function updateRatings() {
+export const updateRatings = () => {
   return dispatch => {
     TerminalApi.updateRatings()
-      .then(data => {
+      .then(({ rating }) => {
         dispatch({
           type: UPDATE_RATINGS,
-          rating: data.rating,
+          rating,
         });
       })
       .catch(e => console.error('error'));
   };
-}
+};
 
-export function updateOrderBook(exchange, market, orderBook) {
-  return {
-    type: UPDATE_ORDER_BOOK,
-    exchange,
-    market,
-    orderBook,
-  };
-}
+export const updateOrderBook = (exchange, market, orderBook) => ({
+  type: UPDATE_ORDER_BOOK,
+  exchange, market, orderBook,
+});
 
-export function updateHistory(exchange, market, history) {
-  return {
-    type: UPDATE_HISTORY,
-    history,
-    market,
-    exchange,
-  };
-}
-export function updateAllRates(rates) {
-  return {
-    type: EXCHANGE_RATES_ALL,
-    rates,
-  };
-}
+export const updateHistory = (exchange, market, history) => ({
+  type: UPDATE_HISTORY,
+  history, market, exchange,
+});
 
-export function updateRates(exchange, rates) {
-  return {
-    type: EXCHANGE_RATES,
-    exchange,
-    rates,
-  };
-}
+export const updateRates = (exchange, rates) => ({
+  type: EXCHANGE_RATES,
+  exchange, rates,
+});
 
-export function updateTicker(exchange, market, ticker) {
-  return {
-    type: UPDATE_TICKER,
-    exchange, market, ticker,
-  };
-}
+export const updateTicker = (exchange, market, ticker) => ({
+  type: UPDATE_TICKER,
+  exchange, market, ticker,
+});
+
+export const selectAssetGroup = group => ({
+  type: SELECT_ASSET_GROUP,
+  group,
+});

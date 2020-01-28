@@ -1,6 +1,10 @@
 import io from 'socket.io-client';
-import { SELECT_MARKET, SELECT_EXCHANGE, EXCHANGE_MARKETS,
-  TRADING_DATA_START, TRADING_DATA_STOP } from './actions/terminal';
+import {
+  SELECT_MARKET,
+  SELECT_EXCHANGE,
+  EXCHANGE_MARKETS,
+  TRADING_DATA_STOP,
+} from './actions/terminal';
 import { LOGGED_OUT, LOGGED_IN } from './actions/auth';
 import {updateKeyBalance} from './actions/apiKeys';
 import {updateOrderBook, updateHistory, updateRates, updateTicker, selectMarket} from './actions/terminal';
@@ -132,19 +136,6 @@ const socketMiddleware = store => next => action => {
       }
       break;
     }
-    case TRADING_DATA_START: {
-      if (!socket) {
-        socket = createSocket(store);
-      }
-      if(socket) {
-        const state = store.getState();
-        const {exchange} = state.terminal;
-        const symbol = action.market;
-        socket.emit('market', {exchange, symbol});
-        socket.emit('rates', {exchange});
-      }
-      return;
-    }
     case TRADING_DATA_STOP: {
       if(socket) {
         socket.emit('off_data');
@@ -162,33 +153,23 @@ const socketMiddleware = store => next => action => {
         const state = store.getState();
         const {exchange} = state.terminal;
         const symbol = action.market;
+
         socket.emit('market', {exchange, symbol});
       }
       break;
     }
     case SELECT_EXCHANGE: {
-      if(socket) {
+      if (!socket) {
+        socket = createSocket(store);
+      }
+
+      if (socket) {
         socket.emit('rates', {exchange: action.exchange});
-        const state = store.getState();
-        const exchangeInfo = state.exchangesInfo[action.exchange];
-        const symbol = state.terminal.market;
-        if(exchangeInfo && exchangeInfo.markets) {
-          const hasMarket = !!exchangeInfo.markets.find(m => m.symbol === symbol);
-          if(hasMarket) {
-            socket.emit('market', {exchange: action.exchange, symbol});
-          } else {
-            store.dispatch(selectMarket('USDT-BTC'));
-          }
-        } else if(action.restore) {
-          socket.emit('market', {exchange: action.exchange, symbol});
-        } else {
-          socket.emit('market', {exchange: action.exchange, symbol});
-        }
       }
       break;
     }
     case EXCHANGE_MARKETS: {
-      const terminal = store.getState().terminal;
+      const { terminal } = store.getState();
       if(terminal.exchange !== action.exchange) {
         break;
       }

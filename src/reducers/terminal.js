@@ -1,20 +1,21 @@
 import {
-  SELECT_FUND, SELECT_EXCHANGE, SELECT_MARKET,
-  SELECT_INTERVAL, GET_MY_ORDERS, CANCEL_ORDER, PLACE_ORDER, UPDATE_ORDER
+  SELECT_FUND, SELECT_EXCHANGE, SELECT_MARKET, SELECT_INTERVAL, CHECK_URL_VALIDITY,
+  GET_MY_ORDERS, GET_GROUP_ORDER, CANCEL_ORDER, PLACE_ORDER, UPDATE_ORDER,
+  UPDATE_ORDER_BOOK, UPDATE_HISTORY, UPDATE_TICKER, SELECT_ASSET_GROUP,
 } from '../actions/terminal';
-import {UPDATE_ORDER_BOOK, UPDATE_HISTORY, UPDATE_TICKER} from '../actions/terminal';
-import {UPDATE_KEYS} from '../actions/dashboard';
-import {FETCH_CONTRACTS} from '../actions/contracts';
+import { UPDATE_ASSET_GROUP, DELETE_ASSET_GROUP } from '../actions/assetGroup';
 
 export default function(state = {
   fund: null,
-  exchange: localStorage.getItem('terminal.selectedExchange') || 'binance',
-  market: localStorage.getItem('terminal.selectedMarket') || 'USDT-BTC',
-  interval: localStorage.getItem('terminal.selectedInterval') || '30 MIN',
+  assetGroup: null,
+  exchange: 'binance',
+  market: 'USDT-BTC',
+  interval: '30 MIN',
   orderBook: {sell: [], buy: [], smap: {}, bmap: {}},
   history: [],
   ticker: {},
   orders: {open: [], closed: []},
+  isValidUrl: undefined,
 }, action) {
   switch(action.type) {
     case SELECT_FUND: {
@@ -26,6 +27,26 @@ export default function(state = {
       } else {
         return {...state, market: action.market, orderBook: {sell: [], buy: [], smap: {}, bmap: {}}, history: [], ticker: null};
       }
+    }
+    case SELECT_ASSET_GROUP: {
+      return {
+        ...state,
+        assetGroup: action.group,
+        orders: action.group ? state.orders : { open: [], closed: [] },
+        fund: null,
+      };
+    }
+    case DELETE_ASSET_GROUP: {
+      return {
+        ...state,
+        assetGroup: null,
+        orders: state.assetGroup ? { open: [], closed: [] } : state.orders,
+      };
+    }
+    case UPDATE_ASSET_GROUP: {
+      const { assetGroup } = state;
+
+      return { ...state, assetGroup: assetGroup ? action.assetGroup : null };
     }
     case SELECT_EXCHANGE: {
       if(action.exchange === state.exchange) {
@@ -107,27 +128,37 @@ export default function(state = {
       }
       return state;
     }
-    case UPDATE_KEYS: {
-      if(!state.fund && action.data.length && action.data[0].exchange === state.exchange) {
-        return {...state, fund: action.data[0]};
-      }
-      break;
-    }
-    case FETCH_CONTRACTS: {
-      if(!state.fund) {
-        const contract = action.contracts.current.find(c => c.to._id === action.userId && c.exchange === state.exchange);
-        if(contract) {
-          return {...state, fund: contract};
-        }
-      }
-      break;
-    }
     case GET_MY_ORDERS: {
-      if(state.fund && state.fund._id === action.fundId) {
+      const fund = state.fund || state.assetGroup;
+      if(fund && fund._id === action.fundId) {
         return {...state, orders: action.orders};
       }
       break;
     }
+
+    case GET_GROUP_ORDER: {
+      const { open, closed } = state.orders;
+      const order = open.find(order => order._id === action.order._id);
+
+      if (order) {
+        return {
+          ...state,
+          orders: {
+            open: open.map(item => item._id === order._id ? action.order : item),
+            closed,
+          },
+        };
+      } else {
+        return {
+          ...state,
+          orders: {
+            open,
+            closed: closed.map(item => item._id === action.order._id ? action.order : item),
+          },
+        };
+      }
+    }
+
     case PLACE_ORDER: {
       const order = state.orders.open.find(o => o._id === action.order._id);
       if(!order) {
@@ -148,6 +179,9 @@ export default function(state = {
       }
     }
     case UPDATE_ORDER: {
+      if (!(state.fund && state.fund._id === action.fundId)) {
+        return state;
+      }
       let { open, closed } = state.orders;
       const order = action.order;
       switch (order.state) {
@@ -191,6 +225,11 @@ export default function(state = {
         return {...state, orders};
       }
       break;
+    }
+
+    case CHECK_URL_VALIDITY: {
+      const { isValidUrl } = action;
+      return { ...state, isValidUrl };
     }
     default:
       return state;

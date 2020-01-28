@@ -4,7 +4,7 @@ import { Col } from 'reactstrap';
 import qs from 'qs';
 
 import Login from './containers/login/LoginContainer';
-import Dashboard from './containers/dashboard/DashboardContainer';
+import Dashboard from './containers/dashboard';
 import Terminal from './containers/terminal/Terminal';
 import Orders from './containers/orders/Orders';
 import Profile from './containers/profile/ProfileContainer';
@@ -74,7 +74,7 @@ class MainContent extends React.Component {
         {this.renderNotificationBar()}
         <Switch>
           <LoginRoute exact path="/login" loggedIn={loggedIn}/>
-          <ProtectedRoute exact path="/dashboard" component={Dashboard} loggedIn={loggedIn}/>
+          <ProtectedRoute path="/dashboard" component={Dashboard} loggedIn={loggedIn}/>
           <Route exact path="/terminal" component={Terminal} loggedIn={loggedIn}/>
           <Route exact path="/terminal/:exchange" component={Terminal} loggedIn={loggedIn}/>
           <Route exact path="/terminal/:exchange/:market" component={Terminal} loggedIn={loggedIn}/>

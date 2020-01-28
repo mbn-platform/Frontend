@@ -38,7 +38,6 @@ class FundSelect extends React.Component {
   }
 
   render() {
-    const funds = this.props.funds.filter(fund => fund.exchange === this.props.exchange);
     return (
       <div onClick={() => this.setState({isOpen: !this.state.isOpen})} id="popover1" className="dropdown-link-wrap">
         {this.renderSelectedFund()}
@@ -63,7 +62,7 @@ class FundSelect extends React.Component {
                   defaultMessage="API KEY"/>
               </span><span className="arrow_down"/>
             </div>
-            {funds.map(fund => (
+            {this.props.funds.map(fund => (
               <div
                 key={fund._id}
                 onClick={e => this.onKeySelect(e, fund)}
@@ -81,7 +80,7 @@ class FundSelect extends React.Component {
 
     return (
       <span className="dropdown-link">
-        <FormattedMessage id="apiKey"
+        <FormattedMessage id={this.props.title}
           defaultMessage="API KEY"/>
         {this.props.selectedFund ? ': ' : ''}
         {this.renderFundName(this.props.selectedFund)} <span className="arrow_down"/>
