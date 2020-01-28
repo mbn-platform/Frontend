@@ -176,8 +176,8 @@ class ContractSettings extends React.Component {
             </button>
             <button tabIndex={10} onClick={this.onEditButtonClick} type="button" className="edit-btn send-request-btn btn btn-secondary active">
               <FormattedMessage
-                id="profile.saveChanges"
-                defaultMessage="SAVE CHANGES"
+                id="profile.save"
+                defaultMessage="SAVE"
               />
             </button>
           </div>

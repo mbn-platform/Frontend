@@ -336,7 +336,7 @@ class Navigation extends React.Component {
     const {isExpanded} = this.state;
     return (
       <NavLink to={to} key={name} title={name} className="nav-link">
-        <Container className="h-100" fluid >
+        <Container className="h-100 justify-content-center" fluid >
           <Row className="h-100">
             <Col xs="12" md={isExpanded ? 12 : 4} className="align-self-center navigation__tab-item">
               <Container fluid className="align-middle">

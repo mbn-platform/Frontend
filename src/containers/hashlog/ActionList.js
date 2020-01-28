@@ -404,6 +404,7 @@ class ActionList extends React.Component {
                   </div>
                   <a href={`/api/v2/hashlog/blocks/${blockInfo.number || currentBlockNumberFromUrl}/actions`}
                     target="_blank"
+                    rel="noopener noreferrer"
                     className="hashlog__export-to-json">
                     <FormattedMessage
                       id="hashlog.asJson"
