@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import React from 'react';
 import { injectIntl} from 'react-intl';
 import { connect } from 'react-redux';
@@ -258,7 +259,7 @@ class PlaceOrderContainer extends React.Component {
           const rounded = floorBinance(maxOrderSize.toString(), minTradeSize);
           newState.amount = rounded;
           if (minimize) {
-            newState.total = (price * parseFloat(rounded)).toString();
+            newState.total = new BigNumber(price).times(rounded).toFixed();
           } else {
             newState.total = total;
           }
