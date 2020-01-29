@@ -128,7 +128,6 @@ class ProfitChart extends React.Component {
   }
 
   calculateStat = memoizeOne((data, summary) => {
-    console.log(summary);
     const stat = {
       positive: summary.positive || 0,
       negative: summary.negative || 0,

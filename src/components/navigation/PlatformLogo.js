@@ -6,7 +6,7 @@ export class PlatformLogo extends React.PureComponent {
   render() {
     return (
       <a target="_blank" href="https://membrana.io" rel='noopener noreferrer' className="nav-link d-none d-md-flex">
-        <Container fluid className="h-100">
+        <Container fluid className="h-100 justify-content-center">
           <Row className="h-100">
             <Col xs="12" className="align-self-center">
               <Container fluid className="align-middle">

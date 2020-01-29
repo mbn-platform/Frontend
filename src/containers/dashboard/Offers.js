@@ -96,12 +96,12 @@ class Offers extends React.Component {
               </div>
               <div className="table_requests_control_btns offer_controls">
                 <a onClick={onAcceptClick}
-                  className="table_requests_yes table_requests_btn" href=""><u><FormattedMessage
+                  className="table_requests_yes table_requests_btn" href="# "><u><FormattedMessage
                     id="yes"
                     defaultMessage="yes"
                   /></u></a>
                 <a onClick={onRejectClick}
-                  className="table_requests_no table_requests_btn" href=""><u><FormattedMessage
+                  className="table_requests_no table_requests_btn" href="# "><u><FormattedMessage
                     id="no"
                     defaultMessage="no"
                   /></u></a>
@@ -125,7 +125,7 @@ class Offers extends React.Component {
               <div className="table_requests_control_btns offer_controls">
                 <a
                   onClick={onClick}
-                  className="table_requests_yes table_requests_btn" href=""><u><FormattedMessage
+                  className="table_requests_yes table_requests_btn" href="# "><u><FormattedMessage
                     id="yes"
                     defaultMessage="yes"
                   /></u></a>
