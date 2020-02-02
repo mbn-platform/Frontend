@@ -1,5 +1,12 @@
 {
   "extends": "react-app",
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "moduleDirectory": ["node_modules", "src/"]
+      }
+    }
+  },
   "rules": {
     "curly": "error",
     "indent": [
