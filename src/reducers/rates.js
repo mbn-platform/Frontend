@@ -1,10 +1,8 @@
-import { UPDATE_EXCHANGE_RATES } from '../actions/terminal';
+import { reducerCreator } from 'generic/util';
+import { UPDATE_EXCHANGE_RATES } from 'actions/terminal';
 
-export default function rates(state = null, action) {
-  switch(action.type) {
-    case UPDATE_EXCHANGE_RATES:
-      return action.rates;
-    default:
-      return state;
-  }
-}
+const reducerList = {
+  [UPDATE_EXCHANGE_RATES]: (_, { rates }) => rates,
+};
+
+export default reducerCreator(null, reducerList);
