@@ -1,10 +1,8 @@
-import { UPDATE_SELECTION } from '../actions/selection';
+import { reducerCreator } from 'generic/util';
+import { UPDATE_SELECTION } from 'actions/selection';
 
-export default (state = null, action) => {
-  switch (action.type) {
-    case UPDATE_SELECTION:
-      return action.selection;
-    default:
-      return state;
-  }
+const reducerList = {
+  [UPDATE_SELECTION]: (state, { selection }) => selection,
 };
+
+export default reducerCreator(null, reducerList);
