@@ -1,10 +1,8 @@
-import {UPDATE_RATINGS} from '../actions/terminal';
+import { reducerCreator } from 'generic/util';
+import { UPDATE_RATINGS } from 'actions/terminal';
 
-export default function ratings(state = [], action) {
-  switch(action.type) {
-    case UPDATE_RATINGS:
-      return action.rating;
-    default:
-      return state;
-  }
-}
+const reducerList = {
+  [UPDATE_RATINGS]: (_, { rating }) => rating,
+};
+
+export default reducerCreator([], reducerList);
