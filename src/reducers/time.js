@@ -1,10 +1,8 @@
-import { GET_TIME } from '../actions/time';
+import { reducerCreator } from 'generic/util';
+import { GET_TIME } from 'actions/time';
 
-export default function(state = Date.now(), action) {
-  switch(action.type) {
-    case GET_TIME:
-      return action.time;
-    default:
-      return state;
-  }
-}
+const reducerList = {
+  [GET_TIME]: (_, { time }) => time,
+};
+
+export default reducerCreator(Date.now(), reducerList);
