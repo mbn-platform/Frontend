@@ -1,61 +1,64 @@
-import { EXCHANGE_MARKETS, EXCHANGE_RATES, UPDATE_MARKET_SUMMARIES, EXCHANGE_RATES_ALL } from '../actions/terminal';
-import { UPDATE_EXCHANGES } from '../actions/exchanges';
-export const EXCHANGE_BITTREX = 'bittrex';
-export const EXCHANGE_CURRENCIES = 'EXCHANGE_CURRENCIES';
-export default function reducer(exchangesInfo = {}, action) {
-  switch(action.type) {
-    case EXCHANGE_CURRENCIES: {
-      const currencies = action.currencies;
-      return {...exchangesInfo, [action.exchange]: {...exchangesInfo[action.exchange], currencies}};
-    }
-    case EXCHANGE_MARKETS: {
-      const exchange = {...exchangesInfo[action.exchange]};
-      action.markets.forEach(m => {
-        const [base, second] = m.symbol.split('-');
-        m.base = base;
-        m.second = second;
-        m.change = m.last / m.prevDay * 100 - 100;
+import { reducerCreator } from 'generic/util';
+import { EXCHANGE_MARKETS, EXCHANGE_RATES, UPDATE_MARKET_SUMMARIES, EXCHANGE_RATES_ALL } from 'actions/terminal';
+import { UPDATE_EXCHANGES, EXCHANGE_CURRENCIES } from 'actions/exchanges';
+
+const reducerList = {
+  [EXCHANGE_CURRENCIES]: (state, { exchange, currencies }) => ({
+    ...state, [exchange]: { ...state[exchange], currencies }
+  }),
+  [EXCHANGE_MARKETS]: (state, { exchange, markets }) => {
+    const newExchange = { ...state[exchange] };
+    markets.forEach(m => {
+      const [base, second] = m.symbol.split('-');
+      m.base = base;
+      m.second = second;
+      m.change = m.last / m.prevDay * 100 - 100;
+    });
+    newExchange.markets = markets;
+
+    return { ...state, [exchange]: newExchange };
+  },
+  [EXCHANGE_RATES]: (state, { exchange, rates }) => {
+    const newExchange = state[exchange] || {};
+    const newRates = { ...newExchange.rates };
+    rates.forEach(r => {
+      newRates[r[0]] = r[1];
+    });
+
+    return { ...state, [exchange]: { ...state[exchange], rates: newRates }};
+  },
+  [EXCHANGE_RATES_ALL]: (state, { rates }) => {
+    const exchanges = Object.keys(rates);
+    for (const ex of exchanges) {
+      const action = { type: EXCHANGE_RATES, exchange: ex, rates: rates[ex] };
+      const reducer = reducerList[action.type];
+
+      state = reducer(state, {
+        type: EXCHANGE_RATES,
+        exchange: ex,
+        rates: rates[ex],
       });
-      exchange.markets = action.markets;
-      return {...exchangesInfo, [action.exchange]: exchange};
     }
-    case EXCHANGE_RATES: {
-      const exchange = exchangesInfo[action.exchange] || {};
-      const rates = {...exchange.rates};
-      action.rates.forEach(r => {
-        rates[r[0]] = r[1];
-      });
-      return {...exchangesInfo, [action.exchange]: {...exchangesInfo[action.exchange], rates}};
-    }
-    case EXCHANGE_RATES_ALL: {
-      const exchanges = Object.keys(action.rates);
-      for (const ex of exchanges) {
-        exchangesInfo = reducer(exchangesInfo, {
-          type: EXCHANGE_RATES,
-          exchange: ex,
-          rates: action.rates[ex],
-        });
-      }
-      return {...exchangesInfo, exchanges};
-    }
-    case UPDATE_EXCHANGES: {
-      return {...exchangesInfo, exchanges: action.exchanges};
-    }
-    case UPDATE_MARKET_SUMMARIES: {
-      const summaries = action.summaries.map(market => {
-        const currencies = market.MarketName.split('-');
-        return {
-          MarketCurrency: currencies[1],
-          BaseCurrency: currencies[0],
-          Price: market.Last,
-          MarketName: market.MarketName,
-          Volume: market.Volume,
-          Change: market.Last / market.PrevDay * 100 - 100,
-        };
-      });
-      return {...exchangesInfo, bittrex: {...exchangesInfo.bittrex, summaries}};
-    }
-    default:
-      return exchangesInfo;
-  }
-}
+
+    return { ...state, exchanges };
+  },
+  [UPDATE_EXCHANGES]: (state, { exchanges }) => ({ ...state, exchanges }),
+  [UPDATE_MARKET_SUMMARIES]: (state, { summaries }) => {
+    const newSummaries = summaries.map(market => {
+      const currencies = market.MarketName.split('-');
+
+      return {
+        MarketCurrency: currencies[1],
+        BaseCurrency: currencies[0],
+        Price: market.Last,
+        MarketName: market.MarketName,
+        Volume: market.Volume,
+        Change: market.Last / market.PrevDay * 100 - 100,
+      };
+    });
+
+    return { ...state, bittrex: { ...state.bittrex, summaries: newSummaries }};
+  },
+};
+
+export default reducerCreator({}, reducerList);
