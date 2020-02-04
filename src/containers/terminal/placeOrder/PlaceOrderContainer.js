@@ -1,6 +1,5 @@
 import BigNumber from 'bignumber.js';
 import React from 'react';
-import { injectIntl} from 'react-intl';
 import { connect } from 'react-redux';
 import { PlaceOrder } from './PlaceOrder';
 import { OrderType } from './PlaceOrderType';
@@ -375,4 +374,4 @@ function floorBinance(string, step) {
   }
 }
 
-export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(PlaceOrderContainer));
+export default connect(mapStateToProps, mapDispatchToProps)(PlaceOrderContainer);
