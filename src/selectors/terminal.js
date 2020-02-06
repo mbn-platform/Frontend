@@ -1,27 +1,54 @@
 import { createSelector } from 'reselect';
+import * as R from 'ramda';
 
-const terminalSelector = state => state.terminal;
-const contractsSelector = state => state.contracts.current;
-const apiKeysSelector = state => state.apiKeys.ownKeys;
-const userSelector = state => state.auth.profile;
+import { currentContractsSelector } from './contracts';
+import { ownKeysSelector } from './apiKeys';
+import { profileSelector } from './auth';
 
-const groupSelector = createSelector(
+const terminalSelector = R.prop('terminal');
+
+export const groupSelector = createSelector(
   terminalSelector,
-  (terminal) => terminal.assetGroup,
+  R.prop('assetGroup'),
+);
+
+export const exchangeSelector = createSelector(
+  terminalSelector,
+  R.prop('exchange'),
+);
+
+export const fundSelector = createSelector(
+  terminalSelector,
+  R.prop('fund'),
+);
+
+export const marketSelector = createSelector(
+  terminalSelector,
+  R.prop('market'),
+);
+
+export const intervalSelector = createSelector(
+  terminalSelector,
+  R.prop('interval'),
+);
+
+export const assetGroupSelector = createSelector(
+  terminalSelector,
+  R.prop('assetGroup'),
 );
 
 export const fundsSelector = createSelector(
-  contractsSelector,
-  apiKeysSelector,
+  currentContractsSelector,
+  ownKeysSelector,
   groupSelector,
-  userSelector,
-  (contracts, apiKeys, assetGroup, user) => {
+  profileSelector,
+  (contracts, apiKeys, assetGroup, profile) => {
     let funds;
 
     if (assetGroup) {
       funds = contracts.filter((c) => assetGroup.contracts.includes(c._id));
     } else {
-      funds = apiKeys.concat(contracts.filter(contract => contract.to._id === user._id));
+      funds = apiKeys.concat(contracts.filter(contract => contract.to._id === profile._id));
     }
 
     return funds;

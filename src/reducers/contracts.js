@@ -1,5 +1,5 @@
 import { makeId, reducerCreator } from 'generic/util';
-import { CONTRACT_STATE_VERIFIED } from 'constants';
+import { CONTRACT_STATE_VERIFIED } from '../constants';
 import {
   RATE_CONTRACT, FETCH_CONTRACTS, UPDATE_CONTRACT_BALANCE,
   FINISH_CONTRACT, UPDATE_CONTRACT_TOTAL_BALANCE,
