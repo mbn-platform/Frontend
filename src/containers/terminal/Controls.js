@@ -3,13 +3,13 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { FormattedMessage } from 'react-intl';
-import isNull from 'lodash/isNull';
+import { isNil, compose } from 'ramda';
 
-import FundSelect from '../../components/FundSelect';
-import GroupContractSelect from '../../components/GroupContractSelect';
-import GroupSelect from '../../components/GroupSelect';
-import DropdownSelect from '../../components/DropdownSelect';
-import Checkbox from '../../components/Checkbox';
+import FundSelect from 'components/FundSelect';
+import GroupContractSelect from 'components/GroupContractSelect';
+import GroupSelect from 'components/GroupSelect';
+import DropdownSelect from 'components/DropdownSelect';
+import Checkbox from 'components/Checkbox';
 import MarketSelect from './MarketSelect';
 import {
   selectExchange,
@@ -19,10 +19,16 @@ import {
   selectAssetGroup,
   getExchangeMarkets,
   selectControlsByExchange,
-} from '../../actions/terminal';
-import { showInfoModal, closeInfoModal } from '../../actions/modal';
-import { getAssetGroups } from '../../actions/assetGroup';
-import { fundsSelector } from 'selectors/terminal';
+} from 'actions/terminal';
+import { showInfoModal, closeInfoModal } from 'actions/modal';
+import { getAssetGroups } from 'actions/assetGroup';
+import { assetGroupsSelector } from 'selectors/assetGroups';
+import {
+  fundsSelector, exchangeSelector, fundSelector,
+  marketSelector, intervalSelector, assetGroupSelector,
+} from 'selectors/terminal';
+import { loggedInSelector } from 'selectors/auth';
+import { exchangesSelector } from 'selectors/exchangesInfo';
 
 const TIME_RANGE_OPTIONS = ['1 MIN', '5 MIN', '30 MIN', '1 H', '4 H', '12 H', '1 D', '1 W'];
 
@@ -30,7 +36,7 @@ class Controls extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      assetGroupEnabled: !isNull(props.assetGroup),
+      assetGroupEnabled: !isNil(props.assetGroup),
     };
   }
 
@@ -60,7 +66,7 @@ class Controls extends React.Component {
     }
 
     if (prevProps.assetGroup && prevProps.assetGroup !== this.props.assetGroup) {
-      this.setState({ assetGroupEnabled: !isNull(this.props.assetGroup) });
+      this.setState({ assetGroupEnabled: !isNil(this.props.assetGroup) });
     }
   };
 
@@ -103,17 +109,21 @@ class Controls extends React.Component {
   };
 
   render() {
-    const { assetGroup, assetGroups, funds } = this.props;
+    const {
+      assetGroup, assetGroups, fund, funds, isFullScreenEnabled,
+      selectFund, exchange, exchanges, market, interval, selectInterval,
+    } = this.props;
+    const { assetGroupEnabled } = this.state;
 
     return (
-      <div className={classNames('row', 'dropdowns', {'controls-fullscreen-mode': this.props.isFullScreenEnabled})}>
-        <div className={classNames('asset_groups_checkbox_wr', { 'active': this.state.assetGroupEnabled })}>
+      <div className={classNames('row', 'dropdowns', { 'controls-fullscreen-mode': isFullScreenEnabled })}>
+        <div className={classNames('asset_groups_checkbox_wr', { 'active': assetGroupEnabled })}>
           <Checkbox
-            checked={this.state.assetGroupEnabled}
+            checked={assetGroupEnabled}
             title="Asset Group"
             onToggle={this.onAssetGroupToggle}
           />
-          {this.state.assetGroupEnabled && assetGroup && (
+          {assetGroupEnabled && assetGroup && (
             <GroupSelect
               selectedGroup={assetGroup}
               assetGroups={assetGroups}
@@ -124,89 +134,72 @@ class Controls extends React.Component {
             />
           )}
         </div>
-        {this.state.assetGroupEnabled && assetGroup ? (
+        {assetGroupEnabled && assetGroup ? (
           <GroupContractSelect
             contracts={funds}
             group={assetGroup}
-            selectedFund={this.props.fund}
-            onContractSelect={this.props.selectFund}
+            selectedFund={fund}
+            onContractSelect={selectFund}
           />
         ) : (
           <FundSelect
             title="apiKey"
             funds={funds}
-            selectedFund={this.props.fund}
-            userId={this.props.userId}
+            selectedFund={fund}
             onApiKeySelect={this.handleFundSelect}
           />
         )}
         <DropdownSelect
-          selected={this.props.exchange}
-          items={this.props.exchanges}
+          selected={exchange}
+          items={exchanges}
           targetId="exchange_select"
           elementClassName="exchange__switch"
           dropdownClassName="exchange"
           onItemSelect={this.handleExchangeSelect}
         />
         <MarketSelect
-          market={this.props.market}
+          market={market}
           targetId="market_select"
         />
         <DropdownSelect
-          selected={this.props.interval}
+          selected={interval}
           items={TIME_RANGE_OPTIONS}
           targetId="time_select"
           elementClassName="time__switch"
           dropdownClassName="time"
-          onItemSelect={this.props.selectInterval}
+          onItemSelect={selectInterval}
         />
       </div>
     );
   }
 }
 
-const mapStateToProps = state => {
-  const {
-    auth,
-    exchangesInfo: {
-      exchanges = [],
-    },
-    terminal: {
-      market,
-      exchange,
-      fund,
-      interval,
-      assetGroup,
-    },
-    assetGroups,
-  } = state;
-  const funds = fundsSelector(state);
-  return {
-    funds,
-    userId: auth && auth.profile ? auth.profile._id : undefined,
-    exchange,
-    exchanges,
-    fund,
-    market,
-    interval,
-    assetGroups: auth && auth.loggedIn ? assetGroups : null,
-    assetGroup,
-    loggedIn: auth.loggedIn,
-  };
-};
+const mapStateToProps = state => ({
+  fund: fundSelector(state),
+  funds: fundsSelector(state),
+  market: marketSelector(state),
+  interval: intervalSelector(state),
+  loggedIn: loggedInSelector(state),
+  exchange: exchangeSelector(state),
+  exchanges: exchangesSelector(state),
+  assetGroup: assetGroupSelector(state),
+  assetGroups: assetGroupsSelector(state),
+});
 
 const mapDispatchToProps = {
-  selectInterval,
   selectFund,
-  selectExchange,
-  selectControlsByExchange,
   selectMarket,
-  getAssetGroups,
-  selectAssetGroup,
   showInfoModal,
   closeInfoModal,
+  selectInterval,
+  getAssetGroups,
+  selectExchange,
+  selectAssetGroup,
   getExchangeMarkets,
+  selectControlsByExchange,
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Controls));
-
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withRouter,
+)(Controls);
