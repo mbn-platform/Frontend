@@ -22,6 +22,7 @@ import {
 } from '../../actions/terminal';
 import { showInfoModal, closeInfoModal } from '../../actions/modal';
 import { getAssetGroups } from '../../actions/assetGroup';
+import { fundsSelector } from 'selectors/terminal';
 
 const TIME_RANGE_OPTIONS = ['1 MIN', '5 MIN', '30 MIN', '1 H', '4 H', '12 H', '1 D', '1 W'];
 
@@ -102,13 +103,7 @@ class Controls extends React.Component {
   };
 
   render() {
-    const { assetGroup, assetGroups } = this.props;
-    let funds;
-    if (assetGroup) {
-      funds = this.props.contracts.filter((c) => assetGroup.contracts.includes(c._id));
-    } else {
-      funds = this.props.apiKeys.concat(this.props.contracts.filter(contract => contract.to._id === this.props.userId));
-    }
+    const { assetGroup, assetGroups, funds } = this.props;
 
     return (
       <div className={classNames('row', 'dropdowns', {'controls-fullscreen-mode': this.props.isFullScreenEnabled})}>
@@ -179,27 +174,19 @@ const mapStateToProps = state => {
     terminal: {
       market,
       exchange,
-      ticker,
       fund,
       interval,
       assetGroup,
     },
-    apiKeys: {
-      ownKeys: apiKeys,
-    },
-    contracts: {
-      current: contracts,
-    },
     assetGroups,
   } = state;
+  const funds = fundsSelector(state);
   return {
+    funds,
     userId: auth && auth.profile ? auth.profile._id : undefined,
     exchange,
     exchanges,
-    contracts,
     fund,
-    apiKeys,
-    ticker,
     market,
     interval,
     assetGroups: auth && auth.loggedIn ? assetGroups : null,

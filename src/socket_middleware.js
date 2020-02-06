@@ -1,16 +1,22 @@
 import io from 'socket.io-client';
+
 import {
   SELECT_MARKET,
   SELECT_EXCHANGE,
   EXCHANGE_MARKETS,
   TRADING_DATA_STOP,
+  UPDATE_ORDER,
+  updateOrderBook,
+  updateHistory,
+  updateRates,
+  updateTicker,
+  selectMarket,
 } from './actions/terminal';
 import { LOGGED_OUT, LOGGED_IN } from './actions/auth';
-import {updateKeyBalance} from './actions/apiKeys';
-import {updateOrderBook, updateHistory, updateRates, updateTicker, selectMarket} from './actions/terminal';
-import { UPDATE_ORDER } from './actions/terminal';
+import { updateKeyBalance } from './actions/apiKeys';
 import { addQuickNotif } from './actions/quickNotif';
 import { ACCEPT_OFFER, NEW_OFFER, CANCEL_OFFER, REJECT_OFFER, VERIFY_OFFER, TIMEOUT_OFFER } from './actions/offers';
+
 let socket;
 
 function createSocket(store) {

@@ -111,6 +111,8 @@ const reducerList = {
     if (fund && fund._id === fundId) {
       return { ...state, orders };
     }
+
+    return state;
   },
   [actions.GET_GROUP_ORDER]: (state, action) => {
     const { open, closed } = state.orders;
@@ -202,6 +204,8 @@ const reducerList = {
       }
       return { ...state, orders };
     }
+
+    return state;
   },
   [actions.CHECK_URL_VALIDITY]: (state, { isValidUrl }) => ({ ...state, isValidUrl }),
 };

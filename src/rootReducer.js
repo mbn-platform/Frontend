@@ -1,6 +1,8 @@
+import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
+import { LOGGED_OUT } from './actions/auth';
 import apiKeys from './reducers/apiKeys';
 import contracts from './reducers/contracts';
 import offers from './reducers/offers';
@@ -17,8 +19,6 @@ import rates from './reducers/rates';
 import modal from './reducers/modal';
 import profile from './reducers/profile';
 import exchangesInfo from './reducers/exchangesInfo';
-import { combineReducers } from 'redux';
-import { LOGGED_OUT } from './actions/auth';
 import ratings from './reducers/ratings';
 import stakeInfo from './reducers/stakeInfo';
 import stakeTr from './reducers/stakeTr';
@@ -32,6 +32,12 @@ const terminalPersistConfig = {
   key: 'terminal',
   storage,
   blacklist: ['orderBook', 'history', 'ticker', 'isValidUrl'],
+};
+
+const rootPersistConfig = {
+  key: 'root',
+  storage,
+  whitelist: ['auth', 'assetGroups'],
 };
 
 const combined = combineReducers({
@@ -97,12 +103,6 @@ const rootReducer = (state, action) => {
     default:
       return newState;
   }
-};
-
-const rootPersistConfig = {
-  key: 'root',
-  storage,
-  whitelist: ['auth', 'assetGroups'],
 };
 
 export default persistReducer(rootPersistConfig, rootReducer);
