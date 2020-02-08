@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { Col } from 'reactstrap';
 
@@ -27,4 +27,4 @@ Checkbox.propTypes = {
   onToggle: PropTypes.func.isRequired,
 };
 
-export default Checkbox;
+export default memo(Checkbox);

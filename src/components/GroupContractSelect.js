@@ -2,6 +2,7 @@ import React from 'react';
 import { Popover } from 'reactstrap';
 import classNames from 'classnames';
 import { FormattedMessage } from 'react-intl';
+import { path } from 'ramda';
 
 class GroupContractSelect extends React.Component {
   state = { isOpen: false };
@@ -105,7 +106,7 @@ class GroupContractSelect extends React.Component {
       : (
         <FormattedMessage id="userTrustToMe"
           defaultMessage="{name} trusted to me"
-          values={{ name: fund.from.name }}
+          values={{ name: path(['from', 'name'], fund) }}
         />
       )
   )
