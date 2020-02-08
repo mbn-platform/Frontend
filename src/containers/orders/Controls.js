@@ -3,28 +3,33 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import isNull from 'lodash/isNull';
+import { isNil } from 'ramda';
 
+import FundSelect from 'components/FundSelect';
+import GroupContractSelect from 'components/GroupContractSelect';
+import GroupSelect from 'components/GroupSelect';
+import DropdownSelect from 'components/DropdownSelect';
+import Checkbox from 'components/Checkbox';
 import {
   selectExchange,
   getExchangeMarkets,
-  selectMarket,
   selectFund,
+  selectMarket,
   selectAssetGroup,
   selectControlsByExchange,
-} from '../../actions/terminal';
-import { showInfoModal, closeInfoModal } from '../../actions/modal';
-import { getAssetGroups } from '../../actions/assetGroup';
-import FundSelect from '../../components/FundSelect';
-import GroupContractSelect from '../../components/GroupContractSelect';
-import GroupSelect from '../../components/GroupSelect';
-
-import DropdownSelect from '../../components/DropdownSelect';
-import Checkbox from '../../components/Checkbox';
+} from 'actions/terminal';
+import { showInfoModal, closeInfoModal } from 'actions/modal';
+import { getAssetGroups } from 'actions/assetGroup';
+import {
+  fundsSelector, assetGroupSelector, fundSelector,
+  marketSelector, exchangeSelector,
+} from 'selectors/terminal';
+import { assetGroupsSelector } from 'selectors/assetGroups';
+import { exchangesSelector } from 'selectors/exchangesInfo';
 
 class Controls extends React.Component {
   state = {
-    assetGroupEnabled: !isNull(this.props.assetGroup),
+    assetGroupEnabled: !isNil(this.props.assetGroup),
   };
 
   componentDidMount = () => {
@@ -33,7 +38,7 @@ class Controls extends React.Component {
 
   componentDidUpdate = (prevProps) => {
     if (prevProps.assetGroup && prevProps.assetGroup !== this.props.assetGroup) {
-      this.setState({ assetGroupEnabled: !isNull(this.props.assetGroup) });
+      this.setState({ assetGroupEnabled: !isNil(this.props.assetGroup) });
     }
   };
 
@@ -44,7 +49,7 @@ class Controls extends React.Component {
       this.setState({ assetGroupEnabled: checked });
       if (checked) {
         this.handleGroupSelect(this.props.assetGroups[0]._id);
-        this.props.onApiKeySelect(null);
+        this.props.selectFund(null);
       } else {
         this.props.selectAssetGroup(null);
       }
@@ -56,7 +61,7 @@ class Controls extends React.Component {
     const group = assetGroups.find(group => group._id === groupId);
 
     if (group) {
-      this.props.selectAssetGroup(group);
+      this.props.selectAssetGroup(group._id);
       this.props.selectExchange(group.exchange);
       this.props.getExchangeMarkets(group.exchange);
       this.props.selectMarket(this.props.market);
@@ -92,24 +97,21 @@ class Controls extends React.Component {
   };
 
   render() {
-    const { assetGroup, assetGroups, apiKeys, contracts, userId } = this.props;
-
-    let funds;
-    if (assetGroup) {
-      funds = contracts.filter((c) => assetGroup.contracts.includes(c._id));
-    } else {
-      funds = apiKeys.concat(contracts.filter(contract => contract.to._id === userId));
-    }
+    const {
+      assetGroup, assetGroups, fund, funds,
+      selectFund, exchange, exchanges,
+    } = this.props;
+    const { assetGroupEnabled } = this.state;
 
     return (
       <div className="row dropdowns pt-2">
-        <div className={classNames('asset_groups_checkbox_wr', { 'active': this.state.assetGroupEnabled })}>
+        <div className={classNames('asset_groups_checkbox_wr', { 'active': assetGroupEnabled })}>
           <Checkbox
-            checked={this.state.assetGroupEnabled}
+            checked={assetGroupEnabled}
             title="Asset Group"
             onToggle={this.onAssetGroupToggle}
           />
-          {this.state.assetGroupEnabled && assetGroup && (
+          {assetGroupEnabled && assetGroup && (
             <GroupSelect
               selectedGroup={assetGroup}
               assetGroups={assetGroups}
@@ -120,25 +122,24 @@ class Controls extends React.Component {
             />
           )}
         </div>
-        {this.state.assetGroupEnabled && assetGroup ? (
+        {assetGroupEnabled && assetGroup ? (
           <GroupContractSelect
             contracts={funds}
             group={assetGroup}
-            selectedFund={this.props.fund}
-            onContractSelect={this.props.onApiKeySelect}
+            selectedFund={fund}
+            onContractSelect={selectFund}
           />
         ) : (
           <FundSelect
             title="apiKey"
             funds={funds}
-            selectedFund={this.props.fund}
-            userId={this.props.userId}
+            selectedFund={fund}
             onApiKeySelect={this.handleFundSelect}
           />
         )}
         <DropdownSelect
-          selected={this.props.exchange}
-          items={this.props.exchanges}
+          selected={exchange}
+          items={exchanges}
           targetId="exchange_select"
           elementClassName="exchange__switch"
           dropdownClassName="exchange"
@@ -149,20 +150,25 @@ class Controls extends React.Component {
   }
 }
 
-const mapStateToProps = ({ assetGroups, terminal }) => ({
-  assetGroup: terminal.assetGroup,
-  assetGroups,
+const mapStateToProps = (state) => ({
+  fund: fundSelector(state),
+  funds: fundsSelector(state),
+  market: marketSelector(state),
+  exchange: exchangeSelector(state),
+  exchanges: exchangesSelector(state),
+  assetGroup: assetGroupSelector(state),
+  assetGroups: assetGroupsSelector(state),
 });
 
 const mapDispatchToProps = {
-  selectExchange,
-  getExchangeMarkets,
-  selectMarket,
   selectFund,
-  getAssetGroups,
-  selectAssetGroup,
+  selectMarket,
   showInfoModal,
   closeInfoModal,
+  getAssetGroups,
+  selectExchange,
+  selectAssetGroup,
+  getExchangeMarkets,
   selectControlsByExchange,
 };
 

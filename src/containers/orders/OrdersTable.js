@@ -1,10 +1,14 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import classNames from 'classnames';
-import ReactTable from '../../components/SelectableReactTable';
-import { OrderProgress } from '../../components/OrderProgress';
-import {sortData, onColumnSort, classNameForColumnHeader}  from '../../generic/terminalSortFunctions';
 import { FormattedMessage } from 'react-intl';
-import createMqProvider, {querySchema} from '../../MediaQuery';
+
+import ReactTable from 'components/SelectableReactTable';
+import { OrderProgress } from 'components/OrderProgress';
+import { sortData, onColumnSort, classNameForColumnHeader } from 'generic/terminalSortFunctions';
+import createMqProvider, { querySchema } from 'MediaQuery';
+import { getGroupOrder, cancelOrder } from 'actions/terminal';
+import * as selectors from 'selectors/terminal';
 
 const { Screen, MediaQuery } = createMqProvider(querySchema);
 
@@ -296,4 +300,15 @@ const OrderType = ({ original }) => {
   );
 };
 
-export default OrdersTable;
+const mapStateToProps = state => ({
+  fund: selectors.fundSelector(state),
+  orders: selectors.ordersSelector(state),
+  assetGroup: selectors.assetGroupSelector(state),
+});
+
+const mapDispatchToProps = {
+  getGroupOrder,
+  cancelOrder,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(OrdersTable);
