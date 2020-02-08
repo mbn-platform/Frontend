@@ -56,7 +56,7 @@ export const selectControlsByExchange = exchange => {
     dispatch(selectExchange(exchange));
 
     const {
-      terminal: { assetGroup },
+      terminal: { groupId },
       apiKeys: { ownKeys },
       contracts: { current },
       auth: { profile },
@@ -67,9 +67,9 @@ export const selectControlsByExchange = exchange => {
     const fund = funds.find(k => k.exchange === exchange);
     const groupExists = assetGroups.find(g => g.exchange === exchange);
 
-    if (assetGroup) {
+    if (groupId) {
       if (groupExists) {
-        dispatch(selectAssetGroup(groupExists));
+        dispatch(selectAssetGroup(groupId));
       } else {
         dispatch(selectAssetGroup(null));
         dispatch(fund ? selectFund(fund) : selectFund(null));
@@ -322,38 +322,6 @@ export function placeOrder(order) {
         }
       });
   };
-  //apiPost(url, null, order)
-  //.then(order => {
-  //alert('Order has been placed');
-  //dispatch({
-  //type: PLACE_ORDER,
-  //order,
-  //});
-  //dispatch(fetchDashboardData());
-  //})
-  //.catch(err => {
-  //if(err.apiErrorCode) {
-  //switch(err.apiErrorCode) {
-  //case ApiError.FORBIDDEN:
-  //alert('The key does not allow to trade this pair');
-  //break;
-  //case ApiError.EXCHANGE_ERROR:
-  //alert('Exchange error');
-  //break;
-  //case ApiError.INSUFFICIENT_FUNDS:
-  //alert('Not enough funds');
-  //break;
-  //case ApiError.MIN_TRADE_REQUIREMENT_NOT_MET:
-  //alert('Order size is less than minimal order size for this market');
-  //break;
-  //default:
-  //console.log('unhandled api error', err.apiErrorCode);
-  //}
-  //} else {
-  //console.log('error');
-  //}
-  //});
-  //};
 }
 
 export const updateRatings = () => {
@@ -390,7 +358,7 @@ export const updateTicker = (exchange, market, ticker) => ({
   exchange, market, ticker,
 });
 
-export const selectAssetGroup = group => ({
+export const selectAssetGroup = groupId => ({
   type: SELECT_ASSET_GROUP,
-  group,
+  groupId,
 });

@@ -1,44 +1,39 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Container, Row, Col } from 'reactstrap';
 import classNames from 'classnames';
-import {connect} from 'react-redux';
 
-class HeaderStatus extends React.Component {
+import { exchangeRatesSelector, exchangeMarketsSelector } from 'selectors/terminal';
 
-  render() {
-    const rates = this.props.rates || {};
-    const markets = this.props.markets || [];
-    return (
-      <header className="header-status">
-        <Container fluid className="h-100">
-          <Row className="h-100 justify-content-between">
-            <Col xs="12" sm="12" md="8" lg="7" xl="4" className="curses-wrap row">
-              <Rate
-                pair="BTC/USDT"
-                val={rates['USDT-BTC'] ? Math.floor(rates['USDT-BTC']) : ''}
-                marketInfo={markets.find(m => m.symbol === 'USDT-BTC')}
-              />
-              <Rate
-                pair="ETH/USDT"
-                val={rates['USDT-ETH'] ? rates['USDT-ETH'].toFixed(2) : ''}
-                marketInfo={markets.find(m => m.symbol === 'USDT-ETH')}
-              />
-              <Rate
-                pair="ETH/BTC"
-                val={rates['BTC-ETH'] ? rates['BTC-ETH'].toFixed(4) : ''}
-                marketInfo={markets.find(m => m.symbol === 'BTC-ETH')}
-              />
-            </Col>
-          </Row>
-        </Container>
-      </header>
-    );
-  }
-}
+const HeaderStatus = ({ rates, markets }) => (
+  <header className="header-status">
+    <Container fluid className="h-100">
+      <Row className="h-100 justify-content-between">
+        <Col xs="12" sm="12" md="8" lg="7" xl="4" className="curses-wrap row">
+          <Rate
+            pair="BTC/USDT"
+            val={rates['USDT-BTC'] ? Math.floor(rates['USDT-BTC']) : ''}
+            marketInfo={markets.find(m => m.symbol === 'USDT-BTC')}
+          />
+          <Rate
+            pair="ETH/USDT"
+            val={rates['USDT-ETH'] ? rates['USDT-ETH'].toFixed(2) : ''}
+            marketInfo={markets.find(m => m.symbol === 'USDT-ETH')}
+          />
+          <Rate
+            pair="ETH/BTC"
+            val={rates['BTC-ETH'] ? rates['BTC-ETH'].toFixed(4) : ''}
+            marketInfo={markets.find(m => m.symbol === 'BTC-ETH')}
+          />
+        </Col>
+      </Row>
+    </Container>
+  </header>
+);
 
 HeaderStatus.propTypes = {
-  rates: PropTypes.object,
+  rates: PropTypes.shape(),
   markets: PropTypes.array,
 };
 
@@ -57,11 +52,9 @@ const Rate = ({ pair, marketInfo, val }) => {
   );
 };
 
-const mapStateToProps = state => {
-  const {exchangesInfo, terminal: {exchange}} = state;
-  return {
-    ...exchangesInfo[exchange]
-  };
-};
+const mapStateToProps = state => ({
+  rates: exchangeRatesSelector(state),
+  markets: exchangeMarketsSelector(state),
+});
 
 export default connect(mapStateToProps)(HeaderStatus);
