@@ -77,7 +77,7 @@ const reducerList = {
     group,
   }),
   [actions.CLOSE_ADD_CONTRACT_TO_GROUP_MODAL]: (state) => ({
-    ...state, isAddContractModalOpen: true,
+    ...state, isAddContractModalOpen: false,
   }),
 };
 
