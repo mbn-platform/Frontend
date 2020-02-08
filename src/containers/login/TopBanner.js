@@ -18,7 +18,7 @@ export default class TopBanner extends React.PureComponent {
   }
 
   render() {
-    if (!this.props.auth || !this.props.auth.loggedIn) {
+    if (!this.props.loggedIn) {
       return ReactDOM.createPortal(
         <Link to="/login"
           className="top_banner"

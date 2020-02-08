@@ -73,7 +73,7 @@ class Controls extends React.Component {
   handleGroupSelect = groupId => {
     const group = this.props.assetGroups.find(group => group._id === groupId);
     if (group) {
-      this.props.selectAssetGroup(group);
+      this.props.selectAssetGroup(group._id);
       this.props.selectExchange(group.exchange);
       this.props.getExchangeMarkets(group.exchange);
       this.props.selectMarket(this.props.market);

@@ -35,7 +35,7 @@ export class PlaceOrder extends React.PureComponent {
     const minTradeSize = this.props.marketInfo ? this.props.marketInfo.minTradeSize : '';
     return (
       <Col sm="12" md="12" lg="4">
-        <div className={classNames('buysell', { active: this.props.assetGroup })}>
+        <div className={classNames('buysell', { active: this.props.active })}>
           <PlaceOrderHeader selectedTab={this.props.selectedOrderType} onClick={this.props.onOrderTypeSelected} />
           <Row>
             <Col>
@@ -101,12 +101,12 @@ export class PlaceOrder extends React.PureComponent {
           </Row>
           <Row>
             <Col>
-              {this.props.selectedOrderType === 'stop-limit' && this.props.auth.loggedIn ? (
+              {this.props.selectedOrderType === 'stop-limit' && this.props.loggedIn ? (
                 <LockButton
                   offsetTop="10px"
                   offsetLeft="-25px"
                   placement="right"
-                  {...this.props.auth.profile.billing.algoOrders}
+                  {...this.props.profile.billing.algoOrders}
                 >
                   <PlaceOrderButton
                     onClick={this.props.onPlaceOrderClick}

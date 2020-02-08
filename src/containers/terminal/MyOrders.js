@@ -111,8 +111,8 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps =  dispatch => ({
-  cancelOrder: order => dispatch(cancelOrder(order)),
-});
+const mapDispatchToProps = {
+  cancelOrder,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyOrders);
