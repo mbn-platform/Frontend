@@ -1,16 +1,15 @@
-import { createSelector } from 'reselect';
+import { createSelector, createSelectorCreator, defaultMemoize } from 'reselect';
 import * as R from 'ramda';
+import isEqual from 'lodash/isEqual';
 
 import { currentContractsSelector } from './contracts';
+import { assetGroupsSelector } from './assetGroups';
 import { ownKeysSelector } from './apiKeys';
 import { profileSelector } from './auth';
+import { exchangesInfoSelector } from './exchangesInfo';
 
 const terminalSelector = R.prop('terminal');
-
-export const groupSelector = createSelector(
-  terminalSelector,
-  R.prop('assetGroup'),
-);
+export const groupIdSelector = R.path(['terminal', 'groupId']);
 
 export const exchangeSelector = createSelector(
   terminalSelector,
@@ -20,6 +19,11 @@ export const exchangeSelector = createSelector(
 export const fundSelector = createSelector(
   terminalSelector,
   R.prop('fund'),
+);
+
+export const ordersSelector = createSelector(
+  terminalSelector,
+  R.prop('orders'),
 );
 
 export const marketSelector = createSelector(
@@ -32,18 +36,57 @@ export const intervalSelector = createSelector(
   R.prop('interval'),
 );
 
-export const assetGroupSelector = createSelector(
+export const tickerSelector = createSelector(
   terminalSelector,
-  R.prop('assetGroup'),
+  R.prop('ticker'),
 );
 
-export const fundsSelector = createSelector(
+export const isValidUrlSelector = createSelector(
+  terminalSelector,
+  R.prop('isValidUrl'),
+);
+
+export const assetGroupSelector = createSelector(
+  assetGroupsSelector,
+  groupIdSelector,
+  (groups, id) => groups.find(group => group._id === id),
+);
+
+export const controlSelector = createSelector(
+  fundSelector,
+  assetGroupSelector,
+  (fund, group) => fund || group,
+);
+
+export const exchangesByExchangeSelector = createSelector(
+  exchangesInfoSelector,
+  exchangeSelector,
+  (exchangesInfo, exchange) => R.propOr({}, exchange, exchangesInfo),
+);
+
+export const exchangeRatesSelector = createSelector(
+  exchangesByExchangeSelector,
+  R.propOr({}, 'rates'),
+);
+
+export const exchangeMarketsSelector = createSelector(
+  exchangesByExchangeSelector,
+  R.propOr([], 'markets'),
+);
+
+
+const createDeepEqualSelector = createSelectorCreator(
+  defaultMemoize,
+  isEqual,
+);
+
+export const fundsSelector = createDeepEqualSelector(
   currentContractsSelector,
+  assetGroupSelector,
   ownKeysSelector,
-  groupSelector,
   profileSelector,
-  (contracts, apiKeys, assetGroup, profile) => {
-    let funds;
+  (contracts, assetGroup, apiKeys, profile) => {
+    let funds = [];
 
     if (assetGroup) {
       funds = contracts.filter((c) => assetGroup.contracts.includes(c._id));
