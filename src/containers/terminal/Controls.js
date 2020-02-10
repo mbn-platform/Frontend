@@ -33,7 +33,7 @@ class Controls extends React.Component {
     };
   }
 
-  onAssetGroupToggle = (checked) => {
+  onAssetGroupToggle = () => ({ target: { checked } }) => {
     if (!this.props.loggedIn) { return; }
 
     if (checked && this.props.assetGroups.length === 0) {
@@ -114,9 +114,10 @@ class Controls extends React.Component {
       <div className={classNames('row', 'dropdowns', {'controls-fullscreen-mode': this.props.isFullScreenEnabled})}>
         <div className={classNames('asset_groups_checkbox_wr', { 'active': this.state.assetGroupEnabled })}>
           <Checkbox
+            name="assetGroup"
             checked={this.state.assetGroupEnabled}
             title="Asset Group"
-            onToggle={this.onAssetGroupToggle}
+            onChange={this.onAssetGroupToggle}
           />
           {this.state.assetGroupEnabled && assetGroup && (
             <GroupSelect

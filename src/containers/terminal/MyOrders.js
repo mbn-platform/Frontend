@@ -20,8 +20,9 @@ class MyOrders extends React.Component {
   state = {
     tab: OrdersHeader.tabs[0],
     sort: {},
-    pairFilterChecked: false,
-    smallAssetesFilterChecked: false,
+    pairChecked: false,
+    filledChecked: false,
+    smallAssetsChecked: false,
   }
 
   onTabClick = (tab) => {
@@ -30,27 +31,25 @@ class MyOrders extends React.Component {
     }
   }
 
-  onSmallAssetsFilterChange = (checked) => {
-    this.setState({smallAssetesFilterChecked: checked});
-  }
-
-  onPairFilterChange = (checked) => {
-    this.setState({pairFilterChecked: checked});
+  handleToggleCheckbox = (name) => ({ target: { checked } }) => {
+    this.setState({ [`${name}Checked`]: checked });
   }
 
   render() {
-    const { tab } = this.state;
-    const { orders } = this.props;
+    const { tab, pairChecked, filledChecked, smallAssetsChecked } = this.state;
+    const { orders, market } = this.props;
     let data = tab === OrdersHeader.tabs[0] ? orders.open : orders.closed;
+
     return (
       <div className="orders-table chart col-sm-12 col-md-12 col-lg-8">
         <OrdersHeader
-          selectedTab={tab} onClick={this.onTabClick}
-          pairFilterChecked={this.state.pairFilterChecked}
-          onPairFilterChange={this.onPairFilterChange}
-          smallAssetesFilterChecked={this.state.smallAssetesFilterChecked}
-          onSmallAssetsFilterChange={this.onSmallAssetsFilterChange}
-          market={this.props.market}
+          market={market}
+          selectedTab={tab}
+          pairChecked={pairChecked}
+          filledChecked={filledChecked}
+          smallAssetsChecked={smallAssetsChecked}
+          onToggle={this.handleToggleCheckbox}
+          onClick={this.onTabClick}
         />
         <div className="orders-table-tabs">
           <div className={classNames('orders-table-tab', 'active')}>
@@ -66,9 +65,14 @@ class MyOrders extends React.Component {
   renderContent(data) {
     switch (this.state.tab) {
       case OrdersHeader.tabs[0]:
-        if (this.state.pairFilterChecked) {
+        if (this.state.pairChecked) {
           data = data.filter((o) => o.symbol === this.props.market);
         }
+
+        if (this.state.filledChecked) {
+          data = data.filter((o) => o.filled / o.amount === 1);
+        }
+
         return (
           <this.MediaQuery>
             <this.Screen on={(size) => (
@@ -81,9 +85,14 @@ class MyOrders extends React.Component {
           </this.MediaQuery>
         );
       case OrdersHeader.tabs[1]:
-        if (this.state.pairFilterChecked) {
+        if (this.state.pairChecked) {
           data = data.filter((o) => o.symbol === this.props.market);
         }
+
+        if (this.state.filledChecked) {
+          data = data.filter((o) => o.filled / o.amount === 1);
+        }
+
         return (
           <this.MediaQuery>
             <this.Screen on={(size) => (
@@ -95,7 +104,7 @@ class MyOrders extends React.Component {
           </this.MediaQuery>
         );
       case OrdersHeader.tabs[2]:
-        return <Balances fund={this.props.fund} hideSmallAssets={this.state.smallAssetesFilterChecked} />;
+        return <Balances fund={this.props.fund} hideSmallAssets={this.state.smallAssetsChecked} />;
       default:
         return null;
     }

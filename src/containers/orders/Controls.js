@@ -37,7 +37,7 @@ class Controls extends React.Component {
     }
   };
 
-  onAssetGroupToggle = checked => {
+  onAssetGroupToggle = () => ({ target: { checked } }) => {
     if (checked && this.props.assetGroups.length === 0) {
       this.showNoFundsModal();
     } else {
@@ -105,9 +105,10 @@ class Controls extends React.Component {
       <div className="row dropdowns pt-2">
         <div className={classNames('asset_groups_checkbox_wr', { 'active': this.state.assetGroupEnabled })}>
           <Checkbox
+            name="assetGroup"
             checked={this.state.assetGroupEnabled}
             title="Asset Group"
-            onToggle={this.onAssetGroupToggle}
+            onChange={this.onAssetGroupToggle}
           />
           {this.state.assetGroupEnabled && assetGroup && (
             <GroupSelect

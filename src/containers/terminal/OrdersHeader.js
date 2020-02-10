@@ -30,18 +30,28 @@ export class OrdersHeader extends React.PureComponent {
       case OrdersHeader.tabs[0]:
       case OrdersHeader.tabs[1]:
         return (
-          <Checkbox
-            checked={this.props.pairFilterChecked}
-            title={this.props.market}
-            onToggle={this.props.onPairFilterChange}
-          />
+          <React.Fragment>
+            <Checkbox
+              name="pair"
+              checked={this.props.pairChecked}
+              title={this.props.market}
+              onChange={this.props.onToggle}
+            />
+            <Checkbox
+              name="filled"
+              checked={this.props.filledChecked}
+              title={{ id: 'terminal.filled' }}
+              onChange={this.props.onToggle}
+            />
+          </React.Fragment>
         );
       case OrdersHeader.tabs[2]:
         return (
           <Checkbox
-            checked={this.props.smallAssetesFilterChecked}
+            name="smallAssets"
+            checked={this.props.smallAssetsChecked}
             title='Hide small assets'
-            onToggle={this.props.onSmallAssetsFilterChange}
+            onChange={this.props.onToggle}
           />
         );
       default:
@@ -52,9 +62,8 @@ export class OrdersHeader extends React.PureComponent {
 
 OrdersHeader.propTypes = {
   selectedTab: PropTypes.string.isRequired,
-  pairFilterChecked: PropTypes.bool.isRequired,
-  smallAssetesFilterChecked: PropTypes.bool.isRequired,
+  pairChecked: PropTypes.bool.isRequired,
+  smallAssetsChecked: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired,
-  onPairFilterChange: PropTypes.func.isRequired,
-  onSmallAssetsFilterChange: PropTypes.func.isRequired,
+  onToggle: PropTypes.func.isRequired,
 };
