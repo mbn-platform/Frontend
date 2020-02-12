@@ -68,34 +68,13 @@ const combined = combineReducers({
 });
 
 const rootReducer = (state, action) => {
-  switch(action.type) {
-    case LOGGED_OUT: {
-      localStorage.clear();
-      state = undefined;
-      break;
-    }
-    default:
-      break;
-  };
-  let newState = combined(state, action);
-  switch(action.type) {
-    case 'UPDATE_API_KEY_BALANCE': {
-      if(state.terminal.fund && state.terminal.fund._id === action._id) {
-        const fund = newState.apiKeys.ownKeys.find(k => k._id === action._id);
-        newState = {...newState, terminal: {...newState.terminal, fund}};
-      }
-      return newState;
-    }
-    case 'UPDATE_CONTRACT_BALANCE': {
-      if(state.terminal.fund && state.terminal.fund._id === action._id) {
-        const fund = newState.contracts.current.find(c => c._id === action._id);
-        newState.terminal.fund = fund;
-      }
-      return newState;
-    }
-    default:
-      return newState;
+  if (action.type === LOGGED_OUT) {
+    localStorage.clear();
+
+    return combined(undefined, action);
   }
+
+  return combined(state, action);
 };
 
 export default persistReducer(rootPersistConfig, rootReducer);
