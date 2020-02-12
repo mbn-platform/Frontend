@@ -10,15 +10,11 @@ import { exchangesInfoSelector } from './exchangesInfo';
 
 const terminalSelector = R.prop('terminal');
 export const groupIdSelector = R.path(['terminal', 'groupId']);
+export const fundIdSelector = R.path(['terminal', 'fundId']);
 
 export const exchangeSelector = createSelector(
   terminalSelector,
   R.prop('exchange'),
-);
-
-export const fundSelector = createSelector(
-  terminalSelector,
-  R.prop('fund'),
 );
 
 export const ordersSelector = createSelector(
@@ -34,6 +30,16 @@ export const marketSelector = createSelector(
 export const intervalSelector = createSelector(
   terminalSelector,
   R.prop('interval'),
+);
+
+export const orderBookSelector = createSelector(
+  terminalSelector,
+  R.prop('orderBook'),
+);
+
+export const historySelector = createSelector(
+  terminalSelector,
+  R.prop('history'),
 );
 
 export const tickerSelector = createSelector(
@@ -52,12 +58,6 @@ export const assetGroupSelector = createSelector(
   (groups, id) => groups.find(group => group._id === id),
 );
 
-export const controlSelector = createSelector(
-  fundSelector,
-  assetGroupSelector,
-  (fund, group) => fund || group,
-);
-
 export const exchangesByExchangeSelector = createSelector(
   exchangesInfoSelector,
   exchangeSelector,
@@ -73,7 +73,6 @@ export const exchangeMarketsSelector = createSelector(
   exchangesByExchangeSelector,
   R.propOr([], 'markets'),
 );
-
 
 const createDeepEqualSelector = createSelectorCreator(
   defaultMemoize,
@@ -96,4 +95,21 @@ export const fundsSelector = createDeepEqualSelector(
 
     return funds;
   },
+);
+
+export const fundSelector = createSelector(
+  fundsSelector,
+  fundIdSelector,
+  (funds, id) => funds.find(fund => fund._id === id),
+);
+
+export const controlSelector = createSelector(
+  fundSelector,
+  assetGroupSelector,
+  (fund, group) => fund || group,
+);
+
+export const fundBalancesSelector = createSelector(
+  fundSelector,
+  R.propOr(null, 'balances'),
 );
