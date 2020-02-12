@@ -1,11 +1,11 @@
 import React from 'react';
 import { Row } from 'reactstrap';
-import { Desktop } from '../../generic/MediaQuery';
-import {ESCAPE_KEYCODE} from '../../constants';
+import { connect } from 'react-redux';
 
-
-import TradingViewDatafeed from '../../generic/TradingViewDatafeed';
-import {connect} from 'react-redux';
+import { Desktop } from 'generic/MediaQuery';
+import { ESCAPE_KEYCODE } from '../../constants';
+import TradingViewDatafeed from 'generic/TradingViewDatafeed';
+import { exchangeSelector, marketSelector, intervalSelector } from 'selectors/terminal';
 
 class TradingView extends React.PureComponent {
   constructor(props) {
@@ -253,13 +253,10 @@ function createTradingView(symbol, interval, socketPath) {
   return widget;
 }
 
-const mapStateToProps = state => {
-  const { market, exchange, interval} = state.terminal;
-  return {
-    exchange,
-    market,
-    interval
-  };
-};
+const mapStateToProps = state => ({
+  exchange: exchangeSelector(state),
+  market: marketSelector(state),
+  interval: intervalSelector(state),
+});
 
 export default connect(mapStateToProps)(TradingView);

@@ -87,7 +87,7 @@ class Controls extends React.Component {
   }
 
   handleFundSelect = fund => {
-    this.props.selectFund(fund);
+    this.props.selectFund(fund._id);
     this.props.selectExchange(fund.exchange);
     this.props.getExchangeMarkets(fund.exchange);
     this.props.selectMarket(this.props.market);

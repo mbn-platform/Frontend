@@ -4,10 +4,11 @@ import { BigNumber } from 'bignumber.js';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import classNames from 'classnames';
 
-import ReactTable from '../../components/SelectableReactTable';
-import { formatFloat } from '../../generic/util';
-import { Desktop } from '../../generic/MediaQuery';
-import { sortData, onColumnSort, classNameForColumnHeader } from '../../generic/terminalSortFunctions';
+import ReactTable from 'components/SelectableReactTable';
+import { formatFloat } from 'generic/util';
+import { Desktop } from 'generic/MediaQuery';
+import { sortData, onColumnSort, classNameForColumnHeader } from 'generic/terminalSortFunctions';
+import { marketSelector, historySelector } from 'selectors/terminal';
 
 class RecentTrades extends React.Component {
   constructor(props) {
@@ -181,9 +182,9 @@ class RecentTrades extends React.Component {
   }
 }
 
-const mapStateToProps = ({ terminal: { market, history } }) => ({
-  market,
-  history,
+const mapStateToProps = (state) => ({
+  market: marketSelector(state),
+  history: historySelector(state),
 });
 
 export default injectIntl(connect(mapStateToProps)(RecentTrades));

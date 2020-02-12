@@ -28,10 +28,10 @@ class GroupContractSelect extends React.Component {
     document.removeEventListener('click', this.onOutsideClick);
   }
 
-  onContractSelect = contract => event => {
+  onContractSelect = contractId => event => {
     event.stopPropagation();
     this.setState({ isOpen: false });
-    this.props.onContractSelect(contract);
+    this.props.onContractSelect(contractId);
   }
 
   stopPropagation = (event) => {
@@ -70,7 +70,7 @@ class GroupContractSelect extends React.Component {
             {contracts.map(contract => (
               <div
                 key={contract._id}
-                onClick={this.onContractSelect(contract)}
+                onClick={this.onContractSelect(contract._id)}
                 className={classNames('key', {
                   active: this.props.selectedFund && this.props.selectedFund._id === contract._id
                 })}>

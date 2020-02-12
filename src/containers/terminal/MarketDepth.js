@@ -3,9 +3,10 @@ import { Row } from 'reactstrap';
 import { connect } from 'react-redux';
 import AmChartsReact from '@amcharts/amcharts3-react';
 
-import { formatFloat, defaultFormatValue } from '../../generic/util';
-import { Desktop } from '../../generic/MediaQuery';
-import withThrottledRender from '../../generic/withThrottledRender';
+import { formatFloat, defaultFormatValue } from 'generic/util';
+import { Desktop } from 'generic/MediaQuery';
+import withThrottledRender from 'generic/withThrottledRender';
+import { tickerSelector, marketSelector, exchangeSelector, orderBookSelector } from 'selectors/terminal';
 
 class MarketDepth extends React.PureComponent {
   constructor(props) {
@@ -42,15 +43,17 @@ class MarketDepth extends React.PureComponent {
   }
 
   componentDidUpdate = (prevProps) => {
-    const { buy, sell } = this.props;
+    const { orderBook: { buy, sell } } = this.props;
 
-    if (buy && sell && (buy !== prevProps.buy || sell !== prevProps.sell)) {
+    if (buy && sell && (buy !== prevProps.orderBook.buy || sell !== prevProps.orderBook.sell)) {
       const data = this.getData(this.props);
       this.setState({ data });
     }
   }
 
-  getData(props) {
+  getData({ orderBook, ticker }) {
+    const { buy, sell, minBuy, minSell, maxBuy, maxSell } = orderBook;
+
     function processData(list, minSize, maxSize, type, desc, last) {
       list = list
         .filter(e => e.Rate < last * 10 && e.Rate > last / 10)
@@ -103,8 +106,8 @@ class MarketDepth extends React.PureComponent {
     }
 
     let res = [];
-    processData(props.buy, props.minBuy, props.maxBuy, 'buy', true, (props.ticker || {}).l);
-    processData(props.sell, props.minSell, props.maxSell ,'sell', false, (props.ticker || {}).l);
+    processData(buy, minBuy, maxBuy, 'buy', true, ticker.l);
+    processData(sell, minSell, maxSell ,'sell', false, ticker.l);
 
     return res;
   }
@@ -315,7 +318,7 @@ class MarketDepth extends React.PureComponent {
     };
   }
 
-  render = () => (
+  render = () => console.log('render') || (
     <React.Fragment>
       <Row className="chart__top justify-content-between">
         <Desktop>
@@ -324,7 +327,7 @@ class MarketDepth extends React.PureComponent {
       </Row>
       <div className="marketdepth-chart__graph row col-12" id='chartdiv'>
         <AmChartsReact.React
-          style={{height: '100%', width: '100%', backgroundColor: 'transparent',position: 'absolute'}}
+          style={{ height: '100%', width: '100%', backgroundColor: 'transparent',position: 'absolute' }}
           options={this.makeConfig()}
         />
       </div>
@@ -333,15 +336,12 @@ class MarketDepth extends React.PureComponent {
   );
 }
 
-const mapStateToProps = state => {
-  const { market, exchange, ticker, orderBook } = state.terminal;
-  return {
-    exchange,
-    ticker,
-    market,
-    ...orderBook,
-  };
-};
+const mapStateToProps = (state) => ({
+  ticker: tickerSelector(state),
+  market: marketSelector(state),
+  exchange: exchangeSelector(state),
+  orderBook: orderBookSelector(state),
+});
 
 function relativeSize(minSize, maxSize, size) {
   return (size - minSize) / (maxSize - minSize);
