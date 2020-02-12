@@ -1,12 +1,9 @@
-import { path } from 'ramda';
-
 import { reducerCreator } from 'generic/util';
 import * as actions from 'actions/terminal';
 import { UPDATE_ASSET_GROUP, DELETE_ASSET_GROUP } from 'actions/assetGroup';
 
 const initialState = {
-  fund: null,
-  assetGroup: null,
+  fundId: null,
   groupId: null,
   exchange: 'binance',
   market: 'USDT-BTC',
@@ -19,7 +16,7 @@ const initialState = {
 };
 
 const reducerList = {
-  [actions.SELECT_FUND]: (state, { fund }) => ({ ...state, fund }),
+  [actions.SELECT_FUND]: (state, { fundId }) => ({ ...state, fundId }),
   [actions.SELECT_MARKET]: (state, { market }) => (
     market === state.market
       ? state
@@ -29,7 +26,7 @@ const reducerList = {
     ...state,
     groupId,
     orders: groupId ? state.orders : initialState.orders,
-    fund: null,
+    fundId: null,
   }),
   [DELETE_ASSET_GROUP]: (state) => ({
     ...state,
@@ -110,7 +107,7 @@ const reducerList = {
       : state
   ),
   [actions.GET_MY_ORDERS]: (state, { orders, fundId }) => {
-    const stateId = path(['fund', '_id'], state) || state.groupId;
+    const stateId = state.fundId || state.groupId;
 
     if (stateId === fundId) {
       return { ...state, orders };
@@ -161,7 +158,7 @@ const reducerList = {
     }
   },
   [actions.UPDATE_ORDER]: (state, action) => {
-    if (!(state.fund && state.fund._id === action.fundId)) { return state; }
+    if (state.fundId !== action.fundId) { return state; }
 
     let { open, closed } = state.orders;
     const order = action.order;

@@ -32,9 +32,9 @@ export const CHECK_URL_VALIDITY = 'CHECK_URL_VALIDITY';
 const TerminalApi = new ApiTerminal();
 const ExchangeApi = new ApiExchange();
 
-export const selectFund = fund => ({
+export const selectFund = fundId => ({
   type: SELECT_FUND,
-  fund,
+  fundId,
 });
 
 export const stopTradingDataUpdates = () => ({
@@ -72,10 +72,10 @@ export const selectControlsByExchange = exchange => {
         dispatch(selectAssetGroup(groupId));
       } else {
         dispatch(selectAssetGroup(null));
-        dispatch(fund ? selectFund(fund) : selectFund(null));
+        dispatch(fund ? selectFund(fund._id) : selectFund(null));
       }
     } else {
-      dispatch(fund ? selectFund(fund) : selectFund(null));
+      dispatch(fund ? selectFund(fund._id) : selectFund(null));
     }
   };
 };
