@@ -8,13 +8,7 @@ import AmChartsReact from '@amcharts/amcharts3-react';
 import { FormattedMessage } from 'react-intl';
 
 class FundsChart extends React.Component {
-
-
-  constructor(props) {
-    super(props);
-    const funds = props.apiKeys.concat(props.contracts.filter(c => c.to._id === props.userId));
-    this.state = {data: this.formatData(funds)};
-  }
+  state = { data: [] }
 
   getValueInBTC(currencyName, currencyValue) {
     if (currencyName === 'BTC') {
@@ -40,6 +34,7 @@ class FundsChart extends React.Component {
         }
       }
     }
+
     return 0;
   }
 
@@ -60,8 +55,9 @@ class FundsChart extends React.Component {
     const formated = Object.keys(data).map(key=>({
       category: key,
       'column-1': data[key],
-      'column-2': this.getValueInBTC(key, data[key])
+      'column-2': this.getValueInBTC(key, data[key]),
     })).sort((a1, a2) => a1['column-1'] < a2['column-1']);
+
     return formated;
   }
 
@@ -79,7 +75,7 @@ class FundsChart extends React.Component {
         '#c94546',
         '#ce802c',
         '#c5c5c5',
-        '#465666'
+        '#465666',
       ],
       'balloonText': '[[title]]<br><span style=\'font-size:14px\'><b>[[description]]</b> ([[percents]]%)</span>',
       'innerRadius': '70%',
@@ -106,10 +102,10 @@ class FundsChart extends React.Component {
         'align': 'left',
         'valueText': '[[description]] [[title]]',
         'useMarkerColorForLabels': true,
-        'useMarkerColorForValues': true
+        'useMarkerColorForValues': true,
       },
       'titles': [],
-      'dataProvider': data
+      'dataProvider': data,
     };
   });
 
@@ -128,8 +124,10 @@ class FundsChart extends React.Component {
         </div>
         <div className="charts">
           <div className="chart_pie">
-            <AmChartsReact.React   style={{height: '100%', width: '100%', backgroundColor: 'transparent',position: 'absolute'}}
-              options={this.getConfig(this.props.exchangesInfo, this.props.apiKeys, this.props.contracts)} />
+            <AmChartsReact.React
+              style={{ height: '100%', width: '100%', backgroundColor: 'transparent',position: 'absolute' }}
+              options={this.getConfig(this.props.exchangesInfo, this.props.apiKeys, this.props.contracts)}
+            />
           </div>
           <div className="legend_pie_wrapper">
             <div id="funds_legend" className="legend_pie">
