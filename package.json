@@ -6,6 +6,10 @@
     "@amcharts/amcharts3-react": "^3.1.0",
     "@formatjs/intl-pluralrules": "^1.5.2",
     "@formatjs/intl-relativetimeformat": "^4.5.9",
+    "@types/jest": "^25.1.2",
+    "@types/node": "^13.7.1",
+    "@types/react": "^16.9.19",
+    "@types/react-dom": "^16.9.5",
     "amcharts3": "^3.21.14",
     "bignumber.js": "^9.0.0",
     "bootstrap": "^4.4.1",
@@ -37,7 +41,8 @@
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
-    "socket.io-client": "^2.3.0"
+    "socket.io-client": "^2.3.0",
+    "typescript": "^3.7.5"
   },
   "scripts": {
     "build-css": "node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/",
