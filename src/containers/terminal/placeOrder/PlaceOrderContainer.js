@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import BigNumber from 'bignumber.js';
 import { injectIntl } from 'react-intl';
-import { compose, isNil } from 'ramda';
+import { compose, isNil, prop } from 'ramda';
 
 import { commissionPercent, floorBinance } from 'utils/terminal';
 import { defaultFormatValue, setFundId } from 'generic/util';
@@ -31,16 +31,18 @@ class PlaceOrderContainer extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(this.props.markets !== prevProps.markets) {
-      this.setState({marketInfo: this.props.markets.find(m => m.symbol === this.props.market)});
+    const { markets, market, ticker, price, size } = this.props;
+
+    if (markets !== prevProps.markets) {
+      this.setState({ marketInfo: markets.find(m => m.symbol === market) });
     }
-    if (prevProps.ticker !== this.props.ticker &&
-      !prevState.price && !prevState.tickerSet && this.props.ticker.l) {
-      this.setState({price: this.props.ticker.l.toString(), tickerSet: true});
+
+    if (prevProps.ticker !== ticker && !prevState.price && !prevState.tickerSet && prop('l', ticker)) {
+      this.setState({ price: prop('l', ticker).toString(), tickerSet: true });
       this.setAmount(prevState.amount);
     }
-    if ((this.props.price && this.props.price !== prevProps.price) ||
-      (this.props.size && this.props.size !== prevProps.size)) {
+
+    if ((price && price !== prevProps.price) || (size && size !== prevProps.size)) {
       let price = this.props.price || this.state.price;
       // let amount = this.props.size || this.state.amount;
       this.setPrice(price);
@@ -361,16 +363,22 @@ class PlaceOrderContainer extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  profile: profileSelector(state),
-  loggedIn: loggedInSelector(state),
-  fund: selectors.controlSelector(state),
-  market: selectors.marketSelector(state),
-  ticker: selectors.tickerSelector(state),
-  groupId: selectors.groupIdSelector(state),
-  exchange: selectors.exchangeSelector(state),
-  markets: selectors.exchangeMarketsSelector(state),
-});
+const mapStateToProps = state => {
+  const market = selectors.marketSelector(state);
+  const exchange = selectors.exchangeSelector(state);
+
+  return {
+    key: `${market}${exchange}`,
+    market,
+    exchange,
+    profile: profileSelector(state),
+    loggedIn: loggedInSelector(state),
+    fund: selectors.controlSelector(state),
+    ticker: selectors.tickerSelector(state),
+    groupId: selectors.groupIdSelector(state),
+    markets: selectors.exchangeMarketsSelector(state),
+  };
+};
 
 const mapDispatchToProps = {
   placeOrder,
