@@ -2,21 +2,13 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
-import { Desktop, Mobile } from '../../../generic/MediaQuery';
-import ReactTable from '../../../components/SelectableReactTable';
-import Pagination from '../../../components/Pagination';
+import { Desktop, Mobile } from 'generic/MediaQuery';
+import ReactTable from 'components/SelectableReactTable';
+import Pagination from 'components/Pagination';
 import { BalanceCell } from './BalanceCell';
 
-class ReceivedDetails extends React.Component {
-  static defaultProps = {
-    contract: null,
-  };
-
-  static propTypes = {
-    contract: PropTypes.shape(),
-  };
-
-  getColumns = () => {
+const ReceivedDetails = ({ contract }) => {
+  const getColumns = () => {
     return [
       {
         Header: (
@@ -68,16 +60,16 @@ class ReceivedDetails extends React.Component {
         accessor: 'available',
       },
     ];
-  }
+  };
 
-  render = () => (
+  return (
     <div className="received-balances-table-wrapper table">
       <div className="table_title_wrapper">
         <div className="table_title">
           <FormattedMessage id="dashboard.balances" />
         </div>
       </div>
-      {this.props.contract && (
+      {contract && (
         <React.Fragment>
           <Desktop>
             <ReactTable
@@ -86,15 +78,15 @@ class ReceivedDetails extends React.Component {
                 desc: true,
               }]}
               style={{ height: 310 }}
-              data={this.props.contract.balances}
-              columns={this.getColumns()}
+              data={contract.balances}
+              columns={getColumns()}
               scrollBarHeight={310}
             />
           </Desktop>
           <Mobile>
             <ReactTable
-              data={this.props.contract.balances}
-              columns={this.getColumns()}
+              data={contract.balances}
+              columns={getColumns()}
               minRows={5}
               showPagination={true}
               defaultPageSize={5}
@@ -105,6 +97,14 @@ class ReceivedDetails extends React.Component {
       )}
     </div>
   );
-}
+};
+
+ReceivedDetails.defaultProps = {
+  contract: null,
+};
+
+ReceivedDetails.propTypes = {
+  contract: PropTypes.shape(),
+};
 
 export default ReceivedDetails;

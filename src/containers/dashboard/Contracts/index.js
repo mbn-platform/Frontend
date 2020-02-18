@@ -14,6 +14,8 @@ import ReceivedDetails from './ReceivedDetails';
 import ProvidedContracts from './ProvidedContracts';
 import ProvidedDetails from './ProvidedDetails';
 import Groups from './Groups';
+import { profileNameSelector } from 'selectors/auth';
+import { assetGroupsSelector } from 'selectors/assetGroups';
 
 const ContractTableHeader = header => (
   <div className="table_header_wrapper contract_header_wrapper">
@@ -290,9 +292,9 @@ class Contracts extends React.Component {
   };
 }
 
-const mapStateToProps = ({ auth, assetGroups }) => ({
-  userName: auth.profile.name,
-  assetGroups,
+const mapStateToProps = (state) => ({
+  userName: profileNameSelector(state),
+  assetGroups: assetGroupsSelector(state),
 });
 
 export default connect(mapStateToProps)(Contracts);

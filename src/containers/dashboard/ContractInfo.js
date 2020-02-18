@@ -17,6 +17,7 @@ const ContractInfo = ({ contract, time }) => {
     left = maxBalance - currentBalance;
     profitProgress = (currentBalance - minBalance) / (maxBalance - minBalance) * 100;
   }
+
   return (
     <div>
       <div className="profit_time_wrapper_block">

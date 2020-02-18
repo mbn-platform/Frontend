@@ -17,3 +17,19 @@ export const profileIdSelector = createSelector(
   profileSelector,
   R.prop('_id'),
 );
+
+export const mfaEnabledSelector = createSelector(
+  profileSelector,
+  R.prop('mfaEnabled'),
+);
+
+export const billingSelector = createSelector(
+  profileSelector,
+  R.prop('billing'),
+);
+
+
+export const profileNameSelector = createSelector(
+  profileSelector,
+  R.prop('name'),
+);

@@ -1,16 +1,25 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
+import { Desktop } from 'generic/MediaQuery';
+import { CONTRACT_STATE_FINISHED, CONTRACT_STATE_HALTED } from '../../constants';
 import ContractInfo from './ContractInfo';
 import ContractInfoEmpty from './ContractInfoEmpty';
 import ContractFeedback from './ContractFeedback';
 import ProfileFeedbacks from './ProfileFeedbacks';
-import { Desktop } from '../../generic/MediaQuery';
-import { CONTRACT_STATE_FINISHED, CONTRACT_STATE_HALTED } from '../../constants';
+import { rateContract } from 'actions/contracts';
+import { profileIdSelector } from 'selectors/auth';
+import { timeSelector } from 'selectors/time';
 
-const SelectedContractInfo = ({ contract, onContractRate, time, userId }) => {
+const SelectedContractInfo = ({ contract, time, userId, userName, rateContract }) => {
+  const onContractRate = (feedback) => {
+    rateContract(feedback, userName, time);
+  };
+
   if(!contract) {
     return (
       <Desktop>
-        <ContractInfoEmpty/>
+        <ContractInfoEmpty />
       </Desktop>
     );
   } else {
@@ -18,8 +27,8 @@ const SelectedContractInfo = ({ contract, onContractRate, time, userId }) => {
       if(canLeaveFeedback(contract, userId)) {
         return (
           <ContractFeedback
-            onContractRate={onContractRate}
             contract={contract}
+            onContractRate={onContractRate}
           />
         );
       } else {
@@ -39,4 +48,13 @@ function canLeaveFeedback(contract, userId) {
   return !feedback;
 }
 
-export default SelectedContractInfo;
+const mapStateToProps = (state) => ({
+  userId: profileIdSelector(state),
+  time: timeSelector(state),
+});
+
+const mapDispatchToProps = {
+  rateContract,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SelectedContractInfo);
