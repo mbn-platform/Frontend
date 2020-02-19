@@ -2,13 +2,13 @@ import React from 'react';
 import AmChartsReact from '@amcharts/amcharts3-react';
 import { Col, Row } from 'reactstrap';
 import memoizeOne from 'memoize-one';
-import { ProfileBlock, BalanceChartHelpTooltip } from '../../components/ProfileBlock';
-import SegmentedControl from '../../components/SegmentedControl';
-import { Desktop, Mobile } from '../../generic/MediaQuery';
 import classNames from 'classnames';
 
-class BalanceChart extends React.PureComponent {
+import { ProfileBlock, BalanceChartHelpTooltip } from 'components/ProfileBlock';
+import SegmentedControl from 'components/SegmentedControl';
+import { Desktop, Mobile } from 'generic/MediaQuery';
 
+class BalanceChart extends React.PureComponent {
   static lsKeySelectedGraphs = 'profile.balanceChart.selected'
   static lsKeySelectedInterval = 'profile.balanceChart.selectedInterval'
 
@@ -38,8 +38,8 @@ class BalanceChart extends React.PureComponent {
   }
 
   onZoom = (item) => {
-    const {start: selectedStart, end: selectedEnd} = item;
-    this.setState({selectedStart, selectedEnd});
+    const { start: selectedStart, end: selectedEnd } = item;
+    this.setState({ selectedStart, selectedEnd });
   }
 
   onZoomOut = (item) => {
@@ -67,15 +67,15 @@ class BalanceChart extends React.PureComponent {
         start = 0;
     }
     window.localStorage.setItem(BalanceChart.lsKeySelectedInterval, segment);
-    this.setState({selectedInterval: segment});
+    this.setState({ selectedInterval: segment });
     this.fetchData(start, Date.now());
   }
 
   fetchData(start, end) {
-    this.setState({loading: true, start, end, data: []});
+    this.setState({ loading: true, start, end, data: [] });
     window.fetch(`/api/v2/profile/${this.props.name}/balanceStat?start=${start}&end=${end}`)
       .then(res => res.json())
-      .then(data => this.setState({data, loading: false}));
+      .then(data => this.setState({ data, loading: false }));
   }
 
   componentDidUpdate(prevProps) {
@@ -106,6 +106,7 @@ class BalanceChart extends React.PureComponent {
 
   render() {
     const { selected } = this.state;
+
     return (
       <ProfileBlock
         iconClassName='icon-005-growth'
@@ -128,19 +129,21 @@ class BalanceChart extends React.PureComponent {
             {this.renderCurrent()}
             {this.renderChange()}
           </Col>
-          <Col xs={{order: 1}} md={{order: 3}}>
+          <Col xs={{ order: 1 }} md={{ order: 3 }}>
             <Desktop>
               <SegmentedControl
                 segments={this.segments}
                 selectedIndex={this.state.selectedInterval}
-                onChange={this.onSegmentChange} />
+                onChange={this.onSegmentChange}
+              />
             </Desktop>
             <Mobile>
               <SegmentedControl
                 segments={this.segments}
                 segmentWidth={50}
                 selectedIndex={this.state.selectedInterval}
-                onChange={this.onSegmentChange} />
+                onChange={this.onSegmentChange}
+              />
             </Mobile>
           </Col>
         </Row>
@@ -149,7 +152,8 @@ class BalanceChart extends React.PureComponent {
   }
 
   renderChange() {
-    const {startItem: first, endItem: latest} = this.state;
+    const { startItem: first, endItem: latest } = this.state;
+
     if (!latest) {
       return null;
     } else {
@@ -199,7 +203,8 @@ class BalanceChart extends React.PureComponent {
   }
 
   renderCurrent() {
-    const {endItem} = this.state;
+    const { endItem } = this.state;
+
     if (!endItem) {
       return null;
     } else {
@@ -226,13 +231,6 @@ class BalanceChart extends React.PureComponent {
         <div className='values'>Current: {arrayOfElements}</div>
       );
     }
-  }
-
-  graphBalloon() {
-    return '';
-  }
-
-  calculateDataProvider(segment) {
   }
 
   getConfig = memoizeOne((data, selectedInterval, selected) => {
@@ -275,7 +273,7 @@ class BalanceChart extends React.PureComponent {
       listeners: [
         {
           event: 'rendered',
-          method: function({type, chart}) {
+          method: function({ chart }) {
             chart.zoomOut();
           },
         },
@@ -374,22 +372,16 @@ class BalanceChart extends React.PureComponent {
 
   renderChart() {
     const config = this.getConfig(this.state.data, this.state.selectedInterval, this.state.selected);
+
     return (
-      <AmChartsReact.React style={{height: '100%', width: '100%', backgroundColor: 'transparent',position: 'absolute'}}
-        options={config} />
+      <AmChartsReact.React
+        style={{height: '100%', width: '100%', backgroundColor: 'transparent',position: 'absolute'}}
+        options={config}
+      />
     );
   }
 }
 
-function Preloader({show}) {
-  if (!show) {
-    return null;
-  } else {
-    return (
-      <div className='preloader' />
-    );
-  }
-}
-
+const Preloader = ({ show }) => !show ? null : <div className='preloader' />;
 
 export default BalanceChart;

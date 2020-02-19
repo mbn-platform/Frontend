@@ -3,11 +3,12 @@ import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { Col, Row } from 'reactstrap';
 import PropTypes from 'prop-types';
-import { updateNotificationSettings, verifyTelegram, updateInfo } from '../../actions/profile';
-import LockButton from '../../components/LockButton';
+
+import { updateNotificationSettings, verifyTelegram, updateInfo } from 'actions/profile';
+import LockButton from 'components/LockButton';
+import { contactsSelector, notificationSettingsSelector, infoSelector } from 'selectors/profile';
 
 class NotificationSettings extends React.Component {
-
   static propTypes = {
     contacts: PropTypes.array.isRequired,
     settings: PropTypes.shape({
@@ -40,6 +41,7 @@ class NotificationSettings extends React.Component {
   render() {
     const { settings, info, billing } = this.props;
     const telegramContact = this.props.contacts.find((c) => c.type === 'telegram');
+
     return (
       <React.Fragment>
         <SettingsHeader title="profile.about" />
@@ -50,99 +52,93 @@ class NotificationSettings extends React.Component {
           onToggle={this.onChange}
           title="info"
           billing={billing}
-          checked={settings.info} />
+          checked={settings.info}
+        />
         <SettingsSwitch
           onToggle={this.onChange}
           title="orders"
           billing={billing}
-          checked={settings.orders} />
+          checked={settings.orders}
+        />
         <SettingsSwitch
           onToggle={this.onChange}
           title="contracts"
           billing={billing}
-          checked={settings.contracts || false} />
+          checked={settings.contracts || false}
+        />
       </React.Fragment>
     );
   }
 }
 
-
-
-class SettingsHeader extends React.PureComponent {
-  render() {
-    const { title } = this.props;
-    return (
-      <div className="row title-setting">
-        <div className="col-auto text-center align-middle contract-setting-title title-text">
-          <span className="icon icon-settings icon-006-wrench"/>
-          <FormattedMessage id={title} />
-        </div>
-      </div>
-    );
-  }
-}
+const SettingsHeader = ({ title }) => (
+  <div className="row title-setting">
+    <div className="col-auto text-center align-middle contract-setting-title title-text">
+      <span className="icon icon-settings icon-006-wrench"/>
+      <FormattedMessage id={title} />
+    </div>
+  </div>
+);
 
 class About extends React.Component {
-
   state = {
     about: this.props.info || '',
   }
 
   onChange = (e) => {
     const about = e.target.value;
-    if (about.length > 144) {
-      return;
-    }
-    this.setState({about});
+
+    if (about.length > 144) { return; }
+    this.setState({ about });
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     if (prevProps.info !== this.props.info) {
-      this.setState({about: (this.props.info || '')});
+      this.setState({ about: (this.props.info || '') });
     }
   }
 
   onSaveClick = () => {
     const info = this.state.about;
+
     if (info) {
       this.props.updateInfo(info);
     }
   }
 
   render() {
-    const {about} = this.state;
+    const { about } = this.state;
     const canSave = about && about !== this.props.info;
+
     return (
       <Row>
-        <textarea value={about} onChange={this.onChange}
+        <textarea
+          value={about}
+          onChange={this.onChange}
           className='about'
-          placeholder='Enter information about yourself' />
-        {
-          canSave ? (
-            <Col  xs="12">
-              <Row className="justify-content-center">
-                <button className="edit-btn btn btn-secondary" style={{marginBottom: '15px'}} onClick={this.onSaveClick}>Save</button>
-              </Row>
-            </Col>
-          ) : null
-        }
+          placeholder='Enter information about yourself'
+        />
+        {canSave ? (
+          <Col  xs="12">
+            <Row className="justify-content-center">
+              <button className="edit-btn btn btn-secondary" style={{marginBottom: '15px'}} onClick={this.onSaveClick}>Save</button>
+            </Row>
+          </Col>
+        ) : null}
       </Row>
     );
   }
 }
 
-function SettingsInput(props) {
-  return <input className="profile-settings" {...props} />;
-}
+const SettingsInput = (props) => <input className="profile-settings" {...props} />;
 
 class TelegramContact extends React.Component {
-
   state = {
     telegram: '',
     isVerified: false,
   }
 
-  static getDerivedStateFromProps(props, state) {
+  static getDerivedStateFromProps(props) {
     let telegram;
     if (props.contact && props.contact.value) {
       telegram = '@' + props.contact.value;
@@ -150,13 +146,13 @@ class TelegramContact extends React.Component {
       telegram = '';
     }
     return {
-      telegram: telegram,
+      telegram,
       isVerified: (props.contact && props.contact.isVerified) || false,
     };
   }
   onChange = (e) => {
     const telegram = e.target.value;
-    this.setState({telegram: telegram});
+    this.setState({ telegram });
   }
 
   onVerifyClick = () => {
@@ -175,16 +171,20 @@ class TelegramContact extends React.Component {
         canVerify = true;
       }
     }
+
     return (
       <Row className='input-telegram'>
-        <div className="description-text telegram" style={{
-          margin: '5px 0 5px 0',
-          color: '#bfbfc1',
-          letterSpacing: '1px',
-          fontSize: '11px'
-        }} >YOUR TELEGRAM ID</div>
+        <div
+          className="description-text telegram"
+          style={{
+            margin: '5px 0 5px 0',
+            color: '#bfbfc1',
+            letterSpacing: '1px',
+            fontSize: '11px'
+          }}
+        >YOUR TELEGRAM ID</div>
         <SettingsInput spellCheck={false} value={this.state.telegram} placeholder="@membrana" onChange={this.onChange} />
-        {!canVerify ? null :(
+        {!canVerify ? null : (
           <Col  xs="12">
             <Row className="justify-content-center">
               <button className="edit-btn btn btn-secondary" style={{marginBottom: '15px'}} onClick={this.onVerifyClick}>Verify</button>
@@ -197,8 +197,7 @@ class TelegramContact extends React.Component {
 }
 
 class SettingsSwitch extends React.PureComponent {
-
-  onToggle = (e) => {
+  onToggle = () => {
     this.props.onToggle(this.props.title, !this.props.checked);
   }
 
@@ -227,12 +226,14 @@ class SettingsSwitch extends React.PureComponent {
                 <label className="cmn-text cmn-yes-text">
                   <FormattedMessage
                     id="yes"
-                    defaultMessage="yes" />
+                    defaultMessage="yes"
+                  />
                 </label>
                 <label className="cmn-text cmn-no-text">
                   <FormattedMessage
                     id="no"
-                    defaultMessage="no" />
+                    defaultMessage="no"
+                  />
                 </label>
               </Col>
             </LockButton>
@@ -241,7 +242,6 @@ class SettingsSwitch extends React.PureComponent {
       </Row>
     );
   }
-
 }
 
 SettingsSwitch.propTypes = {
@@ -250,10 +250,10 @@ SettingsSwitch.propTypes = {
   onToggle: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ({ profile }) => ({
-  contacts: profile.contacts,
-  settings: profile.notificationSettings,
-  info: profile.info,
+const mapStateToProps = (state) => ({
+  contacts: contactsSelector(state),
+  settings: notificationSettingsSelector(state),
+  info: infoSelector(state),
 });
 
 const mapDispatchToProps = {
