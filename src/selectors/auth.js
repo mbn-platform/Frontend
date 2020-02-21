@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import * as R from 'ramda';
 
-const authSelector = R.prop('auth');
+export const authSelector = R.prop('auth');
 
 export const loggedInSelector = createSelector(
   authSelector,
