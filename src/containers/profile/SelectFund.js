@@ -1,73 +1,70 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactTable from '../../components/SelectableReactTable';
-import SearchHeader from '../../components/SearchHeader';
-import { Desktop, Mobile } from '../../generic/MediaQuery';
-import Pagination from '../../components/Pagination';
-import ExchangeSelect from '../../components/ExchangeSelect';
-import {FormattedMessage, injectIntl} from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
+
+import { Desktop, Mobile } from 'generic/MediaQuery';
+import ReactTable from 'components/SelectableReactTable';
+import SearchHeader from 'components/SearchHeader';
+import Pagination from 'components/Pagination';
+import ExchangeSelect from 'components/ExchangeSelect';
 
 class SelectFund extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      filtered: [{id: 'name', value: ''}, {id: 'exchange', value: 'All'}]
+    state = {
+      filtered: [{ id: 'name', value: '' }, { id: 'exchange', value: 'All' }]
     };
-    this.onFilter = this.onFilter.bind(this);
-    this.onExchangeChange = this.onExchangeChange.bind(this);
-  }
 
-  onExchangeChange(e) {
-    const value = e ? e : 'All';
+  onExchangeChange = (e) => {
+    const value = e || 'All';
+
     this.setState((state) => {
-      const filtered = state.filtered.map(i => i.id === 'exchange' ? {id: 'exchange', value} : i);
-      return {filtered};
+      const filtered = state.filtered.map(i => i.id === 'exchange' ? { id: 'exchange', value } : i);
+      return { filtered };
     });
   }
-  onFilter(e) {
-    const value = e.target.value;
+  onFilter = (e) => {
+    const { value } = e.target;
+
     this.setState(state => {
-      const filtered = state.filtered.map(i => i.id === 'name' ? {id: 'name', value} : i);
-      return {filtered};
+      const filtered = state.filtered.map(i => i.id === 'name' ? { id: 'name', value } : i);
+
+      return { filtered };
     });
   }
-  render() {
-    return (
-      <div className="row-fluid choose-api-block">
-        <div className="row justify-content-center choose-title">
-          <div className="col-auto text-center align-middle choose-setting-title title-text">
+  render = () => (
+    <div className="row-fluid choose-api-block">
+      <div className="row justify-content-center choose-title">
+        <div className="col-auto text-center align-middle choose-setting-title title-text">
+          <FormattedMessage
+            id="profile.chooseFunds"
+            defaultMessage="choose funds"
+          />
+        </div>
+        <div className="col-md-12 col-lg-12 col-xl-12 separate-second-block">
+          <div className="separate-line d-none d-md-block"/>
+        </div>
+        {this.renderTable()}
+        <div className="col-12 d-flex align-items-center justify-content-between choose-btn-group">
+          <button onClick={this.props.onCancelClick} type="button" className="cancel-btn btn btn-secondary">
             <FormattedMessage
-              id="profile.chooseFunds"
-              defaultMessage="choose funds"
+              id="profile.cancel"
+              defaultMessage="CANCEL"
             />
-          </div>
-          <div className="col-md-12 col-lg-12 col-xl-12 separate-second-block">
-            <div className="separate-line d-none d-md-block"/>
-          </div>
-          {this.renderTable()}
-          <div className="col-12 d-flex align-items-center justify-content-between choose-btn-group">
-            <button onClick={this.props.onCancelClick} type="button" className="cancel-btn btn btn-secondary">
-              <FormattedMessage
-                id="profile.cancel"
-                defaultMessage="CANCEL"
-              />
-            </button>
-            <button onClick={this.props.onNextClick} type="button" disabled={!this.props.selectedFund} className="send-request-btn btn btn-secondary active">
-              <FormattedMessage
-                id="profile.next"
-                defaultMessage="NEXT"
-              />
-            </button>
-          </div>
+          </button>
+          <button onClick={this.props.onNextClick} type="button" disabled={!this.props.selectedFund} className="send-request-btn btn btn-secondary active">
+            <FormattedMessage
+              id="profile.next"
+              defaultMessage="NEXT"
+            />
+          </button>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 
   getColumns() {
     const nameFilter = this.state.filtered.find(f => f.id === 'name').value;
     const exchangeFilter = this.state.filtered.find(f => f.id === 'exchange').value;
+
     return [
       {
         Header: SearchHeader(this.props.intl.messages['profile.fundName'], nameFilter, this.onFilter),
@@ -78,7 +75,7 @@ class SelectFund extends React.Component {
         accessor: 'exchange',
         className: 'table_col_value upper',
         filterMethod: (filter, row) => {
-          if(filter.value === 'All') {
+          if (filter.value === 'All') {
             return true;
           } else {
             return filter.value === row.exchange;
@@ -103,21 +100,22 @@ class SelectFund extends React.Component {
           return balance ? balance.available + ' ' + this.props.currency : '–';
         }
       }
-    ];    
+    ];
   }
 
   renderTable() {
     const data = this.props.apiKeys;
+
     return (
-      <div style={{width: '100%'}}>
-        <Desktop>          
+      <div style={{ width: '100%' }}>
+        <Desktop>
           <ReactTable
             style={{height: 245, width: '100%'}}
             columns={this.getColumns()}
             data={data}
             filtered={this.state.filtered}
             selectedItem={this.props.selectedFund}
-            onItemSelected={fund => this.props.onFundSelected(fund)}
+            onItemSelected={this.props.onFundSelected}
             scrollBarHeight={150}
           />
         </Desktop>
@@ -127,12 +125,12 @@ class SelectFund extends React.Component {
             data={data}
             filtered={this.state.filtered}
             selectedItem={this.props.selectedFund}
-            onItemSelected={fund => this.props.onFundSelected(fund)}
+            onItemSelected={this.props.onFundSelected}
             minRows={5}
             showPagination={true}
             defaultPageSize={5}
-            PaginationComponent={Pagination}                
-          />        
+            PaginationComponent={Pagination}
+          />
         </Mobile>
       </div>
     );
@@ -152,7 +150,8 @@ const ExchangeHeader = (exchanges, value, onChange) => {
         <div className="green_arrow green_arrow_bottom" />
       </div>
       <div className="table_filter_wrapper" onClick={e => e.stopPropagation()}>
-        <ExchangeSelect exchanges={exchanges}
+        <ExchangeSelect
+          exchanges={exchanges}
           showAllOption
           exchange={value}
           onChange={onChange}

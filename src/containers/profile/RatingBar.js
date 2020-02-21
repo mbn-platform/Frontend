@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 class RatingBar extends React.Component {
   static defaultProps = {
     numberOfStars: 5,
-    rating: 0
+    rating: 0,
   }
 
   renderStars() {
@@ -23,24 +23,22 @@ class RatingBar extends React.Component {
     return stars;
   }
 
-  render() {
-    return (
-      <Row className="justify-content-center">
-        <Col xs="8" sm="8" md="12" lg="9" xl="9">
-          <Container fluid>
-            <Row className="justify-content-center">
-              {this.renderStars()}
-            </Row>
-          </Container>
-        </Col>
-      </Row>
-    );
-  }
+  render = () => (
+    <Row className="justify-content-center">
+      <Col xs="8" sm="8" md="12" lg="9" xl="9">
+        <Container fluid>
+          <Row className="justify-content-center">
+            {this.renderStars()}
+          </Row>
+        </Container>
+      </Col>
+    </Row>
+  );
 }
 
 RatingBar.propTypes = {
   numberOfStars: PropTypes.number,
   rating: PropTypes.number
-}
+};
 
 export default RatingBar;

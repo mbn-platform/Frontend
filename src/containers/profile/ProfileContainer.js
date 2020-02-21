@@ -1,14 +1,18 @@
 import React from 'react';
-import Profile from './Profile';
 import { connect } from 'react-redux';
-import { updateExchanges } from '../../actions/exchanges';
-import {updateContractSettings, getProfilePageInfo, toggleAvailable} from '../../actions/profile';
-import {getExchangeRates} from '../../actions/terminal';
+
+import { updateExchanges } from 'actions/exchanges';
+import { updateContractSettings, getProfilePageInfo, toggleAvailable } from 'actions/profile';
+import { getExchangeRates } from 'actions/terminal';
+import { authSelector } from 'selectors/auth';
+import { profileSelector } from 'selectors/profile';
+import { exchangesInfoSelector } from 'selectors/exchangesInfo';
+import Profile from './Profile';
 
 const mapStateToProps = state => ({
-  auth: state.auth,
-  exchangesInfo: state.exchangesInfo,
-  profile: state.profile,
+  auth: authSelector(state),
+  exchangesInfo: exchangesInfoSelector(state),
+  profile: profileSelector(state),
 });
 
 const mapDispatchToProps = {
@@ -25,7 +29,7 @@ const ProfileContainer = connect(mapStateToProps, mapDispatchToProps)(Profile);
  * Component for recreating profile component on user change
  *
  */
-const ProfileWrapper = ({match}) => (
+const ProfileWrapper = ({ match }) => (
   <ProfileContainer key={match.params.id} name={match.params.id} />
 );
 
