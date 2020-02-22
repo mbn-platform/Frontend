@@ -1,64 +1,63 @@
 import React from 'react';
-import ExchangeSelect from '../../components/ExchangeSelect';
 import { connect } from 'react-redux';
-import { addApiKey } from '../../actions/apiKeys';
 import { injectIntl } from 'react-intl';
+
+import { addApiKey } from '../../actions/apiKeys';
 import {showInfoModal, showTwoFactorAuthModal} from '../../actions/modal';
+import ExchangeSelect from '../../components/ExchangeSelect';
 import LockButton from '../../components/LockButton';
 
+const INITIAL_STATE = {
+  name: '',
+  secret: '',
+  value: '',
+  exchange: '',
+  passphrase: '',
+};
+
 class AddApiKey extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = this.initialState();
-    this.onSubmit = this.onSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleExchangeChange = this.handleExchangeChange.bind(this);
-  }
+  state = INITIAL_STATE;
 
-  initialState() {
-    return {
-      name: '',
-      secret: '',
-      value: '',
-      exchange: '',
-    };
-  }
-
-  async onSubmit(event) {
+  onSubmit = async (event) => {
     event.preventDefault();
-    const { name, value, exchange, secret } = this.state;
+    const { name, value, exchange, secret, passphrase } = this.state;
     const { is2FAEnable, showTwoFactorAuthModal } = this.props;
-    if(!name || !value || !exchange || !secret) {
-      this.props.showModalWindow('dashboard.addAlert');
+    const isPhraseNotFilled = exchange === 'kucoin' && !passphrase;
+
+    if (!name || !value || !exchange || !secret || isPhraseNotFilled) {
+      this.props.showModalWindow(`dashboard.${isPhraseNotFilled ? 'addPassphrase' : 'addAlert'}`);
       return;
     }
+
     if (is2FAEnable) {
       showTwoFactorAuthModal('',
         {},
-        async token => await this.props.onApiKeyCreated({name, key: value.trim(), exchange, secret: secret.trim()}, token)
+        async token => await this.props.onApiKeyCreated(this.state, token)
       );
     } else {
-      this.props.onApiKeyCreated({name, key: value.trim(), exchange, secret: secret.trim()});
+      this.props.onApiKeyCreated(this.state);
     }
-    this.setState(this.initialState());
+
+    this.setState(INITIAL_STATE);
   }
 
-  handleChange(event) {
-    const name = event.target.name;
-    const value = event.target.value;
-    this.setState({[name]: value});
+  handleChange = (event) => {
+    const { name, value } = event.target;
+
+    this.setState({ [name]: value });
   }
 
-  handleExchangeChange(exchange) {
-    this.setState({exchange: exchange});
+  handleExchangeChange = (exchange) => {
+    this.setState({ exchange });
   }
 
   render() {
     const { apiKeys } = this.props.billing;
+    const { exchange } = this.state;
 
     return (
       <div className="add_keys_form_wrapper">
-        <form className="add_keys_form" onSubmit={this.onSubmit}>
+        <form onSubmit={this.onSubmit}>
           <div className="add_keys_str">
             <div className="add_keys_field_wr">
               <input
@@ -82,31 +81,47 @@ class AddApiKey extends React.Component {
               />
             </div>
             <div className="add_keys_double_field_wr clearfix">
-              <input className="add_keys_field add_keys_field_key"
-                type="text"
-                name="value"
-                autoComplete="off"
-                value={this.state.value}
-                onChange={this.handleChange}
-                placeholder={this.props.intl.messages['dashboard.keyPlaceholder']}
-                autoCorrect="off"
-                spellCheck="false"
-              />
-              <input
-                className="add_keys_field add_keys_field_secret"
-                type="text"
-                value={this.state.secret}
-                name="secret"
-                autoComplete="off"
-                onChange={this.handleChange}
-                placeholder={this.props.intl.messages['dashboard.secretPlaceholder']}
-                autoCorrect="off"
-                spellCheck="false"
-              />
+              <div>
+                <input className="add_keys_field add_keys_field_key"
+                  type="text"
+                  name="value"
+                  autoComplete="off"
+                  value={this.state.value}
+                  onChange={this.handleChange}
+                  placeholder={this.props.intl.messages['dashboard.keyPlaceholder']}
+                  autoCorrect="off"
+                  spellCheck="false"
+                />
+                <input
+                  className="add_keys_field add_keys_field_secret"
+                  type="text"
+                  value={this.state.secret}
+                  name="secret"
+                  autoComplete="off"
+                  onChange={this.handleChange}
+                  placeholder={this.props.intl.messages['dashboard.secretPlaceholder']}
+                  autoCorrect="off"
+                  spellCheck="false"
+                />
+              </div>
+              {exchange === 'kucoin' && (
+                <div className="add_keys_kucoin_field_wr">
+                  <input
+                    className="add_keys_field add_keys_field_name"
+                    onChange={this.handleChange}
+                    type="text"
+                    value={this.state.passphrase}
+                    name="passphrase"
+                    placeholder={this.props.intl.messages['dashboard.passphrasePlaceholder']}
+                    autoCorrect="off"
+                    spellCheck="false"
+                  />
+                </div>
+              )}
             </div>
             <div className="keys_submit_wrapper">
               <LockButton
-                offsetTop="7px"
+                offsetTop="calc(50% - 15px)"
                 offsetLeft="-30px"
                 {...apiKeys}
               >

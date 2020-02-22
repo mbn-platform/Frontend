@@ -1,6 +1,6 @@
 import { ApiError } from '../generic/apiCall';
 import defaultErrorHandler from '../generic/errorHandlers';
-import { LOGGED_OUT } from '../actions/auth';
+import { LOGGED_OUT } from './auth';
 import {UPDATE_KEYS} from './dashboard';
 import {SELECT_FUND} from './terminal';
 import { ApiKeys, ApiBotKeys } from '../generic/api';
@@ -124,14 +124,25 @@ export function deleteApiKey(key, token2FA) {
 
 export function addApiKey(key, token2FA) {
   return async (dispatch, getState) => {
+    const params = {
+      name: key.name,
+      exchange: key.exchange,
+      key: key.value.trim(),
+      secret: key.secret.trim(),
+      extra: {
+        passphrase: key.passphrase.trim(),
+      },
+    };
+
     try {
-      await KeysApi.add(key, token2FA)
+      await KeysApi.add(params, token2FA)
         .then(json => {
           dispatch({
             type: ADD_API_KEY,
             apiKey: json,
           });
           const ownKeys = getState().apiKeys.ownKeys;
+
           if (ownKeys.length === 1) {
             dispatch({
               type: SELECT_FUND,

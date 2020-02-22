@@ -110,10 +110,8 @@ class Dashboard extends React.Component {
             onKeyDeleteClick={this.props.onKeyDeleteClick}
             exchanges={this.props.exchanges}
           />
+          <ApiKeyInfo fund={this.state.selectedOffer || this.state.selectedApiKey} />
           <AddApiKey billing={this.props.billing} />
-          <ApiKeyInfo
-            fund={this.state.selectedOffer || this.state.selectedApiKey}
-          />
         </div>
         <div className="dashboard_block_header_title">
           <FormattedMessage

@@ -39,7 +39,7 @@
       text-align: left;
     }
     .api_key_currencies_table .ReactTable .rt-tr > :first-child {
-     text-align: center;
+      text-align: center;
     }
     .rt-resizable-header-content
     {
@@ -241,8 +241,9 @@
       position: relative;
       margin-bottom: 0;
     }
-    .keys_tables_wrapper
-    {
+    .keys_tables_wrapper {
+      display: flex;
+      flex-wrap: wrap;
       width: 100%;
     }
 
@@ -328,13 +329,10 @@
 
     //---------------------------------------- add api keys
 
-    .add_keys_form_wrapper
-    {
+    .add_keys_form_wrapper {
+      position: relative;
       background-color: #232629;
       border: 1px solid #494d4d;
-      height: 52px;
-      line-height: 52px;
-      float: left;
       width: 100%;
       border-top: 0;
       box-sizing: border-box;
@@ -345,15 +343,12 @@
       width: 100%;
     }
 
-    .add_keys_form
-    {
-
-    }
-    .add_keys_str
-    {
-      text-align: left;
+    .add_keys_str {
       padding-left: 15px;
+      padding-top: 13px;
+      padding-bottom: 13px;
     }
+
     .add_keys_str .add_keys_field_wr:nth-child(1)
     {
       margin-left: 0;
@@ -463,6 +458,15 @@
       width: 45%;
       display: inline-block;
       vertical-align: middle;
+
+      .add_keys_kucoin_field_wr {
+        width: 96%;
+
+        .add_keys_field {
+          width: 100%;
+          margin-top: 13px;
+        }
+      }
     }
     .add_keys_field
     {
@@ -584,22 +588,22 @@
     .add_keys_field:focus::-moz-placeholder           {color:#7c7c7d;}/* Firefox 18- */
     .add_keys_field:focus::-ms-input-placeholder      {color:#7c7c7d;}
 
-    .keys_submit_wrapper
-    {
-      float: right;
+    .keys_submit_wrapper {
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 100%;
     }
-    .keys_submit
-    {
+
+    .keys_submit {
+      min-width: 54px;
+      min-height: 52px;
+      height: 100%;
       border: 0;
-      width: 54px;
-      height: 51px;
       border-left: 1px solid #44464a;
+      border-radius: 0 0 4px 0;
       background-color: #2d3034;
       cursor: pointer;
-      line-height: 56px;
-      display: inline-block;
-      text-align: center;
-      vertical-align: top;
       font-size: 0em;
       color: #7c7c7d;
       padding: 0;
@@ -626,7 +630,6 @@
     .api_key_currencies_table
     {
       width: 45% !important;
-      float: left;
       border-top-left-radius: 0 !important;
       border-bottom-right-radius: 0 !important;
       border-bottom-left-radius: 0 !important;
@@ -643,9 +646,6 @@
     }
 
     .api_key_currencies_table {
-      float: right;
-      margin-top: -416px;
-      overflow: hidden;
     }
 
     .table_requests_control_wr
@@ -785,7 +785,6 @@
     .keys_tables_wrapper .api_keys_table.table
     {
       width: 55%;
-      float: left;
 
       &.api_keys_table_width_100 {
         width: 100%;
@@ -1987,9 +1986,12 @@
       {
         margin: 0;
       }
-      .add_keys_double_field_wr
-      {
+      .add_keys_double_field_wr {
         margin-left: 0;
+
+        .add_keys_kucoin_field_wr {
+          width: 100%;
+        }
       }
       .add_keys_double_field_wr .add_keys_field
       {
@@ -1999,7 +2001,6 @@
       .add_keys_field_wr.select_wr,
       .add_keys_double_field_wr
       {
-        height: 30px;
         line-height: 1;
         vertical-align: top;
         margin-bottom: 10px;
@@ -2012,6 +2013,7 @@
         background: none;
         border: none;
         margin-bottom: 20px;
+        position: initial;
       }
 
       .table_bot_col_value {
@@ -2088,8 +2090,10 @@ $color-dashboard-border: #494d4d;
 .dashboard.page {
   .block {
     // generic
+    width: 100%;
     border: 1px solid $color-dashboard-border;
     border-radius: 4px;
+
     .title {
       color: $color-dashboard-block-title;
       text-transform: uppercase;
@@ -2106,8 +2110,6 @@ $color-dashboard-border: #494d4d;
         padding-left: 24px;
         background: url('../assets/img/ApiKeysIcon.png') no-repeat left center;
       }
-    }
-    .body {
     }
   }
 }

@@ -736,43 +736,6 @@ body {
 	  text-transform: uppercase;
 	}
 
-    .keys_submit_wrapper
-    {
-      float: right;
-    }
-    .keys_submit
-    {
-      border: 0;
-      width: 54px;
-      height: 51px;
-      border-left: 1px solid #44464a;
-      background-color: #2d3034;
-      cursor: pointer;
-      line-height: 56px;
-      display: inline-block;
-      text-align: center;
-      vertical-align: top;
-      font-size: 0em;
-      color: #7c7c7d;
-      padding: 0;
-      transition-property: color, background-color;
-      transition-duration: 400ms;
-      transition: color 400ms, background-color 400ms;
-      font-family: 'maven_pro_light300';
-      background-image: url(../assets/img/AddKeyIcon.png);
-      background-repeat: no-repeat;
-      background-position: center;
-    }
-    .keys_submit:focus
-    {
-      outline: none;
-    }
-    .keys_submit:hover
-    {
-      background-color: #346255;
-      color: white;
-    }
-
 	//---------
 		.table_rewind_page {
 		    margin-top: 15px;
