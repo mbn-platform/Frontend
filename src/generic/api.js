@@ -355,7 +355,7 @@ export class ApiTerminal {
       .then(responseSchemaHandler);
 
   updateRatings = () =>
-    apiGet('/rating')
+    apiGet('/rating?verifiedOnly=false')
       .then(errorHandler)
       .then(responseSchemaHandler);
 }

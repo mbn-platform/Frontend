@@ -5,7 +5,7 @@ import Logo from '../../assets/svg/MainLogo.svg';
 export class PlatformLogo extends React.PureComponent {
   render() {
     return (
-      <a target="_blank" href="https://membrana.io" rel='noopener noreferrer' className="nav-link d-none d-md-flex">
+      <a target="_blank" href="https://mbn.global" rel='noopener noreferrer' className="nav-link d-none d-md-flex">
         <Container fluid className="h-100">
           <Row className="h-100">
             <Col xs="12" className="align-self-center">
