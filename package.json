@@ -10,6 +10,7 @@
     "@types/node": "^13.7.1",
     "@types/react": "^16.9.19",
     "@types/react-dom": "^16.9.5",
+    "@types/reactstrap": "^8.4.1",
     "amcharts3": "^3.21.14",
     "bignumber.js": "^9.0.0",
     "bootstrap": "^4.4.1",
