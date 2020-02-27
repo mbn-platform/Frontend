@@ -2,26 +2,27 @@ import React from 'react';
 import BigNumber from 'bignumber.js';
 import { Col, Button, Row, Container } from 'reactstrap';
 import { FormattedDate } from 'react-intl';
-import get from 'lodash/get';
+import { prop } from 'ramda';
 
-import ReactTable from '../../components/SelectableReactTable';
-import PaginationWithPage from '../../components/PaginationWithPage';
+import ReactTable from 'components/SelectableReactTable';
+import PaginationWithPage from 'components/PaginationWithPage';
 import { EarlyPoolProgress } from './EarlyPoolProgress';
 
 class PersonalInfo extends React.Component {
   componentDidMount() {
-    const {getPage, trs : {page, pageSize}, getStakeRating} = this.props;
+    const { getPage, trs : { page, pageSize }, getStakeRating } = this.props;
     getPage(page, pageSize);
     getStakeRating();
   }
 
   renderTable() {
     const {
-      trs: {list, count, page, pageSize},
+      trs: { list, count, page, pageSize },
       setPage,
       setPageSize,
       getPage,
     } = this.props;
+
     return (
       <ReactTable
         data={list}
@@ -37,9 +38,7 @@ class PersonalInfo extends React.Component {
           setPage(p);
           getPage(p, ps);
         }}
-        paginationPageSizeDispatcher={ps => {
-          setPageSize(ps);
-        }}
+        paginationPageSizeDispatcher={setPageSize}
         onItemSelected={() => {}}
         PaginationComponent={PaginationWithPage}
       />
@@ -93,7 +92,7 @@ class PersonalInfo extends React.Component {
 
   renderInfo() {
     const { info: { earlyPool, earlyPoolStat, globalPoolStat, address } } = this.props;
-    const stat = get(earlyPoolStat, 'stat');
+    const stat = prop('stat', earlyPoolStat);
     const isTimeRestriction = new Date() > new Date(earlyPool.endJoin);
     const canJoin = !isTimeRestriction && !earlyPoolStat.executed;
     const style = {
@@ -106,7 +105,7 @@ class PersonalInfo extends React.Component {
         <Row>
           <Col xs="12" md="6">
             <div>Staking is on</div>
-            <div style={{wordBreak: 'break-word'}}>Address: {address}</div>
+            <div style={{ wordBreak: 'break-word' }}>Address: {address}</div>
             <br/>
             <h4>Early Pool Info</h4>
             {stat ? (
@@ -164,14 +163,15 @@ class PersonalInfo extends React.Component {
   }
 
   renderStakingRating(earlyPool) {
-    const rating = this.props.rating;
+    const { rating, info } = this.props;
+
     return (
       <Col xs="12" md="6">
         <div>Staking rating</div>
-        <StakingRating rating={rating} info={this.props.info} />
+        <StakingRating rating={rating} info={info} />
         <br/>
-        <div style={{maxWidth: '550px'}}>
-          <EarlyPoolProgress {...earlyPool}/>
+        <div style={{ maxWidth: '550px' }}>
+          <EarlyPoolProgress {...earlyPool} />
         </div>
       </Col>
     );
@@ -211,18 +211,16 @@ class PersonalInfo extends React.Component {
     }
   }
 
-  render() {
-    return (
-      <div>
-        {this.renderInfo()}
-        <br/>
-        <h6>Staking Rewards</h6>
-        <Col xs="12" md="6">
-          {this.renderTable()}
-        </Col>
-      </div>
-    );
-  }
+  render = () => (
+    <div>
+      {this.renderInfo()}
+      <br/>
+      <h6>Staking Rewards</h6>
+      <Col xs="12" md="6">
+        {this.renderTable()}
+      </Col>
+    </div>
+  );
 }
 
 const MaturationEnd = ({ date, level }) => {
@@ -252,25 +250,24 @@ const MaturationEnd = ({ date, level }) => {
 
 const StakingRating = ({ info, rating }) => {
   const top = rating.slice(0, 3);
+
   return (
     <div className='staking-rating'>
-      {top.map((r, i) =>
+      {top.map((r, i) => (
         <div
           className={info && info.address === r.address ? 'own' : null}
           key={i}>
           {r.place} {r.address} {Math.ceil(r.total)} (MBN)
         </div>
-      )}
-      {
-        rating.length > 3 ? (
-          <div key={4}>...</div>
-        ) : null
-      }
-      {
-        rating.length > 3 ? (
-          <div className='own' key={5}>{rating[3].place} {rating[3].address} {Math.ceil(rating[3].total)} (MBN)</div>
-        ) : null
-      }
+      ))}
+      {rating.length > 3 ? (
+        <div key={4}>...</div>
+      ) : null}
+      {rating.length > 3 ? (
+        <div className='own' key={5}>
+          {rating[3].place} {rating[3].address} {Math.ceil(rating[3].total)} (MBN)
+        </div>
+      ) : null}
     </div>
   );
 };

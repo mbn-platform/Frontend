@@ -1,10 +1,12 @@
-import BigNumber from 'bignumber.js';
 import React from 'react';
-import ProgressBar from '../../components/ProgressBar';
+import BigNumber from 'bignumber.js';
+
+import ProgressBar from 'components/ProgressBar';
 
 export const EarlyPoolProgress = ({ total, endJoin, limit }) => {
-  const percent = new BigNumber(total).div(limit).times(100);
   let status;
+  const percent = new BigNumber(total).div(limit).times(100);
+
   if (new Date(endJoin).getTime() <  Date.now()) {
     status = 'closed';
   } else if (total === limit) {
@@ -12,6 +14,7 @@ export const EarlyPoolProgress = ({ total, endJoin, limit }) => {
   } else {
     status = 'open';
   }
+
   return (
     <div>
       Current status of the Early Adopters pool: {status}, {percent.toFixed(2)}%
