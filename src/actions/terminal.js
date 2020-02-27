@@ -369,9 +369,10 @@ export const updateRatings = () => {
   };
 };
 
-export const updateOrderBook = (exchange, market, orderBook) => ({
+export const updateOrderBook = (exchange, market, orderBook, isFull) => ({
   type: UPDATE_ORDER_BOOK,
   exchange, market, orderBook,
+  isFull,
 });
 
 export const updateHistory = (exchange, market, history) => ({

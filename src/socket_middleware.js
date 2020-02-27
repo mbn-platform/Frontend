@@ -84,11 +84,11 @@ function createSocket(store) {
         break;
     }
   });
-  socket.on('orders', ({name, content}) => {
+  socket.on('orders', ({name, content, firstId}) => {
     const [exchange,, market] = name.split('.');
     const buy = content.bids;
     const sell = content.asks;
-    store.dispatch(updateOrderBook(exchange, market, {buy, sell}));
+    store.dispatch(updateOrderBook(exchange, market, {buy, sell}, firstId === 0));
   });
   socket.on('trades', ({name, content}) => {
     const [exchange,, market] = name.split('.');

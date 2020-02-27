@@ -225,6 +225,19 @@ class PlaceOrderContainer extends React.Component {
         this.setState(newState);
       }
         break;
+      case 'kucoin': {
+        const minTradeSize = this.state.marketInfo ? this.state.marketInfo.tradeStep.toString() : '';
+        const rounded = floorBinance(amount, minTradeSize);
+        const price = parseFloat(this.state.price);
+        const newState = {amount: rounded.toString()};
+        if (price > 0) {
+          const tab = this.state.selectedTab;
+          const total = rounded * price * commissionPercent(tab, this.props.exchange);
+          newState.total = defaultFormatValue(total);
+        }
+        this.setState(newState);
+        break;
+      }
       default: {
         const value = parseFloat(amount);
         if(value >= 0) {
@@ -268,6 +281,22 @@ class PlaceOrderContainer extends React.Component {
         }
       }
         break;
+      case 'kucoin': {
+        const newState = {};
+        const value = parseFloat(total);
+        const price = parseFloat(this.state.price);
+        if (price >= 0) {
+          const minTradeSize = this.state.marketInfo ? this.state.marketInfo.tradeStep.toString() : '';
+          const maxOrderSize = value / price / commissionPercent(this.state.selectedTab, this.props.exchange);
+          const rounded = floorBinance(maxOrderSize.toString(), minTradeSize);
+          newState.amount = rounded;
+          newState.total = value.toString();
+        } else {
+          newState.total = total.toString();
+        }
+        this.setState(newState);
+        break;
+      }
       default: {
         const value = parseFloat(total);
         if(value >= 0) {
@@ -297,6 +326,19 @@ class PlaceOrderContainer extends React.Component {
         const amount = parseFloat(this.state.amount);
         if(amount) {
           const total = parseFloat(rounded) * amount;
+          newState.total = defaultFormatValue(total);
+        }
+        this.setState(newState);
+        break;
+      }
+      case 'kucoin': {
+        const priceStep = this.state.marketInfo ? this.state.marketInfo.priceStep.toString() : '';
+        const rounded = floorBinance(price, priceStep.toString());
+        const newState = {price: rounded};
+        const amount = parseFloat(this.state.amount);
+        if (amount >= 0) {
+          const tab = this.state.selectedTab;
+          const total = rounded * amount * commissionPercent(tab, this.props.exchange);
           newState.total = defaultFormatValue(total);
         }
         this.setState(newState);
@@ -344,10 +386,13 @@ const mapDispatchToProps = {
   placeAlgoOrder,
 };
 
-function commissionPercent(exchange, orderSide) {
+function commissionPercent(orderSide, exchange) {
   switch(exchange) {
     case 'bittrex': {
       return orderSide === TAB_BUY ? 1.0025 : 0.9975;
+    }
+    case 'kucoin': {
+      return orderSide === TAB_BUY ? 1.001 : 0.999;
     }
     case 'huobi':
     case 'binance': {
