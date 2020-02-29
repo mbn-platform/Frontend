@@ -281,6 +281,8 @@ input[type=number]::-webkit-outer-spin-button {
 					border: 1px solid #FFB300;
 					background-color: transparent;
 					width: 32%;
+					margin-bottom: 10px;
+
 					&:hover{
 						opacity: .7;
 					}
@@ -298,9 +300,13 @@ input[type=number]::-webkit-outer-spin-button {
 						line-height: 1.4em;
 						font-size: 1.2em;
 						display: flex;
-						justify-content: space-between;
-						margin-bottom: 10px;
+						justify-content: space-around;
+						flex-wrap: wrap;
 					}
+				}
+
+				&__btn.sub {
+					width: 19%;
 				}
 			}
 		}
