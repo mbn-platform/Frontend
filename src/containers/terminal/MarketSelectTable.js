@@ -1,23 +1,46 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import classNames from 'classnames';
+import {FormattedMessage, injectIntl} from 'react-intl';
+import { isEmpty } from 'ramda';
+
+import { uniqBaseMarkets } from '../../generic/util';
 import { defaultFormatValue } from '../../generic/util';
 import ReactTable from '../../components/SelectableReactTable';
 import {sortData, onColumnSort, classNameForColumnHeader}  from '../../generic/terminalSortFunctions';
 import {selectMarket} from '../../actions/terminal';
-import { connect } from 'react-redux';
-import {FormattedMessage, injectIntl} from 'react-intl';
 import createMqProvider, {querySchema} from '../../MediaQuery';
 
 const { Screen} = createMqProvider(querySchema);
 
+const STABLECOINS = ['USDT', 'BUSD', 'PAX', 'USDC'];
+const BTC = 'BTC';
+const USD = 'USD';
+const ALTS = 'ALTS';
+
 class MarketSelectTable extends React.Component {
   constructor(props) {
     super(props);
-    const [base, secondary] = props.market.split('-');
+    const [base] = props.market.split('-');
+
+    let bs;
+    let secondary;
+    let subCoins = [];
+
+    if (base === BTC) {
+      bs = base;
+    } else {
+      secondary = props.markets.find(item => item.base === base).base;
+      const alts = props.markets.filter(m => ![...STABLECOINS, BTC].includes(secondary));
+      bs = STABLECOINS.includes(secondary) ? USD : ALTS;
+      subCoins = STABLECOINS.includes(secondary) ? STABLECOINS : uniqBaseMarkets(alts);
+    }
+
     this.state = {
-      baseCurrency: base,
+      baseCurrency: bs,
       secondaryCurrency: secondary,
+      subCoins,
       filter: '',
       markets: props.markets.filter(m => m.base === base),
       sort: {},
@@ -60,21 +83,44 @@ class MarketSelectTable extends React.Component {
     this.setState({filter: e.target.value});
   }
 
-  onBaseCurrencySelected = (e, base) => {
+  handleFilterBaseCurrency = (base) => (e) => {
     e.stopPropagation();
     e.nativeEvent.stopImmediatePropagation();
+
+    let markets = [];
+    let subCoins = [];
+
+    if (base === BTC) {
+      markets = this.props.markets.filter(m => m.base === base);
+    } else if (base === USD) {
+      markets = this.props.markets.filter(m => STABLECOINS.includes(m.base));
+      subCoins = STABLECOINS;
+    } else {
+      markets = this.props.markets.filter(m => ![...STABLECOINS, BTC].includes(m.base));
+      subCoins = uniqBaseMarkets(markets);
+    }
+
     this.setState({
-      baseCurrency: base, secondaryCurrency: null,
-      markets: this.props.markets.filter(m => m.base === base),
+      baseCurrency: base,
+      secondaryCurrency: null,
+      markets,
+      subCoins,
+    });
+  }
+
+  handleFilterSecondaryCurrency = (secondary) => () => {
+    this.setState({
+      secondaryCurrency: secondary,
+      markets: this.props.markets.filter(m => m.base === secondary),
     });
   }
 
   onSecondaryCurrencySelected = (e, rowInfo) => {
     e.stopPropagation();
-    const currency = rowInfo.original.second;
-    const market = this.state.baseCurrency + '-' + currency;
-    if(market !== this.props.market) {
-      this.props.selectMarket(this.state.baseCurrency + '-' + currency);
+    const { symbol } = rowInfo.original;
+
+    if(symbol !== this.props.market) {
+      this.props.selectMarket(symbol);
     }
   }
 
@@ -205,7 +251,7 @@ class MarketSelectTable extends React.Component {
   )
 
   render() {
-    const baseCurrency = this.state.baseCurrency;
+    const { baseCurrency, secondaryCurrency, subCoins } = this.state;
     let sortedData = [];
     if(this.props.balances && this.state.hideZeros) {
       sortedData = this.state.markets.filter(m => {
@@ -216,6 +262,7 @@ class MarketSelectTable extends React.Component {
     } else {
       sortedData = this.sortData(this.state.markets);
     }
+
     return (
       <div onClick={e => {
         e.stopPropagation();
@@ -234,23 +281,36 @@ class MarketSelectTable extends React.Component {
           </span>
         </div>
         <form action="" className="dropdown__form">
-          <input autoComplete="off" value={this.state.filter} type="text" name="filter" onChange={this.onChange} 
+          <input autoComplete="off" value={this.state.filter} type="text" name="filter" onChange={this.onChange}
             className="input-search" placeholder={this.props.intl.messages['terminal.search']}/>
         </form>
         <div className="dropdown__btn-wrap">
           <button
-            onClick={e => this.onBaseCurrencySelected(e, 'BTC')}
-            className={classNames('dropdown__btn', {active: baseCurrency === 'BTC'})}
-          >BTC</button>
+            onClick={this.handleFilterBaseCurrency(BTC)}
+            className={classNames('dropdown__btn', {active: baseCurrency === BTC})}
+          >{BTC}</button>
           <button
-            onClick={e => this.onBaseCurrencySelected(e, 'ETH')}
-            className={classNames('dropdown__btn', {active: baseCurrency === 'ETH'})}
-          >ETH</button>
+            onClick={this.handleFilterBaseCurrency(ALTS)}
+            className={classNames('dropdown__btn', {active: baseCurrency === ALTS})}
+          >{ALTS}</button>
           <button
-            onClick={e => this.onBaseCurrencySelected(e, 'USDT')}
-            className={classNames('dropdown__btn', {active: baseCurrency === 'USDT'})}
-          >USDT</button>
+            onClick={this.handleFilterBaseCurrency(USD)}
+            className={classNames('dropdown__btn', {active: baseCurrency === USD})}
+          >{USD}</button>
         </div>
+        {!isEmpty(subCoins) && (
+          <div className="dropdown__btn-wrap">
+            {subCoins.map((item) => (
+              <button
+                key={item}
+                onClick={this.handleFilterSecondaryCurrency(item)}
+                className={classNames('dropdown__btn sub', {active: secondaryCurrency === item})}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
+        )}
         <Screen on={screenWidth => (
           <div className="terminal__market-select-dropdown-container dropdown-table-wrapper js-dropdown-table-wrapper">
             {this.renderMarketTable(sortedData.filter(m => m.second.toLowerCase().indexOf(this.state.filter.toLowerCase()) >= 0), screenWidth)}
