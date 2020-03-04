@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import {FormattedMessage, injectIntl} from 'react-intl';
-import { isEmpty } from 'ramda';
+import { isEmpty, map, prop } from 'ramda';
 
 import { uniqBaseMarkets } from '../../generic/util';
 import { defaultFormatValue } from '../../generic/util';
@@ -14,7 +14,7 @@ import createMqProvider, {querySchema} from '../../MediaQuery';
 
 const { Screen} = createMqProvider(querySchema);
 
-const STABLECOINS = ['USDT', 'BUSD', 'PAX', 'USDC'];
+const STABLECOINS = ['USDT', 'BUSD', 'PAX', 'USDC', 'DAI', 'USD', 'TUSD', 'NUSD'];
 const BTC = 'BTC';
 const USD = 'USD';
 const ALTS = 'ALTS';
@@ -23,24 +23,16 @@ class MarketSelectTable extends React.Component {
   constructor(props) {
     super(props);
     const [base] = props.market.split('-');
-
-    let bs;
-    let secondary;
-    let subCoins = [];
-
-    if (base === BTC) {
-      bs = base;
-    } else {
-      secondary = props.markets.find(item => item.base === base).base;
-      const alts = props.markets.filter(m => ![...STABLECOINS, BTC].includes(secondary));
-      bs = STABLECOINS.includes(secondary) ? USD : ALTS;
-      subCoins = STABLECOINS.includes(secondary) ? STABLECOINS : uniqBaseMarkets(alts);
-    }
+    const alts = props.markets.filter(m => ![...STABLECOINS, BTC].includes(m.base));
+    const coins = map(prop('base'), props.markets);
+    const usdCoins = STABLECOINS.filter(coin => coins.includes(coin));
+    const baseCurrency = base === BTC ? base : STABLECOINS.includes(base) ? USD : ALTS;
+    const subCoins = base === BTC ? [] : STABLECOINS.includes(base) ? usdCoins : uniqBaseMarkets(alts);
 
     this.state = {
-      baseCurrency: bs,
-      secondaryCurrency: secondary,
+      baseCurrency,
       subCoins,
+      secondaryCurrency: base,
       filter: '',
       markets: props.markets.filter(m => m.base === base),
       sort: {},
@@ -94,7 +86,8 @@ class MarketSelectTable extends React.Component {
       markets = this.props.markets.filter(m => m.base === base);
     } else if (base === USD) {
       markets = this.props.markets.filter(m => STABLECOINS.includes(m.base));
-      subCoins = STABLECOINS;
+      const coins = map(prop('base'), markets);
+      subCoins = STABLECOINS.filter(coin => coins.includes(coin));
     } else {
       markets = this.props.markets.filter(m => ![...STABLECOINS, BTC].includes(m.base));
       subCoins = uniqBaseMarkets(markets);
@@ -330,8 +323,9 @@ MarketSelectTable.propTypes = {
 };
 
 const mapStateToProps = state => {
-  const exchange = state.terminal.exchange;
+  const { exchange } = state.terminal;
   const info = state.exchangesInfo[exchange];
+
   return {
     balances: state.terminal.fund ? state.terminal.fund.balances : null,
     market: state.terminal.market,
