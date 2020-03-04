@@ -306,7 +306,9 @@ input[type=number]::-webkit-outer-spin-button {
 				}
 
 				&__btn.sub {
-					width: 19%;
+					width: 15%;
+					font-size: 12px;
+					line-height: 14px;
 				}
 			}
 		}
