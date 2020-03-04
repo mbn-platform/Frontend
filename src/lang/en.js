@@ -334,6 +334,7 @@ const en = {
   'terminal.priceForTable': 'Price ',
   'terminal.totalVolume' : 'Total volume: ',
   'terminal.amount' : 'Amount ',
+  'terminal.market' : 'Market',
   'terminal.marketDepth' : 'Market Depth',
   'terminal.hideZeros' : 'Hide zeros ',
   'terminal.search' : 'search...',

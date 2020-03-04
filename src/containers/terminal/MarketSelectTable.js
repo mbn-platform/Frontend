@@ -71,8 +71,13 @@ class MarketSelectTable extends React.Component {
     this.setState({hideZeros: !this.state.hideZeros});
   }
 
-  onChange = (e) => {
-    this.setState({filter: e.target.value});
+  onChange = (event) => {
+    this.setState({
+      baseCurrency: null,
+      secondaryCurrency: null,
+      markets: this.props.markets,
+      filter: event.target.value,
+    });
   }
 
   handleFilterBaseCurrency = (base) => (e) => {
@@ -88,14 +93,16 @@ class MarketSelectTable extends React.Component {
       markets = this.props.markets.filter(m => STABLECOINS.includes(m.base));
       const coins = map(prop('base'), markets);
       subCoins = STABLECOINS.filter(coin => coins.includes(coin));
+      markets = markets.filter(m => m.base === subCoins[0]);
     } else {
       markets = this.props.markets.filter(m => ![...STABLECOINS, BTC].includes(m.base));
       subCoins = uniqBaseMarkets(markets);
+      markets = markets.filter(m => m.base === subCoins[0]);
     }
 
     this.setState({
       baseCurrency: base,
-      secondaryCurrency: null,
+      secondaryCurrency: isEmpty(subCoins) ? null : subCoins[0],
       markets,
       subCoins,
     });
@@ -150,17 +157,17 @@ class MarketSelectTable extends React.Component {
       {
         Header:
           <div onClick={() => this.onColumnSort('second')}>
-            <FormattedMessage id="terminal.currency" defaultMessage="Currency"/>
+            <FormattedMessage id="terminal.market" defaultMessage="Market"/>
             <span className={classNameForColumnHeader(this.state, 'second')}/>
           </div>,
         minWidth:  screenWidth === 'lg' ? 80 : 30,
         headerClassName: 'table__header-wrapper terminal__market-header-table',
         className: 'terminal__market-table-cell terminal__market-table-cell_color-white',
-        Cell: row =>  (
+        Cell: row => (
           <div>
-            {row.original.second}
+            {row.original.symbol.split('-').reverse().join('/')}
           </div>
-        )
+        ),
       },
       {
         Header:   <div onClick={() => this.onColumnSort('last')}>
@@ -274,8 +281,15 @@ class MarketSelectTable extends React.Component {
           </span>
         </div>
         <form action="" className="dropdown__form">
-          <input autoComplete="off" value={this.state.filter} type="text" name="filter" onChange={this.onChange}
-            className="input-search" placeholder={this.props.intl.messages['terminal.search']}/>
+          <input
+            autoComplete="off"
+            value={this.state.filter}
+            type="text"
+            name="filter"
+            onChange={this.onChange}
+            className="input-search"
+            placeholder={this.props.intl.messages['terminal.search']}
+          />
         </form>
         <div className="dropdown__btn-wrap">
           <button
@@ -283,13 +297,13 @@ class MarketSelectTable extends React.Component {
             className={classNames('dropdown__btn', {active: baseCurrency === BTC})}
           >{BTC}</button>
           <button
+            onClick={this.handleFilterBaseCurrency(USD)}
+            className={classNames('dropdown__btn', {active: baseCurrency === USD})}
+          >{USD}Ⓢ</button>
+          <button
             onClick={this.handleFilterBaseCurrency(ALTS)}
             className={classNames('dropdown__btn', {active: baseCurrency === ALTS})}
           >{ALTS}</button>
-          <button
-            onClick={this.handleFilterBaseCurrency(USD)}
-            className={classNames('dropdown__btn', {active: baseCurrency === USD})}
-          >{USD}</button>
         </div>
         {!isEmpty(subCoins) && (
           <div className="dropdown__btn-wrap">
