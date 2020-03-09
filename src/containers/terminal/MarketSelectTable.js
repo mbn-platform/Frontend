@@ -2,15 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
-import {FormattedMessage, injectIntl} from 'react-intl';
-import { isEmpty, map, prop } from 'ramda';
+import { FormattedMessage, injectIntl } from 'react-intl';
+import { isEmpty, map, prop, propEq, findIndex, propOr } from 'ramda';
 
 import { uniqBaseMarkets } from '../../generic/util';
 import { defaultFormatValue } from '../../generic/util';
 import ReactTable from '../../components/SelectableReactTable';
-import {sortData, onColumnSort, classNameForColumnHeader}  from '../../generic/terminalSortFunctions';
-import {selectMarket} from '../../actions/terminal';
-import createMqProvider, {querySchema} from '../../MediaQuery';
+import { sortData, onColumnSort, classNameForColumnHeader }  from '../../generic/terminalSortFunctions';
+import { selectMarket } from '../../actions/terminal';
+import createMqProvider, { querySchema } from '../../MediaQuery';
 
 const { Screen} = createMqProvider(querySchema);
 
@@ -28,13 +28,16 @@ class MarketSelectTable extends React.Component {
     const usdCoins = STABLECOINS.filter(coin => coins.includes(coin));
     const baseCurrency = base === BTC ? base : STABLECOINS.includes(base) ? USD : ALTS;
     const subCoins = base === BTC ? [] : STABLECOINS.includes(base) ? usdCoins : uniqBaseMarkets(alts);
+    const markets = props.markets.filter(m => m.base === base);
+    const secondaryCurrency = props.markets.find(m => m.symbol === props.market);
 
     this.state = {
       baseCurrency,
+      subCurrency: base,
+      secondaryCurrency,
       subCoins,
-      secondaryCurrency: base,
       filter: '',
-      markets: props.markets.filter(m => m.base === base),
+      markets,
       sort: {},
       hideZeros: false,
       dropDownHeight: 400,
@@ -65,20 +68,37 @@ class MarketSelectTable extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.onResize);
+    window.removeEventListener('keydown', this.onKeyDown);
+  }
+
+  componentDidMount() {
+    window.addEventListener('keydown', this.onKeyDown);
+    this.setState({dropDownHeight: this.dropDownWrapper.current.offsetHeight - 180});
+  };
+
   onHideZeroClick = (e) => {
     e.stopPropagation();
     e.nativeEvent.stopImmediatePropagation();
-    this.setState({hideZeros: !this.state.hideZeros});
+    this.setState({ hideZeros: !this.state.hideZeros });
   }
 
-  onChange = (event) => {
+  handleChange = ({ target: { value } }) => {
+    const { markets } = this.props;
+    const marketsFiltered = this.handleFilterTable(markets, value);
+
     this.setState({
       baseCurrency: null,
-      secondaryCurrency: null,
-      markets: this.props.markets,
-      filter: event.target.value,
+      subCurrency: null,
+      markets: marketsFiltered,
+      secondaryCurrency: marketsFiltered[0],
+      filter: value,
+      subCoins: [],
     });
   }
+
+  handleFilterTable = (data, filter) => data.filter(m => m.second.toLowerCase().includes(filter.toLowerCase()));
 
   handleFilterBaseCurrency = (base) => (e) => {
     e.stopPropagation();
@@ -102,36 +122,55 @@ class MarketSelectTable extends React.Component {
 
     this.setState({
       baseCurrency: base,
-      secondaryCurrency: isEmpty(subCoins) ? null : subCoins[0],
+      subCurrency: isEmpty(subCoins) ? null : subCoins[0],
       markets,
       subCoins,
     });
   }
 
-  handleFilterSecondaryCurrency = (secondary) => () => {
-    this.setState({
-      secondaryCurrency: secondary,
-      markets: this.props.markets.filter(m => m.base === secondary),
-    });
+  handleFilterSubCurrency = (subCurrency) => () => {
+    const markets = this.props.markets.filter(m => m.base === subCurrency);
+    this.setState({ subCurrency, markets });
   }
 
-  onSecondaryCurrencySelected = (e, rowInfo) => {
-    e.stopPropagation();
-    const { symbol } = rowInfo.original;
+  onSecondaryCurrencySelected = ({ symbol }) => (event) => {
+    event.stopPropagation();
 
-    if(symbol !== this.props.market) {
+    if (symbol !== this.props.market) {
       this.props.selectMarket(symbol);
     }
   }
 
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.onResize);
+  handlePressEnter = (event) => {
+    if (event.keyCode === 13 && event.shiftKey === false) {
+      event.preventDefault();
+
+      this.props.selectMarket(this.state.secondaryCurrency.symbol);
+      this.props.close();
+    }
   }
 
-  componentDidMount() {
-    this.setState({dropDownHeight: this.dropDownWrapper.current.offsetHeight - 180});
-  };
+  onKeyDown = (e) => {
+    const data = this.sortData(this.state.markets);
+    const index = findIndex(propEq('symbol', prop('symbol', this.state.secondaryCurrency)))(data);
 
+    if (e.keyCode === 38) {
+      e.preventDefault();
+      this.setState(() => {
+        return index >= 1 ? { secondaryCurrency: data[index - 1] } : null;
+      });
+      const selectedRow = document.getElementsByClassName('-selected')[0];
+      selectedRow.scrollIntoViewIfNeeded();
+    }
+    if (e.keyCode === 40) {
+      e.preventDefault();
+      this.setState(() => {
+        return index < data.length - 1 ? { secondaryCurrency: data[index + 1] } : null;
+      });
+      const selectedRow = document.getElementsByClassName('-selected')[0];
+      selectedRow.scrollIntoViewIfNeeded();
+    }
+  }
 
   getColumns = screenWidth => {
     const { baseCurrency } = this.state;
@@ -235,25 +274,16 @@ class MarketSelectTable extends React.Component {
     ];
   }
 
-  onRowClick = (state, rowInfo) => {
-    return {
-      onClick: e => this.onSecondaryCurrencySelected(e, rowInfo)
-    };
-  }
-
-  renderMarketTable = (data, screenWidth) => (
-    <ReactTable
-      getTrProps={this.onRowClick}
-      columns={this.getColumns(screenWidth)}
-      data={data}
-      scrollBarHeight={this.state.dropDownHeight}
-    />
-  )
+  onRowClick = (_, { original }) => ({
+    onClick: this.onSecondaryCurrencySelected(original),
+    className: prop('symbol', this.state.secondaryCurrency) === original.symbol ? '-selected' : '',
+  });
 
   render() {
-    const { baseCurrency, secondaryCurrency, subCoins } = this.state;
+    const { baseCurrency, subCurrency, subCoins } = this.state;
     let sortedData = [];
-    if(this.props.balances && this.state.hideZeros) {
+
+    if (this.props.balances && this.state.hideZeros) {
       sortedData = this.state.markets.filter(m => {
         const c = this.props.balances.find(b => b.name === m.second);
         return c && c.total > 0;
@@ -264,10 +294,14 @@ class MarketSelectTable extends React.Component {
     }
 
     return (
-      <div onClick={e => {
-        e.stopPropagation();
-        e.nativeEvent.stopImmediatePropagation();
-      }} className="dropdown search" ref={this.dropDownWrapper}>
+      <div
+        onClick={e => {
+          e.stopPropagation();
+          e.nativeEvent.stopImmediatePropagation();
+        }}
+        className="dropdown search"
+        ref={this.dropDownWrapper}
+      >
         <div onClick={this.props.close} className="dropdown__name">
           <span>{this.props.market}</span>
           <span>
@@ -286,7 +320,8 @@ class MarketSelectTable extends React.Component {
             value={this.state.filter}
             type="text"
             name="filter"
-            onChange={this.onChange}
+            onChange={this.handleChange}
+            onKeyDown={this.handlePressEnter}
             className="input-search"
             placeholder={this.props.intl.messages['terminal.search']}
           />
@@ -310,8 +345,8 @@ class MarketSelectTable extends React.Component {
             {subCoins.map((item) => (
               <button
                 key={item}
-                onClick={this.handleFilterSecondaryCurrency(item)}
-                className={classNames('dropdown__btn sub', {active: secondaryCurrency === item})}
+                onClick={this.handleFilterSubCurrency(item)}
+                className={classNames('dropdown__btn sub', {active: subCurrency === item})}
               >
                 {item}
               </button>
@@ -320,9 +355,15 @@ class MarketSelectTable extends React.Component {
         )}
         <Screen on={screenWidth => (
           <div className="terminal__market-select-dropdown-container dropdown-table-wrapper js-dropdown-table-wrapper">
-            {this.renderMarketTable(sortedData.filter(m => m.second.toLowerCase().indexOf(this.state.filter.toLowerCase()) >= 0), screenWidth)}
+            <ReactTable
+              getTrProps={this.onRowClick}
+              columns={this.getColumns(screenWidth)}
+              data={sortedData}
+              selectedItem={this.state.secondaryCurrency}
+              scrollBarHeight={this.state.dropDownHeight}
+            />
           </div>
-        )}/>
+        )} />
       </div>
     );
   }
@@ -337,19 +378,19 @@ MarketSelectTable.propTypes = {
 };
 
 const mapStateToProps = state => {
-  const { exchange } = state.terminal;
+  const { exchange, market, fund } = state.terminal;
   const info = state.exchangesInfo[exchange];
 
   return {
-    balances: state.terminal.fund ? state.terminal.fund.balances : null,
-    market: state.terminal.market,
-    rates: (info && info.rates) || {},
-    markets: (info && info.markets) || [],
+    market,
+    balances: propOr(null, 'balances', fund),
+    rates: propOr({}, 'rates', info),
+    markets: propOr([], 'markets', info),
   };
 };
 
-const mapDispatchToProps = dispatch => ({
-  selectMarket: market => dispatch(selectMarket(market)),
-});
+const mapDispatchToProps = {
+  selectMarket,
+};
 
 export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(MarketSelectTable));

@@ -560,6 +560,10 @@
   .rt-tr {
     line-height: 20px !important;
   }
+
+  .rt-tr-group .rt-tr:not(.-padRow).-selected {
+    background: #346255;
+  }
 }
 
 .terminal__sub-cell {
