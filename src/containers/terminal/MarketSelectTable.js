@@ -142,7 +142,7 @@ class MarketSelectTable extends React.Component {
   }
 
   handlePressEnter = (event) => {
-    if (event.keyCode === 13 && event.shiftKey === false) {
+    if (event.keyCode === 13 && event.shiftKey === false && !isEmpty(this.state.markets)) {
       event.preventDefault();
 
       this.props.selectMarket(this.state.secondaryCurrency.symbol);
@@ -169,6 +169,13 @@ class MarketSelectTable extends React.Component {
       });
       const selectedRow = document.getElementsByClassName('-selected')[0];
       selectedRow.scrollIntoViewIfNeeded();
+    }
+
+    if (e.keyCode === 13) {
+      e.preventDefault();
+
+      this.props.selectMarket(this.state.secondaryCurrency.symbol);
+      this.props.close();
     }
   }
 
