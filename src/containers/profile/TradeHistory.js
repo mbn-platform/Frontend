@@ -1,33 +1,32 @@
 import BigNumber from 'bignumber.js';
 import React from 'react';
 import { Col, Container, Row } from 'reactstrap';
-import { Desktop, Mobile } from '../../generic/MediaQuery';
-import Pagination from '../../components/Pagination';
-import ReactTable from '../../components/SelectableReactTable';
-import { formatDate } from '../../generic/util';
 import { injectIntl } from 'react-intl';
-import { ProfileBlock, TradeHistoryHelpTooltip } from '../../components/ProfileBlock';
+
+import { formatDate } from 'generic/util';
+import { Desktop, Mobile } from 'generic/MediaQuery';
+import Pagination from 'components/Pagination';
+import ReactTable from 'components/SelectableReactTable';
+import { ProfileBlock, TradeHistoryHelpTooltip } from 'components/ProfileBlock';
 
 class TradeHistory extends React.Component {
-  render() {
-    return (
-      <Col xs="12" sm="12" md="12" lg="12" xl="8" className="trade-block">
-        <Container fluid className="h-100">
-          <Row className="h-100">
-            <Col className="trade-history">
-              <ProfileBlock
-                iconClassName='icon-history-clock-button'
-                title='profile.tradeHistory'
-                Tooltip={TradeHistoryHelpTooltip}
-              >
-                {this.renderTable()}
-              </ProfileBlock>
-            </Col>
-          </Row>
-        </Container>
-      </Col>
-    );
-  }
+  render = () => (
+    <Col xs="12" sm="12" md="12" lg="12" xl="8" className="trade-block">
+      <Container fluid className="h-100">
+        <Row className="h-100">
+          <Col className="trade-history">
+            <ProfileBlock
+              iconClassName='icon-history-clock-button'
+              title='profile.tradeHistory'
+              Tooltip={TradeHistoryHelpTooltip}
+            >
+              {this.renderTable()}
+            </ProfileBlock>
+          </Col>
+        </Row>
+      </Container>
+    </Col>
+  );
 
   getColumns() {
     return [
@@ -71,6 +70,7 @@ class TradeHistory extends React.Component {
       },
     ];
   }
+
   renderTable() {
     const data = this.props.trades
       .sort((t1, t2) => t2.date - t1.date)
@@ -83,20 +83,15 @@ class TradeHistory extends React.Component {
         }
         return accum.concat(value);
       }, []);
+
     return (
       <div>
         <Desktop>
           <div  className="profile_table_wrapper">
             <ReactTable
-              getTrProps={(state, rowInfo) => {
-                if(rowInfo.original.first) {
-                  return {
-                    className: 'first-row'
-                  };
-                } else {
-                  return {};
-                }
-              }}
+              getTrProps={(state, rowInfo) => (
+                rowInfo.original.first ? { className: 'first-row' } : {}
+              )}
               data={data}
               className="profile_table"
               onItemSelected={() => {}}
@@ -108,15 +103,9 @@ class TradeHistory extends React.Component {
         <Mobile>
           <div>
             <ReactTable
-              getTrProps={(state, rowInfo, column, instance) => {
-                if(rowInfo && rowInfo.original.first) {
-                  return {
-                    className: 'first-row'
-                  };
-                } else {
-                  return {};
-                }
-              }}
+              getTrProps={(state, rowInfo, column, instance) => (
+                rowInfo && rowInfo.original.first ? { className: 'first-row' } : {}
+              )}
               data={data}
               onItemSelected={() => {}}
               columns={this.getColumns()}
@@ -129,11 +118,10 @@ class TradeHistory extends React.Component {
         </Mobile>
       </div>
     );
-
   }
 }
 
-const SortableHeader = (header, showSort = true) => (
+const SortableHeader = (header) => (
   <div className="table_header_wrapper contract_header_wrapper">
     <span className="table_header">{header}</span>
   </div>

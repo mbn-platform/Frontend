@@ -13,6 +13,7 @@ class StakingInfo extends React.Component {
       fontSize: '11px',
     };
     const { info: { earlyPool } } = this.props;
+
     return (
       <div className="info">
         <h3>Staking structure</h3>
@@ -78,53 +79,52 @@ class StakingInfo extends React.Component {
     );
   }
 
-  renderLevelsTable() {
-    return (
-      <table>
-        <colgroup>
-          <col width="100" className="test"/>
-          <col width="150" />
-          <col width="130" />
-        </colgroup>
-        <thead>
-          <tr>
-            <th>Level</th>
-            <th>Requirements (MBN)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Lvl1</td>
-            <td>100,000</td>
-          </tr>
-          <tr>
-            <td>Lvl2</td>
-            <td>300,000</td>
-          </tr>
-          <tr>
-            <td>Lvl3</td>
-            <td>1,000,000</td>
-          </tr>
-          <tr>
-            <td>Lvl4</td>
-            <td>3,000,000</td>
-          </tr>
-        </tbody>
-      </table>
-    );
-  }
+  renderLevelsTable = () => (
+    <table>
+      <colgroup>
+        <col width="100" className="test"/>
+        <col width="150" />
+        <col width="130" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th>Level</th>
+          <th>Requirements (MBN)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Lvl1</td>
+          <td>100,000</td>
+        </tr>
+        <tr>
+          <td>Lvl2</td>
+          <td>300,000</td>
+        </tr>
+        <tr>
+          <td>Lvl3</td>
+          <td>1,000,000</td>
+        </tr>
+        <tr>
+          <td>Lvl4</td>
+          <td>3,000,000</td>
+        </tr>
+      </tbody>
+    </table>
+  );
 
   render() {
     const { verifyStakeAddress } = this.props;
-    const isVerified = this.props.info.verified;
+    const { verified } = this.props.info;
+
     return (
       <div>
         {this.renderInfo()}
-        {isVerified ? null :
+        {!verified && (
           <Button onClick={verifyStakeAddress}>
             <FormattedMessage id='staking.start' />
           </Button>
-        }
+        )}
       </div>
     );
   }

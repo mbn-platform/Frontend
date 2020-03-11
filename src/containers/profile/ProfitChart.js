@@ -1,14 +1,14 @@
 import React from 'react';
-import SegmentedControl from '../../components/SegmentedControl';
 import { Col, Row } from 'reactstrap';
-import { Desktop, Mobile } from '../../generic/MediaQuery';
 import AmChartsReact from '@amcharts/amcharts3-react';
-import { formatDate } from '../../generic/util';
-import { ProfileBlock } from '../../components/ProfileBlock';
 import memoizeOne from 'memoize-one';
 
-class ProfitChart extends React.Component {
+import SegmentedControl from 'components/SegmentedControl';
+import { ProfileBlock } from 'components/ProfileBlock';
+import { Desktop, Mobile } from 'generic/MediaQuery';
+import { formatDate } from 'generic/util';
 
+class ProfitChart extends React.Component {
   state = {
     selectedInterval: 1,
     maximum: 0,
@@ -19,8 +19,8 @@ class ProfitChart extends React.Component {
 
   segments = ['ALL', 'CURRENT']
 
-  onSegmentChange = (segment) => {
-    this.setState({selectedInterval: segment});
+  onSegmentChange = (selectedInterval) => {
+    this.setState({ selectedInterval });
   }
 
   computeState(segment) {
@@ -70,51 +70,47 @@ class ProfitChart extends React.Component {
         });
       }
     });
-    return {dataProvider, graphIds};
+    return { dataProvider, graphIds };
   }
 
-  render() {
-    return (
-      <ProfileBlock
-        iconClassName='icon-005-growth'
-        title='profile.profitChart'
-        className='graphic'
-      >
-        <Row className="justify-content-center d-flex">
-          <Col xs={{size: 12, order: 2}} md="9">
-            <div className="amcharts">
-              {this.renderChart()}
-            </div>
-          </Col>
-          <Col xs={{size: 12, order: 3}} md="3" className='legend'>
-            {this.renderStat()}
-          </Col>
-          <Col xs={{order: 1}} md={{order: 3}}>
-            <Desktop>
-              <SegmentedControl
-                segments={this.segments}
-                selectedIndex={this.state.selectedInterval}
-                onChange={this.onSegmentChange} />
-            </Desktop>
-            <Mobile>
-              <SegmentedControl
-                segments={this.segments}
-                segmentWidth={50}
-                selectedIndex={this.state.selectedInterval}
-                onChange={this.onSegmentChange} />
-            </Mobile>
-          </Col>
-        </Row>
-      </ProfileBlock>
-    );
-  }
+  render = () => (
+    <ProfileBlock
+      iconClassName='icon-005-growth'
+      title='profile.profitChart'
+      className='graphic'
+    >
+      <Row className="justify-content-center d-flex">
+        <Col xs={{ size: 12, order: 2 }} md="9">
+          <div className="amcharts">
+            {this.renderChart()}
+          </div>
+        </Col>
+        <Col xs={{ size: 12, order: 3 }} md="3" className='legend'>
+          {this.renderStat()}
+        </Col>
+        <Col xs={{ order: 1 }} md={{ order: 3 }}>
+          <Desktop>
+            <SegmentedControl
+              segments={this.segments}
+              selectedIndex={this.state.selectedInterval}
+              onChange={this.onSegmentChange} />
+          </Desktop>
+          <Mobile>
+            <SegmentedControl
+              segments={this.segments}
+              segmentWidth={50}
+              selectedIndex={this.state.selectedInterval}
+              onChange={this.onSegmentChange} />
+          </Mobile>
+        </Col>
+      </Row>
+    </ProfileBlock>
+  );
 
   renderStat() {
     const stat = this.calculateStat(this.props.stats || [], this.props.summary || {});
-    if (!stat) {
-      return null;
-    }
-    return (
+
+    return stat ? (
       <div className="values">
         {stat.currentCount > 0 ?
           <div>Profit per current contract: {stat.currentProfit.map((v) => v.toFixed(2) + '%').join(' / ')}</div>
@@ -124,11 +120,10 @@ class ProfitChart extends React.Component {
         <div>Contracts with positive profit: {stat.positive}</div>
         <div>Contracts with negative profit: {stat.negative}</div>
       </div>
-    );
+    ) : null;
   }
 
   calculateStat = memoizeOne((data, summary) => {
-    console.log(summary);
     const stat = {
       positive: summary.positive || 0,
       negative: summary.negative || 0,
@@ -144,6 +139,7 @@ class ProfitChart extends React.Component {
         return;
       }
     });
+
     return stat;
   })
 
@@ -243,13 +239,15 @@ class ProfitChart extends React.Component {
 
   renderChart() {
     const config = this.makeConfig(this.props.stats, this.state.selectedInterval);
-    if (config.graphs.length === 0) {
-      return null;
-    }
-    return (
-      <AmChartsReact.React  style={{height: '100%', width: '100%', backgroundColor: 'transparent',position: 'absolute'}}
-        options={config} />
-    );
+
+    return config.graphs.length === 0
+      ? null
+      : (
+        <AmChartsReact.React
+          style={{ height: '100%', width: '100%', backgroundColor: 'transparent',position: 'absolute' }}
+          options={config}
+        />
+      );
   }
 }
 

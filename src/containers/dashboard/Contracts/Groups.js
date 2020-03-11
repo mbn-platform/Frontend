@@ -3,11 +3,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 
-import { showCreateGroupModal, showConfirmModal, showAddContractToGroupModal } from '../../../actions/modal';
-import { deleteAssetGroup } from '../../../actions/assetGroup';
-import { Desktop, Mobile } from '../../../generic/MediaQuery';
-import ReactTable from '../../../components/SelectableReactTable';
-import Pagination from '../../../components/Pagination';
+import { showCreateGroupModal, showConfirmModal, showAddContractToGroupModal } from 'actions/modal';
+import { deleteAssetGroup } from 'actions/assetGroup';
+import { Desktop, Mobile } from 'generic/MediaQuery';
+import ReactTable from 'components/SelectableReactTable';
+import Pagination from 'components/Pagination';
+import { currentContractsSelector } from 'selectors/contracts';
+import { profileNameSelector } from 'selectors/auth';
+import { assetGroupsSelector } from 'selectors/assetGroups';
 
 class Groups extends React.Component {
   static propTypes = {
@@ -144,14 +147,10 @@ class Groups extends React.Component {
   );
 }
 
-const mapStateToProps = ({
-  contracts,
-  auth: { profile: { name } },
-  assetGroups,
-}) => ({
-  allContracts: contracts.current,
-  user: name,
-  assetGroups,
+const mapStateToProps = (state) => ({
+  allContracts: currentContractsSelector(state),
+  user: profileNameSelector(state),
+  assetGroups: assetGroupsSelector(state),
 });
 
 const mapDispatchToProps = {

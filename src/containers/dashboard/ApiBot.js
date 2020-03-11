@@ -2,13 +2,16 @@ import React from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {FormattedMessage, FormattedDate, FormattedTime, injectIntl } from 'react-intl';
-import ReactTable from '../../components/SelectableReactTable';
-import Pagination from '../../components/Pagination';
-import ExchangeSelect from '../../components/ExchangeSelect';
-import {showTwoFactorAuthModal, showConfirmModal} from '../../actions/modal';
-import createMqProvider, {querySchema} from '../../MediaQuery';
-import {fetchBotKeys, deleteBotKeys} from '../../actions/apiKeys';
 import classNames from 'classnames';
+
+import createMqProvider, {querySchema} from 'MediaQuery';
+import ReactTable from 'components/SelectableReactTable';
+import Pagination from 'components/Pagination';
+import ExchangeSelect from 'components/ExchangeSelect';
+import { showTwoFactorAuthModal, showConfirmModal } from 'actions/modal';
+import { fetchBotKeys, deleteBotKeys } from 'actions/apiKeys';
+import { botKeysSelector, ownKeysSelector } from 'selectors/apiKeys';
+import { mfaEnabledSelector } from 'selectors/auth';
 
 const ACTIVE_KEYS =  {
   value: 'active',
@@ -29,15 +32,14 @@ const DELETED_KEYS = {
 const { Screen} = createMqProvider(querySchema);
 
 class BotList extends React.Component {
-
   state = {
     currentMode: ACTIVE_KEYS.value,
     keysList: this.props.botKeysList,
     selectedApiKey: null,
   };
 
-  onKeySelected = (key) => {
-    this.setState({selectedApiKey: key});
+  onKeySelected = (selectedApiKey) => {
+    this.setState({ selectedApiKey });
   }
 
   static getDerivedStateFromProps(nextProps, ) {
@@ -269,9 +271,10 @@ BotList.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  apiKeys: state.apiKeys.own || [],
-  is2FAEnable: state.auth.profile.mfaEnabled,
-  botKeysList: state.apiKeys.botKeys,
+  botKeysList: botKeysSelector(state),
+  apiKeys: ownKeysSelector(state),
+  is2FAEnabled: mfaEnabledSelector(state),
+
 });
 
 const mapDispatchToProps = {

@@ -1,5 +1,6 @@
 import memoizeOne from 'memoize-one';
 import React from 'react';
+import { connect } from 'react-redux';
 import 'amcharts3/amcharts/amcharts';
 import 'amcharts3/amcharts/xy';
 import 'amcharts3/amcharts/pie';
@@ -7,9 +8,12 @@ import 'amcharts3/amcharts/serial';
 import AmChartsReact from '@amcharts/amcharts3-react';
 import { FormattedMessage } from 'react-intl';
 
+import { ownKeysSelector } from 'selectors/apiKeys';
+import { profileIdSelector } from 'selectors/auth';
+import { currentContractsSelector } from 'selectors/contracts';
+import { exchangesInfoSelector } from 'selectors/exchangesInfo';
+
 class FundsChart extends React.Component {
-
-
   constructor(props) {
     super(props);
     const funds = props.apiKeys.concat(props.contracts.filter(c => c.to._id === props.userId));
@@ -115,30 +119,37 @@ class FundsChart extends React.Component {
 
 
 
-  render() {
-    return (
-      <div className="table">
-        <div className="table_title_wrapper clearfix">
-          <div className="table_title center">
-            <FormattedMessage
-              id="dashboard.availableAssets"
-              defaultMessage="AVAILABLE ASSETS"
-            />
-          </div>
+  render = () => (
+    <div className="table">
+      <div className="table_title_wrapper clearfix">
+        <div className="table_title center">
+          <FormattedMessage
+            id="dashboard.availableAssets"
+            defaultMessage="AVAILABLE ASSETS"
+          />
         </div>
-        <div className="charts">
-          <div className="chart_pie">
-            <AmChartsReact.React   style={{height: '100%', width: '100%', backgroundColor: 'transparent',position: 'absolute'}}
-              options={this.getConfig(this.props.exchangesInfo, this.props.apiKeys, this.props.contracts)} />
-          </div>
-          <div className="legend_pie_wrapper">
-            <div id="funds_legend" className="legend_pie">
-            </div>
+      </div>
+      <div className="charts">
+        <div className="chart_pie">
+          <AmChartsReact.React
+            style={{ height: '100%', width: '100%', backgroundColor: 'transparent',position: 'absolute' }}
+            options={this.getConfig(this.props.exchangesInfo, this.props.apiKeys, this.props.contracts)}
+          />
+        </div>
+        <div className="legend_pie_wrapper">
+          <div id="funds_legend" className="legend_pie">
           </div>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
-export default FundsChart;
+const mapStateToProps = state => ({
+  apiKeys: ownKeysSelector(state),
+  userId: profileIdSelector(state),
+  contracts: currentContractsSelector(state),
+  exchangesInfo: exchangesInfoSelector(state),
+});
+
+export default connect(mapStateToProps)(FundsChart);

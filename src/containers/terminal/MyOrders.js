@@ -1,15 +1,16 @@
 import React from 'react';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
-import { cancelOrder } from '../../actions/terminal';
+
 import { ClosedOrders } from './ClosedOrders';
 import { OpenOrders } from './OpenOrders';
 import { Balances } from './Balances';
 import { OrdersHeader } from './OrdersHeader';
-import createMqProvider, {ordersSchema} from '../../MediaQuery';
+import createMqProvider, { ordersSchema } from 'MediaQuery';
+import { cancelOrder } from 'actions/terminal';
+import { fundSelector, ordersSelector, marketSelector } from 'selectors/terminal';
 
 class MyOrders extends React.Component {
-
   constructor(props) {
     super(props);
     const { Screen, MediaQuery } = createMqProvider(ordersSchema);
@@ -102,17 +103,14 @@ class MyOrders extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  const {market, orders, fund, assetGroup } = state.terminal;
-  return {
-    market,
-    orders,
-    fund: fund || assetGroup,
-  };
-};
-
-const mapDispatchToProps =  dispatch => ({
-  cancelOrder: order => dispatch(cancelOrder(order)),
+const mapStateToProps = state => ({
+  fund: fundSelector(state),
+  orders: ordersSelector(state),
+  market: marketSelector(state),
 });
+
+const mapDispatchToProps = {
+  cancelOrder,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyOrders);

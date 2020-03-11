@@ -1,24 +1,24 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Container, Row, Col } from 'reactstrap';
+import classNames from 'classnames';
+import { FormattedMessage, injectIntl } from 'react-intl';
+import { compose } from 'ramda';
+
 import BestTraders from './BestTraders';
 import BestInvestors from './BestInvestors';
-import classNames from 'classnames';
-import DropdownSelect from '../../components/DropdownSelect';
-import {sortData, onColumnSort, classNameForColumnHeader, defaultSortFunction} from '../../generic/terminalSortFunctions';
-import { connect } from 'react-redux';
-import { updateRatings } from '../../actions/terminal';
-import {FormattedMessage, injectIntl} from 'react-intl';
+import DropdownSelect from 'components/DropdownSelect';
+import { sortData, onColumnSort, classNameForColumnHeader, defaultSortFunction } from 'generic/terminalSortFunctions';
+import { updateRatings } from 'actions/terminal';
+import { ratingsSelector } from 'selectors/ratings';
 
 const TAB_TRADERS = 0;
 const TAB_INVESTORS = 1;
 const TIME_RANGE_OPTIONS = ['1 week', '1 month', '3 months', '6 months', '12 months', 'All time'];
 
 class Ratings extends React.Component {
-
   constructor(props) {
     super(props);
-    this.onNameFilterChange = this.onNameFilterChange.bind(this);
-    this.onTabClick = this.onTabClick.bind(this);
     this.sortData = sortData.bind(this);
     this.onColumnSort = onColumnSort.bind(this);
     this.sortFunctions = {
@@ -29,42 +29,49 @@ class Ratings extends React.Component {
       fee: (a, b) => defaultSortFunction(a.contractSettings.fee, b.contractSettings.fee),
       maxLoss: (a, b) => defaultSortFunction(a.contractSettings.maxLoss, b.contractSettings.maxLoss),
     };
+
     this.state = {
       roiIntervalOpen: false,
       nameFilter: '',
       tab: TAB_TRADERS,
       selectedPeriod: 'All time',
-      sort: {}
+      sort: {},
     };
     this.inputRef = React.createRef();
     this.onRowClick = this.onRowClick.bind(this);
   }
 
-  onRowClick(e) {
-    const name = e.currentTarget.dataset.name;
+  componentDidMount = () => {
+    this.props.updateRatings();
+  }
+
+  onRowClick = (e) => {
+    const { name } = e.currentTarget.dataset;
     this.props.history.push(`/${name}`);
   }
 
-  onTabClick(tab) {
-    this.setState({tab});
+  onTabClick = (tab) => {
+    this.setState({ tab });
   }
 
 
-  onNameFilterChange(e) {
-    this.setState({nameFilter: e.target.value});
+  onNameFilterChange = (e) => {
+    this.setState({ nameFilter: e.target.value });
   }
 
   render() {
-    if(this.inputRef.current && document.activeElement === this.inputRef.current) {
+    if (this.inputRef.current && document.activeElement === this.inputRef.current) {
       this.shouldFocus = true;
     } else {
       this.shouldFocus = false;
     }
+
     let data = this.props.ratings;
     data = data.filter(profile => {
       return profile.name.toLowerCase().indexOf(this.state.nameFilter.toLowerCase()) >= 0;
     });
     const sortedData = this.sortData(data);
+
     return (
       <Container fluid className="ratings">
         <Row>
@@ -81,7 +88,7 @@ class Ratings extends React.Component {
                   <div className="block__top-switch-wrap">
                     <span
                       onClick={() => this.onTabClick(TAB_TRADERS)}
-                      className={classNames('block__top-switch', 'ratings-traders', {active: this.state.tab === TAB_TRADERS})}>
+                      className={classNames('block__top-switch', 'ratings-traders', { active: this.state.tab === TAB_TRADERS })}>
                       <FormattedMessage
                         id="ratings.traders"
                         defaultMessage="Traders"
@@ -89,7 +96,7 @@ class Ratings extends React.Component {
                     </span>
                     <span
                       onClick={() => this.onTabClick(TAB_INVESTORS)}
-                      className={classNames('block__top-switch', 'ratings-investors', {active: this.state.tab === TAB_INVESTORS})}>
+                      className={classNames('block__top-switch', 'ratings-investors', { active: this.state.tab === TAB_INVESTORS })}>
                       <FormattedMessage
                         id="ratings.investors"
                         defaultMessage="Investors"
@@ -169,7 +176,7 @@ class Ratings extends React.Component {
                                     id="ratings.durationOfContract"
                                     defaultMessage="Duration of the contract,"
                                   />
-                                  <br/>
+                                  <br />
                                 </span>
                                 <span>
                                   <FormattedMessage
@@ -207,18 +214,28 @@ class Ratings extends React.Component {
                                 <span className={classNameForColumnHeader(this.state, 'maxLoss')}/>
                               </th>
                             </tr>
-
                             <tr>
-                              <th/>
+                              <th />
                               <th>
                                 <div>
-                                  <input ref={this.inputRef} value={this.state.nameFilter} onChange={this.onNameFilterChange} type="text" className="input_search" placeholder={this.props.intl.messages['ratings.search']} />
+                                  <input
+                                    ref={this.inputRef}
+                                    value={this.state.nameFilter}
+                                    onChange={this.onNameFilterChange}
+                                    type="text"
+                                    className="input_search"
+                                    placeholder={this.props.intl.messages['ratings.search']}
+                                  />
                                 </div>
                               </th>
                               <th>
-                                <div className="help" data-toggle="ratings-help-popover" data-placement="bottom"
+                                <div
+                                  className="help"
+                                  data-toggle="ratings-help-popover"
+                                  data-placement="bottom"
                                   data-total={this.props.intl.messages['ratings.amountOfContracts']}
-                                  data-success={this.props.intl.messages['ratings.amountOfFinishedContracts']}>?</div>
+                                  data-success={this.props.intl.messages['ratings.amountOfFinishedContracts']}
+                                >?</div>
                               </th>
                               <th>
                                 <DropdownSelect
@@ -227,17 +244,17 @@ class Ratings extends React.Component {
                                   targetId="time_select"
                                   elementClassName="time__switch"
                                   dropdownClassName="roi"
-                                  onItemSelect={item => this.setState({selectedPeriod: item})}
+                                  onItemSelect={item => this.setState({ selectedPeriod: item })}
                                 />
                               </th>
-                              <th/>
+                              <th />
                               <th>
                               </th>
-                              <th/>
-                              <th/>
+                              <th />
+                              <th />
                               <th>
                               </th>
-                              <th/>
+                              <th />
                             </tr>
                           </thead>
                           <tbody>
@@ -284,19 +301,19 @@ class Ratings extends React.Component {
                                   <FormattedMessage
                                     id="ratings.startedSince"
                                     defaultMessage="Started since"
-                                    values={{br: <br/>}}
+                                    values={{ br: <br/> }}
                                   />
                                 </span>
-                                <span className={classNameForColumnHeader(this.state, 'dateCreated')}/>
+                                <span className={classNameForColumnHeader(this.state, 'dateCreated')} />
                               </th>
                               <th onClick={() => this.onColumnSort('paidExcessProfit')}>
                                 <span>
                                   <FormattedMessage
                                     id="ratings.paidExcess"
                                     defaultMessage="Paid excess{br}profit"
-                                    values={{br: <br/>}}
+                                    values={{ br: <br/> }}
                                   />
-                                </span><span className={classNameForColumnHeader(this.state, 'paidExcessProfit')}/>
+                                </span><span className={classNameForColumnHeader(this.state, 'paidExcessProfit')} />
                               </th>
                               <th onClick={() => this.onColumnSort('paidInvoices')}>
                                 <span>
@@ -307,18 +324,28 @@ class Ratings extends React.Component {
                                 </span><span className={classNameForColumnHeader(this.state, 'paidInvoices')}/>
                               </th>
                             </tr>
-
                             <tr>
                               <th/>
                               <th>
                                 <div>
-                                  <input ref={this.inputRef} value={this.state.nameFilter} onChange={this.onNameFilterChange} type="text" className="input_search" placeholder={this.props.intl.messages['ratings.search']} />
+                                  <input
+                                    ref={this.inputRef}
+                                    value={this.state.nameFilter}
+                                    onChange={this.onNameFilterChange}
+                                    type="text"
+                                    className="input_search"
+                                    placeholder={this.props.intl.messages['ratings.search']}
+                                  />
                                 </div>
                               </th>
                               <th>
-                                <div className="help" data-toggle="ratings-help-popover" data-placement="bottom"
+                                <div
+                                  className="help"
+                                  data-toggle="ratings-help-popover"
+                                  data-placement="bottom"
                                   data-total={this.props.intl.messages['ratings.amountOfContracts']}
-                                  data-success={this.props.intl.messages['ratings.amountOfFinishedContracts']}>?</div>
+                                  data-success={this.props.intl.messages['ratings.amountOfFinishedContracts']}
+                                >?</div>
                               </th>
                               <th>
                                 <DropdownSelect
@@ -327,7 +354,7 @@ class Ratings extends React.Component {
                                   targetId="time_select"
                                   elementClassName="time__switch"
                                   dropdownClassName="roi"
-                                  onItemSelect={item => this.setState({selectedPeriod: item})}
+                                  onItemSelect={item => this.setState({ selectedPeriod: item })}
                                 />
                               </th>
                               <th/>
@@ -354,9 +381,6 @@ class Ratings extends React.Component {
       </Container>
     );
   }
-  componentDidMount() {
-    this.props.updateRatings();
-  }
 }
 
 const TraderRatingRow = (props) => (
@@ -377,15 +401,13 @@ const TraderRatingRow = (props) => (
       <span> – </span>
     </td>
     <td>
-      {props.available ?
-        <span className='accept'/> :
-        <span className='empty'/> }
+      <span className={props.available ? 'accept': 'empty'} />
     </td>
     <td>
       {formatDate(new Date(props.dt || Date.now()))}
     </td>
     <td>
-      {props.contractSettings.minAmount + ' ' + props.contractSettings.currency}
+      {`${props.contractSettings.minAmount} ${props.contractSettings.currency}`}
     </td>
     <td>
       {props.contractSettings.duration}
@@ -394,7 +416,7 @@ const TraderRatingRow = (props) => (
       {props.contractSettings.fee}
     </td>
     <td>
-      {(props.inManagement || 0).toFixed(2) + ' USDT'}
+      {`${(props.inManagement || 0).toFixed(2)} USDT`}
     </td>
     <td>
       {props.contractSettings.maxLoss}
@@ -405,7 +427,7 @@ const TraderRatingRow = (props) => (
 const InvestorRatingRow = (props) => (
   <tr data-name={props.name} onClick={props.onClick}>
     <td>
-      <span className="star"/>
+      <span className="star" />
     </td>
     <td>
       <div className="nickname">@{props.name}</div>
@@ -431,22 +453,28 @@ const InvestorRatingRow = (props) => (
   </tr>
 );
 
-function padDate(number) {
-  return number < 10 ? '0' + number : number;
-};
+const padDate = (number) => number < 10 ? `0 ${number}` : number;
 
-function formatDate(date) {
+const formatDate = (date) => {
   let year = date.getFullYear();
   let month = date.getMonth() + 1;
   let day = date.getDate();
   year = padDate(year);
   month = padDate(month);
   day = padDate(day);
-  return day + '.' + month + '.' + year;
-}
 
+  return `${day}.${month}.${year}`;
+};
 
-export default injectIntl(connect(
-  state => ({ratings: state.ratings}),
-  dispatch => ({updateRatings: () => dispatch(updateRatings())}),
-)(Ratings));
+const mapStateToProps = (state) => ({
+  ratings: ratingsSelector(state),
+});
+
+const mapDispatchToProps = {
+  updateRatings,
+};
+
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  injectIntl,
+)(Ratings);

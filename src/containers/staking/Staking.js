@@ -8,11 +8,14 @@ import { Switch, Route, NavLink, Redirect } from 'react-router-dom';
 import {
   verifyStakeAddress, getStakeInfo, getStakeTransactions,
   getStakeRating, setTrListPage, setTrListPageSize,
-} from '../../actions/profile';
-import { showCommitTokensModal } from '../../actions/modal';
+} from 'actions/profile';
+import { showCommitTokensModal } from 'actions/modal';
 import StakingInfo from './StakingInfo';
 import PersonalInfo from './PersonalInfo';
 import Rules from './Rules';
+import { loggedInSelector } from 'selectors/auth';
+import { stakeInfoSelector } from 'selectors/stakeInfo';
+import { stakeTrSelector } from 'selectors/stakeTr';
 
 class Staking extends React.Component {
   state = {
@@ -30,13 +33,9 @@ class Staking extends React.Component {
     history.push(`/login?${qs.stringify({ redirectTo: '/staking' })}`);
   };
 
-  showCommitTokensModal = () => {
-    this.props.showCommitTokensModal();
-  };
-
   componentDidUpdate(prevProps) {
     if (this.props.info.info !== prevProps.info.info) {
-      this.setState({loaded: true});
+      this.setState({ loaded: true });
     }
   }
 
@@ -46,6 +45,7 @@ class Staking extends React.Component {
 
   render() {
     const { info } = this.props;
+
     return (
       <Container fluid className="ratings leaderboard staking">
         <Row>
@@ -75,7 +75,7 @@ class Staking extends React.Component {
                           setPageSize={this.props.setPageSize}
                           trs={this.props.trs}
                           getStakeRating={this.props.getStakeRating}
-                          showModal={this.showCommitTokensModal}
+                          showModal={this.props.showCommitTokensModal}
                         />
                       );
                     }
@@ -93,37 +93,34 @@ class Staking extends React.Component {
     );
   }
 
-  renderNavigation() {
-    return (
-      <div className="rating-navigation">
-        <NavLink exact to="/staking/info">
-          <FormattedMessage
-            id="staking.info.title"
-            defaultMessage="INFO"
-          />
-        </NavLink>
-        <NavLink exact to="/staking">
-          <FormattedMessage
-            id="staking.title"
-            defaultMessage="STAKING"
-          />
-        </NavLink>
-        <NavLink exact to="/staking/rules">
-          <FormattedMessage
-            id="staking.rules"
-            defaultMessage="RULES"
-          />
-        </NavLink>
-      </div>
-    );
-  }
-
+  renderNavigation = () => (
+    <div className="rating-navigation">
+      <NavLink exact to="/staking/info">
+        <FormattedMessage
+          id="staking.info.title"
+          defaultMessage="INFO"
+        />
+      </NavLink>
+      <NavLink exact to="/staking">
+        <FormattedMessage
+          id="staking.title"
+          defaultMessage="STAKING"
+        />
+      </NavLink>
+      <NavLink exact to="/staking/rules">
+        <FormattedMessage
+          id="staking.rules"
+          defaultMessage="RULES"
+        />
+      </NavLink>
+    </div>
+  );
 }
 
 const mapStateToProps = (state) => ({
-  info: state.stakeInfo,
-  trs: state.stakeTr,
-  loggedIn: state.auth.loggedIn,
+  info: stakeInfoSelector(state),
+  trs: stakeTrSelector(state),
+  loggedIn: loggedInSelector(state),
 });
 
 const mapDispatchToProps = {

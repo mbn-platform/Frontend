@@ -2,10 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { FormattedMessage, injectIntl } from 'react-intl';
+import { compose } from 'ramda';
 
-import { createAssetGroup } from '../../../actions/assetGroup';
-import ModalWindow from '../../../components/Modal';
-import ExchangeSelect from '../../../components/ExchangeSelect';
+import { createAssetGroup } from 'actions/assetGroup';
+import ModalWindow from 'components/Modal';
+import ExchangeSelect from 'components/ExchangeSelect';
+import { exchangesSelector } from 'selectors/exchanges';
 
 class CreateGroupModal extends React.Component {
   static propTypes = {
@@ -87,12 +89,15 @@ class CreateGroupModal extends React.Component {
   }
 };
 
-const mapStateToProps = ({ exchanges }) => ({
-  exchanges,
+const mapStateToProps = (state) => ({
+  exchanges: exchangesSelector(state),
 });
 
 const mapDispatchToProps = {
   createAssetGroup,
 };
 
-export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(CreateGroupModal));
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  injectIntl,
+)(CreateGroupModal);

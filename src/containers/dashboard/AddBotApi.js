@@ -1,9 +1,14 @@
 import React from 'react';
-import ExchangeSelect from '../../components/ExchangeSelect';
 import { connect } from 'react-redux';
-import { addBotKeys } from '../../actions/apiKeys';
 import { injectIntl } from 'react-intl';
-import {showInfoModal, showTwoFactorAuthModal} from '../../actions/modal';
+import { compose } from 'ramda';
+
+import ExchangeSelect from 'components/ExchangeSelect';
+import { addBotKeys } from 'actions/apiKeys';
+import { showInfoModal } from 'actions/modal';
+import { exchangesSelector } from 'selectors/exchanges';
+import { profileIdSelector, mfaEnabledSelector } from 'selectors/auth';
+import { ownKeysSelector } from 'selectors/apiKeys';
 
 class AddBotApi extends React.Component {
   state = {
@@ -11,79 +16,79 @@ class AddBotApi extends React.Component {
     chosenKeyName: '',
   };
 
-   onSubmit = async event => {
-     event.preventDefault();
-     const { label, chosenKeyName } = this.state;
-     const { addNewBotKeys, apiKeys } = this.props;
-     if(!label || !chosenKeyName) {
-       this.props.showModalWindow('dashboard.addBotAlert');
-       return;
-     }
-     await addNewBotKeys(label, apiKeys.find(key => key.name === chosenKeyName)._id);
-     this.setState({label: ''});
-   }
+  onSubmit = async event => {
+    event.preventDefault();
+    const { label, chosenKeyName } = this.state;
+    const { addNewBotKeys, apiKeys } = this.props;
+    if(!label || !chosenKeyName) {
+      this.props.showModalWindow('dashboard.addBotAlert');
+      return;
+    }
+    await addNewBotKeys(label, apiKeys.find(key => key.name === chosenKeyName)._id);
+    this.setState({ label: '' });
+  }
 
   handleChange = event => {
-    const value = event.target.value;
-    this.setState({label: value});
+    const { value } = event.target;
+    this.setState({ label: value });
   }
 
-  handleKeyChange = keyName => {
-    this.setState({chosenKeyName: keyName});
+  handleKeyChange = chosenKeyName => {
+    this.setState({ chosenKeyName });
   }
 
-  render() {
-    return (
-      <div className="add_keys_form_wrapper add_bot_form_wrapper">
-        <form className="add_keys_form" onSubmit={this.onSubmit}>
-          <div className="add_keys_str">
-            <div className="add_keys_field_wr">
-              <input
-                className="add_keys_field add_keys_field_name"
-                onChange={this.handleChange}
-                type="text"
-                value={this.state.label}
-                maxLength='20'
-                name="label"
-                placeholder={this.props.intl.messages['dashboard.label']}
-                autoCorrect="off"
-                spellCheck="false"
-              />
-            </div>
-            <div className="add_keys_field_wr select_wr">
-              <ExchangeSelect
-                exchanges={this.props.apiKeys.map(key => key.name)}
-                onChange={this.handleKeyChange}
-                defaultPlaceholder="Select key"
-                exchange={this.state.chosenKeyName}
-              />
-            </div>
-            <div className="keys_submit_wrapper">
-              <input className="keys_submit" type="submit" value="Add key"/>
-            </div>
+  render = () => (
+    <div className="add_keys_form_wrapper add_bot_form_wrapper">
+      <form className="add_keys_form" onSubmit={this.onSubmit}>
+        <div className="add_keys_str">
+          <div className="add_keys_field_wr">
+            <input
+              className="add_keys_field add_keys_field_name"
+              onChange={this.handleChange}
+              type="text"
+              value={this.state.label}
+              maxLength='20'
+              name="label"
+              placeholder={this.props.intl.messages['dashboard.label']}
+              autoCorrect="off"
+              spellCheck="false"
+            />
           </div>
-        </form>
-      </div>
-    );
-  }
+          <div className="add_keys_field_wr select_wr">
+            <ExchangeSelect
+              exchanges={this.props.apiKeys.map(key => key.name)}
+              onChange={this.handleKeyChange}
+              defaultPlaceholder="Select key"
+              exchange={this.state.chosenKeyName}
+            />
+          </div>
+          <div className="keys_submit_wrapper">
+            <input className="keys_submit" type="submit" value="Add key"/>
+          </div>
+        </div>
+      </form>
+    </div>
+  );
 }
 
 const mapStateToProps = state => ({
-  userId: state.auth.profile._id,
-  exchanges: state.exchanges,
-  apiKeys: state.apiKeys.ownKeys,
-  is2FAEnabled: state.auth.profile.mfaEnabled,
+  userId: profileIdSelector(state),
+  exchanges: exchangesSelector(state),
+  apiKeys: ownKeysSelector(state),
+  is2FAEnabled: mfaEnabledSelector(state),
 });
+
 
 const mapDispatchToProps = dispatch => {
   return {
     addNewBotKeys: async (label, keys) => {
       dispatch(await addBotKeys(label, keys));
     },
-    showModalWindow: showInfoModal,
-    showTwoFactorAuthModal,
+    showModalWindow: () => dispatch(showInfoModal()),
   };
 };
 
-
-export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(AddBotApi));
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  injectIntl,
+)(AddBotApi);

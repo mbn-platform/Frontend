@@ -1,23 +1,19 @@
 import React from 'react';
-import ReactTable from '../../components/SelectableReactTable';
-import SearchHeader from '../../components/SearchHeader';
-import { Desktop, Mobile } from '../../generic/MediaQuery';
-import Pagination from '../../components/Pagination';
-import {CONTRACT_STATE_ACCEPTED, CONTRACT_STATE_INIT} from '../../constants';
-import {FormattedMessage, injectIntl} from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
+import { pathOr } from 'ramda';
 
+import {CONTRACT_STATE_ACCEPTED, CONTRACT_STATE_INIT} from '../../constants';
+import ReactTable from 'components/SelectableReactTable';
+import SearchHeader from 'components/SearchHeader';
+import { Desktop, Mobile } from 'generic/MediaQuery';
+import Pagination from 'components/Pagination';
 
 class ApiKeyInfo extends React.Component {
+  state = {
+    filtered: [{id: 'currency', value: ''},],
+  };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      filtered: [{id: 'currency', value: ''},],
-    };
-    this.onCurrencyChange = this.onCurrencyChange.bind(this);
-  }
-
-  onCurrencyChange(e) {
+  onCurrencyChange = (e) => {
     this.setState({filtered: [{id: 'currency', value: e.target.value}]});
   }
 
@@ -142,24 +138,16 @@ class ApiKeyInfo extends React.Component {
   }
 
   render() {
-    let data;
-    if(this.props.fund) {
-      data = this.props.fund.balances;
-    } else {
-      data = [];
-    }
+    const data = pathOr([], ['fund', 'balances'], this.props);
+
     return (
       <div className="api_key_currencies_table table">
         <div className="table_title_wrapper clearfix">
-          <div className="table_title">{this.getTitle(this.props.fund)}</div>
+          <div className="table_title">{this.props.intl.messages['dashboard.apiKeyCurrencies']}</div>
         </div>
         {this.renderContent(data)}
       </div>
     );
-  }
-
-  getTitle(fund) {
-    return this.props.intl.messages['dashboard.apiKeyCurrencies'];
   }
 }
 

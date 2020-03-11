@@ -1,19 +1,11 @@
-import { UPDATE_TARIFFS, UPDATE_TARIFF_BY_ID } from '../actions/tariffs';
+import { reducerCreator } from 'generic/util';
+import { UPDATE_TARIFFS, UPDATE_TARIFF_BY_ID } from 'actions/tariffs';
 
-export default (state = {}, action) => {
-  switch (action.type) {
-    case UPDATE_TARIFFS:
-      return action.tariffs;
-    case UPDATE_TARIFF_BY_ID:
-      const newState = state.map(item => {
-        if (item._id === action.tariff._id) {
-          return action.tariff;
-        }
-        return item;
-      });
-
-      return newState;
-    default:
-      return state;
-  }
+const reducerList = {
+  [UPDATE_TARIFFS]: (_, { tariffs }) => tariffs,
+  [UPDATE_TARIFF_BY_ID]: (state, { tariff }) => (
+    state.map(item => item._id === tariff._id ? tariff : item)
+  ),
 };
+
+export default reducerCreator({}, reducerList);

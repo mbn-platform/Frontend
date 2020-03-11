@@ -1,13 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import { defaultFormatValue } from '../../generic/util';
-import ReactTable from '../../components/SelectableReactTable';
-import {sortData, onColumnSort, classNameForColumnHeader}  from '../../generic/terminalSortFunctions';
-import {selectMarket} from '../../actions/terminal';
 import { connect } from 'react-redux';
-import {FormattedMessage, injectIntl} from 'react-intl';
-import createMqProvider, {querySchema} from '../../MediaQuery';
+import classNames from 'classnames';
+import { FormattedMessage, injectIntl } from 'react-intl';
+import { compose } from 'ramda';
+
+import { defaultFormatValue } from 'generic/util';
+import ReactTable from 'components/SelectableReactTable';
+import { sortData, onColumnSort, classNameForColumnHeader }  from 'generic/terminalSortFunctions';
+import { selectMarket } from 'actions/terminal';
+import createMqProvider, { querySchema } from 'MediaQuery';
+import {
+  marketSelector, fundBalancesSelector,
+  exchangeRatesSelector, exchangeMarketsSelector,
+} from 'selectors/terminal';
 
 const { Screen} = createMqProvider(querySchema);
 
@@ -234,7 +240,7 @@ class MarketSelectTable extends React.Component {
           </span>
         </div>
         <form action="" className="dropdown__form">
-          <input autoComplete="off" value={this.state.filter} type="text" name="filter" onChange={this.onChange} 
+          <input autoComplete="off" value={this.state.filter} type="text" name="filter" onChange={this.onChange}
             className="input-search" placeholder={this.props.intl.messages['terminal.search']}/>
         </form>
         <div className="dropdown__btn-wrap">
@@ -269,19 +275,18 @@ MarketSelectTable.propTypes = {
   selectMarket: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => {
-  const exchange = state.terminal.exchange;
-  const info = state.exchangesInfo[exchange];
-  return {
-    balances: state.terminal.fund ? state.terminal.fund.balances : null,
-    market: state.terminal.market,
-    rates: (info && info.rates) || {},
-    markets: (info && info.markets) || [],
-  };
-};
-
-const mapDispatchToProps = dispatch => ({
-  selectMarket: market => dispatch(selectMarket(market)),
+const mapStateToProps = state => ({
+  balances: fundBalancesSelector(state),
+  market: marketSelector(state),
+  rates: exchangeRatesSelector(state),
+  markets: exchangeMarketsSelector(state),
 });
 
-export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(MarketSelectTable));
+const mapDispatchToProps = {
+  selectMarket,
+};
+
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  injectIntl,
+)(MarketSelectTable);

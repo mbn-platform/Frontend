@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
-import { Desktop, Mobile } from '../../../generic/MediaQuery';
-import Pagination from '../../../components/Pagination';
-import ReactTable from '../../../components/SelectableReactTable';
+import { Desktop, Mobile } from 'generic/MediaQuery';
+import Pagination from 'components/Pagination';
+import ReactTable from 'components/SelectableReactTable';
 
 const ProvidedContracts = ({
   contracts, getColumns, getMobileColumns, selectedItem, onItemSelected,

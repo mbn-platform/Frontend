@@ -1,10 +1,11 @@
 import React from 'react';
 import AmChartsReact from '@amcharts/amcharts3-react';
 import { FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
 
+import { exchangesInfoSelector } from 'selectors/exchangesInfo';
 
 class SelectedContractChart extends React.Component {
-
   constructor(props) {
     super(props);
     this.getValueInBTC = getValueInBTC.bind(this);
@@ -82,7 +83,7 @@ class SelectedContractChart extends React.Component {
                 },
                 'titles': [],
                 'dataProvider': this.state.data
-              }} />          
+              }} />
           </div>
           <div className="legend_pie_wrapper">
             <div id="contracts_legend" className="legend_pie">
@@ -94,7 +95,11 @@ class SelectedContractChart extends React.Component {
   }
 }
 
-export default SelectedContractChart;
+const mapStateToProps = state => ({
+  exchangesInfo: exchangesInfoSelector(state),
+});
+
+export default connect(mapStateToProps)(SelectedContractChart);
 
 export function getValueInBTC(currencyName, currencyValue) {
   if (currencyName === 'BTC') {

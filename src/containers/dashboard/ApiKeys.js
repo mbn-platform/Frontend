@@ -1,18 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactTable from '../../components/SelectableReactTable';
-import ExchangeSelect from '../../components/ExchangeSelect';
-import SearchHeader from '../../components/SearchHeader';
+import { connect } from 'react-redux';
 import classNames from 'classnames';
-import { Desktop, Mobile } from '../../generic/MediaQuery';
-import Pagination from '../../components/Pagination';
-import {FormattedMessage, injectIntl} from 'react-intl';
-import {showTwoFactorAuthModal, showConfirmModal} from '../../actions/modal';
-import {connect} from 'react-redux';
+import { FormattedMessage, injectIntl } from 'react-intl';
 
+import ReactTable from 'components/SelectableReactTable';
+import ExchangeSelect from 'components/ExchangeSelect';
+import SearchHeader from 'components/SearchHeader';
+import { Desktop, Mobile } from 'generic/MediaQuery';
+import Pagination from 'components/Pagination';
+import { showTwoFactorAuthModal, showConfirmModal } from 'actions/modal';
+import { mfaEnabledSelector, profileIdSelector } from 'selectors/auth';
+import { ownKeysSelector } from 'selectors/apiKeys';
+import { exchangesSelector } from 'selectors/exchanges';
 
 class Funds extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -205,7 +207,10 @@ Funds.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  is2FAEnable: state.auth.profile.mfaEnabled,
+  is2FAEnable: mfaEnabledSelector(state),
+  userId: profileIdSelector(state),
+  apiKeys: ownKeysSelector(state),
+  exchanges: exchangesSelector(state),
 });
 
 const mapDispatchToProps = {

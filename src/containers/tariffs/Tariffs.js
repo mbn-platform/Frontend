@@ -22,12 +22,13 @@ class Tariffs extends React.PureComponent {
 
   componentDidUpdate(prevProps) {
     if (prevProps.paymentRequest !== this.props.paymentRequest) {
-      this.setState({payment: this.props.paymentRequest});
+      this.setState({ payment: this.props.paymentRequest });
     }
   }
 
   componentDidMount = () => {
-    const search = this.props.location.search;
+    const { search } = this.props.location;
+
     if (search) {
       const { tariff } = qs.parse(search.slice(1));
       if (tariff && (tariff === 'free' || tariff === 'premium' || tariff === 'pro')) {
@@ -77,26 +78,24 @@ class Tariffs extends React.PureComponent {
 
   onBuyWithEth = async () => {
     const { payment } = this.state;
-    if (!payment) {
-      return;
-    }
+
+    if (!payment) { return; }
+
     window.ethTransfer(payment.address, payment.amountETH)();
   }
 
   onBuyWithMbn = async () => {
     const { payment } = this.state;
-    if (!payment) {
-      return;
-    }
+
+    if (!payment) { return; }
+
     window.mbnTransfer(payment.address, payment.amountMBN);
   }
 
   onLogIn = () => {
     const redirectTo = this.props.location.pathname + this.props.location.search;
-    const query = {
-      redirectTo,
-    };
-    this.props.history.push('/login?' + qs.stringify(query));
+    const query = { redirectTo };
+    this.props.history.push(`/login?${qs.stringify(query)}`);
   };
 
   render = () => {
@@ -247,18 +246,19 @@ class Tariffs extends React.PureComponent {
           onBuyWithEth={this.onBuyWithEth}
           onBuyWithMbn={this.onBuyWithMbn}
         />
-        <ExpireInfo billing={billing} />
+        {billing && <ExpireInfo billing={billing} />}
       </Container>
     ) : null;
   };
 }
 
-const BuyDescription = ({payment, tariff}) => {
+const BuyDescription = ({ payment, tariff }) => {
   if (!payment || tariff === 'free') {
     return null;
   } else {
     const ethAmount = BigNumber(payment.amountETH).div(1e18).toFixed();
     const mbnAmount = BigNumber(payment.amountMBN).div(1e18).toFixed();
+
     return (
       <div className="tariffs__container-description">
         Choose a service plan and click "BUY NOW" button.
@@ -307,23 +307,20 @@ const BuyButtons = ({ loggedIn, tariff, payment, billing, onBuyWithMbn, onBuyWit
   }
 };
 
-const ExpireInfo = ({billing}) => {
-  if (!billing) {
-    return null;
-  } else {
-    return (
-      <Row className="tariff-expire">
-        <Col>You have activated <b>{billing.tariff}</b> service plan.{ billing.end && ` It will be active for ${remainingDays(new Date(billing.end))} days`}</Col>
-      </Row>
-    );
-  }
-};
+const ExpireInfo = ({ billing }) => (
+  <Row className="tariff-expire">
+    <Col>
+      You have activated <b>{billing.tariff}</b> service plan.{ billing.end && ` It will be active for ${remainingDays(new Date(billing.end))} days`}
+    </Col>
+  </Row>
+);
 
-function remainingDays(billingEnd) {
+const remainingDays = (billingEnd) => {
   const now = new Date();
   const remaining = billingEnd - now;
   const remainingDays = Math.round(remaining / (86400 * 1000));
+
   return remainingDays;
-}
+};
 
 export default Tariffs;

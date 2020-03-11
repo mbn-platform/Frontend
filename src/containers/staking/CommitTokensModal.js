@@ -1,12 +1,12 @@
-import { connect } from 'react-redux';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Button, Col } from 'reactstrap';
 import { FormattedMessage } from 'react-intl';
-import { closeCommitTokensModal } from '../../actions/modal';
-import { commitToEarlyPool } from '../../actions/profile';
 
-import ModalWindow from '../../components/Modal';
+import { closeCommitTokensModal } from 'actions/modal';
+import { commitToEarlyPool } from 'actions/profile';
+import ModalWindow from 'components/Modal';
 
 class CommitTokensModal extends React.Component {
   static propTypes = {
@@ -27,6 +27,7 @@ class CommitTokensModal extends React.Component {
   handleSubmit = async (event) => {
     event.preventDefault();
     const amount = parseInt(this.state.commits, 10);
+
     if (Number.isFinite(amount)) {
       if (amount < 100000) {
         alert('min is 100000');
@@ -44,9 +45,7 @@ class CommitTokensModal extends React.Component {
       <ModalWindow
         modalIsOpen={modal.isCommitTokensModalOpen}
         onClose={close}
-        title={
-          <FormattedMessage id="staking.tokenToCommit" />
-        }
+        title={<FormattedMessage id="staking.tokenToCommit" />}
         content={
           <form className="commit_tokens_form" onSubmit={this.handleSubmit}>
             <Col xs="auto" className="commit_tokens_field">

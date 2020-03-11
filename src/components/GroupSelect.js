@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import OutsideClick from './OutsideClick';
 
-class GroupSelect extends React.Component {
+class GroupSelect extends React.PureComponent {
   state = { isOpen: false }
 
   onItemSelect = groupId => () => {

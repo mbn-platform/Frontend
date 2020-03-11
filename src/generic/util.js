@@ -171,3 +171,8 @@ export function setFundId(payload, fund) {
   }
   return payload;
 }
+
+export const reducerCreator = (initialState, list) => (state = initialState, action) => {
+  const reducer = list[action.type];
+  return reducer ? reducer(state, action) : state;
+};

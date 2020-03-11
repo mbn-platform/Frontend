@@ -2,10 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 
-import { addApiKey } from '../../actions/apiKeys';
-import {showInfoModal, showTwoFactorAuthModal} from '../../actions/modal';
-import ExchangeSelect from '../../components/ExchangeSelect';
-import LockButton from '../../components/LockButton';
+import ExchangeSelect from 'components/ExchangeSelect';
+import { addApiKey } from 'actions/apiKeys';
+import { showInfoModal, showTwoFactorAuthModal } from 'actions/modal';
+import LockButton from 'components/LockButton';
+import { billingSelector, profileIdSelector } from 'selectors/auth';
+import { mfaEnabledSelector } from 'selectors/auth';
+import { exchangesSelector } from 'selectors/exchanges';
 
 const INITIAL_STATE = {
   name: '',
@@ -26,6 +29,7 @@ class AddApiKey extends React.Component {
 
     if (!name || !value || !exchange || !secret || isPhraseNotFilled) {
       this.props.showModalWindow(`dashboard.${isPhraseNotFilled ? 'addPassphrase' : 'addAlert'}`);
+
       return;
     }
 
@@ -136,9 +140,10 @@ class AddApiKey extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  userId: state.auth.profile._id,
-  exchanges: state.exchanges,
-  is2FAEnable: state.auth.profile.mfaEnabled,
+  userId: profileIdSelector(state),
+  exchanges: exchangesSelector(state),
+  is2FAEnable: mfaEnabledSelector(state),
+  billing: billingSelector(state),
 });
 
 const mapDispatchToProps = {

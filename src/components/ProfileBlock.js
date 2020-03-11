@@ -11,7 +11,7 @@ export class ProfileBlock extends React.PureComponent {
     const { children, title, iconClassName, className, Tooltip } = this.props;
     return (
       <Card className={classNames('profile-block', className)}>
-        <CardHeader>
+        <CardHeader className="align-items-center">
           <span className={classNames('icon', iconClassName)}/>
           <FormattedMessage className="title" id={title} />
           {Tooltip ? <Tooltip /> : null}

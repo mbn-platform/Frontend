@@ -1,21 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { FormattedMessage, injectIntl } from 'react-intl';
+import { compose } from 'ramda';
+
+import { Desktop, Mobile } from 'generic/MediaQuery';
+import { clearRequest } from 'actions/request';
+import { sendOffer } from 'actions/offers';
+import { getExchangeCurrencies } from 'actions/exchanges';
+import { showInfoModal } from 'actions/modal';
+import SearchHeader from 'components/SearchHeader';
+import { StatusHeader, StatusCell } from 'components/StatusComponents';
+import Pagination from 'components/Pagination';
+import ReactTable from 'components/SelectableReactTable';
 import ContractDetails from './ContractDetails';
 import SelectFund from './SelectFund';
 import ContractSent from './ContractSent';
-import { connect } from 'react-redux';
-import { sendOffer } from '../../actions/offers';
-import { clearRequest } from '../../actions/request';
-import { Redirect } from 'react-router-dom';
 import {EditAmountEntry} from './ContractSettings';
-import SearchHeader from '../../components/SearchHeader';
-import { StatusHeader, StatusCell } from '../../components/StatusComponents';
-import Pagination from '../../components/Pagination';
-import ReactTable from '../../components/SelectableReactTable';
-import { Desktop, Mobile } from '../../generic/MediaQuery';
-import {getExchangeCurrencies} from '../../actions/exchanges';
-import {FormattedMessage, injectIntl} from 'react-intl';
-import { showInfoModal } from '../../actions/modal';
+import { ownKeysSelector } from 'selectors/apiKeys';
+import { exchangesSelector } from 'selectors/exchanges';
+import { ratesSelector } from 'selectors/rates';
+import { authSelector } from 'selectors/auth';
+import { exchangesInfoSelector } from 'selectors/exchangesInfo';
+import { requestSelector } from 'selectors/request';
 
 const SEND_REQUEST_BLOCK_DETAILS = 0;
 const SEND_REQUEST_BLOCK_SELECT_API = 1;
@@ -26,14 +34,13 @@ const REDIRECT_TO_DASHBOARD = 5;
 export const REQUIRED_CURRENCIES = ['USDT', 'ETH', 'BTC'];
 
 class SendRequestBlock extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
       visibleBlock: SEND_REQUEST_BLOCK_DETAILS,
       selectedFund: null,
       contractAmount: '',
-      filtered: [{id: 'currency', value: ''},],
+      filtered: [{ id: 'currency', value: '' }],
       changed: false,
       changedCurrencies: {},
       allSelected: false,
@@ -41,20 +48,16 @@ class SendRequestBlock extends React.Component {
     };
     this.onFundSelected = async (fund) => {
       const exchangeInfo = this.props.exchangesInfo[fund.exchange];
-      if(!exchangeInfo || !exchangeInfo.currencies) {
+      if (!exchangeInfo || !exchangeInfo.currencies) {
         await this.props.getExchangeCurrencies(fund.exchange);
       }
-      this.setState({selectedFund: fund});
+      this.setState({ selectedFund: fund });
     };
-    this.onSendOfferClick = this.onSendOfferClick.bind(this);
-    this.onCurrencyChange = this.onCurrencyChange.bind(this);
-    this.onCurrencyStateClicked = this.onCurrencyStateClicked.bind(this);
     this.onSelectAllClicked = this.onSelectAllClicked.bind(this);
-
   }
 
-  async onSendOfferClick() {
-    if(!this.state.selectedFund) {
+  onSendOfferClick = async () => {
+    if (!this.state.selectedFund) {
       this.props.showInfoModalWindow('profile.selectKeyFirst');
       return;
     }
@@ -81,15 +84,15 @@ class SendRequestBlock extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.request.sendOffer === 'success') {
-      this.setState({visibleBlock: SEND_REQUEST_BLOCK_SENT});
-    } else if(this.state.visibleBlock === SEND_REQUEST_BLOCK_SENT) {
-      this.setState({visibleBlock: REDIRECT_TO_DASHBOARD});
+    if (nextProps.request.sendOffer === 'success') {
+      this.setState({ visibleBlock: SEND_REQUEST_BLOCK_SENT });
+    } else if (this.state.visibleBlock === SEND_REQUEST_BLOCK_SENT) {
+      this.setState({ visibleBlock: REDIRECT_TO_DASHBOARD });
     }
   }
 
-  onCurrencyChange(e) {
-    this.setState({filtered: [{id: 'currency', value: e.target.value}]});
+  onCurrencyChange = (e) => {
+    this.setState({ filtered: [{id: 'currency', value: e.target.value }] });
   }
 
   canChangeCurrency(currency) {
@@ -100,23 +103,23 @@ class SendRequestBlock extends React.Component {
     }
   }
 
-  onCurrencyStateClicked(e) {
+  onCurrencyStateClicked = (e) => {
     e.stopPropagation();
-    const currency = e.target.dataset.currency;
-    if(currency === 'USDT' || currency === 'BTC' || currency === 'ETH') {;
+    const { currency } = e.target.dataset;
+    if (currency === 'USDT' || currency === 'BTC' || currency === 'ETH') {;
       this.props.showModalWindow('profile.shouldByAlwaysAvailable');
       return;
     }
-    if(!this.canChangeCurrency(currency)) {
+    if (!this.canChangeCurrency(currency)) {
       return;
     } else {
       const changedCurrencies = this.state.changedCurrencies;
-      if(changedCurrencies[currency]) {
+      if (changedCurrencies[currency]) {
         delete changedCurrencies[currency];
       } else {
         changedCurrencies[currency] = true;
       }
-      if(Object.keys(changedCurrencies).length) {
+      if (Object.keys(changedCurrencies).length) {
         this.setState({
           changed: true,
           changedCurrencies,
@@ -132,11 +135,12 @@ class SendRequestBlock extends React.Component {
     }
   }
 
-  onSelectAllClicked(e) {
+  onSelectAllClicked = (e) => {
     e.stopPropagation();
     const currencies = this.props.exchangesInfo[this.state.selectedFund.exchange] ? this.props.exchangesInfo[this.state.selectedFund.exchange].currencies : [];
     const change = {};
     const flag = !this.state.allSelected;
+
     currencies.forEach((currency)=>{
       if (!REQUIRED_CURRENCIES.includes(currency)) {
         change[currency] = flag;
@@ -147,11 +151,11 @@ class SendRequestBlock extends React.Component {
       changedCurrencies: change,
       allSelected: !this.state.allSelected
     });
-
   }
 
   getCurrencyTableColumns() {
     const currencyFilter = this.state.filtered.find(f => f.id === 'currency').value;
+
     return [
       {
         Header: SearchHeader(this.props.intl.messages['profile.currency'], currencyFilter, this.onCurrencyChange),
@@ -185,17 +189,17 @@ class SendRequestBlock extends React.Component {
       });
     });
     const scrollBarHeight = 217;
+
     return (
-      <div style={{width: '100%'}}>
+      <div style={{ width: '100%' }}>
         <Desktop>
-          <div style={{width: '90%', margin: '0 auto'}}>
+          <div style={{ width: '90%', margin: '0 auto' }}>
             <ReactTable
-              style={{height: 312, marginRight: -1}}
+              style={{ height: 312, marginRight: -1 }}
               data={data}
               columns={this.getCurrencyTableColumns()}
               filtered={this.state.filtered}
-              onItemSelected={() => {
-              }}
+              onItemSelected={() => {}}
               scrollBarHeight={scrollBarHeight}
             />
           </div>
@@ -206,8 +210,7 @@ class SendRequestBlock extends React.Component {
               data={data}
               columns={this.getCurrencyTableColumns()}
               filtered={this.state.filtered}
-              onItemSelected={() => {
-              }}
+              onItemSelected={() => {}}
               minRows={5}
               showPagination={true}
               defaultPageSize={15}
@@ -223,13 +226,13 @@ class SendRequestBlock extends React.Component {
     if (!this.props.auth.loggedIn) {
       window.location = '/login';
     } else {
-      this.setState({visibleBlock: SEND_REQUEST_BLOCK_SELECT_API});
+      this.setState({ visibleBlock: SEND_REQUEST_BLOCK_SELECT_API });
     }
   }
 
   render() {
-    const profile = this.props.profile;
-    const contractSettings = profile.contractSettings;
+    const { profile } = this.props;
+    const { contractSettings } = profile;
 
     switch(this.state.visibleBlock) {
       case SEND_REQUEST_BLOCK_DETAILS: {
@@ -256,8 +259,8 @@ class SendRequestBlock extends React.Component {
             rates={this.props.rates}
             currency={contractSettings.currency}
             selectedFund={this.state.selectedFund}
-            onCancelClick={() => this.setState({visibleBlock:SEND_REQUEST_BLOCK_DETAILS})}
-            onNextClick={() => this.setState({visibleBlock:SEND_REQUEST_BLOCK_ENTER_AMOUNT, contractAmount: contractSettings.minAmount})}
+            onCancelClick={() => this.setState({ visibleBlock:SEND_REQUEST_BLOCK_DETAILS })}
+            onNextClick={() => this.setState({ visibleBlock:SEND_REQUEST_BLOCK_ENTER_AMOUNT, contractAmount: contractSettings.minAmount })}
             onFundSelected={this.onFundSelected}
           />
         );
@@ -274,32 +277,37 @@ class SendRequestBlock extends React.Component {
                 />
               </div>
               <div className="col-md-12 col-lg-12 col-xl-12 separate-second-block">
-                <div className="separate-line d-none d-md-block"/>
+                <div className="separate-line d-none d-md-block" />
               </div>
               <EditAmountEntry
                 dimension={this.props.profile.contractSettings.currency}
                 tabIndex={0}
-                onChange={e => this.setState({contractAmount: e.target.value})}
+                onChange={e => this.setState({ contractAmount: e.target.value })}
                 value={this.state.contractAmount}
                 placeholder={this.props.profile.contractSettings.minAmount}
               />
               <div className="col-12 d-flex align-items-center justify-content-between choose-btn-group">
-                <button onClick={() => this.setState({visibleBlock:SEND_REQUEST_BLOCK_SELECT_API})} type="button" className="cancel-btn btn btn-secondary">
+                <button onClick={() => this.setState({ visibleBlock:SEND_REQUEST_BLOCK_SELECT_API })} type="button" className="cancel-btn btn btn-secondary">
                   <FormattedMessage
                     id="profile.back"
                     defaultMessage="BACK"
                   />
                 </button>
-                <button disabled={
-                  this.state.contractAmount !== ''
-                  && (parseFloat(this.state.contractAmount) < parseFloat(this.props.profile.contractSettings.minAmount)
-                  || parseFloat(this.state.contractAmount) > parseFloat(currentKeyBalance ? currentKeyBalance.available : '0'))
-                } onClick={() => {
-                  if (this.state.contractAmount === '') {
-                    this.setState({contractAmount: this.props.profile.contractSettings.minAmount});
+                <button
+                  disabled={
+                    this.state.contractAmount !== ''
+                    && (parseFloat(this.state.contractAmount) < parseFloat(this.props.profile.contractSettings.minAmount)
+                    || parseFloat(this.state.contractAmount) > parseFloat(currentKeyBalance ? currentKeyBalance.available : '0'))
                   }
-                  this.setState({visibleBlock:SEND_REQUEST_BLOCK_SELECT_CURRENCIES});
-                }} type="button" className="send-request-btn btn btn-secondary active">
+                  onClick={() => {
+                    if (this.state.contractAmount === '') {
+                      this.setState({ contractAmount: this.props.profile.contractSettings.minAmount });
+                    }
+                    this.setState({ visibleBlock:SEND_REQUEST_BLOCK_SELECT_CURRENCIES });
+                  }}
+                  type="button"
+                  className="send-request-btn btn btn-secondary active"
+                >
                   <FormattedMessage
                     id="profile.next"
                     defaultMessage="NEXT"
@@ -326,13 +334,13 @@ class SendRequestBlock extends React.Component {
               </div>
               {this.renderCurrencyTable(currencies)}
               <div className="col-12 d-flex align-items-center justify-content-between choose-btn-group">
-                <button onClick={() => this.setState({visibleBlock:SEND_REQUEST_BLOCK_ENTER_AMOUNT})} type="button" className="cancel-btn btn btn-secondary">
+                <button onClick={() => this.setState( {visibleBlock:SEND_REQUEST_BLOCK_ENTER_AMOUNT })} type="button" className="cancel-btn btn btn-secondary">
                   <FormattedMessage
                     id="profile.back"
                     defaultMessage="BACK"
                   />
                 </button>
-                <button onClick={() => this.onSendOfferClick()} type="button" className="send-request-btn btn btn-secondary active">
+                <button onClick={this.onSendOfferClick} type="button" className="send-request-btn btn btn-secondary active">
                   <FormattedMessage
                     id="profile.send"
                     defaultMessage="SEND"
@@ -345,9 +353,7 @@ class SendRequestBlock extends React.Component {
       }
       case SEND_REQUEST_BLOCK_SENT: {
         return (
-          <ContractSent
-            onButtonClick={this.props.onGotItClick}
-          />
+          <ContractSent onButtonClick={this.props.onGotItClick} />
         );
       }
       case REDIRECT_TO_DASHBOARD:
@@ -358,28 +364,28 @@ class SendRequestBlock extends React.Component {
   }
 
   componentWillUnmount() {
-    if(this.props.request.sendOffer === 'success') {
+    if (this.props.request.sendOffer === 'success') {
       this.props.onGotItClick();
     }
   }
 }
 
 SendRequestBlock.propTypes = {
+  profile: PropTypes.object,
+  request: PropTypes.object,
+  onOfferSendClick: PropTypes.func,
   apiKeys: PropTypes.array.isRequired,
   exchanges: PropTypes.array.isRequired,
-  profile: PropTypes.object,
-  onOfferSendClick: PropTypes.func,
-  request: PropTypes.object,
   onGotItClick: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
-  apiKeys: state.apiKeys.ownKeys,
-  exchanges: state.exchanges,
-  request: state.request,
-  rates: state.rates,
-  auth: state.auth,
-  exchangesInfo: state.exchangesInfo
+  apiKeys: ownKeysSelector(state),
+  exchanges: exchangesSelector(state),
+  request: requestSelector(state),
+  rates: ratesSelector(state),
+  auth: authSelector(state),
+  exchangesInfo: exchangesInfoSelector(state),
 });
 
 const mapDispatchToProps = {
@@ -389,4 +395,7 @@ const mapDispatchToProps = {
   sendOffer,
 };
 
-export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(SendRequestBlock));
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  injectIntl,
+)(SendRequestBlock);

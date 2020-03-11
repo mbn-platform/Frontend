@@ -1,6 +1,8 @@
+import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
+import { LOGGED_OUT } from './actions/auth';
 import apiKeys from './reducers/apiKeys';
 import contracts from './reducers/contracts';
 import offers from './reducers/offers';
@@ -17,8 +19,6 @@ import rates from './reducers/rates';
 import modal from './reducers/modal';
 import profile from './reducers/profile';
 import exchangesInfo from './reducers/exchangesInfo';
-import { combineReducers } from 'redux';
-import { LOGGED_OUT } from './actions/auth';
 import ratings from './reducers/ratings';
 import stakeInfo from './reducers/stakeInfo';
 import stakeTr from './reducers/stakeTr';
@@ -32,6 +32,12 @@ const terminalPersistConfig = {
   key: 'terminal',
   storage,
   blacklist: ['orderBook', 'history', 'ticker', 'isValidUrl'],
+};
+
+const rootPersistConfig = {
+  key: 'root',
+  storage,
+  whitelist: ['auth', 'assetGroups'],
 };
 
 const combined = combineReducers({
@@ -62,47 +68,13 @@ const combined = combineReducers({
 });
 
 const rootReducer = (state, action) => {
-  switch(action.type) {
-    case LOGGED_OUT: {
-      localStorage.clear();
-      state = undefined;
-      break;
-    }
-    default:
-      break;
-  };
-  let newState = combined(state, action);
-  switch(action.type) {
-    case 'UPDATE_API_KEY_BALANCE': {
-      if(state.terminal.fund && state.terminal.fund._id === action._id) {
-        const fund = newState.apiKeys.ownKeys.find(k => k._id === action._id);
-        newState = {...newState, terminal: {...newState.terminal, fund}};
-      }
-      return newState;
-    }
-    case 'UPDATE_GROUP_BALANCE': {
-      const activeGroup = state.terminal.assetGroup;
-      if (activeGroup && activeGroup._id === action._id) {
-        newState = {...newState, terminal: {...newState.terminal, assetGroup: {...activeGroup, balances: action.balances}}};
-      }
-      return newState;
-    }
-    case 'UPDATE_CONTRACT_BALANCE': {
-      if(state.terminal.fund && state.terminal.fund._id === action._id) {
-        const fund = newState.contracts.current.find(c => c._id === action._id);
-        newState.terminal.fund = fund;
-      }
-      return newState;
-    }
-    default:
-      return newState;
-  }
-};
+  if (action.type === LOGGED_OUT) {
+    localStorage.clear();
 
-const rootPersistConfig = {
-  key: 'root',
-  storage,
-  whitelist: ['auth', 'assetGroups'],
+    return combined(undefined, action);
+  }
+
+  return combined(state, action);
 };
 
 export default persistReducer(rootPersistConfig, rootReducer);

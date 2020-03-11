@@ -6,11 +6,15 @@ import { ReactTableDefaults } from 'react-table';
 import { FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
 
-import { formatFloat, defaultFormatValue } from '../../generic/util';
-import { Desktop } from '../../generic/MediaQuery';
-import { sortData, onColumnSort, classNameForColumnHeader } from '../../generic/terminalSortFunctions';
-import ReactTable from '../../components/SelectableReactTable';
-import createMqProvider, { querySchema } from '../../MediaQuery';
+import { formatFloat, defaultFormatValue } from 'generic/util';
+import { Desktop } from 'generic/MediaQuery';
+import { sortData, onColumnSort, classNameForColumnHeader } from 'generic/terminalSortFunctions';
+import ReactTable from 'components/SelectableReactTable';
+import createMqProvider, { querySchema } from 'MediaQuery';
+import {
+  orderBookSelector, marketSelector,
+  exchangeSelector, tickerSelector,
+} from 'selectors/terminal';
 
 const { Screen } = createMqProvider(querySchema);
 
@@ -165,7 +169,7 @@ class OrderBook extends React.Component {
               <div className="chart-name">
                 <FormattedMessage id="terminal.orderBook" defaultMessage="Order Book"/>
               </div>
-              <a role="button" className="reset-button text-muted" onClick={this.reset}>
+              <a href="# " role="button" className="reset-button text-muted" onClick={this.reset}>
                 <FormattedMessage id="terminal.resetSort" defaultMessage="Reset sort"/>
               </a>
               <Desktop>
@@ -225,10 +229,11 @@ class LastPrice extends React.Component {
   render() {
     const { price } = this.props;
     const { isUp } = this.state;
+
     return (
       <div className={classNames('last-price', 'row', isUp ? 'up' : 'down')}>
         <div className={'bid-label'}>
-          <FormattedMessage id="terminal.bid" defaultMessage="Bid"/>
+          <FormattedMessage id="terminal.bid" defaultMessage="Bid" />
         </div>
         <span onClick={this.onClick}>
           {price ? BigNumber(price).toString(10) : null}</span>
@@ -237,17 +242,6 @@ class LastPrice extends React.Component {
     );
   }
 }
-
-
-const mapStateToProps = state => {
-  const {orderBook, market, exchange, ticker = {}} = state.terminal;
-  return {
-    orderBook,
-    market,
-    exchange,
-    ticker
-  };
-};
 
 class MyTr extends React.Component {
 
@@ -279,6 +273,13 @@ OrderBookPresenter.propTypes = {
   ask: PropTypes.array.isRequired,
   bid: PropTypes.array.isRequired,
 };
+
+const mapStateToProps = state => ({
+  orderBook: orderBookSelector(state),
+  market: marketSelector(state),
+  exchange: exchangeSelector(state),
+  ticker: tickerSelector(state),
+});
 
 
 export default connect(mapStateToProps)(OrderBook);

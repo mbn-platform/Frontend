@@ -1,15 +1,20 @@
-import BigNumber from 'bignumber.js';
 import React from 'react';
 import { connect } from 'react-redux';
+import BigNumber from 'bignumber.js';
+import { injectIntl } from 'react-intl';
+import { compose, isNil, prop } from 'ramda';
+
+import { commissionPercent, floorBinance } from 'utils/terminal';
+import { defaultFormatValue, setFundId } from 'generic/util';
+import { showInfoModal } from 'actions/modal';
+import { placeOrder, placeAlgoOrder } from 'actions/terminal';
 import { PlaceOrder } from './PlaceOrder';
 import { OrderType } from './PlaceOrderType';
 import { TAB_BUY, TAB_SELL } from './BuySellSwitch';
-import { defaultFormatValue, setFundId } from '../../../generic/util';
-import { showInfoModal } from '../../../actions/modal';
-import { placeOrder, placeAlgoOrder } from '../../../actions/terminal';
+import { loggedInSelector, profileSelector } from 'selectors/auth';
+import * as selectors from 'selectors/terminal';
 
 class PlaceOrderContainer extends React.Component {
-
   state = {
     selectedOrderType: OrderType.LIMIT,
     selectedTab: TAB_BUY,
@@ -26,16 +31,18 @@ class PlaceOrderContainer extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(this.props.markets !== prevProps.markets) {
-      this.setState({marketInfo: this.props.markets.find(m => m.symbol === this.props.market)});
+    const { markets, market, ticker, price, size } = this.props;
+
+    if (markets !== prevProps.markets) {
+      this.setState({ marketInfo: markets.find(m => m.symbol === market) });
     }
-    if (prevProps.ticker !== this.props.ticker &&
-      !prevState.price && !prevState.tickerSet && this.props.ticker.l) {
-      this.setState({price: this.props.ticker.l.toString(), tickerSet: true});
+
+    if (prevProps.ticker !== ticker && !prevState.price && !prevState.tickerSet && prop('l', ticker)) {
+      this.setState({ price: prop('l', ticker).toString(), tickerSet: true });
       this.setAmount(prevState.amount);
     }
-    if ((this.props.price && this.props.price !== prevProps.price) ||
-      (this.props.size && this.props.size !== prevProps.size)) {
+
+    if ((price && price !== prevProps.price) || (size && size !== prevProps.size)) {
       let price = this.props.price || this.state.price;
       // let amount = this.props.size || this.state.amount;
       this.setPrice(price);
@@ -99,7 +106,7 @@ class PlaceOrderContainer extends React.Component {
   onPlaceOrderClick = (e) => {
     e.preventDefault();
     if(!this.props.fund) {;
-      this.props.showModalWindow('terminal.selectFund');
+      this.props.showInfoModal('terminal.selectFund');
       return;
     }
     if (!this.state.amount || !this.state.price) {
@@ -177,37 +184,32 @@ class PlaceOrderContainer extends React.Component {
     }
   };
 
-  render() {
+  render = () => {
+    const {
+      exchange, market, fund, loggedIn, profile, groupId,
+    } = this.props;
+
     return (
       <PlaceOrder
-        exchange={this.props.exchange}
-        market={this.props.market}
-        fund={this.props.fund}
-        auth={this.props.auth}
-        assetGroup={this.props.assetGroup}
-
-        selectedTab={this.state.selectedTab}
-        selectedOrderType={this.state.selectedOrderType}
-
-        amount={this.state.amount}
-        price={this.state.price}
-        stopPrice={this.state.stopPrice}
-        total={this.state.total}
-
-        marketInfo={this.state.marketInfo}
-
+        exchange={exchange}
+        market={market}
+        fund={fund}
+        loggedIn={loggedIn}
+        profile={profile}
+        active={!isNil(groupId)}
         onBuySellClick={this.onBuySellClick}
         onOrderTypeSelected={this.onOrderTypeSelected}
         onChange={this.onChange}
         onPercentSelected={this.onPercentSelected}
         onPlaceOrderClick={this.onPlaceOrderClick}
+        {...this.state}
       />
     );
-  }
+  };
 
   setAmount(amount) {
     if(!amount) {
-      this.setState({total: '', amount: ''});
+      this.setState({ total: '', amount: '' });
       return;
     }
     switch(this.props.exchange) {
@@ -362,61 +364,29 @@ class PlaceOrderContainer extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const {
-    exchangesInfo,
-    terminal: { market, exchange, ticker, fund, assetGroup },
-    auth,
-  } = state;
+  const market = selectors.marketSelector(state);
+  const exchange = selectors.exchangeSelector(state);
 
   return {
-    key: market + exchange,
-    markets: ( exchangesInfo[exchange] || {}).markets || [],
-    ticker,
-    exchange,
+    key: `${market}${exchange}`,
     market,
-    fund: fund || assetGroup,
-    auth,
-    assetGroup,
+    exchange,
+    profile: profileSelector(state),
+    loggedIn: loggedInSelector(state),
+    fund: selectors.controlSelector(state),
+    ticker: selectors.tickerSelector(state),
+    groupId: selectors.groupIdSelector(state),
+    markets: selectors.exchangeMarketsSelector(state),
   };
 };
 
 const mapDispatchToProps = {
-  showModalWindow: showInfoModal,
   placeOrder,
+  showInfoModal,
   placeAlgoOrder,
 };
 
-function commissionPercent(orderSide, exchange) {
-  switch(exchange) {
-    case 'bittrex': {
-      return orderSide === TAB_BUY ? 1.0025 : 0.9975;
-    }
-    case 'kucoin': {
-      return orderSide === TAB_BUY ? 1.001 : 0.999;
-    }
-    case 'huobi':
-    case 'binance': {
-      return 1;
-    }
-    default:
-      return 1;
-  }
-}
-function floorBinance(string, step) {
-  let afterComma;
-  if(step.startsWith('1e')) {
-    afterComma = parseInt(step.split('-')[1], 10);
-  } else {
-    afterComma = (step.toString().split('.')[1] || '').length;
-  }
-  const numberAfterComma = (string.split('.')[1] || '').length;
-  if(afterComma === 0) {
-    return Math.floor(parseFloat(string)).toString();
-  } else if(numberAfterComma > afterComma) {
-    return string.slice(0, afterComma - numberAfterComma);
-  } else {
-    return string;
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(PlaceOrderContainer);
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  injectIntl,
+)(PlaceOrderContainer);

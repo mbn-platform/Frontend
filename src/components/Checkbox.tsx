@@ -1,8 +1,13 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { memo } from 'react';
 import { Col } from 'reactstrap';
 
-const Checkbox = ({ checked, title, onToggle }) => {
+interface CheckboxProps {
+  checked: boolean,
+  title: string,
+  onToggle: (checked: boolean) => void,
+};
+
+const Checkbox: React.FC<CheckboxProps> = ({ checked, title, onToggle }) => {
   const onChange = () => {
     onToggle(!checked);
   };
@@ -21,10 +26,4 @@ const Checkbox = ({ checked, title, onToggle }) => {
   );
 };
 
-Checkbox.propTypes = {
-  checked: PropTypes.bool.isRequired,
-  title: PropTypes.string.isRequired,
-  onToggle: PropTypes.func.isRequired,
-};
-
-export default Checkbox;
+export default memo(Checkbox);

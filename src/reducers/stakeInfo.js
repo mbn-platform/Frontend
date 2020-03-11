@@ -1,13 +1,15 @@
-import {GET_STAKE_INFO, STAKE_RATING} from '../actions/profile';
+import { reducerCreator } from 'generic/util';
+import { GET_STAKE_INFO, STAKE_RATING } from 'actions/profile';
 
-export default function(state = {rating: [], info: {}}, action) {
-  switch (action.type) {
-    case GET_STAKE_INFO:
-      return {...state, info: action.info};
-    case STAKE_RATING: {
-      return {...state, rating: action.rating};
-    }
-    default:
-      return state;
-  }
-}
+const initialState = {
+  rating: [],
+  info: {},
+};
+
+const reducerList = {
+  [GET_STAKE_INFO]: (state, { info }) => ({ ...state, info }),
+  [STAKE_RATING]: (state, { rating }) => ({ ...state, rating }),
+};
+
+export default reducerCreator(initialState, reducerList);
+

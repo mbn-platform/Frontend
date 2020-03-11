@@ -1,23 +1,19 @@
-import { UPDATE_MBN_ADDRESS } from '../actions/payments';
-import { CREATE_PAYMENT_REQUEST } from '../actions/tariffs';
+import { reducerCreator } from 'generic/util';
+import { UPDATE_MBN_ADDRESS } from 'actions/payments';
+import { CREATE_PAYMENT_REQUEST } from 'actions/tariffs';
 
-const INITIAL_STATE = {
+const initialState = {
   address: null,
   paymentRequest: null,
 };
 
-export default (state = INITIAL_STATE, action) => {
-  switch(action.type) {
-    case UPDATE_MBN_ADDRESS:
-      const { address } = action;
-      if (Object.entries(address).length === 0) {
-        return state;
-      }
-      return { ...state, ...address };
-    case CREATE_PAYMENT_REQUEST:
-    const { paymentRequest } = action;
-      return { ...state, paymentRequest };
-    default:
-      return state;
-  }
-}
+const reducerList = {
+  [UPDATE_MBN_ADDRESS]: (state, { address }) => (
+    Object.entries(address).length === 0
+      ? state
+      : { ...state, ...address }
+  ),
+  [CREATE_PAYMENT_REQUEST]: (state, { paymentRequest }) => ({ ...state, paymentRequest }),
+};
+
+export default reducerCreator(initialState, reducerList);

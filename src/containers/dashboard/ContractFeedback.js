@@ -1,10 +1,11 @@
 import React from 'react';
-import RatingBar from '../../components/RatingBar';
-import {FormattedMessage, injectIntl} from 'react-intl';
-import {connect} from 'react-redux';
-import { showInfoModal } from '../../actions/modal';
+import { connect } from 'react-redux';
+import { FormattedMessage, injectIntl } from 'react-intl';
 
-const ContractFeedback = ({contract, onContractRate, intl, showModalWindow}) => {
+import RatingBar from 'components/RatingBar';
+import { showInfoModal } from 'actions/modal';
+
+const ContractFeedback = ({ contract, onContractRate, intl, showModalWindow }) => {
   return (
     <div className="table">
       <div className="table_title_wrapper clearfix">

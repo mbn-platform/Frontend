@@ -12,19 +12,12 @@ import FundsChart from './FundsChart';
 import SelectedContractChart from './SelectedContractChart';
 
 class Dashboard extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedReceivedContract: null,
-      selectedProvidedContract: null,
-      selectedApiKey: null,
-      selectedOffer: null,
-    };
-    this.onKeySelected = this.onKeySelected.bind(this);
-    this.onOfferSelected = this.onOfferSelected.bind(this);
-    this.onContractSelected = this.onContractSelected.bind(this);
-    this.onContractRate = this.onContractRate.bind(this);
-  }
+  state = {
+    selectedReceivedContract: null,
+    selectedProvidedContract: null,
+    selectedApiKey: null,
+    selectedOffer: null,
+  };
 
   componentDidMount() {
     this.props.updateExchanges();
@@ -33,10 +26,6 @@ class Dashboard extends React.Component {
 
   componentWillUnmount() {
     clearInterval(this.interval);
-  }
-
-  onContractRate(feedback) {
-    this.props.onContractRate(feedback, this.props.userName, this.props.time);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -81,12 +70,10 @@ class Dashboard extends React.Component {
             </div>
             <div className="table_wrapper requests_table_wrapper">
               <Offers
-                time={this.props.time}
                 onOfferCanceled={this.props.onOfferCanceled}
                 onOfferRejected={this.props.onOfferRejected}
                 onOfferAccepted={this.props.onOfferAccepted}
                 onOfferPay={this.props.onOfferPay}
-
                 offers={this.props.offers}
                 selectedOffer={this.state.selectedOffer}
                 onOfferSelected={this.onOfferSelected}
@@ -102,16 +89,12 @@ class Dashboard extends React.Component {
         </div>
         <div className="keys_tables_wrapper table_wrapper">
           <Funds
-            exchangesInfo={this.props.exchangesInfo}
-            userId={this.props.userId}
-            apiKeys={this.props.apiKeys.ownKeys}
             selectedApiKey={this.state.selectedApiKey}
             onKeySelected={this.onKeySelected}
             onKeyDeleteClick={this.props.onKeyDeleteClick}
-            exchanges={this.props.exchanges}
           />
           <ApiKeyInfo fund={this.state.selectedOffer || this.state.selectedApiKey} />
-          <AddApiKey billing={this.props.billing} />
+          <AddApiKey />
         </div>
         <div className="dashboard_block_header_title">
           <FormattedMessage
@@ -139,25 +122,23 @@ class Dashboard extends React.Component {
         </div>
         <div className="table_wrapper selected_contract_table">
           <SelectedContractInfo
-            userId={this.props.userId}
-            time={this.props.time}
-            onContractRate={this.onContractRate}
-            contract={this.state.selectedReceivedContract || this.state.selectedProvidedContract} />
+            userName={this.props.userName}
+            contract={this.state.selectedReceivedContract || this.state.selectedProvidedContract}
+          />
         </div>
         <div className="table_wrapper traders_chart">
-          <FundsChart userId={this.props.userId} apiKeys={this.props.apiKeys.ownKeys || []} exchangesInfo={this.props.exchangesInfo} contracts={this.props.contracts.current}/>
+          <FundsChart />
         </div>
         <div className="table_wrapper contracts_chart">
           <SelectedContractChart
             contract={this.state.selectedReceivedContract || this.state.selectedProvidedContract}
-            exchangesInfo={this.props.exchangesInfo}
           />
         </div>
       </div>
     );
   }
 
-  onKeySelected(apiKey) {
+  onKeySelected = (apiKey) => {
     const { selectedApiKey } = this.state;
 
     if (selectedApiKey === apiKey) {
@@ -173,7 +154,7 @@ class Dashboard extends React.Component {
     });
   }
 
-  onOfferSelected(offer) {
+  onOfferSelected = (offer) => {
     if(this.state.selectedOffer !== offer) {
       this.setState({
         selectedOffer: offer,
@@ -184,7 +165,7 @@ class Dashboard extends React.Component {
     }
   }
 
-  onContractSelected(contract) {
+  onContractSelected = (contract) => {
     const { selectedReceivedContract, selectedProvidedContract} = this.state;
 
     if (selectedReceivedContract && selectedReceivedContract._id === contract._id) {

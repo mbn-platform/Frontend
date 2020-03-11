@@ -2,6 +2,7 @@ import React from 'react';
 import { Popover } from 'reactstrap';
 import classNames from 'classnames';
 import { FormattedMessage } from 'react-intl';
+import { path } from 'ramda';
 
 class GroupContractSelect extends React.Component {
   state = { isOpen: false };
@@ -27,10 +28,10 @@ class GroupContractSelect extends React.Component {
     document.removeEventListener('click', this.onOutsideClick);
   }
 
-  onContractSelect = contract => event => {
+  onContractSelect = contractId => event => {
     event.stopPropagation();
     this.setState({ isOpen: false });
-    this.props.onContractSelect(contract);
+    this.props.onContractSelect(contractId);
   }
 
   stopPropagation = (event) => {
@@ -69,7 +70,7 @@ class GroupContractSelect extends React.Component {
             {contracts.map(contract => (
               <div
                 key={contract._id}
-                onClick={this.onContractSelect(contract)}
+                onClick={this.onContractSelect(contract._id)}
                 className={classNames('key', {
                   active: this.props.selectedFund && this.props.selectedFund._id === contract._id
                 })}>
@@ -105,7 +106,7 @@ class GroupContractSelect extends React.Component {
       : (
         <FormattedMessage id="userTrustToMe"
           defaultMessage="{name} trusted to me"
-          values={{ name: fund.from.name }}
+          values={{ name: path(['from', 'name'], fund) }}
         />
       )
   )

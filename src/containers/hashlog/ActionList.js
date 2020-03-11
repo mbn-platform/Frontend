@@ -2,24 +2,26 @@ import React from 'react';
 import {connect} from 'react-redux';
 import { Container, Row, Col } from 'reactstrap';
 import { FormattedMessage, FormattedDate, injectIntl } from 'react-intl';
-import {CopyToClipboard} from 'react-copy-to-clipboard';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { compose } from 'ramda';
+import qs from 'qs';
+
+import createMqProvider, { querySchema } from 'MediaQuery';
+import ReactTable from 'components/SelectableReactTable';
+import PaginationWithPage from 'components/PaginationWithPage';
 import {
   getActionListPage,
   setActionListPage,
   setActionListPageSize,
-} from '../../actions/actionsList';
-import { getBlock } from '../../actions/hashlog';
-import ReactTable from '../../components/SelectableReactTable';
-import createMqProvider, {querySchema} from '../../MediaQuery';
-import PaginationWithPage from '../../components/PaginationWithPage';
+} from 'actions/actionsList';
+import { getBlock } from 'actions/hashlog';
+import { actionListSelector } from 'selectors/actionList';
 
-import qs from 'qs';
-
-const {Screen} = createMqProvider(querySchema);
+const { Screen } = createMqProvider(querySchema);
 
 class ActionList extends React.Component {
   state = {
-    actionAnchor: null
+    actionAnchor: null,
   };
 
   componentDidMount() {
@@ -39,7 +41,7 @@ class ActionList extends React.Component {
     }
   };
 
-  static getDerivedStateFromProps({actionList: {actionsList}, location}, prevState) {
+  static getDerivedStateFromProps({ actionList: { actionsList }, location }, prevState) {
     if (actionsList.length > 0) {
       return {
         actionAnchor: location.hash,
@@ -121,32 +123,32 @@ class ActionList extends React.Component {
               timestamp: row.original.record.timestamp,
               params: row.original.record.params,
             }, null, 2);
-          return (<div className="hashlog__table-unformatted-container">
-            {(row.original.record === null || row.original.record.params === null) ?
-              <div className="hashlog__table-no-data">
-                &#8212;
-              </div> :
-              <React.Fragment>
-                <div className="hashlog__table-unformatted">
-                  <pre className='hashlog__table-unformatted-pre'>
-                    {
-                      paramsText
-                    }
-                  </pre>
+
+          return (
+            <div className="hashlog__table-unformatted-container">
+              {(row.original.record === null || row.original.record.params === null) ? (
+                <div className="hashlog__table-no-data">
+                  &#8212;
                 </div>
-                <CopyToClipboard text={
-                  paramsText
-                }>
-                  <button className='hashlog__copy-button'>
-                    <FormattedMessage
-                      id="hashlog.copy"
-                      defaultMessage="Copy"
-                    />
-                  </button>
-                </CopyToClipboard>
-              </React.Fragment>
-            }
-          </div>);
+              ) : (
+                <React.Fragment>
+                  <div className="hashlog__table-unformatted">
+                    <pre className='hashlog__table-unformatted-pre'>
+                      {paramsText}
+                    </pre>
+                  </div>
+                  <CopyToClipboard text={paramsText}>
+                    <button className='hashlog__copy-button'>
+                      <FormattedMessage
+                        id="hashlog.copy"
+                        defaultMessage="Copy"
+                      />
+                    </button>
+                  </CopyToClipboard>
+                </React.Fragment>
+              )}
+            </div>
+          );
         },
       },
       {
@@ -159,9 +161,7 @@ class ActionList extends React.Component {
             <div className='hashlog__copied-block'>
               {row.original.hash}
             </div>
-            <CopyToClipboard text={
-              row.original.hash
-            }>
+            <CopyToClipboard text={row.original.hash}>
               <button  className='hashlog__copy-button'>
                 <FormattedMessage
                   id="hashlog.copy"
@@ -195,19 +195,18 @@ class ActionList extends React.Component {
 
 
   renderBlockInfoTable = () => {
-    const {
-      actionList: {
-        blockInfo,
-      },
-    } = this.props;
+    const { actionList: { blockInfo } } = this.props;
+
     return (
       <React.Fragment>
         <Screen on={screenWidth => (
-          screenWidth  === 'lg' ?<ReactTable
-            data={[blockInfo]}
-            columns={this.getBlockInfoColumns(screenWidth)}
-            screenWidth={screenWidth}
-          /> : this.renderMobileBlockInfo(blockInfo)
+          screenWidth  === 'lg' ? (
+            <ReactTable
+              data={[blockInfo]}
+              columns={this.getBlockInfoColumns(screenWidth)}
+              screenWidth={screenWidth}
+            />
+          ) : this.renderMobileBlockInfo(blockInfo)
         )}
         />
       </React.Fragment>
@@ -239,78 +238,70 @@ class ActionList extends React.Component {
 
   renderMobileActionList = actionsList => (
     <div className="hashlog__mobileActionListWrapper">
-      {actionsList.map((actionsListItem, index) => {
-        return (
-          <div key={index} className="hashlog__mobileActionListItemWrapper">
-            <div className="hashlog__mobileActionListRow" id={`action-${actionsListItem.blockIndex}`}>
-              <div className="hashlog__mobileActionListTitle">{this.props.intl.messages['hashlog.index']}</div>
-              <div className="hashlog__mobileActionListValue">{actionsListItem.blockIndex}</div>
-            </div>
-            <div className="hashlog__mobileActionListRow">
-              <div className="hashlog__mobileActionListTitle">{this.props.intl.messages['hashlog.record']}</div>
-              <div className="hashlog__mobileActionListValue">
-                <div className="hashlog__table-unformatted-container">
-                  {(actionsListItem.record === null || actionsListItem.record.params === null) ?
-                    <div className="hashlog__table-no-data">
-                      &#8212;
-                    </div> :
-                    <React.Fragment>
-                      <div className="hashlog__table-unformatted">
-                        <pre className='hashlog__table-unformatted-pre'>
-                          {
-                            JSON.stringify({
-                              type: actionsListItem.record.type,
-                              timestamp: actionsListItem.record.timestamp,
-                              params: actionsListItem.record.params,
-                            }, null, 2)
-                          }
-                        </pre>
-                      </div>
-                      <CopyToClipboard text={
-                        JSON.stringify({
+      {actionsList.map((actionsListItem, index) => (
+        <div key={index} className="hashlog__mobileActionListItemWrapper">
+          <div className="hashlog__mobileActionListRow" id={`action-${actionsListItem.blockIndex}`}>
+            <div className="hashlog__mobileActionListTitle">{this.props.intl.messages['hashlog.index']}</div>
+            <div className="hashlog__mobileActionListValue">{actionsListItem.blockIndex}</div>
+          </div>
+          <div className="hashlog__mobileActionListRow">
+            <div className="hashlog__mobileActionListTitle">{this.props.intl.messages['hashlog.record']}</div>
+            <div className="hashlog__mobileActionListValue">
+              <div className="hashlog__table-unformatted-container">
+                {(actionsListItem.record === null || actionsListItem.record.params === null) ?
+                  <div className="hashlog__table-no-data">
+                    &#8212;
+                  </div> :
+                  <React.Fragment>
+                    <div className="hashlog__table-unformatted">
+                      <pre className='hashlog__table-unformatted-pre'>
+                        {JSON.stringify({
                           type: actionsListItem.record.type,
-                          params: actionsListItem.record.params,
                           timestamp: actionsListItem.record.timestamp,
-                        }, null, 2)
-                      }>
-                        <button className='hashlog__copy-button'>
-                          <FormattedMessage
-                            id="hashlog.copy"
-                            defaultMessage="Copy"
-                          />
-                        </button>
-                      </CopyToClipboard>
-                    </React.Fragment>
-                  }
-                </div>
+                          params: actionsListItem.record.params,
+                        }, null, 2)}
+                      </pre>
+                    </div>
+                    <CopyToClipboard text={
+                      JSON.stringify({
+                        type: actionsListItem.record.type,
+                        params: actionsListItem.record.params,
+                        timestamp: actionsListItem.record.timestamp,
+                      }, null, 2)
+                    }>
+                      <button className='hashlog__copy-button'>
+                        <FormattedMessage
+                          id="hashlog.copy"
+                          defaultMessage="Copy"
+                        />
+                      </button>
+                    </CopyToClipboard>
+                  </React.Fragment>
+                }
               </div>
-            </div>
-            <div className="hashlog__mobileActionListRow">
-              <div className="hashlog__mobileActionListTitle">
-                {this.props.intl.messages['hashlog.hash']}
-              </div>
-              <div className="hashlog__mobileActionListValue">
-                <div className='hashlog__copied-block'>
-                  {actionsListItem.hash}
-                </div>
-                <CopyToClipboard text={
-                  actionsListItem.hash
-                }>
-                  <button  className='hashlog__copy-button'>
-                    <FormattedMessage
-                      id="hashlog.copy"
-                      defaultMessage="Copy"
-                    />
-                  </button>
-                </CopyToClipboard></div>
             </div>
           </div>
-        ); })
-      })}
+          <div className="hashlog__mobileActionListRow">
+            <div className="hashlog__mobileActionListTitle">
+              {this.props.intl.messages['hashlog.hash']}
+            </div>
+            <div className="hashlog__mobileActionListValue">
+              <div className='hashlog__copied-block'>
+                {actionsListItem.hash}
+              </div>
+              <CopyToClipboard text={actionsListItem.hash}>
+                <button  className='hashlog__copy-button'>
+                  <FormattedMessage
+                    id="hashlog.copy"
+                    defaultMessage="Copy"
+                  />
+                </button>
+              </CopyToClipboard></div>
+          </div>
+        </div>
+      ))})}
     </div>
   )
-
-
 
   renderActionListTable = () =>  {
     let {
@@ -326,31 +317,34 @@ class ActionList extends React.Component {
       getActionList,
     } = this.props;
     const { blockNumber: currentBlockNumberFromUrl } = qs.parse(this.props.location.search.slice(1));
+
     return (
       <React.Fragment>
         <Screen on={screenWidth => (
-          screenWidth  === 'lg' ? <ReactTable
-            data={actionsList}
-            columns={this.getActionListColumns(screenWidth)}
-            pages={Math.ceil(actionsListCount/actionListPageSize)}
-            page={actionListPage}
-            defaultPageSize={actionListPageSize}
-            pageSize={actionListPageSize}
-            showPagination={true}
-            screenWidth={screenWidth}
-            showPaginationBottom={true}
-            manual
-            paginationPageDispatcher={page => {
-              setActionPage(page);
-              getActionList(blockInfo.number || currentBlockNumberFromUrl, page, actionListPageSize);
-            }}
-            paginationPageSizeDispatcher={pageSize => {
-              setActionPageSize(pageSize);
-              getActionList(blockInfo.number || currentBlockNumberFromUrl, actionListPage, pageSize);
-            }}
-            onItemSelected={() => {}}
-            PaginationComponent={PaginationWithPage}
-          /> : this.renderMobileActionList(actionsList))}
+          screenWidth  === 'lg' ? (
+            <ReactTable
+              data={actionsList}
+              columns={this.getActionListColumns(screenWidth)}
+              pages={Math.ceil(actionsListCount/actionListPageSize)}
+              page={actionListPage}
+              defaultPageSize={actionListPageSize}
+              pageSize={actionListPageSize}
+              showPagination={true}
+              screenWidth={screenWidth}
+              showPaginationBottom={true}
+              manual
+              paginationPageDispatcher={page => {
+                setActionPage(page);
+                getActionList(blockInfo.number || currentBlockNumberFromUrl, page, actionListPageSize);
+              }}
+              paginationPageSizeDispatcher={pageSize => {
+                setActionPageSize(pageSize);
+                getActionList(blockInfo.number || currentBlockNumberFromUrl, actionListPage, pageSize);
+              }}
+              onItemSelected={() => {}}
+              PaginationComponent={PaginationWithPage}
+            />
+          ) : this.renderMobileActionList(actionsList))}
         />
       </React.Fragment>
     );
@@ -358,17 +352,15 @@ class ActionList extends React.Component {
 
 
   render() {
-    const {
-      actionList: {
-        blockInfo,
-      }
-    } = this.props;
+    const { actionList: { blockInfo } } = this.props;
     const { actionAnchor } = this.state;
     const { blockNumber: currentBlockNumberFromUrl } = qs.parse(this.props.location.search.slice(1));
+
     if (actionAnchor) {
       const searchingElement = document.getElementById(actionAnchor.substr(1));
       searchingElement && searchingElement.scrollIntoView();
     }
+
     return (
       <Container fluid>
         <Row>
@@ -404,6 +396,7 @@ class ActionList extends React.Component {
                   </div>
                   <a href={`/api/v2/hashlog/blocks/${blockInfo.number || currentBlockNumberFromUrl}/actions`}
                     target="_blank"
+                    rel="noopener noreferrer"
                     className="hashlog__export-to-json">
                     <FormattedMessage
                       id="hashlog.asJson"
@@ -424,17 +417,17 @@ class ActionList extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  actionList: state.actionList,
+  actionList: actionListSelector(state),
 });
 
-const mapDispatchToProps = dispatch => {
-  return {
-    getActionList: (blockNumber, page, size) => dispatch(getActionListPage(blockNumber, page, size)),
-    setActionPage: page => dispatch(setActionListPage(page)),
-    setActionPageSize: pageSize => dispatch(setActionListPageSize(pageSize)),
-    getCurrentBlock: blockNumber => dispatch(getBlock(blockNumber)),
-  };
+const mapDispatchToProps = {
+  getActionList: getActionListPage,
+  setActionPage: setActionListPage,
+  setActionPageSize: setActionListPageSize,
+  getCurrentBlock: getBlock,
 };
 
-
-export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(ActionList));
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  injectIntl,
+)(ActionList);
