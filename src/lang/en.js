@@ -321,6 +321,7 @@ const en = {
   'ratings.amountOfFinishedContracts' : 'The amount of successfully finished contracts',
   'ratings.paidExcess' : 'Paid excess{br}profit',
   'ratings.amountOfPaid' : 'Amount of paid invoices',
+
   'terminal.contracts': 'Contract',
   'terminal.placeOrder.limit': 'Limit',
   'terminal.placeOrder.stop-limit': 'Stop-limit',
@@ -370,6 +371,8 @@ const en = {
   'terminal.orders.openOrders': 'Open Orders',
   'terminal.orders.closedOrders': 'Closed Orders',
   'terminal.orders.balances': 'Balances',
+  'terminal.filled': 'FILLED',
+
   'modal.error': 'Error',
   'modal.error.useYourAddress': 'You have to use your address associated with your Membrana account',
   'modal.error.deniedContractPay': 'You have rejected transaction, contract is not booked',

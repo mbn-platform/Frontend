@@ -305,18 +305,15 @@
       width: 50%;
       height: 100%;
       position: relative;
-
     }
 
     .legend_pie_wrapper {
       float: right;
-      overflow: hidden;
-
+      overflow-y: auto;
     }
     .legend_pie_wrapper .trader_legend {
         overflow: hidden;
       }
-
 
     .amChartsLegend
     {
