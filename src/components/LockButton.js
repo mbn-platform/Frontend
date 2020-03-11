@@ -28,7 +28,7 @@ const LockButton = ({
   const isButtonLock = (used >= total && total !== -1) || !notifications;
 
   return isButtonLock ? (
-    <div className="relative">
+    <div style={{ height: '100%' }} className="relative">
       <NavLink to="/tariffs">
         <div
           id={id}

@@ -66,9 +66,12 @@ export default function(state = {
       if(!(action.market === state.market && action.exchange === state.exchange)) {
         return state;
       }
-      const orderBook = {...state.orderBook};
+      let orderBook = {...state.orderBook};
+      if (action.isFull) {
+        orderBook = {sell: [], buy: [], smap: {}, bmap: {}};
+      }
       if (action.orderBook.sell.length) {
-        const smap = {...state.orderBook.smap};
+        const smap = {...orderBook.smap};
         for(const o of action.orderBook.sell) {
           const [value, amount] = o;
           if(amount === 0) {
@@ -86,7 +89,7 @@ export default function(state = {
         orderBook.minSell = minSell;
       }
       if (action.orderBook.buy.length) {
-        const bmap = {...state.orderBook.bmap};
+        const bmap = {...orderBook.bmap};
         for(const o of action.orderBook.buy) {
           const [value, amount] = o;
           if(amount === 0) {

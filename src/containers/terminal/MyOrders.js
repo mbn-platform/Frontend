@@ -112,11 +112,11 @@ class MyOrders extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const {market, orders, fund} = state.terminal;
+  const {market, orders, fund, assetGroup } = state.terminal;
   return {
     market,
     orders,
-    fund,
+    fund: fund || assetGroup,
   };
 };
 

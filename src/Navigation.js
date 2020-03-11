@@ -291,7 +291,7 @@ class Navigation extends React.Component {
         }>
         <Navbar expand="md"  >
           <NavbarBrand className="d-inline-block d-md-none" tag="div">
-            <a target="_blank" rel='noopener noreferrer' href="https://membrana.io">
+            <a target="_blank" rel='noopener noreferrer' href={`https://${APP_HOST}`}>
               <img src={LogoMobile} alt=""/>
             </a>
           </NavbarBrand>
