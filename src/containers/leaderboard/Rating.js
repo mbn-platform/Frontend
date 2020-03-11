@@ -301,7 +301,7 @@ class RatingTable extends React.PureComponent {
         Cell: row => {
           return (
             <Link to={'/' + row.original.name}>
-              <button style={{verticalAlign: 'text-top', width: 'unset'}} className="leaderboard__form-submit">INVEST NOW</button>
+              <button style={{verticalAlign: 'text-top', width: 'unset'}} className="leaderboard__form-submit">DETAILS</button>
             </Link>
           );
         },
