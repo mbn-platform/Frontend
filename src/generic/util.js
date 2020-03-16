@@ -1,3 +1,5 @@
+import * as R from 'ramda';
+
 export const makeId = length => {
   length = length || 24;
   let text = '';
@@ -171,3 +173,8 @@ export function setFundId(payload, fund) {
   }
   return payload;
 }
+
+export const uniqBaseMarkets = R.pipe(
+  R.map(R.prop('base')),
+  R.uniq,
+);
