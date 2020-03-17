@@ -21,6 +21,7 @@ import {
   getExchangeMarkets,
   validateUrlParams,
 } from '../../actions/terminal';
+import { updateExchanges } from '../../actions/exchanges';
 
 class Terminal extends React.Component {
   state = {
@@ -39,6 +40,7 @@ class Terminal extends React.Component {
     }
 
     if (isEmpty(params)) {
+      this.props.updateExchanges();
       this.props.selectExchange(exchange);
       this.props.getExchangeMarkets(exchange);
       this.props.selectMarket(market);
@@ -159,6 +161,7 @@ const mapDispatchToProps = {
   selectMarket,
   getExchangeMarkets,
   validateUrlParams,
+  updateExchanges,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Terminal);
