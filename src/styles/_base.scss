@@ -300,7 +300,7 @@ input[type=number]::-webkit-outer-spin-button {
 						line-height: 1.4em;
 						font-size: 1.2em;
 						display: flex;
-						justify-content: space-around;
+						justify-content: space-between;
 						flex-wrap: wrap;
 					}
 				}
@@ -412,10 +412,6 @@ input[type=number]::-webkit-outer-spin-button {
 	margin: 14px 0;
 	font-size: 12px;
 	margin-left: 10px;
-
-	&:last-child {
-
-	}
 }
 
 .table__page-button_active {
