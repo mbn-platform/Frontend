@@ -1,11 +1,12 @@
 import React from 'react';
 import { Row } from 'reactstrap';
+import { BigNumber } from 'bignumber.js';
+import { connect } from 'react-redux';
+
 import { Desktop } from '../../generic/MediaQuery';
-import {ESCAPE_KEYCODE} from '../../constants';
-
-
+import { ESCAPE_KEYCODE } from '../../constants';
 import TradingViewDatafeed from '../../generic/TradingViewDatafeed';
-import {connect} from 'react-redux';
+import { cancelOrder } from '../../actions/terminal';
 
 class TradingView extends React.PureComponent {
   constructor(props) {
@@ -44,13 +45,16 @@ class TradingView extends React.PureComponent {
         <TradingViewContainer
           symbol={this.props.market}
           exchange={this.props.exchange}
-          interval={this.mapInterval(this.props.interval)}
+          orders={this.props.orders}
+          interval={this.mapInterval()}
+          cancelOrder={this.props.cancelOrder}
         />
       </React.Fragment>
     );
   }
 
-  mapInterval(interval) {
+  mapInterval() {
+    const { interval } = this.props;
     let formatted;
     switch(interval) {
       case '1 MIN':
@@ -87,10 +91,9 @@ class TradingView extends React.PureComponent {
 }
 
 class TradingViewContainer extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {ready: false};
+  state = {
+    ready: false,
+    orderLines: [],
   }
 
   componentWillReceiveProps(nextProps) {
@@ -103,10 +106,54 @@ class TradingViewContainer extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    const { orders, exchange } = this.props;
+
     if(!prevState.ready && this.state.ready) {
       const symbol = this.props.symbol + '@' + this.props.exchange;
       this.updateChart(symbol, this.props.interval);
     }
+
+    if (orders.length > prevProps.orders.length) {
+      const newOrders = orders.filter(order =>  prevProps.orders.map(({ _id }) => _id).indexOf(order._id) === -1);
+      this.createOrderLines(newOrders);
+    }
+
+    if (exchange !== prevProps.exchange && this.state.orderLines.length > 0) {
+      this.state.orderLines.forEach(line => line.remove());
+      this.setState({ orderLines: [] });
+    }
+  }
+
+  createOrderLines = (orders) => {
+    const chart = this.widget.chart();
+
+    const orderLines = orders.map(order => {
+      const price = BigNumber(order.limit).toString(10);
+      const color = order.type === 'buy' ? '#53b994' : '#cb353c';
+      const orderLine = chart.createOrderLine();
+
+      orderLine
+        .setText(`${order.type.toUpperCase()} ${order.limit} | ${order.amount}`)
+        .setQuantity((order.orders && order.orders.length) || '1')
+        .setPrice(price)
+        .setLineColor(color)
+        .setBodyBorderColor(color)
+        .setBodyTextColor(color)
+        .setQuantityBorderColor(color)
+        .setQuantityBackgroundColor(color)
+        .setCancelButtonBorderColor(color)
+        .setCancelButtonIconColor(color)
+        .onCancel(this.onCancelOrder(order, orderLine));
+
+      return orderLine;
+    });
+
+    this.setState({ orderLines });
+  }
+
+  onCancelOrder = (order, orderLine) => () => {
+    this.props.cancelOrder(order);
+    orderLine.remove();
   }
 
   componentDidMount() {
@@ -115,7 +162,7 @@ class TradingViewContainer extends React.Component {
     this.widget = createTradingView(symbol, this.props.interval, path);
     this.widget.onChartReady(() => {
       this.setState({ready: true});
-
+      this.createOrderLines(this.props.orders);
     });
   }
 
@@ -134,7 +181,7 @@ class TradingViewContainer extends React.Component {
       style.visibility = 'hidden';
     }
     return (
-      <div style={style} id="tv_chart_container" className="tv_chart_container"/>
+      <div style={style} id="tv_chart_container" className="tv_chart_container" />
     );
   }
 
@@ -250,16 +297,24 @@ function createTradingView(symbol, interval, socketPath) {
     },
     custom_css_url: '../../../css/trading_view.css',
   });
+
   return widget;
 }
 
 const mapStateToProps = state => {
-  const { market, exchange, interval} = state.terminal;
+  const { market, exchange, interval, orders: { open } } = state.terminal;
+  const orders = open.filter(order => order.exchange === exchange);
+
   return {
     exchange,
     market,
-    interval
+    interval,
+    orders,
   };
 };
 
-export default connect(mapStateToProps)(TradingView);
+const mapDispatchToProps = {
+  cancelOrder,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TradingView);
