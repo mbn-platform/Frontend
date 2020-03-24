@@ -113,18 +113,22 @@ class TradingViewContainer extends React.Component {
       this.updateChart(symbol, this.props.interval);
     }
 
-    if (orders.length > prevProps.orders.length) {
-      const newOrders = orders.filter(order =>  prevProps.orders.map(({ _id }) => _id).indexOf(order._id) === -1);
-      this.createOrderLines(newOrders);
+    if (orders.length !== prevProps.orders.length) {
+      if (this.state.orderLines.length > 0) {
+        this.state.orderLines.forEach(line => line.remove());
+      }
+
+      this.createOrderLines(orders);
     }
 
-    if (exchange !== prevProps.exchange && this.state.orderLines.length > 0) {
-      this.state.orderLines.forEach(line => line.remove());
+    if (exchange !== prevProps.exchange) {
       this.setState({ orderLines: [] });
     }
   }
 
   createOrderLines = (orders) => {
+    if (orders.length === 0) { return; }
+
     const chart = this.widget.chart();
 
     const orderLines = orders.map(order => {
@@ -133,8 +137,8 @@ class TradingViewContainer extends React.Component {
       const orderLine = chart.createOrderLine();
 
       orderLine
-        .setText(`${order.type.toUpperCase()} ${order.limit} | ${order.amount}`)
-        .setQuantity((order.orders && order.orders.length) || '1')
+        .setText(`${order.type.toUpperCase()} ${order.limit}`)
+        .setQuantity(order.amount)
         .setPrice(price)
         .setLineColor(color)
         .setBodyBorderColor(color)
@@ -143,7 +147,7 @@ class TradingViewContainer extends React.Component {
         .setQuantityBackgroundColor(color)
         .setCancelButtonBorderColor(color)
         .setCancelButtonIconColor(color)
-        .onCancel(this.onCancelOrder(order, orderLine));
+        .onCancel(this.onCancelOrder(order));
 
       return orderLine;
     });
@@ -151,9 +155,8 @@ class TradingViewContainer extends React.Component {
     this.setState({ orderLines });
   }
 
-  onCancelOrder = (order, orderLine) => () => {
+  onCancelOrder = (order) => () => {
     this.props.cancelOrder(order);
-    orderLine.remove();
   }
 
   componentDidMount() {
