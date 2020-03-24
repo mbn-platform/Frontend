@@ -113,16 +113,13 @@ class TradingViewContainer extends React.Component {
       this.updateChart(symbol, this.props.interval);
     }
 
-    if (orders.length !== prevProps.orders.length) {
+    if (orders.length !== prevProps.orders.length || exchange !== prevProps.exchange) {
       if (this.state.orderLines.length > 0) {
         this.state.orderLines.forEach(line => line.remove());
+        this.setState({ orderLines: [] });
       }
 
       this.createOrderLines(orders);
-    }
-
-    if (exchange !== prevProps.exchange) {
-      this.setState({ orderLines: [] });
     }
   }
 
