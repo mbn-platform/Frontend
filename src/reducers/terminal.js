@@ -52,7 +52,12 @@ export default function(state = {
       if(action.exchange === state.exchange) {
         return state;
       } else {
-        return {...state, exchange: action.exchange, orderBook: {sell: [], buy: [], smap: {}, bmap: {}}, history: []};
+        return {
+          ...state,
+          exchange: action.exchange,
+          orderBook: {sell: [], buy: [], smap: {}, bmap: {}}, history: [],
+          orders: {open: [], closed: []},
+        };
       }
     }
     case SELECT_INTERVAL: {
