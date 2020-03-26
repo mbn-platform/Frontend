@@ -106,40 +106,38 @@ class TradingViewContainer extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { orders, exchange } = this.props;
+    const { orders, exchange, symbol } = this.props;
 
     if(!prevState.ready && this.state.ready) {
-      const symbol = this.props.symbol + '@' + this.props.exchange;
-      this.updateChart(symbol, this.props.interval);
+      const chartSymbol = symbol + '@' + exchange;
+      this.updateChart(chartSymbol, this.props.interval);
     }
 
-    if (orders.length !== prevProps.orders.length || exchange !== prevProps.exchange) {
-      if (this.state.orderLines.length > 0) {
-        this.state.orderLines.forEach(line => line.remove());
-        this.setState({ orderLines: [] });
-      }
-
-      this.createOrderLines(orders);
+    if (this.state.ready && orders !== prevProps.orders) {
+      const open = orders.filter((o) => o.symbol === this.props.symbol);
+      this.createOrderLines(open);
     }
   }
 
   createOrderLines = (orders) => {
-    if (orders.length === 0) { return; }
+    this.state.orderLines.forEach((line) => line.remove());
+    if (orders.length === 0) {
+      this.setState({ orderLines: [] });
+      return;
+    }
 
     const chart = this.widget.chart();
 
     const orderLines = orders.map(order => {
       const price = BigNumber(order.limit).toString(10);
-      const color = order.type === 'buy' ? '#53b994' : '#cb353c';
+      const color = order.type === 'buy' ? '#32b994' : '#d74c4c';
       const orderLine = chart.createOrderLine();
 
       orderLine
-        .setText(`${order.type.toUpperCase()} ${order.limit}`)
-        .setQuantity(order.amount)
+        .setText('')
+        .setQuantity(`${order.type.toUpperCase()} ${order.amount}`)
         .setPrice(price)
         .setLineColor(color)
-        .setBodyBorderColor(color)
-        .setBodyTextColor(color)
         .setQuantityBorderColor(color)
         .setQuantityBackgroundColor(color)
         .setCancelButtonBorderColor(color)
@@ -162,7 +160,8 @@ class TradingViewContainer extends React.Component {
     this.widget = createTradingView(symbol, this.props.interval, path);
     this.widget.onChartReady(() => {
       this.setState({ready: true});
-      this.createOrderLines(this.props.orders);
+      const orders = this.props.orders.filter((o) => o.symbol === this.props.symbol);
+      this.createOrderLines(orders);
     });
   }
 
@@ -303,13 +302,11 @@ function createTradingView(symbol, interval, socketPath) {
 
 const mapStateToProps = state => {
   const { market, exchange, interval, orders: { open } } = state.terminal;
-  const orders = open.filter(order => order.exchange === exchange);
-
   return {
     exchange,
     market,
     interval,
-    orders,
+    orders: open,
   };
 };
 
