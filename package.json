@@ -1,6 +1,6 @@
 {
   "name": "mbn-platform",
-  "version": "1.13.3",
+  "version": "1.14.0",
   "private": true,
   "dependencies": {
     "@amcharts/amcharts3-react": "^3.1.0",
