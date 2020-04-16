@@ -15,7 +15,7 @@ export class ApiAuth {
       const address = accounts[0];
       if (!address) {
       }
-      const message = web3.toHex('MembranaLogin');
+      const message = web3.toHex('MBN Platform Login');
       res(
         new Promise((resolve, reject) => {
           web3.personal.sign(message, address, (err, signature) => {

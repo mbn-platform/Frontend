@@ -94,9 +94,6 @@ class Tariffs extends React.PureComponent {
 
   onLogIn = () => {
     const redirectTo = this.props.location.pathname + this.props.location.search;
-    const query = {
-      redirectTo,
-    };
     redirectToAuthorization(redirectTo);
   };
 

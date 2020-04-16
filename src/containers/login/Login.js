@@ -1,10 +1,7 @@
 import React from 'react';
-import qs from 'qs';
 import EnterNickname from './EnterNickname';
 import './Login.css';
 import './LoginStep.css';
-import MetamaskClosed from './MetamaskClosed';
-import LoginForm from './LoginForm';
 import { redirectToAuthorization } from '../../actions/auth';
 
 class Login extends React.Component {
