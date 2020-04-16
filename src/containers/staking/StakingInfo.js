@@ -32,8 +32,8 @@ class StakingInfo extends React.Component {
                 </a>
               </Col>
               <Col>
-                <a href="https://abcc.com/markets/mbnbtc" target="_blank" rel="noopener noreferrer">
-                  <Button style={style}>Buy on ABCC MBN/BTC</Button>
+                <a href="https://eterbase.exchange/markets/MBNUSDT" target="_blank" rel="noopener noreferrer">
+                  <Button style={style}>BUY ON ETERBASE MBN/USDT</Button>
                 </a>
               </Col>
             </Row>
