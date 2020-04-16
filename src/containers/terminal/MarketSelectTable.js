@@ -14,7 +14,11 @@ import createMqProvider, { querySchema } from '../../MediaQuery';
 
 const { Screen} = createMqProvider(querySchema);
 
-const STABLECOINS = ['USDT', 'BUSD', 'PAX', 'USDC', 'DAI', 'USD', 'TUSD', 'NUSD'];
+const STABLECOINS = [
+  'USDT', 'BUSD', 'PAX',
+  'USDC', 'DAI', 'USD', 'TUSD', 'NUSD',
+  'USDS', 'HUSD',
+];
 const BTC = 'BTC';
 const USD = 'USD';
 const ALTS = 'ALTS';
@@ -75,7 +79,7 @@ class MarketSelectTable extends React.Component {
 
   componentDidMount() {
     window.addEventListener('keydown', this.onKeyDown);
-    this.setState({dropDownHeight: this.dropDownWrapper.current.offsetHeight - 180});
+    this.setState({dropDownHeight: this.dropDownWrapper.current.offsetHeight - 207});
   };
 
   onHideZeroClick = (e) => {
@@ -232,7 +236,7 @@ class MarketSelectTable extends React.Component {
         className: 'terminal__market-table-cell',
         headerClassName: 'table__header-wrapper terminal__market-header-table',
         Header: <div onClick={() => this.onColumnSort('volume')}>
-          <FormattedMessage id="terminal.volumeCurrency" defaultMessage="Volume({baseCurrency})" values={{baseCurrency}}/>
+          <FormattedMessage id="terminal.volumeCurrency" defaultMessage="Volume" />
           <span className={classNameForColumnHeader(this.state, 'volume')}/>
         </div>,
         Cell: row => Math.round(row.original.volume * row.original.last)
@@ -262,8 +266,7 @@ class MarketSelectTable extends React.Component {
             {screenWidth === 'lg' ?
               <FormattedMessage
                 id="terminal.balance"
-                defaultMessage="Balance ({baseCurrency}) "
-                values={{baseCurrency}}/> :
+                defaultMessage="Balance" /> :
               <FormattedMessage
                 id="terminal.balance-mobile"
                 defaultMessage="Balance"

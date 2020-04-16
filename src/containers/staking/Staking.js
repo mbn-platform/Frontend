@@ -2,13 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Container, Row, Col } from 'reactstrap';
 import { FormattedMessage } from 'react-intl';
-import qs from 'qs';
 import { Switch, Route, NavLink, Redirect } from 'react-router-dom';
 
 import {
   verifyStakeAddress, getStakeInfo, getStakeTransactions,
   getStakeRating, setTrListPage, setTrListPageSize,
 } from '../../actions/profile';
+import { redirectToAuthorization } from '../../actions/auth';
 import { showCommitTokensModal } from '../../actions/modal';
 import StakingInfo from './StakingInfo';
 import PersonalInfo from './PersonalInfo';
@@ -20,14 +20,13 @@ class Staking extends React.Component {
   }
 
   verifyStakeAddress = () => {
-    const { loggedIn, history } = this.props;
+    const { loggedIn } = this.props;
 
     if (loggedIn) {
       this.props.verifyStakeAddress();
       return;
     }
-
-    history.push(`/login?${qs.stringify({ redirectTo: '/staking' })}`);
+    redirectToAuthorization('/staking');
   };
 
   showCommitTokensModal = () => {

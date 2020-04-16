@@ -18,8 +18,8 @@ export default () => {
             defaultMessage="Please, install one of these browsers to use"/>
           <br/>
           <span className="login_no_metamask_title__font-light-green">
-            <FormattedMessage id="membranaPlatform"
-              defaultMessage="Membrana Platform"/>
+            <FormattedMessage id="mbnPlatform"
+              defaultMessage="MBN Platform"/>
           </span>
           <br/>
           <FormattedMessage id="orImportAccount"

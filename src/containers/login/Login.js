@@ -3,70 +3,23 @@ import qs from 'qs';
 import EnterNickname from './EnterNickname';
 import './Login.css';
 import './LoginStep.css';
-import NoMetamask from '../../components/NoMetamask';
 import MetamaskClosed from './MetamaskClosed';
 import LoginForm from './LoginForm';
+import { redirectToAuthorization } from '../../actions/auth';
 
 class Login extends React.Component {
 
-  constructor(props) {
-    super(props);
-    if(window.web3) {
-      const intervalId = setInterval(() =>
-        window.web3.eth.getAccounts((err, accounts) => {
-          this.setState({hasActiveAccount: (!err && accounts.length),
-            modern: !!window.ethereum});
-        }), 1000);
-      this.state = {hasActiveAccount: false, intervalId: intervalId};
-      window.web3.eth.getAccounts((err, accounts) => {
-        this.setState({hasActiveAccount: (!err && accounts.length), modern: !!window.ethereum});
-      });
-    } else {
-      this.state = {};
-    }
-  }
-
-  onLoginClick = () => {
-    if (!this.state.hasActiveAccount && this.state.modern) {
-      window.ethereum.enable().then(() => {
-        this.props.onLoginClick();
-      }).catch(e => console.log(e));
-    } else if (this.state.hasActiveAccount) {
-      this.props.onLoginClick();
-    }
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.state.intervalId);
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    if(nextProps !== this.props) {
-      return true;
-    } else {
-      return !(this.state.hasActiveAccount === nextState.hasActiveAccount);
-    }
-  }
-
-  renderStep() {
+  componentDidMount() {
     if(!window.web3) {
-      return (<NoMetamask />);
-    } else if(this.props.nameRequired) {
-      return (<EnterNickname onNicknameSet={this.props.onNicknameSet} />);
-    } else {
-      const { search } = this.props.location;
-      const params = qs.parse(search.slice(1));
-      return (
-        this.state.hasActiveAccount || this.state.modern ? (
-          <LoginForm
-            onClick={this.onLoginClick}
-            autoLogin={!!params.autoLogin}
-          />
-        ) : (
-          <MetamaskClosed />
-        )
-      );
+      redirectToAuthorization('', true);
+      return;
     }
+    this.onLoginClick();
+  }
+
+  onLoginClick = async () => {
+    await window.ethereum.enable();
+    this.props.onLoginClick();
   }
 
   render() {
@@ -76,12 +29,12 @@ class Login extends React.Component {
           <div className="login_steps">
             <div className="login_title_wrapper">
               <div className="login_title_text">
-                  Membrana Platform
+                  MBN Platform
                 <br/>
                   Beta {process.env.REACT_APP_VERSION}
               </div>
             </div>
-            {this.renderStep()}
+            {this.props.nameRequired && <EnterNickname onNicknameSet={this.props.onNicknameSet} />}
           </div>
         </div>
       </div>

@@ -17,6 +17,7 @@ import Payments from './containers/payments/PaymentsContainer';
 import './MainContent.css';
 import NotificationBar from './components/NotificationBar';
 import { ApiNotification } from './generic/api';
+import { redirectToAuthorization } from './actions/auth';
 
 const NotificationApi = new ApiNotification();
 
@@ -88,7 +89,7 @@ class MainContent extends React.Component {
           <Route exact path="/leaderboard" component={Leaderboard}/>
           <Route exact path="/rating" component={Leaderboard}/>
           <Route exact path="/selection" component={Leaderboard}/>
-          <Redirect exact from="/profile" to={loggedIn ? `/${profile.name}` : '/login'}/>
+          <ProfileRoute exach path="/profile" loggedIn={loggedIn} profile={profile} />
           <Route exact path="/:id" component={Profile}/>
           <Redirect exact from="/" to={defaultRoute}/>
         </Switch>
@@ -96,6 +97,15 @@ class MainContent extends React.Component {
     );
   }
 }
+
+const ProfileRoute = ({ loggedIn, profile, ...props }) => {
+  if (loggedIn) {
+    return <Redirect to={`/${profile.name}`} />;
+  } else {
+    redirectToAuthorization(props.path);
+    return null;
+  }
+};
 
 const LoginRoute = ({ loggedIn, ...props }) => {
   if(loggedIn) {
@@ -110,7 +120,8 @@ const LoginRoute = ({ loggedIn, ...props }) => {
 
 const ProtectedRoute = ({ component, loggedIn, ...props }) => {
   if(!loggedIn) {
-    return (<Redirect to="/login" />);
+    redirectToAuthorization(props.path);
+    return null;
   } else {
     return (<Route {...props} component={component} />);
   }

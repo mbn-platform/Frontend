@@ -1,6 +1,7 @@
 import { ApiError } from '../generic/apiCall';
 import { ApiAuth } from '../generic/api';
 import { showInfoModal } from './modal';
+import qs from 'qs';
 
 export const LOGGED_OUT = 'LOGGED_OUT';
 export const LOGGED_IN = 'LOGGED_IN';
@@ -22,6 +23,20 @@ export function logIn() {
         error.code && dispatch(showInfoModal('simpleValue', {value : error.code}));
       });
   };
+}
+
+export function redirectToAuthorization(redirectTo = '', replace = false) {
+  const params = {
+  };
+  if (redirectTo) {
+    params.redirectTo = redirectTo;
+  }
+  const redirectUrl = `${process.env.REACT_APP_SIGN_IN_LANDING}?${qs.stringify(params)}`;
+  if (replace) {
+    window.location.replace(redirectUrl);
+  } else {
+    window.location.href = redirectUrl;
+  }
 }
 
 export function addName(name) {

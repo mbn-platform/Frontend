@@ -5,6 +5,7 @@ import { FormattedMessage } from 'react-intl';
 import qs from 'qs';
 import BigNumber from 'bignumber.js';
 import copy from 'copy-to-clipboard';
+import { redirectToAuthorization } from '../../actions/auth';
 
 import Header from './components/Header';
 
@@ -96,7 +97,7 @@ class Tariffs extends React.PureComponent {
     const query = {
       redirectTo,
     };
-    this.props.history.push('/login?' + qs.stringify(query));
+    redirectToAuthorization(redirectTo);
   };
 
   render = () => {

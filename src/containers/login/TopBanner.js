@@ -20,11 +20,11 @@ export default class TopBanner extends React.PureComponent {
   render() {
     if (!this.props.auth || !this.props.auth.loggedIn) {
       return ReactDOM.createPortal(
-        <Link to="/login"
+        <a href={process.env.REACT_APP_SIGN_IN_LANDING}
           className="top_banner"
         >
           {this.getTitle()}
-        </Link>,
+        </a>,
         this.el
       );
     } else {
@@ -35,7 +35,7 @@ export default class TopBanner extends React.PureComponent {
   getTitle() {
     const isIOSorAndroid = (/android|iphone|ipad/i).test(window.navigator.userAgent);
     const hasWeb3 = !!window.ethereum || !!window.web3;
-    let title = 'Click here to login to Membrana Platform. ';
+    let title = 'Click here to login to MBN Platform. ';
     if (!hasWeb3) {
       if (isIOSorAndroid) {
         title += 'To login you need to use a browser that supports dapps';

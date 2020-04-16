@@ -183,7 +183,7 @@ class TelegramContact extends React.Component {
           letterSpacing: '1px',
           fontSize: '11px'
         }} >YOUR TELEGRAM ID</div>
-        <SettingsInput spellCheck={false} value={this.state.telegram} placeholder="@membrana" onChange={this.onChange} />
+        <SettingsInput spellCheck={false} value={this.state.telegram} placeholder="@mbn" onChange={this.onChange} />
         {!canVerify ? null :(
           <Col  xs="12">
             <Row className="justify-content-center">

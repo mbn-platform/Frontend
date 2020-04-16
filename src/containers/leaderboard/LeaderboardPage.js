@@ -7,6 +7,7 @@ import RoundSelect from './RoundSelect';
 import PointsInfo from './PointsInfo';
 import ReactTable from '../../components/SelectableReactTable';
 import createMqProvider, {querySchema} from '../../MediaQuery';
+import { redirectToAuthorization } from '../../actions/auth';
 
 const { Screen} = createMqProvider(querySchema);
 
@@ -51,7 +52,7 @@ class Leaderboard extends React.Component {
 
   onContractApply = (free) => {
     if (!this.props.loggedIn) {
-      this.props.history.push('/login');
+      redirectToAuthorization();
       return;
     }
     this.props.showConfirmModal('leaderboard.payContractHeader', {},

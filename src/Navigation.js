@@ -41,6 +41,7 @@ import AddContractModal from './containers/dashboard/Contracts/AddContractModal'
 import {ESCAPE_KEYCODE} from './constants';
 import { SignOutButton } from './components/navigation/SignOutButton';
 import { PlatformLogo } from './components/navigation/PlatformLogo';
+import { redirectToAuthorization } from './actions/auth';
 
 class Navigation extends React.Component {
 
@@ -55,7 +56,7 @@ class Navigation extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.auth.loggedIn && !this.props.auth.loggedIn) {
-      this.props.history.push('/login');
+      redirectToAuthorization();
     }
   }
 
@@ -292,7 +293,7 @@ class Navigation extends React.Component {
         <Navbar expand="md"  >
           <NavbarBrand className="d-inline-block d-md-none" tag="div">
             <a target="_blank" rel='noopener noreferrer' href={`https://${APP_HOST}`}>
-              <img src={LogoMobile} alt=""/>
+              <img src={LogoMobile} height="23px" alt=""/>
             </a>
           </NavbarBrand>
           <NavbarToggler onClick={this.toggle} className={this.state.isOpen ? '' : 'collapsed'} />

@@ -14,6 +14,7 @@ import Pagination from '../../components/Pagination';
 import ReactTable from '../../components/SelectableReactTable';
 import { Desktop, Mobile } from '../../generic/MediaQuery';
 import {getExchangeCurrencies} from '../../actions/exchanges';
+import { redirectToAuthorization } from '../../actions/auth';
 import {FormattedMessage, injectIntl} from 'react-intl';
 import { showInfoModal } from '../../actions/modal';
 
@@ -221,7 +222,7 @@ class SendRequestBlock extends React.Component {
 
   onOfferSendClick = () => {
     if (!this.props.auth.loggedIn) {
-      window.location = '/login';
+      redirectToAuthorization(`/${this.props.profile.name}`);
     } else {
       this.setState({visibleBlock: SEND_REQUEST_BLOCK_SELECT_API});
     }

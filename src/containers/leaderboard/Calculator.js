@@ -103,7 +103,7 @@ class Calculator extends React.Component {
           <div className='calculation'>
             {this.renderCalculationResult()}
           </div>
-          <div className='undertext'>Profit is calculated according to trader's history verified by <Link to="/hashlog">Membrana Proof-of-Trade</Link></div>
+          <div className='undertext'>Profit is calculated according to trader's history verified by <Link to="/hashlog">MBN Platform Proof-of-Trade</Link></div>
         </Col>
       </Row>
     );

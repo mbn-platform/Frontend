@@ -1,2 +1,2 @@
 # Frontend
-Frontend of the Membrana platform
+Frontend of the MBN platform
