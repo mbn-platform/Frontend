@@ -30,9 +30,10 @@ class AddApiKey extends React.Component {
     }
 
     if (is2FAEnable) {
+      const params = {...this.state};
       showTwoFactorAuthModal('',
         {},
-        async token => await this.props.onApiKeyCreated(this.state, token)
+        async token => await this.props.onApiKeyCreated(params, token)
       );
     } else {
       this.props.onApiKeyCreated(this.state);
