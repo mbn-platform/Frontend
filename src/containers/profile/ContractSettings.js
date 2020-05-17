@@ -42,7 +42,7 @@ class ContractSettings extends React.Component {
   onEditButtonClick() {
     const isEditing = this.state.isEditing;
     if(isEditing) {
-      const fee = parseInt(this.state.fee, 10) || this.props.fee;
+      const fee = parseFloat(this.state.fee);
       let minAmount = parseFloat(this.state.amount);
       if(isNaN(minAmount)) {
         minAmount = this.props.amount;
@@ -51,7 +51,7 @@ class ContractSettings extends React.Component {
       const roi = parseInt(this.state.roi, 10) || this.props.roi;
       const maxLoss = parseInt(this.state.maxLoss, 10) || this.props.maxLoss;
       const duration = parseFloat(this.state.duration) || this.props.duration;
-      if(fee >= 100 || fee <= 0 || minAmount < 0 || roi <= 0 ||
+      if(fee >= 100 || fee < 0 || minAmount < 0 || roi <= 0 ||
         duration <= 0 || maxLoss <= 0) {;
         this.props.showModalWindow('profile.enterSetting');
         return;
@@ -91,7 +91,7 @@ class ContractSettings extends React.Component {
       return;
     }
 
-    if(fee >= 100 || fee <= 0 || minAmount <= 0 || roi <= 0 ||
+    if(fee >= 100 || fee < 0 || minAmount <= 0 || roi <= 0 ||
       duration <= 0 || maxLoss <= 0) {
       this.props.showModalWindow('profile.needEditFirst');
       return;
