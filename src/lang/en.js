@@ -208,6 +208,7 @@ const en = {
   'dashboard.addContractToGroup': 'Add contract to group',
   'dashboard.profitNotCalculated': 'Profit cannot be calculated for group consisting contracts with different currencies',
   'dashboard.contractRequests': 'Contract Requests',
+  'exchange.maintenance': 'This exchange is currently in maintenance',
 
   'orders.orders' : 'Orders',
   'orders.openOrders' : 'Open Orders',

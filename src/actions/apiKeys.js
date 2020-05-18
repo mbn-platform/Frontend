@@ -168,6 +168,9 @@ export function addApiKey(key, token2FA) {
               },
             ));
             break;
+          case ApiError.MAINTENANCE:
+            dispatch(showInfoModal('exchange.maintenance'));
+            break;
           default:
             dispatch(showInfoModal('failedToAddApiKey', {key: error.apiErrorCode}));
             console.error('unhandled api error', error.apiErrorCode);

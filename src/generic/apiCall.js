@@ -51,6 +51,7 @@ ApiError.THROTTLE_LIMIT = -1001;
 ApiError.LOCK = -1002;
 ApiError.TARIFF_LIMIT = -1003;
 ApiError.IN_PROGRESS = -507;
+ApiError.MAINTENANCE = -9;
 
 const API_PREFIX = '/api/v2';
 

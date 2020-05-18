@@ -259,6 +259,8 @@ export function placeAlgoOrder(order) {
                 },
               ));
               break;
+            case ApiError.MAINTENANCE:
+              dispatch(showInfoModal('exchange.maintenance'));
             default:
               console.log('unhandler error: ' + JSON.stringify(error));
           }
@@ -315,6 +317,9 @@ export function placeOrder(order) {
                   cancelText: 'profile.cancel',
                 },
               ));
+              break;
+            case ApiError.MAINTENANCE:
+              dispatch(showInfoModal('exchange.maintenance'));
               break;
             default:
               dispatch(showInfoModal('failedToPlaceOrder', {order : error.apiErrorCode}));
