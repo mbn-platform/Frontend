@@ -42,7 +42,7 @@ class ContractSettings extends React.Component {
   onEditButtonClick() {
     const isEditing = this.state.isEditing;
     if(isEditing) {
-      const fee = parseFloat(this.state.fee);
+      const fee = parseFloat(this.state.fee) || this.props.fee;
       let minAmount = parseFloat(this.state.amount);
       if(isNaN(minAmount)) {
         minAmount = this.props.amount;
