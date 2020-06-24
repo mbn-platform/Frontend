@@ -15,6 +15,8 @@ import {
   CLOSE_CREATE_GROUP_MODAL,
   SHOW_ADD_CONTRACT_TO_GROUP_MODAL,
   CLOSE_ADD_CONTRACT_TO_GROUP_MODAL,
+  SHOW_TELEGRAM_VERIFY_CODE,
+  CLOSE_TELEGRAM_VERIFY_CODE,
 } from '../actions/modal';
 
 const modal = (
@@ -26,6 +28,12 @@ const modal = (
     modalProps: {}
   }, action) => {
   switch(action.type) {
+    case SHOW_TELEGRAM_VERIFY_CODE: {
+      return {...state, isTelegramModalOpen: true, code: action.code};
+    }
+    case CLOSE_TELEGRAM_VERIFY_CODE: {
+      return {...state, isTelegramModalOpen: false, code: undefined};
+    }
     case SHOW_INFORM_MODAL: {
       return {...state,  isInfoModalOpen: true, modalComponent: action.textID, modalProps: action.values, body: action.body  };
     }

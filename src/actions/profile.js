@@ -1,10 +1,9 @@
-import React from 'react';
 import get from 'lodash/get';
 
 import { profileErrorHandler } from '../generic/errorHandlers';
 import { ApiProfile, ApiContacts} from '../generic/api';
 import { ApiError} from '../generic/apiCall';
-import { showConfirmModal, showInfoModal } from './modal';
+import { showConfirmModal, showInfoModal, showTelergramVerifyCodeModal } from './modal';
 
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
 export const UPDATE_PROFILE_AVAILABLE = 'UPDATE_PROFILE_AVAILABLE';
@@ -35,12 +34,7 @@ export function verifyTelegram(value) {
     if (!result.verification) {
       dispatch(showInfoModal('contactVerified'));
     } else if (result.verification.type === 'code') {
-      const bot = process.env.REACT_APP_BOT_NAME;
-      const botRef = `https://t.me/${bot}`;
-      dispatch(showInfoModal('telegramConfirmCode', {
-        code: result.verification.params.code,
-        link: <a target="__blank" href={botRef}> our bot </a>,
-      }));
+      dispatch(showTelergramVerifyCodeModal(result.verification.params.code));
       dispatch({
         type: ADD_CONTACT,
         contact: result.contact,

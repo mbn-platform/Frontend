@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ModalWindow from './Modal';
+import ModalWindow from '.';
 import QRCode from 'qrcode.react';
-import {injectIntl, FormattedMessage} from 'react-intl';
+import {FormattedMessage} from 'react-intl';
 import {connect} from 'react-redux';
-import { closeTwoFactorAuthModal, disable2FA, confirm2FA } from '../actions/modal';
+import { closeTwoFactorAuthModal, disable2FA, confirm2FA } from '../../actions/modal';
 
 class TwoFactorAuthModal extends React.Component {
   state = {
@@ -195,4 +195,5 @@ const mapDispatchToProps = {
   confirm2FA,
 };
 
-export default injectIntl(connect(state => state, mapDispatchToProps)(TwoFactorAuthModal));
+export default connect(state => state, mapDispatchToProps)(TwoFactorAuthModal);
+

@@ -22,10 +22,8 @@ import {APP_NAME, APP_HOST} from './constants';
 import { withRouter } from 'react-router';
 import { Navbar, NavbarToggler, NavbarBrand, Nav, Collapse, Col } from 'reactstrap';
 import { Desktop, Mobile } from './generic/MediaQuery';
-import ModalWindow from './components/Modal';
-import TwoFactorAuthModal from './components/TwoFactorAuthModal';
 import { Container, Row } from 'reactstrap';
-import { injectIntl, FormattedMessage } from 'react-intl';
+import { injectIntl } from 'react-intl';
 import {
   closeCodeModal,
   closeConfirmModal,
@@ -33,15 +31,18 @@ import {
   closeUpgradeTariffModal,
   closeCreateGroupModal,
   closeAddContractToGroupModal,
+  closeTelegramVerifyCodeModal,
 } from './actions/modal';
 import { loggedOut } from './actions/auth';
-import CommitTokensModal from './containers/staking/CommitTokensModal';
-import CreateGroupModal from './containers/dashboard/Contracts/CreateGroupModal';
-import AddContractModal from './containers/dashboard/Contracts/AddContractModal';
 import {ESCAPE_KEYCODE} from './constants';
 import { SignOutButton } from './components/navigation/SignOutButton';
 import { PlatformLogo } from './components/navigation/PlatformLogo';
 import { redirectToAuthorization } from './actions/auth';
+
+import { GlobalInformModal, GlobalConfirmModal, CodeInformModal,
+  UpgradeTariffModal, TwoFactorAuthModal, CommitTokensModal,
+  VerifyTelegramModal, AddContractModal, CreateGroupModal,
+} from './components/modal';
 
 class Navigation extends React.Component {
 
@@ -73,178 +74,6 @@ class Navigation extends React.Component {
       this.setState({isOpen: false});
       window.removeEventListener('keydown', this.handleKeydown);
     }
-  }
-
-  renderGlobalConfirmModel = () => {
-    const { modal, closeConfirmModalWindow  } = this.props;
-    if (!modal.isConfirmModalOpen) {
-      return null;
-    }
-    return (
-      <ModalWindow
-        modalIsOpen={modal.isConfirmModalOpen}
-        onClose={closeConfirmModalWindow}
-        title={
-          <FormattedMessage
-            id={modal.modalComponent || 'message'}
-            defaultMessage="Message"
-            values={modal.modalProps}
-          />
-        }
-        content={
-          <div>
-            {modal.body ?
-              <div className="modal__body_text">
-                <FormattedMessage
-                  id={modal.body.textId}
-                  values={modal.body.values || {}}
-                  defaultMessage={modal.body.textId}
-                />
-              </div>
-              : null}
-            <button className="modal__button btn" onClick={() => {
-              modal.confirmCallback();
-              closeConfirmModalWindow();
-            }}>
-              {modal.body && modal.body.confirmText ?
-                <FormattedMessage
-                  id={modal.body.confirmText}
-                /> : this.props.intl.messages['yes']}
-            </button>
-            <button className="modal__button btn" onClick={closeConfirmModalWindow}>
-              {modal.body && modal.body.cancelText ?
-                <FormattedMessage
-                  id={modal.body.cancelText}
-                /> : this.props.intl.messages['no']}
-            </button>
-          </div>
-        }
-      />
-    );
-  }
-
-  renderGlobalInformModel = () => {
-    const { modal, closeInfoModalWindow } = this.props;
-    if (!modal.isInfoModalOpen) {
-      return null;
-    }
-    return (
-      <ModalWindow
-        modalIsOpen={modal.isInfoModalOpen}
-        onClose={closeInfoModalWindow}
-        title={
-          <FormattedMessage
-            id={modal.modalComponent || 'message'}
-            defaultMessage="Message"
-            values={modal.modalProps}
-          />
-        }
-        content={
-          <div>
-            {modal.body ?
-              <div className="modal__body_text">
-                <FormattedMessage
-                  id={modal.body.textId}
-                  values={modal.body.values || {}}
-                  defaultMessage={modal.body.textId}
-                />
-              </div>
-              : null}
-            <button className="modal__button btn" onClick={closeInfoModalWindow}>
-              {this.props.intl.messages['ok']}
-            </button>
-          </div>
-        }
-      />
-    );
-  }
-
-  renderCodeInformModel = () => {
-    const { modal, closeCodeModalWindow } = this.props;
-    return (
-      <ModalWindow
-        modalIsOpen={modal.isCodeInfoModalOpen}
-        onClose={closeCodeModalWindow}
-        title={
-          <FormattedMessage
-            id={modal.modalTitle || 'message'}
-            defaultMessage="Message"
-          />
-        }
-        content={
-          <div>
-            <div className="modal__content-wrapper">
-              <div className="modal__key-annotation">
-                <FormattedMessage
-                  id={modal.modalText || 'message'}
-                  defaultMessage="Message"
-                />
-              </div>
-              <div className="modal__key-wrapper">
-                <div className="modal__key-item">
-                  <FormattedMessage
-                    id="keyIs"
-                    defaultMessage="Key: {key}"
-                    values={{key: modal.modalKey}}
-                  />
-                </div>
-                <div className="modal__key-item">
-                  <FormattedMessage
-                    id="secretIs"
-                    defaultMessage="Secret: {secret}"
-                    values={{secret: modal.modalCode}}
-                  />
-                </div>
-
-              </div>
-              <button className="modal__button btn" onClick={closeCodeModalWindow}>
-                {this.props.intl.messages['ok']}
-              </button>
-            </div>
-          </div>
-        }
-      />
-    );
-  }
-
-
-  renderTwoFactorAuthModal = () => <TwoFactorAuthModal appName={APP_NAME} appHost={APP_HOST}/>
-
-  renderUpgradeTariffModal = () => {
-    const { modal, closeUpgradeTariffModalWindow, history } = this.props;
-
-    if (!modal.isUpgradeModalOpen) {
-      return null;
-    }
-
-    return (
-      <ModalWindow
-        modalIsOpen={modal.isUpgradeModalOpen}
-        onClose={closeUpgradeTariffModalWindow}
-        title={
-          <FormattedMessage
-            id={modal.modalText}
-            values={modal.modalProps}
-          />
-        }
-        content={
-          <div>
-            <button className="modal__button btn" onClick={() => {
-              history.push('/tariffs');
-              closeUpgradeTariffModalWindow();
-            }}>
-              <FormattedMessage id={modal.body.upgradeTariffText} />
-            </button>
-            <button className="modal__button btn" onClick={closeUpgradeTariffModalWindow}>
-              {modal.body && modal.body.cancelText ?
-                <FormattedMessage
-                  id={modal.body.cancelText}
-                /> : this.props.intl.messages['no']}
-            </button>
-          </div>
-        }
-      />
-    );
   }
 
   renderCommitTokensModal = () => {
@@ -316,14 +145,15 @@ class Navigation extends React.Component {
             </Collapse>
           </Mobile>
         </Navbar>
-        {this.renderCodeInformModel()}
-        {this.renderGlobalInformModel()}
-        {this.renderGlobalConfirmModel()}
-        {this.renderTwoFactorAuthModal()}
-        {this.renderUpgradeTariffModal()}
+        <CodeInformModal {...this.props} />
+        <GlobalInformModal {...this.props} />
+        <GlobalConfirmModal {...this.props} />
+        <UpgradeTariffModal {...this.props} />
+        <TwoFactorAuthModal appName={APP_NAME} appHost={APP_HOST} intl={this.props.intl}/>
         {this.renderCommitTokensModal()}
         {this.renderCreateGroupModal()}
         {this.renderAddContractModal()}
+        <VerifyTelegramModal {...this.props} />
         <div
           className="navigation__splitter"
           onClick={() => this.setState({isExpanded: !isExpanded})}>
@@ -435,6 +265,7 @@ const mapDispatchToProps = {
   closeUpgradeTariffModalWindow: closeUpgradeTariffModal,
   closeCreateGroupModalWindow: closeCreateGroupModal,
   closeAddContractToGroupModalWindow: closeAddContractToGroupModal,
+  closeTelegramVerifyCodeModal,
   logOut: loggedOut,
 };
 

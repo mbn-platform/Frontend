@@ -6,7 +6,7 @@ import { FormattedMessage } from 'react-intl';
 import { closeCommitTokensModal } from '../../actions/modal';
 import { commitToEarlyPool } from '../../actions/profile';
 
-import ModalWindow from '../../components/Modal';
+import ModalWindow from '.';
 
 class CommitTokensModal extends React.Component {
   static propTypes = {

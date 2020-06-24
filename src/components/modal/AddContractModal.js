@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { FormattedMessage, injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
-import { updateAssetGroup } from '../../../actions/assetGroup';
-import ModalWindow from '../../../components/Modal';
-import ContractSelect from '../GroupAsset/ContractSelect';
+import { updateAssetGroup } from '../../actions/assetGroup';
+import ModalWindow from '.';
+import ContractSelect from '../../containers/dashboard/GroupAsset/ContractSelect';
 
 class AddContractModal extends React.Component {
   static propTypes = {
@@ -85,4 +85,4 @@ const mapDispatchToProps = {
   updateAssetGroup,
 };
 
-export default injectIntl(connect(null, mapDispatchToProps)(AddContractModal));
+export default connect(null, mapDispatchToProps)(AddContractModal);

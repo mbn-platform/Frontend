@@ -18,6 +18,8 @@ export const SHOW_CREATE_GROUP_MODAL = 'SHOW_CREATE_GROUP_MODAL';
 export const CLOSE_CREATE_GROUP_MODAL = 'CLOSE_CREATE_GROUP_MODAL';
 export const SHOW_ADD_CONTRACT_TO_GROUP_MODAL = 'SHOW_ADD_CONTRACT_TO_GROUP_MODAL';
 export const CLOSE_ADD_CONTRACT_TO_GROUP_MODAL = 'CLOSE_ADD_CONTRACT_TO_GROUP_MODAL';
+export const SHOW_TELEGRAM_VERIFY_CODE = 'SHOW_TELEGRAM_VERIFY_CODE';
+export const CLOSE_TELEGRAM_VERIFY_CODE = 'CLOSE_TELEGRAM_VERIFY_CODE';
 
 const Api2FA = new ApiTwoFactorAuth();
 
@@ -130,6 +132,15 @@ export const showAddContractToGroupModal = (group, contracts) => ({
   type: 'SHOW_ADD_CONTRACT_TO_GROUP_MODAL',
   group,
   contracts,
+});
+
+export const showTelergramVerifyCodeModal = (code) => ({
+  type: SHOW_TELEGRAM_VERIFY_CODE,
+  code,
+});
+
+export const closeTelegramVerifyCodeModal = () => ({
+  type: CLOSE_TELEGRAM_VERIFY_CODE
 });
 
 export const closeAddContractToGroupModal = () => ({

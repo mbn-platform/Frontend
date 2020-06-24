@@ -381,7 +381,9 @@ const en = {
   'modal.error.contractNotAvailable': 'This contract is no more available',
   'modal.success': 'Success',
   'contactVerified': 'This contact is already added',
-  'telegramConfirmCode': 'Your code is {code}. Go to {link} and enter',
+  'telegramConfirm.title': 'Telegram account verification',
+  'telegramConfirm.body': 'Your code is {code}. Go to {link} and enter',
+  'telegramConfirm.copyCode': 'Copy Code',
   'noAssetGroups': 'You have no asset groups. Go to {link} to create one',
   'help-stop-limit-order': 'Stop-limit orders are triggered when pair price reaches stop price. In that case a limit order is placed. Such orders don\'t block your available balance',
 

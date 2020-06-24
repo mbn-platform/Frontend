@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { FormattedMessage, injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
-import { createAssetGroup } from '../../../actions/assetGroup';
-import ModalWindow from '../../../components/Modal';
-import ExchangeSelect from '../../../components/ExchangeSelect';
+import { createAssetGroup } from '../../actions/assetGroup';
+import ModalWindow from '.';
+import ExchangeSelect from '../ExchangeSelect';
 
 class CreateGroupModal extends React.Component {
   static propTypes = {
@@ -95,4 +95,4 @@ const mapDispatchToProps = {
   createAssetGroup,
 };
 
-export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(CreateGroupModal));
+export default connect(mapStateToProps, mapDispatchToProps)(CreateGroupModal);
