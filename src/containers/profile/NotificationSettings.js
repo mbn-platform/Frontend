@@ -56,11 +56,6 @@ class NotificationSettings extends React.Component {
           title="orders"
           billing={billing}
           checked={settings.orders} />
-        <SettingsSwitch
-          onToggle={this.onChange}
-          title="contracts"
-          billing={billing}
-          checked={settings.contracts || false} />
       </React.Fragment>
     );
   }

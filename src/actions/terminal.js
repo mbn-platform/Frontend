@@ -261,6 +261,7 @@ export function placeAlgoOrder(order) {
               break;
             case ApiError.MAINTENANCE:
               dispatch(showInfoModal('exchange.maintenance'));
+              break;
             default:
               console.log('unhandler error: ' + JSON.stringify(error));
           }
