@@ -32,7 +32,7 @@ const en = {
   'failedToCancelOrder' : 'failed to cancel order: {order}',
   'failedToPlaceOrder' : 'failed to place order: {order}',
   'orderHasBeenPlaced' : 'Order has been placed',
-  'thisKeyAlreadyInSystem' : 'This key already in system',
+  'thisKeyAlreadyInSystem' : 'You can add only one API key from one exchange account',
   'failedToAddApiKey:' : 'failed to add api key: {key}',
   'playImageAlt' : 'Play button',
   'toshiImageAlt' : 'Toshi',
