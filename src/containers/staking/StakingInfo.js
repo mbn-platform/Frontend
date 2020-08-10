@@ -27,22 +27,29 @@ class StakingInfo extends React.Component {
 
             <Row>
               <Col>
-                <a href="https://idex.market/eth/mbn" target="_blank" rel="noopener noreferrer">
-                  <Button style={style}>Buy on IDEX MBN/ETH</Button>
+                <a href="https://app.uniswap.org/#/swap?inputCurrency=0x4eeea7b48b9c3ac8f70a9c932a8b1e8a5cb624c7&outputCurrency=0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2" target="_blank" rel="noopener noreferrer">
+                  <Button style={style}>Buy on Uniswap MBN/ETH</Button>
                 </a>
               </Col>
               <Col>
-                <a href="https://eterbase.exchange/markets/MBNUSDT" target="_blank" rel="noopener noreferrer">
-                  <Button style={style}>BUY ON ETERBASE MBN/USDT</Button>
+                <a href="https://idex.market/eth/mbn" target="_blank" rel="noopener noreferrer">
+                  <Button style={style}>Buy on IDEX MBN/ETH</Button>
                 </a>
               </Col>
             </Row>
             <Row>
               <Col>
+                <a href="https://eterbase.exchange/markets/MBNUSDT" target="_blank" rel="noopener noreferrer">
+                  <Button style={style}>BUY ON ETERBASE MBN/USDT</Button>
+                </a>
+              </Col>
+              <Col>
                 <a href="https://www.probit.com/app/exchange/MBN-BTC" target="_blank" rel="noopener noreferrer">
                   <Button style={style}>Buy on ProBit MBN/BTC</Button>
                 </a>
               </Col>
+            </Row>
+            <Row>
               <Col>
                 <a href="https://coinmarketcap.com/currencies/membrana/" target="_blank" rel="noopener noreferrer">
                   <Button style={style}>View MBN on CoinMarketCap</Button>
