@@ -27,7 +27,7 @@ class StakingInfo extends React.Component {
 
             <Row>
               <Col>
-                <a href="https://app.uniswap.org/#/swap?inputCurrency=0x4eeea7b48b9c3ac8f70a9c932a8b1e8a5cb624c7&outputCurrency=0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2" target="_blank" rel="noopener noreferrer">
+                <a href="https://app.uniswap.org/#/swap?outputCurrency=0x4eeea7b48b9c3ac8f70a9c932a8b1e8a5cb624c7" target="_blank" rel="noopener noreferrer">
                   <Button style={style}>Buy on Uniswap MBN/ETH</Button>
                 </a>
               </Col>
