@@ -214,6 +214,7 @@ const en = {
   'orders.openOrders' : 'Open Orders',
   'orders.completedOrders' : 'Completed orders',
   'orders.openDate' : 'Opened Date',
+  'orders.closeDate' : 'Closed Date',
   'orders.market' : ' Market',
   'orders.unitsFilled' : 'Units Filled',
   'orders.unitsTotal' : 'Units Total',

@@ -100,7 +100,7 @@ export class ClosedOrders extends React.Component {
         id: 'time',
         Header: 'Time/Date',
         Cell: (row) => <OpenOrdersCell title={row.value.toLocaleTimeString()} subtitle={formatDate(row.value)} />,
-        accessor: (info) => new Date(info.dt),
+        accessor: (info) => new Date(info.dtClose),
         width: 80,
         show: showTime,
       },

@@ -95,9 +95,8 @@ class OrdersTable extends React.Component {
         Header: isNested ? '' : <div onClick={() => this.onColumnSort('dt')}
           className="table__header-wrapper orders__table-header-wrapper">
           <FormattedMessage
-            id="orders.openDate"
-            defaultMessage="Opened Date"
-          /> <span className={classNameForColumnHeader(this.state, 'dt')}/>
+            id={isOpenOrder ? 'orders.openDate' : 'orders.closeDate'}
+          /> <span className={classNameForColumnHeader(this.state, isOpenOrder ? 'dt': 'dtClose')}/>
         </div>,
         minWidth: 60,
         className: ' orders__table_cell',
