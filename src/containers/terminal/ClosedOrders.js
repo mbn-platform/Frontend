@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactTable from '../../components/SelectableReactTable';
+import { OpenOrdersCell } from './OpenOrders';
 
 export class ClosedOrders extends React.Component {
 
@@ -47,7 +48,7 @@ export class ClosedOrders extends React.Component {
     return [
       {
         Header: 'Pair/Exchange',
-        Cell: (row) => <OpenOrdersCell title={row.original.symbol.split('-').reverse().join('/')} subtitle={row.original.exchange} />,
+        Cell: (row) => <OpenOrdersCell onMarketClick={this.props.onMarketClick} title={row.original.symbol.split('-').reverse().join('/')} subtitle={row.original.exchange} />,
         width: 80,
       },
       {
@@ -118,15 +119,6 @@ export class ClosedOrders extends React.Component {
     );
   }
 }
-function OpenOrdersCell(props) {
-  const {title, subtitle, className} = props;
-  return (
-    <div className={className || 'openordercell'}>
-      <div className="title">{title}</div>
-      <div className="subtitle">{subtitle}</div>
-    </div>
-  );
-}
 
 function formatDate(date) {
   return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
@@ -134,4 +126,5 @@ function formatDate(date) {
 
 ClosedOrders.propTypes = {
   orders: PropTypes.array.isRequired,
+  onMarketClick: PropTypes.func.isRequired,
 };

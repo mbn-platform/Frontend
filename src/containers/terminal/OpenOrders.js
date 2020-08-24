@@ -50,7 +50,7 @@ export class OpenOrders extends React.Component {
     return [
       {
         Header: 'Pair/Exchange',
-        Cell: (row) => <OpenOrdersCell title={row.original.symbol.split('-').reverse().join('/')} subtitle={row.original.exchange} />,
+        Cell: (row) => <OpenOrdersCell onMarketClick={this.props.onMarketClick} title={row.original.symbol.split('-').reverse().join('/')} subtitle={row.original.exchange} />,
         width: 80,
       },
       {
@@ -138,10 +138,13 @@ export class OpenOrders extends React.Component {
   }
 }
 
-function OpenOrdersCell(props) {
-  const {title, subtitle, className} = props;
+export function OpenOrdersCell(props) {
+  const {title, subtitle, className, onMarketClick} = props;
   return (
-    <div className={className || 'openordercell'}>
+    <div onClick={onMarketClick ? () => {
+      const s = title.split('/').reverse().join('-');
+      onMarketClick(s);
+    } : undefined} className={className || 'openordercell'}>
       <div className="title">{title}</div>
       <div className="subtitle">{subtitle}</div>
     </div>
@@ -168,6 +171,7 @@ function CancelOrderCell(props) {
 OpenOrders.propTypes = {
   orders: PropTypes.array.isRequired,
   onOrderCancel: PropTypes.func.isRequired,
+  onMarketClick: PropTypes.func.isRequired,
 };
 
 function formatDate(date) {

@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
-import { cancelOrder } from '../../actions/terminal';
+import { cancelOrder, selectMarket } from '../../actions/terminal';
 import { ClosedOrders } from './ClosedOrders';
 import { OpenOrders } from './OpenOrders';
 import { Balances } from './Balances';
@@ -80,6 +80,7 @@ class MyOrders extends React.Component {
                 size={size}
                 onOrderCancel={this.props.cancelOrder}
                 orders={data}
+                onMarketClick={this.props.selectMarket}
               />
             )} />
           </this.MediaQuery>
@@ -97,6 +98,7 @@ class MyOrders extends React.Component {
           <this.MediaQuery>
             <this.Screen on={(size) => (
               <ClosedOrders
+                onMarketClick={this.props.selectMarket}
                 orders={data}
                 size={size}
               />
@@ -120,8 +122,9 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps =  dispatch => ({
-  cancelOrder: order => dispatch(cancelOrder(order)),
-});
+const mapDispatchToProps = {
+  cancelOrder,
+  selectMarket,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyOrders);
