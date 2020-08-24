@@ -72,6 +72,7 @@ class Rating extends React.Component {
                 type="text"
                 className="ratings__input-search"
                 placeholder='Search'
+                spellcheck='false'
               />
             </span>
             <label className="rating-checkbox" style={{fontSize: '12px', color: '#7e8190'}}
@@ -103,7 +104,7 @@ class Rating extends React.Component {
   }
 
   onNameFilterChange = (e) => {
-    this.setState({nameFilter: e.target.value});
+    this.setState({nameFilter: e.target.value.toLowerCase()});
   }
 
   onShowVerifiedToggle = (e) => {
