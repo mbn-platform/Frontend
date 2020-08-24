@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { PlaceOrder } from './PlaceOrder';
 import { OrderType } from './PlaceOrderType';
 import { TAB_BUY, TAB_SELL } from './BuySellSwitch';
-import { defaultFormatValue, setFundId } from '../../../generic/util';
+import { setFundId } from '../../../generic/util';
 import { showInfoModal } from '../../../actions/modal';
 import { placeOrder, placeAlgoOrder } from '../../../actions/terminal';
 
@@ -31,7 +31,7 @@ class PlaceOrderContainer extends React.Component {
     }
     if (prevProps.ticker !== this.props.ticker &&
       !prevState.price && !prevState.tickerSet && this.props.ticker.l) {
-      this.setState({price: this.props.ticker.l.toString(), tickerSet: true});
+      this.setState({price: BigNumber(this.props.ticker.l).toFixed(), tickerSet: true});
       this.setAmount(prevState.amount);
     }
     if ((this.props.price && this.props.price !== prevProps.price) ||
@@ -48,8 +48,9 @@ class PlaceOrderContainer extends React.Component {
       const amount = parseFloat(this.state.amount);
       const price = parseFloat(this.state.price);
       if(amount >= 0 && price >= 0) {
-        const total = amount * price * commissionPercent(tab, this.props.exchange);
-        newState.total = defaultFormatValue(total);
+        const total = getTotalForExchange(new BigNumber(amount), new BigNumber(price),
+          this.props.exchange, tab);
+        newState.total = total.toFixed();
       }
       this.setState(newState);
     }
@@ -63,8 +64,21 @@ class PlaceOrderContainer extends React.Component {
 
   onChange = (e) => {
     const {name, value} = e.target;
-    if(value >= 0 || value === '') {
-      this.setNewValue(name, value);
+    switch (name) {
+      case 'amount': {
+        this.setAmount(value);
+        break;
+      }
+      case 'price': {
+        this.setPrice(value);
+        break;
+      }
+      case 'total': {
+        this.setTotal(value);
+        break;
+      }
+      default:
+        break;
     }
   }
 
@@ -206,158 +220,111 @@ class PlaceOrderContainer extends React.Component {
   }
 
   setAmount(amount) {
-    if(!amount) {
-      this.setState({total: '', amount: ''});
-      return;
-    }
-    switch(this.props.exchange) {
-      case 'huobi':
-      case 'binance': {
-        const minTradeSize = this.state.marketInfo ? this.state.marketInfo.minTradeSize.toString() : '';
-        const rounded = floorBinance(amount, minTradeSize);
-        const newState = {amount: rounded.toString()};
-        const price = parseFloat(this.state.price);
-        const value = parseFloat(rounded);
-        if(price >= 0) {
-          const total = value * price;
-          newState.total = defaultFormatValue(total);
+    if (amount === '') {
+      this.setState({
+        total: '',
+        amount: '',
+      });
+    } else {
+      const bn = new BigNumber(amount);
+      if (bn.isNaN()) {
+        return;
+      } else if (bn.eq(0)) {
+        this.setState({
+          total: '0',
+          amount,
+        });
+      } else if (bn.eq(this.state.amount)) {
+        this.setState({
+          amount,
+        });
+      } else {
+        let tradeStep;
+        if (this.props.exchange === 'bittrex') {
+          tradeStep = new BigNumber(1e-8);
+        } else {
+          tradeStep = new BigNumber(this.state.marketInfo ?
+            this.state.marketInfo.tradeStep : 1e-8);
+        }
+        const formattedAmount = floorWithStep(bn, tradeStep);
+        const newState = {amount: formattedAmount.toFixed()};
+        const price = new BigNumber(this.state.price);
+        if (!price.isNaN() && price.gt(0)) {
+          const total = getTotalForExchange(formattedAmount, price,
+            this.props.exchange, this.state.selectedTab);
+          newState.total = total.toFixed();
         }
         this.setState(newState);
       }
-        break;
-      case 'kucoin': {
-        const minTradeSize = this.state.marketInfo ? this.state.marketInfo.tradeStep.toString() : '';
-        const rounded = floorBinance(amount, minTradeSize);
-        const price = parseFloat(this.state.price);
-        const newState = {amount: rounded.toString()};
-        if (price > 0) {
-          const tab = this.state.selectedTab;
-          const total = rounded * price * commissionPercent(tab, this.props.exchange);
-          newState.total = defaultFormatValue(total);
-        }
-        this.setState(newState);
-        break;
-      }
-      default: {
-        const value = parseFloat(amount);
-        if(value >= 0) {
-          const newState = {amount: value};
-          const price = parseFloat(this.state.price);
-          if(price >= 0) {
-            const tab = this.state.selectedTab;
-            const total = value * price * commissionPercent(tab, this.props.exchange);
-            newState.total = defaultFormatValue(total);
-          }
-          this.setState(newState);
-        }
-      }
     }
+    return;
   }
 
   setTotal(total, minimize = false) {
-    if(!total) {
+    if (total === '') {
       this.setState({amount: '', total: ''});
       return;
     }
-    switch(this.props.exchange) {
-      case 'huobi':
-      case 'binance': {
-        const price = parseFloat(this.state.price);
-        const value = parseFloat(total);
-        if(price >= 0) {
-          const newState = {};
-          const minTradeSize = this.state.marketInfo ? this.state.marketInfo.minTradeSize.toString() : '';
-          const maxOrderSize = value / price;
-          const rounded = floorBinance(maxOrderSize.toString(), minTradeSize);
-          newState.amount = rounded;
-          if (minimize) {
-            newState.total = new BigNumber(price).times(rounded).toFixed();
-          } else {
-            newState.total = total;
-          }
-          this.setState(newState);
-        } else {
-          this.setState({total});
-        }
-      }
-        break;
-      case 'kucoin': {
-        const newState = {};
-        const value = parseFloat(total);
-        const price = parseFloat(this.state.price);
-        if (price >= 0) {
-          const minTradeSize = this.state.marketInfo ? this.state.marketInfo.tradeStep.toString() : '';
-          const maxOrderSize = value / price / commissionPercent(this.state.selectedTab, this.props.exchange);
-          const rounded = floorBinance(maxOrderSize.toString(), minTradeSize);
-          newState.amount = rounded;
-          newState.total = value.toString();
-        } else {
-          newState.total = total.toString();
-        }
-        this.setState(newState);
-        break;
-      }
-      default: {
-        const value = parseFloat(total);
-        if(value >= 0) {
-          const newState = {total};
-          const price = parseFloat(this.state.price);
-          if(price >= 0) {
-            const tab = this.state.selectedTab;
-            const amount = value / commissionPercent(tab, this.props.exchange) / price;
-            newState.amount = defaultFormatValue(amount);
-          }
-          this.setState(newState);
-        }
-      }
+    const bnTotal = new BigNumber(total);
+    if (bnTotal.isNaN()) {
+      return;
     }
+    if (bnTotal.eq(this.state.total)) {
+      this.setState({
+        total,
+      });
+      return;
+    }
+    const flooredTotal = floorWithStep(bnTotal, new BigNumber(1e-8));
+    const price = new BigNumber(this.state.price);
+    const newState = {total: flooredTotal.toFixed()};
+    if (!price.isNaN() && price.gt(0)) {
+      let tradeStep;
+      if (this.props.exchange === 'bittrex') {
+        tradeStep = new BigNumber(1e-8);
+      } else {
+        tradeStep = new BigNumber(this.state.marketInfo ?
+          this.state.marketInfo.tradeStep : 1e-8);
+      }
+      const amount = getAmountForExchange(flooredTotal, price,
+        this.props.exchange, this.state.selectedTab);
+      const flooredAmount = floorWithStep(amount, tradeStep);
+      newState.amount = flooredAmount.toFixed();
+    }
+    this.setState(newState);
   }
 
   setPrice(price) {
-    if (!price) {
+    if (price === '') {
       this.setState({price: '', total: ''});
       return;
     }
-    switch(this.props.exchange) {
-      case 'binance': {
-        const priceStep = this.state.marketInfo ? this.state.marketInfo.priceStep.toString() : '';
-        const rounded = floorBinance(price, priceStep.toString());
-        const newState = {price: rounded};
-        const amount = parseFloat(this.state.amount);
-        if(amount) {
-          const total = parseFloat(rounded) * amount;
-          newState.total = defaultFormatValue(total);
-        }
-        this.setState(newState);
-        break;
-      }
-      case 'kucoin': {
-        const priceStep = this.state.marketInfo ? this.state.marketInfo.priceStep.toString() : '';
-        const rounded = floorBinance(price, priceStep.toString());
-        const newState = {price: rounded};
-        const amount = parseFloat(this.state.amount);
-        if (amount >= 0) {
-          const tab = this.state.selectedTab;
-          const total = rounded * amount * commissionPercent(tab, this.props.exchange);
-          newState.total = defaultFormatValue(total);
-        }
-        this.setState(newState);
-        break;
-      }
-      default: {
-        const value = parseFloat(price);
-        if(value >= 0) {
-          const newState = {price};
-          const amount = parseFloat(this.state.amount);
-          if(amount >= 0) {
-            const tab = this.state.selectedTab;
-            const total = price * amount * commissionPercent(tab, this.props.exchange);
-            newState.total = defaultFormatValue(total);
-          }
-          this.setState(newState);
-        }
-      }
+    const bnPrice = new BigNumber(price);
+    if (bnPrice.isNaN()) {
+      return;
     }
+    if (bnPrice.eq(this.state.price)) {
+      this.setState({
+        price,
+      });
+      return;
+    }
+    let priceStep;
+    if (this.props.exchange === 'bittrex') {
+      priceStep = new BigNumber(1e-8);
+    } else {
+      priceStep = new BigNumber(this.state.marketInfo ?
+        this.state.marketInfo.priceStep : 1e-8);
+    }
+    const flooredPrice = floorWithStep(bnPrice, priceStep);
+    const newState = {price: flooredPrice.toFixed()};
+    const amount = new BigNumber(this.state.amount);
+    if (!amount.isNaN() && amount.gt(0)) {
+      const total = getTotalForExchange(amount, flooredPrice,
+        this.props.exchange, this.state.selectedTab);
+      newState.total = total.toFixed();
+    }
+    this.setState(newState);
   }
 }
 
@@ -386,6 +353,35 @@ const mapDispatchToProps = {
   placeAlgoOrder,
 };
 
+function getTotalForExchange(amount, price, exchange, orderSide) {
+  switch (exchange) {
+    case 'binance':
+    case 'huobi': {
+      return amount.times(price).dp(8, BigNumber.ROUND_UP);
+    }
+    case 'bittrex':
+    case 'kucoin': {
+      const percent = commissionPercent(orderSide, exchange);
+      const total = amount.times(price).times(percent);
+      return total.dp(8, BigNumber.ROUND_UP);
+
+    }
+    default:
+      break;
+  }
+}
+
+function getAmountForExchange(total, price, exchange, orderSide) {
+  switch (exchange) {
+    case 'binance':
+    case 'huobi': {
+      return total.div(price);
+    }
+    default: {
+      return total.div(commissionPercent).div(price);
+    }
+  }
+}
 function commissionPercent(orderSide, exchange) {
   switch(exchange) {
     case 'bittrex': {
@@ -402,21 +398,9 @@ function commissionPercent(orderSide, exchange) {
       return 1;
   }
 }
-function floorBinance(string, step) {
-  let afterComma;
-  if(step.startsWith('1e')) {
-    afterComma = parseInt(step.split('-')[1], 10);
-  } else {
-    afterComma = (step.toString().split('.')[1] || '').length;
-  }
-  const numberAfterComma = (string.split('.')[1] || '').length;
-  if(afterComma === 0) {
-    return Math.floor(parseFloat(string)).toString();
-  } else if(numberAfterComma > afterComma) {
-    return string.slice(0, afterComma - numberAfterComma);
-  } else {
-    return string;
-  }
+
+function floorWithStep(bnValue, bnStep) {
+  return bnValue.dp(bnStep.dp(), BigNumber.ROUND_DOWN);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlaceOrderContainer);

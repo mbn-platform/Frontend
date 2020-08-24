@@ -19,7 +19,8 @@ export class PlaceOrderInput extends React.PureComponent {
           <input
             onChange={onChange}
             placeholder={placeholder}
-            value={value} type="number" name={name} className="buysell__form-input"/>
+            autoComplete="off"
+            value={value} spellCheck="off" name={name} className="buysell__form-input"/>
           <span className="buysell__form-input__label" >{currency}</span>
         </Col>
       </Row>
