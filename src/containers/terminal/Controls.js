@@ -3,7 +3,6 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { FormattedMessage } from 'react-intl';
-import isNull from 'lodash/isNull';
 
 import FundSelect from '../../components/FundSelect';
 import GroupContractSelect from '../../components/GroupContractSelect';
@@ -21,7 +20,6 @@ import {
   selectControlsByExchange,
 } from '../../actions/terminal';
 import { showInfoModal, closeInfoModal } from '../../actions/modal';
-import { getAssetGroups } from '../../actions/assetGroup';
 
 const TIME_RANGE_OPTIONS = ['1 MIN', '5 MIN', '30 MIN', '1 H', '4 H', '12 H', '1 D', '1 W'];
 
@@ -29,7 +27,7 @@ class Controls extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      assetGroupEnabled: !isNull(props.assetGroup),
+      assetGroupEnabled: false,
     };
   }
 
@@ -49,18 +47,15 @@ class Controls extends React.Component {
     }
   };
 
-  componentDidMount = () => {
-    this.props.getAssetGroups();
-  };
-
   componentDidUpdate = (prevProps) => {
     if (this.props.loggedIn !== prevProps.loggedIn) {
       this.setState({ assetGroupEnabled: false });
     }
 
-    if (prevProps.assetGroup && prevProps.assetGroup !== this.props.assetGroup) {
-      this.setState({ assetGroupEnabled: !isNull(this.props.assetGroup) });
-    }
+    if (this.props.loggedIn &&
+      this.props.assetGroup && !this.state.assetGroupEnabled ) {
+      this.setState({ assetGroupEnabled: true});
+    };
   };
 
   handleGroupSelect = groupId => {
@@ -215,7 +210,6 @@ const mapDispatchToProps = {
   selectExchange,
   selectControlsByExchange,
   selectMarket,
-  getAssetGroups,
   selectAssetGroup,
   showInfoModal,
   closeInfoModal,

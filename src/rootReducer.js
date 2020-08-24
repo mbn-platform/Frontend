@@ -28,12 +28,6 @@ import payments from './reducers/payments';
 import selection from './reducers/selection';
 import assetGroups from './reducers/assetGroups';
 
-const terminalPersistConfig = {
-  key: 'terminal',
-  storage,
-  blacklist: ['orderBook', 'history', 'ticker', 'isValidUrl'],
-};
-
 const combined = combineReducers({
   apiKeys,
   notification,
@@ -48,7 +42,7 @@ const combined = combineReducers({
   time,
   request,
   challenge,
-  terminal: persistReducer(terminalPersistConfig, terminal),
+  terminal,
   rates,
   profile,
   stakeInfo,
@@ -64,7 +58,11 @@ const combined = combineReducers({
 const rootReducer = (state, action) => {
   switch(action.type) {
     case LOGGED_OUT: {
+      const fundId = localStorage.getItem('lastSelectedFund');
       localStorage.clear();
+      if (fundId) {
+        localStorage.setItem('lastSelectedFund', fundId);
+      }
       state = undefined;
       break;
     }
@@ -102,7 +100,7 @@ const rootReducer = (state, action) => {
 const rootPersistConfig = {
   key: 'root',
   storage,
-  whitelist: ['auth', 'assetGroups'],
+  whitelist: ['auth'],
 };
 
 export default persistReducer(rootPersistConfig, rootReducer);

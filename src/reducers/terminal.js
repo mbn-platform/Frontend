@@ -19,7 +19,13 @@ export default function(state = {
 }, action) {
   switch(action.type) {
     case SELECT_FUND: {
-      return {...state, fund: action.fund};
+      if (action.fund) {
+        window.localStorage.setItem('lastSelectedFund', action.fund._id);
+      }
+      const orders = (state.fund && action.fund && state.fund._id === action.fund._id) ? state.orders : {open: [], closed: []};
+      return {...state, fund: action.fund,
+        orders,
+      };
     }
     case SELECT_MARKET: {
       if(action.market === state.market) {
@@ -29,10 +35,13 @@ export default function(state = {
       }
     }
     case SELECT_ASSET_GROUP: {
+      if (action.group) {
+        window.localStorage.setItem('lastSelectedFund', action.group._id);
+      }
       return {
         ...state,
         assetGroup: action.group,
-        orders: action.group ? state.orders : { open: [], closed: [] },
+        orders: {open: [], closed: []},
         fund: null,
       };
     }

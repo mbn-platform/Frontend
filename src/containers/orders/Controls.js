@@ -3,7 +3,6 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import isNull from 'lodash/isNull';
 
 import {
   selectExchange,
@@ -14,7 +13,6 @@ import {
   selectControlsByExchange,
 } from '../../actions/terminal';
 import { showInfoModal, closeInfoModal } from '../../actions/modal';
-import { getAssetGroups } from '../../actions/assetGroup';
 import FundSelect from '../../components/FundSelect';
 import GroupContractSelect from '../../components/GroupContractSelect';
 import GroupSelect from '../../components/GroupSelect';
@@ -24,17 +22,13 @@ import Checkbox from '../../components/Checkbox';
 
 class Controls extends React.Component {
   state = {
-    assetGroupEnabled: !isNull(this.props.assetGroup),
-  };
-
-  componentDidMount = () => {
-    this.props.getAssetGroups();
+    assetGroupEnabled: false,
   };
 
   componentDidUpdate = (prevProps) => {
-    if (prevProps.assetGroup && prevProps.assetGroup !== this.props.assetGroup) {
-      this.setState({ assetGroupEnabled: !isNull(this.props.assetGroup) });
-    }
+    if (this.props.assetGroup && !this.state.assetGroupEnabled ) {
+      this.setState({ assetGroupEnabled: true });
+    };
   };
 
   onAssetGroupToggle = () => ({ target: { checked } }) => {
@@ -160,7 +154,6 @@ const mapDispatchToProps = {
   getExchangeMarkets,
   selectMarket,
   selectFund,
-  getAssetGroups,
   selectAssetGroup,
   showInfoModal,
   closeInfoModal,

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { UncontrolledTooltip } from 'reactstrap';
 
-import { getAssetGroups, deleteAssetGroup } from '../../../actions/assetGroup';
+import { deleteAssetGroup } from '../../../actions/assetGroup';
 import { showConfirmModal } from '../../../actions/modal';
 import { Desktop, Mobile } from '../../../generic/MediaQuery';
 import ReactTable from '../../../components/SelectableReactTable';
@@ -14,7 +14,6 @@ import TableHeader from './TableHeader';
 class CreatedGroups extends React.Component {
   static propTypes = {
     assetGroups: PropTypes.arrayOf(PropTypes.shape()).isRequired,
-    getAssetGroups: PropTypes.func.isRequired,
     selectAssetGroup: PropTypes.func.isRequired,
     deleteAssetGroup: PropTypes.func.isRequired,
   };
@@ -92,11 +91,6 @@ class CreatedGroups extends React.Component {
     return isMobile ? columns.filter(({ id }) => id !== 'quantity') : columns;
   }
 
-
-  componentDidMount = () => {
-    this.props.getAssetGroups();
-  };
-
   onGroupSelect = group => {
     const { selectedGroup } = this.state;
 
@@ -157,7 +151,6 @@ class CreatedGroups extends React.Component {
 };
 
 const mapDispatchToProps = {
-  getAssetGroups,
   deleteAssetGroup,
   showConfirmModal,
 };
