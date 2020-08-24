@@ -92,6 +92,7 @@ class Navigation extends React.Component {
     return modal.isCreateGroupModalOpen ? (
       <CreateGroupModal
         modal={modal}
+        intl={this.props.intl}
         closeCreateGroupModal={closeCreateGroupModalWindow}
       />
     ) : null;
