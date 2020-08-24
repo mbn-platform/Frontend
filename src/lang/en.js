@@ -256,7 +256,7 @@ const en = {
   'profile.contractSettings' : 'Contract settings',
   'profile.toChangeYouProfileMessage' : 'To change your profile please accept or decline all offers in your dashboard',
   'profile.cancel' : 'CANCEL',
-  'profile.saveChanges' : 'SAVE CHANGES',
+  'profile.saveChanges' : 'SAVE',
   'profile.edit' : 'EDIT',
   'profile.enterSetting' : 'Enter all contract settings',
   'profile.needEditFirst' : 'You need to edit your contract settings first',
