@@ -50,7 +50,13 @@ export class OpenOrders extends React.Component {
     return [
       {
         Header: 'Pair/Exchange',
-        Cell: (row) => <OpenOrdersCell onMarketClick={this.props.onMarketClick} title={row.original.symbol.split('-').reverse().join('/')} subtitle={row.original.exchange} />,
+        Cell: (row) => (
+          <OpenOrdersCell
+            className={classNames('openordercell', 'symbol')}
+            onMarketClick={this.props.onMarketClick}
+            title={row.original.symbol.split('-').reverse().join('/')}
+            subtitle={row.original.exchange}
+          />),
         width: 80,
       },
       {

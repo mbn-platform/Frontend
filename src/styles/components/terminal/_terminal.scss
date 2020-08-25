@@ -428,6 +428,7 @@
         }
 
         .rt-tr {
+          cursor: default !important;
           line-height: unset !important;
           padding-left: 10px;
           & > :first-child {
@@ -455,8 +456,13 @@
           &.buy * {
             color: #58bb94;
           }
+          &.symbol :first-child:hover {
+            text-decoration: underline;
+            cursor: pointer;
+          }
         }
         .cancel-order-cell {
+          cursor: pointer;
           padding: 2px 8px 2px 8px;
           font-size: 11px;
           color: #2b2f33;
