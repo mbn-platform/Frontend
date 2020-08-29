@@ -77,6 +77,10 @@ class PlaceOrderContainer extends React.Component {
         this.setTotal(value);
         break;
       }
+      case 'stopPrice': {
+        this.setStopPrice(value);
+        break;
+      }
       default:
         break;
     }
@@ -325,6 +329,32 @@ class PlaceOrderContainer extends React.Component {
       newState.total = total.toFixed();
     }
     this.setState(newState);
+  }
+
+  setStopPrice(price) {
+    if (price === '') {
+      this.setState({stopPrice: ''});
+      return;
+    }
+    const bnPrice = new BigNumber(price);
+    if (bnPrice.isNaN()){
+      return;
+    }
+    if (bnPrice.eq(this.state.stopPrice)) {
+      this.setState({
+        stopPrice: price,
+      });
+      return;
+    }
+    let priceStep;
+    if (this.props.exchange === 'bittrex') {
+      priceStep = new BigNumber(1e-8);
+    } else {
+      priceStep = new BigNumber(this.state.marketInfo ?
+        this.state.marketInfo.priceStep : 1e-8);
+    }
+    const flooredPrice = floorWithStep(bnPrice, priceStep);
+    this.setState({stopPrice: flooredPrice.toFixed()});
   }
 }
 
