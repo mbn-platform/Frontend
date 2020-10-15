@@ -1153,3 +1153,25 @@ body {
 	}
 }
 
+.faq {
+	padding: 20px;
+	margin-bottom: 40px;
+	.player {
+		width: 480px !important;
+		height: 270px !important;
+	}
+	h5 {
+		width: 480px;
+		margin-top: 10px;
+	}
+	@media (max-width: 520px) {
+		margin-bottom: 20px;
+		.player {
+			width: 320px !important;
+			height: 180px !important;
+		}
+		h5 {
+			width: 320px;
+		}
+	}
+}

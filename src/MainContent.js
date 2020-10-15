@@ -13,6 +13,7 @@ import Hashlog from './containers/hashlog/Hashlog';
 import ActionList from './containers/hashlog/ActionList';
 import Staking from './containers/staking/Staking';
 import Tariffs from './containers/tariffs/TariffsContainer';
+import FAQ from './containers/faq';
 import Payments from './containers/payments/PaymentsContainer';
 import './MainContent.css';
 import NotificationBar from './components/NotificationBar';
@@ -82,6 +83,7 @@ class MainContent extends React.Component {
           <ProtectedRoute exact path="/orders" component={Orders} loggedIn={loggedIn}/>
           <Route path="/staking" component={Staking} loggedIn={loggedIn}/>
           <Route exact path="/tariffs" component={Tariffs} loggedIn={loggedIn}/>
+          <Route exact path="/howitworks" component={FAQ} />
           <ProtectedRoute exact path="/payments/" component={Payments} loggedIn={loggedIn}/>
           <Redirect exact from="/ratings" to="/leaderboard"/>
           <Route exact path="/hashlog" component={Hashlog} loggedIn={loggedIn}/>

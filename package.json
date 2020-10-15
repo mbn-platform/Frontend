@@ -8,34 +8,36 @@
     "bignumber.js": "^7.2.1",
     "bootstrap": "^4.1.1",
     "classnames": "^2.2.6",
-    "copy-to-clipboard": "^3.2.0",
-    "jquery": "^3.4.1",
-    "lodash": "^4.17.15",
-    "lodash.merge": "^4.3.2",
+    "copy-to-clipboard": "^3.3.1",
+    "jquery": "^3.5.1",
+    "lodash": "^4.17.20",
+    "lodash.merge": "^4.6.2",
     "lodash.times": "^4.3.2",
     "malihu-custom-scrollbar-plugin": "^3.1.5",
-    "memoize-one": "^5.0.5",
+    "memoize-one": "^5.1.1",
     "node-sass-chokidar": "^1.3.5",
     "qrcode.react": "^0.8.0",
-    "qs": "^6.7.0",
-    "ramda": "^0.27.0",
-    "react": "^16.5.2",
+    "qs": "^6.9.4",
+    "ramda": "^0.27.1",
+    "react": "^16.13.1",
     "react-calendar": "^2.19.0",
-    "react-copy-to-clipboard": "^5.0.1",
+    "react-copy-to-clipboard": "^5.0.2",
     "react-custom-scrollbars": "^4.2.1",
-    "react-dom": "^16.3.2",
+    "react-dom": "^16.13.1",
     "react-intl": "^2.9.0",
     "react-modal": "^3.5.1",
-    "react-redux": "^5.0.7",
+    "react-player": "^2.6.2",
+    "react-redux": "^7.2.1",
     "react-responsive": "^4.1.0",
-    "react-router-dom": "^4.2.2",
-    "react-scripts": "^1.1.5",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "^3.4.3",
     "react-table": "^6.8.5",
     "reactstrap": "^6.0.1",
-    "redux": "^4.0.0",
+    "redux": "^4.0.5",
     "redux-persist": "^6.0.0",
-    "redux-thunk": "^2.2.0",
-    "socket.io-client": "^2.1.1"
+    "redux-thunk": "^2.3.0",
+    "socket.io-client": "^2.3.1"
   },
   "scripts": {
     "build-css": "node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/",
@@ -59,9 +61,21 @@
     }
   },
   "devDependencies": {
-    "husky": "^1.0.0-rc.14",
-    "lint-staged": "^7.2.2",
-    "npm-run-all": "^4.1.2"
+    "husky": "^4.3.0",
+    "lint-staged": "^10.4.0",
+    "npm-run-all": "^4.1.5"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   },
   "proxy": "http://localhost:7000"
 }

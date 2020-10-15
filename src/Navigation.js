@@ -11,6 +11,7 @@ import OrdersIcon from './assets/svg/orders.svg';
 import OrdersIconHover from './assets/svg/orders_hover.svg';
 import LeaderboardIcon from './assets/svg/MenuIconLeaderboard.svg';
 import LeaderboardIconHover from './assets/svg/MenuIconLeaderboardHover.svg';
+import HelpIcon from './assets/svg/MenuIconHelp.svg';
 import HashlogIcon from './assets/svg/MenuIconHashlog.svg';
 import HashlogIconHover from './assets/svg/MenuIconHashlogHover.svg';
 import StakingIcon from './assets/svg/MenuIconStaking.svg';
@@ -194,6 +195,13 @@ class Navigation extends React.Component {
 
   getLinks() {
     return [
+      {
+        name: 'FAQ',
+        to: '/howitworks',
+        imgClass: 'staking',
+        icon: HelpIcon,
+        iconHover: HelpIcon,
+      },
       {
         name: 'Profile',
         to: this.props.auth.loggedIn ? '/' + this.props.auth.profile.name : '/profile',
