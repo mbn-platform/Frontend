@@ -11,12 +11,9 @@ import MainContent from './MainContentContainer';
 import QuickNotification from './containers/QuickNotification';
 import Navigation from './Navigation';
 import { fetchTime } from './actions/time';
-import createMqProvider, {querySchema} from './MediaQuery';
 import './App.css';
 require('bootstrap');
 require('malihu-custom-scrollbar-plugin');
-
-const {MediaQuery} = createMqProvider(querySchema);
 
 const { store, persistor } = configureStore();
 
@@ -74,16 +71,14 @@ class App extends React.Component {
 
 const MainRouter = () => (
   <BrowserRouter>
-    <MediaQuery>
-      <Container className="main-panel" fluid>
-        <Row id="top-banner" style={{minHeight: 'unset'}} />
-        <Row noGutters className='flex-wrap flex-md-nowrap'>
-          <Navigation />
-          <MainContent />
-        </Row>
-        <QuickNotification />
-      </Container>
-    </MediaQuery>
+    <Container className="main-panel" fluid>
+      <Row id="top-banner" style={{minHeight: 'unset'}} />
+      <Row noGutters className='flex-wrap flex-md-nowrap'>
+        <Navigation />
+        <MainContent />
+      </Row>
+      <QuickNotification />
+    </Container>
   </BrowserRouter>
 );
 

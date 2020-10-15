@@ -104,6 +104,7 @@ class Navigation extends React.Component {
 
     return modal.isAddContractModalOpen ? (
       <AddContractModal
+        intl={this.props.intl}
         modal={modal}
         closeAddContractToGroupModal={closeAddContractToGroupModalWindow}
       />
