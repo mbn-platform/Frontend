@@ -216,5 +216,5 @@ const mapDispatchToProps = {
   getExchangeMarkets,
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Controls));
+export default connect(mapStateToProps, mapDispatchToProps)(Controls);
 
