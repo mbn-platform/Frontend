@@ -19,13 +19,8 @@ class Hashlog extends React.Component {
     sort: {},
   };
 
-  componentDidMount() {
-    const {getBlocksPages, hashlog : {blocksPage, blocksPageSize}} = this.props;
-    getBlocksPages(blocksPage, blocksPageSize);
-  }
-
   onRowClick = rowData=> {
-    const { 
+    const {
       setActionBlock,
       history,
     } = this.props;
@@ -38,10 +33,7 @@ class Hashlog extends React.Component {
 
   renderBlocklist = () => {
     const {
-      hashlog: {blockList, totalBlocks, blocksPage, blocksPageSize},
-      setBlocksPage,
-      setBlocksPageSize,
-      getBlocksPages,
+      hashlog: {blockList, totalBlocks, blocksPageSize},
     } = this.props;
     return (
       <React.Fragment>
@@ -50,27 +42,26 @@ class Hashlog extends React.Component {
             data={blockList}
             columns={this.getColumns(screenWidth)}
             pages={Math.ceil(totalBlocks/blocksPageSize)}
-            page={blocksPage}
             defaultPageSize={blocksPageSize}
-            pageSize={blocksPageSize}
             showPagination={true}
             screenWidth={screenWidth}
             showPaginationBottom={true}
             manual
-            paginationPageDispatcher={page => {
-              setBlocksPage(page);
-              getBlocksPages(page, blocksPageSize);
-            }}
-            paginationPageSizeDispatcher={pageSize => {
-              setBlocksPageSize(pageSize);
-              getBlocksPages(blocksPage, pageSize);
-            }}
+            onFetchData={this.onFetchData}
             onItemSelected={() => {}}
             PaginationComponent={PaginationWithPage}
           />)}
         />
       </React.Fragment>
     );
+  }
+
+  onFetchData = ({page, pageSize}) => {
+    this.setState({loading: true, pageSize});
+    this.props.setBlocksPageSize(pageSize);
+    this.props.setBlocksPage(page + 1);
+    this.props.getBlocksPages(page + 1, pageSize);
+
   }
 
   getColumns = screenWidth => {

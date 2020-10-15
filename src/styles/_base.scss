@@ -731,10 +731,11 @@ input[type=number]::-webkit-outer-spin-button {
 		-moz-osx-font-smoothing: auto;
 
     a {
+      margin-left: 10px;
       color: $color-page-tab;
 
-      &:last-child {
-        margin-left: 10px;
+      &:first-child {
+        margin-left: 0;
       }
 
       &.active {

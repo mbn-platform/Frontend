@@ -72,7 +72,7 @@ class Rating extends React.Component {
                 type="text"
                 className="ratings__input-search"
                 placeholder='Search'
-                spellcheck='false'
+                spellCheck='false'
               />
             </span>
             <label className="rating-checkbox" style={{fontSize: '12px', color: '#7e8190'}}
@@ -116,7 +116,6 @@ class RatingTable extends React.PureComponent {
 
   state = {
     page: 0,
-    pageSize: 10,
     nameFilter: '',
   }
 
@@ -331,19 +330,11 @@ class RatingTable extends React.PureComponent {
         data={this.props.data}
         filtered={[{id: 'name', value: this.props.nameFilter}, {id: 'verified', value: this.props.showVerified}]}
         getTrProps={this.getTrProps}
-        minRows={this.state.pageSize}
-        page={this.state.page}
+        minRows={10}
         resizable={false}
-        pageSize={this.state.pageSize}
         noDataText=""
         showPagination={true}
         PaginationComponent={PaginationWithPageRight}
-        paginationPageDispatcher={(p, ps) => {
-          this.setState({pageSize: ps, page: p});
-        }}
-        paginationPageSizeDispatcher={ps => {
-          this.setState({pageSize: ps});
-        }}
       />
     );
   }

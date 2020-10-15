@@ -20,6 +20,11 @@ export function fetchContracts() {
   };
 }
 
+export const fetchActiveContractProvided = ContractsApi.activeProvided;
+export const fetchActiveContractReceived = ContractsApi.activeReceived;
+export const fetchHistoryContractProvided = ContractsApi.historyProvided;
+export const fetchHistoryContractReceived = ContractsApi.historyReceived;
+
 export function rateContract(feedback) {
   return dispatch => {
     ContractsApi.rate(feedback)

@@ -699,6 +699,21 @@
     background-position: center;
     background-image: url('../assets/svg/vip.svg');
   }
+  &.contracts {
+    .rt-th:not(.-sort-asc):not(.-sort-desc) {
+      .table_header_wrapper:hover {
+        .green_arrow {
+          background: url(../assets/svg/GreenTriangleTop.svg) no-repeat center center
+        }
+      }
+    }
+    .table_header_wrapper {
+      cursor: pointer;
+    }
+    .table_header {
+      display: inline-block;
+    }
+  }
 }
 
 

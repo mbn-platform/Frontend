@@ -5,7 +5,7 @@ import { PlaceOrder } from './PlaceOrder';
 import { OrderType } from './PlaceOrderType';
 import { TAB_BUY, TAB_SELL } from './BuySellSwitch';
 import { setFundId } from '../../../generic/util';
-import { showInfoModal } from '../../../actions/modal';
+import { addQuickNotif } from '../../../actions/quickNotif';
 import { placeOrder, placeAlgoOrder } from '../../../actions/terminal';
 
 class PlaceOrderContainer extends React.Component {
@@ -117,7 +117,13 @@ class PlaceOrderContainer extends React.Component {
   onPlaceOrderClick = (e) => {
     e.preventDefault();
     if(!this.props.fund) {;
-      this.props.showModalWindow('terminal.selectFund');
+      this.props.addQuickNotif({
+        type: 'error',
+        object: {
+          text: 'terminal.selectFund',
+          _id: 'terminal.selectFund',
+        },
+      });
       return;
     }
     if (!this.state.amount || !this.state.price) {
@@ -378,7 +384,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-  showModalWindow: showInfoModal,
+  addQuickNotif,
   placeOrder,
   placeAlgoOrder,
 };

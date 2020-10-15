@@ -95,6 +95,39 @@ export class ApiContract {
       .then(errorHandler)
       .then(responseSchemaHandler);
 
+  historyProvided = (page, size, sort) => {
+    const params = {page, size};
+    if (sort.length) {
+      params.sort = sort[0].id;
+      params.desc = sort[0].desc;
+    }
+    const requestParams= qs.stringify(params);
+    return apiGet('/contract/history/provided?' + requestParams)
+      .then(errorHandler)
+      .then(responseSchemaHandler);
+  }
+  historyReceived = (page, size, sort) => {
+    const params = {page, size};
+    if (sort.length) {
+      params.sort = sort[0].id;
+      params.desc = sort[0].desc;
+    }
+    const requestParams= qs.stringify(params);
+    return apiGet('/contract/history/received?' + requestParams)
+      .then(errorHandler)
+      .then(responseSchemaHandler);
+  }
+  activeProvided = () => {
+    return apiGet('/contract/active/provided?')
+      .then(errorHandler)
+      .then(responseSchemaHandler);
+  }
+  activeReceived = () => {
+    return apiGet('/contract/active/received?')
+      .then(errorHandler)
+      .then(responseSchemaHandler);
+  }
+
   rate = feedback =>
     apiPost('/feedback', null, feedback)
       .then(errorHandler)
@@ -292,10 +325,6 @@ export class ApiProfile {
     apiPost(`/profile/${name}/info`, null, {info})
       .then(errorHandler)
       .then(responseSchemaHandler);
-  verifyEmail = (email) =>
-    apiPost('/verifyEmail', null, {email})
-      .then(errorHandler)
-      .then(responseSchemaHandler)
 
   calculateTraderProfit = (trader, start, investment) => {
     const params = {trader, start, investment};

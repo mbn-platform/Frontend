@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Container, Row, Col } from 'reactstrap';
 import { FormattedMessage } from 'react-intl';
 
-import HeaderStatus from '../../components/HeaderStatus';
 import Controls from './Controls';
 import OrdersTable from './OrdersTable';
 import {
@@ -44,13 +43,12 @@ class Orders extends React.Component {
 
   render() {
     const apiKeys = this.props.apiKeys.ownKeys;
-    const { contracts, exchangeInfo, fund, assetGroup } = this.props;
+    const { contracts, fund, assetGroup } = this.props;
 
     return (
       <Container fluid className="orders">
         <Row>
           <Col xs="12" sm="12" md="12" lg="12">
-            <HeaderStatus {...exchangeInfo} />
             <div className="orders-main">
               <div className="orders-main__top">
                 <div className="row  align-items-center">
@@ -97,7 +95,6 @@ const mapStateToProps = state => ({
   market: state.terminal.market,
   exchange: state.terminal.exchange,
   exchanges: state.exchangesInfo.exchanges || [],
-  exchangeInfo: state.exchangesInfo[state.terminal.exchange],
 });
 
 const mapDispatchToProps = {

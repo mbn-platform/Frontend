@@ -9,15 +9,9 @@ const defaultButton = props => (
     {props.children}
   </button>);
 
-const availablePageSize = [ 10, 25, 50];
+const availablePageSize = [ '10', '25', '50'];
 
 export default class PaginationWithPage extends React.Component {
-  constructor(props) {
-    super();
-    this.state = {
-      visiblePages: this.getVisiblePages(props.page, props.pages, props.screenSize)
-    };
-  }
 
   static propTypes = {
     pages: PropTypes.number.isRequired,
@@ -29,45 +23,36 @@ export default class PaginationWithPage extends React.Component {
     screenSize: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   };
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.pages !== nextProps.pages) {
-      this.setState({
-        visiblePages: this.getVisiblePages(nextProps.page, nextProps.pages, nextProps.screenSize)
-      });
-      this.props.paginationPageDispatcher(nextProps.page, nextProps.pageSize);
-    }
-  }
-
-  getVisiblePages = (page, total, screenSize) => {
+  getVisiblePages = (page, pages, screenSize) => {
     const isMobileScreen = (screenSize === 'sm');
     if (isMobileScreen) {
-      if (total < 5) {
-        return times(total, (i) => 1 + i);
+      if (pages < 5) {
+        return times(pages, (i) => 1 + i);
       } else {
         if (page < 3) {
-          return [1, 2, 3, 4, total];
+          return [1, 2, 3, 4, pages];
         } else {
-          if (total - page <= 2) {
-            return [1, total - 3, total - 2, total - 1, total];
+          if (pages - page <= 2) {
+            return [1, pages - 3, pages - 2, pages - 1, pages];
           } else {
             if (page + 3 % 3 >= 0) {
-              return [1, page - 1, page, page + 1, total];
+              return [1, page - 1, page, page + 1, pages];
             }
           }
         }
       }
     } else {
-      if (total < 7) {
-        return times(total, (i) => 1 + i);
+      if (pages < 7) {
+        return times(pages, (i) => 1 + i);
       } else {
         if (page < 5) {
-          return [1, 2, 3, 4, 5, 6, total];
+          return [1, 2, 3, 4, 5, 6, pages];
         }
-        if (total - page <= 2) {
-          return [1, total - 5, total - 4, total - 3, total - 2, total - 1, total];
+        if (pages - page <= 2) {
+          return [1, pages - 5, pages - 4, pages - 3, pages - 2, pages - 1, pages];
         }
         if (page + 5 % 5 >= 0) {
-          return [1, page - 2, page - 1, page, page + 1, page + 2, total];
+          return [1, page - 2, page - 1, page, page + 1, page + 2, pages];
         }
       }
     }
@@ -79,11 +64,12 @@ export default class PaginationWithPage extends React.Component {
       page,
       pages: total,
       pageSize,
-      paginationPageDispatcher,
-      paginationPageSizeDispatcher,
-      screenSize
+      screenSize,
+      onPageChange,
     } = this.props;
-    const { visiblePages } = this.state;
+
+    const visiblePages = this.getVisiblePages(page, total, screenSize);
+
     return (
       <div className="table__pagination">
         <div className="table__prev-page-wrapper">
@@ -91,15 +77,9 @@ export default class PaginationWithPage extends React.Component {
             <PageButtonComponent
               className=" btn btn-secondary table__page-button"
               onClick={() => {
-                if (page === 1) {
-                  return;
-                }
-                paginationPageDispatcher(page - 1, pageSize);
-                this.setState({
-                  visiblePages: this.getVisiblePages(page - 1, total, screenSize)
-                });
+                onPageChange(page - 1);
               }}
-              disabled={page === 1}
+              disabled={!this.props.canPrevious}
             >
               {this.props.previousText}
             </PageButtonComponent>
@@ -112,15 +92,12 @@ export default class PaginationWithPage extends React.Component {
                 key={index}
                 className={`
                   btn btn-secondary
-                  ${page === currentPage
+                  ${page + 1 === currentPage
                 ? 'table__page-button table__page-button_active'
                 : 'table__page-button'}`
                 }
                 onClick={() => {
-                  paginationPageDispatcher(currentPage, pageSize);
-                  this.setState({
-                    visiblePages: this.getVisiblePages(currentPage, total, screenSize)
-                  });
+                  onPageChange(currentPage - 1);
                 }}
               >
                 {`
@@ -139,12 +116,9 @@ export default class PaginationWithPage extends React.Component {
               if (page === this.props.pages) {
                 return;
               }
-              paginationPageDispatcher(page + 1, pageSize);
-              this.setState({
-                visiblePages: this.getVisiblePages(page + 1, total, screenSize)
-              });
+              onPageChange(page + 1);
             }}
-            disabled={page === this.props.pages}
+            disabled={!this.props.canNext}
           >
             {this.props.nextText}
           </PageButtonComponent>
@@ -152,27 +126,25 @@ export default class PaginationWithPage extends React.Component {
         </div>
         <div className="table__page-size-wrapper">
           <DropdownSelect
-            selected={pageSize}
+            selected={pageSize.toString()}
             items={availablePageSize}
             targetId="time_select"
             switcherClassName="table__page-size-switcher"
             elementClassName="table__page-size-dropdown-list"
             dropdownClassName="table__page-size-dropdown"
-            onItemSelect={paginationPageSizeDispatcher}
+            onItemSelect={this.onPageSizeSelect}
           />
         </div>
       </div>
     );
+  }
+
+  onPageSizeSelect = (size) => {
+    this.props.onPageSizeChange(Number(size));
   }
 }
 
 export class PaginationWithPageRight extends React.Component {
-  constructor(props) {
-    super();
-    this.state = {
-      visiblePages: this.getVisiblePages(props.page, props.pages, props.screenSize)
-    };
-  }
 
   static propTypes = {
     pages: PropTypes.number.isRequired,
@@ -183,15 +155,6 @@ export class PaginationWithPageRight extends React.Component {
     nextText: PropTypes.string,
     screenSize: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   };
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.pages !== nextProps.pages) {
-      this.setState({
-        visiblePages: this.getVisiblePages(nextProps.page, nextProps.pages, nextProps.screenSize)
-      });
-      this.props.paginationPageDispatcher(nextProps.page, nextProps.pageSize);
-    }
-  }
 
   getVisiblePages = (page, total, screenSize) => {
     const isMobileScreen = (screenSize === 'sm');
@@ -234,11 +197,10 @@ export class PaginationWithPageRight extends React.Component {
       page,
       pages: total,
       pageSize,
-      paginationPageDispatcher,
-      paginationPageSizeDispatcher,
+      onPageChange,
       screenSize
     } = this.props;
-    const { visiblePages } = this.state;
+    const visiblePages = this.getVisiblePages(page, total, screenSize);
     return (
       <div className="table__pagination">
         <div className="table__prev-page-wrapper">
@@ -246,15 +208,9 @@ export class PaginationWithPageRight extends React.Component {
             <PageButtonComponent
               className=" btn btn-secondary table__page-button"
               onClick={() => {
-                if (page === 0) {
-                  return;
-                }
-                paginationPageDispatcher(page - 1, pageSize);
-                this.setState({
-                  visiblePages: this.getVisiblePages(page - 1, total, screenSize)
-                });
+                onPageChange(page - 1);
               }}
-              disabled={page === 0}
+              disabled={!this.props.canPrevious}
             >
               {this.props.previousText}
             </PageButtonComponent>
@@ -267,15 +223,12 @@ export class PaginationWithPageRight extends React.Component {
                 key={index}
                 className={`
                   btn btn-secondary
-                  ${page === currentPage - 1
+                  ${page + 1 === currentPage
                 ? 'table__page-button table__page-button_active'
                 : 'table__page-button'}`
                 }
                 onClick={() => {
-                  paginationPageDispatcher(currentPage - 1, pageSize);
-                  this.setState({
-                    visiblePages: this.getVisiblePages(currentPage, total, screenSize)
-                  });
+                  onPageChange(currentPage - 1);
                 }}
               >
                 {`
@@ -294,12 +247,9 @@ export class PaginationWithPageRight extends React.Component {
               if (page === this.props.pages) {
                 return;
               }
-              paginationPageDispatcher(page + 1, pageSize);
-              this.setState({
-                visiblePages: this.getVisiblePages(page + 1, total, screenSize)
-              });
+              onPageChange(page + 1);
             }}
-            disabled={page === this.props.pages - 1}
+            disabled={!this.props.canNext}
           >
             {this.props.nextText}
           </PageButtonComponent>
@@ -307,16 +257,20 @@ export class PaginationWithPageRight extends React.Component {
         </div>
         <div className="table__page-size-wrapper">
           <DropdownSelect
-            selected={pageSize}
+            selected={pageSize.toString()}
             items={availablePageSize}
             targetId="time_select"
             switcherClassName="table__page-size-switcher"
             elementClassName="table__page-size-dropdown-list"
             dropdownClassName="table__page-size-dropdown"
-            onItemSelect={paginationPageSizeDispatcher}
+            onItemSelect={this.onPageSizeSelect}
           />
         </div>
       </div>
     );
+  }
+
+  onPageSizeSelect = (size) => {
+    this.props.onPageSizeChange(Number(size));
   }
 }

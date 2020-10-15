@@ -49,19 +49,11 @@ class SelectionTable extends React.PureComponent {
       className='rating-table'
       columns={this.columns}
       data={this.props.data}
-      minRows={this.state.pageSize}
-      page={this.state.page}
+      minRows={10}
       resizable={false}
-      pageSize={this.state.pageSize}
       showPagination={true}
       noDataText=""
       PaginationComponent={PaginationWithPageRight}
-      paginationPageDispatcher={(page, pageSize) => {
-        this.setState({ pageSize, page });
-      }}
-      paginationPageSizeDispatcher={pageSize => {
-        this.setState({ pageSize });
-      }}
     />
   );
 }

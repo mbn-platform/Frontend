@@ -240,7 +240,7 @@ class Navigation extends React.Component {
       },
       {
         name: 'Orders',
-        to: '/orders',
+        to: '/history',
         imgClass: 'orders',
         icon: OrdersIcon,
         iconHover: OrdersIconHover
