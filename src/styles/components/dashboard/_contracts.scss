@@ -64,7 +64,7 @@
               transition-duration: 400ms;
               transition: color 400ms, background-color 400ms;
               text-transform: uppercase;
-              line-height: 26px;
+              line-height: 28px;
               font-size: 1.3em;
 
               &:hover {
@@ -133,6 +133,12 @@
 
         .table_title_wrapper {
           border-radius: 0;
+        }
+      }
+      &.provided {
+        margin-top: 20px;
+        .provided-contracts-table-wrapper, .provided-balances-table-wrapper {
+          border-top: 1px solid #494d4d;
         }
       }
     }

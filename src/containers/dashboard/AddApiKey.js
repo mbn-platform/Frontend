@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 
 import { addApiKey } from '../../actions/apiKeys';
-import {showInfoModal, showTwoFactorAuthModal} from '../../actions/modal';
+import { showTwoFactorAuthModal} from '../../actions/modal';
+import { addQuickNotif } from '../../actions/quickNotif';
 import ExchangeSelect from '../../components/ExchangeSelect';
 import LockButton from '../../components/LockButton';
 
@@ -25,7 +26,14 @@ class AddApiKey extends React.Component {
     const isPhraseNotFilled = exchange === 'kucoin' && !passphrase;
 
     if (!name || !value || !exchange || !secret || isPhraseNotFilled) {
-      this.props.showModalWindow(`dashboard.${isPhraseNotFilled ? 'addPassphrase' : 'addAlert'}`);
+      const text = `dashboard.${isPhraseNotFilled ? 'addPassphrase' : 'addAlert'}`;
+      this.props.addQuickNotif({
+        type: 'error',
+        object: {
+          text,
+          _id: text,
+        },
+      });
       return;
     }
 
@@ -144,7 +152,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   onApiKeyCreated: addApiKey,
-  showModalWindow: showInfoModal,
+  addQuickNotif,
   showTwoFactorAuthModal,
 };
 

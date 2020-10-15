@@ -1,4 +1,6 @@
 .quick-notif-wrapper {
+  margin-bottom: 5px;
+  margin-right: 5px;
   font-size: 14px;
   position: fixed;
   bottom: 0;
@@ -14,12 +16,26 @@
   background-color: #2C2F33;
   min-width: 300px;
   border-radius: 0;
-  border: 1px solid #7c7e80;
+  border: 1px solid #346255;
+  &.error {
+    border-color: #953a3a;
+  }
 }
 
 .quick-notif .title {
   text-transform: capitalize;
   font-weight: bold;
+}
+
+.quick-notif .title {
+  text-transform: capitalize;
+  font-weight: bold;
+  &.error {
+    color: #953a3a;
+  }
+  &.success {
+    color: #346255;
+  }
 }
 
 .quick-notif .top-block {

@@ -1,7 +1,7 @@
 import defaultErrorHandler from '../generic/errorHandlers';
 import { ApiPayments } from '../generic/api';
 import { ApiError } from '../generic/apiCall';
-import { showInfoModal } from './modal';
+import { addQuickNotif } from './quickNotif';
 
 export const UPDATE_MBN_ADDRESS = 'UPDATE_MBN_ADDRESS';
 
@@ -33,7 +33,13 @@ export function createMbnAddress() {
         if(err.apiErrorCode) {
           switch(err.apiErrorCode) {
             case ApiError.UNIQUE_VIOLATION: {
-              dispatch(showInfoModal('payments.errors.addressAlreadyExists'));
+              dispatch(addQuickNotif({
+                type: 'error',
+                object: {
+                  text: 'payments.errors.addressAlreadyExists',
+                  _id: 'payments.errors.addressAlreadyExists',
+                },
+              }));
               break;
             }
             default:

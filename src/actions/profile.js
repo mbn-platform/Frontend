@@ -3,7 +3,8 @@ import get from 'lodash/get';
 import { profileErrorHandler } from '../generic/errorHandlers';
 import { ApiProfile, ApiContacts} from '../generic/api';
 import { ApiError} from '../generic/apiCall';
-import { showConfirmModal, showInfoModal, showTelergramVerifyCodeModal } from './modal';
+import { showConfirmModal, showTelergramVerifyCodeModal } from './modal';
+import { addQuickNotif } from './quickNotif';
 
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
 export const UPDATE_PROFILE_AVAILABLE = 'UPDATE_PROFILE_AVAILABLE';
@@ -32,7 +33,13 @@ export function verifyTelegram(value) {
     }
     const result = await ContactsApi.create('telegram', value);
     if (!result.verification) {
-      dispatch(showInfoModal('contactVerified'));
+      dispatch(addQuickNotif({
+        type: 'error',
+        object: {
+          text: 'contactVerified',
+          _id: 'contactVerified',
+        },
+      }));
     } else if (result.verification.type === 'code') {
       dispatch(showTelergramVerifyCodeModal(result.verification.params.code));
       dispatch({
@@ -205,7 +212,13 @@ export function verifyStakeAddress(address) {
               .then(() => dispatch(getStakeInfo()))
               .catch((e) => {
                 if (e.apiErrorCode === ApiError.UNIQUE_VIOLATION) {
-                  dispatch(showInfoModal('youCannotUseThatAddress'));
+                  dispatch(addQuickNotif({
+                    type: 'error',
+                    object: {
+                      text: 'youCannotUseThatAddress',
+                      _id: 'youCannotUseThatAddress',
+                    },
+                  }));
                 } else {
                   console.log('unhandled error');
                 }
@@ -214,30 +227,6 @@ export function verifyStakeAddress(address) {
         });
       }));
     });
-  };
-}
-
-export function verifyEmail(email) {
-  return (dispatch) => {
-    ProfileApi.verifyEmail(email)
-      .then(() => {
-        dispatch(showInfoModal('emailVerificationSent'));
-      })
-      .catch((e) => {
-        switch (e.apiErrorCode) {
-          case ApiError.INVALID_PARAMS_SET:
-            dispatch(showInfoModal('invalidEmail'));
-            break;
-          case ApiError.THROTTLE_LIMIT:
-            dispatch(showInfoModal('tryAgainLater'));
-            break;
-          case ApiError.IN_PROGRESS:
-            dispatch(showInfoModal('emailVerificationSent'));
-            break;
-          default:
-            break;
-        }
-      });
   };
 }
 

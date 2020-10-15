@@ -1,7 +1,8 @@
 import { ApiError } from '../generic/apiCall';
 import defaultErrorHandler from '../generic/errorHandlers';
 import { ApiOffers } from '../generic/api';
-import { showInfoModal, showUpgradeTariffModal } from './modal';
+import { showUpgradeTariffModal } from './modal';
+import { addQuickNotif } from './quickNotif';
 
 export const ACCEPT_OFFER = 'ACCEPT_OFFER';
 export const REJECT_OFFER = 'REJECT_OFFER';
@@ -72,17 +73,41 @@ export function sendOffer(offer) {
         if(err.apiErrorCode) {
           switch(err.apiErrorCode) {
             case ApiError.WRONG_MIN_AMOUNT: {
-              dispatch(showInfoModal('yourApiKeyBalanceIsLowerThatTraderMinimum'));
+              dispatch(addQuickNotif({
+                type: 'error',
+                object: {
+                  text: 'yourApiKeyBalanceIsLowerThatTraderMinimum',
+                  _id: 'yourApiKeyBalanceIsLowerThatTraderMinimum',
+                },
+              }));
               break;
             }
             case ApiError.WRONG_DEAL_TERMS:
-              dispatch(showInfoModal('traderHasChangedContractSettings'));
+              dispatch(addQuickNotif({
+                type: 'error',
+                object: {
+                  text: 'traderHasChangedContractSettings',
+                  _id: 'traderHasChangedContractSettings',
+                },
+              }));
               break;
             case ApiError.INSUFFICIENT_FUNDS:
-              dispatch(showInfoModal('errorInsufficientFunds'));
+              dispatch(addQuickNotif({
+                type: 'error',
+                object: {
+                  text: 'errorInsufficientFunds',
+                  _id: 'errorInsufficientFunds',
+                },
+              }));
               break;
             case ApiError.TRADER_NOT_AVAILABLE:
-              dispatch(showInfoModal('errorTraderNotAvailable'));
+              dispatch(addQuickNotif({
+                type: 'error',
+                object: {
+                  text: 'errorTraderNotAvailable',
+                  _id: 'errorTraderNotAvailable',
+                },
+              }));
               break;
             case ApiError.TARIFF_LIMIT:
               dispatch(showUpgradeTariffModal('profile.needToUpgradePlan',

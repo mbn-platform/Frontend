@@ -1,6 +1,6 @@
 import { ApiAssetGroup } from '../generic/api';
 import defaultErrorHandler from '../generic/errorHandlers';
-import { showInfoModal } from './modal';
+import { addQuickNotif } from './quickNotif';
 
 const AssetGroupApi = new ApiAssetGroup();
 
@@ -21,7 +21,14 @@ export const getAssetGroups = () => {
       })
       .catch(err => {
         if (err.reason) {
-          dispatch(showInfoModal(`dashboard.errors.${err.reason}`));
+          const text = `dashboard.errors.${err.reason}`;
+          dispatch(addQuickNotif({
+            type: 'error',
+            object: {
+              text,
+              _id: text,
+            },
+          }));
         }
       });
   };
@@ -38,7 +45,14 @@ export const createAssetGroup = (name, exchange, contracts = []) => {
       })
       .catch(err => {
         if (err.reason) {
-          dispatch(showInfoModal(`dashboard.errors.${err.reason}`));
+          const text = `dashboard.errors.${err.reason}`;
+          dispatch(addQuickNotif({
+            type: 'error',
+            object: {
+              text,
+              _id: text,
+            },
+          }));
         }
       });
   };
@@ -55,7 +69,14 @@ export const updateAssetGroup = (id, contracts) => {
       })
       .catch(err => {
         if (err.reason) {
-          dispatch(showInfoModal(`dashboard.errors.${err.reason}`));
+          const text = `dashboard.errors.${err.reason}`;
+          dispatch(addQuickNotif({
+            type: 'error',
+            object: {
+              text,
+              _id: text,
+            },
+          }));
         }
       });
   };

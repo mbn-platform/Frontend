@@ -6,7 +6,7 @@ import {FormattedMessage, injectIntl} from 'react-intl';
 import { Desktop, Mobile } from '../../generic/MediaQuery';
 import  SecuritySettings from './SecuritySettings';
 import NotificationSettings from './NotificationSettings';
-import { showInfoModal } from '../../actions/modal';
+import { addQuickNotif } from '../../actions/quickNotif';
 import LockButton from '../../components/LockButton';
 
 class ContractSettings extends React.Component {
@@ -42,7 +42,10 @@ class ContractSettings extends React.Component {
   onEditButtonClick() {
     const isEditing = this.state.isEditing;
     if(isEditing) {
-      const fee = parseFloat(this.state.fee) || this.props.fee;
+      let fee = parseFloat(this.state.fee);
+      if (isNaN(fee)) {
+        fee = this.props.fee;
+      }
       let minAmount = parseFloat(this.state.amount);
       if(isNaN(minAmount)) {
         minAmount = this.props.amount;
@@ -53,7 +56,13 @@ class ContractSettings extends React.Component {
       const duration = parseFloat(this.state.duration) || this.props.duration;
       if(fee >= 100 || fee < 0 || minAmount < 0 || roi <= 0 ||
         duration <= 0 || maxLoss <= 0) {;
-        this.props.showModalWindow('profile.enterSetting');
+        this.props.addQuickNotif({
+          type: 'error',
+          object: {
+            text: 'profile.enterSettings',
+            _id: 'profile.enterSettings',
+          },
+        });
         return;
       } else {
         const update = { fee, minAmount, currency, roi, maxLoss, duration };
@@ -93,7 +102,13 @@ class ContractSettings extends React.Component {
 
     if(fee >= 100 || fee < 0 || minAmount <= 0 || roi <= 0 ||
       duration <= 0 || maxLoss <= 0) {
-      this.props.showModalWindow('profile.needEditFirst');
+      this.props.addQuickNotif({
+        type: 'error',
+        object: {
+          text: 'profile.needEditFirst',
+          _id: 'profile.needEditFirst',
+        },
+      });
       return;
     }
     this.props.onToggleClick(!this.props.availableForOffers);
@@ -419,7 +434,7 @@ const EditSettingsEntry = ({className, placeholder,value, dimension, name, onCha
 );
 
 const mapDispatchToProps = {
-  showModalWindow: showInfoModal,
+  addQuickNotif,
 };
 
 export default injectIntl(connect(state => state, mapDispatchToProps)(ContractSettings));

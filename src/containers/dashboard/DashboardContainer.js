@@ -7,7 +7,7 @@ import { acceptOffer, cancelOffer, rejectOffer, payOffer } from '../../actions/o
 import { updateExchanges } from '../../actions/exchanges';
 import { rateContract } from '../../actions/contracts';
 import { getExchangeRates } from '../../actions/terminal';
-import { showInfoModal } from '../../actions/modal';
+import { addQuickNotif } from '../../actions/quickNotif';
 
 const mapStateToProps = state => ({
   time: state.time,
@@ -26,7 +26,13 @@ const mapDispatchToProps = dispatch => {
   return {
     onKeyDeleteClick: async (apiKey, token2FA) => {
       if(apiKey.inUse) {
-        dispatch(showInfoModal(this.props.intl.messages['dashboard.cannotDeleteKey']));
+        dispatch(addQuickNotif({
+          type: 'error',
+          object: {
+            text: 'dashboard.cannotDeleteKey',
+            _id: 'dashboard.cannotDeleteKey',
+          },
+        }));
       } else {
         await dispatch(deleteApiKey(apiKey, token2FA));
       }

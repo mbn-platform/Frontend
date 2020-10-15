@@ -1,6 +1,6 @@
 import { ApiError } from '../generic/apiCall';
 import { ApiAuth } from '../generic/api';
-import { showInfoModal } from './modal';
+import { addQuickNotif } from './quickNotif';
 import qs from 'qs';
 
 export const LOGGED_OUT = 'LOGGED_OUT';
@@ -20,7 +20,14 @@ export function logIn() {
         }
       })
       .catch(error => {
-        error.code && dispatch(showInfoModal('simpleValue', {value : error.code}));
+        error.code && dispatch(addQuickNotif({
+          type: 'error',
+          object: {
+            text: 'simpleValue',
+            _id: 'simpleValue',
+            values: {value: error.code},
+          },
+        }));
       });
   };
 }
@@ -54,10 +61,22 @@ export function addName(name) {
               });
               break;
             case ApiError.INVALID_PARAMS_SET:
-              dispatch(showInfoModal('invalidName'));
+              dispatch(addQuickNotif({
+                type: 'error',
+                object: {
+                  text: 'invalidName',
+                  _id: 'invalidName',
+                },
+              }));
               return;
             case ApiError.UNIQUE_VIOLATION:
-              dispatch(showInfoModal('youCannotUseThatName'));
+              dispatch(addQuickNotif({
+                type: 'error',
+                object: {
+                  text: 'youCannotUseThatName',
+                  _id: 'youCannotUseThatName',
+                },
+              }));
               break;
             default:
               console.error('unhandled api error');

@@ -1,7 +1,7 @@
 import defaultErrorHandler from '../generic/errorHandlers';
 import { ApiTariffs } from '../generic/api';
 import { ApiError } from '../generic/apiCall';
-import { showInfoModal } from './modal';
+import { addQuickNotif } from './quickNotif';
 import '../eth/MembranaToken';
 
 const TariffsApi = new ApiTariffs();
@@ -47,10 +47,22 @@ export function createPaymentRequest(id) {
         if(err.apiErrorCode) {
           switch(err.apiErrorCode) {
             case ApiError.INVALID_PARAMS_SET:
-              dispatch(showInfoModal('tariffs.errors.unableToBuyFree'));
+              dispatch(addQuickNotif({
+                type: 'error',
+                object: {
+                  text: 'tariffs.errors.unableToBuyFree',
+                  _id: 'tariffs.errors.unableToBuyFree',
+                },
+              }));
               break;
             case ApiError.UNIQUE_VIOLATION: {
-              dispatch(showInfoModal('tariffs.errors.addressNotGenerated'));
+              dispatch(addQuickNotif({
+                type: 'error',
+                object: {
+                  text: 'tariffs.errors.addressNotGenerated',
+                  _id: 'tariffs.errors.addressNotGenerated',
+                },
+              }));
               break;
             }
             default:

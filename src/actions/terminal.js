@@ -1,7 +1,7 @@
 import { ApiError } from '../generic/apiCall';
 import { ApiTerminal } from '../generic/api';
 import { ApiExchange } from '../generic/api';
-import { showInfoModal, showUpgradeTariffModal } from './modal';
+import { showUpgradeTariffModal } from './modal';
 import { LOGGED_OUT } from './auth';
 import { UPDATE_EXCHANGES } from './exchanges';
 import { addQuickNotif } from './quickNotif';
@@ -214,16 +214,40 @@ export function cancelOrder(order) {
         if(err.apiErrorCode) {
           switch(err.apiErrorCode) {
             case ApiError.ORDER_NOT_OPEN:
-              dispatch(showInfoModal('thisOrderIsAlreadyClosed'));
+              dispatch(addQuickNotif({
+                type: 'error',
+                object: {
+                  text: 'thisOrderIsAlreadyClosed',
+                  _id: 'thisOrderIsAlreadyClosed',
+                },
+              }));
               break;
             case ApiError.TRY_AGAIN_LATER:
-              dispatch(showInfoModal('serverIsBusyTryAgainLater'));
+              dispatch(addQuickNotif({
+                type: 'error',
+                object: {
+                  text: 'serverIsBusyTryAgainLater',
+                  _id: 'serverIsBusyTryAgainLater',
+                },
+              }));
               break;
             case ApiError.ORDER_ALREADY_CLOSED:
-              dispatch(showInfoModal('thisOrderIsAlreadyClosed'));
+              dispatch(addQuickNotif({
+                type: 'error',
+                object: {
+                  text: 'thisOrderIsAlreadyClosed',
+                  _id: 'thisOrderIsAlreadyClosed',
+                },
+              }));
               break;
             case ApiError.ORDER_NOT_SUPPORTED:
-              dispatch(showInfoModal('orderNotSupported'));
+              dispatch(addQuickNotif({
+                type: 'error',
+                object: {
+                  text: 'orderNotSupported',
+                  _id: 'orderNotSupported',
+                },
+              }));
               break;
             case ApiError.FORBIDDEN:
               dispatch({
@@ -231,8 +255,14 @@ export function cancelOrder(order) {
               });
               break;
             default:
-              dispatch(showInfoModal('failedToCancelOrder', {order :err.apiErrorCode}));
-              console.error('unhandled api error', err.apiErrorCode);
+              dispatch(addQuickNotif({
+                type: 'error',
+                object: {
+                  text: 'failedToCancelOrder',
+                  _id: 'failedToCancelOrder',
+                  values: {errorCode: err.apiErrorCode},
+                },
+              }));
           }
         } else {
           console.error('error performing request', err);
@@ -245,7 +275,13 @@ export function placeAlgoOrder(order) {
   return (dispatch, store) => {
     TerminalApi.placeAlgoOrder(order)
       .then(res => {
-        dispatch(showInfoModal('orderHasBeenPlaced'));
+        dispatch(addQuickNotif({
+          type: 'success',
+          object: {
+            text: 'orderHasBeenPlaced',
+            _id: 'orderHasBeenPlaced',
+          },
+        }));
       })
       .catch(error => {
         if(error.apiErrorCode) {
@@ -260,7 +296,13 @@ export function placeAlgoOrder(order) {
               ));
               break;
             case ApiError.MAINTENANCE:
-              dispatch(showInfoModal('exchange.maintenance'));
+              dispatch(addQuickNotif({
+                type: 'error',
+                object: {
+                  text: 'exchange.maintenance',
+                  _id: 'exchange.maintenance',
+                },
+              }));
               break;
             default:
               console.log('unhandler error: ' + JSON.stringify(error));
@@ -282,7 +324,13 @@ export function placeOrder(order) {
             }))));
           }
         }
-        dispatch(showInfoModal('orderHasBeenPlaced'));
+        dispatch(addQuickNotif({
+          type: 'success',
+          object: {
+            text: 'orderHasBeenPlaced',
+            _id: 'orderHasBeenPlaced',
+          },
+        }));
       })
       .catch(error => {
         if(error.apiErrorCode) {
@@ -293,22 +341,58 @@ export function placeOrder(order) {
               });
               break;
             case ApiError.INSUFFICIENT_FUNDS:
-              dispatch(showInfoModal('errorInsufficientFunds'));
+              dispatch(addQuickNotif({
+                type: 'error',
+                object: {
+                  text: 'errorInsufficientFunds',
+                  _id: 'errorInsufficientFunds',
+                },
+              }));
               break;
             case ApiError.TRY_AGAIN_LATER:
-              dispatch(showInfoModal('serverIsBusyTryAgainLater'));
+              dispatch(addQuickNotif({
+                type: 'error',
+                object: {
+                  text: 'serverIsBusyTryAgainLater',
+                  _id: 'serverIsBusyTryAgainLater',
+                },
+              }));
               break;
             case ApiError.MIN_TRADE_REQUIREMENT_NOT_MET:
-              dispatch(showInfoModal('minTradeRequirementNotMet'));
+              dispatch(addQuickNotif({
+                type: 'error',
+                object: {
+                  text: 'minTradeRequirementNotMet',
+                  _id: 'minTradeRequirementNotMet',
+                },
+              }));
               break;
             case ApiError.MARKET_NOT_ALLOWED:
-              dispatch(showInfoModal('youAreNotAllowedToTradeOnThatMarket'));
+              dispatch(addQuickNotif({
+                type: 'error',
+                object: {
+                  text: 'youAreNotAllowedToTradeOnThatMarket',
+                  _id: 'youAreNotAllowedToTradeOnThatMarket',
+                },
+              }));
               break;
             case ApiError.THROTTLE_LIMIT:
-              dispatch(showInfoModal('youHaveMadeTooManyOrders'));
+              dispatch(addQuickNotif({
+                type: 'error',
+                object: {
+                  text: 'youHaveMadeTooManyOrders',
+                  _id: 'youHaveMadeTooManyOrders',
+                },
+              }));
               break;
             case ApiError.LOCK:
-              dispatch(showInfoModal('youCanPlaceOnlyOneOrderAtOnce'));
+              dispatch(addQuickNotif({
+                type: 'error',
+                object: {
+                  text: 'youCanPlaceOnlyOneOrderAtOnce',
+                  _id: 'youCanPlaceOnlyOneOrderAtOnce',
+                },
+              }));
               break;
             case ApiError.TARIFF_LIMIT:
               dispatch(showUpgradeTariffModal('profile.needToUpgradePlan',
@@ -320,10 +404,23 @@ export function placeOrder(order) {
               ));
               break;
             case ApiError.MAINTENANCE:
-              dispatch(showInfoModal('exchange.maintenance'));
+              dispatch(addQuickNotif({
+                type: 'error',
+                object: {
+                  text: 'exchange.maintenance',
+                  _id: 'exchange.maintenance',
+                },
+              }));
               break;
             default:
-              dispatch(showInfoModal('failedToPlaceOrder', {order : error.apiErrorCode}));
+              dispatch(addQuickNotif({
+                type: 'error',
+                object: {
+                  text: 'failedToPlaceOrder',
+                  _id: 'failedToPlaceOrder',
+                  values: {errorCode: error.apiErrorCode},
+                },
+              }));
           }
         }
       });

@@ -3,7 +3,8 @@ import ExchangeSelect from '../../components/ExchangeSelect';
 import { connect } from 'react-redux';
 import { addBotKeys } from '../../actions/apiKeys';
 import { injectIntl } from 'react-intl';
-import {showInfoModal, showTwoFactorAuthModal} from '../../actions/modal';
+import { showTwoFactorAuthModal } from '../../actions/modal';
+import { addQuickNotif } from '../../actions/quickNotif';
 
 class AddBotApi extends React.Component {
   state = {
@@ -16,7 +17,13 @@ class AddBotApi extends React.Component {
      const { label, chosenKeyName } = this.state;
      const { addNewBotKeys, apiKeys } = this.props;
      if(!label || !chosenKeyName) {
-       this.props.showModalWindow('dashboard.addBotAlert');
+       this.props.addQuickNotif({
+         type: 'error',
+         object: {
+           text: 'dashboard.addBotAlert',
+           _id: 'dashboard.addBotAlert',
+         },
+       });
        return;
      }
      await addNewBotKeys(label, apiKeys.find(key => key.name === chosenKeyName)._id);
@@ -80,7 +87,7 @@ const mapDispatchToProps = dispatch => {
     addNewBotKeys: async (label, keys) => {
       dispatch(await addBotKeys(label, keys));
     },
-    showModalWindow: showInfoModal,
+    addQuickNotif,
     showTwoFactorAuthModal,
   };
 };

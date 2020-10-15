@@ -87,7 +87,7 @@ class Contracts extends React.Component {
             />
           </div>
         </div>
-        <div className="contracts-wrapper">
+        <div className="contracts-wrapper provided">
           <ProvidedContracts
             contracts={providedContracts}
             getColumns={this.getTableColumns}

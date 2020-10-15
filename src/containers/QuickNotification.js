@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Card } from 'reactstrap';
 import delay from 'lodash/delay';
+import { FormattedMessage } from 'react-intl';
 
 import { removeQuickNotif } from '../actions/quickNotif';
 
@@ -92,6 +93,30 @@ class QuickNotification extends React.PureComponent {
                 />
               );
             }
+            case 'error': {
+              const { object: { _id, text, values }} = event;
+              return (
+                <ErrorNotification
+                  event={event}
+                  text={text}
+                  key={_id}
+                  onClick={this.onEventClick}
+                  values={values || {}}
+                />
+              );
+            };
+            case 'success': {
+              const { object: { _id, text, values }} = event;
+              return (
+                <SuccessNotification
+                  event={event}
+                  text={text}
+                  key={_id}
+                  onClick={this.onEventClick}
+                  values={values || {}}
+                />
+              );
+            }
             default:
               return null;
           }
@@ -100,7 +125,48 @@ class QuickNotification extends React.PureComponent {
     ) : null;
   }
 }
+class ErrorNotification extends React.Component {
+  componentDidMount = () => {
+    const { event, onClick } = this.props;
+    delay(onClick(event), NOTIFICATION_LIFETIME);
+  };
 
+  render() {
+    const { text, onClick, values, event } = this.props;
+    return (
+      <Card className="quick-notif error" onClick={onClick(event)}>
+        <div className="title error">
+          Error
+        </div>
+        <FormattedMessage
+          id={text}
+          values={values}
+        />
+      </Card>
+    );
+  }
+}
+class SuccessNotification extends React.Component {
+  componentDidMount = () => {
+    const { event, onClick } = this.props;
+    delay(onClick(event), NOTIFICATION_LIFETIME);
+  };
+
+  render() {
+    const { text, onClick, event, values } = this.props;
+    return (
+      <Card className="quick-notif success" onClick={onClick(event)}>
+        <div className="title success">
+          Success
+        </div>
+        <FormattedMessage
+          id={text}
+          values={values}
+        />
+      </Card>
+    );
+  }
+}
 class Notification extends React.Component {
   componentDidMount = () => {
     const { event, onClick } = this.props;

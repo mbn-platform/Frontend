@@ -4,7 +4,8 @@ import { LOGGED_OUT } from './auth';
 import {UPDATE_KEYS} from './dashboard';
 import {SELECT_FUND} from './terminal';
 import { ApiKeys, ApiBotKeys } from '../generic/api';
-import { showCodeModal, showInfoModal, showUpgradeTariffModal } from './modal';
+import { showCodeModal, showUpgradeTariffModal } from './modal';
+import { addQuickNotif } from './quickNotif';
 export const DELETE_API_KEY = 'DELETE_API_KEY';
 export const ADD_API_KEY = 'ADD_API_KEY';
 export const UPDATE_API_KEY = 'UPDATE_API_KEY';
@@ -73,7 +74,13 @@ export function addBotKeys(label, keyId) {
 export function deleteApiKey(key, token2FA) {
   return async (dispatch, getState) => {
     if (key.inUse) {
-      dispatch(showInfoModal(this.props.intl.messages['dashboard.cannotDeleteKey']));
+      dispatch(addQuickNotif({
+        type: 'error',
+        object: {
+          text: 'dashboard.cannotDeleteKey',
+          _id: 'dashboard.cannotDeleteKey',
+        },
+      }));
       return;
     }
     await KeysApi.delete(key, token2FA)
@@ -108,8 +115,14 @@ export function deleteApiKey(key, token2FA) {
               throw error;
             }
             case ApiError.KEY_IN_USE:
-              dispatch(showInfoModal('theKeyIsInUse'));
-              throw error;
+              dispatch(addQuickNotif({
+                type: 'error',
+                object: {
+                  text: 'theKeyIsInUse',
+                  _id: 'theKeyIsInUse',
+                },
+              }));
+              break;
             default:
               console.error('unhandled api error', error.apiErrorCode);
               throw error;
@@ -137,6 +150,13 @@ export function addApiKey(key, token2FA) {
     try {
       await KeysApi.add(params, token2FA)
         .then(json => {
+          dispatch(addQuickNotif({
+            type: 'success',
+            object: {
+              text: 'notification.apiKeyAdded',
+              _id: 'notification.apiKeyAdded',
+            },
+          }));
           dispatch({
             type: ADD_API_KEY,
             apiKey: json,
@@ -154,10 +174,22 @@ export function addApiKey(key, token2FA) {
       if (error.apiErrorCode) {
         switch(error.apiErrorCode) {
           case ApiError.INVALID_PARAMS_SET:
-            dispatch(showInfoModal('invalidKeySecretPair'));
+            dispatch(addQuickNotif({
+              type: 'error',
+              object: {
+                text: 'invalidKeySecretPair',
+                _id: 'invalidKeySecretPair',
+              },
+            }));
             break;
           case ApiError.UNIQUE_VIOLATION:
-            dispatch(showInfoModal('thisKeyAlreadyInSystem'));
+            dispatch(addQuickNotif({
+              type: 'error',
+              object: {
+                text: 'thisKeyAlreadyInSystem',
+                _id: 'thisKeyAlreadyInSystem',
+              },
+            }));
             break;
           case ApiError.TARIFF_LIMIT:
             dispatch(showUpgradeTariffModal('profile.needToUpgradePlan',
@@ -169,11 +201,23 @@ export function addApiKey(key, token2FA) {
             ));
             break;
           case ApiError.MAINTENANCE:
-            dispatch(showInfoModal('exchange.maintenance'));
+            dispatch(addQuickNotif({
+              type: 'error',
+              object: {
+                text: 'exchange.maintenance',
+                _id: 'exchange.maintenance',
+              },
+            }));
             break;
           default:
-            dispatch(showInfoModal('failedToAddApiKey', {key: error.apiErrorCode}));
-            console.error('unhandled api error', error.apiErrorCode);
+            dispatch(addQuickNotif({
+              type: 'error',
+              object: {
+                text: 'exchange.maintenance',
+                _id: 'exchange.maintenance',
+                values: {errorCode: error.apiErrorCode},
+              },
+            }));
         }
       }
     }
