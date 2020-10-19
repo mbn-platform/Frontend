@@ -138,15 +138,18 @@ class TelegramContact extends React.Component {
   }
 
   static getDerivedStateFromProps(props, state) {
+    const isVerified = props.contact && props.contact.isVerified;
     let telegram;
-    if (props.contact && props.contact.value) {
+    if (state.telegram) {
+      telegram = state.telegram;
+    } else if (props.contact && props.contact.value) {
       telegram = '@' + props.contact.value;
     } else {
       telegram = '';
     }
     return {
-      telegram: telegram,
-      isVerified: (props.contact && props.contact.isVerified) || false,
+      telegram,
+      isVerified,
     };
   }
   onChange = (e) => {

@@ -411,6 +411,7 @@ const en = {
   'history.contracts.title': 'Finished Contracts',
   'howitworks.title': 'How It Works',
   'notification.apiKeyAdded': 'API key added',
+  'notification.codeCopied': 'Code copied',
 };
 
 export default en;

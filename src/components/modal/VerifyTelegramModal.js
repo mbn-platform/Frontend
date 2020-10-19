@@ -3,10 +3,11 @@ import { FormattedMessage } from 'react-intl';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import {connect} from 'react-redux';
 import { closeTelegramVerifyCodeModal } from '../../actions/modal';
+import { addQuickNotif } from '../../actions/quickNotif';
 
 import ModalWindow from '.';
 
-export function VerifyTelegramModal({modal, closeTelegramVerifyCodeModal, intl}) {
+export function VerifyTelegramModal({modal, addQuickNotif, closeTelegramVerifyCodeModal, intl}) {
   if (!modal.isTelegramModalOpen) {
     return null;
   }
@@ -34,7 +35,19 @@ export function VerifyTelegramModal({modal, closeTelegramVerifyCodeModal, intl})
               }}
             />
           </div>
-          <CopyToClipboard text={modal.code}>
+          <CopyToClipboard
+            onCopy={() => {
+              addQuickNotif({
+                type: 'success',
+                object: {
+                  text: 'notification.codeCopied',
+                  _id: 'notification.codeCopied',
+                },
+              });
+              closeTelegramVerifyCodeModal();
+            }}
+            text={modal.code}
+          >
             <button className="modal__button btn">
               {intl.messages['telegramConfirm.copyCode']}
             </button>
@@ -46,5 +59,6 @@ export function VerifyTelegramModal({modal, closeTelegramVerifyCodeModal, intl})
 }
 const mapDispatchToProps = {
   closeTelegramVerifyCodeModal,
+  addQuickNotif,
 };
 export default connect(null, mapDispatchToProps)(VerifyTelegramModal);
